@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+        android:id="@+id/ctb_simple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleBarHeight="@dimen/simpleBarHeight"
+        app:centerType="customView"
+        app:statusBarMode="dark"
+        app:centerCustomView="@layout/common_layout_titlebar_center"
+        app:leftType="customView"
+        app:leftCustomView="@layout/common_layout_titlebar_left"
+        app:rightTextColor="@color/black"
+        app:rightType="customView"
+        app:rightCustomView="@layout/common_layout_titlebar_right"
+        android:visibility="gone"
+        />
+
+    <ViewStub
+        android:id="@+id/view_stub_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

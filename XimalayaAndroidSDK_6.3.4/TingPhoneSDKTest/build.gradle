@@ -1,0 +1,126 @@
+apply plugin: 'com.android.application'
+
+buildscript {
+    repositories{
+        maven {
+            url "https://maven.google.com"
+        }
+        google()
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+    }
+}
+
+dependencies {
+    //    如果你的jar包/依赖代码 在编译的时候需要依赖，在运行的时候也需要，那么就用compile
+    //    如果你的jar包/依赖代码 仅在编译的时候需要，但是在运行时不需要依赖,就用provided
+    if(new File("D:\\OpenSDK 打包").exists() || new File("/Users/nali/Public/SDK打包").exists()) {
+        api files('libs/xutil3.3.6.jar')
+        api rootProject.ext.dependencies.gson
+        api rootProject.ext.dependencies.supportV4
+        api project(':Downloader')
+        api project(':OAuth2_Android_SDK:XmPayOrderSDK')
+        api project(':TingPhoneOpenSDK')
+        api project(':OpenSDKAdModel')
+    } else{
+        api rootProject.ext.dependencies.gson
+        api rootProject.ext.dependencies.supportV4
+        api fileTree(dir: 'libs', include: '*.jar')
+    }
+}
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
+
+    defaultConfig {
+        applicationId "com.app.test.android"
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi'/*, 'x86'*///, 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+        targetSdkVersion 28
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+//            jniLibs.srcDirs = ['libs']
+        }
+
+        // Move the tests to tests/java, tests/res, etc...
+        instrumentTest.setRoot('tests')
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+
+    lintOptions {
+        // set to true to turn off analysis progress reporting by lint
+        quiet true
+        // if true, stop the gradle build if errors are found
+        abortOnError false
+        // if true, only report errors
+        ignoreWarnings true
+        checkAllWarnings false
+        checkReleaseBuilds false
+//        lintConfig file("lint.xml")
+    }
+
+    dexOptions {
+        incremental true
+        maxProcessCount 4
+        javaMaxHeapSize "2048M"
+    }
+
+    signingConfigs {
+        myConfig {
+            storeFile file("build-files/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            v2SigningEnabled false
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable true
+            signingConfig signingConfigs.myConfig
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
+}
+
+android.variantFilter { variant ->
+    if (variant.buildType.name.endsWith('debug')) {
+        variant.setIgnore(true);
+    }
+}

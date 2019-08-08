@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:vpi="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/control_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+
+        <RelativeLayout
+            android:id="@+id/control_bar"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="3dp"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/sound_cover"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/sound_cover"
+                android:textColor="@color/textcolor"
+                android:maxLines="1"
+                android:layout_marginLeft="10dp"
+                android:text="no play sound" />
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_toRightOf="@id/sound_cover"
+                android:textColor="@color/textcolor"
+                android:maxLines="1"
+                android:layout_below="@id/message"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content"/>
+
+            <SeekBar
+                android:id="@+id/seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/sound_cover"
+                android:layout_below="@id/time"
+                android:maxHeight="10dp"
+                android:minHeight="10dp" />
+
+            <ProgressBar
+                android:id="@+id/buffering_progress"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/pre_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/seek_bar"
+                android:layout_alignParentBottom="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pre_icon_transparent_normal" />
+
+            <ImageButton
+                android:id="@+id/play_or_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/pre_sound"
+                android:layout_toRightOf="@+id/pre_sound"
+                android:scaleType="fitCenter"
+                android:src="@drawable/widget_play_normal" />
+
+            <ImageButton
+                android:id="@+id/next_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/pre_sound"
+                android:layout_toRightOf="@+id/play_or_pause"
+                android:scaleType="fitCenter"
+                android:src="@drawable/next_icon_transparent_normal" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/control_layout"
+        android:background="#ffffff" >
+        
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="top"
+            />
+    </android.support.v4.view.ViewPager>
+
+</RelativeLayout>

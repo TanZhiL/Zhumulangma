@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Common</string>
+    <string-array name="report_types">
+        <item >杂物漂浮</item>
+        <item >污水直排</item>
+        <item >水体异样</item>
+        <item >护岸损毁</item>
+        <item >非法采砂</item>
+        <item >侵占河道</item>
+        <item >非法捕鱼</item>
+        <item >其他</item>
+    </string-array>
+    <string-array name="river_names">
+        <item >西江干流南海区段:FS000120000-4</item>
+        <item >雅瑶水道南海区段:FS200220000</item>
+        <item >松江河:FS201022500</item>
+        <item >潭洲水道东平社区段:FS401530703</item>
+        <item >水口水道里水镇段:FS200122700-1</item>
+    </string-array>
+
+    <string name="ji">%d集</string>
+    <string name="ci">播放:%s次</string>
+    <string name="zhubo">主播:%s</string>
+    <string name="gong_ji">数量:共%d集</string>
+    <string name="sb">订阅(%s)</string>
+    <string name="playing">正在直播: %s</string>
+    <string name="qian">%s前</string>
+    <string name="update">%d更新</string>
+</resources>

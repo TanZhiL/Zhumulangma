@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="110dp">
+
+    <ImageView
+        android:id="@+id/img_notifyIcon"
+        android:layout_width="110dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/notification_default" />
+
+    <ImageView
+        android:id="@+id/img_notifyClose"
+        android:layout_width="35dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="5dp"
+        android:contentDescription="关闭"
+        android:paddingRight="4dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/notify_btn_close" />
+
+    <TextView
+        android:id="@+id/txt_notifyMusicName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_toLeftOf="@+id/img_notifyClose"
+        android:layout_toRightOf="@+id/img_notifyIcon"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:singleLine="true"
+        android:textAppearance="@style/NotificationTitle"
+        android:text="随时随地 听我想听"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/txt_notifyNickName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txt_notifyMusicName"
+        android:layout_below="@+id/txt_notifyMusicName"
+        android:layout_marginTop="5dp"
+        android:gravity="left"
+        android:text="喜马拉雅"
+        android:singleLine="true"
+        android:textAppearance="@style/NotificationText"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/control_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@+id/txt_notifyMusicName"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/txt_notifyNickName"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp"
+        android:paddingTop="3dp">
+
+        <ImageView
+            android:id="@+id/img_notifyPre"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="25dp"
+            android:layout_toLeftOf="@id/img_notifyPlayOrPause"
+            android:contentDescription="上一首"
+            android:scaleType="fitCenter"
+            android:src="@drawable/notify_btn_dark_prev_normal_xml" />
+
+        <ImageView
+            android:id="@+id/img_notifyPlayOrPause"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="开始播放"
+            android:scaleType="fitCenter"
+            android:src="@drawable/notify_btn_dark_pause_normal_xml" />
+
+        <ImageView
+            android:id="@+id/img_notifyNext"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@id/img_notifyPlayOrPause"
+            android:contentDescription="下一首"
+            android:scaleType="fitCenter"
+            android:src="@drawable/notify_btn_dark_next_normal_xml" />
+    </RelativeLayout>
+
+</RelativeLayout>

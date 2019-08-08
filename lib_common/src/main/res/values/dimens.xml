@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="simpleBarHeight">50dp</dimen>
+    <dimen name="simpleBarTitle">16sp</dimen>
+    <dimen name="simpleBarSubtitle">12sp</dimen>
+    <dimen name="simpleBarAction">14sp</dimen>
+</resources>

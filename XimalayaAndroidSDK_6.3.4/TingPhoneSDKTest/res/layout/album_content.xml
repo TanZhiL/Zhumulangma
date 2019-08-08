@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp" >
+
+    <com.ximalaya.volley.toolbox.NetworkImageView
+        android:id="@+id/imageview"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/image_default_album_s" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/imageview" >
+
+        <TextView
+            android:id="@+id/albumname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="tagname"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/playnum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/albumname"
+            android:layout_marginTop="2dp"
+            android:text="100"
+            android:textColor="#000000"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/trackcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/albumname"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@id/playnum"
+            android:text="100"
+            android:textColor="#000000"
+            android:textSize="8sp" />
+
+        <TextView
+            android:id="@+id/updatetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/playnum"
+            android:layout_marginTop="2dp"
+            android:text="100"
+            android:textColor="#000000"
+            android:textSize="8sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:overScrollMode="never">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:descendantFocusability="blocksDescendants"
+        android:layout_height="match_parent">
+        <com.youth.banner.Banner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="158dp"
+            app:indicator_drawable_unselected="@drawable/shap_common_circle_white"
+            app:indicator_height="7dp"
+            app:indicator_margin="3dp"
+            app:indicator_width="7dp" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="84dp"
+                android:scrollbars="none"
+                android:overScrollMode="never"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="68dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:id="@+id/fl_rank"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/shap_common_circle_pink">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_home_hot_phb" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="18dp"
+                            android:gravity="center"
+                            android:text="排行榜"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="68dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/shap_common_circle_powderblue">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_home_hot_jp" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="18dp"
+                            android:gravity="center"
+                            android:text="精品"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="68dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/shap_common_circle_orange">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_home_hot_dfhy" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="18dp"
+                            android:gravity="center"
+                            android:text="巅峰会员"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="68dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/shap_common_circle_green">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_home_hot_tqy" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="18dp"
+                            android:gravity="center"
+                            android:text="听清远"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="68dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/shap_common_circle_blue">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_home_hot_xyyx"/>
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="18dp"
+                            android:gravity="center"
+                            android:text="小雅音响"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="68dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/shap_common_circle_yellow">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_home_hot_td" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="18dp"
+                            android:gravity="center"
+                            android:text="听单"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="68dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/shap_common_circle_blue">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_home_hot_jrbt"/>
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="18dp"
+                            android:gravity="center"
+                            android:text="今日必听"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="68dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/shap_common_circle_green">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_home_hot_btbd"/>
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="18dp"
+                            android:gravity="center"
+                            android:text="边听边读"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="68dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/shap_common_circle_red">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:tint="@color/white"
+                                android:src="@drawable/ic_home_hot_rmfx"/>
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="18dp"
+                            android:gravity="center"
+                            android:text="热门分享"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <com.gykj.zhumulangma.common.widget.ItemHeader
+                android:id="@+id/ih_like"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:ih_right_text="更多"
+                app:ih_title="猜你喜欢"
+                app:layout_constraintTop_toBottomOf="@id/horizontalScrollView" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_like"
+                android:layout_width="match_parent"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:background="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/ih_like"
+                android:nestedScrollingEnabled="false"
+                android:layout_height="wrap_content"/>
+
+            <include
+                android:id="@+id/like_refresh"
+                layout="@layout/common_layout_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/rv_like" />
+
+            <com.gykj.zhumulangma.common.widget.ItemHeader
+                android:id="@+id/ih_story"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:ih_right_text="更多"
+                app:ih_title="最热有声小说"
+                app:layout_constraintTop_toBottomOf="@id/like_refresh" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_story"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/ih_story"
+                android:nestedScrollingEnabled="false"
+                android:layout_height="wrap_content"/>
+            <include
+                android:id="@+id/story_refresh"
+                layout="@layout/common_layout_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                app:layout_constraintTop_toBottomOf="@id/rv_story" />
+
+            <com.gykj.zhumulangma.common.widget.ItemHeader
+                android:id="@+id/ih_baby"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                app:ih_right_text="更多"
+                app:ih_title="宝贝最爱听"
+                app:layout_constraintTop_toBottomOf="@id/story_refresh" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_baby"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/ih_baby"
+                android:nestedScrollingEnabled="false"
+                android:layout_height="wrap_content"/>
+            <include
+                android:id="@+id/baby_refresh"
+                layout="@layout/common_layout_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                app:layout_constraintTop_toBottomOf="@id/rv_baby" />
+            <LinearLayout
+                android:id="@+id/layout_ad"
+                android:layout_width="match_parent"
+                android:layout_height="169dp"
+                android:background="@color/white"
+                android:paddingLeft="11dp"
+                android:paddingRight="11dp"
+                android:paddingTop="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/baby_refresh"
+                >
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="113dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/home_hot_ad"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="23dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:text="小雅音响"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="14dp"
+                    android:textSize="11sp"
+                    android:textColor="@color/colorGray"
+                    android:gravity="center_vertical"
+                    android:text="你家里的有声图书馆，点击购买！"
+                    />
+            </LinearLayout>
+            <com.gykj.zhumulangma.common.widget.ItemHeader
+                android:id="@+id/ih_topic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:ih_right_text="更多"
+                app:ih_title="精选专题"
+                app:layout_constraintTop_toBottomOf="@id/layout_ad" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_topic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/ih_topic" />
+
+            <include
+                android:visibility="gone"
+                android:id="@+id/topic_refresh"
+                layout="@layout/common_layout_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                app:layout_constraintTop_toBottomOf="@id/rv_topic" />
+            <com.gykj.zhumulangma.common.widget.ItemHeader
+                android:id="@+id/ih_music"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:ih_right_text="更多"
+                app:ih_title="音乐好时光"
+                app:layout_constraintTop_toBottomOf="@id/topic_refresh" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_music"
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/ih_music"
+                android:background="@color/white"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:nestedScrollingEnabled="false"
+                android:layout_height="wrap_content"/>
+            <include
+                android:id="@+id/music_refresh"
+                layout="@layout/common_layout_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                app:layout_constraintTop_toBottomOf="@id/rv_music" />
+
+            <com.gykj.zhumulangma.common.widget.ItemHeader
+                android:id="@+id/ih_radio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:ih_right_text="更多"
+                app:ih_title="电台"
+                app:layout_constraintTop_toBottomOf="@id/music_refresh" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_radio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/ih_radio" />
+            <include
+                android:id="@+id/radio_refresh"
+                layout="@layout/common_layout_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                app:layout_constraintTop_toBottomOf="@id/rv_radio" />
+        </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+</ScrollView>

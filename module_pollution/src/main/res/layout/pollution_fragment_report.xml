@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="综合污染指数"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="总磷(mg/L)"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isb_pollute_index" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="氨氮(mg/L)"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isb_tp_data" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="溶解氧(mg/L)"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isb_an_data" />
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="化学需氧量(mg/L)"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isb_do_data" />
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="高锰酸盐指数(mg/L)"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isb_cod_data" />
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="生化需氧量(mg/L)"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/isb_pi_data" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3.0"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.5"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3.0"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/isb_an_data"
+            app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/isb_do_data"
+            app:layout_constraintTop_toTopOf="@+id/textView21" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView23" />
+
+        <TextView
+            android:id="@+id/textView27"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView26" />
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView29" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="10"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView28" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="0"
+            android:textColor="#333333"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <com.warkiz.widget.IndicatorSeekBar
+            android:id="@+id/isb_pollute_index"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:isb_indicator_color="@color/colorPrimaryDark"
+            app:isb_max="3"
+            app:isb_min="0"
+            app:isb_progress="0.6"
+            app:isb_progress_value_float="true"
+            app:isb_seek_smoothly="true"
+            app:isb_show_thumb_text="true"
+            app:isb_thumb_color="@color/colorPrimary"
+            app:isb_thumb_text_color="@color/colorPrimaryDark"
+            app:isb_track_background_color="#E2E2E2"
+            app:isb_track_background_size="6dp"
+            app:isb_track_progress_color="@color/colorPrimaryDark"
+            app:isb_track_progress_size="6dp"
+            app:isb_track_rounded_corners="true"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintLeft_toRightOf="@id/textView4"
+            app:layout_constraintRight_toLeftOf="@id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView8"
+            app:layout_constraintTop_toTopOf="@id/textView8"
+            />
+
+        <com.warkiz.widget.IndicatorSeekBar
+            android:id="@+id/isb_tp_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:isb_max="0.5"
+            app:isb_min="0"
+            app:isb_progress="0.2"
+            app:isb_progress_value_float="true"
+            app:isb_indicator_color="@color/colorPrimaryDark"
+            app:isb_seek_smoothly="true"
+            app:isb_show_thumb_text="true"
+            app:isb_thumb_color="@color/colorPrimary"
+            app:isb_thumb_text_color="@color/colorPrimaryDark"
+            app:isb_track_background_color="#E2E2E2"
+            app:isb_track_background_size="6dp"
+            app:isb_track_progress_color="@color/colorPrimaryDark"
+            app:isb_track_progress_size="6dp"
+            app:isb_track_rounded_corners="true"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@id/textView4"
+            app:layout_constraintRight_toLeftOf="@id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+        <com.warkiz.widget.IndicatorSeekBar
+            android:id="@+id/isb_an_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:isb_max="3"
+            app:isb_min="0"
+            app:isb_progress_value_float="true"
+            app:isb_indicator_color="@color/colorAccentDark"
+            app:isb_progress="1.5"
+            app:isb_seek_smoothly="true"
+            app:isb_show_thumb_text="true"
+            app:isb_thumb_color="@color/colorAccent"
+            app:isb_thumb_text_color="@color/colorAccentDark"
+            app:isb_track_progress_color="@color/colorAccentDark"
+            app:isb_track_background_size="6dp"
+            app:isb_track_background_color="#E2E2E2"
+            app:isb_track_progress_size="6dp"
+            app:isb_track_rounded_corners="true"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@id/textView4"
+            app:layout_constraintRight_toLeftOf="@id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/textView11" />
+
+        <com.warkiz.widget.IndicatorSeekBar
+            android:id="@+id/isb_do_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:isb_max="10"
+            app:isb_indicator_color="@color/colorAccentDark"
+            app:isb_r2l="true"
+            app:isb_min="0"
+            app:isb_progress_value_float="true"
+            app:isb_progress="5"
+            app:isb_seek_smoothly="true"
+            app:isb_show_thumb_text="true"
+            app:isb_thumb_color="@color/colorAccent"
+            app:isb_thumb_text_color="@color/colorAccentDark"
+            app:isb_track_background_color="@color/colorAccentDark"
+            app:isb_track_background_size="6dp"
+            app:isb_track_progress_color="#E2E2E2"
+            app:isb_track_progress_size="6dp"
+            app:isb_track_rounded_corners="true"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@id/textView4"
+            app:layout_constraintRight_toLeftOf="@id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/textView21" />
+
+        <com.warkiz.widget.IndicatorSeekBar
+            android:id="@+id/isb_cod_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:isb_progress_value_float="true"
+            app:isb_indicator_color="@color/colorPrimaryDark"
+            app:isb_max="50"
+            app:isb_min="0"
+            app:isb_progress="20"
+            app:isb_seek_smoothly="true"
+            app:isb_show_thumb_text="true"
+            app:isb_thumb_color="@color/colorPrimary"
+            app:isb_thumb_text_color="@color/colorPrimaryDark"
+            app:isb_track_background_color="#E2E2E2"
+            app:isb_track_background_size="6dp"
+            app:isb_track_progress_color="@color/colorPrimaryDark"
+            app:isb_track_progress_size="6dp"
+            app:isb_track_rounded_corners="true"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@id/textView4"
+            app:layout_constraintRight_toLeftOf="@id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/textView23" />
+
+        <com.warkiz.widget.IndicatorSeekBar
+            android:id="@+id/isb_pi_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:isb_progress_value_float="true"
+            app:isb_indicator_color="@color/colorPrimaryDark"
+            app:isb_max="20"
+            app:isb_min="0"
+            app:isb_progress="4"
+            app:isb_seek_smoothly="true"
+            app:isb_show_thumb_text="true"
+            app:isb_thumb_color="@color/colorPrimary"
+            app:isb_thumb_text_color="@color/colorPrimaryDark"
+            app:isb_track_background_color="#E2E2E2"
+            app:isb_track_background_size="6dp"
+            app:isb_track_progress_color="@color/colorPrimaryDark"
+            app:isb_track_progress_size="6dp"
+            app:isb_track_rounded_corners="true"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@id/textView4"
+            app:layout_constraintRight_toLeftOf="@id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/textView26" />
+
+        <com.warkiz.widget.IndicatorSeekBar
+            android:id="@+id/isb_bod5_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:isb_progress_value_float="true"
+            app:isb_indicator_color="@color/colorPrimaryDark"
+            app:isb_max="15"
+            app:isb_min="0"
+            app:isb_progress="4"
+            app:isb_seek_smoothly="true"
+            app:isb_show_thumb_text="true"
+            app:isb_thumb_color="@color/colorPrimary"
+            app:isb_thumb_text_color="@color/colorPrimaryDark"
+            app:isb_track_background_color="#E2E2E2"
+            app:isb_track_background_size="6dp"
+            app:isb_track_progress_color="@color/colorPrimaryDark"
+            app:isb_track_progress_size="6dp"
+            app:isb_track_rounded_corners="true"
+            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@id/textView4"
+            app:layout_constraintRight_toLeftOf="@id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView6"
+            app:layout_constraintTop_toTopOf="@+id/textView29" />
+
+        <Button
+            android:id="@+id/btn_commit"
+           style="@style/PrimaryBtn"
+            android:layout_marginTop="16dp"
+            android:text="确认调整"
+            app:layout_constraintTop_toBottomOf="@id/isb_bod5_data"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/textView15"
+            style="@style/InputLabel"
+            android:layout_marginTop="16dp"
+            android:text="河湖名称"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/tv_river_name"
+            android:layout_width="0dp"
+            android:background="@null"
+            android:editable="false"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:hint="请选择河湖名称"
+            android:textSize="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintTop_toTopOf="@id/textView15" />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

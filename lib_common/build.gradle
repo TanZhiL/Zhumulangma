@@ -1,0 +1,128 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        ndk {
+            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
+
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "boolean", 'IS_DEBUG', 'true'
+        }
+        release {
+            buildConfigField "boolean", 'IS_DEBUG', 'false'
+        }
+    }
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api(project(':lib_util')) {
+        exclude group: "com.github.tbruyelle"
+        exclude group: "io.reactivex2.rxjava"
+        exclude group: "io.reactivex2.rxandroid"
+        exclude group: "com.github.lovetuzitong"
+        exclude group: "com.android.support"
+    }
+    api(project(':lib_videotrimmer')) {
+        exclude group: "com.github.tbruyelle"
+        exclude group: "io.reactivex2.rxjava"
+        exclude group: "io.reactivex2.rxandroid"
+        exclude group: "com.github.bumptech.glide"
+        exclude group: "com.android.support"
+    }
+    api rootProject.ext.support["design"]
+    api rootProject.ext.support["support-v4"]
+    api rootProject.ext.support["appcompat-v7"]
+    api rootProject.ext.support["constraint-layout"]
+    api rootProject.ext.support["recyclerview-v7"]
+    api rootProject.ext.support["junit"]
+    api rootProject.ext.support["runner"]
+    api rootProject.ext.support["espresso-core"]
+    api rootProject.ext.dependencies["arouter-api"]
+    api rootProject.ext.dependencies["rxjava"]
+    api rootProject.ext.dependencies["rxandroid"]
+    api rootProject.ext.dependencies["eventbus"]
+    api(rootProject.ext.dependencies["glide"]) {
+        exclude group: 'com.android.support'
+    }
+    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+    api rootProject.ext.dependencies["lifecycle-extensions"]
+    annotationProcessor rootProject.ext.dependencies["lifecycle-compiler"]
+    //network
+    api rootProject.ext.dependencies["okhttp"]
+    api rootProject.ext.dependencies["retrofit"]
+    api rootProject.ext.dependencies["converter-gson"]
+    api rootProject.ext.dependencies["adapter-rxjava"]
+    api rootProject.ext.dependencies["logging-interceptor"]
+    //json解析
+    api rootProject.ext.dependencies["gson"]
+    //rx管理View的生命周期
+    api(rootProject.ext.dependencies["rxlifecycle"]) {
+        exclude group: 'com.android.support'
+    }
+    api(rootProject.ext.dependencies["rxlifecycle-components"]) {
+        exclude group: 'com.android.support'
+    }
+    api rootProject.ext.dependencies["rxjava"]
+    api rootProject.ext.dependencies["rxandroid"]
+    //rx权限请求
+    api(rootProject.ext.dependencies["rxpermissions"]) {
+        exclude group: 'com.android.support'
+    }
+    //极光推送
+    api files('libs/jcore-android-2.1.2.jar')
+    api files('libs/jpush-android-3.3.4.jar')
+    //喜马拉雅SDK
+    api files('libs/TingPhoneOpenSDK_6.3.4.jar')
+    api files('libs/XmDownload_1.6.jar')
+    api files('libs/XmlyOAuth2SDK_V1.10.jar')
+
+    api rootProject.ext.dependencies["MultiImageSelector"]
+    api rootProject.ext.dependencies["utilcode"]
+    api rootProject.ext.dependencies["loadsir"]
+    api rootProject.ext.dependencies["titlebar"]
+    api rootProject.ext.dependencies["fragmentation"]
+    api rootProject.ext.dependencies["fragmentation-swipeback"]
+    api rootProject.ext.dependencies["lottie"]
+    api rootProject.ext.dependencies["autosize"]
+    api rootProject.ext.dependencies["SmartRefreshLayout"]
+    api rootProject.ext.dependencies["circleimageview"]
+    api rootProject.ext.dependencies["SCardView"]
+    api rootProject.ext.dependencies["NiceImageView"]
+    api rootProject.ext.dependencies["indicatorseekbar"]
+    api rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
+    api rootProject.ext.dependencies["multidex"]
+    api rootProject.ext.dependencies["switch-button"]
+    api rootProject.ext.dependencies["picture_library"]
+    api rootProject.ext.dependencies["PickerView"]
+    api rootProject.ext.dependencies["rxbinding"]
+    api rootProject.ext.dependencies["lib-dialog"]
+    debugApi rootProject.ext.dependencies["doraemonkit"]
+    releaseApi rootProject.ext.dependencies["doraemonkit-no-op"]
+    api rootProject.ext.dependencies["AVLoading"]
+    api rootProject.ext.dependencies["EasyNavigation"]
+    api rootProject.ext.dependencies["MagicIndicator"]
+    api rootProject.ext.dependencies["banner"]
+
+}
+

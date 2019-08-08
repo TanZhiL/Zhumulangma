@@ -1,0 +1,507 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>Model层</title><link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857143; overflow-x: hidden; background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; background-position: inherit inherit; background-repeat: inherit inherit; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 40px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+@media screen and (max-width: 500px) { 
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:first-child { margin-top: -20px; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; }
+button, input, select, textarea { color: inherit; font-family: inherit; font-size: inherit; font-style: inherit; font-variant-caps: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 2; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.701961); color: rgb(85, 85, 85); border-top-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px !important; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right-width: 0px; background-color: inherit; }
+.CodeMirror-linenumber { }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background-image: inherit; background-size: inherit; background-attachment: inherit; background-origin: inherit; background-clip: inherit; background-color: inherit; position: relative !important; background-position: inherit inherit; background-repeat: inherit inherit; }
+.md-diagram-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; background-position: 0px 0px; background-repeat: initial initial; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print { 
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid-page; break-before: avoid-page; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  html.blink-to-pdf { font-size: 13px; }
+  .typora-export #write { padding-left: 32px; padding-right: 32px; padding-bottom: 0px; break-after: avoid-page; }
+  .typora-export #write::after { height: 0px; }
+  @page { margin: 20mm 0px; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background-color: rgb(204, 204, 204); display: block; overflow-x: hidden; background-position: initial initial; background-repeat: initial initial; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) { 
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background-color: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; background-position: initial initial; background-repeat: initial initial; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.8; font-family: var(--monospace); }
+code { text-align: left; }
+a.md-print-anchor { white-space: pre !important; border: none !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; text-shadow: initial !important; background-position: 0px 0px !important; background-repeat: initial initial !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.html-for-mac .inline-math-svg .MathJax_SVG { vertical-align: 0.2px; }
+.md-math-block .MathJax_SVG_Display { text-align: center; margin: 0px; position: relative; text-indent: 0px; max-width: none; max-height: none; min-height: 0px; min-width: 100%; width: auto; overflow-y: hidden; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: var(--monospace); }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: 400; line-height: normal; zoom: 90%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none; }
+.MathJax_SVG_Display svg { vertical-align: middle !important; margin-bottom: 0px !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="mermaid"] svg, [lang="flow"] svg { max-width: 100%; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom-width: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+
+
+:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    padding-bottom: .3em;
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+   padding-bottom: .3em;
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border-top: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table tr th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+}
+table tr td {
+    border: 1px solid #dfe2e5;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+}
+table tr th:first-child,
+table tr td:first-child {
+    margin-top: 0;
+}
+table tr th:last-child,
+table tr td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    table,
+    pre {
+        page-break-inside: avoid;
+    }
+    pre {
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+.html-for-mac .context-menu {
+    --item-hover-bg-color: #E6F0FE;
+}
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+}
+
+ .typora-export li, .typora-export p, .typora-export,  .footnote-line {white-space: normal;} 
+</style>
+</head>
+<body class='typora-export' >
+<div  id='write'  class = 'is-mac'><h1><a name='header-n0' class='md-header-anchor '></a>喜马拉雅Android SDK Model层具体含义 接入文档</h1><div class='md-toc' mdtype='toc'><p class="md-toc-content"><span class="md-toc-item md-toc-h1" data-ref="n0"><a class="md-toc-inner" href="#header-n0">喜马拉雅Android SDK Model层具体含义 接入文档</a></span><span class="md-toc-item md-toc-h2" data-ref="n3"><a class="md-toc-inner" href="#header-n3">注意事项</a></span><span class="md-toc-item md-toc-h2" data-ref="n7"><a class="md-toc-inner" href="#header-n7">Category</a></span><span class="md-toc-item md-toc-h2" data-ref="n37"><a class="md-toc-inner" href="#header-n37">Tag</a></span><span class="md-toc-item md-toc-h2" data-ref="n51"><a class="md-toc-inner" href="#header-n51">Album</a></span><span class="md-toc-item md-toc-h2" data-ref="n206"><a class="md-toc-inner" href="#header-n206">Track</a></span><span class="md-toc-item md-toc-h2" data-ref="n352"><a class="md-toc-inner" href="#header-n352">Announcer</a></span><span class="md-toc-item md-toc-h2" data-ref="n411"><a class="md-toc-inner" href="#header-n411">UpdateBatch</a></span><span class="md-toc-item md-toc-h2" data-ref="n441"><a class="md-toc-inner" href="#header-n441">Province</a></span><span class="md-toc-item md-toc-h2" data-ref="n467"><a class="md-toc-inner" href="#header-n467">Radio</a></span><span class="md-toc-item md-toc-h2" data-ref="n542"><a class="md-toc-inner" href="#header-n542">Program</a></span><span class="md-toc-item md-toc-h2" data-ref="n592"><a class="md-toc-inner" href="#header-n592">Schedule </a></span><span class="md-toc-item md-toc-h2" data-ref="n631"><a class="md-toc-inner" href="#header-n631">Rank </a></span><span class="md-toc-item md-toc-h2" data-ref="n697"><a class="md-toc-inner" href="#header-n697">RankItem</a></span><span class="md-toc-item md-toc-h2" data-ref="n715"><a class="md-toc-inner" href="#header-n715">Column</a></span><span class="md-toc-item md-toc-h2" data-ref="n761"><a class="md-toc-inner" href="#header-n761">Banner</a></span><span class="md-toc-item md-toc-h2" data-ref="n828"><a class="md-toc-inner" href="#header-n828">ColdBootTag</a></span><span class="md-toc-item md-toc-h2" data-ref="n850"><a class="md-toc-inner" href="#header-n850">AnnouncerCategory</a></span><span class="md-toc-item md-toc-h2" data-ref="n873"><a class="md-toc-inner" href="#header-n873">HotWord</a></span><span class="md-toc-item md-toc-h2" data-ref="n892"><a class="md-toc-inner" href="#header-n892">MetaData</a></span><span class="md-toc-item md-toc-h2" data-ref="n910"><a class="md-toc-inner" href="#header-n910">Attributes</a></span><span class="md-toc-item md-toc-h2" data-ref="n932"><a class="md-toc-inner" href="#header-n932">RadioCategoryList</a></span><span class="md-toc-item md-toc-h2" data-ref="n954"><a class="md-toc-inner" href="#header-n954">CustomizedAlbum</a></span><span class="md-toc-item md-toc-h2" data-ref="n1016"><a class="md-toc-inner" href="#header-n1016">CustomizedTrack(目前和CustomizedAlbum 返回的字段和名字一样)</a></span><span class="md-toc-item md-toc-h2" data-ref="n1078"><a class="md-toc-inner" href="#header-n1078">ColumnAlbumItem</a></span><span class="md-toc-item md-toc-h2" data-ref="n1160"><a class="md-toc-inner" href="#header-n1160">ColumnItems</a></span><span class="md-toc-item md-toc-h2" data-ref="n1266"><a class="md-toc-inner" href="#header-n1266">SubordinatedAlbum (声音内的专辑新)</a></span><span class="md-toc-item md-toc-h2" data-ref="n1292"><a class="md-toc-inner" href="#header-n1292">City (城市信息)</a></span><span class="md-toc-item md-toc-h2" data-ref="n1310"><a class="md-toc-inner" href="#header-n1310">CustomizedDimension (维度配置数据)</a></span><span class="md-toc-item md-toc-h2" data-ref="n1329"><a class="md-toc-inner" href="#header-n1329">CategoryRecommendAlbums</a></span><span class="md-toc-item md-toc-h2" data-ref="n1352"><a class="md-toc-inner" href="#header-n1352">PlayHistory</a></span><span class="md-toc-item md-toc-h2" data-ref="n1383"><a class="md-toc-inner" href="#header-n1383">CustomizedSearch</a></span><span class="md-toc-item md-toc-h2" data-ref="n1448"><a class="md-toc-inner" href="#header-n1448">XmlyAuth2AccessToken</a></span><span class="md-toc-item md-toc-h2" data-ref="n1472"><a class="md-toc-inner" href="#header-n1472">XmBaseUserInfo</a></span><span class="md-toc-item md-toc-h2" data-ref="n1498"><a class="md-toc-inner" href="#header-n1498">XmUserInfo</a></span><span class="md-toc-item md-toc-h2" data-ref="n1544"><a class="md-toc-inner" href="#header-n1544">XmTrackStatue</a></span><span class="md-toc-item md-toc-h2" data-ref="n1562"><a class="md-toc-inner" href="#header-n1562">PayOderStatue</a></span><span class="md-toc-item md-toc-h2" data-ref="n1585"><a class="md-toc-inner" href="#header-n1585">BannerV2</a></span><span class="md-toc-item md-toc-h2" data-ref="n1632"><a class="md-toc-inner" href="#header-n1632">OrderDetail</a></span><span class="md-toc-item md-toc-h2" data-ref="n1678"><a class="md-toc-inner" href="#header-n1678">ColumnDetail</a></span><span class="md-toc-item md-toc-h2" data-ref="n1680"><a class="md-toc-inner" href="#header-n1680">ColumnEditor</a></span></p></div><h2><a name='header-n3' class='md-header-anchor '></a>注意事项</h2><ul><li>此文档中的所有的类都是基础的类 不包含包装类(比如 <code>CategoryList</code>
+实际上就只是包含了<code>Category</code>这个类,那么此文档中只是<code>Category</code>的详细说明)</li></ul><h2><a name='header-n7' class='md-header-anchor '></a>Category</h2><figure><table><thead><tr><th style='text-align:left;' >id</th><th style='text-align:left;' >Int</th><th style='text-align:left;' >分类ID</th></tr></thead><tbody><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;category&quot;</td></tr><tr><td style='text-align:left;' >category_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >分类名</td></tr><tr><td style='text-align:left;' >cover_url_small</td><td style='text-align:left;' >String</td><td style='text-align:left;' >分类封面小图</td></tr><tr><td style='text-align:left;' >cover_url_middle</td><td style='text-align:left;' >String</td><td style='text-align:left;' >分类封面中图</td></tr><tr><td style='text-align:left;' >cover_url_large</td><td style='text-align:left;' >String</td><td style='text-align:left;' >分类封面大图</td></tr><tr><td style='text-align:left;' >order_num</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >排序值，值越小排序越在前</td></tr></tbody></table></figure><h2><a name='header-n37' class='md-header-anchor '></a>Tag</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >tag_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >标签名</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;tag&quot;</td></tr></tbody></table></figure><h2><a name='header-n51' class='md-header-anchor '></a>Album</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >ID</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;album&quot;</td></tr><tr><td style='text-align:left;' >category_id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >分类ID，为-1时表示分类未知</td></tr><tr><td style='text-align:left;' >album_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑名称</td></tr><tr><td style='text-align:left;' >album_tags</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑标签列表</td></tr><tr><td style='text-align:left;' >album_intro</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑简介</td></tr><tr><td style='text-align:left;' >cover_url_small</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑封面小，无则返回空字符串””</td></tr><tr><td style='text-align:left;' >cover_url_middle</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑封面中，无则返回空字符串””</td></tr><tr><td style='text-align:left;' >cover_url_large</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑封面大，无则返回空字符串””</td></tr><tr><td style='text-align:left;' >announer</td><td style='text-align:left;' >JSON</td><td style='text-align:left;' >专辑所属主播信息，包括id（主播用户ID）、nickname（昵称）、avatar_url（头像）和is_verified（是否加V）和updated_at 主播更新时间created_at主播创建时间</td></tr><tr><td style='text-align:left;' >play_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >专辑播放次数</td></tr><tr><td style='text-align:left;' >favorite_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >专辑喜欢数</td></tr><tr><td style='text-align:left;' >include_track_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >专辑包含声音数</td></tr><tr><td style='text-align:left;' >last_uptrack</td><td style='text-align:left;' >JSON</td><td style='text-align:left;' >专辑中最新上传的一条声音信息，包括track_id、track_title、duration、created_at、updated_at字段</td></tr><tr><td style='text-align:left;' >is_finished</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >是否完结，0-无此属性；1-未完结；2-完结</td></tr><tr><td style='text-align:left;' >can_download</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >能否下载，true-可下载，false-不可下载</td></tr><tr><td style='text-align:left;' >updated_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >专辑最后更新时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >created_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >专辑创建时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >canDownload</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >专辑是否可以下载</td></tr><tr><td style='text-align:left;' >subscribe_count</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >专辑订阅数</td></tr><tr><td style='text-align:left;' >tracks_natural_ordered</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >专辑内声音排序是否自然序，自然序是指先上传的声音在前面，晚上传的声音在后面</td></tr><tr><td style='text-align:left;' >is_paid</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >是否付费</td></tr><tr><td style='text-align:left;' >estimated_track_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >预计更新多少集</td></tr><tr><td style='text-align:left;' >album_rich_intro</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑富文本简介</td></tr><tr><td style='text-align:left;' >speaker_intro</td><td style='text-align:left;' >String</td><td style='text-align:left;' >主讲人介绍</td></tr><tr><td style='text-align:left;' >free_track_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >专辑内包含的整条免费听声音总数</td></tr><tr><td style='text-align:left;' >free_track_ids</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑内包含的整条免费声音ID列表，英文逗号分隔</td></tr><tr><td style='text-align:left;' >sale_intro</td><td style='text-align:left;' >String</td><td style='text-align:left;' >营销简介</td></tr><tr><td style='text-align:left;' >expected_revenue</td><td style='text-align:left;' >String</td><td style='text-align:left;' >对应喜马拉雅APP上的“你将获得”，主要卖点，是由UGC主播提供的富文本</td></tr><tr><td style='text-align:left;' >buy_notes</td><td style='text-align:left;' >String</td><td style='text-align:left;' >购买须知，富文本</td></tr><tr><td style='text-align:left;' >speaker_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >主讲人自定义标题</td></tr><tr><td style='text-align:left;' >speaker_content</td><td style='text-align:left;' >String</td><td style='text-align:left;' >主讲人自定义标题下的内容</td></tr><tr><td style='text-align:left;' >has_sample</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >是否支持试</td></tr><tr><td style='text-align:left;' >composed_price_type</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >支持的购买类型，1-只支持分集购买，2-只支持整张专辑购买，3-同时支持分集购买和整张专辑购买</td></tr><tr><td style='text-align:left;' >price_type_detail</td><td style='text-align:left;' >JSON Array</td><td style='text-align:left;' >支持的详细价格模型列表，每种价格模型包括price_type（1-分集购买，2-整张专辑购买）、price（Double，原价）、discounted_price（Double，折后价）、price_unit（String，价格单位）</td></tr><tr><td style='text-align:left;' >detail_banner_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >付费专辑详情页焦点图，无则返回空字符串””</td></tr><tr><td style='text-align:left;' >album_score</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑评分</td></tr></tbody></table></figure><h2><a name='header-n206' class='md-header-anchor '></a>Track</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >long</td><td style='text-align:left;' >声音ID(SDK 内使用getDataId()获得)</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;track&quot;</td></tr><tr><td style='text-align:left;' >track_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >声音名称</td></tr><tr><td style='text-align:left;' >track_tags</td><td style='text-align:left;' >String</td><td style='text-align:left;' >声音标签列表</td></tr><tr><td style='text-align:left;' >track_intro</td><td style='text-align:left;' >String</td><td style='text-align:left;' >声音简介</td></tr><tr><td style='text-align:left;' >cover_url_small</td><td style='text-align:left;' >String</td><td style='text-align:left;' >声音封面小图</td></tr><tr><td style='text-align:left;' >cover_url_middle</td><td style='text-align:left;' >String</td><td style='text-align:left;' >声音封面中图</td></tr><tr><td style='text-align:left;' >cover_url_large</td><td style='text-align:left;' >String</td><td style='text-align:left;' >声音封面大图</td></tr><tr><td style='text-align:left;' >announcer</td><td style='text-align:left;' >JSON</td><td style='text-align:left;' >专辑所属主播信息，包括id（主播用户ID）、nickname（昵称）、avatar_url（头像）和is_verified Bool（是否加V） 如果这条声音是转采的，则announcer是上传原始专辑的主播。</td></tr><tr><td style='text-align:left;' >duration</td><td style='text-align:left;' >Int类型</td><td style='text-align:left;' >声音时长，单位秒</td></tr><tr><td style='text-align:left;' >play_count Int</td><td style='text-align:left;' >播放数</td><td style='text-align:left;' >&nbsp;</td></tr><tr><td style='text-align:left;' >favorite_count</td><td style='text-align:left;' >Int 喜欢数</td><td style='text-align:left;' >&nbsp;</td></tr><tr><td style='text-align:left;' >comment_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >评论数</td></tr><tr><td style='text-align:left;' >download_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >下载次数</td></tr><tr><td style='text-align:left;' >play_size_32</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >32位声音文件大小</td></tr><tr><td style='text-align:left;' >play_size_64</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >64位声音文件大小</td></tr><tr><td style='text-align:left;' >play_size_24_m4a</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >声音m4a格式24位大小</td></tr><tr><td style='text-align:left;' >play_size_64_m4a</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >声音m4a格式64位大小</td></tr><tr><td style='text-align:left;' >can_download</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >可否下载，true-可下载，false-不可下载</td></tr><tr><td style='text-align:left;' >download_size</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >声音下载大小</td></tr><tr><td style='text-align:left;' >order_num</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >一条声音在一个专辑中的位置</td></tr><tr><td style='text-align:left;' >subordinated_album</td><td style='text-align:left;' >JSON</td><td style='text-align:left;' >声音所属专辑信息</td></tr><tr><td style='text-align:left;' >source</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >声音来源，1-用户原创，2-用户转采</td></tr><tr><td style='text-align:left;' >updated_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >声音更新时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >created_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >声音创建时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >canDownload</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >是否可以下载</td></tr><tr><td style='text-align:left;' >play_size_amr</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >声音amr格式大小</td></tr><tr><td style='text-align:left;' >category_id</td><td style='text-align:left;' >int</td><td style='text-align:left;' >所属专辑的类型id</td></tr><tr><td style='text-align:left;' >is_paid</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >是否付费，固定值true</td></tr><tr><td style='text-align:left;' >is_free</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >声音是否整条免费听</td></tr><tr><td style='text-align:left;' >is_trailer</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >是否片花，片花声音一定是整条免费听声音</td></tr><tr><td style='text-align:left;' >has_sample</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >是否支持试听</td></tr><tr><td style='text-align:left;' >sample_duration</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >试听时长，如果不支持试听则这个试听时长为0</td></tr><tr><td style='text-align:left;' >isAudition</td><td style='text-align:left;' >bool</td><td style='text-align:left;' >是否是部分试听声音</td></tr><tr><td style='text-align:left;' >authorized</td><td style='text-align:left;' >bool</td><td style='text-align:left;' >是否已经购买</td></tr></tbody></table></figure><h2><a name='header-n352' class='md-header-anchor '></a>Announcer</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >主播用户ID</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;announcer&quot;</td></tr><tr><td style='text-align:left;' >vcategory_id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >主播分类ID</td></tr><tr><td style='text-align:left;' >nickname</td><td style='text-align:left;' >String</td><td style='text-align:left;' >主播用户昵称</td></tr><tr><td style='text-align:left;' >vdesc</td><td style='text-align:left;' >String</td><td style='text-align:left;' >主播简介</td></tr><tr><td style='text-align:left;' >vsignature</td><td style='text-align:left;' >String</td><td style='text-align:left;' >主播签名</td></tr><tr><td style='text-align:left;' >avatar_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >主播头像</td></tr><tr><td style='text-align:left;' >announcer_positioin</td><td style='text-align:left;' >String</td><td style='text-align:left;' >主播定位</td></tr><tr><td style='text-align:left;' >follower_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >主播粉丝数</td></tr><tr><td style='text-align:left;' >following_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >主播关注数</td></tr><tr><td style='text-align:left;' >released_album_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >主播发布的专辑数</td></tr><tr><td style='text-align:left;' >released_track_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >主播发布的声音数</td></tr><tr><td style='text-align:left;' >is_verified</td><td style='text-align:left;' >Boolean</td><td style='text-align:left;' >主播是否加V</td></tr></tbody></table></figure><h2><a name='header-n411' class='md-header-anchor '></a>UpdateBatch</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >long</td><td style='text-align:left;' >专辑id</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑类:固定值&quot;album&quot;</td></tr><tr><td style='text-align:left;' >last_up_track_id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >该专辑下新更新的声音ID(0表示无更新)</td></tr><tr><td style='text-align:left;' >last_up_track_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >该专辑下新更新的声音标题(“”表示无更新)</td></tr><tr><td style='text-align:left;' >last_up_track_cover_path</td><td style='text-align:left;' >String</td><td style='text-align:left;' >该专辑下新更新的声音封面图URL(“”表示无更新)</td></tr><tr><td style='text-align:left;' >last_up_track_at</td><td style='text-align:left;' >long</td><td style='text-align:left;' >该专辑下，声音更新的时间</td></tr></tbody></table></figure><h2><a name='header-n441' class='md-header-anchor '></a>Province</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >省市ID</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;province&quot;</td></tr><tr><td style='text-align:left;' >province_code</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >省市代码，比如110000</td></tr><tr><td style='text-align:left;' >province_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >省市名称，比如&quot;北京&quot;、&quot;河北&quot;</td></tr><tr><td style='text-align:left;' >created_at</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >创建时间，Unix毫秒数时间戳</td></tr></tbody></table></figure><h2><a name='header-n467' class='md-header-anchor '></a>Radio</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >声音ID  (SDK 内使用getDataId()获得</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;radio&quot;</td></tr><tr><td style='text-align:left;' >radio_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >电台名称</td></tr><tr><td style='text-align:left;' >radio_desc</td><td style='text-align:left;' >String</td><td style='text-align:left;' >电台简介</td></tr><tr><td style='text-align:left;' >program_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >正在直播的节目名称</td></tr><tr><td style='text-align:left;' >schedule_id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >正在直播的节目时间表ID</td></tr><tr><td style='text-align:left;' >start_time</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >节目开始时间，比如&quot;09:00&quot;</td></tr><tr><td style='text-align:left;' >end_time</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >节目结束时间，比如&quot;10:00&quot;</td></tr><tr><td style='text-align:left;' >support_bitrates</td><td style='text-align:left;' >Array</td><td style='text-align:left;' >支持的码率列表，如[24,64]</td></tr><tr><td style='text-align:left;' >rate24_aac_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >24码率aac格式播放地址</td></tr><tr><td style='text-align:left;' >rate24_ts_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >24码率ts格式播放地址</td></tr><tr><td style='text-align:left;' >rate64_aac_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >64码率aac格式播放地址</td></tr><tr><td style='text-align:left;' >rate64_ts_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >64码率ts格式播放地址</td></tr><tr><td style='text-align:left;' >radio_play_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >电台累计收听次数</td></tr><tr><td style='text-align:left;' >cover_url_small</td><td style='text-align:left;' >String</td><td style='text-align:left;' >电台封面小图</td></tr><tr><td style='text-align:left;' >cover_url_large</td><td style='text-align:left;' >String</td><td style='text-align:left;' >电台封面大图</td></tr><tr><td style='text-align:left;' >updated_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >声音更新时间，Unix毫秒数时间戳</td></tr></tbody></table></figure><h2><a name='header-n542' class='md-header-anchor '></a>Program</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >直播节目ID</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;program&quot;</td></tr><tr><td style='text-align:left;' >program_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >节目名称，无则返回空字符串””</td></tr><tr><td style='text-align:left;' >back_pic_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >节目背景图URL，无则返回空字符串””</td></tr><tr><td style='text-align:left;' >support_bitrates</td><td style='text-align:left;' >Array</td><td style='text-align:left;' >支持的码率列表，如[24,64]</td></tr><tr><td style='text-align:left;' >rate24_aac_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >24码率aac格式电台在线播放地址</td></tr><tr><td style='text-align:left;' >rate24_ts_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >24码率ts格式电台在线播放地址</td></tr><tr><td style='text-align:left;' >rate64_aac_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >64码率aac格式电台在线播放地址</td></tr><tr><td style='text-align:left;' >rate64_ts_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >64码率ts格式电台在线播放地址</td></tr><tr><td style='text-align:left;' >live_announcers</td><td style='text-align:left;' >Array</td><td style='text-align:left;' >直播主播列表</td></tr><tr><td style='text-align:left;' >updated_at</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >更新时间，Unix毫秒数时间戳</td></tr></tbody></table></figure><h2><a name='header-n592' class='md-header-anchor '></a>Schedule </h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >节目时间表ID     (SDK 内使用getDataId()获得</td></tr><tr><td style='text-align:left;' >radio_id</td><td style='text-align:left;' >Int<span>	</span>所属直播电台ID</td><td style='text-align:left;' >&nbsp;</td></tr><tr><td style='text-align:left;' >start_time</td><td style='text-align:left;' >String</td><td style='text-align:left;' >节目开始时间，比如&quot;09:00&quot;</td></tr><tr><td style='text-align:left;' >end_time</td><td style='text-align:left;' >String</td><td style='text-align:left;' >节目结束时间，比如&quot;10:00&quot;</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;schedule&quot;</td></tr><tr><td style='text-align:left;' >updated_at</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >更新时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >listen_back_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >节目回听地址，无则返回空字符串””</td></tr><tr><td style='text-align:left;' >related_program</td><td style='text-align:left;' >JSON Object</td><td style='text-align:left;' >关联的直播节目，包含下列字段:对应的是<code>Program</code>对象</td></tr></tbody></table></figure><h2><a name='header-n631' class='md-header-anchor '></a>Rank </h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >rank_key</td><td style='text-align:left;' >String</td><td style='text-align:left;' >用于获取具体榜单内容的key，它作为入参用于获取具体某个排行榜内容</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;rank&quot;</td></tr><tr><td style='text-align:left;' >rank_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >榜单标题</td></tr><tr><td style='text-align:left;' >rank_type</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >榜单类型，1-节目榜单</td></tr><tr><td style='text-align:left;' >rank_sub_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >榜单副标题</td></tr><tr><td style='text-align:left;' >rank_period</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >榜单计算周期，单位为天</td></tr><tr><td style='text-align:left;' >rank_period_type</td><td style='text-align:left;' >String</td><td style='text-align:left;' >榜单计算周期类型，比如“日榜”、“周榜”等</td></tr><tr><td style='text-align:left;' >rank_item_num</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >该榜单内条目总数，比如100</td></tr><tr><td style='text-align:left;' >rank_order_num</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >该榜单相对其他榜单的排序值，值越小越靠前</td></tr><tr><td style='text-align:left;' >cover_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >榜单封面图URL</td></tr><tr><td style='text-align:left;' >category_id</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >榜单所属分类ID</td></tr><tr><td style='text-align:left;' >rank_content_type</td><td style='text-align:left;' >String</td><td style='text-align:left;' >榜单内容类型，album-专辑，track-声音</td></tr><tr><td style='text-align:left;' >rank_first_item_id</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >榜单内排名第一的条目的ID</td></tr><tr><td style='text-align:left;' >rank_first_item_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >榜单内排名第一的条目的标题</td></tr><tr><td style='text-align:left;' >index_rank_items</td><td style='text-align:left;' >Array</td><td style='text-align:left;' >榜单首页显示的条目列表,对应<code>RankItem</code></td></tr></tbody></table></figure><h2><a name='header-n697' class='md-header-anchor '></a>RankItem</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >long</td><td style='text-align:left;' >条目ID，比如声音或专辑的ID（Long类型）</td></tr><tr><td style='text-align:left;' >title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >条目标题，比如声音或专辑的ID（String类型）</td></tr><tr><td style='text-align:left;' >content_type</td><td style='text-align:left;' >String</td><td style='text-align:left;' >条目内容类型，album -专辑，track-声音（String类型）</td></tr></tbody></table></figure><h2><a name='header-n715' class='md-header-anchor '></a>Column</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >听单ID</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;column&quot;</td></tr><tr><td style='text-align:left;' >column_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >听单标题</td></tr><tr><td style='text-align:left;' >column_sub_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >听单副标题</td></tr><tr><td style='text-align:left;' >column_foot_note</td><td style='text-align:left;' >String</td><td style='text-align:left;' >听单脚注显示信息</td></tr><tr><td style='text-align:left;' >column_content_type</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >听单内节目内容类型，1-专辑，2-声音</td></tr><tr><td style='text-align:left;' >cover_url_small</td><td style='text-align:left;' >String</td><td style='text-align:left;' >听单小图标URL</td></tr><tr><td style='text-align:left;' >cover_url_large</td><td style='text-align:left;' >String</td><td style='text-align:left;' >听单大图标URL</td></tr><tr><td style='text-align:left;' >released_at</td><td style='text-align:left;' >听单发布时间</td><td style='text-align:left;' >&nbsp;</td></tr><tr><td style='text-align:left;' >is_hot Bool</td><td style='text-align:left;' >是否是热门听单</td><td style='text-align:left;' >&nbsp;</td></tr></tbody></table></figure><h2><a name='header-n761' class='md-header-anchor '></a>Banner</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >榜单焦点图ID</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;banner&quot;</td></tr><tr><td style='text-align:left;' >banner_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >榜单焦点图标题</td></tr><tr><td style='text-align:left;' >banner_short_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >榜单焦点图短标题</td></tr><tr><td style='text-align:left;' >banner_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >榜单焦点图图片URL</td></tr><tr><td style='text-align:left;' >banner_redirect_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >点击榜单焦点图后跳转的URL</td></tr><tr><td style='text-align:left;' >can_share</td><td style='text-align:left;' >Boolean</td><td style='text-align:left;' >榜单焦点图是否可以分享，true-可以分享，false-不可分享</td></tr><tr><td style='text-align:left;' >banner_content_type</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >焦点图类型：1-单个用户，2-单个专辑，3-单个声音，4-链接，5-多个用户，6-多个专辑，7-多个声音，8-活动，9-听单，10-广告</td></tr><tr><td style='text-align:left;' >banner_uid</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >焦点图类型为用户时对应的用户ID，仅当banner_content_type为1时显示</td></tr><tr><td style='text-align:left;' >track_id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >焦点图类型为声音时对应的声音ID，仅当banner_content_type为3时显示</td></tr><tr><td style='text-align:left;' >column_id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >焦点图类型为听单时对应的听单ID，仅当banner_content_type为9时显示</td></tr><tr><td style='text-align:left;' >column_content_type</td><td style='text-align:left;' >String</td><td style='text-align:left;' >焦点图类型为听单时对应听单的内容类型，album-专辑，track-声音，仅当banner_content_type为9时显示</td></tr><tr><td style='text-align:left;' >album_id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >焦点图类型为专辑时对应的专辑ID，仅当banner_content_type为2时显示</td></tr><tr><td style='text-align:left;' >third_party_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >第三方URL，主要指广告，仅当banner_content_type为10时显示</td></tr><tr><td style='text-align:left;' >is_external_url</td><td style='text-align:left;' >Boolean</td><td style='text-align:left;' >是否外链地址，用于控制客户端跳转</td></tr></tbody></table></figure><h2><a name='header-n828' class='md-header-anchor '></a>ColdBootTag</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值”coldboot”</td></tr><tr><td style='text-align:left;' >coldboot_genre</td><td style='text-align:left;' >String</td><td style='text-align:left;' >冷启动分类</td></tr><tr><td style='text-align:left;' >coldboot_sub_genre</td><td style='text-align:left;' >String</td><td style='text-align:left;' >冷启动二级分类</td></tr><tr><td style='text-align:left;' >coldboot_tags</td><td style='text-align:left;' >JSON Array</td><td style='text-align:left;' >对应冷启动类别下的冷启动标签列表</td></tr></tbody></table></figure><h2><a name='header-n850' class='md-header-anchor '></a>AnnouncerCategory</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >主播分类ID</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;vcategory&quot;</td></tr><tr><td style='text-align:left;' >vcategory_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >主播分类名</td></tr><tr><td style='text-align:left;' >order_num</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >该分类在所有分类中的排序值，值越小排序越靠前</td></tr></tbody></table></figure><h2><a name='header-n873' class='md-header-anchor '></a>HotWord</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >search_word</td><td style='text-align:left;' >String</td><td style='text-align:left;' >某一热搜词</td></tr><tr><td style='text-align:left;' >degree</td><td style='text-align:left;' >int</td><td style='text-align:left;' >这个热搜词的热度（昨天的搜索次数减去前天的搜索次数再减去昨天的平均搜索次数）；</td></tr><tr><td style='text-align:left;' >count</td><td style='text-align:left;' >int</td><td style='text-align:left;' >昨天的搜索次数。</td></tr></tbody></table></figure><h2><a name='header-n892' class='md-header-anchor '></a>MetaData</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >display_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >元数据显示名称</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;metadata&quot;</td></tr><tr><td style='text-align:left;' >attributes</td><td style='text-align:left;' >Array</td><td style='text-align:left;' >见<code>Attributes</code></td></tr></tbody></table></figure><h2><a name='header-n910' class='md-header-anchor '></a>Attributes</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >attr_key</td><td style='text-align:left;' >int</td><td style='text-align:left;' >用于请求/metadata/album接口的属性键</td></tr><tr><td style='text-align:left;' >attr_value</td><td style='text-align:left;' >String</td><td style='text-align:left;' >用于请求/metadata/album接口的属性值，类型是字符串</td></tr><tr><td style='text-align:left;' >display_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >属性的显示名称</td></tr><tr><td style='text-align:left;' >child_metadata</td><td style='text-align:left;' >Array</td><td style='text-align:left;' >见<code>Attributes</code></td></tr></tbody></table></figure><h2><a name='header-n932' class='md-header-anchor '></a>RadioCategoryList</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型<span>	</span>描述</th><th style='text-align:left;' >&nbsp;</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >直播分类ID</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值”radio_category”</td></tr><tr><td style='text-align:left;' >radio_category_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >直播分类名称</td></tr><tr><td style='text-align:left;' >order_num</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >排序值，值越小排序越在前</td></tr></tbody></table></figure><h2><a name='header-n954' class='md-header-anchor '></a>CustomizedAlbum</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >自定义专辑听单ID</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值&quot;customized_column&quot;</td></tr><tr><td style='text-align:left;' >column_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义专辑听单标题</td></tr><tr><td style='text-align:left;' >column_intro</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义专辑听单简介</td></tr><tr><td style='text-align:left;' >column_content_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >自定义专辑听单内包含“专辑或声音听单”的总数</td></tr><tr><td style='text-align:left;' >cover_url_original</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义专辑听单的原始封面图</td></tr><tr><td style='text-align:left;' >cover_url_small</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义专辑听单的封面小图</td></tr><tr><td style='text-align:left;' >cover_url_middle</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义专辑听单的封面中图</td></tr><tr><td style='text-align:left;' >cover_url_large</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义专辑听单的封面大图</td></tr><tr><td style='text-align:left;' >channel_play_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >自定义专辑听单在当前合作方渠道的播放总次数</td></tr><tr><td style='text-align:left;' >created_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >自定义专辑听单的创建时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >updated_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >自定义专辑听单的更新时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >dimensions  (CustomizedDimension)</td><td style='text-align:left;' >JSON Array</td><td style='text-align:left;' >with_dimensions为true时会返回维度配置数据</td></tr><tr><td style='text-align:left;' >order_num</td><td style='text-align:left;' >int</td><td style='text-align:left;' >自定义专辑听单顺序</td></tr></tbody></table></figure><h2><a name='header-n1016' class='md-header-anchor '></a>CustomizedTrack(目前和CustomizedAlbum 返回的字段和名字一样)</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >自定义声音听单ID</td></tr><tr><td style='text-align:left;' >kind</td><td style='text-align:left;' >String</td><td style='text-align:left;' >固定值”customized_column”</td></tr><tr><td style='text-align:left;' >column_title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义声音听单标题</td></tr><tr><td style='text-align:left;' >column_intro</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义声音听单简介</td></tr><tr><td style='text-align:left;' >column_content_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >自定义声音听单内包含的声音总数</td></tr><tr><td style='text-align:left;' >cover_url_original</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义声音听单的原始封面图</td></tr><tr><td style='text-align:left;' >cover_url_small</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义声音听单的封面小图</td></tr><tr><td style='text-align:left;' >cover_url_middle</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义声音听单的封面中图</td></tr><tr><td style='text-align:left;' >cover_url_large</td><td style='text-align:left;' >String</td><td style='text-align:left;' >自定义声音听单的封面大图</td></tr><tr><td style='text-align:left;' >channel_play_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >自定义声音听单在当前合作方渠道的播放总次数</td></tr><tr><td style='text-align:left;' >created_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >自定义声音听单的创建时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >updated_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >自定义声音听单的更新时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >dimensions  (CustomizedDimension)</td><td style='text-align:left;' >JSON Array</td><td style='text-align:left;' >with_dimensions为true时会返回维度配置数据</td></tr><tr><td style='text-align:left;' >order_num</td><td style='text-align:left;' >int</td><td style='text-align:left;' >自定义专辑听单顺序</td></tr></tbody></table></figure><h2><a name='header-n1078' class='md-header-anchor '></a>ColumnAlbumItem</h2><p>自定义专辑听单内一页条目。该页里每个条目可以是一个专辑，也可以是一个声音听单，每个条目包含的字段定义如下：</p><ul><li>下面的是 content_type = 1 或者 3 的时候会返回的数据</li></ul><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >专辑ID或声音听单ID</td></tr><tr><td style='text-align:left;' >content_type</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >条目内容类型:1-专辑，3-声音听单</td></tr><tr><td style='text-align:left;' >order_num</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >该条目在当前听单内的位置，从1开始</td></tr><tr><td style='text-align:left;' >title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑标题或声音听单标题</td></tr><tr><td style='text-align:left;' >category_id</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >所属喜马拉雅点播一级分类ID，如果不属于任何分类，则该字段值为-1</td></tr><tr><td style='text-align:left;' >intro</td><td style='text-align:left;' >String</td><td style='text-align:left;' >专辑简介或声音听单简介</td></tr><tr><td style='text-align:left;' >cover_url_original</td><td style='text-align:left;' >String</td><td style='text-align:left;' >原始封面图</td></tr><tr><td style='text-align:left;' >cover_url_small</td><td style='text-align:left;' >String</td><td style='text-align:left;' >封面小图</td></tr><tr><td style='text-align:left;' >cover_url_middle</td><td style='text-align:left;' >String</td><td style='text-align:left;' >封面中图</td></tr><tr><td style='text-align:left;' >cover_url_large</td><td style='text-align:left;' >String</td><td style='text-align:left;' >封面大图</td></tr><tr><td style='text-align:left;' >play_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >在喜马拉雅主站播放数</td></tr><tr><td style='text-align:left;' >channel_play_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >合作方渠道单独算的播放数</td></tr><tr><td style='text-align:left;' >include_track_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >该专辑或声音听单内包含声音数</td></tr><tr><td style='text-align:left;' >created_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >创建时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >updated_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >更新时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >is_finished</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >是否完结，0-无此属性；1-未完结；2-完结</td></tr><tr><td style='text-align:left;' >dimensions</td><td style='text-align:left;' >JSON Array</td><td style='text-align:left;' >是否完结，0-无此属性；1-未完结；2-完结</td></tr><tr><td style='text-align:left;' >is_paid</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >是否是付费专辑，-1 - 无此属性；0 -免费专辑；1 -付费专辑</td></tr></tbody></table></figure><h2><a name='header-n1160' class='md-header-anchor '></a>ColumnItems</h2><ul><li>下面的是 content_type = 2 的时候会返回的数据</li></ul><p>自定义声音听单内一页声音条目。该页里每个声音条目包含的字段定义如下：</p><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >声音ID</td></tr><tr><td style='text-align:left;' >content_type</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >条目内容类型，固定值2，表示是声音</td></tr><tr><td style='text-align:left;' >order_num</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >该条目在当前听单内的位置，从1开始</td></tr><tr><td style='text-align:left;' >title</td><td style='text-align:left;' >String</td><td style='text-align:left;' >声音标题</td></tr><tr><td style='text-align:left;' >category_id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >所属喜马拉雅点播一级分类ID，如果不属于任何分类，则该字段值为-1</td></tr><tr><td style='text-align:left;' >intro</td><td style='text-align:left;' >String</td><td style='text-align:left;' >声音简介</td></tr><tr><td style='text-align:left;' >cover_url_original</td><td style='text-align:left;' >String</td><td style='text-align:left;' >原始封面图</td></tr><tr><td style='text-align:left;' >cover_url_small</td><td style='text-align:left;' >String</td><td style='text-align:left;' >封面小图</td></tr><tr><td style='text-align:left;' >cover_url_middle</td><td style='text-align:left;' >String</td><td style='text-align:left;' >封面中图</td></tr><tr><td style='text-align:left;' >cover_url_large</td><td style='text-align:left;' >String</td><td style='text-align:left;' >封面大图</td></tr><tr><td style='text-align:left;' >play_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >在喜马拉雅主站播放数</td></tr><tr><td style='text-align:left;' >channel_play_count</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >合作方渠道单独算的播放数</td></tr><tr><td style='text-align:left;' >play_size_32</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >32位声音文件大小</td></tr><tr><td style='text-align:left;' >play_size_64</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >64位声音文件大小</td></tr><tr><td style='text-align:left;' >play_size_24_m4a</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >声音m4a格式24位大小</td></tr><tr><td style='text-align:left;' >play_size_64_m4a</td><td style='text-align:left;' >String</td><td style='text-align:left;' >声音m4a格式64位大小</td></tr><tr><td style='text-align:left;' >can_download</td><td style='text-align:left;' >Bool</td><td style='text-align:left;' >可否下载，布尔值，true-可下载，false-不可下载</td></tr><tr><td style='text-align:left;' >download_url</td><td style='text-align:left;' >String</td><td style='text-align:left;' >声音下载地址</td></tr><tr><td style='text-align:left;' >download_size</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >声音下载大小，单位为字节</td></tr><tr><td style='text-align:left;' >created_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >创建时，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >updated_at</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >更新时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >publish_at：</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >发布时间，Unix毫秒数时间戳</td></tr><tr><td style='text-align:left;' >subordinated_album</td><td style='text-align:left;' >JSON</td><td style='text-align:left;' >声音所属专辑信息</td></tr><tr><td style='text-align:left;' >shortExtInfo</td><td style='text-align:left;' >String</td><td style='text-align:left;' >精简版声音扩展信息，截取的是扩展信息字段前50个字符</td></tr></tbody></table></figure><h2><a name='header-n1266' class='md-header-anchor '></a>SubordinatedAlbum (声音内的专辑新)</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >albumId:</td><td style='text-align:left;' >String</td><td style='text-align:left;' >归属的专辑的 ID.</td></tr><tr><td style='text-align:left;' >albumTitle:</td><td style='text-align:left;' >String</td><td style='text-align:left;' >归属的专辑的名称</td></tr><tr><td style='text-align:left;' >coverUrlSmall:</td><td style='text-align:left;' >String</td><td style='text-align:left;' >封面小图</td></tr><tr><td style='text-align:left;' >coverUrlMiddle:</td><td style='text-align:left;' >String</td><td style='text-align:left;' >封面中图</td></tr><tr><td style='text-align:left;' >coverUrlLarge:</td><td style='text-align:left;' >String</td><td style='text-align:left;' >封面大图</td></tr></tbody></table></figure><h2><a name='header-n1292' class='md-header-anchor '></a>City (城市信息)</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >id</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >城市id</td></tr><tr><td style='text-align:left;' >city_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >城市name</td></tr><tr><td style='text-align:left;' >city_code</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >城市code (国家行政规划的城市代码)</td></tr></tbody></table></figure><h2><a name='header-n1310' class='md-header-anchor '></a>CustomizedDimension (维度配置数据)</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >dim_id</td><td style='text-align:left;' >Long</td><td style='text-align:left;' >维度ID</td></tr><tr><td style='text-align:left;' >dim_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >维度名称</td></tr><tr><td style='text-align:left;' >dim_val</td><td style='text-align:left;' >String</td><td style='text-align:left;' >维度值</td></tr></tbody></table></figure><h2><a name='header-n1329' class='md-header-anchor '></a>CategoryRecommendAlbums</h2><figure><table><thead><tr><th style='text-align:left;' >字段名</th><th style='text-align:left;' >类型</th><th style='text-align:left;' >描述</th></tr></thead><tbody><tr><td style='text-align:left;' >category_id</td><td style='text-align:left;' >Int</td><td style='text-align:left;' >此推荐模块所属分类id</td></tr><tr><td style='text-align:left;' >display_tag_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >该专辑推荐模块的名称</td></tr><tr><td style='text-align:left;' >tag_name</td><td style='text-align:left;' >String</td><td style='text-align:left;' >该专辑推荐模块对应的标签名，可以通过/v2/albums/list（需要同时设置category_id和tag_name参数，并且设置calc_dimension=1）获取该专辑推荐模块的更多专辑信息</td></tr><tr><td style='text-align:left;' >has_more</td><td style='text-align:left;' >Boolean</td><td style='text-align:left;' >此模块是否有更多专辑</td></tr></tbody></table></figure><h2><a name='header-n1352' class='md-header-anchor '></a>PlayHistory</h2><figure><table><thead><tr><th>字段名</th><th>类型</th><th>描述</th></tr></thead><tbody><tr><td>content_type</td><td>int</td><td>1-点播，2-广播</td></tr><tr><td>break_second</td><td>int</td><td>相对于音频开始位置的播放跳出位置，单位为秒。比如当前音频总时长60s，本次播放到音频第25s处就退出或者切到下一首，那么break_second就是25</td></tr><tr><td>play_begin_at</td><td>int</td><td>开始播放时刻，Unix毫秒数时间戳</td></tr><tr><td>play_end_at</td><td>int</td><td>结束播放时刻，Unix毫秒数时间戳</td></tr><tr><td>mHistoryAlbum</td><td>object</td><td>content_type = 1时使用此model</td></tr><tr><td>mHistoryRadio</td><td>object</td><td>content_type = 2时使用此model</td></tr></tbody></table></figure><h2><a name='header-n1383' class='md-header-anchor '></a>CustomizedSearch</h2><figure><table><thead><tr><th>字段名</th><th>描述</th></tr></thead><tbody><tr><td>id</td><td>专辑ID或声音听单ID</td></tr><tr><td>title</td><td>专辑标题或声音听单标题</td></tr><tr><td>category_id</td><td>所属喜马拉雅点播一级分类ID，如果不属于任何分类，则该字段值为-1</td></tr><tr><td>intro</td><td>专辑简介或声音听单简介</td></tr><tr><td>cover_url_original</td><td>原始封面图</td></tr><tr><td>cover_url_small</td><td>封面小图</td></tr><tr><td>cover_url_middle</td><td>封面中图</td></tr><tr><td>cover_url_large</td><td>封面大图</td></tr><tr><td>play_count</td><td>在喜马拉雅主站播放数</td></tr><tr><td>channel_play_count</td><td>合作方渠道单独算的播放数</td></tr><tr><td>include_track_count</td><td>该专辑或声音听单内包含声音数</td></tr><tr><td>is_finished</td><td>是否完结，0-无此属性；1-未完结；2-完结。如果是声音听单则为is_finished为固定值0</td></tr><tr><td>dimensions</td><td>with_dimensions为true时会返回维度配置数据，JSON Array，每条维度配置数据字段如下</td></tr><tr><td>dim_id</td><td>维度ID，Long类型</td></tr><tr><td>dim_name</td><td>维度名称，String类型</td></tr><tr><td>dim_val</td><td>维度值，String类型</td></tr><tr><td>created_at</td><td>创建时间，Unix毫秒数时间戳</td></tr><tr><td>updated_at</td><td>更新时间，Unix毫秒数时间</td></tr><tr><td>publish_at</td><td>发布时间，Unix毫秒数时间戳</td></tr><tr><td>is_paid</td><td>是否是付费专辑，-1 - 无此属性；0 -免费专辑；1 -付费专辑</td></tr></tbody></table></figure><h2><a name='header-n1448' class='md-header-anchor '></a>XmlyAuth2AccessToken</h2><figure><table><thead><tr><th>字段名</th><th>描述</th></tr></thead><tbody><tr><td>access_token</td><td>获取授权后的access token。</td></tr><tr><td>expires_in</td><td>access_token的生命周期，单位是秒数</td></tr><tr><td>refresh_token</td><td>用户刷新access_token</td></tr><tr><td>uid</td><td>喜马拉雅用户id</td></tr><tr><td>device_id</td><td>设备唯一标识</td></tr><tr><td>scope</td><td>获得的授权范围, 使用逗号（,）分隔</td></tr></tbody></table></figure><h2><a name='header-n1472' class='md-header-anchor '></a>XmBaseUserInfo</h2><figure><table><thead><tr><th>字段名</th><th>类型</th><th>描述</th></tr></thead><tbody><tr><td>id</td><td>Int</td><td>用户ID</td></tr><tr><td>kind</td><td>String</td><td>固定值&quot;user&quot;</td></tr><tr><td>nickname</td><td>String</td><td>用户昵称</td></tr><tr><td>avatar_url</td><td>String</td><td>用户头像</td></tr><tr><td>is_verified</td><td>Boolean</td><td>用户是否加V</td></tr></tbody></table></figure><h2><a name='header-n1498' class='md-header-anchor '></a>XmUserInfo</h2><figure><table><thead><tr><th>字段名</th><th>类型</th><th>描述</th></tr></thead><tbody><tr><td>id</td><td>Int</td><td>用户ID</td></tr><tr><td>kind</td><td>String</td><td>固定值&quot;persona&quot;</td></tr><tr><td>sex</td><td>Int</td><td>用户性别：0-未知，1-男，2-女</td></tr><tr><td>birth_year</td><td>String</td><td>用户出生年份，比如&quot;1989&quot;</td></tr><tr><td>birth_month</td><td>String</td><td>用户出生月份，比如&quot;10&quot;</td></tr><tr><td>birth_day</td><td>String</td><td>用户出生日期，比如&quot;10&quot;</td></tr><tr><td>interested_album_ids</td><td>JSON Array</td><td>用户感兴趣的专辑ID列表，比如[1000, 1001]</td></tr><tr><td>interested_category_ids</td><td>JSON Array</td><td>用户感兴趣的分类ID列表，比如[3, 6]</td></tr><tr><td>login_historys</td><td>JSON Array</td><td>用户登陆历史列表，每条登陆历史包括如下字段： cty_code 登陆城市代码 login_times 在该城市登陆几次</td></tr><tr><td>last_play_at</td><td>Long</td><td>用户最近一次收听喜马拉雅的时间，Unix毫秒数时间戳</td></tr></tbody></table></figure><h2><a name='header-n1544' class='md-header-anchor '></a>XmTrackStatue</h2><figure><table><thead><tr><th>字段名</th><th>类型</th><th>描述</th></tr></thead><tbody><tr><td>id</td><td>long</td><td>声音ID</td></tr><tr><td>is_paid</td><td>Bool</td><td>是否为付费声音</td></tr><tr><td>has_bought</td><td>Bool</td><td>是否为已购买状态</td></tr></tbody></table></figure><h2><a name='header-n1562' class='md-header-anchor '></a>PayOderStatue</h2><figure><table><thead><tr><th>字段名</th><th>类型</th><th>描述</th></tr></thead><tbody><tr><td>xima_order_no</td><td>String</td><td>喜马拉雅订单</td></tr><tr><td>xima_order_status</td><td>Int</td><td>3表示成功</td></tr><tr><td>xima_order_created_at</td><td>Long</td><td>喜马拉雅订单创建时间 ,Unix毫秒时间戳</td></tr><tr><td>xima_order_updated_at</td><td>Long</td><td>喜马拉雅订单更新时间 ,Unix毫秒时间戳</td></tr></tbody></table></figure><h2><a name='header-n1585' class='md-header-anchor '></a>BannerV2</h2><figure><table><thead><tr><th>字段名</th><th>类型</th><th>描述</th></tr></thead><tbody><tr><td>id</td><td>Int</td><td>分类焦点图ID</td></tr><tr><td>kind</td><td>String</td><td>固定值&quot;banner&quot;</td></tr><tr><td>banner_title</td><td>String</td><td>分类焦点图标题</td></tr><tr><td>banner_short_title</td><td>String</td><td>分类焦点图副标题</td></tr><tr><td>banner_url</td><td>String</td><td>分类焦点图图片URL</td></tr><tr><td>banner_content_type</td><td>Int</td><td>焦点图类型：1-单个用户，2-单个专辑，3-单个声音，4-第三方浏览器打开的链接，5-专辑听单，6-声音听单</td></tr><tr><td>banner_uid</td><td>Int</td><td>焦点图类型为主播时对应的主播uid，仅当banner_content_type为1时显示</td></tr><tr><td>album_id</td><td>Int</td><td>焦点图类型为专辑时对应的专辑ID，仅当banner_content_type为2时显示</td></tr><tr><td>track_id</td><td>Int</td><td>焦点图类型为声音时对应的声音ID，仅当banner_content_type为3时显示</td></tr><tr><td>column_id</td><td>Int</td><td>焦点图类型为听单时对应的听单ID，仅当banner_content_type为5时显示</td></tr></tbody></table></figure><h2><a name='header-n1632' class='md-header-anchor '></a>OrderDetail</h2><figure><table><thead><tr><th>字段名</th><th>类型</th><th>描述</th></tr></thead><tbody><tr><td>xima_order_no</td><td>String</td><td>喜马拉雅订单号</td></tr><tr><td>xima_order_status</td><td>Int</td><td>喜马拉雅订单状态：1-订单待支付，2-订单成功，3-订单取消</td></tr><tr><td>xima_order_created_at</td><td>Int</td><td>喜马拉雅订单创建时间，Unix毫秒数时间戳</td></tr><tr><td>xima_order_updated_at</td><td>Int</td><td>喜马拉雅订单更新时间，Unix毫秒数时间戳</td></tr><tr><td>uid</td><td>Int</td><td>订单所属用户ID，使用喜马拉雅账号则uid有合法值，否则uid为-1</td></tr><tr><td>third_uid</td><td>String</td><td>合作方第三方用户ID，使用合作方自己账号时该字段有值，否则third_uid为-1</td></tr><tr><td>order_amount</td><td>BigDecimal</td><td>订单总价（单位元），注意与下单接口里的price不是一个概念：分集购买时order_amount是单条付费音频单价乘以待购买付费音频总数；整张专辑购买时order_amount是专辑折后价</td></tr><tr><td>client_os_type</td><td>Int</td><td>客户端操作系统类型，1-iOS，2-Android，3-PC端，4-Linux，5-Ecos，6-H5；在当前场景表示订单发生平台</td></tr><tr><td>pay_content</td><td>String</td><td>订单商品，付费专辑ID（整张购买时）或英文逗号分隔的付费声音ID（分集购买时）</td></tr><tr><td>pay_channel</td><td>Int</td><td>支付渠道，1-支付宝，2-微信支付，3-苹果IAP支付，4-百度钱包</td></tr></tbody></table></figure><h2><a name='header-n1678' class='md-header-anchor '></a>ColumnDetail</h2><p>|字段名<span>	</span>|类型<span>	</span>|描述|
+|id<span>	</span>|Int<span>	</span>|听单id
+| --------------------- | ---------- | ---------------------------------------- |
+| kind<span>	</span>| String<span>	</span>| 固定值&quot;column&quot;|
+| column_intro<span>	</span>| String<span>	</span>| 听单的简介|
+| column_content_type<span>	</span>| int| <span>	</span>听单内节目内容类型，1-专辑，2-声音|
+| cover_url_large<span>	</span>| String<span>	</span>| 听单封面大图URL|
+| logo_small<span>	</span>| String| <span>	</span>听单小Logo的URL|
+| column_editor<span>	</span>| Object<span>	</span>| 小编信息|</p><h2><a name='header-n1680' class='md-header-anchor '></a>ColumnEditor</h2><figure><table><thead><tr><th>字段名</th><th>类型</th><th>描述</th></tr></thead><tbody><tr><td>id</td><td>int</td><td>小编ID</td></tr><tr><td>nickname</td><td>String</td><td>小编昵称</td></tr><tr><td>avatar_url</td><td>String</td><td>小编头像</td></tr><tr><td>personal_signature</td><td>String</td><td>小编签名</td></tr></tbody></table></figure></div>
+</body>
+</html>

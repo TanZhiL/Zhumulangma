@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.gykj.zhumulangma.pollution">
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:name="debug.MeApplication">
+        <activity android:name="com.gykj.zhumulangma.pollution.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.gykj.zhumulangma.pollution.NewsTypeAddActivity"
+            android:label="新闻类型设置"
+            />
+        <activity
+            android:name="com.gykj.zhumulangma.pollution.NewsTypeListActivity"
+            android:label="新闻类型列表"/>
+        <activity android:name="com.gykj.zhumulangma.pollution.NewsDetailAddActivity"
+            android:label="添加新闻"/>
+    </application>
+
+</manifest>

@@ -1,0 +1,144 @@
+ext {
+    //android开发版本配置
+    android = [
+            compileSdkVersion: 28,
+            buildToolsVersion: "28.0.3",
+            applicationId    : "com.gykj.thomas",
+            minSdkVersion    : 19,
+            targetSdkVersion : 28,
+            versionCode      : 1,
+            versionName      : "1.0",
+    ]
+    //version配置
+    versions = [
+            "support-version": "28.0.0",
+            "junit-version"  : "4.12",
+            "constraint-layout":"1.1.3",
+            "runner":"1.0.2",
+            "espresso-core":"3.0.2",
+            "rxjava":"2.2.3",
+            "rxandroid":"2.1.0",
+            "rxlifecycle":"2.2.2",
+            "rxlifecycle-components":"2.2.2",
+            "rxpermissions":"0.10.2",
+            "okhttp":"3.10.0",
+            "retrofit":"2.4.0",
+            "converter-gson":"2.4.0",
+            "adapter-rxjava":"2.4.0",
+            "logging-interceptor":"3.9.1",
+            "glide":"4.8.0",
+            "glide-compiler":"4.8.0",
+            "gson":"2.8.5",
+            "lifecycle-extensions":"1.1.1",
+            "lifecycle-compiler":"1.1.1",
+            "arouter-api":"1.4.1",
+            "arouter-compiler":"1.2.2",
+            "eventbus":"3.1.1",
+            "MultiImageSelector":"1.2",
+            "utilcode":"1.25.0",
+            "loadsir":"1.3.6",
+            "titlebar":"1.1.4",
+            "fragmentation":"1.3.7",
+            "fragmentation-swipeback":"1.3.7",
+            "lottie":"2.7.0",
+            "autosize":"1.1.2",
+            "SmartRefreshLayout":"1.1.0-alpha-28",
+            "circleimageview":"3.0.0",
+            "SCardView":"1.1",
+            "NiceImageView":"1.0.5",
+            "indicatorseekbar":"2.1.2",
+            "BaseRecyclerViewAdapterHelper":"2.9.30",
+            "multidex":"1.0.3",
+            "switch-button":"0.0.3",
+            "togglebutton":"1.1.0",
+            "picture_library":"v2.2.3",
+            "doraemonkit":"1.1.7",
+            "PickerView":"4.1.8",
+            "rxbinding":"3.0.0",
+            "lib-dialog":"1.1.0",
+            "AVLoading":"2.1.3",
+            "EasyNavigation":"1.0.2",
+            "MagicIndicator":"1.5.0",
+            "banner":"1.4.10"
+    ]
+    //support配置
+    support = [
+            "constraint-layout"       : "com.android.support.constraint:constraint-layout:${versions["constraint-layout"]}",
+            'support-v4'              : "com.android.support:support-v4:${versions["support-version"]}",
+            'appcompat-v7'            : "com.android.support:appcompat-v7:${versions["support-version"]}",
+            'recyclerview-v7'         : "com.android.support:recyclerview-v7:${versions["support-version"]}",
+            'support-v13'             : "com.android.support:support-v13:${versions["support-version"]}",
+            'support-fragment'        : "com.android.support:support-fragment:${versions["support-version"]}",
+            'design'                  : "com.android.support:design:${versions["support-version"]}",
+            'animated-vector-drawable': "com.android.support:animated-vector-drawable:${versions["support-version"]}",
+            'junit'                   : "junit:junit:${versions["junit-version"]}",
+            'runner'                  : "com.android.support.test:runner:${versions["runner"]}",
+            'espresso-core'           : "com.android.support.test.espresso:espresso-core:${versions["espresso-core"]}",
+
+    ]
+    //依赖第三方配置
+    dependencies = [
+            //***************************************框架类*************************************************
+            //multidex 65535限制
+            "multidex"                               : "com.android.support:multidex:${versions["multidex"]}",
+            //rxjava
+            "rxjava"                               : "io.reactivex.rxjava2:rxjava:${versions["rxjava"]}",
+            "rxandroid"                            : "io.reactivex.rxjava2:rxandroid:${versions["rxandroid"]}",
+            //rx系列与View生命周期同步
+            "rxlifecycle"                          : "com.trello.rxlifecycle2:rxlifecycle:${versions["rxlifecycle"]}",
+            "rxlifecycle-components"               : "com.trello.rxlifecycle2:rxlifecycle-components:${versions["rxlifecycle-components"]}",
+            //rx 6.0权限请求
+            "rxpermissions"                        : "com.github.tbruyelle:rxpermissions:${versions["rxpermissions"]}",
+            //network
+            "okhttp"                               : "com.squareup.okhttp3:okhttp:${versions["okhttp"]}",
+            "retrofit"                             : "com.squareup.retrofit2:retrofit:${versions["retrofit"]}",
+            "converter-gson"                       : "com.squareup.retrofit2:converter-gson:${versions["converter-gson"]}",
+            "adapter-rxjava"                       : "com.squareup.retrofit2:adapter-rxjava2:${versions["adapter-rxjava"]}",
+            "logging-interceptor"                  : "com.squareup.okhttp3:logging-interceptor:${versions["logging-interceptor"]}",
+            //glide图片加载
+            "glide"                                : "com.github.bumptech.glide:glide:${versions["glide"]}",
+            "glide-compiler"                       : "com.github.bumptech.glide:compiler:${versions["glide-compiler"]}",
+            //json解析
+            "gson"                                 : "com.google.code.gson:gson:${versions["gson"]}",
+            //Google AAC
+            "lifecycle-extensions"                 : "android.arch.lifecycle:extensions:${versions["lifecycle-extensions"]}",
+            "lifecycle-compiler"                   : "android.arch.lifecycle:compiler:${versions["lifecycle-compiler"]}",
+            //阿里路由框架
+            "arouter-api"                          : "com.alibaba:arouter-api:${versions["arouter-api"]}",
+            "arouter-compiler"                     : "com.alibaba:arouter-compiler:${versions["arouter-compiler"]}",
+            //eventbus
+            "eventbus"                             : "org.greenrobot:eventbus:${versions["eventbus"]}",
+            "utilcode"                             : "com.blankj:utilcode:${versions["utilcode"]}",
+
+            "fragmentation"                        : "me.yokeyword:fragmentation:${versions["fragmentation"]}",
+            "fragmentation-swipeback"              : "me.yokeyword:fragmentation-swipeback:${versions["fragmentation-swipeback"]}",
+            "doraemonkit"                   : "com.didichuxing.doraemonkit:doraemonkit:${versions["doraemonkit"]}",
+            "doraemonkit-no-op"                   : "com.didichuxing.doraemonkit:doraemonkit-no-op:${versions["doraemonkit"]}",
+            "rxbinding"         :"com.jakewharton.rxbinding3:rxbinding:${versions["rxbinding"]}",
+
+            //***************************************界面类*************************************************
+            "MultiImageSelector"                   :"com.github.lovetuzitong:MultiImageSelector:${versions["MultiImageSelector"]}",
+            "loadsir"                              :"com.kingja.loadsir:loadsir:${versions["loadsir"]}",
+            "titlebar"                             :"com.wuhenzhizao:titlebar:${versions["titlebar"]}",
+            "lottie"                               :"com.airbnb.android:lottie:${versions["lottie"]}",
+            "autosize"                             :"me.jessyan:autosize:${versions["autosize"]}",
+            "SmartRefreshLayout"                   :"com.scwang.smartrefresh:SmartRefreshLayout:${versions["SmartRefreshLayout"]}",
+            "circleimageview"                      :"de.hdodenhof:circleimageview:${versions["circleimageview"]}",
+            "SCardView"                      :"io.github.meetsl:SCardView:${versions["SCardView"]}",
+            "NiceImageView"                      :"com.github.SheHuan:NiceImageView:${versions["NiceImageView"]}",
+            "indicatorseekbar"                      :"com.github.warkiz.widget:indicatorseekbar:${versions["indicatorseekbar"]}",
+            "BaseRecyclerViewAdapterHelper"         :"com.github.CymChad:BaseRecyclerViewAdapterHelper:${versions["BaseRecyclerViewAdapterHelper"]}",
+            "switch-button"         :"com.github.zcweng:switch-button:${versions["switch-button"]}@aar",
+            "togglebutton"         :"com.zcw:togglebutton-library:${versions["togglebutton"]}",
+            "picture_library"         :"com.github.LuckSiege.PictureSelector:picture_library:${versions["picture_library"]}",
+            "PickerView"         :"com.contrarywind:Android-PickerView:${versions["PickerView"]}",
+            "lib-dialog"         :"com.ninetripods:lib-dialog:${versions["lib-dialog"]}",
+            "AVLoading"         :"com.wang.avi:library:${versions["AVLoading"]}",
+            "EasyNavigation"         :"com.github.forvv231:EasyNavigation:${versions["EasyNavigation"]}",
+            "MagicIndicator"         :"com.github.hackware1993:MagicIndicator:${versions["MagicIndicator"]}",
+            "banner"         :"com.youth.banner:banner:${versions["banner"]}",
+    ]
+
+}
+
+

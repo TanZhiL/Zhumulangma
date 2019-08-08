@@ -1,0 +1,91 @@
+package com.gykj.zhumulangma.main.fragment;
+
+
+import android.support.v4.app.Fragment;
+import android.view.View;
+
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.mvvm.BaseFragment;
+import com.gykj.zhumulangma.main.R;
+import com.next.easynavigation.view.EasyNavigationBar;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Route(path = AppConstants.Router.Main.F_MAIN)
+public class MainFragment extends BaseFragment {
+
+    private EasyNavigationBar enb;
+    private String[] tabText = {"首页", "我听", "", "发现", "我的"};
+    //未选中icon
+    private int[] normalIcon = {R.drawable.ic_main_tab_home_normal, R.drawable.ic_main_tab_litsten_normal
+            , R.drawable.ic_main_tab_play, R.drawable.ic_main_tab_find_normal, R.drawable.ic_main_tab_user_normal};
+    //选中时icon
+    private int[] selectIcon = {R.drawable.ic_main_tab_home_press, R.drawable.ic_main_tab_listen_press
+            , R.drawable.ic_main_tab_play, R.drawable.ic_main_tab_find_press, R.drawable.ic_main_tab_user_press};
+
+    private List<Fragment> fragments = new ArrayList<>();
+
+    private onRootShowListener mShowListener;
+
+    public MainFragment() {
+
+    }
+
+    @Override
+    protected int onBindLayout() {
+        return R.layout.main_fragment_main;
+    }
+
+
+    @Override
+    public void initView(View view) {
+        setSwipeBackEnable(false);
+
+        enb = view.findViewById(R.id.enb);
+
+        fragments.add(new LoginFragment());
+
+        Object home = ARouter.getInstance().build(AppConstants.Router.Home.F_MAIN).navigation();
+        if (null != home) {
+            fragments.add((Fragment) home);
+        }
+        fragments.add(new LoginFragment());
+        fragments.add(new LoginFragment());
+        enb.titleItems(tabText)
+                .normalIconItems(normalIcon)
+                .selectIconItems(selectIcon)
+                .fragmentList(fragments)
+                .lineHeight(1)
+                .mode(EasyNavigationBar.MODE_ADD)
+                .fragmentManager(getChildFragmentManager())
+                .normalTextColor(getResources().getColor(R.color.colorGray))   //Tab未选中时字体颜色
+                .selectTextColor(getResources().getColor(R.color.colorPrimary))   //Tab选中时字体颜色
+                .tabTextSize(11)   //Tab文字大小
+                .iconSize(27)
+                .addIconSize(0)//取消中间图标
+                .navigationHeight(50)
+                .build();
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    protected boolean enableSimplebar() {
+        return false;
+    }
+
+    public void setShowListener(onRootShowListener showListener) {
+        mShowListener = showListener;
+    }
+
+    public interface onRootShowListener {
+        void onRootShow(boolean isVisible);
+    }
+
+}
