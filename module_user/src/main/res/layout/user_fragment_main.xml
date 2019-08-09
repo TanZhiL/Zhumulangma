@@ -158,6 +158,7 @@
                     <ImageView
                         android:layout_width="28dp"
                         android:layout_height="28dp"
+                        android:tint="@color/white"
                         android:src="@drawable/ic_common_star" />
 
                     <TextView
@@ -225,7 +226,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/user_record_bg"
+                android:background="@drawable/shap_user_record"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -235,7 +236,8 @@
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:src="@drawable/user_record" />
+                    android:tint="@color/white"
+                    android:src="@drawable/ic_user_ksly" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -267,7 +269,7 @@
 
     </com.gykj.zhumulangma.common.widget.TScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-    <com.gykj.thomas.zhumulangma.widget.CommonTitleBar
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
         android:id="@+id/ctb_trans"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -285,7 +287,7 @@
         app:rightCustomView="@layout/layout_user_bar_right"
         app:rightType="customView"
         app:titleBarColor="@color/transparent" />
-    <com.gykj.thomas.zhumulangma.widget.CommonTitleBar
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
         android:id="@+id/ctb_white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
