@@ -22,11 +22,11 @@ public interface  AppConstants {
              String F_ACCEPT="/task/accept";
              String F_FEEDBACK="/task/feedback";
          }
-         interface  Patrol{
-             String F_MAIN="/patrol/main";
+         interface  Discover{
+             String F_MAIN="/discover/main";
          }
-         interface Video{
-             String F_MAIN="/video/main";
+         interface Listen{
+             String F_MAIN="/listen/main";
              String F_CHAT="/video/chat";
          }
          interface Pollution{

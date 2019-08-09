@@ -15,7 +15,6 @@
         android:text="主标题"
         android:visibility="gone"
         android:singleLine="true"
-        android:textStyle="bold"
         android:ellipsize="marquee"
         android:textColor="@color/colorSimplebarText"
         android:textSize="@dimen/simpleBarTitle" />

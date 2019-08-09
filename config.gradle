@@ -59,7 +59,10 @@ ext {
             "AVLoading":"2.1.3",
             "EasyNavigation":"1.0.2",
             "MagicIndicator":"1.5.0",
-            "banner":"1.4.10"
+            "banner":"1.4.10",
+            "ratingbar":"1.1.2",
+            "labelview":"v1.1.2",
+            "BaseItemLayout":"2.2.3"
     ]
     //support配置
     support = [
@@ -137,6 +140,9 @@ ext {
             "EasyNavigation"         :"com.github.forvv231:EasyNavigation:${versions["EasyNavigation"]}",
             "MagicIndicator"         :"com.github.hackware1993:MagicIndicator:${versions["MagicIndicator"]}",
             "banner"         :"com.youth.banner:banner:${versions["banner"]}",
+            "ratingbar"         :"com.hedgehog.ratingbar:app:${versions["ratingbar"]}",
+            "labelview"         :"com.github.linger1216:labelview:${versions["labelview"]}",
+            "BaseItemLayout"         :"com.maiml:baseitemlayoutlibrary:${versions["BaseItemLayout"]}",
     ]
 
 }

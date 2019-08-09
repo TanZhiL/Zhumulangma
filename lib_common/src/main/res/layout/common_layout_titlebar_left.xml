@@ -5,15 +5,15 @@
     android:layout_width="match_parent"
     android:orientation="horizontal"
    android:gravity="center_vertical"
-
+    android:paddingStart="15dp"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/iv_back"
         android:layout_width="23dp"
         android:layout_height="23dp"
-        android:layout_marginStart="14dp"
-        android:visibility="visible"
+        android:visibility="gone"
+        android:tint="@color/colorPrimaryDark"
         android:src="@drawable/ic_common_titlebar_back" />
 
     <TextView
@@ -29,6 +29,6 @@
         android:id="@+id/iv1"
         android:layout_width="28dp"
         android:layout_height="28dp"
-        android:visibility="gone"
-        android:layout_marginLeft="12dp"/>
+        android:tint="@color/colorPrimaryDark"
+        android:visibility="gone"/>
 </LinearLayout>

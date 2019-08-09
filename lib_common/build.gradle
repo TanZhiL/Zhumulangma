@@ -123,6 +123,9 @@ dependencies {
     api rootProject.ext.dependencies["EasyNavigation"]
     api rootProject.ext.dependencies["MagicIndicator"]
     api rootProject.ext.dependencies["banner"]
+    api rootProject.ext.dependencies["ratingbar"]
+    api rootProject.ext.dependencies["labelview"]
+    api rootProject.ext.dependencies["BaseItemLayout"]
 
 }
 

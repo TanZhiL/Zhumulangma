@@ -19,6 +19,7 @@ public class MainFragment extends BaseFragment {
 
     private EasyNavigationBar enb;
     private String[] tabText = {"首页", "我听", "", "发现", "我的"};
+    private List<String> tabTexts;
     //未选中icon
     private int[] normalIcon = {R.drawable.ic_main_tab_home_normal, R.drawable.ic_main_tab_litsten_normal
             , R.drawable.ic_main_tab_play, R.drawable.ic_main_tab_find_normal, R.drawable.ic_main_tab_user_normal};
@@ -43,16 +44,25 @@ public class MainFragment extends BaseFragment {
     @Override
     public void initView(View view) {
         setSwipeBackEnable(false);
-
+        tabTexts=new ArrayList<>();
         enb = view.findViewById(R.id.enb);
-
-        fragments.add(new LoginFragment());
 
         Object home = ARouter.getInstance().build(AppConstants.Router.Home.F_MAIN).navigation();
         if (null != home) {
+            tabTexts.add("首页");
             fragments.add((Fragment) home);
         }
-        fragments.add(new LoginFragment());
+        Object listen = ARouter.getInstance().build(AppConstants.Router.Listen.F_MAIN).navigation();
+        if (null != listen) {
+            tabTexts.add("我听");
+            fragments.add((Fragment) listen);
+        }
+        Object discover = ARouter.getInstance().build(AppConstants.Router.Discover.F_MAIN).navigation();
+        if (null != listen) {
+            tabTexts.add("发现");
+            fragments.add((Fragment) discover);
+        }
+        tabTexts.add("我的");
         fragments.add(new LoginFragment());
         enb.titleItems(tabText)
                 .normalIconItems(normalIcon)

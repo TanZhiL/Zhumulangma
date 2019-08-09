@@ -27,7 +27,7 @@ public class CategoryFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-
+        setSwipeBackEnable(false);
     }
 
     @Override

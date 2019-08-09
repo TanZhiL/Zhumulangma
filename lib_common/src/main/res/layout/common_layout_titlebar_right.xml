@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingEnd="12dp">
+    android:paddingEnd="10dp">
 
     <ImageView
         android:id="@+id/iv1"
@@ -12,6 +12,7 @@
         android:layout_height="28dp"
         android:layout_alignParentEnd="true"
         android:visibility="gone"
+        android:tint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,6 +24,7 @@
         android:layout_marginEnd="8dp"
         android:layout_toLeftOf="@id/iv1"
         android:visibility="gone"
+        android:tint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/iv1"
         app:layout_constraintTop_toTopOf="parent" />

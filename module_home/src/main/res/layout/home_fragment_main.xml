@@ -17,7 +17,7 @@
           android:layout_height="28dp"
           android:tint="@color/colorGray"
           android:layout_marginStart="17dp"
-          android:src="@drawable/ic_home_message"
+          android:src="@drawable/ic_common_message"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
           android:tint="@color/colorGray"
           android:layout_marginEnd="17dp"
           android:layout_marginBottom="8dp"
-          android:src="@drawable/ic_home_download"
+          android:src="@drawable/ic_common_download"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +43,7 @@
           android:layout_marginEnd="6dp"
           android:tint="@color/colorGray"
           android:layout_marginBottom="8dp"
-          android:src="@drawable/ic_home_history"
+          android:src="@drawable/ic_common_history"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toStartOf="@+id/imageView4"
           app:layout_constraintTop_toTopOf="parent" />
@@ -70,7 +70,7 @@
               android:layout_width="23dp"
               android:layout_height="23dp"
               android:tint="#cccccc"
-              android:src="@drawable/ic_home_bar_search" />
+              android:src="@drawable/ic_common_search" />
 
           <TextView
               android:id="@+id/textView11"

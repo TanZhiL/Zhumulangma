@@ -12,10 +12,11 @@
             <option value="$PROJECT_DIR$/lib_util" />
             <option value="$PROJECT_DIR$/lib_videotrimmer" />
             <option value="$PROJECT_DIR$/module_app" />
+            <option value="$PROJECT_DIR$/module_discover" />
             <option value="$PROJECT_DIR$/module_home" />
+            <option value="$PROJECT_DIR$/module_listen" />
             <option value="$PROJECT_DIR$/module_main" />
-            <option value="$PROJECT_DIR$/module_pollution" />
-            <option value="$PROJECT_DIR$/module_task" />
+            <option value="$PROJECT_DIR$/module_user" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

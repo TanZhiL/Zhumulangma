@@ -13,5 +13,5 @@
         android:layout_height="28dp"
         android:layout_marginEnd="2dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_home_message" />
+        android:src="@drawable/ic_common_message" />
 </LinearLayout>

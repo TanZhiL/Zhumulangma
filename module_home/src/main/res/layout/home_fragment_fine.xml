@@ -10,6 +10,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:paddingBottom="8dp"
     android:descendantFocusability="blocksDescendants"
     android:layout_height="wrap_content">
     <com.youth.banner.Banner

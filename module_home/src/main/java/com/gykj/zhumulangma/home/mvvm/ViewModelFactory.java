@@ -7,8 +7,10 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
-import com.gykj.zhumulangma.home.mvvm.model.HomeModel;
+import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
 
 /**
  * Author: Thomas.
@@ -43,7 +45,11 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(HotViewModel.class)) {
-            return (T) new HotViewModel(mApplication, new HomeModel(mApplication));
+            return (T) new HotViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(FineViewModel.class)) {
+            return (T) new FineViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(RadioViewModel.class)) {
+            return (T) new RadioViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

@@ -66,6 +66,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
 
     @Override
     protected void initView(View view) {
+        setSwipeBackEnable(false);
         initAction();
         initBanner();
         initLike();
@@ -213,6 +214,20 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     @Override
     public void OnBannerClick(int position) {
 
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        if(banner!=null)
+        banner.startAutoPlay();
+    }
+
+    @Override
+    public void onSupportInvisible() {
+        super.onSupportInvisible();
+        if(banner!=null)
+        banner.stopAutoPlay();
     }
 
     @Override

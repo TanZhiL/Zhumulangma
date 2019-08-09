@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_home_hot_author" />
-                            <entry key="sourceFile" value="C:\Users\Thomas\Desktop\icon\home_hot_author.svg" />
+                            <entry key="outputName" value="ic_common_star" />
+                            <entry key="sourceFile" value="C:\Users\Thomas\Desktop\icon\common_star.svg" />
                           </map>
                         </option>
                       </PersistentState>

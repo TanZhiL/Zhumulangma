@@ -52,7 +52,8 @@ dependencies {
     if (!isModule.toBoolean()) {
         implementation project(':module_main')
         implementation project(':module_home')
-        implementation project(':module_pollution')
-        implementation project(':module_task')
+        implementation project(':module_listen')
+        implementation project(':module_discover')
+        implementation project(':module_user')
     }
 }

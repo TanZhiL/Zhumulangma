@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:overScrollMode="never"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <com.maiml.library.BaseItemLayout
+            android:id="@+id/bil_fine"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text_size  = "14"
+            app:text_color = "@color/black"
+            app:icon_margin_left = "16"
+            app:icon_text_margin = "8"
+            app:margin_right = "12"
+            app:item_height = "45"
+            app:line_color="@color/transparent"
+            app:right_text_color  = "@color/colorGray"
+            app:right_text_size  = "11"
+            app:right_text_margin = "8"
+            />
+</ScrollView>

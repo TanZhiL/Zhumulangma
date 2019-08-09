@@ -64,7 +64,7 @@ public class JPushReceiver extends JPushMessageReceiver {
             @Override
             public void run() {
                 BaseActivityEvent<String> event = new BaseActivityEvent(EventCode.MainCode.JPUSH);
-                event.setData(AppConstants.Router.Task.F_ACCEPT);
+//                event.setData(AppConstants.Router.Task.F_ACCEPT);
                 EventBus.getDefault().post(event);
             }
         },500);

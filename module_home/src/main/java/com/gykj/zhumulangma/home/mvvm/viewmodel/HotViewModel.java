@@ -5,30 +5,25 @@ import android.support.annotation.NonNull;
 
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
-import com.gykj.zhumulangma.home.mvvm.model.HomeModel;
+import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
-import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
-import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.column.Column;
-import com.ximalaya.ting.android.opensdk.model.column.ColumnList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.functions.Consumer;
-
-public class HotViewModel extends BaseViewModel<HomeModel> {
-    SingleLiveEvent<List<BannerV2>> mBannerV2SingleLiveEvent;
-    SingleLiveEvent<List<Album>> mLikeSingleLiveEvent;
-    SingleLiveEvent<List<Album>> mStorySingleLiveEvent;
-    SingleLiveEvent<List<Album>> mBadySingleLiveEvent;
-    SingleLiveEvent<List<Column>> mTopicSingleLiveEvent;
-    SingleLiveEvent<List<Album>> mMusicSingleLiveEvent;
-    SingleLiveEvent<List<Radio>> mRadioSingleLiveEvent;
+public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
+    private SingleLiveEvent<List<BannerV2>> mBannerV2SingleLiveEvent;
+    private SingleLiveEvent<List<Album>> mLikeSingleLiveEvent;
+    private SingleLiveEvent<List<Album>> mStorySingleLiveEvent;
+    private SingleLiveEvent<List<Album>> mBadySingleLiveEvent;
+    private SingleLiveEvent<List<Column>> mTopicSingleLiveEvent;
+    private SingleLiveEvent<List<Album>> mMusicSingleLiveEvent;
+    private SingleLiveEvent<List<Radio>> mRadioSingleLiveEvent;
 
     private int totalStoryPage = 1;
     private int totalBabyPage = 1;
@@ -42,7 +37,7 @@ public class HotViewModel extends BaseViewModel<HomeModel> {
     private int curMusicPage = 1;
     private int curRadioPage = 1;
 
-    public HotViewModel(@NonNull Application application, HomeModel model) {
+    public HotViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
 

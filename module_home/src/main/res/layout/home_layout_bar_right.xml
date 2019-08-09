@@ -15,12 +15,12 @@
             android:id="@+id/iv_history"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:src="@drawable/ic_home_history" />
+            android:src="@drawable/ic_common_history" />
         <ImageView
             android:id="@+id/iv_download"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginStart="2dp"
-            android:src="@drawable/ic_home_download" />
+            android:src="@drawable/ic_common_download" />
     </LinearLayout>
 

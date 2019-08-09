@@ -277,7 +277,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                         }
                     });
                 }
-                if (ints.length > 1 & null != ints[1]) {
+                if (ints.length > 1 && null != ints[1]) {
                     ImageView iv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv2);
                     iv2.setVisibility(View.VISIBLE);
                     iv2.setImageResource(ints[1]);
