@@ -13,7 +13,7 @@ public interface  AppConstants {
          }
          interface Home{
             String F_MAIN="/home/main";
-            String F_REPORT="/event/report";
+            String F_SEARCH="/home/search";
             String F_ACCEPT="/event/accept";
             String F_FEEDBACK="/event/feedback";
          }

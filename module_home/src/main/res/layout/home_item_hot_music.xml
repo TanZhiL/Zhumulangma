@@ -20,7 +20,7 @@
             android:src="@drawable/hot_like" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iv_back"
             android:layout_width="17dp"
             android:layout_height="17dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -36,7 +36,7 @@
             android:textColor="@color/white"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView" />
+            app:layout_constraintStart_toEndOf="@+id/iv_back" />
     </android.support.constraint.ConstraintLayout>
 
     <TextView

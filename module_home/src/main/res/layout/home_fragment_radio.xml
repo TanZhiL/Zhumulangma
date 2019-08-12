@@ -186,13 +186,13 @@
             android:text="交通台"
             android:textColor="@color/colorGray"
             android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView11"
+            app:layout_constraintEnd_toStartOf="@+id/tv_search"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView8"
             app:layout_constraintTop_toTopOf="@+id/textView8" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/tv_search"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:background="#f0f0f0"

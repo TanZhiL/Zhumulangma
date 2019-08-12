@@ -4,6 +4,7 @@ package com.gykj.zhumulangma.home.fragment;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -25,8 +26,9 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 @Route(path = AppConstants.Router.Home.F_MAIN)
-public class MainHomeFragment extends BaseFragment {
+public class MainHomeFragment extends BaseFragment implements View.OnClickListener {
 
 
     private MagicIndicator magicIndicator;
@@ -47,27 +49,39 @@ public class MainHomeFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         setSwipeBackEnable(false);
-        if( StatusBarUtils.supportTransparentStatusBar()){
-            fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(),0,0);
+        if (StatusBarUtils.supportTransparentStatusBar()) {
+            fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
 
-        viewpager=view.findViewById(R.id.viewpager);
+        viewpager = view.findViewById(R.id.viewpager);
         pages.add(new HotFragment());
         pages.add(new CategoryFragment());
         pages.add(new FineFragment());
         pages.add(new RadioFragment());
 
         TFragmentPagerAdapter adapter = new TFragmentPagerAdapter(
-                getChildFragmentManager(),pages);
+                getChildFragmentManager(), pages);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(adapter);
 
-        magicIndicator=view.findViewById(R.id.magic_indicator);
+        magicIndicator = view.findViewById(R.id.magic_indicator);
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
-        commonNavigator.setAdapter(new NavigatorAdapter(Arrays.asList(tabs),viewpager,50));
+        commonNavigator.setAdapter(new NavigatorAdapter(Arrays.asList(tabs), viewpager, 50));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        fd(R.id.tv_search).setOnClickListener(this);
+//        addDisposable(RxView.clicks(fd(R.id.tv_search)).throttleFirst(1, TimeUnit.SECONDS)
+//                .subscribe(unit -> {
+//                    Log.e(TAG, "initListener: ");
+//                    start(new CategoryFragment());
+//                }));
+
     }
 
     @Override
@@ -78,6 +92,15 @@ public class MainHomeFragment extends BaseFragment {
     @Override
     protected boolean enableSimplebar() {
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if(id==R.id.tv_search){
+            Log.e(TAG, "initListener: ");
+            start(new SearchFragment());
+        }
     }
 
     public static class GlideImageLoader extends ImageLoader {
