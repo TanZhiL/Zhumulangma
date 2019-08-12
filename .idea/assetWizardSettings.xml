@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_user_ksly" />
-                            <entry key="sourceFile" value="C:\Users\Thomas\Desktop\icon\user_ksly.svg" />
+                            <entry key="outputName" value="ic_common_settings" />
+                            <entry key="sourceFile" value="C:\Users\Thomas\Desktop\icon\common_settings.svg" />
                           </map>
                         </option>
                       </PersistentState>

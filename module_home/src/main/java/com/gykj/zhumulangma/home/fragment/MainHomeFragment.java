@@ -11,10 +11,11 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.BarUtils;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.NavigatorAdapter;
+import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.home.R;
+import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.youth.banner.loader.ImageLoader;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -46,8 +47,9 @@ public class MainHomeFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         setSwipeBackEnable(false);
-
-        fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(),0,0);
+        if( StatusBarUtils.supportTransparentStatusBar()){
+            fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(),0,0);
+        }
 
         viewpager=view.findViewById(R.id.viewpager);
         pages.add(new HotFragment());

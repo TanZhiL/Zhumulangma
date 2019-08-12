@@ -62,8 +62,11 @@ public class MainFragment extends BaseFragment {
             tabTexts.add("发现");
             fragments.add((Fragment) discover);
         }
-        tabTexts.add("我的");
-        fragments.add(new LoginFragment());
+        Object user = ARouter.getInstance().build(AppConstants.Router.User.F_MAIN).navigation();
+        if (null != listen) {
+            tabTexts.add("我的");
+            fragments.add((Fragment) user);
+        }
         enb.titleItems(tabText)
                 .normalIconItems(normalIcon)
                 .selectIconItems(selectIcon)

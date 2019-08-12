@@ -9,6 +9,7 @@
       android:id="@+id/cl_titlebar"
       android:layout_width="match_parent"
       app:layout_constraintTop_toTopOf="parent"
+      android:background="@color/white"
       android:layout_height="wrap_content">
 
       <ImageView

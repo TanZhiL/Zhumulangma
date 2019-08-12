@@ -1,27 +1,19 @@
 package com.gykj.zhumulangma.common;
 
-import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.Utils;
 import com.didichuxing.doraemonkit.DoraemonKit;
-import com.didichuxing.doraemonkit.kit.webdoor.WebDoorManager;
-import com.gykj.zhumulangma.common.net.RetrofitManager;
-import com.gykj.videotrimmer.VideoTrimmer;
 import com.gykj.util.log.TLog;
+import com.gykj.videotrimmer.VideoTrimmer;
+import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
-import com.scwang.smartrefresh.layout.api.RefreshFooter;
-import com.scwang.smartrefresh.layout.api.RefreshHeader;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 
-import cn.jpush.android.api.JPushInterface;
 import me.yokeyword.fragmentation.Fragmentation;
 
 /**
@@ -37,25 +29,19 @@ public class Application extends android.app.Application {
     static {
 
         //设置全局的Header构建器
-        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
-            @Override
-            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                ClassicsHeader classicsHeader=new ClassicsHeader(context);
-                classicsHeader.setTextSizeTitle(14);
-                classicsHeader.setTextSizeTime(10);
-                classicsHeader.setDrawableSize(18);
-                return classicsHeader;
-            }
+        SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> {
+            ClassicsHeader classicsHeader=new ClassicsHeader(context);
+            classicsHeader.setTextSizeTitle(14);
+            classicsHeader.setTextSizeTime(10);
+            classicsHeader.setDrawableSize(18);
+            return classicsHeader;
         });
         //设置全局的Footer构建器
-        SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
-            @Override
-            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
-                ClassicsFooter classicsFooter=new ClassicsFooter(context);
-                classicsFooter.setTextSizeTitle(14);
-                classicsFooter.setDrawableSize(18);
-                return classicsFooter;
-            }
+        SmartRefreshLayout.setDefaultRefreshFooterCreator((context, layout) -> {
+            ClassicsFooter classicsFooter=new ClassicsFooter(context);
+            classicsFooter.setTextSizeTitle(14);
+            classicsFooter.setDrawableSize(18);
+            return classicsFooter;
         });
     }
 
@@ -92,8 +78,8 @@ public class Application extends android.app.Application {
 
         VideoTrimmer.init(this);
 
-        JPushInterface.setDebugMode(true);
-        JPushInterface.init(this);
+        /*JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);*/
 
         if(AppConfig.ISDORAEMONKIT) {
             //调试助手

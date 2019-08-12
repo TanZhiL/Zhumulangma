@@ -17,8 +17,8 @@ public interface  AppConstants {
             String F_ACCEPT="/event/accept";
             String F_FEEDBACK="/event/feedback";
          }
-         interface Task{
-             String F_MAIN="/task/main";
+         interface User{
+             String F_MAIN="/user/main";
              String F_ACCEPT="/task/accept";
              String F_FEEDBACK="/task/feedback";
          }
