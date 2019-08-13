@@ -13,4 +13,7 @@ public class BaseActivityEvent<T> extends BaseEvent<T> {
     public BaseActivityEvent(int code) {
         super(code);
     }
+    public BaseActivityEvent(int code,T data) {
+        super(code,data);
+    }
 }

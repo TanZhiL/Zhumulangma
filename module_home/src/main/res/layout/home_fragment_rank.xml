@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#f0f0f0"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/magic_indicator"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:overScrollMode="never"
+            android:layout_height="match_parent" />
+        <FrameLayout
+            android:id="@+id/fl_mask"
+            android:layout_width="match_parent"
+            android:background="#99000000"
+            android:visibility="gone"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_category"
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:background="@color/white"
+                />
+        </FrameLayout>
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>

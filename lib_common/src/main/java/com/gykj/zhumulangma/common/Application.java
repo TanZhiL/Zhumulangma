@@ -1,5 +1,6 @@
 package com.gykj.zhumulangma.common;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -7,6 +8,8 @@ import com.blankj.utilcode.util.Utils;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.gykj.util.log.TLog;
 import com.gykj.videotrimmer.VideoTrimmer;
+import com.gykj.zhumulangma.common.dao.DaoMaster;
+import com.gykj.zhumulangma.common.dao.DaoSession;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -50,7 +53,7 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         mApplication = this;
-
+        initGreenDao();
         MultiDex.install(this);
 
         ConstantsOpenSdk.isDebug = true;
@@ -93,5 +96,20 @@ public class Application extends android.app.Application {
     }
     public static Application getInstance(){
         return mApplication;
+    }
+
+    /**
+     * 初始化GreenDao,直接在Application中进行初始化操作
+     */
+    private void initGreenDao() {
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "zhumulangma.db");
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+    }
+
+    private static DaoSession daoSession;
+    public  static DaoSession getDaoSession() {
+        return daoSession;
     }
 }

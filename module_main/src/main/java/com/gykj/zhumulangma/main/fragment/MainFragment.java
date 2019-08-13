@@ -1,7 +1,10 @@
 package com.gykj.zhumulangma.main.fragment;
 
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -39,11 +42,14 @@ public class MainFragment extends BaseFragment {
     protected int onBindLayout() {
         return R.layout.main_fragment_main;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSwipeBackEnable(false);
+    }
 
     @Override
     public void initView(View view) {
-        setSwipeBackEnable(false);
         tabTexts=new ArrayList<>();
         enb = view.findViewById(R.id.enb);
 
@@ -88,6 +94,19 @@ public class MainFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        if(mShowListener!=null)
+            mShowListener.onRootShow(true);
+    }
+
+    @Override
+    public void onSupportInvisible() {
+        super.onSupportInvisible();
+        if(mShowListener!=null)
+            mShowListener.onRootShow(false);
+    }
     @Override
     protected boolean enableSimplebar() {
         return false;

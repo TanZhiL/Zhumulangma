@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,11 @@ public class CategoryFragment extends BaseFragment {
     public CategoryFragment() {
 
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSwipeBackEnable(false);
+    }
 
     @Override
     protected int onBindLayout() {
@@ -27,7 +32,7 @@ public class CategoryFragment extends BaseFragment {
 
     @Override
     protected void initView(View view) {
-        setSwipeBackEnable(false);
+
     }
 
     @Override

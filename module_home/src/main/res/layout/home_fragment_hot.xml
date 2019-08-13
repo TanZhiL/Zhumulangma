@@ -316,7 +316,7 @@
 
             <include
                 android:id="@+id/like_refresh"
-                layout="@layout/common_layout_refresh"
+                layout="@layout/common_layout_item_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:visibility="gone"
@@ -338,7 +338,7 @@
                 android:layout_height="wrap_content"/>
             <include
                 android:id="@+id/story_refresh"
-                layout="@layout/common_layout_refresh"
+                layout="@layout/common_layout_item_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 app:layout_constraintTop_toBottomOf="@id/rv_story" />
@@ -359,7 +359,7 @@
                 android:layout_height="wrap_content"/>
             <include
                 android:id="@+id/baby_refresh"
-                layout="@layout/common_layout_refresh"
+                layout="@layout/common_layout_item_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 app:layout_constraintTop_toBottomOf="@id/rv_baby" />
@@ -416,7 +416,7 @@
             <include
                 android:visibility="gone"
                 android:id="@+id/topic_refresh"
-                layout="@layout/common_layout_refresh"
+                layout="@layout/common_layout_item_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 app:layout_constraintTop_toBottomOf="@id/rv_topic" />
@@ -440,7 +440,7 @@
                 android:layout_height="wrap_content"/>
             <include
                 android:id="@+id/music_refresh"
-                layout="@layout/common_layout_refresh"
+                layout="@layout/common_layout_item_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 app:layout_constraintTop_toBottomOf="@id/rv_music" />
@@ -461,7 +461,7 @@
                 app:layout_constraintTop_toBottomOf="@id/ih_radio" />
             <include
                 android:id="@+id/radio_refresh"
-                layout="@layout/common_layout_refresh"
+                layout="@layout/common_layout_item_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 app:layout_constraintTop_toBottomOf="@id/rv_radio" />

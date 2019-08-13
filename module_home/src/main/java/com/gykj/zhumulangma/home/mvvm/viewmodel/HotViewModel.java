@@ -43,7 +43,7 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public void getBannerList() {
         Map<String, String> map = new HashMap<>();
-        map.put(DTransferConstants.CATEGORY_ID, "0");
+        map.put(DTransferConstants.CATEGORY_ID, "1");
         map.put(DTransferConstants.IMAGE_SCALE, "2");
         mModel.getCategoryBannersV2(map)
                 .subscribe(bannerV2List ->

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/iv_back"
+            android:id="@+id/iv_pop"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginStart="15dp"
@@ -29,16 +29,16 @@
             android:layout_height="34dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:background="@drawable/shape_home_search"
-
             android:gravity="center_vertical"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView6"
-            app:layout_constraintStart_toEndOf="@+id/iv_back"
+            app:layout_constraintEnd_toStartOf="@+id/tv_search"
+            app:layout_constraintStart_toEndOf="@+id/iv_pop"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -48,37 +48,41 @@
                 android:src="@drawable/ic_common_search"
                 android:tint="#cccccc" />
 
-            <TextView
-                android:id="@+id/tv_search"
+            <EditText
+                android:id="@+id/et_keyword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                android:text="我的一个道姑朋友"
-                android:textColor="#cccccc"
-
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="我的一个道姑朋友"
+                android:textColorHint="#cccccc"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"
+                android:ellipsize="end"
+                android:textCursorDrawable="@drawable/shap_common_input_cursor"
                 android:textSize="12sp" />
 
             <ImageView
                 android:id="@+id/imageView7"
                 android:layout_width="23dp"
                 android:layout_height="23dp"
-                android:tint="@color/colorPrimary"
-                android:src="@drawable/ic_common_voice" />
+                android:src="@drawable/ic_common_voice"
+                android:tint="@color/colorPrimary" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tv_search"
             android:layout_width="62dp"
             android:layout_height="wrap_content"
-            android:text="搜索"
-            android:textSize="14sp"
             android:gravity="center"
+            android:text="搜索"
             android:textColor="@color/colorPrimary"
-            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
     <FrameLayout
         android:id="@+id/fl_container"

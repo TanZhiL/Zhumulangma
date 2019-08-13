@@ -1,5 +1,7 @@
 package com.gykj.zhumulangma.discover.fragment;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -23,9 +25,13 @@ public class MainDiscoverFragment extends BaseFragment {
     }
 
     @Override
-    protected void initView(View view) {
-
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
+    }
+
+    @Override
+    protected void initView(View view) {
 
         bilFine = view.findViewById(R.id.bil_fine);
         List<String> valueList = new ArrayList<>();

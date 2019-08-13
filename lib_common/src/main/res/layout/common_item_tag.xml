@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:paddingRight="8dp"
+    android:paddingBottom="8dp"
+    android:layout_height="wrap_content">
+<TextView
+    android:id="@+id/tv_keyword"
+    android:layout_width="wrap_content"
+    android:text="摸金天师"
+    android:textSize="11sp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:textColor="@color/black"
+    android:background="@drawable/shap_common_tag_normal"
+    android:gravity="center_vertical"
+    android:layout_height="18dp" />
+</FrameLayout>

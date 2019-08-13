@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="158dp"
+    android:layout_height="187dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/c"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    >
+
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="158dp"
+        android:layout_height="158dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/hot_like" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_avatar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="逆生长"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/civ_avatar"
+        app:layout_constraintEnd_toStartOf="@+id/imageView8"
+        app:layout_constraintStart_toEndOf="@+id/civ_avatar"
+        app:layout_constraintTop_toTopOf="@+id/civ_avatar" />
+
+    <TextView
+        android:id="@+id/tv_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="音乐"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_nickname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_nickname" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_tag"
+        app:layout_constraintEnd_toStartOf="@+id/tv_tag"
+        app:layout_constraintTop_toTopOf="@+id/tv_tag" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_fans"
+        app:layout_constraintEnd_toStartOf="@+id/tv_fans"
+        app:layout_constraintTop_toTopOf="@+id/tv_fans"/>
+
+    <TextView
+        android:id="@+id/tv_fans"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="#11000000"
+        android:padding="2dp"
+        android:text="1126"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_vsignature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="  你的小鹿已上线！"
+        android:textSize="11sp"
+        app:layout_constraintLeft_toLeftOf="@id/c"
+        app:layout_constraintTop_toBottomOf="@id/c" />
+</android.support.constraint.ConstraintLayout>

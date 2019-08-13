@@ -11,9 +11,8 @@ public interface KeyCode {
     interface Main {
     }
 
-    interface News {
-        String NEWS_TYPE = "newstype";
-        String NEWS_ID = "newsid";
+    interface Home {
+        String KEYWORD = "keyword";
     }
 
     interface Find {

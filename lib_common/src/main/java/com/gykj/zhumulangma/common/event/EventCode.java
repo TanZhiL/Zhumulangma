@@ -10,6 +10,7 @@ package com.gykj.zhumulangma.common.event;
 public interface EventCode {
     interface MainCode {
         int JPUSH = 1000;
+        int NAVIGATE=1001;
         //1000开始
     }
 

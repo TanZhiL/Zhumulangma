@@ -2,6 +2,8 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -41,10 +43,13 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements Vie
     protected int onBindLayout() {
         return R.layout.home_fragment_fine;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSwipeBackEnable(false);
+    }
     @Override
     protected void initView(View view) {
-        setSwipeBackEnable(false);
         initBanner();
         initDaily();
         initBook();

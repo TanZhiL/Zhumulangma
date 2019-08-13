@@ -2,6 +2,8 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -14,8 +16,11 @@ import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.NavigatorAdapter;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.home.R;
+import com.jakewharton.rxbinding3.view.RxView;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.youth.banner.loader.ImageLoader;
 
@@ -23,9 +28,14 @@ import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_MAIN)
 public class MainHomeFragment extends BaseFragment implements View.OnClickListener {
@@ -45,10 +55,13 @@ public class MainHomeFragment extends BaseFragment implements View.OnClickListen
     protected int onBindLayout() {
         return R.layout.home_fragment_main;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSwipeBackEnable(false);
+    }
     @Override
     protected void initView(View view) {
-        setSwipeBackEnable(false);
         if (StatusBarUtils.supportTransparentStatusBar()) {
             fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
@@ -75,12 +88,9 @@ public class MainHomeFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void initListener() {
         super.initListener();
-        fd(R.id.tv_search).setOnClickListener(this);
-//        addDisposable(RxView.clicks(fd(R.id.tv_search)).throttleFirst(1, TimeUnit.SECONDS)
-//                .subscribe(unit -> {
-//                    Log.e(TAG, "initListener: ");
-//                    start(new CategoryFragment());
-//                }));
+        addDisposable(RxView.clicks(fd(R.id.ll_search)).throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(unit -> EventBus.getDefault().post(new BaseActivityEvent<ISupportFragment>
+                        (EventCode.MainCode.NAVIGATE,new SearchFragment()))));
 
     }
 
@@ -98,10 +108,10 @@ public class MainHomeFragment extends BaseFragment implements View.OnClickListen
     public void onClick(View v) {
         int id = v.getId();
         if(id==R.id.tv_search){
-            Log.e(TAG, "initListener: ");
-            start(new SearchFragment());
+
         }
     }
+
 
     public static class GlideImageLoader extends ImageLoader {
         @Override

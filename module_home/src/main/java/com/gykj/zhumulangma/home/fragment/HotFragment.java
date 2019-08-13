@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,8 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
@@ -30,6 +33,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.yokeyword.fragmentation.ISupportFragment;
 
 public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBannerListener, View.OnClickListener {
 
@@ -63,10 +68,13 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     protected int onBindLayout() {
         return R.layout.home_fragment_hot;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSwipeBackEnable(false);
+    }
     @Override
     protected void initView(View view) {
-        setSwipeBackEnable(false);
         initAction();
         initBanner();
         initLike();
@@ -79,7 +87,21 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
 
     private void initAction() {
         flRank = fd(R.id.fl_rank);
+
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
         flRank.setOnClickListener(this);
+        mLikeAdapter.setOnItemClickListener((adapter, view, position) -> {
+        });
+        mStoryAdapter.setOnItemClickListener((adapter, view, position) -> {
+        });
+        mBabyAdapter.setOnItemClickListener((adapter, view, position) -> {
+        });
+        mMusicAdapter.setOnItemClickListener((adapter, view, position) -> {
+        });
     }
 
     @Override
@@ -112,8 +134,6 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         rvLike.setHasFixedSize(true);
         mLikeAdapter.bindToRecyclerView(rvLike);
 
-        mLikeAdapter.setOnItemClickListener((adapter, view, position) -> {
-        });
     }
 
     private void initStory() {
@@ -125,8 +145,6 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         rvStory.setLayoutManager(new LinearLayoutManager(mContext));
         rvStory.setHasFixedSize(true);
         mStoryAdapter.bindToRecyclerView(rvStory);
-        mStoryAdapter.setOnItemClickListener((adapter, view, position) -> {
-        });
     }
 
     private void initBaby() {
@@ -138,8 +156,6 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         rvBaby.setLayoutManager(new LinearLayoutManager(mContext));
         rvBaby.setHasFixedSize(true);
         mBabyAdapter.bindToRecyclerView(rvBaby);
-        mBabyAdapter.setOnItemClickListener((adapter, view, position) -> {
-        });
 
     }
 
@@ -152,8 +168,6 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         rvMusic.setLayoutManager(new GridLayoutManager(mContext, 3));
         rvMusic.setHasFixedSize(true);
         mMusicAdapter.bindToRecyclerView(rvMusic);
-        mMusicAdapter.setOnItemClickListener((adapter, view, position) -> {
-        });
 
     }
 
@@ -243,6 +257,9 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
             mViewModel.getHotMusicList();
         } else if (id == R.id.radio_refresh) {
             mViewModel.getRadioList();
+        }else if (id == R.id.fl_rank) {
+            EventBus.getDefault().post(new BaseActivityEvent<ISupportFragment>
+                    (EventCode.MainCode.NAVIGATE,new RankFragment()));
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.gykj.zhumulangma.listen.fragment;
 
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -35,10 +37,13 @@ public class MainListenFragment extends BaseFragment {
     protected int onBindLayout() {
         return R.layout.listen_fragment_main;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSwipeBackEnable(false);
+    }
     @Override
     protected void initView(View view) {
-        setSwipeBackEnable(false);
 
         viewpager=fd(R.id.viewpager);
 

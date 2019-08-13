@@ -40,10 +40,13 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> {
     protected int onBindLayout() {
         return R.layout.home_fragment_radio;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSwipeBackEnable(false);
+    }
     @Override
     protected void initView(View view) {
-        setSwipeBackEnable(false);
         initLocal();
         initTop();
     }

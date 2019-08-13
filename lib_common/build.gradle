@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
@@ -126,6 +126,16 @@ dependencies {
     api rootProject.ext.dependencies["ratingbar"]
     api rootProject.ext.dependencies["labelview"]
     api rootProject.ext.dependencies["BaseItemLayout"]
+    api rootProject.ext.dependencies["FlowLayout"]
+    api rootProject.ext.dependencies["greendao"]
 
+}
+greendao {
+    //数据库的schema版本，也可以理解为数据库版本号
+    schemaVersion 1
+    //设置DaoMaster、DaoSession、Dao包名，也就是要放置这些类的包的全路径。
+    daoPackage 'com.gykj.zhumulangma.common.dao'
+    //设置DaoMaster、DaoSession、Dao目录
+    targetGenDir 'src/main/java'
 }
 

@@ -17,7 +17,7 @@
     <!-- 背景部分 -->
     <!-- 形象的表达：bottom代表背景部分在上边缘超出阴影的高度，right代表背景部分在左边超出阴影的宽度（相对应的offset） -->
     <item
-        android:bottom="1.2dp"
+
         android:left="1.2dp"
         android:top="1.2dp"
         android:right="1.2dp">

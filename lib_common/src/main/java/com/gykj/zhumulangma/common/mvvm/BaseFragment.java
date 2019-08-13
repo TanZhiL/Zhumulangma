@@ -57,6 +57,8 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     protected CommonTitleBar mSimpleTitleBar;
     private Handler mLoadingHandler=new Handler();
     protected Application mApplication;
+
+    private boolean isFirst=true;
    protected interface BarStyle {
         //左边
         int LEFT_BACK = 0;
@@ -109,6 +111,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         initCommonView(mView);
        return attachToSwipeBack(mView);
     }
+
 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
@@ -306,7 +309,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     protected int onBindBarLeftStyle() {
-        return BarStyle.LEFT_BACK_TEXT;
+        return BarStyle.LEFT_BACK;
     }
 
     protected int onBindBarCenterStyle() {
@@ -482,6 +485,19 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         initData();
     }
 
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        if(!isFirst){
+            onRevisible();
+        }
+            isFirst=false;
+    }
+
+    /**
+     * 再次可见
+     */
+    protected void onRevisible(){}
     /**
      * findViewById
      *

@@ -4,7 +4,9 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
@@ -45,10 +47,13 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
     protected int onBindLayout() {
         return R.layout.user_fragment_main;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSwipeBackEnable(false);
+    }
     @Override
     protected void initView(View view) {
-        setSwipeBackEnable(false);
         ctbTrans = view.findViewById(R.id.ctb_trans);
         ctbWhite = view.findViewById(R.id.ctb_white);
         bilUser = view.findViewById(R.id.bil_user);

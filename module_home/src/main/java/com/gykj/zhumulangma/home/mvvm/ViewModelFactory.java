@@ -1,16 +1,18 @@
 package com.gykj.zhumulangma.home.mvvm;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
+import com.gykj.zhumulangma.common.Application;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchViewModel;
 
 /**
  * Author: Thomas.
@@ -50,6 +52,10 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new FineViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(RadioViewModel.class)) {
             return (T) new RadioViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(SearchViewModel.class)) {
+            return (T) new SearchViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(SearchResultViewModel.class)) {
+            return (T) new SearchResultViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="84dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:paddingLeft="11dp"
+    android:paddingRight="11dp">
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="68dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="11dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/hot_like"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_index"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:text="小道士笔记【灵异玄幻-有声小说】"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_cover"
+        app:layout_constraintTop_toTopOf="@+id/iv_cover" />
+
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="0dp"
+        android:layout_height="23dp"
+        android:text="《盗墓笔记》49"
+        android:textSize="14sp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/colorGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="17dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_desc">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:tint="@color/colorPrimaryDark"
+            android:src="@drawable/ic_common_play" />
+
+        <TextView
+            android:id="@+id/tv_playcount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="3596.2万"
+            android:textColor="#505050"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="10dp"
+            android:tint="@color/colorPrimaryDark"
+            android:src="@drawable/ic_home_hot_ji" />
+
+        <TextView
+            android:id="@+id/tv_track_num"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="513集"
+            android:textColor="#505050"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_index"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="#999999"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:background="#f0f0f0"
+        android:layout_height="1dp"/>
+</android.support.constraint.ConstraintLayout>

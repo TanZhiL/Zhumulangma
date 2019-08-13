@@ -2,6 +2,8 @@ package com.gykj.zhumulangma.main.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,10 +40,13 @@ public class LoginFragment extends BaseMvvmFragment<LoginViewModel> implements V
     protected int onBindLayout() {
         return R.layout.main_fragment_login;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSwipeBackEnable(false);
+    }
     @Override
     protected void initView(View view) {
-        setSwipeBackEnable(false);
         etCode = fd(R.id.et_code);
         etDescerName = fd(R.id.et_descer_name);
         etDescerPhone = fd(R.id.et_descer_phone);

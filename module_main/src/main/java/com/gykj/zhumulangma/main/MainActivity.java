@@ -6,14 +6,18 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseActivity;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.fragment.MainFragment;
 
+import me.yokeyword.fragmentation.ISupportFragment;
+
 @Route(path=AppConstants.Router.Main.A_MAIN)
 public class MainActivity extends BaseActivity implements View.OnClickListener ,MainFragment.onRootShowListener{
 
-    private GlobalPlay mGlobalPlay;
+    private GlobalPlay globalPlay;
     @Override
     protected int onBindLayout() {
         return R.layout.main_activity_main;
@@ -23,15 +27,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
     public void initView() {
         setSwipeBackEnable(false);
         if (findFragment(MainFragment.class) == null) {
-            loadRootFragment(R.id.fl_container,new MainFragment());
+            MainFragment mainFragment = new MainFragment();
+            mainFragment.setShowListener(this);
+            loadRootFragment(R.id.fl_container,mainFragment);
         }
-        mGlobalPlay=fd(R.id.gp);
+        globalPlay=fd(R.id.gp);
 
     }
 
     @Override
     public void initListener() {
-        mGlobalPlay.setOnClickListener(this);
+        globalPlay.setOnClickListener(this);
     }
 
     @Override
@@ -44,6 +50,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
         return false;
     }
 
+    @Override
+    public <T> void onEvent(BaseActivityEvent<T> event) {
+        super.onEvent(event);
+        switch (event.getCode()){
+            case EventCode.MainCode.NAVIGATE:
+                start((ISupportFragment) event.getData());
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+    @Override
+    public void onRootShow(boolean isVisible) {
+        if (isVisible)
+            globalPlay.setBackgroundColor(Color.TRANSPARENT);
+        else
+            globalPlay.setBackground(getResources().getDrawable(R.drawable.shap_common_widget_play));
+    }
 
 
     // 用来计算返回键的点击间隔时间
@@ -63,17 +90,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener ,
         }
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    @Override
-    public void onRootShow(boolean isVisible) {
-        if (isVisible)
-            mGlobalPlay.setBackgroundColor(Color.TRANSPARENT);
-        else
-            mGlobalPlay.setBackground(getResources().getDrawable(R.drawable.shap_common_widget_play));
-    }
 
 }

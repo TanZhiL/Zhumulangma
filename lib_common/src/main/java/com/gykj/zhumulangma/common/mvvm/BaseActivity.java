@@ -77,13 +77,13 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         super.onCreate(savedInstanceState);
         mApplication= Application.getInstance();
         setContentView(R.layout.common_activity_root);
-        initCommonView();
+        EventBus.getDefault().register(this);
         ARouter.getInstance().inject(this);
+        initCommonView();
         initView();
         initListener();
         initParam();
         initData();
-        EventBus.getDefault().register(this);
     }
 
     /**
@@ -454,10 +454,10 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     /**
      * 解决键盘遮挡EditText
      */
-    @Override
+/*    @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         KeyboardConflictCompat.assistWindow(getWindow());
-    }
+    }*/
 
 }
