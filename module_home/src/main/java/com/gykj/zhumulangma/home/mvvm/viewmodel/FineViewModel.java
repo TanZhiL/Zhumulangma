@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.datatype.DatatypeConstants;
+
 public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     private SingleLiveEvent<List<BannerV2>> mBannerV2SingleLiveEvent;
@@ -38,6 +40,7 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "0");
         map.put(DTransferConstants.IMAGE_SCALE, "2");
+        map.put(DTransferConstants.CONTAINS_PAID,"true");
         mModel.getCategoryBannersV2(map)
                 .subscribe(bannerV2List ->
                                 getBannerV2SingleLiveEvent().postValue(bannerV2List.getBannerV2s())

@@ -9,8 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.Application;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.gykj.zhumulangma.common.net.config.API;
@@ -86,7 +86,7 @@ public class LoginFragment extends BaseMvvmFragment<LoginViewModel> implements V
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return MainViewModelFactory.getInstance(Application.getInstance());
+        return MainViewModelFactory.getInstance(App.getInstance());
     }
 
     @Override

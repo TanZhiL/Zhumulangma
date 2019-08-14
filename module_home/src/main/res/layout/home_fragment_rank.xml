@@ -26,7 +26,8 @@
             android:id="@+id/fl_mask"
             android:layout_width="match_parent"
             android:background="#99000000"
-            android:visibility="gone"
+           android:visibility="gone"
+            android:alpha="0"
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView

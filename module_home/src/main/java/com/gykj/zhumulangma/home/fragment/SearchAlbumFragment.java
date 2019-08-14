@@ -7,13 +7,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.util.DisplayUtil;
+import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.HotStoryAdapter;
@@ -23,17 +28,22 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
+import org.greenrobot.eventbus.EventBus;
+
+import me.yokeyword.fragmentation.ISupportFragment;
+
 
 public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel> implements OnLoadMoreListener,
-       BaseQuickAdapter.OnItemClickListener {
+        BaseQuickAdapter.OnItemClickListener {
 
 
-    RecyclerView rv;
-    SmartRefreshLayout refreshLayout;
-    HotStoryAdapter mAdapter;
+    private RecyclerView rv;
+    private SmartRefreshLayout refreshLayout;
+    private HotStoryAdapter mAdapter;
 
 
     private String keyword;
+
     public SearchAlbumFragment() {
 
     }
@@ -52,21 +62,26 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     @Override
     protected void initView(View view) {
-        rv=view.findViewById(R.id.rv);
+        rv = view.findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(mContext));
         rv.setHasFixedSize(true);
-        mAdapter=new HotStoryAdapter(R.layout.home_item_hot_story);
+        mAdapter = new HotStoryAdapter(R.layout.home_item_hot_story);
         mAdapter.bindToRecyclerView(rv);
-        mAdapter.setOnItemClickListener(this);
-        refreshLayout=view.findViewById(R.id.refreshLayout);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setEnableRefresh(false);
+
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        mAdapter.setOnItemClickListener(this);
         refreshLayout.setOnLoadMoreListener(this);
     }
 
-
     @Override
     public void initData() {
-        keyword=getArguments().getString(KeyCode.Home.KEYWORD);
+        keyword = getArguments().getString(KeyCode.Home.KEYWORD);
         mViewModel.searchAlbums(keyword);
     }
 
@@ -79,11 +94,10 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
- /*       SupportFragment fragment=new AlbumDetailFragment();
-        Bundle bundle=new Bundle();
-        bundle.putLong(AlbumDetailFragment.ALBUMID,mAlbums.get(position).getId());
-        fragment.setArguments(bundle);
-        EventBus.getDefault().post(new NavigationEvent(fragment));*/
+        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                .withLong(KeyCode.Home.ALBUMID, mAdapter.getData().get(position).getId())
+                .navigation();
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
     }
 
     @Override
@@ -99,7 +113,7 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
     @Override
     public void initViewObservable() {
         mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> {
-            if(null==albums||(mAdapter.getData().size()==0&&albums.size()==0)){
+            if (null == albums || (mAdapter.getData().size() == 0 && albums.size() == 0)) {
                 showNoDataView(true);
                 return;
             }
@@ -107,10 +121,11 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
                 mAdapter.addData(albums);
                 refreshLayout.finishLoadMore();
             } else {
-                refreshLayout.setNoMoreData(true);
+                refreshLayout.finishLoadMoreWithNoMoreData();
             }
         });
     }
+
     @Override
     protected boolean enableSimplebar() {
         return false;

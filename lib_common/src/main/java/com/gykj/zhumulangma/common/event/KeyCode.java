@@ -13,6 +13,9 @@ public interface KeyCode {
 
     interface Home {
         String KEYWORD = "keyword";
+        String TYPE = "type";
+        String TITLE = "title";
+        String ALBUMID = "albumid";
     }
 
     interface Find {

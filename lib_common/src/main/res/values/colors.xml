@@ -2,14 +2,14 @@
 <resources>
     <color name="textColorPrimary">#333333</color>
     <color name="colorAccentDark">#DB4D4D</color>
-    <color name="colorHint">#ffa6a6a6</color>F7F8FC
+    <color name="colorHint">#ffa6a6a6</color>
     <color name="colorDefualtBg">#F7F8FC</color>
 
     <color name="colorSimplebarText">@color/black</color>
 
     <color name="colorPrimary">#ff7050</color>
     <color name="colorPrimaryDark">#999999</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#55ccaa</color>
     <color name="colorGray">#505050</color>
     <color name="colorBg">#ffffff</color>
 

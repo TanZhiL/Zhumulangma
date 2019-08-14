@@ -100,7 +100,7 @@ public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewMo
                 mAdapter.addData(announcers);
                 refreshLayout.finishLoadMore();
             } else {
-                refreshLayout.setNoMoreData(true);
+                refreshLayout.finishLoadMoreWithNoMoreData();
             }
         });
     }

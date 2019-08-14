@@ -2,7 +2,7 @@ package com.gykj.zhumulangma.common.util;
 
 import android.widget.Toast;
 
-import com.gykj.zhumulangma.common.Application;
+import com.gykj.zhumulangma.common.App;
 
 /**
  * Description: <吐司工具类><br>
@@ -14,11 +14,11 @@ import com.gykj.zhumulangma.common.Application;
 public class ToastUtil {
 
     public static void showToast(String message) {
-        Toast.makeText(Application.getInstance(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(App.getInstance(), message, Toast.LENGTH_SHORT).show();
     }
 
     public static void showToast(int resid) {
-        Toast.makeText(Application.getInstance(), Application.getInstance().getString(resid), Toast.LENGTH_SHORT)
+        Toast.makeText(App.getInstance(), App.getInstance().getString(resid), Toast.LENGTH_SHORT)
                 .show();
     }
 }

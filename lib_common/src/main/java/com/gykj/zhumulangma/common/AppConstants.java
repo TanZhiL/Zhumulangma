@@ -15,8 +15,8 @@ public interface  AppConstants {
             String F_MAIN="/home/main";
             String F_SEARCH="/home/search";
             String F_SEARCH_RESULT="/home/search/result";
-            String F_ACCEPT="/event/accept";
-            String F_FEEDBACK="/event/feedback";
+            String F_ALBUM_LIST="/home/album/list";
+            String F_ALBUM_DETAIL="/home/album/detail";
          }
          interface User{
              String F_MAIN="/user/main";
@@ -28,7 +28,7 @@ public interface  AppConstants {
          }
          interface Listen{
              String F_MAIN="/listen/main";
-             String F_CHAT="/video/chat";
+             String F_DOWNLOAD="/listen/download";
          }
          interface Pollution{
              String F_MAIN="/pollution/main";

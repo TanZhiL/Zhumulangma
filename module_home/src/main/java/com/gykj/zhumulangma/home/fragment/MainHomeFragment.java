@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
@@ -92,6 +92,7 @@ public class MainHomeFragment extends BaseFragment implements View.OnClickListen
                 .subscribe(unit -> EventBus.getDefault().post(new BaseActivityEvent<ISupportFragment>
                         (EventCode.MainCode.NAVIGATE,new SearchFragment()))));
 
+         fd(R.id.iv_download).setOnClickListener(this);
     }
 
     @Override
@@ -107,8 +108,9 @@ public class MainHomeFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id==R.id.tv_search){
-
+        if(id==R.id.iv_download){
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
         }
     }
 

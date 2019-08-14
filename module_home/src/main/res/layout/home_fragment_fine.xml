@@ -226,11 +226,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_weight="2"
-                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintStart_toEndOf="@+id/iv_download"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/iv_download"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="8dp"
@@ -252,8 +252,8 @@
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/textView4"
-                app:layout_constraintEnd_toEndOf="@+id/imageView4"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+                app:layout_constraintEnd_toEndOf="@+id/iv_download"
+                app:layout_constraintTop_toBottomOf="@+id/iv_download" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -263,8 +263,8 @@
                 android:text="限时五折抢购"
                 android:textSize="18sp"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/imageView4"
-                app:layout_constraintEnd_toEndOf="@+id/imageView4"
+                app:layout_constraintBottom_toTopOf="@+id/iv_download"
+                app:layout_constraintEnd_toEndOf="@+id/iv_download"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
             <TextView

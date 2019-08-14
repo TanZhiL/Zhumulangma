@@ -1,6 +1,6 @@
 package debug;
 
-import com.gykj.zhumulangma.common.Application;
+import com.gykj.zhumulangma.common.App;
 
 /**
  * Description: <><br>
@@ -9,7 +9,7 @@ import com.gykj.zhumulangma.common.Application;
  * Version:     V1.0.0<br>
  * Update:     <br>
  */
-public class MeApplication extends Application {
+public class MeApplication extends App {
     @Override
     public void onCreate() {
         super.onCreate();

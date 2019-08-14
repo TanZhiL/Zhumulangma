@@ -13,6 +13,7 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
+import me.yokeyword.fragmentation.SupportFragment;
 
 public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBannerListener, View.OnClickListener {
 
@@ -94,13 +96,69 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     public void initListener() {
         super.initListener();
         flRank.setOnClickListener(this);
+        fd(R.id.like_refresh).setOnClickListener(this);
+        fd(R.id.ih_like).setOnClickListener(view -> {
+            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+                    .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
+                    .withString(KeyCode.Home.TITLE, "猜你喜欢")
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE,o));
+
+        });
+        fd(R.id.story_refresh).setOnClickListener(this);
+        fd(R.id.ih_story).setOnClickListener(view -> {
+            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+                    .withInt(KeyCode.Home.TYPE, AlbumListFragment.STORY)
+                    .withString(KeyCode.Home.TITLE, "有声小说")
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE,o));
+        });
+        fd(R.id.baby_refresh).setOnClickListener(this);
+        fd(R.id.ih_baby).setOnClickListener(view -> {
+             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+                    .withInt(KeyCode.Home.TYPE, AlbumListFragment.BABY)
+                    .withString(KeyCode.Home.TITLE, "宝贝最爱")
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE,o));
+        });
+        fd(R.id.music_refresh).setOnClickListener(this);
+        fd(R.id.ih_music).setOnClickListener(view -> {
+            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+                    .withInt(KeyCode.Home.TYPE, AlbumListFragment.MUSIC)
+                    .withString(KeyCode.Home.TITLE, "音乐好时光")
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE,o));
+        });
+
+        fd(R.id.radio_refresh).setOnClickListener(this);
+        fd(R.id.topic_refresh).setOnClickListener(this);
         mLikeAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                    .withLong(KeyCode.Home.ALBUMID, mLikeAdapter.getData().get(position).getId())
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
         });
         mStoryAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                    .withLong(KeyCode.Home.ALBUMID, mStoryAdapter.getData().get(position).getId())
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
         });
         mBabyAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                    .withLong(KeyCode.Home.ALBUMID, mBabyAdapter.getData().get(position).getId())
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
         });
         mMusicAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                    .withLong(KeyCode.Home.ALBUMID, mMusicAdapter.getData().get(position).getId())
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
         });
     }
 
@@ -123,12 +181,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     }
 
     private void initLike() {
-        fd(R.id.like_refresh).setOnClickListener(this);
-        fd(R.id.ih_like).setOnClickListener(view -> {
-
-        });
         rvLike = fd(R.id.rv_like);
-
         mLikeAdapter = new HotLikeAdapter(R.layout.home_item_hot_like);
         rvLike.setLayoutManager(new GridLayoutManager(mContext, 3));
         rvLike.setHasFixedSize(true);
@@ -137,9 +190,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     }
 
     private void initStory() {
-        fd(R.id.story_refresh).setOnClickListener(this);
-        fd(R.id.ih_story).setOnClickListener(view -> {
-        });
+
         rvStory = fd(R.id.rv_story);
         mStoryAdapter = new HotStoryAdapter(R.layout.home_item_hot_story);
         rvStory.setLayoutManager(new LinearLayoutManager(mContext));
@@ -148,9 +199,6 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     }
 
     private void initBaby() {
-        fd(R.id.baby_refresh).setOnClickListener(this);
-        fd(R.id.ih_baby).setOnClickListener(view -> {
-        });
         rvBaby = fd(R.id.rv_baby);
         mBabyAdapter = new HotStoryAdapter(R.layout.home_item_hot_story);
         rvBaby.setLayoutManager(new LinearLayoutManager(mContext));
@@ -160,9 +208,6 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     }
 
     private void initMusic() {
-        fd(R.id.music_refresh).setOnClickListener(this);
-        fd(R.id.ih_music).setOnClickListener(view -> {
-        });
         rvMusic = fd(R.id.rv_music);
         mMusicAdapter = new MusicAdapter(R.layout.home_item_hot_music);
         rvMusic.setLayoutManager(new GridLayoutManager(mContext, 3));
@@ -172,7 +217,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     }
 
     private void initRadio() {
-        fd(R.id.radio_refresh).setOnClickListener(this);
+
         rvRadio = fd(R.id.rv_radio);
         mRadioAdapter = new HotRadioAdapter(R.layout.home_item_hot_radio);
         rvRadio.setLayoutManager(new LinearLayoutManager(mContext));
@@ -183,7 +228,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
 
     private void initTopic() {
 
-        fd(R.id.topic_refresh).setOnClickListener(this);
+
 
         rvTopic = fd(R.id.rv_topic);
         mTopicAdapter = new HotTopicAdapter(R.layout.home_item_hot_topic);

@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.zhumulangma.common.Application;
+import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.IBaseView;
@@ -27,7 +27,6 @@ import com.gykj.zhumulangma.common.status.LoadingCallback;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
-import com.wuhenzhizao.titlebar.utils.KeyboardConflictCompat;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,7 +53,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     private Handler mLoadingHandler=new Handler();
     protected LoadService mLoadService;
     protected CommonTitleBar mSimpleTitleBar;
-    protected Application mApplication;
+    protected App mApplication;
 
     interface BarStyle {
         //左边
@@ -75,7 +74,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApplication= Application.getInstance();
+        mApplication= App.getInstance();
         setContentView(R.layout.common_activity_root);
         EventBus.getDefault().register(this);
         ARouter.getInstance().inject(this);
@@ -176,7 +175,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
             backTv.setVisibility(View.VISIBLE);
             backTv.setOnClickListener(v -> finish());
         } else if (onBindBarLeftStyle() == BarStyle.LEFT_ICON && onBindBarLeftIcon() != null) {
-            ImageView icon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv1);
+            ImageView icon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);
             icon.setVisibility(View.VISIBLE);
             icon.setImageResource(onBindBarLeftIcon());
             icon.setOnClickListener(v -> onLeftIconClick(v));
@@ -191,13 +190,13 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
                     break;
                 }
                 if (strings.length > 0 && null != strings[0] && strings[0].trim().length() > 0) {
-                    TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1);
+                    TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1_right);
                     tv1.setVisibility(View.VISIBLE);
                     tv1.setText(strings[0]);
                     tv1.setOnClickListener(v -> onRight1Click(v));
                 }
                 if (strings.length > 1 && null != strings[1] && strings[1].trim().length() > 0) {
-                    TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2);
+                    TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2_right);
                     tv2.setVisibility(View.VISIBLE);
                     tv2.setText(strings[1]);
                     tv2.setOnClickListener(v -> onRight2Click(v));
@@ -209,13 +208,13 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
                     break;
                 }
                 if (ints.length > 0 && null != ints[0]) {
-                    ImageView iv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv1);
+                    ImageView iv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv_left);
                     iv1.setVisibility(View.VISIBLE);
                     iv1.setImageResource(ints[0]);
                     iv1.setOnClickListener(v -> onRight1Click(v));
                 }
                 if (ints.length > 1 & null != ints[1]) {
-                    ImageView iv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv2);
+                    ImageView iv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv2_right);
                     iv2.setVisibility(View.VISIBLE);
                     iv2.setImageResource(ints[1]);
                     iv2.setOnClickListener(v -> onRight2Click(v));
@@ -306,9 +305,9 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
             tvTitle.setTextColor(color);
             TextView tvSubtitle = mSimpleTitleBar.getCenterCustomView().findViewById(R.id.tv_subtitle);
             tvSubtitle.setTextColor(color);
-            TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1);
+            TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1_right);
             tv1.setTextColor(color);
-            TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2);
+            TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2_right);
             tv2.setTextColor(color);
         }
     }
@@ -419,7 +418,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     }
 
     protected void onReload(View v) {
-        mLoadService.showCallback(InitLoadingCallback.class);
+//        mLoadService.showCallback(InitLoadingCallback.class);
         initData();
     }
 

@@ -2,10 +2,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -17,9 +14,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.Application;
 import com.gykj.zhumulangma.common.bean.SearchHistoryBean;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
@@ -33,15 +28,13 @@ import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.functions.Consumer;
-import kotlin.Unit;
 import me.yokeyword.fragmentation.ISupportFragment;
-import me.yokeyword.fragmentation.SupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_SEARCH)
 public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements View.OnClickListener, SearchHistoryFragment.onSearchListener, View.OnFocusChangeListener, TextView.OnEditorActionListener {
 
     private EditText etKeyword;
+
     public SearchFragment() {
 
     }
@@ -53,17 +46,18 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
 
     @Override
     protected void initView(View view) {
-        if( StatusBarUtils.supportTransparentStatusBar()){
-            fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(),0,0);
+        if (StatusBarUtils.supportTransparentStatusBar()) {
+            fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
-        etKeyword=fd(R.id.et_keyword);
+        etKeyword = fd(R.id.et_keyword);
+
+
+            SearchHistoryFragment historyFragment = new SearchHistoryFragment();
+            historyFragment.setSearchListener(SearchFragment.this);
+            loadRootFragment(R.id.fl_container, historyFragment);
+
+
         KeyboardUtils.showSoftInput(etKeyword);
-
-        SearchHistoryFragment historyFragment = new SearchHistoryFragment();
-        historyFragment.setSearchListener(this);
-        loadRootFragment(R.id.fl_container, historyFragment);
-
-        etKeyword.setOnEditorActionListener(this);
 
     }
 
@@ -72,9 +66,10 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         super.initListener();
         fd(R.id.iv_pop).setOnClickListener(this);
         etKeyword.setOnFocusChangeListener(this);
+        etKeyword.setOnEditorActionListener(this);
         addDisposable(RxView.clicks(fd(R.id.tv_search))
-        .throttleFirst(1, TimeUnit.SECONDS)
-        .subscribe(unit -> preSearch()));
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(unit -> preSearch()));
     }
 
     @Override
@@ -90,7 +85,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id==R.id.iv_pop){
+        if (id == R.id.iv_pop) {
             hideSoftInput();
             new Handler().postDelayed(() -> pop(), 200);
         }
@@ -110,8 +105,8 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         hideSoftInput();
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH_RESULT)
                 .withString(KeyCode.Home.KEYWORD, keyword).navigation();
-        if(null!=navigation)
-        ((BaseFragment) getTopChildFragment()).start((ISupportFragment) navigation);
+        if (null != navigation)
+            ((BaseFragment) getTopChildFragment()).start((ISupportFragment) navigation);
     }
 
     @Override
@@ -139,7 +134,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId== EditorInfo.IME_ACTION_SEARCH ){
+        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             preSearch();
         }
         return false;
@@ -155,7 +150,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             etKeyword.setText(etKeyword.getHint());
             search(etKeyword.getHint().toString());
         } else {
-            ToastUtil.showToast( "请输入要搜索的关键词");
+            ToastUtil.showToast("请输入要搜索的关键词");
         }
 
     }

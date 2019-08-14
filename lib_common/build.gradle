@@ -92,11 +92,6 @@ dependencies {
     //极光推送
     api files('libs/jcore-android-2.1.2.jar')
     api files('libs/jpush-android-3.3.4.jar')
-    //喜马拉雅SDK
-    api files('libs/TingPhoneOpenSDK_6.3.4.jar')
-    api files('libs/XmDownload_1.6.jar')
-    api files('libs/XmlyOAuth2SDK_V1.10.jar')
-
     api rootProject.ext.dependencies["MultiImageSelector"]
     api rootProject.ext.dependencies["utilcode"]
     api rootProject.ext.dependencies["loadsir"]
@@ -129,6 +124,9 @@ dependencies {
     api rootProject.ext.dependencies["FlowLayout"]
     api rootProject.ext.dependencies["greendao"]
 
+    api files('libs/TingPhoneOpenSDK_7.0.8.jar')
+    api files('libs/XmDownload_1.7.jar')
+    api files('libs/XmlyOAuth2SDK_V1.11.jar')
 }
 greendao {
     //数据库的schema版本，也可以理解为数据库版本号

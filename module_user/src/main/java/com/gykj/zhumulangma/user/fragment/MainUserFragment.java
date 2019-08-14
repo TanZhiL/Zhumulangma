@@ -2,13 +2,10 @@ package com.gykj.zhumulangma.user.fragment;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -67,8 +64,8 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
 
     private void initBar() {
 
-        ImageView transLeft=ctbTrans.getLeftCustomView().findViewById(R.id.iv1);
-        ImageView transRight=ctbTrans.getRightCustomView().findViewById(R.id.iv1);
+        ImageView transLeft=ctbTrans.getLeftCustomView().findViewById(R.id.iv_left);
+        ImageView transRight=ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
 
 
         transLeft.setImageResource(R.drawable.ic_common_message);
@@ -84,8 +81,8 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
         }
         transRight.setVisibility(View.VISIBLE);
 
-        ImageView whiteLeft=ctbWhite.getLeftCustomView().findViewById(R.id.iv1);
-        ImageView whiteRight=ctbWhite.getRightCustomView().findViewById(R.id.iv1);
+        ImageView whiteLeft=ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
+        ImageView whiteRight=ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
         TextView tvTitle = ctbWhite.getCenterCustomView().findViewById(R.id.tv_title);
         tvTitle.setVisibility(View.VISIBLE);
         tvTitle.setText("我的");

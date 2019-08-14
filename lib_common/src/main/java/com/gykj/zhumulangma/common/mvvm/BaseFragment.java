@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.zhumulangma.common.Application;
+import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.IBaseView;
@@ -56,7 +56,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     protected LoadService mLoadService;
     protected CommonTitleBar mSimpleTitleBar;
     private Handler mLoadingHandler=new Handler();
-    protected Application mApplication;
+    protected App mApplication;
 
     private boolean isFirst=true;
    protected interface BarStyle {
@@ -77,7 +77,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApplication=Application.getInstance();
+        mApplication= App.getInstance();
         ARouter.getInstance().inject(this);
         EventBus.getDefault().register(this);
     }
@@ -116,6 +116,11 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
+    }
+
+    @Override
+    public void onEnterAnimationEnd(Bundle savedInstanceState) {
+        super.onEnterAnimationEnd(savedInstanceState);
         mViewStubContent = mView.findViewById(R.id.view_stub_content);
         loadView();
         initView(mView);
@@ -224,7 +229,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                 }
             });
         } else if (onBindBarLeftStyle() == BarStyle.LEFT_ICON && onBindBarLeftIcon() != null) {
-            ImageView icon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv1);
+            ImageView icon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);
             icon.setVisibility(View.VISIBLE);
             icon.setImageResource(onBindBarLeftIcon());
             icon.setOnClickListener(new View.OnClickListener() {
@@ -242,7 +247,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                     break;
                 }
                 if (strings.length > 0 && null != strings[0] && strings[0].trim().length() > 0) {
-                    TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1);
+                    TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1_right);
                     tv1.setVisibility(View.VISIBLE);
                     tv1.setText(strings[0]);
                     tv1.setOnClickListener(new View.OnClickListener() {
@@ -253,7 +258,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                     });
                 }
                 if (strings.length > 1 && null != strings[1] && strings[1].trim().length() > 0) {
-                    TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2);
+                    TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2_right);
                     tv2.setVisibility(View.VISIBLE);
                     tv2.setText(strings[1]);
                     tv2.setOnClickListener(new View.OnClickListener() {
@@ -270,26 +275,16 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                     break;
                 }
                 if (ints.length > 0 && null != ints[0]) {
-                    ImageView iv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv1);
+                    ImageView iv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv1_right);
                     iv1.setVisibility(View.VISIBLE);
                     iv1.setImageResource(ints[0]);
-                    iv1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onRight1Click(v);
-                        }
-                    });
+                    iv1.setOnClickListener(v -> onRight1Click(v));
                 }
                 if (ints.length > 1 && null != ints[1]) {
-                    ImageView iv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv2);
+                    ImageView iv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv2_right);
                     iv2.setVisibility(View.VISIBLE);
                     iv2.setImageResource(ints[1]);
-                    iv2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onRight2Click(v);
-                        }
-                    });
+                    iv2.setOnClickListener(v -> onRight2Click(v));
                 }
                 break;
             case BarStyle.RIGHT_CUSTOME:
@@ -374,9 +369,9 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             tvTitle.setTextColor(color);
             TextView tvSubtitle = mSimpleTitleBar.getCenterCustomView().findViewById(R.id.tv_subtitle);
             tvSubtitle.setTextColor(color);
-            TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1);
+            TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1_right);
             tv1.setTextColor(color);
-            TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2);
+            TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2_right);
             tv2.setTextColor(color);
         }
     }
@@ -481,7 +476,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
 
     protected void onReload(View v) {
-        mLoadService.showCallback(InitLoadingCallback.class);
+//        mLoadService.showCallback(InitLoadingCallback.class);
         initData();
     }
 

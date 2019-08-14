@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="41dp"
             android:layout_height="18dp"
-            android:background="@drawable/shap_common_tag"
+            android:background="@drawable/shap_common_primary"
             android:gravity="center"
             android:text="直播中"
             android:textColor="@color/white"

@@ -26,7 +26,7 @@
         android:textColor="@color/colorSimplebarText"
         android:textSize="@dimen/simpleBarAction" />
     <ImageView
-        android:id="@+id/iv1"
+        android:id="@+id/iv_left"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:tint="@color/colorPrimaryDark"

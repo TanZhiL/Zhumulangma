@@ -100,7 +100,7 @@ public class SearchTrackFragment extends BaseMvvmFragment<SearchResultViewModel>
                 mAdapter.addData(albums);
                 refreshLayout.finishLoadMore();
             } else {
-                refreshLayout.setNoMoreData(true);
+                refreshLayout.finishLoadMoreWithNoMoreData();
             }
         });
     }

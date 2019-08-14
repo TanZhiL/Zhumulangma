@@ -37,13 +37,13 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 @Route(path = AppConstants.Router.Home.F_SEARCH_RESULT)
 public class SearchResultFragment extends BaseMvvmFragment<SearchViewModel> {
 
-   private MagicIndicator magicIndicator;
-   private ViewPager viewpager;
-   @Autowired
-   public String keyword;
+    private MagicIndicator magicIndicator;
+    private ViewPager viewpager;
+    @Autowired(name = KeyCode.Home.KEYWORD)
+    public String keyword;
 
-    private String[] tabs = {"专辑", "声音","主播","广播"};
-    private  List<Fragment> pages=new ArrayList<>();
+    private String[] tabs = {"专辑", "声音", "主播", "广播"};
+    private List<Fragment> pages = new ArrayList<>();
 
     public SearchResultFragment() {
 
@@ -53,22 +53,24 @@ public class SearchResultFragment extends BaseMvvmFragment<SearchViewModel> {
     protected int onBindLayout() {
         return R.layout.home_fragment_search_result;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
     }
+
     @Override
     protected void initView(View view) {
 
-        magicIndicator=view.findViewById(R.id.magic_indicator);
-        viewpager=view.findViewById(R.id.viewpager);
+        magicIndicator = view.findViewById(R.id.magic_indicator);
+        viewpager = view.findViewById(R.id.viewpager);
 
-        Fragment albumFragment=new SearchAlbumFragment();
-        Fragment trackFragment=new SearchTrackFragment();
-        Fragment announcerFragment=new SearchAnnouncerFragment();
-        Fragment radioFragment=new SearchRadioFragment();
-        Bundle bundle=new Bundle();
+        Fragment albumFragment = new SearchAlbumFragment();
+        Fragment trackFragment = new SearchTrackFragment();
+        Fragment announcerFragment = new SearchAnnouncerFragment();
+        Fragment radioFragment = new SearchRadioFragment();
+        Bundle bundle = new Bundle();
         bundle.putString(KeyCode.Home.KEYWORD, getArguments().getString(KeyCode.Home.KEYWORD));
 
         albumFragment.setArguments(bundle);
@@ -82,7 +84,7 @@ public class SearchResultFragment extends BaseMvvmFragment<SearchViewModel> {
         pages.add(radioFragment);
 
         TFragmentPagerAdapter adapter = new TFragmentPagerAdapter(
-                getChildFragmentManager(),pages);
+                getChildFragmentManager(), pages);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(adapter);
 

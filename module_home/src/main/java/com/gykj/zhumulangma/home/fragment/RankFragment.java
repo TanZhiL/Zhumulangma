@@ -1,7 +1,14 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,49 +21,60 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.NavigatorAdapter;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
+import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RankCategotyAdapter;
 import com.gykj.zhumulangma.home.adapter.RankFreeAdapter;
+import com.gykj.zhumulangma.home.adapter.RankPaidAdapter;
+import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.ranks.RankList;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.util.Arrays;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class RankFragment extends BaseFragment implements View.OnClickListener,
+import me.yokeyword.fragmentation.ISupportFragment;
+
+
+public class RankFragment extends BaseMvvmFragment<RankViewModel> implements View.OnClickListener,
         BaseQuickAdapter.OnItemClickListener {
 
 
-    public RankFragment() {}
+    public RankFragment() {
+    }
 
 
-    MagicIndicator magicIndicator;
-    ViewPager viewpager;
-    RecyclerView rvCategory;
-    FrameLayout flMask;
+    private MagicIndicator magicIndicator;
+    private ViewPager viewpager;
+    private RecyclerView rvCategory;
+    private FrameLayout flMask;
 
-    ViewGroup layoutFree;
-    ViewGroup layoutPaid;
-    RefreshLayout rlFree;
-    RefreshLayout rlPaid;
-    RecyclerView rvFree;
-    RecyclerView rvPaid;
-    RankFreeAdapter mFreeAdapter;
-    RankFreeAdapter mPaidAdapter;
+    private ViewGroup layoutFree;
+    private ViewGroup layoutPaid;
+    private RefreshLayout rlFree;
+    private RefreshLayout rlPaid;
+    private RecyclerView rvFree;
+    private RecyclerView rvPaid;
+    private RankFreeAdapter mFreeAdapter;
+    private RankPaidAdapter mPaidAdapter;
 
     //下拉中间视图
-    View llbarCenter;
-    View ivCategoryDown;
-    TextView tvTitle;
+    private View llbarCenter;
+    private View ivCategoryDown;
+    private TextView tvTitle;
 
     private String[] tabs = {"免费榜", "付费榜"};
     private String[] c_labels = {"热门", "音乐", "娱乐", "有声书"
@@ -72,11 +90,8 @@ public class RankFragment extends BaseFragment implements View.OnClickListener,
             , "17", "8", "18", "7"
             , "22", "21", "24", "23"};
 
-    private static final int PAGESIZE = 20;
-    private int curFreePage = 1;
-    private int totalFreePage;
-    private String cid = c_ids[0];
 
+    private String cid = c_ids[0];
 
 
     @Override
@@ -86,25 +101,26 @@ public class RankFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void initView(View view) {
-        magicIndicator=fd(R.id.magic_indicator);
-        viewpager=fd(R.id.viewpager);
-        rvCategory=fd(R.id.rv_category);
-        flMask=fd(R.id.fl_mask);
+        magicIndicator = fd(R.id.magic_indicator);
+        viewpager = fd(R.id.viewpager);
+        rvCategory = fd(R.id.rv_category);
+        flMask = fd(R.id.fl_mask);
 
-        ivCategoryDown=llbarCenter.findViewById(R.id.iv_down);
-        tvTitle=llbarCenter.findViewById(R.id.tv_title);
+        ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
+        tvTitle = llbarCenter.findViewById(R.id.tv_title);
         tvTitle.setText(c_labels[0]);
-
         layoutFree = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         layoutPaid = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         rlFree = layoutFree.findViewById(R.id.refreshLayout);
+        rlFree.setEnableRefresh(false);
         rlPaid = layoutPaid.findViewById(R.id.refreshLayout);
+        rlPaid.setEnableRefresh(false);
         rvFree = layoutFree.findViewById(R.id.rv);
         rvPaid = layoutPaid.findViewById(R.id.rv);
         rvFree.setLayoutManager(new LinearLayoutManager(mContext));
         rvPaid.setLayoutManager(new LinearLayoutManager(mContext));
         mFreeAdapter = new RankFreeAdapter(R.layout.home_item_rank_free);
-        mPaidAdapter = new RankFreeAdapter(R.layout.home_item_rank_free);
+        mPaidAdapter = new RankPaidAdapter(R.layout.home_item_rank_paid);
         rvFree.setHasFixedSize(true);
         rvPaid.setHasFixedSize(true);
         mFreeAdapter.bindToRecyclerView(rvFree);
@@ -118,7 +134,7 @@ public class RankFragment extends BaseFragment implements View.OnClickListener,
         ViewPagerHelper.bind(magicIndicator, viewpager);
 
         rvCategory.setLayoutManager(new GridLayoutManager(mContext, 4));
-        RankCategotyAdapter categotyAdapter=new RankCategotyAdapter(R.layout.home_item_rank_category,
+        RankCategotyAdapter categotyAdapter = new RankCategotyAdapter(R.layout.home_item_rank_category,
                 Arrays.asList(c_labels));
         rvCategory.setHasFixedSize(true);
         categotyAdapter.bindToRecyclerView(rvCategory);
@@ -134,60 +150,47 @@ public class RankFragment extends BaseFragment implements View.OnClickListener,
         llbarCenter.setOnClickListener(this);
         flMask.setOnClickListener(this);
 
-        mFreeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-              /*  SupportFragment fragment=new AlbumDetailFragment();
-                Bundle bundle=new Bundle();
-                bundle.putLong(AlbumDetailFragment.ALBUMID,mFreeList.get(position).getId());
-                fragment.setArguments(bundle);
-                start(fragment);*/
-            }
+        mFreeAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                    .withLong(KeyCode.Home.ALBUMID,mFreeAdapter.getData().get(position).getId())
+                    .navigation();
+            start((ISupportFragment) navigation);
         });
-        mPaidAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-          /*      SupportFragment fragment=new AlbumDetailFragment();
-                Bundle bundle=new Bundle();
-                bundle.putLong(AlbumDetailFragment.ALBUMID,mPaidList.get(position).getId());
-                fragment.setArguments(bundle);
-                start(fragment);*/
-            }
+        mPaidAdapter.setOnItemClickListener((adapter, view, position) -> {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                    .withLong(KeyCode.Home.ALBUMID,mPaidAdapter.getData().get(position).getId())
+                    .navigation();
+            start((ISupportFragment) navigation);
         });
-        rlFree.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-            }
-        });
-        rlPaid.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-            }
-        });
+        rlFree.setOnLoadMoreListener(refreshLayout -> mViewModel.getFreeRank(cid));
+        rlPaid.setOnLoadMoreListener(refreshLayout -> mViewModel.getPaidRank());
     }
 
     @Override
     public void initData() {
 
+            mViewModel.getFreeRank(cid);
+            mViewModel.getPaidRank();
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if(view==llbarCenter||id==R.id.fl_mask){
+        if (view == llbarCenter || id == R.id.fl_mask) {
             switchCategory();
         }
     }
 
     private void switchCategory() {
         if (flMask.getVisibility() == View.VISIBLE) {
-            flMask.setVisibility(View.GONE);
-            ivCategoryDown.animate().rotationBy(180).setDuration(200);
+
+            flMask.animate().withStartAction(() -> flMask.setAlpha(1))
+                    .withEndAction(() -> flMask.setVisibility(View.GONE)).alpha(0).setDuration(200);
+            ivCategoryDown.animate().rotation(0).setDuration(200);
         } else {
-            flMask.setVisibility(View.VISIBLE);
-            ivCategoryDown.animate().rotationBy(-180).setDuration(200);
+            flMask.setAlpha(0);
+            flMask.animate().withStartAction(() -> flMask.setVisibility(View.VISIBLE)).alpha(1).setDuration(200);
+            ivCategoryDown.animate().rotation(180).setDuration(200);
         }
     }
 
@@ -196,8 +199,47 @@ public class RankFragment extends BaseFragment implements View.OnClickListener,
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         switchCategory();
         tvTitle.setText(c_labels[position]);
-        cid=c_ids[position];
+        cid = c_ids[position];
+        mFreeAdapter.setNewData(null);
+        mViewModel.getFreeRank(cid);
+    }
 
+    @Override
+    public Class<RankViewModel> onBindViewModel() {
+        return RankViewModel.class;
+    }
+
+    @Override
+    public ViewModelProvider.Factory onBindViewModelFactory() {
+        return ViewModelFactory.getInstance(mApplication);
+    }
+
+    @Override
+    public void initViewObservable() {
+        mViewModel.getFreeSingleLiveEvent().observe(this, albums -> {
+            if (null == albums || (mFreeAdapter.getData().size() == 0 && albums.size() == 0)) {
+                showNoDataView(true);
+                return;
+            }
+            if (albums.size() > 0) {
+                mFreeAdapter.addData(albums);
+                rlFree.finishLoadMore();
+            } else {
+                rlFree.finishLoadMoreWithNoMoreData();
+            }
+        });
+        mViewModel.getPaidSingleLiveEvent().observe(this, albums -> {
+            if (null == albums || (mPaidAdapter.getData().size() == 0 && albums.size() == 0)) {
+                showNoDataView(true);
+                return;
+            }
+            if (albums.size() > 0) {
+                mPaidAdapter.addData(albums);
+                rlPaid.finishLoadMore();
+            } else {
+                rlPaid.finishLoadMoreWithNoMoreData();
+            }
+        });
     }
 
     class RankPagerAdapter extends PagerAdapter {
@@ -242,7 +284,7 @@ public class RankFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     protected View onBindBarCenterCustome() {
-       llbarCenter= LayoutInflater.from(mContext).inflate(R.layout.home_layout_rank_bar_center,null);
+        llbarCenter = LayoutInflater.from(mContext).inflate(R.layout.home_layout_rank_bar_center, null);
         return llbarCenter;
     }
 }

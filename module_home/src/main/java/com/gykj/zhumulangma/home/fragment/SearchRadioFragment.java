@@ -26,9 +26,9 @@ public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel>
        BaseQuickAdapter.OnItemClickListener {
 
 
-    RecyclerView rv;
-    SmartRefreshLayout refreshLayout;
-    HotRadioAdapter mAdapter;
+   private RecyclerView rv;
+   private SmartRefreshLayout refreshLayout;
+   private HotRadioAdapter mAdapter;
 
     private String keyword;
     public SearchRadioFragment() {
@@ -100,7 +100,7 @@ public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel>
                 mAdapter.addData(radioList);
                 refreshLayout.finishLoadMore();
             } else {
-                refreshLayout.setNoMoreData(true);
+                refreshLayout.finishLoadMoreWithNoMoreData();
             }
         });
     }

@@ -24,7 +24,7 @@
           app:layout_constraintTop_toTopOf="parent" />
 
       <ImageView
-          android:id="@+id/imageView4"
+          android:id="@+id/iv_download"
           android:layout_width="28dp"
           android:layout_height="28dp"
           android:layout_marginTop="8dp"
@@ -46,7 +46,7 @@
           android:layout_marginBottom="8dp"
           android:src="@drawable/ic_common_history"
           app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toStartOf="@+id/imageView4"
+          app:layout_constraintEnd_toStartOf="@+id/iv_download"
           app:layout_constraintTop_toTopOf="parent" />
 
       <LinearLayout

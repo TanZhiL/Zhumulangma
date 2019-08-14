@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/next_icon_transparent_disable" android:state_enabled="false"></item>
-    <item android:drawable="@drawable/next_icon_transparent_pressed" android:state_enabled="true" android:state_pressed="true"></item>
-    <item android:drawable="@drawable/next_icon_transparent_normal" android:state_enabled="true" android:state_pressed="false"></item>
-
-</selector>
