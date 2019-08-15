@@ -5,15 +5,24 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.discover.R;
+import com.jakewharton.rxbinding3.view.RxView;
 import com.maiml.library.BaseItemLayout;
 import com.maiml.library.config.ConfigAttrs;
 import com.maiml.library.config.Mode;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Discover.F_MAIN)
 public class MainDiscoverFragment extends BaseFragment {
@@ -76,6 +85,12 @@ public class MainDiscoverFragment extends BaseFragment {
 
         bilFine.setConfigAttrs(attrs)
                 .create(); //
+
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
         bilFine.setOnBaseItemClick(position -> {
 
         });
@@ -86,6 +101,20 @@ public class MainDiscoverFragment extends BaseFragment {
 
     }
 
+    @Override
+    protected void onLeftIconClick(View v) {
+        super.onLeftIconClick(v);
+        Object navigation = ARouter.getInstance().build(AppConstants.Router.User.F_MESSAGE).navigation();
+        EventBus.getDefault().post(new BaseActivityEvent<>
+                (EventCode.MainCode.NAVIGATE, (ISupportFragment) navigation));
+    }
+    @Override
+    protected void onRight1Click(View v) {
+        super.onRight1Click(v);
+        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH).navigation();
+        EventBus.getDefault().post(new BaseActivityEvent<>
+                (EventCode.MainCode.NAVIGATE, (ISupportFragment) navigation));
+    }
     @Override
     protected int onBindBarLeftStyle() {
         return BarStyle.LEFT_ICON;

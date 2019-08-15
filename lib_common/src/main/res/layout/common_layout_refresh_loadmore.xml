@@ -8,6 +8,7 @@
     app:srlFooterTriggerRate="0"
     app:srlEnableNestedScrolling="true"
     android:layout_height="match_parent"
+    app:srlEnableLoadMoreWhenContentNotFull="false"
     android:background="@color/white">
 
     <android.support.v7.widget.RecyclerView

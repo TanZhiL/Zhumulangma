@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.widget;
+package com.gykj.zhumulangma.home.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,12 +6,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gykj.zhumulangma.common.R;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.home.fragment.AlbumListFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -35,11 +42,11 @@ public class CategoryItem extends FrameLayout {
     public CategoryItem(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.CategoryItem,defStyleAttr,0);
+        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.CategoryItem,defStyleAttr,0);
         getAttrs(typedArray);
         typedArray.recycle();
 
-        LayoutInflater.from(context).inflate(R.layout.common_widget_category_item,this);
+        LayoutInflater.from(context).inflate(R.layout.home_widget_category_item,this);
 
         TextView tvTitle=findViewById(R.id.tv_title);
         ImageView ivIcon=findViewById(R.id.iv_icon);
@@ -48,6 +55,12 @@ public class CategoryItem extends FrameLayout {
 
         this.setOnClickListener(view -> {
 
+            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+                    .withInt(KeyCode.Home.TYPE, categoryId)
+                    .withString(KeyCode.Home.TITLE,title)
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE,o));
         });
     }
 

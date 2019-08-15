@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CategoryItem">
+        <attr name="ci_icon" format="reference"/>
+        <attr name="ci_id" format="integer"/>
+        <attr name="ci_title" format="string"/>
+    </declare-styleable>
+
+
+</resources>

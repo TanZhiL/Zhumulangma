@@ -1,0 +1,13 @@
+apply from: "../module.build.gradle"
+android {
+    defaultConfig {
+        if (isModule.toBoolean()) {
+            applicationId "com.gykj.zhumulangma.listen"
+        }
+    }
+}
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':lib_common')
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+}

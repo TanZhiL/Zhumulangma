@@ -20,6 +20,7 @@ public interface  AppConstants {
          }
          interface User{
              String F_MAIN="/user/main";
+             String F_MESSAGE="/user/message";
              String F_ACCEPT="/task/accept";
              String F_FEEDBACK="/task/feedback";
          }

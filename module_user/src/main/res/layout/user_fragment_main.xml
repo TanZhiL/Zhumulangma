@@ -178,14 +178,14 @@
                     android:layout_height="35dp"
                     android:background="@color/white"
                     app:layout_constraintBottom_toBottomOf="@id/linearLayout9"
-                    app:layout_constraintEnd_toStartOf="@+id/linearLayout11"
+                    app:layout_constraintEnd_toStartOf="@+id/ll_download"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/linearLayout10"
                     app:layout_constraintTop_toTopOf="@id/linearLayout9"
                     app:layout_constraintVertical_bias="0.526" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayout11"
+                    android:id="@+id/ll_download"
                     android:layout_width="84dp"
                     android:layout_height="70dp"
                     android:gravity="center"

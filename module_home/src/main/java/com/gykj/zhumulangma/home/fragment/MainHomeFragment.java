@@ -55,11 +55,13 @@ public class MainHomeFragment extends BaseFragment implements View.OnClickListen
     protected int onBindLayout() {
         return R.layout.home_fragment_main;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
     }
+
     @Override
     protected void initView(View view) {
         if (StatusBarUtils.supportTransparentStatusBar()) {
@@ -90,9 +92,17 @@ public class MainHomeFragment extends BaseFragment implements View.OnClickListen
         super.initListener();
         addDisposable(RxView.clicks(fd(R.id.ll_search)).throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> EventBus.getDefault().post(new BaseActivityEvent<ISupportFragment>
-                        (EventCode.MainCode.NAVIGATE,new SearchFragment()))));
+                        (EventCode.MainCode.NAVIGATE, new SearchFragment()))));
 
-         fd(R.id.iv_download).setOnClickListener(this);
+        fd(R.id.iv_download).setOnClickListener(this);
+        addDisposable(RxView.clicks(fd(R.id.iv_message)).throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(unit -> {
+                    Object navigation = ARouter.getInstance().build(AppConstants.Router.User.F_MESSAGE)
+                            .navigation();
+                    EventBus.getDefault().post(new BaseActivityEvent<>
+                            (EventCode.MainCode.NAVIGATE, (ISupportFragment) navigation));
+                }));
+
     }
 
     @Override
@@ -108,9 +118,9 @@ public class MainHomeFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id==R.id.iv_download){
+        if (id == R.id.iv_download) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigation));
         }
     }
 

@@ -58,7 +58,6 @@ public class VideoTrimmerUtil {
      INPUT，输入视频文件；
      OUTPUT，输出视频文件
      */
-    //TODO: Here are some instructions
     //https://trac.ffmpeg.org/wiki/Seeking
     //https://superuser.com/questions/138331/using-ffmpeg-to-cut-up-video
 

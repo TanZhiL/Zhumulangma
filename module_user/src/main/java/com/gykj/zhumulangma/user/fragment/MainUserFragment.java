@@ -11,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.widget.TScrollView;
@@ -26,11 +29,15 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import me.yokeyword.fragmentation.ISupportFragment;
+
 @Route(path = AppConstants.Router.User.F_MAIN)
-public class MainUserFragment extends BaseFragment implements TScrollView.OnScrollListener, BaseItemLayout.OnBaseItemClick {
+public class MainUserFragment extends BaseFragment implements TScrollView.OnScrollListener, BaseItemLayout.OnBaseItemClick, View.OnClickListener {
 
 
     private CommonTitleBar ctbTrans;
@@ -39,16 +46,22 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
     private TScrollView mScrollView;
     private ImageView parallax;
     private SmartRefreshLayout refreshLayout;
+    private ImageView whiteLeft;
+    private ImageView whiteRight;
+    private ImageView transLeft;
+    private ImageView transRight;
 
     @Override
     protected int onBindLayout() {
         return R.layout.user_fragment_main;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
     }
+
     @Override
     protected void initView(View view) {
         ctbTrans = view.findViewById(R.id.ctb_trans);
@@ -64,8 +77,8 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
 
     private void initBar() {
 
-        ImageView transLeft=ctbTrans.getLeftCustomView().findViewById(R.id.iv_left);
-        ImageView transRight=ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
+        transLeft = ctbTrans.getLeftCustomView().findViewById(R.id.iv_left);
+        transRight = ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
 
 
         transLeft.setImageResource(R.drawable.ic_common_message);
@@ -81,8 +94,8 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
         }
         transRight.setVisibility(View.VISIBLE);
 
-        ImageView whiteLeft=ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
-        ImageView whiteRight=ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
+        whiteLeft = ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
+        whiteRight = ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
         TextView tvTitle = ctbWhite.getCenterCustomView().findViewById(R.id.tv_title);
         tvTitle.setVisibility(View.VISIBLE);
         tvTitle.setText("我的");
@@ -161,6 +174,11 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
                 parallax.setTranslationY(offset);
             }
         });
+        fd(R.id.ll_download).setOnClickListener(this);
+        whiteLeft.setOnClickListener(this);
+        whiteRight.setOnClickListener(this);
+        transLeft.setOnClickListener(this);
+        transRight.setOnClickListener(this);
     }
 
     @Override
@@ -184,4 +202,18 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
     public void onItemClick(int position) {
 
     }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (R.id.ll_download == id) {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigation));
+        } else if (v == whiteLeft || v == transLeft) {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.User.F_MESSAGE).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>
+                    (EventCode.MainCode.NAVIGATE, (ISupportFragment) navigation));
+        }
+    }
+
 }

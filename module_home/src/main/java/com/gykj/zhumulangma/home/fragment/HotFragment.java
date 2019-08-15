@@ -109,7 +109,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         fd(R.id.story_refresh).setOnClickListener(this);
         fd(R.id.ih_story).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
-                    .withInt(KeyCode.Home.TYPE, AlbumListFragment.STORY)
+                    .withInt(KeyCode.Home.TYPE, 3)
                     .withString(KeyCode.Home.TITLE, "有声小说")
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
@@ -118,7 +118,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         fd(R.id.baby_refresh).setOnClickListener(this);
         fd(R.id.ih_baby).setOnClickListener(view -> {
              Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
-                    .withInt(KeyCode.Home.TYPE, AlbumListFragment.BABY)
+                    .withInt(KeyCode.Home.TYPE, 6)
                     .withString(KeyCode.Home.TITLE, "宝贝最爱")
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
@@ -127,7 +127,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         fd(R.id.music_refresh).setOnClickListener(this);
         fd(R.id.ih_music).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
-                    .withInt(KeyCode.Home.TYPE, AlbumListFragment.MUSIC)
+                    .withInt(KeyCode.Home.TYPE, 2)
                     .withString(KeyCode.Home.TITLE, "音乐好时光")
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
@@ -272,7 +272,15 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
 
     @Override
     public void OnBannerClick(int position) {
-
+        BannerV2 bannerV2 = mViewModel.getBannerV2SingleLiveEvent().getValue().get(position);
+        switch (bannerV2.getBannerContentType()){
+            case 2:
+                Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
+                        .navigation();
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
+                break;
+        }
     }
 
     @Override

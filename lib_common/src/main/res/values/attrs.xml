@@ -5,11 +5,6 @@
         <attr name="ih_right_text" format="string"/>
     </declare-styleable>
 
-    <declare-styleable name="CategoryItem">
-        <attr name="ci_icon" format="reference"/>
-        <attr name="ci_id" format="integer"/>
-        <attr name="ci_title" format="string"/>
-    </declare-styleable>
 
     <declare-styleable name="RatioRelativeLayout">
         <attr name="ratio" format="float"/>

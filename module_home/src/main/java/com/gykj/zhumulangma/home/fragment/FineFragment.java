@@ -8,6 +8,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.FineAdapter;
@@ -16,12 +21,15 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class FineFragment extends BaseMvvmFragment<FineViewModel> implements View.OnClickListener {
+public class FineFragment extends BaseMvvmFragment<FineViewModel> implements View.OnClickListener, OnBannerListener {
 
     Banner banner;
 
@@ -57,6 +65,15 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements Vie
     }
 
     @Override
+    public void initListener() {
+        super.initListener();
+        banner.setOnBannerListener(this);
+        fd(R.id.daily_refresh).setOnClickListener(this);
+        fd(R.id.book_refresh).setOnClickListener(this);
+        fd(R.id.classroom_refresh).setOnClickListener(this);
+    }
+
+    @Override
     public void initData() {
         mViewModel.getBannerList();
         mViewModel.getDailyList();
@@ -71,7 +88,7 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements Vie
     }
 
     private void initDaily() {
-        fd(R.id.daily_refresh).setOnClickListener(this);
+
         rvDaily = fd(R.id.rv_daily);
         mDailyAdapter = new FineAdapter(R.layout.home_item_fine);
         rvDaily.setLayoutManager(new LinearLayoutManager(mContext));
@@ -80,7 +97,6 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements Vie
     }
 
     private void initBook() {
-        fd(R.id.book_refresh).setOnClickListener(this);
         rvBook = fd(R.id.rv_book);
         mBookAdapter = new FineAdapter(R.layout.home_item_fine);
         rvBook.setLayoutManager(new LinearLayoutManager(mContext));
@@ -90,7 +106,6 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements Vie
     }
 
     private void initClassRoom() {
-        fd(R.id.classroom_refresh).setOnClickListener(this);
         rvClassroom = fd(R.id.rv_classroom);
         mClassroomAdapter = new FineAdapter(R.layout.home_item_fine);
         rvClassroom.setLayoutManager(new LinearLayoutManager(mContext));
@@ -151,5 +166,18 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements Vie
         super.onSupportInvisible();
         if(banner!=null)
         banner.stopAutoPlay();
+    }
+
+    @Override
+    public void OnBannerClick(int position) {
+        BannerV2 bannerV2 = mViewModel.getBannerV2SingleLiveEvent().getValue().get(position);
+        switch (bannerV2.getBannerContentType()){
+            case 2:
+                Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
+                        .navigation();
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
+                break;
+        }
     }
 }

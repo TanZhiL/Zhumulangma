@@ -29,9 +29,8 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
         OnLoadMoreListener {
 
     public static final int LIKE = 0;
-    public static final int STORY = 3;
-    public static final int BABY = 6;
-    public static final int MUSIC = 2;
+    public static final int PAID = -1;
+
     @Autowired(name = KeyCode.Home.TYPE)
     public int type;
     @Autowired(name = KeyCode.Home.TITLE)
@@ -73,7 +72,10 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
         if (type == LIKE) {
             mViewModel._getGuessLikeAlbum();
             refreshLayout.setNoMoreData(true);
-        } else {
+        }else if(type==PAID) {
+            mViewModel._getPaidList();
+        }
+        else {
             mViewModel._getAlbumList(String.valueOf(type));
         }
     }
@@ -90,7 +92,11 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel._getAlbumList(String.valueOf(type));
+      if(type==PAID) {
+            mViewModel._getPaidList();
+        } else {
+            mViewModel._getAlbumList(String.valueOf(type));
+        }
     }
 
 

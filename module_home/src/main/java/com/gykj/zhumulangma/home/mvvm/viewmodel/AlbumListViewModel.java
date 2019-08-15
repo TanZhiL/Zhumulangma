@@ -26,6 +26,7 @@ public class AlbumListViewModel extends BaseViewModel<ZhumulangmaModel> {
     private SingleLiveEvent<List<Album>> mLikeSingleLiveEvent;
     private SingleLiveEvent<List<Album>> mAlbumSingleLiveEvent;
     private int curPage=1;
+    private static final int PAGESIZE=20;
     public AlbumListViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
@@ -42,8 +43,19 @@ public class AlbumListViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, String.valueOf(type));
         map.put(DTransferConstants.CALC_DIMENSION, "3");
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getAlbumList(map)
+                .subscribe(albumList -> {
+                    curPage++;
+                    getAlbumSingleLiveEvent().postValue(albumList.getAlbums());
+                }, e->e.printStackTrace());
+    }
+    public void _getPaidList(){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
+        mModel.getAllPaidAlbums(map)
                 .subscribe(albumList -> {
                     curPage++;
                     getAlbumSingleLiveEvent().postValue(albumList.getAlbums());

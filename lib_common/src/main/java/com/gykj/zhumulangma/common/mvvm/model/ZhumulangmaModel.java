@@ -72,6 +72,27 @@ public class ZhumulangmaModel extends BaseModel {
     }
 
     /**
+     * 获取所有付费专辑
+     * @param specificParams
+     * @return
+     */
+    public Observable<AlbumList> getAllPaidAlbums(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getAllPaidAlbums(specificParams,
+                new IDataCallBack<AlbumList>() {
+                    @Override
+                    public void onSuccess(@Nullable AlbumList albumList) {
+                        emitter.onNext(albumList);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
      * 获取专辑列表
      * @param specificParams
      * @return
