@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_browser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:text="@string/btn_browser_text"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/btn_app_text"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_one_in_key"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/btn_one_in_key_text"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_third_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/btn_third_author"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_qrcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="left|center_vertical"
+            android:text="二维码登录"
+            android:textSize="16sp" />
+
+
+        <!--<Button-->
+            <!--android:id="@+id/btn_refresh_token"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:gravity="left|center_vertical"-->
+            <!--android:text="@string/btn_refresh_token_text"-->
+            <!--android:textSize="16sp" />-->
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="left|center_vertical"
+            android:text="@string/btn_logout_text"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="@string/note_display_access_token_info_hint"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_access_token_memo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="left|center_vertical"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_access_token"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="left|center_vertical"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_access_token_expire_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="left|center_vertical"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_obtain_token_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="5dp"
+            android:maxLines="1000"
+            android:scrollbars="vertical"
+            android:text="@string/note_obtain_access_token_hint"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/img_qrcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+
+</ScrollView>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/img_notifyIcon"
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/notification_default" />
+
+    <ImageView
+        android:id="@+id/img_notifyNext"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/notify_btn_light_next_normal_xml" />
+
+    <ImageView
+        android:id="@+id/img_notifyPlayOrPause"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/img_notifyNext"
+        android:scaleType="fitCenter"
+        android:src="@drawable/notify_btn_light_pause2_normal_xml" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@id/img_notifyPlayOrPause"
+        android:layout_toRightOf="@id/img_notifyIcon"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txt_notifyMusicName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="left"
+            android:singleLine="true"
+            android:text="随时随地 听我想听"
+            android:textAppearance="@style/NotificationTitle"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txt_notifyNickName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:text="喜马拉雅"
+            android:singleLine="true"
+            android:textAppearance="@style/NotificationText"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</RelativeLayout>

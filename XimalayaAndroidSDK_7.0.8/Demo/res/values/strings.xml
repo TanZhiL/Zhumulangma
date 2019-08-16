@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TingPhoneSDKTest</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="remove">移除</string>
+    <string name="stop">停止</string>
+    <string name="start">开始下载</string>
+
+    <!-- Button -->
+    <string name="btn_browser_text">OAuth2授权(WEB方式)</string>
+    <string name="btn_app_text">OAuth2授权(客户端方式)</string>
+    <string name="btn_one_in_key_text">OAuth2授权(客户端+WEB方式)</string>
+    <string name="btn_third_author">OAuth2授权(第三方授权方式)</string>
+    <string name="btn_refresh_token_text">OAuth2刷新AccessToken</string>
+    <string name="btn_logout_text">用户退出</string>
+
+    <!-- Note -->
+    <string name="note_display_access_token_info_hint">Access Token 信息：</string>
+    <string name="note_obtain_access_token_hint"><b>请注意：</b>\n<li>客户端授权认证方式需要安装喜马拉雅FM客户端，目前仅 5.4.45.3 及以上客户端版本支持，低于该版本，将自动转为 Oauth2.0 Web 授权认证</li>\n<li>请您使用OAuth2授权(客户端+WEB方式)方式，采用该方式，如果未安装喜马拉雅FM客户端，将自动转为 Oauth2.0 Web 授权认证</li></string>
+
+    <!-- Tip-->
+    <string name="tip_auth_cancel">取消授权</string>
+    <string name="tip_auth_failure">access token 获取失败，错误编号：error no =</string>
+    <string name="tip_access_token_is_valid">access token 有效</string>
+    <string name="tip_access_token">access token：</string>
+    <string name="tip_access_token_expires_at">有效期：</string>
+    <string name="tip_access_token_is_invalid">access token 无效</string>
+    <string name="tip_refresh_access_token_failure">access token 无效，刷新 token 失败</string>
+    <string name="tip_has_not_login">未登录状态，请先认证授权登录</string>
+
+    <color name="selected_bg">#e5dcda</color>
+    <color name="textcolor">#333</color>
+    <color name="red">#ff0000</color>
+
+</resources>
