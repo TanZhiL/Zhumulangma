@@ -21,11 +21,15 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.NavigatorAdapter;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
@@ -43,12 +47,14 @@ import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Arrays;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
-
+@Route(path = AppConstants.Router.Home.F_RANK)
 public class RankFragment extends BaseMvvmFragment<RankViewModel> implements View.OnClickListener,
         BaseQuickAdapter.OnItemClickListener {
 
@@ -154,13 +160,17 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID,mFreeAdapter.getData().get(position).getId())
                     .navigation();
-            start((ISupportFragment) navigation);
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
+                    (ISupportFragment) navigation)));
         });
         mPaidAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID,mPaidAdapter.getData().get(position).getId())
                     .navigation();
-            start((ISupportFragment) navigation);
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
+                    (ISupportFragment) navigation)));
         });
         rlFree.setOnLoadMoreListener(refreshLayout -> mViewModel.getFreeRank(cid));
         rlPaid.setOnLoadMoreListener(refreshLayout -> mViewModel.getPaidRank());

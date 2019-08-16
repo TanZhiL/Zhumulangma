@@ -12,7 +12,10 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.HotStoryAdapter;
@@ -21,6 +24,8 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumListViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -87,7 +92,8 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID,mAdapter.getData().get(position).getId())
                 .navigation();
-        start((ISupportFragment) navigation);
+        EventBus.getDefault().post(new BaseActivityEvent<>(
+                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
     @Override

@@ -1,13 +1,17 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -16,12 +20,17 @@ import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.NavigatorAdapter;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
+import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
+import com.ximalaya.ting.android.opensdk.model.word.HotWord;
 import com.youth.banner.loader.ImageLoader;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -32,13 +41,14 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_MAIN)
-public class MainHomeFragment extends BaseFragment implements View.OnClickListener {
+public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements View.OnClickListener {
 
 
     private MagicIndicator magicIndicator;
@@ -91,23 +101,27 @@ public class MainHomeFragment extends BaseFragment implements View.OnClickListen
     public void initListener() {
         super.initListener();
         addDisposable(RxView.clicks(fd(R.id.ll_search)).throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(unit -> EventBus.getDefault().post(new BaseActivityEvent<ISupportFragment>
-                        (EventCode.MainCode.NAVIGATE, new SearchFragment()))));
+                .subscribe(unit -> {
+                    Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH).navigation();
+                    EventBus.getDefault().post(new BaseActivityEvent<>(
+                            EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
+                }));
 
         fd(R.id.iv_download).setOnClickListener(this);
+        fd(R.id.iv_history).setOnClickListener(this);
         addDisposable(RxView.clicks(fd(R.id.iv_message)).throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     Object navigation = ARouter.getInstance().build(AppConstants.Router.User.F_MESSAGE)
                             .navigation();
-                    EventBus.getDefault().post(new BaseActivityEvent<>
-                            (EventCode.MainCode.NAVIGATE, (ISupportFragment) navigation));
+                    EventBus.getDefault().post(new BaseActivityEvent<>(
+                            EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.User.F_MESSAGE, (ISupportFragment) navigation)));
                 }));
 
     }
 
     @Override
     public void initData() {
-
+        mViewModel._getHotWords();
     }
 
     @Override
@@ -120,8 +134,32 @@ public class MainHomeFragment extends BaseFragment implements View.OnClickListen
         int id = v.getId();
         if (id == R.id.iv_download) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigation));
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
+        } else if (id == R.id.iv_history) {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_HISTORY).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_HISTORY, (ISupportFragment) navigation)));
         }
+
+    }
+
+    @Override
+    public Class<HomeViewModel> onBindViewModel() {
+        return HomeViewModel.class;
+    }
+
+    @Override
+    public ViewModelProvider.Factory onBindViewModelFactory() {
+        return ViewModelFactory.getInstance(mApplication);
+    }
+
+    @Override
+    public void initViewObservable() {
+        mViewModel.getHotWordsSingleLiveEvent().observe(this, hotWords -> {
+            TextView hotword = fd(R.id.tv_search);
+            hotword.setText(hotWords.get(0).getSearchword());
+        });
     }
 
 

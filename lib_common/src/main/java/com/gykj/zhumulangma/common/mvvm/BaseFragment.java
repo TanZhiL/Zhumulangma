@@ -109,6 +109,15 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.common_fragment_root, container, false);
         initCommonView(mView);
+        //不采用懒加载
+        if(!lazyEnable()){
+            mViewStubContent = mView.findViewById(R.id.view_stub_content);
+            loadView();
+            initView(mView);
+            initListener();
+            initParam();
+            initData();
+        }
        return attachToSwipeBack(mView);
     }
 
@@ -121,12 +130,15 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Override
     public void onEnterAnimationEnd(Bundle savedInstanceState) {
         super.onEnterAnimationEnd(savedInstanceState);
-        mViewStubContent = mView.findViewById(R.id.view_stub_content);
-        loadView();
-        initView(mView);
-        initListener();
-        initParam();
-        initData();
+        //采用懒加载
+        if(lazyEnable()){
+            mViewStubContent = mView.findViewById(R.id.view_stub_content);
+            loadView();
+            initView(mView);
+            initListener();
+            initParam();
+            initData();
+        }
     }
 
     /**
@@ -300,7 +312,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     protected int onBindBarRightStyle() {
-        return BarStyle.RIGHT_TEXT;
+        return BarStyle.RIGHT_ICON;
     }
 
     protected int onBindBarLeftStyle() {
@@ -337,7 +349,9 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         return null;
     }
 
-
+    protected boolean lazyEnable(){
+        return true;
+    }
     protected void setTitle(String[] strings) {
         if (!enableSimplebar()) {
             throw new IllegalStateException("导航栏中不可用,请设置enableSimplebar为true");

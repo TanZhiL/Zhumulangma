@@ -37,7 +37,7 @@
           app:layout_constraintTop_toTopOf="parent" />
 
       <ImageView
-          android:id="@+id/imageView5"
+          android:id="@+id/iv_history"
           android:layout_width="28dp"
           android:layout_height="28dp"
           android:layout_marginTop="8dp"
@@ -59,7 +59,7 @@
           android:layout_marginBottom="8dp"
           android:background="@drawable/shap_common_input"
           app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toStartOf="@+id/imageView5"
+          app:layout_constraintEnd_toStartOf="@+id/iv_history"
 
           android:gravity="center_vertical"
           app:layout_constraintStart_toEndOf="@+id/iv_message"
@@ -82,7 +82,7 @@
               android:layout_marginLeft="8dp"
               android:textSize="12sp"
               android:textColor="#cccccc"
-              android:text="我的一个道姑朋友" />
+              tools:text="我的一个道姑朋友" />
       </LinearLayout>
   </android.support.constraint.ConstraintLayout>
 

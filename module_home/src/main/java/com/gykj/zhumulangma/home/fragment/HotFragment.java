@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
@@ -33,6 +34,7 @@ import com.youth.banner.listener.OnBannerListener;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -103,7 +105,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
                     .withString(KeyCode.Home.TITLE, "猜你喜欢")
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE,o));
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
 
         });
         fd(R.id.story_refresh).setOnClickListener(this);
@@ -113,7 +115,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
                     .withString(KeyCode.Home.TITLE, "有声小说")
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE,o));
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
         fd(R.id.baby_refresh).setOnClickListener(this);
         fd(R.id.ih_baby).setOnClickListener(view -> {
@@ -122,7 +124,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
                     .withString(KeyCode.Home.TITLE, "宝贝最爱")
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE,o));
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
         fd(R.id.music_refresh).setOnClickListener(this);
         fd(R.id.ih_music).setOnClickListener(view -> {
@@ -131,7 +133,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
                     .withString(KeyCode.Home.TITLE, "音乐好时光")
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE,o));
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
 
         fd(R.id.radio_refresh).setOnClickListener(this);
@@ -140,25 +142,29 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mLikeAdapter.getData().get(position).getId())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mStoryAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mStoryAdapter.getData().get(position).getId())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mBabyAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mBabyAdapter.getData().get(position).getId())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mMusicAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mMusicAdapter.getData().get(position).getId())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
     }
 
@@ -278,7 +284,8 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
                         .navigation();
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
+                EventBus.getDefault().post(new BaseActivityEvent<>(
+                        EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
         }
     }
@@ -311,8 +318,9 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         } else if (id == R.id.radio_refresh) {
             mViewModel.getRadioList();
         }else if (id == R.id.fl_rank) {
-            EventBus.getDefault().post(new BaseActivityEvent<ISupportFragment>
-                    (EventCode.MainCode.NAVIGATE,new RankFragment()));
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_RANK).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RANK, (ISupportFragment) navigation)));
         }
     }
 }

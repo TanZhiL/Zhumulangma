@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gykj.zhumulangma.common">
 
@@ -10,9 +11,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <!-- 极光推送配置 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 极光推送配置 -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
@@ -34,24 +33,23 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!--极光推送配置END-->
 
     <application>
+        <activity android:name=".LoginActivity"></activity>
+
         <meta-data
             android:name="design_width_in_dp"
             android:value="360" />
         <meta-data
             android:name="design_height_in_dp"
-            android:value="640" />
-        <!--喜马拉雅配置-->
+            android:value="640" /> <!-- 喜马拉雅配置 -->
         <meta-data
             android:name="app_key"
             android:value="aeebdaf70f4efad44a8bc5f6c7847f11" />
         <meta-data
             android:name="pack_id"
-            android:value="${applicationId}" />
-        <!--喜马拉雅配置END-->
-        <!--极光推送配置-->
+            android:value="${applicationId}" /> <!-- 喜马拉雅配置END -->
+        <!-- 极光推送配置 -->
         <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
@@ -69,6 +67,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
         </service>
@@ -77,11 +76,13 @@
             android:name="cn.jpush.android.service.DownloadProvider"
             android:authorities="${applicationId}.DownloadProvider"
             android:exported="true" />
+
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
             android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
             <intent-filter>
@@ -120,6 +121,7 @@
         </activity>
 
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
+
         <activity
             android:name="cn.jpush.android.service.JNotifyActivity"
             android:exported="true"
@@ -127,12 +129,13 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.JNotifyActivity" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
 
         <service
-            android:name="com.gykj.zhumulangma.common.jpush.JPushService"
+            android:name=".jpush.JPushService"
             android:enabled="true"
             android:exported="false"
             android:process=":pushcore">
@@ -140,12 +143,14 @@
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
         </service>
+
         <receiver
-            android:name="com.gykj.zhumulangma.common.jpush.JPushReceiver"
+            android:name=".jpush.JPushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
+
                 <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
@@ -156,6 +161,16 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="8ecd1a2c7057c119b8a889ce" />
-        <!--极光推送配置END-->
+        <!-- 极光推送配置END -->
+        <!-- 喜马拉雅听 -->
+        <activity
+            android:name="com.ximalaya.ting.android.opensdk.auth.component.XmlyBrowserComponent"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <service android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService"
+        android:process=":player"/>
+        <!-- 喜马拉雅听END -->
     </application>
+
 </manifest>

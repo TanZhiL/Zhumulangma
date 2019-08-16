@@ -44,7 +44,7 @@ public class GlobalPlay extends FrameLayout {
         mAnimation.setRepeatCount(Animation.INFINITE);
         mAnimation.setRepeatMode(Animation.RESTART);
         mAnimation.setInterpolator(new LinearInterpolator());
-        civAvatar.startAnimation(mAnimation);
+//        civAvatar.startAnimation(mAnimation);
     }
     public void play(String avatarUrl){
         ivPlay.setImageResource(R.drawable.ic_common_widget_pause);

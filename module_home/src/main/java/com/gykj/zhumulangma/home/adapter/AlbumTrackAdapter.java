@@ -31,6 +31,7 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<AlbumTrackBean, BaseView
         helper.setText(R.id.tv_duration,ZhumulangmaUtil.secondToTime(item.getDuration()));
         helper.setText(R.id.tv_create_time, TimeUtils.millis2String(item.getCreatedAt(),new SimpleDateFormat("yyyy-MM")));
 
+        helper.setGone(R.id.iv_playing,detailTrackBean.isPlaying());
         switch (detailTrackBean.getDownloadState()){
             case FINISHED:
                 helper.setGone(R.id.iv_downloadsucc,true);

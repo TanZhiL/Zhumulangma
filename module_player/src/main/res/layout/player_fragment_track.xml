@@ -71,8 +71,8 @@
 
                 <FrameLayout
                     android:id="@+id/imageView17"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:background="@drawable/shap_player_circle_play"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -560,8 +560,7 @@
         app:titleBarHeight="@dimen/simpleBarHeight"
         app:statusBarColor="@color/transparent"
         app:showBottomLine="false"
-        app:centerCustomView="@layout/common_layout_titlebar_center"
-        app:centerType="customView"
+        app:centerType="textView"
         app:leftCustomView="@layout/common_layout_titlebar_left"
         app:leftType="customView"
         app:rightCustomView="@layout/common_layout_titlebar_right"

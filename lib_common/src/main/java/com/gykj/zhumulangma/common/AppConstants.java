@@ -7,6 +7,9 @@ package com.gykj.zhumulangma.common;
 public interface  AppConstants {
      interface Router{
 
+         interface Common{
+             String A_LOGIN="/common/login";
+         }
          interface Main{
             String F_MAIN="/main/main";
             String A_MAIN="/main/MainActivity";
@@ -14,6 +17,7 @@ public interface  AppConstants {
          interface Home{
             String F_MAIN="/home/main";
             String F_SEARCH="/home/search";
+            String F_RANK="/home/rank";
             String F_SEARCH_RESULT="/home/search/result";
             String F_ALBUM_LIST="/home/album/list";
             String F_ALBUM_DETAIL="/home/album/detail";
@@ -30,9 +34,11 @@ public interface  AppConstants {
          interface Listen{
              String F_MAIN="/listen/main";
              String F_DOWNLOAD="/listen/download";
+             String F_HISTORY="/listen/history";
+             String F_FAVORITE="/listen/favorite";
          }
-         interface Pollution{
-             String F_MAIN="/pollution/main";
+         interface Player{
+             String F_PLAY_TRACK="/player/track";
              String F_HAPPEN="/pollution/happen";
              String F_ACCEPT="/pollution/accept";
              String F_FEEDBACK="/pollution/feedback";

@@ -12,4 +12,7 @@ public class BaseFragmentEvent<T> extends BaseEvent<T> {
     public BaseFragmentEvent(int code) {
         super(code);
     }
+    public BaseFragmentEvent(int code,T o) {
+        super(code,o);
+    }
 }

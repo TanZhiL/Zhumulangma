@@ -18,13 +18,9 @@ public class AlbumTrackBean {
      */
     private boolean isPlaying;
     /**
-     * 是否正在下载
+     * 已播放百分比
      */
-    private boolean isDownloading;
-    /**
-     * 是否下载完毕
-     */
-    private boolean isDownload;
+    private float playcent;
     /**
      * 声音对象
      */
@@ -38,20 +34,12 @@ public class AlbumTrackBean {
         isPlaying = playing;
     }
 
-    public boolean isDownloading() {
-        return isDownloading;
+    public float getPlaycent() {
+        return playcent;
     }
 
-    public void setDownloading(boolean downloading) {
-        isDownloading = downloading;
-    }
-
-    public boolean isDownload() {
-        return isDownload;
-    }
-
-    public void setDownload(boolean download) {
-        isDownload = download;
+    public void setPlaycent(float playcent) {
+        this.playcent = playcent;
     }
 
     public Track getTrack() {

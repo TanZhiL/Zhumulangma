@@ -12,6 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.NavigatorAdapter;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
@@ -26,6 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -74,6 +76,8 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
     public void initListener() {
         super.initListener();
         fd(R.id.ll_download).setOnClickListener(this);
+        fd(R.id.ll_history).setOnClickListener(this);
+        fd(R.id.ll_favorite).setOnClickListener(this);
     }
 
     @Override
@@ -112,22 +116,31 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
         int id = v.getId();
         if(R.id.ll_download==id){
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
+        }else  if(R.id.ll_history==id){
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_HISTORY).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_HISTORY, (ISupportFragment) navigation)));
+        }else  if(R.id.ll_favorite==id){
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_FAVORITE).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_FAVORITE, (ISupportFragment) navigation)));
         }
     }
     @Override
     protected void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
         Object navigation = ARouter.getInstance().build(AppConstants.Router.User.F_MESSAGE).navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>
-                (EventCode.MainCode.NAVIGATE, (ISupportFragment) navigation));
+        EventBus.getDefault().post(new BaseActivityEvent<>(
+                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.User.F_MESSAGE, (ISupportFragment) navigation)));
     }
 
     @Override
     protected void onRight1Click(View v) {
         super.onRight1Click(v);
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH).navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>
-                (EventCode.MainCode.NAVIGATE, (ISupportFragment) navigation));
+        EventBus.getDefault().post(new BaseActivityEvent<>(
+                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
     }
 }

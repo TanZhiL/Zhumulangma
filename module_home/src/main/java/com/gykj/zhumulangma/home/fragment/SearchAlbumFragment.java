@@ -16,6 +16,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.util.DisplayUtil;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
@@ -29,6 +30,8 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -97,7 +100,8 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, mAdapter.getData().get(position).getId())
                 .navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigation));
+        EventBus.getDefault().post(new BaseActivityEvent<>(
+                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
     @Override

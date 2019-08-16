@@ -8,7 +8,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +31,13 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumDetailViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.track.CommonTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
+import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.DownloadState;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.IXmDownloadTrackCallBack;
@@ -50,7 +54,7 @@ import java.util.concurrent.TimeUnit;
 @Route(path = AppConstants.Router.Home.F_ALBUM_DETAIL)
 public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> implements
         ViewPager.OnPageChangeListener, OnLoadMoreListener, BaseQuickAdapter.OnItemClickListener,
-        BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack {
+        BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack, IXmPlayerStatusListener {
 
     @Autowired(name = KeyCode.Home.ALBUMID)
     public long mAlbumId;
@@ -124,8 +128,10 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     public void initListener() {
         super.initListener();
         XmDownloadManager.getInstance().addDownloadStatueListener(this);
+        XmPlayerManager.getInstance(mContext).addPlayerStatusListener(this);
         refreshLayout.setOnLoadMoreListener(this);
         viewpager.addOnPageChangeListener(this);
+        mAlbumTrackAdapter.setOnItemClickListener(this);
         mAlbumTrackAdapter.setOnItemChildClickListener(this);
         addDisposable(RxView.clicks(fd(R.id.iv_sort))
                 .throttleFirst(2, TimeUnit.SECONDS)
@@ -167,6 +173,8 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
+        XmPlayerManager.getInstance(mContext).playList(CommonTrackList.newInstance().getTracks(),0);
+
     }
 
     @Override
@@ -178,7 +186,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         }
     }
 
-    private void setDownloadStatus(Track track) {
+    private void updateDownloadStatus(Track track) {
         List<AlbumTrackBean> mDetailTrackBeans = mAlbumTrackAdapter.getData();
         for (int i = 0; i < mDetailTrackBeans.size(); i++) {
             if (mDetailTrackBeans.get(i).getTrack().getDataId() == track.getDataId()) {
@@ -212,32 +220,46 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
             }
         }
     }
+    private void updatePlayStatus() {
+        Track track = XmPlayerManager.getInstance(mContext).getCurrSoundIgnoreKind(true);
+        if(null==track){
+            return;
+        }
+        List<AlbumTrackBean> mDetailTrackBeans = mAlbumTrackAdapter.getData();
+        for (int i = 0; i < mDetailTrackBeans.size(); i++) {
+            if (mDetailTrackBeans.get(i).getTrack().getDataId() == track.getDataId()) {
+              mDetailTrackBeans.get(i).setPlaying(true);
+                View ivPlaying = mAlbumTrackAdapter.getViewByPosition(i, R.id.iv_playing);
+                ivPlaying.setVisibility(View.VISIBLE);
 
+            }
+        }
+    }
 
     @Override
     public void onWaiting(Track track) {
-        setDownloadStatus(track);
+        updateDownloadStatus(track);
     }
 
     @Override
     public void onStarted(Track track) {
-        setDownloadStatus(track);
+        updateDownloadStatus(track);
     }
 
     @Override
     public void onSuccess(Track track) {
-        setDownloadStatus(track);
+        updateDownloadStatus(track);
     }
 
     @Override
     public void onError(Track track, Throwable throwable) {
-        setDownloadStatus(track);
+        updateDownloadStatus(track);
         throwable.printStackTrace();
     }
 
     @Override
     public void onCancelled(Track track, Callback.CancelledException e) {
-        setDownloadStatus(track);
+        updateDownloadStatus(track);
     }
 
     @Override
@@ -319,6 +341,61 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                 refreshLayout.finishLoadMoreWithNoMoreData();
             }
         });
+    }
+
+    @Override
+    public void onPlayStart() {
+        updatePlayStatus();
+    }
+
+    @Override
+    public void onPlayPause() {
+        updatePlayStatus();
+    }
+
+    @Override
+    public void onPlayStop() {
+        updatePlayStatus();
+    }
+
+    @Override
+    public void onSoundPlayComplete() {
+        updatePlayStatus();
+    }
+
+    @Override
+    public void onSoundPrepared() {
+        updatePlayStatus();
+    }
+
+    @Override
+    public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
+        updatePlayStatus();
+    }
+
+    @Override
+    public void onBufferingStart() {
+
+    }
+
+    @Override
+    public void onBufferingStop() {
+
+    }
+
+    @Override
+    public void onBufferProgress(int i) {
+
+    }
+
+    @Override
+    public void onPlayProgress(int i, int i1) {
+
+    }
+
+    @Override
+    public boolean onError(XmPlayerException e) {
+        return false;
     }
 
     class AlbumPagerAdapter extends PagerAdapter {

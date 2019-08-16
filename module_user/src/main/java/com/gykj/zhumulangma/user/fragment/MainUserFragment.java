@@ -14,6 +14,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
@@ -32,6 +33,7 @@ import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -175,6 +177,7 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
             }
         });
         fd(R.id.ll_download).setOnClickListener(this);
+        fd(R.id.ll_history).setOnClickListener(this);
         whiteLeft.setOnClickListener(this);
         whiteRight.setOnClickListener(this);
         transLeft.setOnClickListener(this);
@@ -208,11 +211,16 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
         int id = v.getId();
         if (R.id.ll_download == id) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigation));
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
+        }else if (R.id.ll_history == id) {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_HISTORY).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_HISTORY, (ISupportFragment) navigation)));
         } else if (v == whiteLeft || v == transLeft) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.User.F_MESSAGE).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>
-                    (EventCode.MainCode.NAVIGATE, (ISupportFragment) navigation));
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.User.F_MESSAGE, (ISupportFragment) navigation)));
         }
     }
 

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="@drawable/selector_common_item"
     android:layout_height="68dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -51,6 +51,7 @@
         app:layout_constraintTop_toTopOf="@+id/iv_cover">
 
         <ImageView
+            android:id="@+id/iv_playing"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:tint="@color/colorPrimary"

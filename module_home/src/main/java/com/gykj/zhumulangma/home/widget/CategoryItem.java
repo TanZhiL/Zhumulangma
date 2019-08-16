@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
@@ -19,6 +20,10 @@ import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.fragment.AlbumListFragment;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
+
+import me.yokeyword.fragmentation.ISupportFragment;
 
 
 /**
@@ -60,7 +65,7 @@ public class CategoryItem extends FrameLayout {
                     .withString(KeyCode.Home.TITLE,title)
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE,o));
+                    EventCode.MainCode.NAVIGATE,new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
     }
 

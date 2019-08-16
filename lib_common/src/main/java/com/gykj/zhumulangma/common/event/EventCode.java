@@ -11,6 +11,10 @@ public interface EventCode {
     interface MainCode {
         int JPUSH = 1000;
         int NAVIGATE=1001;
+        int HIDE_GP=1002;
+        int SHOW_GP=1003;
+        int LOGIN=1004;
+        int LOGINSUCC=1005;
         //1000开始
     }
 

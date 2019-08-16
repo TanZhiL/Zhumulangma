@@ -10,6 +10,7 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
 import java.util.ArrayList;
@@ -62,9 +63,12 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                     List<AlbumTrackBean> trackBeans = new ArrayList<>();
                     for (Track track : trackList.getTracks()) {
                         AlbumTrackBean detailTrackBean = new AlbumTrackBean();
-                        detailTrackBean.setDownload(false);
-                        detailTrackBean.setDownloading(false);
+
                         detailTrackBean.setPlaying(false);
+                        if(XmPlayerManager.getInstance(getApplication()).isPlaying()){
+                            detailTrackBean.setPlaying(XmPlayerManager.getInstance(getApplication())
+                                    .getCurrSoundIgnoreKind(true)==track);
+                        }
                         detailTrackBean.setTrack(track);
                         detailTrackBean.setDownloadState(XmDownloadManager.getInstance()
                                 .getSingleTrackDownloadStatus(track.getDataId()));
