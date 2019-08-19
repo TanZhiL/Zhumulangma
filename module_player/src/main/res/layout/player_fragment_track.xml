@@ -70,7 +70,7 @@
 
 
                 <FrameLayout
-                    android:id="@+id/imageView17"
+                    android:id="@+id/fl_play_pause"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/shap_player_circle_play"
@@ -81,6 +81,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
+                        android:id="@+id/iv_play_pause"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_common_play"
@@ -89,26 +90,26 @@
 
 
                 <ImageView
-                    android:id="@+id/imageView18"
+                    android:id="@+id/iv_next"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
                     android:layout_marginStart="24dp"
                     android:src="@drawable/ic_player_next"
                     android:tint="@color/colorPrimary"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView17"
-                    app:layout_constraintStart_toEndOf="@+id/imageView17"
-                    app:layout_constraintTop_toTopOf="@+id/imageView17" />
+                    app:layout_constraintBottom_toBottomOf="@+id/fl_play_pause"
+                    app:layout_constraintStart_toEndOf="@+id/fl_play_pause"
+                    app:layout_constraintTop_toTopOf="@+id/fl_play_pause" />
 
                 <ImageView
-                    android:id="@+id/imageView19"
+                    android:id="@+id/iv_pre"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
                     android:layout_marginEnd="24dp"
                     android:src="@drawable/ic_player_pre"
                     android:tint="@color/colorPrimary"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView17"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView17"
-                    app:layout_constraintTop_toTopOf="@+id/imageView17" />
+                    app:layout_constraintBottom_toBottomOf="@+id/fl_play_pause"
+                    app:layout_constraintEnd_toStartOf="@+id/fl_play_pause"
+                    app:layout_constraintTop_toTopOf="@+id/fl_play_pause" />
 
                 <ImageView
                     android:id="@+id/imageView20"
@@ -119,7 +120,7 @@
                     android:src="@drawable/ic_player_dingshi"
                     android:tint="@color/colorPrimaryDark"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imageView18" />
+                    app:layout_constraintTop_toTopOf="@+id/iv_pre" />
 
 
                 <ImageView
@@ -131,7 +132,7 @@
                     android:src="@drawable/ic_common_list"
                     android:tint="@color/colorPrimaryDark"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/imageView19" />
+                    app:layout_constraintTop_toTopOf="@+id/iv_pre" />
 
                 <TextView
                     android:id="@+id/textView22"

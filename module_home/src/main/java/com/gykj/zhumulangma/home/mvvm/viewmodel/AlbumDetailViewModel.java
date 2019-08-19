@@ -9,6 +9,7 @@ import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.track.CommonTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
@@ -30,10 +31,10 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
 
     private SingleLiveEvent<Album> mAlbumSingleLiveEvent;
-    private SingleLiveEvent<List<AlbumTrackBean>> mTracksSingleLiveEvent;
-
+    private SingleLiveEvent<List<Track>> mTracksSingleLiveEvent;
+    private CommonTrackList mCommonTrackList = CommonTrackList.newInstance();
     private int curTrackPage = 1;
-    private String mSort="";
+    private String mSort = "";
 
     public AlbumDetailViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
@@ -59,27 +60,11 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE, String.valueOf(curTrackPage));
         mModel.getTracks(map)
                 .observeOn(Schedulers.io())
-                .map(trackList -> {
-                    List<AlbumTrackBean> trackBeans = new ArrayList<>();
-                    for (Track track : trackList.getTracks()) {
-                        AlbumTrackBean detailTrackBean = new AlbumTrackBean();
-
-                        detailTrackBean.setPlaying(false);
-                        if(XmPlayerManager.getInstance(getApplication()).isPlaying()){
-                            detailTrackBean.setPlaying(XmPlayerManager.getInstance(getApplication())
-                                    .getCurrSoundIgnoreKind(true)==track);
-                        }
-                        detailTrackBean.setTrack(track);
-                        detailTrackBean.setDownloadState(XmDownloadManager.getInstance()
-                                .getSingleTrackDownloadStatus(track.getDataId()));
-                        trackBeans.add(detailTrackBean);
-                    }
-                    return trackBeans;
-                })
-                .subscribe(albumTrackBeans -> {
+                .subscribe(trackList -> {
                     curTrackPage++;
+                    mCommonTrackList.updateCommonTrackList(mCommonTrackList.getTracks().size(), trackList);
                     getTracksSingleLiveEvent().postValue(
-                            albumTrackBeans);
+                            trackList.getTracks());
                 }, e -> e.printStackTrace());
 
     }
@@ -88,7 +73,11 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         return mAlbumSingleLiveEvent = createLiveData(mAlbumSingleLiveEvent);
     }
 
-    public SingleLiveEvent<List<AlbumTrackBean>> getTracksSingleLiveEvent() {
+    public SingleLiveEvent<List<Track>> getTracksSingleLiveEvent() {
         return mTracksSingleLiveEvent = createLiveData(mTracksSingleLiveEvent);
+    }
+
+    public CommonTrackList getCommonTrackList() {
+        return mCommonTrackList;
     }
 }

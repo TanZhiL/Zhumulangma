@@ -7,7 +7,8 @@
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:windowIsTranslucent">true</item>
     </style>
-
+    <style name="NotificationText" parent="android:TextAppearance.StatusBar.EventContent" />
+    <style name="NotificationTitle" parent="android:TextAppearance.StatusBar.EventContent.Title" />
     <!--表单分割线-->
     <style name="LineStyle" parent="AppTheme">
         <item name="android:layout_width">match_parent</item>

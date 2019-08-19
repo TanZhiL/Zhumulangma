@@ -27,5 +27,7 @@
     <string name="qian">%s前</string>
     <string name="update">%d更新</string>
     <string name="download">已下载:%d</string>
+    <string name="hasplay">已播:%d%%</string>
     <string name="memory">已占用%s，可用%s</string>
+
 </resources>

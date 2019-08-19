@@ -151,7 +151,7 @@
         android:id="@+id/tv_hasplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="已播2%"
+        tools:text="已播2%"
         android:textColor="@color/colorPrimary"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_duration"

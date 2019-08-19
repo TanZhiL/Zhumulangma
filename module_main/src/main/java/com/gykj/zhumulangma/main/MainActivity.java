@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.util.log.TLog;
+import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -53,6 +54,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
+
 @Route(path = AppConstants.Router.Main.A_MAIN)
 public class MainActivity extends BaseActivity implements View.OnClickListener, MainFragment.onRootShowListener, IXmPlayerStatusListener {
 
@@ -61,8 +64,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     /**
      * 当前 DEMO 应用的回调页，第三方应用应该使用自己的回调页。
      */
-    public static final String REDIRECT_URL = "http://api.ximalaya.com/openapi-collector-app/get_access_token";
-    public static final String REFRESH_TOKEN_URL = "https://api.ximalaya.com/oauth2/refresh_token?";
+
 
     /**
      * 喜马拉雅授权实体类对象
@@ -124,9 +126,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 switch (navigateBean.path) {
                     case AppConstants.Router.User.F_MESSAGE:
                         //登录拦截
-                     /*   String token = AccessTokenKeeper.readAccessToken(this).getToken();
-                        TLog.d(AccessTokenKeeper.readAccessToken(this));
-                        if (TextUtils.isEmpty(token)) {
+                   /*     if (!AccessTokenManager.getInstanse().hasLogin()) {
                             goLogin();
                         } else {
                             start(navigateBean.fragment);
@@ -179,11 +179,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             pop();
         } else {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "再按一次返回桌面", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
-                finish();
-                android.os.Process.killProcess(android.os.Process.myPid());
+            /*    finish();
+                android.os.Process.killProcess(android.os.Process.myPid());*/
+                Intent home = new Intent(Intent.ACTION_MAIN);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                home.addCategory(Intent.CATEGORY_HOME);
+                startActivity(home);
             }
         }
     }
@@ -203,7 +207,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onPlayStart() {
         Track currSoundIgnoreKind = XmPlayerManager.getInstance(this).getCurrSoundIgnoreKind(true);
-        if(null==currSoundIgnoreKind){
+        if (null == currSoundIgnoreKind) {
             return;
         }
         globalPlay.play(currSoundIgnoreKind.getCoverUrlMiddle());
@@ -274,7 +278,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public void onComplete(Bundle bundle) {
             parseAccessToken(bundle);
-            registerLoginTokenChangeListener(MainActivity.this.getApplicationContext());
+            App.registerLoginTokenChangeListener(MainActivity.this.getApplicationContext());
             EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.MainCode.LOGINSUCC));
             ToastUtil.showToast("登录成功");
         }
@@ -304,132 +308,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    public static void registerLoginTokenChangeListener(final Context context) {
-        // 使用此回调了就表示贵方接了需要用户登录才能访问的接口,如果没有此类接口可以不用设置此接口,之前的逻辑没有发生改变
-        CommonRequest.getInstanse().setITokenStateChange(new CommonRequest.ITokenStateChange() {
-            // 此接口表示token已经失效 ,
-            @Override
-            public boolean getTokenByRefreshSync() {
-                if (!TextUtils.isEmpty(AccessTokenManager.getInstanse().getRefreshToken())) {
-                    try {
-                        return refreshSync();
-                    } catch (XimalayaException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return false;
-            }
-
-            @Override
-            public boolean getTokenByRefreshAsync() {
-                if (!TextUtils.isEmpty(AccessTokenManager.getInstanse().getRefreshToken())) {
-                    try {
-                        refresh();
-                        return true;
-                    } catch (XimalayaException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return false;
-            }
-
-            @Override
-            public void tokenLosted() {
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.LOGIN));
-            }
-        });
-    }
-
-    public static void refresh() throws XimalayaException {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .followRedirects(false)
-                .build();
-        FormBody.Builder builder = new FormBody.Builder();
-        builder.add(XmlyConstants.AUTH_PARAMS_GRANT_TYPE, "refresh_token");
-        builder.add(XmlyConstants.AUTH_PARAMS_REFRESH_TOKEN, AccessTokenManager.getInstanse().getTokenModel().getRefreshToken());
-        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_ID, CommonRequest.getInstanse().getAppKey());
-        builder.add(XmlyConstants.AUTH_PARAMS_DEVICE_ID, CommonRequest.getInstanse().getDeviceId());
-        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_OS_TYPE, XmlyConstants.ClientOSType.ANDROID);
-        builder.add(XmlyConstants.AUTH_PARAMS_PACKAGE_ID, CommonRequest.getInstanse().getPackId());
-        builder.add(XmlyConstants.AUTH_PARAMS_UID, AccessTokenManager.getInstanse().getUid());
-        builder.add(XmlyConstants.AUTH_PARAMS_REDIRECT_URL, REDIRECT_URL);
-        FormBody body = builder.build();
-
-        Request request = new Request.Builder()
-                .url("https://api.ximalaya.com/oauth2/refresh_token?")
-                .post(body)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Logger.d("refresh", "refreshToken, request failed, error message = " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                int statusCode = response.code();
-                String body = response.body().string();
-
-                System.out.println("TingApplication.refreshSync  1  " + body);
-
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(body);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if (jsonObject != null) {
-                    AccessTokenManager.getInstanse().setAccessTokenAndUid(jsonObject.optString("access_token"),
-                            jsonObject.optString("refresh_token"), jsonObject.optLong("expires_in"), jsonObject
-                                    .optString("uid"));
-                }
-            }
-        });
-    }
-
-    public static boolean refreshSync() throws XimalayaException {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .followRedirects(false)
-                .build();
-        FormBody.Builder builder = new FormBody.Builder();
-        builder.add(XmlyConstants.AUTH_PARAMS_GRANT_TYPE, "refresh_token");
-        builder.add(XmlyConstants.AUTH_PARAMS_REFRESH_TOKEN, AccessTokenManager.getInstanse().getTokenModel().getRefreshToken());
-        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_ID, CommonRequest.getInstanse().getAppKey());
-        builder.add(XmlyConstants.AUTH_PARAMS_DEVICE_ID, CommonRequest.getInstanse().getDeviceId());
-        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_OS_TYPE, XmlyConstants.ClientOSType.ANDROID);
-        builder.add(XmlyConstants.AUTH_PARAMS_PACKAGE_ID, CommonRequest.getInstanse().getPackId());
-        builder.add(XmlyConstants.AUTH_PARAMS_UID, AccessTokenManager.getInstanse().getUid());
-        builder.add(XmlyConstants.AUTH_PARAMS_REDIRECT_URL, REDIRECT_URL);
-        FormBody body = builder.build();
-
-        Request request = new Request.Builder()
-                .url(REFRESH_TOKEN_URL)
-                .post(body)
-                .build();
-        try {
-            Response execute = client.newCall(request).execute();
-            if (execute.isSuccessful()) {
-                try {
-                    String string = execute.body().string();
-                    JSONObject jsonObject = new JSONObject(string);
-
-                    System.out.println("TingApplication.refreshSync  2  " + string);
-
-                    AccessTokenManager.getInstanse().setAccessTokenAndUid(jsonObject.optString("access_token"),
-                            jsonObject.optString("refresh_token"), jsonObject.optLong("expires_in"), jsonObject
-                                    .optString("uid"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
 
     // 用户退出登录，清空喜马拉雅授权 SDK 中保存的 access token 信息
     public void logout() {
@@ -449,5 +327,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        XmPlayerManager.getInstance(this).removePlayerStatusListener(this);
     }
 }

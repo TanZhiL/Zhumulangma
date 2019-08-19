@@ -1,29 +1,62 @@
 package com.gykj.zhumulangma.common;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.multidex.MultiDex;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.Utils;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.gykj.util.log.TLog;
 import com.gykj.videotrimmer.VideoTrimmer;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
+import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
+import com.ximalaya.ting.android.opensdk.httputil.XimalayaException;
+import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
+import com.ximalaya.ting.android.opensdk.player.appnotification.NotificationColorUtils;
+import com.ximalaya.ting.android.opensdk.player.appnotification.XmNotificationCreater;
+import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
+import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 import com.ximalaya.ting.android.opensdk.util.Logger;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.http.RequestParams;
 import com.ximalaya.ting.android.sdkdownloader.http.app.RequestTracker;
 import com.ximalaya.ting.android.sdkdownloader.http.request.UriRequest;
 
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 import me.yokeyword.fragmentation.Fragmentation;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
+import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
+import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REFRESH_TOKEN_URL;
 
 /**
  * Description: <初始化应用程序><br>
@@ -32,14 +65,16 @@ import me.yokeyword.fragmentation.Fragmentation;
  * Version:     V1.0.0<br>
  * Update:     <br>
  */
-public class App extends android.app.Application {
+public class App extends android.app.Application implements IXmPlayerStatusListener {
     private static App mApplication;
+    private static final String TAG = "App";
+
     //static 代码段可以防止内存泄露
     static {
 
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> {
-            ClassicsHeader classicsHeader=new ClassicsHeader(context);
+            ClassicsHeader classicsHeader = new ClassicsHeader(context);
             classicsHeader.setTextSizeTitle(14);
             classicsHeader.setTextSizeTime(10);
             classicsHeader.setDrawableSize(18);
@@ -48,7 +83,7 @@ public class App extends android.app.Application {
         });
         //设置全局的Footer构建器
         SmartRefreshLayout.setDefaultRefreshFooterCreator((context, layout) -> {
-            ClassicsFooter classicsFooter=new ClassicsFooter(context);
+            ClassicsFooter classicsFooter = new ClassicsFooter(context);
             classicsFooter.setTextSizeTitle(14);
             classicsFooter.setDrawableSize(18);
             classicsFooter.setFinishDuration(0);
@@ -90,7 +125,7 @@ public class App extends android.app.Application {
         /*JPushInterface.setDebugMode(true);
         JPushInterface.init(this);*/
 
-        if(AppConfig.ISDORAEMONKIT) {
+        if (AppConfig.ISDORAEMONKIT) {
             //调试助手
             DoraemonKit.install(this);
             // H5任意门功能需要，非必须
@@ -100,7 +135,8 @@ public class App extends android.app.Application {
         }
 
     }
-    public static App getInstance(){
+
+    public static App getInstance() {
         return mApplication;
     }
 
@@ -115,29 +151,48 @@ public class App extends android.app.Application {
     }
 
     private static DaoSession daoSession;
-    public  static DaoSession getDaoSession() {
+
+    public static DaoSession getDaoSession() {
         return daoSession;
     }
 
     private void initXmly() {
 
         ConstantsOpenSdk.isDebug = true;
-        CommonRequest.getInstanse().init(this,AppConstants.Ximalaya.SECRET);
-        XmPlayerManager.getInstance(this).init();
-        XmDownloadManager.Builder(this)
-                .maxDownloadThread(1)			// 最大的下载个数 默认为1 最大为3
-             //   .maxSpaceSize(Long.MAX_VALUE)	// 设置下载文件占用磁盘空间最大值，单位字节。不设置没有限制
-                .connectionTimeOut(15000)		// 下载时连接超时的时间 ,单位毫秒 默认 30000
-                .readTimeOut(15000)				// 下载时读取的超时时间 ,单位毫秒 默认 30000
-                .fifo(false)					// 等待队列的是否优先执行先加入的任务. false表示后添加的先执行(不会改变当前正在下载的音频的状态) 默认为true
-                .maxRetryCount(3)				// 出错时重试的次数 默认2次
-                .requestTracker(requestTracker)				// 出错时重试的次数 默认2次
-                .progressCallBackMaxTimeSpan(1000)//  进度条progress 更新的频率 默认是800
-                .savePath(getExternalFilesDir("mp3").getAbsolutePath())	// 保存的地址 会检查这个地址是否有效
-                .create();
+        CommonRequest.getInstanse().init(this, AppConstants.Ximalaya.SECRET);
 
+        if (BaseUtil.isMainProcess(this)) {
+            AccessTokenManager.getInstanse().init(this);
+            if (AccessTokenManager.getInstanse().hasLogin()) {
+                registerLoginTokenChangeListener(this);
+            }
+        }
+        if(!BaseUtil.isPlayerProcess(this)) {
+            XmDownloadManager.Builder(this)
+                    .maxDownloadThread(1)            // 最大的下载个数 默认为1 最大为3
+                    //   .maxSpaceSize(Long.MAX_VALUE)	// 设置下载文件占用磁盘空间最大值，单位字节。不设置没有限制
+                    .connectionTimeOut(15000)        // 下载时连接超时的时间 ,单位毫秒 默认 30000
+                    .readTimeOut(15000)                // 下载时读取的超时时间 ,单位毫秒 默认 30000
+                    .fifo(false)                    // 等待队列的是否优先执行先加入的任务. false表示后添加的先执行(不会改变当前正在下载的音频的状态) 默认为true
+                    .maxRetryCount(3)                // 出错时重试的次数 默认2次
+                    .requestTracker(requestTracker)                // 出错时重试的次数 默认2次
+                    .progressCallBackMaxTimeSpan(1000)//  进度条progress 更新的频率 默认是800
+                    .savePath(getExternalFilesDir("mp3").getAbsolutePath())    // 保存的地址 会检查这个地址是否有效
+                    .create();
+        }
         // 此代码表示播放时会去监测下是否已经下载(setDownloadPlayPathCallback 方法已经废弃 请使用如下方法)
         XmPlayerManager.getInstance(this).setCommonBusinessHandle(XmDownloadManager.getInstance());
+
+        NotificationColorUtils.isTargerSDKVersion24More = true;
+        try {
+            Notification mNotification = XmNotificationCreater.getInstanse(this)
+                    .initNotification(this.getApplicationContext(), Class.forName(ActivityUtils.getLauncherActivity()));
+            XmPlayerManager.getInstance(this).init(NOTIFICATION_ID, mNotification);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        XmPlayerManager.getInstance(this).addPlayerStatusListener(this);
     }
 
     private RequestTracker requestTracker = new RequestTracker() {
@@ -182,9 +237,197 @@ public class App extends android.app.Application {
         }
     };
 
+    public static void registerLoginTokenChangeListener(final Context context) {
+        // 使用此回调了就表示贵方接了需要用户登录才能访问的接口,如果没有此类接口可以不用设置此接口,之前的逻辑没有发生改变
+        CommonRequest.getInstanse().setITokenStateChange(new CommonRequest.ITokenStateChange() {
+            // 此接口表示token已经失效 ,
+            @Override
+            public boolean getTokenByRefreshSync() {
+                if (!TextUtils.isEmpty(AccessTokenManager.getInstanse().getRefreshToken())) {
+                    try {
+                        return refreshSync();
+                    } catch (XimalayaException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean getTokenByRefreshAsync() {
+                if (!TextUtils.isEmpty(AccessTokenManager.getInstanse().getRefreshToken())) {
+                    try {
+                        refresh();
+                        return true;
+                    } catch (XimalayaException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public void tokenLosted() {
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.LOGIN));
+            }
+        });
+    }
+
+    public static void refresh() throws XimalayaException {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .followRedirects(false)
+                .build();
+        FormBody.Builder builder = new FormBody.Builder();
+        builder.add(XmlyConstants.AUTH_PARAMS_GRANT_TYPE, "refresh_token");
+        builder.add(XmlyConstants.AUTH_PARAMS_REFRESH_TOKEN, AccessTokenManager.getInstanse().getTokenModel().getRefreshToken());
+        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_ID, CommonRequest.getInstanse().getAppKey());
+        builder.add(XmlyConstants.AUTH_PARAMS_DEVICE_ID, CommonRequest.getInstanse().getDeviceId());
+        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_OS_TYPE, XmlyConstants.ClientOSType.ANDROID);
+        builder.add(XmlyConstants.AUTH_PARAMS_PACKAGE_ID, CommonRequest.getInstanse().getPackId());
+        builder.add(XmlyConstants.AUTH_PARAMS_UID, AccessTokenManager.getInstanse().getUid());
+        builder.add(XmlyConstants.AUTH_PARAMS_REDIRECT_URL, REDIRECT_URL);
+        FormBody body = builder.build();
+
+        Request request = new Request.Builder()
+                .url("https://api.ximalaya.com/oauth2/refresh_token?")
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Logger.d("refresh", "refreshToken, request failed, error message = " + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                int statusCode = response.code();
+                String body = response.body().string();
+
+                System.out.println("TingApplication.refreshSync  1  " + body);
+
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(body);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (jsonObject != null) {
+                    AccessTokenManager.getInstanse().setAccessTokenAndUid(jsonObject.optString("access_token"),
+                            jsonObject.optString("refresh_token"), jsonObject.optLong("expires_in"), jsonObject
+                                    .optString("uid"));
+                }
+            }
+        });
+    }
+
+    public static boolean refreshSync() throws XimalayaException {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .followRedirects(false)
+                .build();
+        FormBody.Builder builder = new FormBody.Builder();
+        builder.add(XmlyConstants.AUTH_PARAMS_GRANT_TYPE, "refresh_token");
+        builder.add(XmlyConstants.AUTH_PARAMS_REFRESH_TOKEN, AccessTokenManager.getInstanse().getTokenModel().getRefreshToken());
+        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_ID, CommonRequest.getInstanse().getAppKey());
+        builder.add(XmlyConstants.AUTH_PARAMS_DEVICE_ID, CommonRequest.getInstanse().getDeviceId());
+        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_OS_TYPE, XmlyConstants.ClientOSType.ANDROID);
+        builder.add(XmlyConstants.AUTH_PARAMS_PACKAGE_ID, CommonRequest.getInstanse().getPackId());
+        builder.add(XmlyConstants.AUTH_PARAMS_UID, AccessTokenManager.getInstanse().getUid());
+        builder.add(XmlyConstants.AUTH_PARAMS_REDIRECT_URL, REDIRECT_URL);
+        FormBody body = builder.build();
+
+        Request request = new Request.Builder()
+                .url(REFRESH_TOKEN_URL)
+                .post(body)
+                .build();
+        try {
+            Response execute = client.newCall(request).execute();
+            if (execute.isSuccessful()) {
+                try {
+                    String string = execute.body().string();
+                    JSONObject jsonObject = new JSONObject(string);
+
+                    System.out.println("TingApplication.refreshSync  2  " + string);
+
+                    AccessTokenManager.getInstanse().setAccessTokenAndUid(jsonObject.optString("access_token"),
+                            jsonObject.optString("refresh_token"), jsonObject.optLong("expires_in"), jsonObject
+                                    .optString("uid"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public void onTerminate() {
         super.onTerminate();
+        XmPlayerManager.getInstance(this).removePlayerStatusListener(this);
         XmPlayerManager.release();
+        CommonRequest.release();
     }
+
+    @Override
+    public void onPlayStart() {
+
+    }
+
+    @Override
+    public void onPlayPause() {
+        Log.e(TAG, "onPlayPause: " );
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if(null!=notificationManager){
+            notificationManager.cancel(NOTIFICATION_ID);
+        }
+    }
+
+    @Override
+    public void onPlayStop() {
+
+    }
+
+    @Override
+    public void onSoundPlayComplete() {
+
+    }
+
+    @Override
+    public void onSoundPrepared() {
+
+    }
+
+    @Override
+    public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
+
+    }
+
+    @Override
+    public void onBufferingStart() {
+
+    }
+
+    @Override
+    public void onBufferingStop() {
+
+    }
+
+    @Override
+    public void onBufferProgress(int i) {
+
+    }
+
+    @Override
+    public void onPlayProgress(int i, int i1) {
+
+    }
+
+    @Override
+    public boolean onError(XmPlayerException e) {
+        return false;
+    }
+
 }

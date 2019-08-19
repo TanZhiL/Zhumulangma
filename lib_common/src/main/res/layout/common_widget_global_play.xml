@@ -20,6 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 <ImageView
+    android:id="@+id/iv_play"
     android:layout_width="16dp"
     android:layout_height="16dp"
     android:src="@drawable/ic_common_widget_play_white"

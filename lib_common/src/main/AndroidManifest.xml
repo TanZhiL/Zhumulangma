@@ -11,11 +11,11 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 极光推送配置 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 极光推送配置 -->
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
-
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -33,16 +33,27 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-
+    <!-- 极光推送配置END -->
+    <!-- 喜马拉雅配置 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <!-- 喜马拉雅配置END -->
     <application>
-        <activity android:name=".LoginActivity"></activity>
+
 
         <meta-data
             android:name="design_width_in_dp"
             android:value="360" />
         <meta-data
             android:name="design_height_in_dp"
-            android:value="640" /> <!-- 喜马拉雅配置 -->
+            android:value="640" />
+        <!-- 喜马拉雅配置 -->
         <meta-data
             android:name="app_key"
             android:value="aeebdaf70f4efad44a8bc5f6c7847f11" />
@@ -50,7 +61,8 @@
             android:name="pack_id"
             android:value="${applicationId}" /> <!-- 喜马拉雅配置END -->
         <!-- 极光推送配置 -->
-        <service
+        <!--
+   <service
             android:name="cn.jpush.android.service.PushService"
             android:enabled="true"
             android:exported="false">
@@ -161,6 +173,7 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="8ecd1a2c7057c119b8a889ce" />
+        -->
         <!-- 极光推送配置END -->
         <!-- 喜马拉雅听 -->
         <activity
@@ -168,8 +181,24 @@
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-        <service android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService"
-        android:process=":player"/>
+
+        <service
+            android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService"
+            android:process=":player" />
+        <receiver
+            android:name="com.ximalaya.ting.android.opensdk.player.receive.PlayerReceiver" android:exported="true"
+            android:process=":player">
+            <intent-filter>
+                <action android:name="com.ximalaya.ting.android.ACTION_CONTROL_START_PAUSE" />
+                <action android:name="com.ximalaya.ting.android.ACTION_CONTROL_PLAY_PRE" />
+                <action android:name="com.ximalaya.ting.android.ACTION_CONTROL_PLAY_NEXT" />
+                <action android:name="com.ximalaya.ting.android.ACTION_CLOSE" />
+                <action android:name="com.ximalaya.ting.android.ACTION_CONTROL_RELEASE_SERVICE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.ximalaya.ting.android.opensdk.player.receive.WireControlReceiver"
+            android:process=":player"
+            android:exported="true" />
         <!-- 喜马拉雅听END -->
     </application>
 

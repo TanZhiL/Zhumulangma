@@ -19,6 +19,7 @@ import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.widget.TScrollView;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -41,6 +42,9 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
     private ImageView transRight1;
     private ImageView transRight2;
 
+    private ImageView ivPlayPause;
+
+
     public PlayTrackFragment() {
 
     }
@@ -59,11 +63,11 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
 
     @Override
     protected void initView(View view) {
-        msv = view.findViewById(R.id.msv);
-        ctbTrans = view.findViewById(R.id.ctb_trans);
-        ctbWhite = view.findViewById(R.id.ctb_white);
-
-        c = view.findViewById(R.id.c);
+        msv = fd(R.id.msv);
+        ctbTrans = fd(R.id.ctb_trans);
+        ctbWhite = fd(R.id.ctb_white);
+        ivPlayPause = fd(R.id.iv_play_pause);
+        c = fd(R.id.c);
 
         initBar();
     }
@@ -115,8 +119,11 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
         msv.setOnScrollListener(this);
         whiteLeft.setOnClickListener(this);
         transLeft.setOnClickListener(this);
-
+        fd(R.id.iv_pre).setOnClickListener(this);
+        fd(R.id.iv_next).setOnClickListener(this);
+        fd(R.id.fl_play_pause).setOnClickListener(this);
     }
+
     @Override
     public void initData() {
 
@@ -125,7 +132,7 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-          EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.HIDE_GP));
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.HIDE_GP));
     }
 
     @Override
@@ -155,8 +162,19 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
 
     @Override
     public void onClick(View v) {
-        if(v==whiteLeft||v==transLeft){
+        int id = v.getId();
+        if (v == whiteLeft || v == transLeft) {
             pop();
+        } else if (R.id.iv_pre == id) {
+            XmPlayerManager.getInstance(mContext).playPre();
+        } else if (R.id.iv_next == id) {
+            XmPlayerManager.getInstance(mContext).playNext();
+        } else if (R.id.fl_play_pause == id) {
+            if (XmPlayerManager.getInstance(mContext).isPlaying()) {
+                XmPlayerManager.getInstance(mContext).pause();
+            } else {
+                XmPlayerManager.getInstance(mContext).play();
+            }
         }
     }
 }

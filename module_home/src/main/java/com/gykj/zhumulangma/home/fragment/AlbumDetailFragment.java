@@ -173,7 +173,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-        XmPlayerManager.getInstance(mContext).playList(CommonTrackList.newInstance().getTracks(),0);
+        XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(),position);
 
     }
 
@@ -182,17 +182,16 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         int id = view.getId();
         if (R.id.iv_download == id) {
             XmDownloadManager.getInstance().downloadSingleTrack(
-                    mAlbumTrackAdapter.getData().get(position).getTrack().getDataId(), null);
+                    mAlbumTrackAdapter.getData().get(position).getDataId(), null);
         }
     }
 
     private void updateDownloadStatus(Track track) {
-        List<AlbumTrackBean> mDetailTrackBeans = mAlbumTrackAdapter.getData();
-        for (int i = 0; i < mDetailTrackBeans.size(); i++) {
-            if (mDetailTrackBeans.get(i).getTrack().getDataId() == track.getDataId()) {
+        List<Track> tracks = mAlbumTrackAdapter.getData();
+        for (int i = 0; i < tracks.size(); i++) {
+            if (tracks.get(i).getDataId() == track.getDataId()) {
                 DownloadState downloadStatus = XmDownloadManager.getInstance()
-                        .getSingleTrackDownloadStatus(mDetailTrackBeans.get(i).getTrack().getDataId());
-                mDetailTrackBeans.get(i).setDownloadState(downloadStatus);
+                        .getSingleTrackDownloadStatus(tracks.get(i).getDataId());
 
                 View ivDownload = mAlbumTrackAdapter.getViewByPosition(i, R.id.iv_download);
                 View progress = mAlbumTrackAdapter.getViewByPosition(i, R.id.progressBar);
@@ -225,17 +224,27 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         if(null==track){
             return;
         }
-        List<AlbumTrackBean> mDetailTrackBeans = mAlbumTrackAdapter.getData();
-        for (int i = 0; i < mDetailTrackBeans.size(); i++) {
-            if (mDetailTrackBeans.get(i).getTrack().getDataId() == track.getDataId()) {
-              mDetailTrackBeans.get(i).setPlaying(true);
-                View ivPlaying = mAlbumTrackAdapter.getViewByPosition(i, R.id.iv_playing);
-                ivPlaying.setVisibility(View.VISIBLE);
-
+        List<Track> tracks = mAlbumTrackAdapter.getData();
+        for (int i = 0; i < tracks.size(); i++) {
+            View ivPlaying = mAlbumTrackAdapter.getViewByPosition(i, R.id.iv_playing);
+            if(null!=ivPlaying){
+                ivPlaying.setVisibility(tracks.get(i).getDataId() == track.getDataId()?View.VISIBLE:View.GONE);
             }
         }
     }
-
+    private void updatePlayStatus(int currPos, int duration) {
+        Track track = XmPlayerManager.getInstance(mContext).getCurrSoundIgnoreKind(true);
+        if(null==track){
+            return;
+        }
+        List<Track> tracks = mAlbumTrackAdapter.getData();
+        for (int i = 0; i < tracks.size(); i++) {
+            TextView tvHasplay = (TextView) mAlbumTrackAdapter.getViewByPosition(i, R.id.tv_hasplay);
+            if(null!=tvHasplay&&tracks.get(i).getDataId() == track.getDataId()){
+                tvHasplay.setText(getString(R.string.hasplay, 100 * currPos /duration));
+            }
+        }
+    }
     @Override
     public void onWaiting(Track track) {
         updateDownloadStatus(track);
@@ -275,6 +284,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     public void onDestroy() {
         super.onDestroy();
         XmDownloadManager.getInstance().removeDownloadStatueListener(this);
+        XmPlayerManager.getInstance(mContext).removePlayerStatusListener(this);
     }
 
     @Override
@@ -323,18 +333,18 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                     , ZhumulangmaUtil.toWanYi(mAlbum.getSubscribeCount())));
         });
 
-        mViewModel.getTracksSingleLiveEvent().observe(this, albumTrackBeans -> {
-            if (null == albumTrackBeans || (mAlbumTrackAdapter.getData().size() == 0 &&
-                    albumTrackBeans.size() == 0)) {
+        mViewModel.getTracksSingleLiveEvent().observe(this, tracks -> {
+            if (null == tracks || (mAlbumTrackAdapter.getData().size() == 0 &&
+                    tracks.size() == 0)) {
                 showNoDataView(true);
                 return;
             }
-            if (albumTrackBeans.size() > 0) {
+            if (tracks.size() > 0) {
                 if (isRefresh) {
-                    mAlbumTrackAdapter.setNewData(albumTrackBeans);
+                    mAlbumTrackAdapter.setNewData(tracks);
                     isRefresh = false;
                 } else {
-                    mAlbumTrackAdapter.addData(albumTrackBeans);
+                    mAlbumTrackAdapter.addData(tracks);
                 }
                 refreshLayout.finishLoadMore();
             } else {
@@ -390,8 +400,9 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
     @Override
     public void onPlayProgress(int i, int i1) {
-
+        updatePlayStatus(i,i1);
     }
+
 
     @Override
     public boolean onError(XmPlayerException e) {
