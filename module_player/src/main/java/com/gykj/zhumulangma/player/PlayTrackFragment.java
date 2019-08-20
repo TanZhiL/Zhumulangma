@@ -24,6 +24,7 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import org.greenrobot.eventbus.EventBus;
 
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
+import me.yokeyword.fragmentation.anim.DefaultVerticalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 @Route(path = AppConstants.Router.Player.F_PLAY_TRACK)
@@ -83,6 +84,7 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             transLeft.setImageTintList(ColorStateList.valueOf(Color.WHITE));
         }
+        transLeft.setRotation(-90);
         transLeft.setVisibility(View.VISIBLE);
 
         transRight1.setImageResource(R.drawable.ic_common_more);
@@ -106,7 +108,7 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
 
         whiteLeft.setImageResource(R.drawable.ic_common_titlebar_back);
         whiteLeft.setVisibility(View.VISIBLE);
-
+        whiteLeft.setRotation(-90);
         whiteRight1.setImageResource(R.drawable.ic_common_more);
         whiteRight1.setVisibility(View.VISIBLE);
         whiteRight2.setImageResource(R.drawable.ic_common_share);
@@ -160,6 +162,8 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
 
     }
 
+
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -177,4 +181,5 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
             }
         }
     }
+
 }

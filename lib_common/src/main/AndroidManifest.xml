@@ -44,7 +44,9 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <!-- 喜马拉雅配置END -->
-    <application>
+    <application
+        android:networkSecurityConfig="@xml/network_security_config"
+        >
 
 
         <meta-data
@@ -183,7 +185,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <service
-            android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService"
+            android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService" android:exported="true"
             android:process=":player" />
         <receiver
             android:name="com.ximalaya.ting.android.opensdk.player.receive.PlayerReceiver" android:exported="true"

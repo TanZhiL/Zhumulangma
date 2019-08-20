@@ -24,7 +24,7 @@ public class HotRadioAdapter extends BaseQuickAdapter<Radio, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, Radio item) {
-        Glide.with(mContext).load(item.getCoverUrlSmall()).into((ImageView) helper.getView(R.id.iv_cover));
+        Glide.with(mContext).load(item.getCoverUrlLarge()).into((ImageView) helper.getView(R.id.iv_cover));
         helper.setText(R.id.tv_playcount, ZhumulangmaUtil.toWanYi(item.getRadioPlayCount()));
         helper.setText(R.id.tv_desc,item.getRadioDesc());
         helper.setText(R.id.tv_title,item.getProgramName());

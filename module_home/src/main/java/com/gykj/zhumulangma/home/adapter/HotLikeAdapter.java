@@ -23,7 +23,7 @@ public class HotLikeAdapter extends BaseQuickAdapter<Album, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, Album item) {
-        Glide.with(mContext).load(item.getCoverUrlMiddle()).into((ImageView) helper.getView(R.id.iv_cover));
+        Glide.with(mContext).load(item.getCoverUrlLarge()).into((ImageView) helper.getView(R.id.iv_cover));
         helper.setText(R.id.tv_playcount, ZhumulangmaUtil.toWanYi(item.getPlayCount()));
         helper.setText(R.id.tv_title,item.getAlbumTitle());
     }

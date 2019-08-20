@@ -1,7 +1,7 @@
 <resources>
     <style name="AppTheme.SplashTheme" parent="AppTheme">
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <!--<item name="android:windowTranslucentNavigation">true</item>-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@drawable/main_welcome</item>
     </style>

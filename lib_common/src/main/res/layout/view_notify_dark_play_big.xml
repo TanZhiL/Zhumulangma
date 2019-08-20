@@ -50,7 +50,7 @@
         android:layout_below="@+id/txt_notifyMusicName"
         android:layout_marginTop="5dp"
         android:gravity="left"
-        android:text="喜马拉雅"
+        android:text="珠穆朗玛"
         android:singleLine="true"
         android:textAppearance="@style/NotificationText"
         android:textSize="12sp" />

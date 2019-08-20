@@ -46,12 +46,12 @@
         android:id="@+id/txt_notifyNickName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txt_notifyMusicName"
         android:layout_below="@+id/txt_notifyMusicName"
+        android:layout_alignLeft="@+id/txt_notifyMusicName"
         android:layout_marginTop="5dp"
         android:gravity="left"
-        android:text="喜马拉雅"
         android:singleLine="true"
+        android:text="珠穆朗玛"
         android:textAppearance="@style/NotificationText"
         android:textSize="12sp" />
 

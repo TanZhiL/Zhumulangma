@@ -1,19 +1,32 @@
 package com.gykj.zhumulangma.home.adapter;
 
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.bean.AlbumTrackBean;
+import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
+import com.gykj.zhumulangma.common.bean.TrackDownloadBean;
+import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
+import com.gykj.zhumulangma.common.dao.TrackDownloadBeanDao;
+import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
+import java.sql.RowId;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by 10719
@@ -23,6 +36,7 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
     public AlbumTrackAdapter(int layoutResId) {
             super(layoutResId);
     }
+    private ZhumulangmaModel model =new ZhumulangmaModel(App.getInstance());
 
     @Override
     protected void convert(BaseViewHolder helper, Track item) {
@@ -35,26 +49,44 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
         if(null!=XmPlayerManager.getInstance(mContext).getCurrSound()){
             helper.setGone(R.id.iv_playing, XmPlayerManager.getInstance(mContext).getCurrSound().equals(item));
         }
-        switch (XmDownloadManager.getInstance().getSingleTrackDownloadStatus(item.getDataId())){
-            case FINISHED:
-                helper.setGone(R.id.iv_downloadsucc,true);
-                helper.setGone(R.id.progressBar,false);
-                helper.setGone(R.id.iv_download,false);
-                break;
-            case STARTED:
-            case WAITING:
-                helper.setGone(R.id.iv_downloadsucc,false);
-                helper.setGone(R.id.progressBar,true);
-                helper.setGone(R.id.iv_download,false);
-                break;
-            case STOPPED:
-            case NOADD:
-            case ERROR:
-                helper.setGone(R.id.iv_downloadsucc,false);
-                helper.setGone(R.id.progressBar,false);
-                helper.setGone(R.id.iv_download,true);
-                break;
-        }
+        model.list(TrackDownloadBean.class,TrackDownloadBeanDao.Properties.TrackId.eq(item.getDataId()))
+                .subscribe(trackDownloadBeans -> {
+                    if(trackDownloadBeans.size()==0){
+                        helper.setGone(R.id.iv_downloadsucc,false);
+                        helper.setGone(R.id.progressBar,false);
+                        helper.setGone(R.id.iv_download,true);
+                        return;
+                    }
+                    switch (trackDownloadBeans.get(0).getStatus()){
+                        case FINISHED:
+                            helper.setGone(R.id.iv_downloadsucc,true);
+                            helper.setGone(R.id.progressBar,false);
+                            helper.setGone(R.id.iv_download,false);
+                            break;
+                        case STARTED:
+                        case WAITING:
+                            helper.setGone(R.id.iv_downloadsucc,false);
+                            helper.setGone(R.id.progressBar,true);
+                            helper.setGone(R.id.iv_download,false);
+                            break;
+                        case STOPPED:
+                        case NOADD:
+                        case ERROR:
+                            helper.setGone(R.id.iv_downloadsucc,false);
+                            helper.setGone(R.id.progressBar,false);
+                            helper.setGone(R.id.iv_download,true);
+                            break;
+                    }
+                },e->e.printStackTrace());
+        model.list(PlayHistoryBean.class, PlayHistoryBeanDao.Properties.SoundId.eq(item.getDataId()),
+                PlayHistoryBeanDao.Properties.Kind.eq(item.getKind()))
+                .subscribe(playHistoryBeans -> {
+                    if(playHistoryBeans.size()==0){
+                        helper.setText(R.id.tv_hasplay,"");
+                    return;
+                }
+                  helper.setText(R.id.tv_hasplay,mContext.getString(R.string.hasplay,playHistoryBeans.get(0).getPercent()));
+                },e->e.printStackTrace());
         helper.addOnClickListener(R.id.iv_download);
     }
 }

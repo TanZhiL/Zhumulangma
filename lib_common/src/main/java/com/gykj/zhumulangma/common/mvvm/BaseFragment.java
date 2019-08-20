@@ -37,6 +37,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
+import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 
@@ -110,14 +111,19 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         mView = inflater.inflate(R.layout.common_fragment_root, container, false);
         initCommonView(mView);
         //不采用懒加载
-        if(!lazyEnable()){
+   /*     if(!lazyEnable()){
             mViewStubContent = mView.findViewById(R.id.view_stub_content);
             loadView();
             initView(mView);
             initListener();
             initParam();
             initData();
-        }
+        }*/
+        mViewStubContent = mView.findViewById(R.id.view_stub_content);
+        loadView();
+        initView(mView);
+        initListener();
+        initParam();
        return attachToSwipeBack(mView);
     }
 
@@ -125,18 +131,21 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
+
+        //采用懒加载
+        if(lazyEnable()){
+            initData();
+
+        }
+
     }
 
     @Override
     public void onEnterAnimationEnd(Bundle savedInstanceState) {
         super.onEnterAnimationEnd(savedInstanceState);
-        //采用懒加载
-        if(lazyEnable()){
-            mViewStubContent = mView.findViewById(R.id.view_stub_content);
-            loadView();
-            initView(mView);
-            initListener();
-            initParam();
+        //不采用懒加载
+        if(!lazyEnable()){
+
             initData();
         }
     }

@@ -51,13 +51,15 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         }
         etKeyword = fd(R.id.et_keyword);
 
-
+        etKeyword.postDelayed(() -> {
             SearchHistoryFragment historyFragment = new SearchHistoryFragment();
             historyFragment.setSearchListener(SearchFragment.this);
             loadRootFragment(R.id.fl_container, historyFragment);
 
 
-        KeyboardUtils.showSoftInput(etKeyword);
+            KeyboardUtils.showSoftInput(etKeyword);
+        },300);
+
 
     }
 
@@ -153,5 +155,10 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             ToastUtil.showToast("请输入要搜索的关键词");
         }
 
+    }
+
+    @Override
+    protected boolean lazyEnable() {
+        return false;
     }
 }

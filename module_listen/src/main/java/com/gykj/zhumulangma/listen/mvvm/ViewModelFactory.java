@@ -7,8 +7,10 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
+import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.listen.mvvm.model.HappenModel;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.HappenViewModel;
+import com.gykj.zhumulangma.listen.mvvm.viewmodel.HistoryViewModel;
 
 /**
  * Author: Thomas.
@@ -42,8 +44,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(HappenViewModel.class)) {
-            return (T) new HappenViewModel(mApplication, new HappenModel(mApplication));
+        if (modelClass.isAssignableFrom(HistoryViewModel.class)) {
+            return (T) new HistoryViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());

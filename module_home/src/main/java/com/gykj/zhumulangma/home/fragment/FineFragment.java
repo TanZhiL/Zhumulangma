@@ -173,6 +173,11 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements Vie
     }
 
     @Override
+    protected boolean lazyEnable() {
+        return true;
+    }
+
+    @Override
     public void OnBannerClick(int position) {
         BannerV2 bannerV2 = mViewModel.getBannerV2SingleLiveEvent().getValue().get(position);
         switch (bannerV2.getBannerContentType()){

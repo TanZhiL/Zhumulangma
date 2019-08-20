@@ -45,14 +45,14 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
                 }, e->e.printStackTrace());
     }
     public void insertHistory(SearchHistoryBean entity){
-        mModel.listAll(SearchHistoryBean.class)
+        mModel.list(SearchHistoryBean.class)
                 .filter(historyBeanList -> !historyBeanList.contains(entity))
                 .flatMap((Function<List<SearchHistoryBean>, ObservableSource<SearchHistoryBean>>)
                         historyBeanList -> mModel.insert(entity))
                 .subscribe(bean -> {}, e->e.printStackTrace());
     }
     public void getHistory(){
-        mModel.listAll(SearchHistoryBean.class)
+        mModel.list(SearchHistoryBean.class)
                 .subscribe(searchHistoryBeans -> getHistorySingleLiveEvent().postValue(searchHistoryBeans));
     }
 

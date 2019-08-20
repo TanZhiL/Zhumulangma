@@ -60,7 +60,7 @@
             android:layout_marginTop="5dp"
             android:gravity="left"
             android:singleLine="true"
-            android:text="喜马拉雅"
+            android:text="珠穆朗玛"
             android:textAppearance="@style/NotificationText"
             android:textSize="13sp" />
     </LinearLayout>

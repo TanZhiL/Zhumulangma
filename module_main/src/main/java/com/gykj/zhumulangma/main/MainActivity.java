@@ -1,16 +1,13 @@
 package com.gykj.zhumulangma.main;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.util.log.TLog;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -22,7 +19,6 @@ import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.fragment.MainFragment;
 import com.ximalaya.ting.android.opensdk.auth.call.IXmlyAuthListener;
-import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants;
 import com.ximalaya.ting.android.opensdk.auth.exception.XmlyException;
 import com.ximalaya.ting.android.opensdk.auth.handler.XmlySsoHandler;
 import com.ximalaya.ting.android.opensdk.auth.model.XmlyAuth2AccessToken;
@@ -37,22 +33,10 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
-import com.ximalaya.ting.android.opensdk.util.Logger;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.Map;
 
 import me.yokeyword.fragmentation.ISupportFragment;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
 
@@ -133,6 +117,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         }*/
                         start(navigateBean.fragment);
                         break;
+                    case AppConstants.Router.Player.F_PLAY_TRACK:
+                        extraTransaction().setCustomAnimations(
+                                com.gykj.zhumulangma.common.R.anim.push_bottom_in,
+                                com.gykj.zhumulangma.common.R.anim.no_anim,
+                                com.gykj.zhumulangma.common.R.anim.no_anim,
+                                com.gykj.zhumulangma.common.R.anim.push_bottom_out)
+                                .start(navigateBean.fragment);
+                        break;
                     default:
                         start(navigateBean.fragment);
                         break;
@@ -156,7 +148,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (v == globalPlay) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Player.F_PLAY_TRACK).navigation();
             if (null != navigation) {
-                start((ISupportFragment) navigation);
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                        new NavigateBean(AppConstants.Router.Player.F_PLAY_TRACK, (ISupportFragment) navigation)));
             }
         }
     }

@@ -19,8 +19,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.adapter.NavigatorAdapter;
-import com.gykj.zhumulangma.common.bean.AlbumTrackBean;
+import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
@@ -33,7 +32,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
-import com.ximalaya.ting.android.opensdk.model.track.CommonTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
@@ -81,6 +79,8 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     private TextView tvSbcount;
     private String[] tabs = {"详情", "节目"};
 
+    private XmPlayerManager playerManager = XmPlayerManager.getInstance(mContext);
+
     private AlbumTrackAdapter mAlbumTrackAdapter;
 
 
@@ -111,7 +111,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         viewpager.setAdapter(new AlbumPagerAdapter());
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
         commonNavigator.setAdjustMode(true);
-        commonNavigator.setAdapter(new NavigatorAdapter(Arrays.asList(tabs), viewpager, 125));
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 125));
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
         viewpager.setCurrentItem(1);
@@ -128,7 +128,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     public void initListener() {
         super.initListener();
         XmDownloadManager.getInstance().addDownloadStatueListener(this);
-        XmPlayerManager.getInstance(mContext).addPlayerStatusListener(this);
+        playerManager.addPlayerStatusListener(this);
         refreshLayout.setOnLoadMoreListener(this);
         viewpager.addOnPageChangeListener(this);
         mAlbumTrackAdapter.setOnItemClickListener(this);
@@ -173,7 +173,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-        XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(),position);
+        playerManager.playList(mViewModel.getCommonTrackList(),position);
 
     }
 
@@ -188,14 +188,18 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
     private void updateDownloadStatus(Track track) {
         List<Track> tracks = mAlbumTrackAdapter.getData();
-        for (int i = 0; i < tracks.size(); i++) {
-            if (tracks.get(i).getDataId() == track.getDataId()) {
-                DownloadState downloadStatus = XmDownloadManager.getInstance()
-                        .getSingleTrackDownloadStatus(tracks.get(i).getDataId());
+        int index = mAlbumTrackAdapter.getData().indexOf(track);
 
-                View ivDownload = mAlbumTrackAdapter.getViewByPosition(i, R.id.iv_download);
-                View progress = mAlbumTrackAdapter.getViewByPosition(i, R.id.progressBar);
-                View ivDownloadSucc = mAlbumTrackAdapter.getViewByPosition(i, R.id.iv_downloadsucc);
+        if(index!=-1){
+                DownloadState downloadStatus = XmDownloadManager.getInstance()
+                        .getSingleTrackDownloadStatus(tracks.get(index).getDataId());
+
+                View ivDownload = mAlbumTrackAdapter.getViewByPosition(index, R.id.iv_download);
+                View progress = mAlbumTrackAdapter.getViewByPosition(index, R.id.progressBar);
+                View ivDownloadSucc = mAlbumTrackAdapter.getViewByPosition(index, R.id.iv_downloadsucc);
+                if(ivDownload==null||progress==null||ivDownloadSucc==null){
+                    return;
+                }
                 switch (downloadStatus) {
                     case FINISHED:
                         ivDownloadSucc.setVisibility(View.VISIBLE);
@@ -217,10 +221,10 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                         break;
                 }
             }
-        }
+
     }
     private void updatePlayStatus() {
-        Track track = XmPlayerManager.getInstance(mContext).getCurrSoundIgnoreKind(true);
+        Track track = playerManager.getCurrSoundIgnoreKind(true);
         if(null==track){
             return;
         }
@@ -233,14 +237,14 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         }
     }
     private void updatePlayStatus(int currPos, int duration) {
-        Track track = XmPlayerManager.getInstance(mContext).getCurrSoundIgnoreKind(true);
+        Track track = playerManager.getCurrSoundIgnoreKind(true);
         if(null==track){
             return;
         }
-        List<Track> tracks = mAlbumTrackAdapter.getData();
-        for (int i = 0; i < tracks.size(); i++) {
-            TextView tvHasplay = (TextView) mAlbumTrackAdapter.getViewByPosition(i, R.id.tv_hasplay);
-            if(null!=tvHasplay&&tracks.get(i).getDataId() == track.getDataId()){
+        int index = mAlbumTrackAdapter.getData().indexOf(track);
+        if(index!=-1){
+            TextView tvHasplay = (TextView) mAlbumTrackAdapter.getViewByPosition(index, R.id.tv_hasplay);
+            if(null!=tvHasplay&&mAlbumTrackAdapter.getData().get(index).getDataId() == track.getDataId()){
                 tvHasplay.setText(getString(R.string.hasplay, 100 * currPos /duration));
             }
         }
@@ -284,7 +288,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     public void onDestroy() {
         super.onDestroy();
         XmDownloadManager.getInstance().removeDownloadStatueListener(this);
-        XmPlayerManager.getInstance(mContext).removePlayerStatusListener(this);
+        playerManager.removePlayerStatusListener(this);
     }
 
     @Override
@@ -432,5 +436,10 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return view == object;
         }
+    }
+
+    @Override
+    protected boolean lazyEnable() {
+        return false;
     }
 }

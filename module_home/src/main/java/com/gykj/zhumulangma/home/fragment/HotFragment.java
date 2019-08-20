@@ -1,7 +1,6 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,10 +21,9 @@ import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
 import com.gykj.zhumulangma.home.adapter.HotRadioAdapter;
 import com.gykj.zhumulangma.home.adapter.HotStoryAdapter;
 import com.gykj.zhumulangma.home.adapter.HotTopicAdapter;
-import com.gykj.zhumulangma.home.adapter.MusicAdapter;
+import com.gykj.zhumulangma.home.adapter.HotMusicAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
-import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -34,11 +32,9 @@ import com.youth.banner.listener.OnBannerListener;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
-import me.yokeyword.fragmentation.SupportFragment;
 
 public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBannerListener, View.OnClickListener {
 
@@ -56,7 +52,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     private HotStoryAdapter mBabyAdapter;
 
     private RecyclerView rvMusic;
-    private MusicAdapter mMusicAdapter;
+    private HotMusicAdapter mMusicAdapter;
 
     private RecyclerView rvRadio;
     private HotRadioAdapter mRadioAdapter;
@@ -215,7 +211,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
 
     private void initMusic() {
         rvMusic = fd(R.id.rv_music);
-        mMusicAdapter = new MusicAdapter(R.layout.home_item_hot_music);
+        mMusicAdapter = new HotMusicAdapter(R.layout.home_item_hot_music);
         rvMusic.setLayoutManager(new GridLayoutManager(mContext, 3));
         rvMusic.setHasFixedSize(true);
         mMusicAdapter.bindToRecyclerView(rvMusic);

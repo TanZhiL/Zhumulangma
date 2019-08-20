@@ -14,10 +14,13 @@ import com.blankj.utilcode.util.Utils;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.gykj.util.log.TLog;
 import com.gykj.videotrimmer.VideoTrimmer;
+import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
+import com.gykj.zhumulangma.common.bean.TrackDownloadBean;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -28,6 +31,7 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.httputil.XimalayaException;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
+import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.appnotification.NotificationColorUtils;
 import com.ximalaya.ting.android.opensdk.player.appnotification.XmNotificationCreater;
@@ -36,11 +40,13 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 import com.ximalaya.ting.android.opensdk.util.Logger;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
+import com.ximalaya.ting.android.sdkdownloader.downloadutil.IXmDownloadTrackCallBack;
 import com.ximalaya.ting.android.sdkdownloader.http.RequestParams;
 import com.ximalaya.ting.android.sdkdownloader.http.app.RequestTracker;
 import com.ximalaya.ting.android.sdkdownloader.http.request.UriRequest;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.greendao.query.QueryBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -65,10 +71,10 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REFRESH_TOKEN_UR
  * Version:     V1.0.0<br>
  * Update:     <br>
  */
-public class App extends android.app.Application implements IXmPlayerStatusListener {
+public class App extends android.app.Application implements IXmPlayerStatusListener, IXmDownloadTrackCallBack {
     private static App mApplication;
     private static final String TAG = "App";
-
+    private ZhumulangmaModel model =new ZhumulangmaModel(this);
     //static 代码段可以防止内存泄露
     static {
 
@@ -144,6 +150,8 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
      * 初始化GreenDao,直接在Application中进行初始化操作
      */
     private void initGreenDao() {
+        QueryBuilder.LOG_SQL = true;
+        QueryBuilder.LOG_VALUES = true;
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "zhumulangma.db");
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
@@ -179,6 +187,7 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
                     .progressCallBackMaxTimeSpan(1000)//  进度条progress 更新的频率 默认是800
                     .savePath(getExternalFilesDir("mp3").getAbsolutePath())    // 保存的地址 会检查这个地址是否有效
                     .create();
+            XmDownloadManager.getInstance().addDownloadStatueListener(this);
         }
         // 此代码表示播放时会去监测下是否已经下载(setDownloadPlayPathCallback 方法已经废弃 请使用如下方法)
         XmPlayerManager.getInstance(this).setCommonBusinessHandle(XmDownloadManager.getInstance());
@@ -193,6 +202,7 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
         }
 
         XmPlayerManager.getInstance(this).addPlayerStatusListener(this);
+
     }
 
     private RequestTracker requestTracker = new RequestTracker() {
@@ -367,6 +377,7 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
     public void onTerminate() {
         super.onTerminate();
         XmPlayerManager.getInstance(this).removePlayerStatusListener(this);
+        XmDownloadManager.getInstance().removeDownloadStatueListener(this);
         XmPlayerManager.release();
         CommonRequest.release();
     }
@@ -422,7 +433,14 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
 
     @Override
     public void onPlayProgress(int i, int i1) {
-
+        Track currSound = XmPlayerManager.getInstance(this).getCurrSoundIgnoreKind(true);
+        if(null==currSound){
+            return;
+        }
+        int currPos=XmPlayerManager.getInstance(this).getPlayCurrPositon();
+        int duration=XmPlayerManager.getInstance(this).getDuration();
+        model.insert(new PlayHistoryBean(currSound.getDataId(),currSound.getKind(),100 * currPos /duration,
+                System.currentTimeMillis(),currSound)).subscribe();
     }
 
     @Override
@@ -430,4 +448,42 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
         return false;
     }
 
+    @Override
+    public void onWaiting(Track track) {
+        model.insert(new TrackDownloadBean(track.getDataId(),XmDownloadManager.getInstance()
+                .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
+    }
+
+    @Override
+    public void onStarted(Track track) {
+        model.insert(new TrackDownloadBean(track.getDataId(),XmDownloadManager.getInstance()
+                .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
+    }
+
+    @Override
+    public void onSuccess(Track track) {
+        model.insert(new TrackDownloadBean(track.getDataId(),XmDownloadManager.getInstance()
+                .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
+    }
+
+    @Override
+    public void onError(Track track, Throwable throwable) {
+        model.insert(new TrackDownloadBean(track.getDataId(),XmDownloadManager.getInstance()
+                .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
+    }
+
+    @Override
+    public void onCancelled(Track track, com.ximalaya.ting.android.sdkdownloader.task.Callback.CancelledException e) {
+        model.insert(new TrackDownloadBean(track.getDataId(),XmDownloadManager.getInstance()
+                .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
+    }
+
+    @Override
+    public void onProgress(Track track, long l, long l1) {
+
+    }
+
+    @Override
+    public void onRemoved() {
+    }
 }

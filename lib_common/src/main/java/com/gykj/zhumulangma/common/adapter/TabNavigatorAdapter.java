@@ -22,12 +22,12 @@ import java.util.List;
  * Created by 10719
  * on 2019/6/21
  */
-public class NavigatorAdapter extends CommonNavigatorAdapter {
+public class TabNavigatorAdapter extends CommonNavigatorAdapter {
     private List<String> mtabs;
     private ViewPager viewPager;
     private float lineHeight;
 
-    public NavigatorAdapter(List<String> mtabs, ViewPager viewPager, float lineHeight) {
+    public TabNavigatorAdapter(List<String> mtabs, ViewPager viewPager, float lineHeight) {
         this.mtabs = mtabs;
         this.viewPager = viewPager;
         this.lineHeight = lineHeight;

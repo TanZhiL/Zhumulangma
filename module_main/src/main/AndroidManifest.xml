@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.gykj.zhumulangma.main.SplashActivity" android:theme="@style/AppTheme.SplashTheme">
+
         </activity>
 
     </application>

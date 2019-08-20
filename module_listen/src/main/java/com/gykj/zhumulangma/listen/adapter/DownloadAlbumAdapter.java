@@ -1,31 +1,30 @@
-package com.gykj.zhumulangma.home.adapter;
+package com.gykj.zhumulangma.listen.adapter;
 
-import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
-import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.listen.R;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
-
-import java.util.List;
+import com.ximalaya.ting.android.sdkdownloader.model.XmDownloadAlbum;
 
 /**
  * Created by 10719
- * on 2019/6/12
+ * on 2019/6/17
  */
-public class MusicAdapter extends BaseQuickAdapter<Album, BaseViewHolder> {
-    public MusicAdapter(int layoutResId) {
+public class DownloadAlbumAdapter extends BaseQuickAdapter<XmDownloadAlbum, BaseViewHolder> {
+    public DownloadAlbumAdapter(int layoutResId) {
         super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Album item) {
+    protected void convert(BaseViewHolder helper, XmDownloadAlbum item) {
         Glide.with(mContext).load(item.getCoverUrlMiddle()).into((ImageView) helper.getView(R.id.iv_cover));
-        helper.setText(R.id.tv_playcount, ZhumulangmaUtil.toWanYi(item.getPlayCount()));
         helper.setText(R.id.tv_title,item.getAlbumTitle());
-        helper.setText(R.id.tv_desc,item.getAlbumIntro());
+        helper.setText(R.id.tv_track_num, String.format(mContext.getResources().getString(R.string.ji),
+                item.getTrackCount()));
+
     }
 }

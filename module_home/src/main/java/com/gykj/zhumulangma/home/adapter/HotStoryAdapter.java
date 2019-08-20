@@ -6,8 +6,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
-import com.gykj.zhumulangma.home.R;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import java.util.List;
