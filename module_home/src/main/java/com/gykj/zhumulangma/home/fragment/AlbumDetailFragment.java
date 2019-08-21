@@ -116,7 +116,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         ViewPagerHelper.bind(magicIndicator, viewpager);
         viewpager.setCurrentItem(1);
 
-        mAlbumTrackAdapter = new AlbumTrackAdapter(R.layout.home_item_album_detail);
+        mAlbumTrackAdapter = new AlbumTrackAdapter(R.layout.home_item_album_track);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);
         mAlbumTrackAdapter.bindToRecyclerView(recyclerView);
@@ -140,6 +140,9 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                     mSort = mSort.equals("asc") ? "desc" : "asc";
                     mViewModel.getTrackList(String.valueOf(mAlbumId), mSort);
                 }));
+        addDisposable(RxView.clicks(fd(R.id.ll_play))
+                .throttleFirst(2, TimeUnit.SECONDS)
+                .subscribe(unit -> playerManager.playList(mViewModel.getCommonTrackList(),0)));
     }
 
     @Override

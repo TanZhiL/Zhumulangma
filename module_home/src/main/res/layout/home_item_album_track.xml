@@ -24,7 +24,7 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/shap_home_track_cover"
+        android:background="@drawable/shap_common_track_cover"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

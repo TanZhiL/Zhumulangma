@@ -28,7 +28,6 @@ public class TrackDownloadBean {
         this.status = status;
     }
 
-
     @Generated(hash = 411110430)
     public TrackDownloadBean() {
     }

@@ -121,7 +121,7 @@
 
 
                 <LinearLayout
-                    android:id="@+id/textView24"
+                    android:id="@+id/ll_play"
                     android:layout_width="162dp"
                     android:layout_height="34dp"
                     android:background="@drawable/shap_common_accent"

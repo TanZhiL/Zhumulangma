@@ -1,11 +1,19 @@
 package com.gykj.zhumulangma.common;
 
+import android.support.annotation.Nullable;
+
 import com.gykj.zhumulangma.common.net.http.RetryWithNewToken;
+import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
+import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
+import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
+import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -48,37 +56,7 @@ public class ExampleUnitTest {
         });
     }
 
-    @Test
-    public void test() {
-        Single<Integer> just = Single.just(1).doOnSuccess(new Consumer<Integer>() {
-            @Override
-            public void accept(Integer integer) throws Exception {
-                System.out.println(integer);
-            }
-        });
-        Single<String> just1 = Single.just("2").doOnSuccess(new Consumer<String>() {
-            @Override
-            public void accept(String s) throws Exception {
-                System.out.println(s);
-            }
-        });
-        List<Single> singles=new ArrayList<>();
-        singles.add(just);
-        singles.add(just1);
-        Single.zipArray(new Function<Object[], Object>() {
-            @Override
-            public Object apply(Object[] objects) throws Exception {
-                return objects[0].toString()+objects[1].toString();
-            }
-        },singles.toArray(new Single[]{}))
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        System.out.println(o);
 
-                    }
-                });
-    }
     String s;
     @Test
     public void test1(){
@@ -109,4 +87,7 @@ public class ExampleUnitTest {
 
         stringObservable.subscribe();
     }
+
+
+
 }

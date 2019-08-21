@@ -22,6 +22,7 @@ import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
 
+import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.Property;
 import org.greenrobot.greendao.query.QueryBuilder;
 import org.greenrobot.greendao.query.WhereCondition;
@@ -441,7 +442,7 @@ public class ZhumulangmaModel extends BaseModel {
      * @param <T>
      * @return
      */
-    public <T> Observable<Boolean> clear(Class<T> cls){
+    public <T> Observable<Boolean> clearAll(Class<T> cls){
         return  Observable.create(emitter -> {
             try {
                 App.getDaoSession().deleteAll(cls);
@@ -454,7 +455,25 @@ public class ZhumulangmaModel extends BaseModel {
 
 
     }
+    /**
+     * 清空所有记录
+     * @param <T>
+     * @return
+     */
+    public <T,K> Observable<Boolean> clear(Class<T> cls,K key){
+        return  Observable.create(emitter -> {
+            try {
+                AbstractDao<T, K> tkAbstractDao = (AbstractDao<T, K>) App.getDaoSession().getDao(cls);
+                tkAbstractDao.deleteByKey(key);
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+            emitter.onNext(true);
+            emitter.onComplete();
+        }).compose(RxAdapter.schedulersTransformer());
 
+
+    }
     /**
      * 插入一条记录
      * @param entity

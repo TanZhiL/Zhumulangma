@@ -7,33 +7,58 @@
     android:background="@color/white"
     android:paddingLeft="11dp"
     android:paddingRight="11dp">
-    <ImageView
+
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_cover"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_common_image_placeholder"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/common_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/c"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shap_common_track_cover"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:tint="@color/white"
+        android:src="@drawable/ic_common_play"
+        app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+        app:layout_constraintEnd_toEndOf="@+id/iv_cover"
+        app:layout_constraintStart_toStartOf="@+id/iv_cover"
+        app:layout_constraintTop_toTopOf="@id/iv_cover" />
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="小道士笔记【灵异玄幻-有声小说】"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:ellipsize="end"
-        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_cover"
-        app:layout_constraintTop_toTopOf="@+id/iv_cover" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
-        android:id="@+id/tv_author"
+        android:id="@+id/tv_album"
         android:layout_width="0dp"
         android:layout_height="23dp"
         android:layout_marginEnd="8dp"
@@ -42,7 +67,7 @@
         android:text="《盗墓笔记》49"
         android:textColor="@color/colorGray"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/frameLayout"
+        app:layout_constraintEnd_toStartOf="@+id/ll_delete"
         app:layout_constraintStart_toStartOf="@+id/tv_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
@@ -51,9 +76,9 @@
         android:layout_height="17dp"
         android:layout_marginEnd="8dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/frameLayout"
+        app:layout_constraintEnd_toStartOf="@+id/ll_delete"
         app:layout_constraintStart_toStartOf="@+id/tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_author">
+        app:layout_constraintTop_toBottomOf="@+id/tv_album">
 
         <ImageView
             android:layout_width="16dp"
@@ -68,27 +93,26 @@
             android:layout_marginStart="8dp"
             android:textColor="#505050"
             android:textSize="12sp"
-            tools:text="3596.2万" />
+            tools:text="6.35M" />
 
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_common_ji"
+            android:src="@drawable/ic_common_history"
             android:tint="@color/colorPrimaryDark" />
 
-
         <TextView
-            android:id="@+id/tv_track_num"
+            android:id="@+id/tv_duration"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
-            android:text="513集"
+            android:text="12:41"
             android:textColor="#505050"
             android:textSize="12sp" />
 
-    </LinearLayout>
 
+    </LinearLayout>
     <FrameLayout
         android:id="@+id/ll_delete"
         android:layout_width="40dp"

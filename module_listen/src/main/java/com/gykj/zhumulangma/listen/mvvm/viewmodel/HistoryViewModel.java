@@ -6,13 +6,10 @@ import android.support.annotation.NonNull;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
-import com.gykj.zhumulangma.common.mvvm.model.BaseModel;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 
 import java.util.List;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * Author: Thomas.
@@ -36,7 +33,7 @@ public class HistoryViewModel extends BaseViewModel<ZhumulangmaModel> {
        }, e->e.printStackTrace());
     }
     public void clear(){
-        mModel.clear(PlayHistoryBean.class).subscribe();
+        mModel.clearAll(PlayHistoryBean.class).subscribe();
     }
     public SingleLiveEvent<List<PlayHistoryBean>> getHistorySingleLiveEvent() {
         return mHistorysSingleLiveEvent=createLiveData(mHistorysSingleLiveEvent);

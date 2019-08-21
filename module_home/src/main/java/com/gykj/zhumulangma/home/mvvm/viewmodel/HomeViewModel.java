@@ -39,7 +39,7 @@ public class HomeViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
     public void clearHistory(){
 
-        mModel.clear(SearchHistoryBean.class)
+        mModel.clearAll(SearchHistoryBean.class)
                 .subscribe(aBoolean -> {
 
                 }, e->e.printStackTrace());

@@ -285,4 +285,9 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
         llbarCenter = LayoutInflater.from(mContext).inflate(R.layout.home_layout_rank_bar_center, null);
         return llbarCenter;
     }
+
+    @Override
+    protected boolean lazyEnable() {
+        return false;
+    }
 }

@@ -36,6 +36,7 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.appnotification.NotificationColorUtils;
 import com.ximalaya.ting.android.opensdk.player.appnotification.XmNotificationCreater;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayerConfig;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 import com.ximalaya.ting.android.opensdk.util.Logger;
@@ -51,6 +52,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
 import me.yokeyword.fragmentation.Fragmentation;
 import okhttp3.Call;
@@ -191,7 +193,13 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
         }
         // 此代码表示播放时会去监测下是否已经下载(setDownloadPlayPathCallback 方法已经废弃 请使用如下方法)
         XmPlayerManager.getInstance(this).setCommonBusinessHandle(XmDownloadManager.getInstance());
-
+        try {
+            Method method = XmPlayerConfig.getInstance(this).getClass().getDeclaredMethod("setUseSystemPlayer", Boolean.class);
+            method.setAccessible(true);
+            method.invoke(XmPlayerConfig.getInstance(this),true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         NotificationColorUtils.isTargerSDKVersion24More = true;
         try {
             Notification mNotification = XmNotificationCreater.getInstanse(this)
