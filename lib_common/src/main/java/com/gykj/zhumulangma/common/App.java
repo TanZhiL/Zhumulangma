@@ -22,6 +22,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
+import com.gykj.zhumulangma.common.widget.TRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
@@ -82,12 +83,13 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
 
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> {
-            ClassicsHeader classicsHeader = new ClassicsHeader(context);
+
+           /* ClassicsHeader classicsHeader = new ClassicsHeader(context);
             classicsHeader.setTextSizeTitle(14);
             classicsHeader.setTextSizeTime(10);
             classicsHeader.setDrawableSize(18);
-            classicsHeader.setFinishDuration(0);
-            return classicsHeader;
+            classicsHeader.setFinishDuration(0);*/
+            return new TRefreshHeader(context);
         });
         //设置全局的Footer构建器
         SmartRefreshLayout.setDefaultRefreshFooterCreator((context, layout) -> {
@@ -447,7 +449,8 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
         }
         int currPos=XmPlayerManager.getInstance(this).getPlayCurrPositon();
         int duration=XmPlayerManager.getInstance(this).getDuration();
-        model.insert(new PlayHistoryBean(currSound.getDataId(),currSound.getKind(),100 * currPos /duration,
+        model.insert(new PlayHistoryBean(currSound.getDataId(),currSound.getAlbum().getAlbumId(),
+                currSound.getKind(),100 * currPos /duration,
                 System.currentTimeMillis(),currSound)).subscribe();
     }
 

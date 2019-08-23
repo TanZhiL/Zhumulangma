@@ -18,6 +18,7 @@ import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerList;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.column.ColumnList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
+import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
@@ -374,6 +375,26 @@ public class ZhumulangmaModel extends BaseModel {
                 })).compose(RxAdapter.exceptionTransformer());
     }
 
+    /**
+     * 根据上一次所听声音的id，获取此声音所在那一页的声音
+     * @param specificParams
+     * @return
+     */
+    public Observable<LastPlayTrackList> getLastPlayTracks(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getLastPlayTracks(specificParams,
+                new IDataCallBack<LastPlayTrackList>() {
+                    @Override
+                    public void onSuccess(@Nullable LastPlayTrackList trackList) {
+                        emitter.onNext(trackList);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
 
 
     /**
@@ -382,7 +403,8 @@ public class ZhumulangmaModel extends BaseModel {
      * @param <T>
      * @return
      */
-    public <T> Observable<List<T>> list(Class<T> cls, int page, int pagesize, Property asc,Property desc, WhereCondition cond, WhereCondition... condMore){
+    public <T> Observable<List<T>> list(Class<T> cls, int page, int pagesize, Property asc,Property desc,
+                                        WhereCondition cond, WhereCondition... condMore){
 
         return  Observable.create(emitter -> {
             List<T> list = new ArrayList<>();
@@ -429,6 +451,12 @@ public class ZhumulangmaModel extends BaseModel {
     public <T> Observable<List<T>> listDesc(Class<T> cls, int page, int pagesize, Property desc){
 
         return list(cls,page,pagesize,null,desc,null);
+
+    }
+    public <T> Observable<List<T>> listDesc(Class<T> cls, int page, int pagesize,Property desc,
+                                            WhereCondition cond ,WhereCondition... condMore){
+
+        return list(cls,page,pagesize,null,desc,cond,condMore);
 
     }
     public <T> Observable<List<T>> list(Class<T> cls,  WhereCondition cond, WhereCondition... condMore){

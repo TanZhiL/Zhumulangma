@@ -19,15 +19,17 @@ import org.greenrobot.greendao.converter.PropertyConverter;
 public class PlayHistoryBean {
     @Id
     long soundId;
+    long albumId;
     String kind;
     int percent;
     long datatime;
     @Convert(converter =TrackConverter.class,columnType = String.class)
     Track track;
-    @Generated(hash = 661612239)
-    public PlayHistoryBean(long soundId, String kind, int percent, long datatime,
-            Track track) {
+    @Generated(hash = 661660988)
+    public PlayHistoryBean(long soundId, long albumId, String kind, int percent,
+            long datatime, Track track) {
         this.soundId = soundId;
+        this.albumId = albumId;
         this.kind = kind;
         this.percent = percent;
         this.datatime = datatime;
@@ -65,6 +67,12 @@ public class PlayHistoryBean {
     }
     public void setTrack(Track track) {
         this.track = track;
+    }
+    public long getAlbumId() {
+        return this.albumId;
+    }
+    public void setAlbumId(long albumId) {
+        this.albumId = albumId;
     }
 
     public static class TrackConverter implements PropertyConverter<Track, String> {

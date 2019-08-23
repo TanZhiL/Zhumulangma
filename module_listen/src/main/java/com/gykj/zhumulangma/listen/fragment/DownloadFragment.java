@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.listen.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -159,7 +160,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             if (id == R.id.ll_delete) {
                 XmDownloadManager.getInstance().clearDownloadedTrack(downloadTracks.get(position).getDataId());
                 mViewModel.clearTrack(downloadTracks.get(position).getDataId());
-                initData();
+                new Handler().postDelayed(()->initData(),200);
             }
         }
     }

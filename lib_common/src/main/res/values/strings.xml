@@ -29,5 +29,6 @@
     <string name="download">已下载:%d</string>
     <string name="hasplay">已播:%d%%</string>
     <string name="memory">已占用%s，可用%s</string>
+    <string name="lastplay">上次播放：%s</string>
 
 </resources>
