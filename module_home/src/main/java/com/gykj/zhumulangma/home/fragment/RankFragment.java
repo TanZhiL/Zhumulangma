@@ -167,8 +167,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
     @Override
     public void initData() {
 
-            mViewModel.getFreeRank(cid);
-            mViewModel.getPaidRank();
+            mViewModel.init(cid);
     }
 
     @Override
@@ -184,11 +183,11 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
 
             flMask.animate().withStartAction(() -> flMask.setAlpha(1))
                     .withEndAction(() -> flMask.setVisibility(View.GONE)).alpha(0).setDuration(200);
-            ivCategoryDown.animate().rotation(0).setDuration(200);
+            ivCategoryDown.animate().rotationBy(180).setDuration(200);
         } else {
             flMask.setAlpha(0);
             flMask.animate().withStartAction(() -> flMask.setVisibility(View.VISIBLE)).alpha(1).setDuration(200);
-            ivCategoryDown.animate().rotation(180).setDuration(200);
+            ivCategoryDown.animate().rotationBy(180).setDuration(200);
         }
     }
 

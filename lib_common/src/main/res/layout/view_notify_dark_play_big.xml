@@ -72,7 +72,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerVertical="true"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="24dp"
             android:layout_toLeftOf="@id/img_notifyPlayOrPause"
             android:contentDescription="上一首"
             android:scaleType="fitCenter"
@@ -92,11 +92,32 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="24dp"
             android:layout_toRightOf="@id/img_notifyPlayOrPause"
             android:contentDescription="下一首"
             android:scaleType="fitCenter"
             android:src="@drawable/notify_btn_light_next_normal_xml" />
+
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:rotation="180"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_common_forward" />
+
+
+        <ImageView
+            android:id="@+id/iv_forward"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_common_forward" />
     </RelativeLayout>
 
 </RelativeLayout>

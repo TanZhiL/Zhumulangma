@@ -265,20 +265,22 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
             return;
         }
         List<Track> tracks = mAlbumTrackAdapter.getData();
+
+        if(mAlbumId == track.getAlbum().getAlbumId()){
+            mLastPlay=track;
+            tvLastplay.setText(getString(R.string.lastplay,mLastPlay.getTrackTitle()));
+        }
         for (int i = 0; i < tracks.size(); i++) {
             LottieAnimationView lavPlaying= (LottieAnimationView) mAlbumTrackAdapter
                     .getViewByPosition(i, R.id.lav_playing);
-            if(tracks.get(i).getDataId() == track.getDataId()){
-                mLastPlay=track;
-                tvLastplay.setText(getString(R.string.lastplay,mLastPlay.getTrackTitle()));
-            }
+
             if (null != lavPlaying) {
                 if(tracks.get(i).getDataId() == track.getDataId()){
                     lavPlaying.setVisibility(View.VISIBLE);
                     if(XmPlayerManager.getInstance(mContext).isPlaying()){
                         lavPlaying.playAnimation();
                     }else {
-                        lavPlaying.cancelAnimation();
+                        lavPlaying.pauseAnimation();
                     }
                 }else {
                     lavPlaying.cancelAnimation();

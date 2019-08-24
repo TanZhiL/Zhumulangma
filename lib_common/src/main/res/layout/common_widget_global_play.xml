@@ -7,25 +7,46 @@
     android:layout_width="50dp"
     android:layout_height="50dp">
 
+<com.gykj.zhumulangma.common.widget.CircleProgressBar
+    android:id="@+id/cpb_progress"
+    android:layout_width="match_parent"
+    android:layout_margin="6dp"
+    app:circleWidth="2dp"
+    app:secondColor="@color/colorPrimary"
+    app:firstColor="#88a6a6a6"
+    android:layout_height="match_parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_avatar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/common_avatar"
+        android:layout_margin="8dp"
+        android:src="@drawable/notification_default"
+        app:civ_border_color="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shap_common_globalplay_mask"
         app:civ_border_color="#f0f0f0f0"
         app:civ_border_width="2dp"
         android:layout_margin="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-<ImageView
-    android:id="@+id/iv_play"
-    android:layout_width="16dp"
-    android:layout_height="16dp"
-    android:src="@drawable/ic_common_widget_play_white"
-    app:layout_constraintTop_toTopOf="@id/civ_avatar"
-    app:layout_constraintBottom_toBottomOf="@id/civ_avatar"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_play"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="3dp"
+        android:src="@drawable/ic_common_widget_play_white"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/civ_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/civ_avatar" />
 </android.support.constraint.ConstraintLayout>

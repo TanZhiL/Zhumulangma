@@ -14,6 +14,7 @@ import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.track.CommonTrackList;
+import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 
@@ -85,7 +86,40 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
 
     private Observable<TrackList> getTrackInitObservable(String albumId) {
-        return mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime,
+        Observable<TrackList> trackListObservable = mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime,
+                PlayHistoryBeanDao.Properties.AlbumId.eq(albumId)).doOnNext(playHistoryBeans -> {
+            if (!CollectionUtils.isEmpty(playHistoryBeans))
+                getLastplaySingleLiveEvent().setValue(playHistoryBeans.get(0).getTrack());
+        }).flatMap((Function<List<PlayHistoryBean>, ObservableSource<TrackList>>) playHistoryBeans -> {
+            if (null == getLastplaySingleLiveEvent().getValue()) {
+
+                Map<String, String> map = new HashMap<>();
+                map.put(DTransferConstants.ALBUM_ID, albumId);
+                map.put(DTransferConstants.PAGE, String.valueOf(1));
+                return mModel.getTracks(map).doOnNext(trackList -> {
+                    curTrackPage = 1;
+                    upTrackPage = 0;
+                });
+            } else {
+                Map<String, String> map = new HashMap<>();
+                map.put(DTransferConstants.ALBUM_ID, albumId);
+                map.put(DTransferConstants.TRACK_ID, String.valueOf(getLastplaySingleLiveEvent()
+                        .getValue().getDataId()));
+                return mModel.getLastPlayTracks(map)
+                        .doOnNext(lastPlayTrackList -> {
+                            curTrackPage = lastPlayTrackList.getPageid();
+                            upTrackPage = lastPlayTrackList.getPageid() - 1;
+                        })
+                        .map(lastPlayTrackList -> {
+                    TrackList trackList = new TrackList();
+                    trackList.setAlbumId(Integer.parseInt(albumId));
+                    trackList.cloneCommonTrackList(lastPlayTrackList);
+                    return trackList;
+                });
+            }
+        });
+        return trackListObservable;
+       /* return mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime,
                 PlayHistoryBeanDao.Properties.AlbumId.eq(albumId)).doOnNext(playHistoryBeans -> {
             if (!CollectionUtils.isEmpty(playHistoryBeans))
                 getLastplaySingleLiveEvent().setValue(playHistoryBeans.get(0).getTrack());
@@ -105,7 +139,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
             map.put(DTransferConstants.ALBUM_ID, albumId);
             map.put(DTransferConstants.PAGE, String.valueOf(integer));
             return mModel.getTracks(map);
-        }).observeOn(Schedulers.io());
+        }).observeOn(Schedulers.io());*/
     }
 
     public void getTrackList(String albumId, String sort) {

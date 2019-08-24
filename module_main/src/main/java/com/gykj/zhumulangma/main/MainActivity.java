@@ -3,6 +3,8 @@ package com.gykj.zhumulangma.main;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -150,6 +152,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onClick(View v) {
         if (v == globalPlay) {
+            XmPlayerManager.getInstance(this).play();
+
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Player.F_PLAY_TRACK).navigation();
             if (null != navigation) {
                 EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
@@ -252,7 +256,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onPlayProgress(int i, int i1) {
-
+        globalPlay.setProgress((float) i/(float) i1);
     }
 
     @Override
@@ -272,7 +276,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onAdsStartBuffering() {
-
+    globalPlay.setProgress(0);
     }
 
     @Override
@@ -282,7 +286,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onStartPlayAds(Advertis advertis, int i) {
-        globalPlay.play(advertis.getLogoUrl());
+        Log.e(TAG, "onStartPlayAds: "+advertis );
+        String imageUrl = advertis.getImageUrl();
+        if(TextUtils.isEmpty(imageUrl)){
+            globalPlay.play(R.drawable.notification_default);
+        }else {
+            globalPlay.play(imageUrl);
+        }
     }
 
     @Override

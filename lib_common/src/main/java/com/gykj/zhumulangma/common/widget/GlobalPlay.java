@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.common.widget;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -24,7 +25,9 @@ public class GlobalPlay extends FrameLayout {
 
     private CircleImageView civAvatar;
     private ImageView ivPlay;
+    private CircleImageView civMask;
     private Animation mAnimation;
+    private CircleProgressBar mCircleProgressBar;
 
     public GlobalPlay(@NonNull Context context) {
         this(context,null);
@@ -39,6 +42,8 @@ public class GlobalPlay extends FrameLayout {
         LayoutInflater.from(context).inflate(R.layout.common_widget_global_play,this);
         civAvatar=findViewById(R.id.civ_avatar);
         ivPlay=findViewById(R.id.iv_play);
+        civMask=findViewById(R.id.civ_mask);
+        mCircleProgressBar=findViewById(R.id.cpb_progress);
         mAnimation = new RotateAnimation(0,360, Animation.RELATIVE_TO_SELF,0.5f, Animation.RELATIVE_TO_SELF,0.5f);
         mAnimation.setDuration(5000);
         mAnimation.setRepeatCount(Animation.INFINITE);
@@ -47,12 +52,23 @@ public class GlobalPlay extends FrameLayout {
 //        civAvatar.startAnimation(mAnimation);
     }
     public void play(String avatarUrl){
-        ivPlay.setImageResource(R.drawable.ic_common_widget_pause);
+        ivPlay.setVisibility(GONE);
+        civMask.setVisibility(GONE);
         Glide.with(getContext()).load(avatarUrl).into(civAvatar);
         civAvatar.startAnimation(mAnimation);
     }
+    public void play(@DrawableRes int res){
+        ivPlay.setVisibility(GONE);
+        civMask.setVisibility(GONE);
+        Glide.with(getContext()).load(res).into(civAvatar);
+        civAvatar.startAnimation(mAnimation);
+    }
     public void pause(){
-        ivPlay.setImageResource(R.drawable.ic_common_widget_play_white);
+        ivPlay.setVisibility(VISIBLE);
+        civMask.setVisibility(VISIBLE);
         civAvatar.clearAnimation();
+    }
+    public void setProgress(float progress){
+        mCircleProgressBar.setProgress((int) (progress*100));
     }
 }

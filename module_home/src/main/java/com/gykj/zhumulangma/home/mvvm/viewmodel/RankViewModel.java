@@ -14,7 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.ObservableSource;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * Author: Thomas.
@@ -25,49 +29,81 @@ import io.reactivex.functions.Consumer;
 public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
     SingleLiveEvent<List<Album>> mFreeSingleLiveEvent;
     SingleLiveEvent<List<Album>> mPaidSingleLiveEvent;
-    private int freePage=1;
-    private int paidPage=1;
+    private int freePage = 1;
+    private int paidPage = 1;
     private String mCid;
     private static final int PAGESIZE = 20;
+
     public RankViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
-    public void getFreeRank(String cid){
-        if(!cid.equals(mCid)){
-            freePage=1;
-            mCid=cid;
+
+    public void init(String cid) {
+
+        Map<String, String> map1 = new HashMap<String, String>();
+        map1.put(DTransferConstants.PAGE, String.valueOf(paidPage));
+        map1.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
+
+        mModel.getPaidAlbumByTag(map1)
+                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
+                .doOnNext(albumList -> {
+                    paidPage++;
+                    getPaidSingleLiveEvent().postValue(albumList.getAlbums());
+                })
+                .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> {
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put(DTransferConstants.CATEGORY_ID, cid);
+                    map.put(DTransferConstants.PAGE, String.valueOf(freePage));
+                    map.put(DTransferConstants.CALC_DIMENSION, "3");
+                    map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
+                    return mModel.getAlbumList(map);
+                })
+                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .subscribe(albumList -> {
+                            freePage++;
+                            getFreeSingleLiveEvent().postValue(albumList.getAlbums());
+                        },
+                        e -> e.printStackTrace());
+    }
+
+    public void getFreeRank(String cid) {
+        if (!cid.equals(mCid)) {
+            freePage = 1;
+            mCid = cid;
         }
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, cid);
         map.put(DTransferConstants.PAGE, String.valueOf(freePage));
         map.put(DTransferConstants.CALC_DIMENSION, "3");
-        map.put(DTransferConstants.PAGE_SIZE,String.valueOf(PAGESIZE));
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         mModel.getAlbumList(map)
+                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
+                .doFinally(() -> postShowInitLoadViewEvent(false))
                 .subscribe(albumList -> {
                             freePage++;
                             getFreeSingleLiveEvent().postValue(albumList.getAlbums());
                         },
-                        e->e.printStackTrace());
+                        e -> e.printStackTrace());
     }
 
-    public void getPaidRank(){
+    public void getPaidRank() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.PAGE, String.valueOf(paidPage));
-        map.put(DTransferConstants.PAGE_SIZE,String.valueOf(PAGESIZE));
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         mModel.getPaidAlbumByTag(map)
                 .subscribe(albumList -> {
-                    paidPage++;
+                            paidPage++;
                             getPaidSingleLiveEvent().postValue(albumList.getAlbums());
                         },
-                        e->e.printStackTrace());
+                        e -> e.printStackTrace());
     }
 
 
     public SingleLiveEvent<List<Album>> getFreeSingleLiveEvent() {
-        return mFreeSingleLiveEvent=createLiveData(mFreeSingleLiveEvent);
+        return mFreeSingleLiveEvent = createLiveData(mFreeSingleLiveEvent);
     }
 
     public SingleLiveEvent<List<Album>> getPaidSingleLiveEvent() {
-        return mPaidSingleLiveEvent=createLiveData(mPaidSingleLiveEvent);
+        return mPaidSingleLiveEvent = createLiveData(mPaidSingleLiveEvent);
     }
 }

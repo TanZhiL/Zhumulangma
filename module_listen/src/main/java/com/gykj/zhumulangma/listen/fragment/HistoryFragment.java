@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.HistoryAdapter;
@@ -44,7 +46,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
         mRecyclerView = fd(R.id.rv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setHasFixedSize(true);
-        mHistoryAdapter=new HistoryAdapter(R.layout.listen_item_history);
+        mHistoryAdapter = new HistoryAdapter(R.layout.listen_item_history);
         mHistoryAdapter.bindToRecyclerView(mRecyclerView);
     }
 
@@ -84,7 +86,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
     @Override
     public void initViewObservable() {
         mViewModel.getHistorySingleLiveEvent().observe(this, playHistoryBeans -> {
-            if(null==playHistoryBeans||(mHistoryAdapter.getData().size()==0&&playHistoryBeans.size()==0)){
+            if (null == playHistoryBeans || (mHistoryAdapter.getData().size() == 0 && playHistoryBeans.size() == 0)) {
                 showNoDataView(true);
                 return;
             }
@@ -105,7 +107,8 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+        PlayHistoryBean playHistoryBean = mHistoryAdapter.getData().get(position);
+        mViewModel.play(String.valueOf(playHistoryBean.getAlbumId()), playHistoryBean.getTrack());
     }
 
     @Override

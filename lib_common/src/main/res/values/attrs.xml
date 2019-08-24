@@ -9,5 +9,10 @@
     <declare-styleable name="RatioRelativeLayout">
         <attr name="ratio" format="float"/>
     </declare-styleable>
-
+    <declare-styleable name="CircleProgressBar">
+        <attr name="circleWidth" format="dimension" />
+        <attr name="betaAngle" format="integer" />
+        <attr name="firstColor" format="color" />
+        <attr name="secondColor" format="color" />
+    </declare-styleable>
 </resources>

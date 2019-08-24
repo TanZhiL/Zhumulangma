@@ -26,7 +26,6 @@
             app:lottie_colorFilter="@color/colorPrimary"
             android:background="@color/transparent"
             app:lottie_autoPlay="true"
-            android:layout_marginTop="-8dp"
             app:lottie_loop="true" />
 
         <TextView

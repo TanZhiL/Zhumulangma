@@ -59,7 +59,7 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
                 if(XmPlayerManager.getInstance(mContext).isPlaying()){
                     lavPlaying.playAnimation();
                 }else {
-                    lavPlaying.cancelAnimation();
+                    lavPlaying.pauseAnimation();
                 }
             }else {
                 lavPlaying.cancelAnimation();

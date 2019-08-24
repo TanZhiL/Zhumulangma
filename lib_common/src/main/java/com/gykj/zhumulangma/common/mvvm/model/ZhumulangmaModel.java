@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 
 public class ZhumulangmaModel extends BaseModel {
     public ZhumulangmaModel(Application application) {
@@ -409,6 +411,7 @@ public class ZhumulangmaModel extends BaseModel {
         return  Observable.create(emitter -> {
             List<T> list = new ArrayList<>();
             try {
+
                 QueryBuilder<T> builder = App.getDaoSession().queryBuilder(cls);
                 if(page!=0&&pagesize!=0){
                     builder=builder.offset((page-1)*pagesize).limit(pagesize);
@@ -431,7 +434,26 @@ public class ZhumulangmaModel extends BaseModel {
         }).compose(RxAdapter.schedulersTransformer());
 
     }
+    public <T> Observable<List<T>> listRaw(Class<T> cls,String where,String... selectionArgs){
+        Observable.create(new ObservableOnSubscribe<List<T>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<T>> emitter) throws Exception {
+                List<T> list = new ArrayList<>();
+                try {
+                    list= App.getDaoSession().queryRaw(cls, where, selectionArgs);
+                } catch (Exception e) {
+                    emitter.onError(e);
+                }
+                emitter.onNext(list);
+                emitter.onComplete();
+            }
+        });
 
+
+
+        return list(cls,0,0,null,null,null);
+
+    }
     public <T> Observable<List<T>> list(Class<T> cls){
 
         return list(cls,0,0,null,null,null);

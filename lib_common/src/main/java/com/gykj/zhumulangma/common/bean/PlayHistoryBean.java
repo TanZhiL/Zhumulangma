@@ -92,4 +92,16 @@ public class PlayHistoryBean {
             return new Gson().toJson(entityProperty);
         }
     }
+
+    @Override
+    public String toString() {
+        return "PlayHistoryBean{" +
+                "soundId=" + soundId +
+                ", albumId=" + albumId +
+                ", kind='" + kind + '\'' +
+                ", percent=" + percent +
+                ", datatime=" + datatime +
+                ", track=" + track +
+                '}';
+    }
 }
