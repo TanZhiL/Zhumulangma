@@ -2,7 +2,7 @@
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#F0F0F0"
+    android:background="#22000000"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <View
         android:layout_width="85dp"
@@ -19,11 +19,14 @@
         >
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animation_view"
-            android:layout_width="180dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            app:lottie_fileName="lottie_refreshing.json"
+            app:lottie_colorFilter="@color/colorPrimary"
+            android:background="@color/transparent"
             app:lottie_autoPlay="true"
             android:layout_marginTop="-8dp"
-            app:lottie_fileName="lottie_loading.json"
             app:lottie_loop="true" />
 
         <TextView
@@ -31,6 +34,7 @@
             android:layout_height="wrap_content"
             android:text="加载中..."
             android:layout_marginTop="-10dp"
+            android:visibility="gone"
             android:textSize="12sp" />
     </LinearLayout>
 

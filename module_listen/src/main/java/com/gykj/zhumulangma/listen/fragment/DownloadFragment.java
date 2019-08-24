@@ -141,17 +141,19 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                 XmDownloadManager.getInstance().clearDownloadedAlbum(downloadAlbums.get(position).getAlbumId(), new IDoSomethingProgress() {
                     @Override
                     public void begin() {
-
+                        showInitLoadView(true);
                     }
 
                     @Override
                     public void success() {
                         initData();
+                        showInitLoadView(false);
                     }
 
                     @Override
                     public void fail(BaseRuntimeException e) {
-
+                        e.printStackTrace();
+                        showInitLoadView(false);
                     }
                 });
 

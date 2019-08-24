@@ -2,10 +2,13 @@ package com.gykj.zhumulangma.common.widget;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.gykj.zhumulangma.common.R;
@@ -27,6 +30,16 @@ public class TRefreshHeader extends LinearLayout implements RefreshHeader {
 
     public TRefreshHeader(Context context) {
         super(context);
+        initView(context);
+    }
+
+    public TRefreshHeader(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        initView(context);
+    }
+
+    public TRefreshHeader(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
         initView(context);
     }
 

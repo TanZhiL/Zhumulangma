@@ -24,6 +24,7 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:visibility="gone"
         android:background="@drawable/shap_common_track_cover"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +33,7 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:tint="@color/white"
+        android:visibility="gone"
         android:src="@drawable/ic_common_play"
         app:layout_constraintBottom_toBottomOf="@id/iv_cover"
         app:layout_constraintEnd_toEndOf="@+id/iv_cover"
@@ -44,19 +46,30 @@
         android:layout_height="24dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/tv_create_time"
         app:layout_constraintStart_toEndOf="@+id/iv_cover"
         app:layout_constraintTop_toTopOf="@+id/iv_cover">
 
-        <ImageView
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lav_playing"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            app:lottie_fileName="lottie_playing.json"
+            app:lottie_colorFilter="@color/colorPrimary"
+            android:background="@color/transparent"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true" />
+
+  <!--      <ImageView
             android:id="@+id/iv_playing"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:tint="@color/colorPrimary"
-            android:visibility="gone"
-            android:src="@drawable/ic_home_playing" />
+            android:src="@drawable/ic_home_playing" />-->
 
         <TextView
             android:id="@+id/tv_title"

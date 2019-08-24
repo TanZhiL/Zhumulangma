@@ -1,8 +1,10 @@
 package com.gykj.zhumulangma.home.adapter;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -16,9 +18,12 @@ import com.gykj.zhumulangma.common.dao.TrackDownloadBeanDao;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
+import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
+
+import org.greenrobot.greendao.annotation.Id;
 
 import java.sql.RowId;
 import java.text.SimpleDateFormat;
@@ -47,7 +52,21 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
         helper.setText(R.id.tv_duration,ZhumulangmaUtil.secondToTime(item.getDuration()));
         helper.setText(R.id.tv_create_time, TimeUtils.millis2String(item.getCreatedAt(),new SimpleDateFormat("yyyy-MM")));
         if(null!=XmPlayerManager.getInstance(mContext).getCurrSound()){
-            helper.setGone(R.id.iv_playing, XmPlayerManager.getInstance(mContext).getCurrSound().equals(item));
+            LottieAnimationView lavPlaying=helper.getView(R.id.lav_playing);
+            PlayableModel currSound = XmPlayerManager.getInstance(mContext).getCurrSound();
+            if(currSound.equals(item)){
+                lavPlaying.setVisibility(View.VISIBLE);
+                if(XmPlayerManager.getInstance(mContext).isPlaying()){
+                    lavPlaying.playAnimation();
+                }else {
+                    lavPlaying.cancelAnimation();
+                }
+            }else {
+                lavPlaying.cancelAnimation();
+                lavPlaying.setVisibility(View.GONE);
+            }
+
+
         }
         model.list(TrackDownloadBean.class,TrackDownloadBeanDao.Properties.TrackId.eq(item.getDataId()))
                 .subscribe(trackDownloadBeans -> {

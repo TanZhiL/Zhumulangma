@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
     private BaseItemLayout bilUser;
     private TScrollView mScrollView;
     private ImageView parallax;
+    private View flParallax;
     private SmartRefreshLayout refreshLayout;
     private ImageView whiteLeft;
     private ImageView whiteRight;
@@ -71,6 +73,7 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
         bilUser = view.findViewById(R.id.bil_user);
         mScrollView = view.findViewById(R.id.msv);
         parallax = view.findViewById(R.id.parallax);
+        flParallax = view.findViewById(R.id.fl_parallax);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         initBar();
         initItemList();
@@ -173,7 +176,11 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
             @Override
             public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
                 ctbTrans.setAlpha(1 - (float) offset / ctbTrans.getHeight());
-                parallax.setTranslationY(offset);
+
+                parallax.setScaleX((float) (1+percent*0.2));
+                parallax.setScaleY((float) (1+percent*0.2));
+
+                flParallax.setTranslationY(offset);
             }
         });
         fd(R.id.ll_download).setOnClickListener(this);
@@ -196,7 +203,7 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
 
     @Override
     public void onScroll(int scrollY) {
-        parallax.setTranslationY(-scrollY);
+        flParallax.setTranslationY(-scrollY);
         ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
         ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
     }

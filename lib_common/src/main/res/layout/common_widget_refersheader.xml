@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.airbnb.lottie.LottieAnimationView
@@ -11,6 +12,6 @@
         android:layout_gravity="center"
         app:lottie_fileName="lottie_refreshing.json"
         app:lottie_colorFilter="@color/colorHint"
-        android:background="@color/white"
+        android:background="@color/transparent"
         app:lottie_loop="true" />
 </FrameLayout>

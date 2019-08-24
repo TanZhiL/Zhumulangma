@@ -29,8 +29,11 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.ILoginOutCallBack;
 import com.ximalaya.ting.android.opensdk.httputil.XimalayaException;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
+import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
+import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
+import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 
@@ -41,7 +44,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
 import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
 
 @Route(path = AppConstants.Router.Main.A_MAIN)
-public class MainActivity extends BaseActivity implements View.OnClickListener, MainFragment.onRootShowListener, IXmPlayerStatusListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, MainFragment.onRootShowListener, IXmPlayerStatusListener, IXmAdsStatusListener {
 
     private GlobalPlay globalPlay;
 
@@ -86,6 +89,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void initListener() {
         globalPlay.setOnClickListener(this);
         XmPlayerManager.getInstance(this).addPlayerStatusListener(this);
+        XmPlayerManager.getInstance(this).addAdsStatusListener(this);
     }
 
     @Override
@@ -254,6 +258,41 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public boolean onError(XmPlayerException e) {
         return false;
+    }
+
+    @Override
+    public void onStartGetAdsInfo() {
+
+    }
+
+    @Override
+    public void onGetAdsInfo(AdvertisList advertisList) {
+
+    }
+
+    @Override
+    public void onAdsStartBuffering() {
+
+    }
+
+    @Override
+    public void onAdsStopBuffering() {
+
+    }
+
+    @Override
+    public void onStartPlayAds(Advertis advertis, int i) {
+        globalPlay.play(advertis.getLogoUrl());
+    }
+
+    @Override
+    public void onCompletePlayAds() {
+
+    }
+
+    @Override
+    public void onError(int i, int i1) {
+
     }
 
     /**

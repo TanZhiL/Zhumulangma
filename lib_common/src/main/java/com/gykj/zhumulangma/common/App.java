@@ -94,8 +94,8 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
         //设置全局的Footer构建器
         SmartRefreshLayout.setDefaultRefreshFooterCreator((context, layout) -> {
             ClassicsFooter classicsFooter = new ClassicsFooter(context);
-            classicsFooter.setTextSizeTitle(14);
-            classicsFooter.setDrawableSize(18);
+            classicsFooter.setTextSizeTitle(12);
+            classicsFooter.setDrawableSize(16);
             classicsFooter.setFinishDuration(0);
             return classicsFooter;
         });

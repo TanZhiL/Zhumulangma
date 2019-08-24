@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;
@@ -26,15 +27,12 @@ import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
-import com.gykj.zhumulangma.common.widget.TRefreshHeader;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumDetailViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.header.BezierRadarHeader;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
@@ -59,7 +57,8 @@ import java.util.concurrent.TimeUnit;
 @Route(path = AppConstants.Router.Home.F_ALBUM_DETAIL)
 public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> implements
         ViewPager.OnPageChangeListener, OnLoadMoreListener, BaseQuickAdapter.OnItemClickListener,
-        BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack, IXmPlayerStatusListener, OnRefreshListener {
+        BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack, IXmPlayerStatusListener,
+        OnRefreshListener {
 
     @Autowired(name = KeyCode.Home.ALBUMID)
     public long mAlbumId;
@@ -76,7 +75,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
     private Album mAlbum;
     private String mSort = "asc";
-    private boolean isUp = false;
+    private boolean isSort = false;
 
     private ImageView ivCover;
     private TextView tvAlbum;
@@ -84,10 +83,11 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     private TextView tvPlaycount;
     private TextView tvTrackcount;
     private TextView tvSbcount;
+    private TextView tvPlay;
     private String[] tabs = {"详情", "节目"};
     private TextView tvLastplay;
     private XmPlayerManager playerManager = XmPlayerManager.getInstance(mContext);
-
+    private Track mLastPlay;
     private AlbumTrackAdapter mAlbumTrackAdapter;
 
 
@@ -101,7 +101,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         magicIndicator = fd(R.id.magic_indicator);
         viewpager = fd(R.id.viewpager);
         clActionbar = fd(R.id.cl_actionbar);
-
+        tvPlay = fd(R.id.tv_play);
         ivCover = fd(R.id.iv_cover);
         tvAlbum = fd(R.id.tv_album);
         tvAuthor = fd(R.id.tv_author);
@@ -113,7 +113,6 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         layoutTracks = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         recyclerView = layoutTracks.findViewById(R.id.rv);
         refreshLayout = layoutTracks.findViewById(R.id.refreshLayout);
-        refreshLayout.setEnableRefresh(false);
 
 
         viewpager.setAdapter(new AlbumPagerAdapter());
@@ -142,21 +141,36 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         viewpager.addOnPageChangeListener(this);
         mAlbumTrackAdapter.setOnItemClickListener(this);
         mAlbumTrackAdapter.setOnItemChildClickListener(this);
-        addDisposable(RxView.clicks(fd(R.id.iv_sort))
+        addDisposable(RxView.clicks(fd(R.id.ll_sort))
                 .throttleFirst(2, TimeUnit.SECONDS)
                 .subscribe(unit -> {
-                    mSort = mSort.equals("asc") ? "desc" : "asc";
-                    mViewModel.getTrackList(String.valueOf(mAlbumId), mSort, false);
+                    isSort = true;
+                    refreshLayout.autoRefresh();
                 }));
         addDisposable(RxView.clicks(fd(R.id.ll_play))
                 .throttleFirst(2, TimeUnit.SECONDS)
-                .subscribe(unit -> playerManager.playList(mViewModel.getCommonTrackList(), 0)));
+                .subscribe(unit -> {
+                    if(mLastPlay!=null){
+                        int index = mAlbumTrackAdapter.getData().indexOf(mLastPlay);
+                        if(index!=-1){
+                            mLastPlay = mAlbumTrackAdapter.getData().get(index);
+                            tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
+                            XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(),
+                                    index);
+                        }else {
+                            mViewModel.getTrackList(String.valueOf(mAlbumId));
+                        }
+                    }else {
+                        mLastPlay = mAlbumTrackAdapter.getData().get(0);
+                        tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
+                        XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(),0);
+                    }
+                }));
     }
 
     @Override
     public void initData() {
         mViewModel.getAlbumDetail(String.valueOf(mAlbumId));
-        mViewModel.getTrackList(String.valueOf(mAlbumId));
     }
 
     @Override
@@ -176,20 +190,24 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        isUp = true;
-        mViewModel.getTrackList(String.valueOf(mAlbumId), mSort, true);
+        if (isSort) {
+            mSort = "asc".equals(mSort) ? "desc" : "asc";
+            mViewModel.getTrackList(String.valueOf(mAlbumId), mSort);
+        } else {
+            mViewModel.getTrackList(String.valueOf(mAlbumId), true);
+        }
     }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        isUp = false;
-        mViewModel.getTrackList(String.valueOf(mAlbumId), mSort, false);
+        mViewModel.getTrackList(String.valueOf(mAlbumId), false);
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
         playerManager.playList(mViewModel.getCommonTrackList(), position);
+        mLastPlay=mAlbumTrackAdapter.getData().get(position);
         tvLastplay.setText(getString(R.string.lastplay, mAlbumTrackAdapter.getData().get(position).getTrackTitle()));
 
     }
@@ -248,9 +266,24 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         }
         List<Track> tracks = mAlbumTrackAdapter.getData();
         for (int i = 0; i < tracks.size(); i++) {
-            View ivPlaying = mAlbumTrackAdapter.getViewByPosition(i, R.id.iv_playing);
-            if (null != ivPlaying) {
-                ivPlaying.setVisibility(tracks.get(i).getDataId() == track.getDataId() ? View.VISIBLE : View.GONE);
+            LottieAnimationView lavPlaying= (LottieAnimationView) mAlbumTrackAdapter
+                    .getViewByPosition(i, R.id.lav_playing);
+            if(tracks.get(i).getDataId() == track.getDataId()){
+                mLastPlay=track;
+                tvLastplay.setText(getString(R.string.lastplay,mLastPlay.getTrackTitle()));
+            }
+            if (null != lavPlaying) {
+                if(tracks.get(i).getDataId() == track.getDataId()){
+                    lavPlaying.setVisibility(View.VISIBLE);
+                    if(XmPlayerManager.getInstance(mContext).isPlaying()){
+                        lavPlaying.playAnimation();
+                    }else {
+                        lavPlaying.cancelAnimation();
+                    }
+                }else {
+                    lavPlaying.cancelAnimation();
+                    lavPlaying.setVisibility(View.GONE);
+                }
             }
         }
     }
@@ -357,27 +390,55 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                     , ZhumulangmaUtil.toWanYi(mAlbum.getSubscribeCount())));
         });
 
-        mViewModel.getTracksSingleLiveEvent().observe(this, tracks -> {
+        mViewModel.getTracksInitSingleLiveEvent().observe(this, tracks -> {
+            mAlbumTrackAdapter.setNewData(tracks);
+            XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(),
+                    mAlbumTrackAdapter.getData().indexOf(mLastPlay));
+
+        });
+
+        mViewModel.getTracksUpSingleLiveEvent().observe(this, tracks -> {
             if (CollectionUtils.isEmpty(tracks)) {
-                if (mAlbumTrackAdapter.getData().size() == 0) {
+                if (0 == mAlbumTrackAdapter.getData().size()) {
                     showNoDataView(true);
                 } else {
-                    if (!isUp)
-                        refreshLayout.finishLoadMoreWithNoMoreData();
-                    else
-                        refreshLayout.finishRefresh();
+                    refreshLayout.finishRefresh();
                 }
             } else {
-                if (isUp) {
-                    mAlbumTrackAdapter.addData(0, tracks);
+                mAlbumTrackAdapter.addData(0, tracks);
+                refreshLayout.finishRefresh();
+            }
+        });
+        mViewModel.getTracksMoreSingleLiveEvent().observe(this, tracks -> {
+            if (CollectionUtils.isEmpty(tracks)) {
+                if (0 == mAlbumTrackAdapter.getData().size()) {
+                    showNoDataView(true);
                 } else {
-                    mAlbumTrackAdapter.addData(tracks);
+                    refreshLayout.finishLoadMoreWithNoMoreData();
                 }
+            } else {
+                mAlbumTrackAdapter.addData(tracks);
+                refreshLayout.finishLoadMore();
             }
         });
 
+        mViewModel.getTracksSortSingleLiveEvent().observe(this, tracks -> {
+            isSort = false;
+            if (CollectionUtils.isEmpty(tracks)) {
+                if (0 == mAlbumTrackAdapter.getData().size()) {
+                    showNoDataView(true);
+                } else {
+                    refreshLayout.finishRefresh();
+                }
+            } else {
+                mAlbumTrackAdapter.setNewData(tracks);
+                refreshLayout.finishRefresh();
+            }
+        });
         mViewModel.getLastplaySingleLiveEvent().observe(this, track -> {
             if (null != track) {
+                tvPlay.setText("继续播放");
+                mLastPlay = track;
                 tvLastplay.setText(getString(R.string.lastplay, track.getTrackTitle()));
             }
         });
@@ -411,6 +472,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     @Override
     public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
         updatePlayStatus();
+
     }
 
     @Override

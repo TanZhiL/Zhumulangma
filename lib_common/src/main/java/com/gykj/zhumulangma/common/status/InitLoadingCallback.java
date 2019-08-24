@@ -23,4 +23,9 @@ public class InitLoadingCallback extends Callback {
         return true;
     }
 
+    @Override
+    public boolean getSuccessVisible() {
+        return true;
+    }
+
 }
