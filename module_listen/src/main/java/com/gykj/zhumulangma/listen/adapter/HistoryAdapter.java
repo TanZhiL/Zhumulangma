@@ -23,8 +23,8 @@ public class HistoryAdapter extends BaseQuickAdapter<PlayHistoryBean, BaseViewHo
     protected void convert(BaseViewHolder helper, PlayHistoryBean item) {
         Track track = item.getTrack();
         Glide.with(mContext).load(track.getCoverUrlMiddle()).into((ImageView) helper.getView(R.id.iv_cover));
-        helper.setText(R.id.tv_title, track.getTrackTitle());
-        helper.setText(R.id.tv_album, track.getAlbum().getAlbumTitle());
+        helper.setText(R.id.tv_title, track.getAlbum().getAlbumTitle());
+        helper.setText(R.id.tv_album, track.getTrackTitle());
         helper.setText(R.id.tv_duration, ZhumulangmaUtil.secondToTime(track.getDuration()));
         helper.setText(R.id.tv_hasplay, mContext.getString(R.string.hasplay, item.getPercent()));
 

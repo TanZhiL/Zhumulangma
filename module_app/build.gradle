@@ -58,6 +58,5 @@ dependencies {
         implementation project(':module_listen')
         implementation project(':module_discover')
         implementation project(':module_user')
-        implementation project(':module_player')
     }
 }

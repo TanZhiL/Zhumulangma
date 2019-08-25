@@ -59,7 +59,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
 
     @Override
     public void initData() {
-        mViewModel.getHistory();
+        mViewModel._getHistory();
     }
 
     @Override
@@ -101,7 +101,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getHistory();
+        mViewModel._getHistory();
 
     }
 

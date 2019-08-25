@@ -14,6 +14,7 @@ import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.listen.mvvm.model.HistoryModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -40,17 +41,19 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class HistoryViewModel extends BaseViewModel<ZhumulangmaModel> {
+public class HistoryViewModel extends BaseViewModel<HistoryModel> {
     private SingleLiveEvent<List<PlayHistoryBean>> mHistorysSingleLiveEvent;
     private static final int PAGESIZE = 20;
     private int curPage = 1;
 
-    public HistoryViewModel(@NonNull Application application, ZhumulangmaModel model) {
+    public HistoryViewModel(@NonNull Application application, HistoryModel model) {
         super(application, model);
     }
 
-    public void getHistory() {
-        mModel.listDesc(PlayHistoryBean.class, curPage, PAGESIZE, PlayHistoryBeanDao.Properties.Datatime)
+    public void _getHistory() {
+        mModel.getHistory(curPage, PAGESIZE)
+                .doOnSubscribe(d->postShowInitLoadViewEvent(curPage==1))
+                .doFinally(()->postShowInitLoadViewEvent(false))
                 .subscribe(playHistoryBeans -> {
                     curPage++;
                     getHistorySingleLiveEvent().postValue(playHistoryBeans);
@@ -68,10 +71,10 @@ public class HistoryViewModel extends BaseViewModel<ZhumulangmaModel> {
                     XmPlayerManager.getInstance(getApplication()).playList(trackList,
                             trackList.getTracks().indexOf(track));
                     Object navigation = ARouter.getInstance()
-                            .build(AppConstants.Router.Player.F_PLAY_TRACK).navigation();
+                            .build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
                     if (null != navigation) {
                         EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                                new NavigateBean(AppConstants.Router.Player.F_PLAY_TRACK,
+                                new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK,
                                         (ISupportFragment) navigation)));
                     }
                 }, e -> e.printStackTrace());

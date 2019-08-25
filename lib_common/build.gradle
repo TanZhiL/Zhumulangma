@@ -37,20 +37,7 @@ android {
 }
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    api(project(':lib_util')) {
-        exclude group: "com.github.tbruyelle"
-        exclude group: "io.reactivex2.rxjava"
-        exclude group: "io.reactivex2.rxandroid"
-        exclude group: "com.github.lovetuzitong"
-        exclude group: "com.android.support"
-    }
-    api(project(':lib_videotrimmer')) {
-        exclude group: "com.github.tbruyelle"
-        exclude group: "io.reactivex2.rxjava"
-        exclude group: "io.reactivex2.rxandroid"
-        exclude group: "com.github.bumptech.glide"
-        exclude group: "com.android.support"
-    }
+
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
 
     api rootProject.ext.support["design"]

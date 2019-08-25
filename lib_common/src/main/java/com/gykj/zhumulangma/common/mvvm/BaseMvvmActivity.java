@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModelProvider.Factory;
 import android.arch.lifecycle.ViewModelProviders;
 
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
-import com.gykj.util.log.TLog;
+import com.gykj.zhumulangma.common.util.log.TLog;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 

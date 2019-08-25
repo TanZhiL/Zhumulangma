@@ -123,7 +123,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         }*/
                         start(navigateBean.fragment);
                         break;
-                    case AppConstants.Router.Player.F_PLAY_TRACK:
+                    case AppConstants.Router.Home.F_PLAY_TRACK:
                         extraTransaction().setCustomAnimations(
                                 com.gykj.zhumulangma.common.R.anim.push_bottom_in,
                                 com.gykj.zhumulangma.common.R.anim.no_anim,
@@ -154,10 +154,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (v == globalPlay) {
             XmPlayerManager.getInstance(this).play();
 
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Player.F_PLAY_TRACK).navigation();
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
             if (null != navigation) {
                 EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                        new NavigateBean(AppConstants.Router.Player.F_PLAY_TRACK, (ISupportFragment) navigation)));
+                        new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK, (ISupportFragment) navigation)));
             }
         }
     }
@@ -375,5 +375,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onDestroy() {
         super.onDestroy();
         XmPlayerManager.getInstance(this).removePlayerStatusListener(this);
+        XmPlayerManager.getInstance(this).removeAdsStatusListener(this);
     }
 }

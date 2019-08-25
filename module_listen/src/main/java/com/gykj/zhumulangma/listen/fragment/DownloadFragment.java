@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.util.DisplayUtil;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
@@ -231,7 +231,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         FrameLayout frameLayout = new FrameLayout(mContext);
         frameLayout.addView(magicIndicator);
         ViewGroup.LayoutParams layoutParams = magicIndicator.getLayoutParams();
-        layoutParams.width = DisplayUtil.dip2px(mContext, 270);
+        layoutParams.width = SizeUtils.dp2px(270);
         magicIndicator.setLayoutParams(layoutParams);
 
         return frameLayout;

@@ -12,8 +12,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.Utils;
 import com.didichuxing.doraemonkit.DoraemonKit;
-import com.gykj.util.log.TLog;
-import com.gykj.videotrimmer.VideoTrimmer;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.bean.TrackDownloadBean;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
@@ -22,6 +20,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
+import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -129,8 +128,6 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
                 .stackViewMode(Fragmentation.BUBBLE)
                 .debug(false)
                 .install();
-
-        VideoTrimmer.init(this);
 
         /*JPushInterface.setDebugMode(true);
         JPushInterface.init(this);*/

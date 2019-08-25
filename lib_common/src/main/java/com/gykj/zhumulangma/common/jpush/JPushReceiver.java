@@ -6,7 +6,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.util.log.TLog;
+import com.gykj.zhumulangma.common.util.log.TLog;
 
 import org.greenrobot.eventbus.EventBus;
 
