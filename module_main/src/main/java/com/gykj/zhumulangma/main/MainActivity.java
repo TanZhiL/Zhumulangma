@@ -96,7 +96,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void initData() {
-
+        if(XmPlayerManager.getInstance(this).isPlaying()){
+            Track currSoundIgnoreKind = XmPlayerManager.getInstance(this).getCurrSoundIgnoreKind(true);
+            if (null == currSoundIgnoreKind) {
+                return;
+            }
+            globalPlay.play(currSoundIgnoreKind.getCoverUrlMiddle());
+        }
     }
 
     @Override

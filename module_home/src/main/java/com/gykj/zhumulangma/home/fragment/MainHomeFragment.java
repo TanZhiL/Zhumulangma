@@ -47,7 +47,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
 
 
     private MagicIndicator magicIndicator;
-    private String[] tabs = {"热门", "分类", "精品", "广播"};
+    private String[] tabs = {"热门", "分类", "精品","主播", "广播"};
     private List<Fragment> pages = new ArrayList<>();
     private ViewPager viewpager;
 
@@ -77,6 +77,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         pages.add(new HotFragment());
         pages.add(new CategoryFragment());
         pages.add(new FineFragment());
+        pages.add(new CategoryFragment());
         pages.add(new RadioFragment());
 
         TFragmentPagerAdapter adapter = new TFragmentPagerAdapter(

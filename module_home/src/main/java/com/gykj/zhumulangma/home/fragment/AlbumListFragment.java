@@ -153,4 +153,9 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
             }
         });
     }
+
+    @Override
+    protected boolean lazyEnable() {
+        return false;
+    }
 }
