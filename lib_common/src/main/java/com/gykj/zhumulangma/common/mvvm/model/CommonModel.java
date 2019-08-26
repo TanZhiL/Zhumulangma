@@ -62,6 +62,7 @@ public class CommonModel extends BaseModel {
                 }
                 if(desc!=null){
                     builder=builder.orderDesc(desc);
+
                 }
                 list=builder.list();
             } catch (Exception e) {

@@ -62,7 +62,7 @@
 
         <TextView
             android:id="@+id/tv_duration"
-            android:layout_width="47dp"
+            android:layout_width="70dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:gravity="center_vertical"

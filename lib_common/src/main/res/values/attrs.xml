@@ -5,7 +5,9 @@
         <attr name="ih_right_text" format="string"/>
     </declare-styleable>
 
-
+    <declare-styleable name="TRefreshHeader">
+        <attr name="trh_color" format="color"/>
+    </declare-styleable>
     <declare-styleable name="RatioRelativeLayout">
         <attr name="ratio" format="float"/>
     </declare-styleable>

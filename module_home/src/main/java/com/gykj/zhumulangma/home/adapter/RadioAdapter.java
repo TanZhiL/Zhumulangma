@@ -26,6 +26,6 @@ public class RadioAdapter extends BaseQuickAdapter<Radio, BaseViewHolder> {
         Glide.with(mContext).load(item.getCoverUrlLarge()).into((ImageView) helper.getView(R.id.iv_cover));
         helper.setText(R.id.tv_playcount, ZhumulangmaUtil.toWanYi(item.getRadioPlayCount()));
         helper.setText(R.id.tv_desc, String.format(mContext.getResources().getString(R.string.playing),item.getProgramName()));
-        helper.setText(R.id.tv_title,item.getProgramName());
+        helper.setText(R.id.tv_title,item.getRadioName());
     }
 }

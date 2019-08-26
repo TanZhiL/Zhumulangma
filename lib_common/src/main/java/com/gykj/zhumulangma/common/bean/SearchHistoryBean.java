@@ -15,10 +15,12 @@ public class SearchHistoryBean {
     @Id(autoincrement = true)
     Long id;
     String keyword;
-    @Generated(hash = 1577923387)
-    public SearchHistoryBean(Long id, String keyword) {
+    long datatime;
+    @Generated(hash = 1604123910)
+    public SearchHistoryBean(Long id, String keyword, long datatime) {
         this.id = id;
         this.keyword = keyword;
+        this.datatime = datatime;
     }
     @Generated(hash = 1570282321)
     public SearchHistoryBean() {
@@ -43,6 +45,12 @@ public class SearchHistoryBean {
         if (o == null || getClass() != o.getClass()) return false;
         SearchHistoryBean that = (SearchHistoryBean) o;
         return Objects.equals(keyword, that.keyword);
+    }
+    public long getDatatime() {
+        return this.datatime;
+    }
+    public void setDatatime(long datatime) {
+        this.datatime = datatime;
     }
 
 }

@@ -29,16 +29,37 @@ public class HistoryModel extends ZhumulangmaModel {
 
     public Observable<List<PlayHistoryBean>> getHistory(int page,int pagesize) {
         return io.reactivex.Observable.create((ObservableOnSubscribe<List<PlayHistoryBean>>) emitter -> {
+            /**
+             * SELECT
+             *     a.*
+             *   FROM
+             *     PLAY_HISTORY_BEAN a
+             *   WHERE
+             *     1 > (
+             *       SELECT
+             *         count(*)
+             *       FROM
+             *         PLAY_HISTORY_BEAN
+             *       WHERE
+             *         ALBUM_ID = a.ALBUM_ID
+             *       AND DATATIME > a.DATATIME
+             *     )
+             *   ORDER BY
+             *     a.DATATIME desc
+             */
             List<PlayHistoryBean> list = new ArrayList<>();
-            String sql = "SELECT * FROM "+ PlayHistoryBeanDao.TABLENAME+
+            String sql = "SELECT a.* FROM "+ PlayHistoryBeanDao.TABLENAME+
+                    " a WHERE 1>( SELECT COUNT(*) FROM "+ PlayHistoryBeanDao.TABLENAME
+                    +" WHERE "+PlayHistoryBeanDao.Properties.AlbumId.columnName+" = a."+PlayHistoryBeanDao.Properties.AlbumId.columnName
+                    +" AND "+PlayHistoryBeanDao.Properties.Datatime.columnName+" > a."+PlayHistoryBeanDao.Properties.Datatime.columnName
+                    +")  ORDER BY a."+PlayHistoryBeanDao.Properties.Datatime.columnName+
+                    " DESC LIMIT "+pagesize+" OFFSET "+((page-1)*20);
+
+           /* String sql = "SELECT * FROM "+ PlayHistoryBeanDao.TABLENAME+
                     " GROUP BY "+PlayHistoryBeanDao.Properties.AlbumId.columnName+
                     "  ORDER BY "+PlayHistoryBeanDao.Properties.Datatime.columnName+
-                    " DESC LIMIT ? OFFSET ?";
-            try (Cursor c = App.getDaoSession().getDatabase().rawQuery(sql,
-                    new String[]{
-                            String.valueOf(pagesize),
-                            String.valueOf((page-1)*20),
-                    })) {
+                    " DESC LIMIT ? OFFSET ?";*/
+            try (Cursor c = App.getDaoSession().getDatabase().rawQuery(sql,null)) {
                 if (c.moveToFirst()) {
                     do {
 

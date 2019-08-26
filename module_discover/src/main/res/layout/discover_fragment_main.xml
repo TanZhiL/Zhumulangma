@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:srlEnableNestedScrolling="true"
+    app:srlEnableLoadMore="false"
+    app:srlEnablePreviewInEditMode="false">
+        <com.gykj.zhumulangma.common.widget.TRefreshHeader
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            app:trh_color="@color/white"
+            android:layout_height="50dp"/>
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,3 +38,4 @@
             app:right_text_margin = "8"
             />
 </ScrollView>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

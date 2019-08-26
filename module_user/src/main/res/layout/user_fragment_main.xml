@@ -23,14 +23,11 @@
         app:srlEnableNestedScrolling="true"
         app:srlEnableLoadMore="false"
         app:srlEnablePreviewInEditMode="false">
-        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+        <com.gykj.zhumulangma.common.widget.TRefreshHeader
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            app:srlTextSizeTitle="14sp"
-            app:srlTextSizeTime="10sp"
-            app:srlDrawableSize="18dp"
-            app:srlAccentColor="@android:color/white"/>
+            app:trh_color="@color/white"
+            android:layout_height="50dp"/>
     <com.gykj.zhumulangma.common.widget.TScrollView
         android:id="@+id/msv"
         android:layout_width="match_parent"

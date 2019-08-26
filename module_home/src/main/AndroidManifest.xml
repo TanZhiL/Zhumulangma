@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.gykj.zhumulangma.home.MainActivity"/>
-        <activity android:name="com.gykj.videotrimmer.features.trim.VideoTrimmerActivity"/>
     </application>
 
 </manifest>

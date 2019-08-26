@@ -14,6 +14,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.HotStoryAdapter;
+import com.gykj.zhumulangma.home.adapter.SearchTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -26,7 +27,7 @@ public class SearchTrackFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     RecyclerView rv;
     SmartRefreshLayout refreshLayout;
-    HotStoryAdapter mAdapter;
+    SearchTrackAdapter mAdapter;
     private String keyword;
     public SearchTrackFragment() {
 
@@ -47,35 +48,37 @@ public class SearchTrackFragment extends BaseMvvmFragment<SearchResultViewModel>
         rv=view.findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(mContext));
         rv.setHasFixedSize(true);
-        mAdapter=new HotStoryAdapter(R.layout.home_item_hot_story);
+        mAdapter=new SearchTrackAdapter(R.layout.home_item_seach_track);
         mAdapter.bindToRecyclerView(rv);
-        mAdapter.setOnItemClickListener(this);
         refreshLayout=view.findViewById(R.id.refreshLayout);
         refreshLayout.setEnableRefresh(false);
-        refreshLayout.setOnLoadMoreListener(this);
     }
 
+    @Override
+    public void initListener() {
+        super.initListener();
+        refreshLayout.setOnLoadMoreListener(this);
+        mAdapter.setOnItemClickListener(this);
+    }
 
     @Override
     public void initData() {
         keyword=getArguments().getString(KeyCode.Home.KEYWORD);
-       mViewModel.searchAlbums(keyword);
+       mViewModel.searchTracks(keyword);
     }
 
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.searchAlbums(keyword);
+        mViewModel.searchTracks(keyword);
     }
 
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-  /*      SupportFragment fragment=new AlbumDetailFragment();
-        Bundle bundle=new Bundle();
-        bundle.putLong(AlbumDetailFragment.ALBUMID,mAlbums.get(position).getId());
-        fragment.setArguments(bundle);
-        EventBus.getDefault().post(new NavigationEvent(fragment));*/
+
+        mViewModel.play(String.valueOf(mAdapter.getData().get(position).getAlbum().getAlbumId()),mAdapter.getData().get(position));
+
     }
 
     @Override
@@ -90,7 +93,7 @@ public class SearchTrackFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     @Override
     public void initViewObservable() {
-        mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> {
+        mViewModel.getTrackSingleLiveEvent().observe(this, albums -> {
             if(null==albums||(mAdapter.getData().size()==0&&albums.size()==0)){
                 showNoDataView(true);
                 return;

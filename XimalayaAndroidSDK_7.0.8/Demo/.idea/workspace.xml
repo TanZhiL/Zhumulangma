@@ -2,38 +2,35 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="71b81b02-33af-4219-8520-64a20c426755" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/drawable/ic_common_discuss.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/drawable/ic_common_list.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/drawable/ic_common_love_full.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/drawable/ic_common_more.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_listen/src/main/java/com/gykj/zhumulangma/listen/fragment/FavoriteFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_listen/src/main/java/com/gykj/zhumulangma/listen/fragment/HistoryFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_listen/src/main/res/drawable/ic_listen_delete.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_player/src/main/java/com/gykj/zhumulangma/player/PlayTrackFragment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_player/src/main/res/drawable-xxhdpi/user_bg.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_player/src/main/res/drawable/ic_player_danmu.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_player/src/main/res/drawable/ic_player_dingshi.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_player/src/main/res/drawable/ic_player_edit.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_player/src/main/res/drawable/ic_player_next.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_player/src/main/res/drawable/ic_player_pre.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_player/src/main/res/drawable/shap_player_announcer_vsignature.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../module_player/src/main/res/drawable/shap_player_circle_play.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/drawable/ic_common_fans.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/drawable/ic_common_following.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/drawable/shap_common_circle_primary.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/fragment/AnnouncerFragment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/mvvm/viewmodel/AnnouncerViewModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../module_home/src/main/res/drawable/shap_home_announcer.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../module_home/src/main/res/layout/home_fragment_announcer.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../module_listen/src/main/java/com/gykj/zhumulangma/listen/bean/HistoryBean.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/assetWizardSettings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/AppConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/AppConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/event/EventCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/event/EventCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/mvvm/BaseFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/mvvm/BaseFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/res/drawable/shap_common_input.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/drawable/shap_common_input.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/dao/DaoMaster.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/dao/DaoMaster.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/dao/DaoSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/dao/DaoSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/dao/PlayHistoryBeanDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/dao/PlayHistoryBeanDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/dao/TrackDownloadBeanDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/dao/TrackDownloadBeanDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/mvvm/model/CommonModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/mvvm/model/CommonModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/mvvm/model/ZhumulangmaModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/java/com/gykj/zhumulangma/common/mvvm/model/ZhumulangmaModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/res/layout/view_notify_dark_play_big.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/layout/view_notify_dark_play_big.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../lib_common/src/main/res/layout/view_notify_play_big.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../lib_common/src/main/res/layout/view_notify_play_big.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/adapter/AnnouncerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/adapter/AnnouncerAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/fragment/AlbumDetailFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/fragment/AlbumDetailFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/fragment/FineFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/fragment/FineFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/fragment/MainHomeFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/fragment/MainHomeFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../module_home/src/main/res/drawable/shape_home_search.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../module_home/src/main/res/layout/home_fragment_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_home/src/main/res/layout/home_fragment_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../module_home/src/main/res/layout/home_fragment_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_home/src/main/res/layout/home_fragment_search.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../module_listen/src/main/java/com/gykj/zhumulangma/listen/fragment/MainListenFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_listen/src/main/java/com/gykj/zhumulangma/listen/fragment/MainListenFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../module_listen/src/main/res/layout/listen_fragment_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_listen/src/main/res/layout/listen_fragment_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../module_main/src/main/java/com/gykj/zhumulangma/main/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_main/src/main/java/com/gykj/zhumulangma/main/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../module_player/src/main/res/layout/player_fragment_track.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_player/src/main/res/layout/player_fragment_track.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../module_user/src/main/java/com/gykj/zhumulangma/user/fragment/MainUserFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_user/src/main/java/com/gykj/zhumulangma/user/fragment/MainUserFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../module_user/src/main/res/layout/user_fragment_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_user/src/main/res/layout/user_fragment_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/fragment/SearchAnnouncerFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/fragment/SearchAnnouncerFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/mvvm/ViewModelFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_home/src/main/java/com/gykj/zhumulangma/home/mvvm/ViewModelFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../module_home/src/main/res/layout/home_fragment_play_track.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_home/src/main/res/layout/home_fragment_play_track.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../module_home/src/main/res/layout/home_item_announcer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_home/src/main/res/layout/home_item_announcer.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../module_listen/src/main/res/layout/listen_item_download_track.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../module_listen/src/main/res/layout/listen_item_download_track.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,6 +44,28 @@
         <projects_view />
       </state>
     </system>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/ximalaya/ting/android/opensdk/test/TingApplication.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="324">
+              <caret line="100" column="43" selection-start-line="100" selection-start-column="43" selection-end-line="100" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="103" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -63,9 +82,87 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane" />
-      <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="AndroidView">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Demo" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Demo" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Demo" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Demo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Demo" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Demo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Demo" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Demo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="ximalaya" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Demo" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Demo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="ximalaya" type="462c0819:PsiDirectoryNode" />
+              <item name="ting" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Demo" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Demo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="ximalaya" type="462c0819:PsiDirectoryNode" />
+              <item name="ting" type="462c0819:PsiDirectoryNode" />
+              <item name="android" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Demo" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Demo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="ximalaya" type="462c0819:PsiDirectoryNode" />
+              <item name="ting" type="462c0819:PsiDirectoryNode" />
+              <item name="android" type="462c0819:PsiDirectoryNode" />
+              <item name="opensdk" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Demo" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Demo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="ximalaya" type="462c0819:PsiDirectoryNode" />
+              <item name="ting" type="462c0819:PsiDirectoryNode" />
+              <item name="android" type="462c0819:PsiDirectoryNode" />
+              <item name="opensdk" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Demo" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Demo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="ximalaya" type="462c0819:PsiDirectoryNode" />
+              <item name="ting" type="462c0819:PsiDirectoryNode" />
+              <item name="android" type="462c0819:PsiDirectoryNode" />
+              <item name="opensdk" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="reciver" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -99,26 +196,43 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" visible="true" weight="0.32995737" />
-      <window_info id="Structure" side_tool="true" />
-      <window_info id="Build Variants" side_tool="true" />
-      <window_info id="Image Layers" />
-      <window_info id="Designer" />
-      <window_info id="Resources Explorer" />
-      <window_info id="Capture Tool" />
-      <window_info id="Favorites" side_tool="true" />
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="TODO" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Build" visible="true" weight="0.32992035" />
-      <window_info anchor="right" id="Capture Analysis" />
-      <window_info anchor="right" id="Gradle" />
-      <window_info anchor="right" id="Theme Preview" />
-      <window_info anchor="right" id="Palette&#9;" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.3336887" />
+      <window_info id="Structure" order="2" side_tool="true" />
+      <window_info id="Build Variants" order="3" side_tool="true" />
+      <window_info id="Image Layers" order="4" />
+      <window_info id="Designer" order="5" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Resources Explorer" order="7" />
+      <window_info id="Favorites" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="0" />
+      <window_info anchor="bottom" id="TODO" order="1" />
+      <window_info anchor="bottom" id="Terminal" order="2" />
+      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Build" order="4" visible="true" weight="0.32992035" />
+      <window_info anchor="right" id="Capture Analysis" order="0" />
+      <window_info anchor="right" id="Gradle" order="1" />
+      <window_info anchor="right" id="Theme Preview" order="2" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
     </layout>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/com/ximalaya/ting/android/opensdk/test/TingApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="100" column="43" selection-start-line="100" selection-start-column="43" selection-end-line="100" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="103" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
   </component>
   <component name="masterDetails">
     <states>

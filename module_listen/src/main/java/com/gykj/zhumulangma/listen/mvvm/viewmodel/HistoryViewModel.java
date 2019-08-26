@@ -53,11 +53,14 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
     public void _getHistory() {
         mModel.getHistory(curPage, PAGESIZE)
                 .doOnSubscribe(d->postShowInitLoadViewEvent(curPage==1))
-                .doFinally(()->postShowInitLoadViewEvent(false))
                 .subscribe(playHistoryBeans -> {
                     curPage++;
+                    postShowInitLoadViewEvent(false);
                     getHistorySingleLiveEvent().postValue(playHistoryBeans);
-                }, e -> e.printStackTrace());
+                }, e -> {
+                    e.printStackTrace();
+                    postShowNoDataViewEvent(true);
+                });
     }
 
     public void play(String albumId, Track track) {

@@ -24,7 +24,6 @@ import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
@@ -169,7 +168,7 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
 
         ConstantsOpenSdk.isDebug = true;
         CommonRequest.getInstanse().init(this, AppConstants.Ximalaya.SECRET);
-
+        CommonRequest.getInstanse().setDefaultPagesize(20);
         if (BaseUtil.isMainProcess(this)) {
             AccessTokenManager.getInstanse().init(this);
             if (AccessTokenManager.getInstanse().hasLogin()) {
@@ -192,6 +191,8 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
         }
         // 此代码表示播放时会去监测下是否已经下载(setDownloadPlayPathCallback 方法已经废弃 请使用如下方法)
         XmPlayerManager.getInstance(this).setCommonBusinessHandle(XmDownloadManager.getInstance());
+
+
         try {
             Method method = XmPlayerConfig.getInstance(this).getClass().getDeclaredMethod("setUseSystemPlayer", Boolean.class);
             method.setAccessible(true);

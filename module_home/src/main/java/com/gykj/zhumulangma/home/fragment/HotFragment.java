@@ -22,6 +22,7 @@ import com.gykj.zhumulangma.home.adapter.HotRadioAdapter;
 import com.gykj.zhumulangma.home.adapter.HotStoryAdapter;
 import com.gykj.zhumulangma.home.adapter.HotTopicAdapter;
 import com.gykj.zhumulangma.home.adapter.HotMusicAdapter;
+import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
@@ -55,7 +56,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     private HotMusicAdapter mMusicAdapter;
 
     private RecyclerView rvRadio;
-    private HotRadioAdapter mRadioAdapter;
+    private RadioAdapter mRadioAdapter;
 
     private View flRank;
 
@@ -221,7 +222,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     private void initRadio() {
 
         rvRadio = fd(R.id.rv_radio);
-        mRadioAdapter = new HotRadioAdapter(R.layout.home_item_hot_radio);
+        mRadioAdapter = new RadioAdapter(R.layout.home_item_radio);
         rvRadio.setLayoutManager(new LinearLayoutManager(mContext));
         rvRadio.setHasFixedSize(true);
         mRadioAdapter.bindToRecyclerView(rvRadio);

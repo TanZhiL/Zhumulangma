@@ -26,6 +26,7 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Keyword = new Property(1, String.class, "keyword", false, "KEYWORD");
+        public final static Property Datatime = new Property(2, long.class, "datatime", false, "DATATIME");
     }
 
 
@@ -42,7 +43,8 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"SEARCH_HISTORY_BEAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"KEYWORD\" TEXT);"); // 1: keyword
+                "\"KEYWORD\" TEXT," + // 1: keyword
+                "\"DATATIME\" INTEGER NOT NULL );"); // 2: datatime
     }
 
     /** Drops the underlying database table. */
@@ -64,6 +66,7 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Long> {
         if (keyword != null) {
             stmt.bindString(2, keyword);
         }
+        stmt.bindLong(3, entity.getDatatime());
     }
 
     @Override
@@ -79,6 +82,7 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Long> {
         if (keyword != null) {
             stmt.bindString(2, keyword);
         }
+        stmt.bindLong(3, entity.getDatatime());
     }
 
     @Override
@@ -90,7 +94,8 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Long> {
     public SearchHistoryBean readEntity(Cursor cursor, int offset) {
         SearchHistoryBean entity = new SearchHistoryBean( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // keyword
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // keyword
+            cursor.getLong(offset + 2) // datatime
         );
         return entity;
     }
@@ -99,6 +104,7 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Long> {
     public void readEntity(Cursor cursor, SearchHistoryBean entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setKeyword(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setDatatime(cursor.getLong(offset + 2));
      }
     
     @Override

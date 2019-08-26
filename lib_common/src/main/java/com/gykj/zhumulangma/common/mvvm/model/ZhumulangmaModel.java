@@ -398,5 +398,25 @@ public class ZhumulangmaModel extends CommonModel {
                 })).compose(RxAdapter.exceptionTransformer());
     }
 
+    /**
+     * 获取某个分类下的主播列表
+     * @param specificParams
+     * @return
+     */
+    public Observable<AnnouncerList> getAnnouncerList(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getAnnouncerList(specificParams,
+                new IDataCallBack<AnnouncerList>() {
+                    @Override
+                    public void onSuccess(@Nullable AnnouncerList announcerList) {
+                        emitter.onNext(announcerList);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
 
 }

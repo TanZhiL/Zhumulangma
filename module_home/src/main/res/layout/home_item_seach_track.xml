@@ -85,14 +85,13 @@
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:src="@drawable/ic_common_folder"
+            android:src="@drawable/ic_common_play"
             android:tint="@color/colorPrimaryDark" />
 
         <TextView
-            android:id="@+id/tv_size"
+            android:id="@+id/tv_playcount"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
             android:textColor="#505050"
             android:textSize="12sp"
             tools:text="6.35M" />
@@ -115,7 +114,7 @@
 
 
     </LinearLayout>
-    <FrameLayout
+<!--    <FrameLayout
         android:id="@+id/ll_delete"
         android:layout_width="40dp"
         android:layout_height="32dp"
@@ -130,5 +129,5 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_listen_delete"
             android:tint="@color/colorPrimaryDark" />
-    </FrameLayout>
+    </FrameLayout>-->
 </android.support.constraint.ConstraintLayout>

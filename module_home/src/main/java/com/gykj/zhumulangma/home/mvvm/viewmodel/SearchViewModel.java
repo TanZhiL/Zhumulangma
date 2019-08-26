@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.gykj.zhumulangma.common.bean.SearchHistoryBean;
+import com.gykj.zhumulangma.common.dao.SearchHistoryBeanDao;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
@@ -52,7 +53,7 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .subscribe(bean -> {}, e->e.printStackTrace());
     }
     public void getHistory(){
-        mModel.list(SearchHistoryBean.class)
+        mModel.listDesc(SearchHistoryBean.class,0,0, SearchHistoryBeanDao.Properties.Datatime)
                 .subscribe(searchHistoryBeans -> getHistorySingleLiveEvent().postValue(searchHistoryBeans));
     }
 

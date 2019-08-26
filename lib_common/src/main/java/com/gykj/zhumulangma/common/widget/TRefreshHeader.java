@@ -1,6 +1,8 @@
 package com.gykj.zhumulangma.common.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 public class TRefreshHeader extends LinearLayout implements RefreshHeader {
 
     private LottieAnimationView mAnimationView;
+    private int color;
 
     public TRefreshHeader(Context context) {
         super(context);
@@ -35,6 +38,9 @@ public class TRefreshHeader extends LinearLayout implements RefreshHeader {
 
     public TRefreshHeader(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TRefreshHeader);
+        color = typedArray.getColor(R.styleable.TRefreshHeader_trh_color, Color.GRAY);
+        typedArray.recycle();
         initView(context);
     }
 
@@ -46,6 +52,7 @@ public class TRefreshHeader extends LinearLayout implements RefreshHeader {
     private void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.common_widget_refersheader, this);
         mAnimationView = view.findViewById(R.id.animation_view);
+        mAnimationView.setColorFilter(color);
     }
 
 
@@ -59,7 +66,7 @@ public class TRefreshHeader extends LinearLayout implements RefreshHeader {
     @NonNull
     @Override
     public SpinnerStyle getSpinnerStyle() {
-          return SpinnerStyle.Translate;
+        return SpinnerStyle.Translate;
     }
 
     @Override

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:srlEnableNestedScrolling="true"
+    app:srlEnableLoadMore="false"
+    app:srlEnablePreviewInEditMode="false">
+    <com.gykj.zhumulangma.common.widget.TRefreshHeader
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        app:trh_color="@color/white"
+        android:layout_height="50dp"/>
+<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="158dp"
+                app:indicator_drawable_unselected="@drawable/shap_common_circle_white"
+                app:indicator_height="7dp"
+                app:elevation="0dp"
+                app:indicator_margin="3dp"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                app:indicator_width="7dp" >
+            </com.youth.banner.Banner>
+
+        <android.support.constraint.ConstraintLayout
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            android:id="@+id/c1"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="11dp"
+            android:background="@drawable/shap_home_announcer"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/banner">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:tint="@color/colorPrimary"
+                android:src="@drawable/ic_home_playing" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="今日主播榜"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:tint="@color/colorPrimaryDark"
+                android:src="@drawable/ic_common_more_arrow" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_top3"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                tools:src="@drawable/common_avatar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/imageView6"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_top2"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginRight="8dp"
+                tools:src="@drawable/common_avatar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/iv_top3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_top1"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginRight="8dp"
+                tools:src="@drawable/common_avatar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/iv_top2"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+
+    </android.support.design.widget.AppBarLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnableRefresh="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:srlFooterTriggerRate="0">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rl_live"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srlEnableNestedScrolling="true"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp">
+
+        </android.support.v7.widget.RecyclerView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</android.support.design.widget.CoordinatorLayout>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

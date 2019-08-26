@@ -102,6 +102,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     private void search(String keyword) {
         SearchHistoryBean searchHistoryBean = new SearchHistoryBean();
         searchHistoryBean.setKeyword(keyword);
+        searchHistoryBean.setDatatime(System.currentTimeMillis());
         mViewModel.insertHistory(searchHistoryBean);
         etKeyword.clearFocus();
         hideSoftInput();

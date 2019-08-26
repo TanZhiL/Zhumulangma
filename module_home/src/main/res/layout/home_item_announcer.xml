@@ -1,105 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="158dp"
-    android:layout_height="187dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-<android.support.constraint.ConstraintLayout
-    android:id="@+id/c"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintTop_toTopOf="parent"
-    >
-
-    <ImageView
-        android:id="@+id/iv_bg"
-        android:layout_width="158dp"
-        android:layout_height="158dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:src="@drawable/hot_like" />
+    android:layout_height="84dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/civ_avatar"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:id="@+id/iv_cover"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/common_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_nickname"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:layout_marginEnd="8dp"
-        android:ellipsize="marquee"
-        android:singleLine="true"
-        android:text="逆生长"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/civ_avatar"
-        app:layout_constraintEnd_toStartOf="@+id/imageView8"
-        app:layout_constraintStart_toEndOf="@+id/civ_avatar"
-        app:layout_constraintTop_toTopOf="@+id/civ_avatar" />
-
-    <TextView
-        android:id="@+id/tv_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="音乐"
-        android:textColor="@color/white"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@id/tv_nickname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_nickname" />
-
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/c"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        android:background="@drawable/shap_common_track_cover"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginRight="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_tag"
-        app:layout_constraintEnd_toStartOf="@+id/tv_tag"
-        app:layout_constraintTop_toTopOf="@+id/tv_tag" />
-
-    <ImageView
-        android:id="@+id/imageView7"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_fans"
-        app:layout_constraintEnd_toStartOf="@+id/tv_fans"
-        app:layout_constraintTop_toTopOf="@+id/tv_fans"/>
+        android:tint="@color/white"
+        android:visibility="gone"
+        android:src="@drawable/ic_common_play"
+        app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+        app:layout_constraintEnd_toEndOf="@+id/iv_cover"
+        app:layout_constraintStart_toStartOf="@+id/iv_cover"
+        app:layout_constraintTop_toTopOf="@id/iv_cover" />
 
     <TextView
-        android:id="@+id/tv_fans"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="#11000000"
-        android:padding="2dp"
-        android:text="1126"
-        android:textColor="@color/white"
-        android:textSize="10sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="小道士笔记【灵异玄幻-有声小说】"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/iv_cover"
         app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/tv_vsignature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="8dp"
         android:ellipsize="end"
-        android:maxLines="2"
-        android:text="  你的小鹿已上线！"
-        android:textSize="11sp"
-        app:layout_constraintLeft_toLeftOf="@id/c"
-        app:layout_constraintTop_toBottomOf="@id/c" />
+        android:singleLine="true"
+        android:text="《盗墓笔记》49"
+        android:textColor="@color/colorGray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/ll_delete"
+        app:layout_constraintStart_toStartOf="@+id/tv_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="17dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/ll_delete"
+        app:layout_constraintStart_toStartOf="@+id/tv_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_vsignature">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_common_following"
+            android:tint="@color/colorPrimaryDark" />
+
+        <TextView
+            android:id="@+id/tv_following"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:textColor="#505050"
+            android:textSize="12sp"
+            tools:text="6.35M" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/ic_common_fans"
+            android:tint="@color/colorPrimaryDark" />
+
+        <TextView
+            android:id="@+id/tv_fans"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="12:41"
+            android:textColor="#505050"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/ll_delete"
+        android:layout_width="40dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name">
+
+     <!--   <ImageView
+            android:id="@+id/iv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_listen_delete"
+            android:tint="@color/colorPrimaryDark" />-->
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_vip"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/shap_common_circle_primary"
+        android:gravity="center"
+        android:text="V"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/tv_name"
+        app:layout_constraintTop_toTopOf="@+id/tv_name" />
 </android.support.constraint.ConstraintLayout>

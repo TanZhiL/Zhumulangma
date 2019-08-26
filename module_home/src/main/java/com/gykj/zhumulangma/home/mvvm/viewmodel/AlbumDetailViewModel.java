@@ -112,7 +112,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                         })
                         .map(lastPlayTrackList -> {
                     TrackList trackList = new TrackList();
-                    trackList.setAlbumId(Integer.parseInt(albumId));
+//                    trackList.setAlbumId(Integer.parseInt(albumId));
                     trackList.cloneCommonTrackList(lastPlayTrackList);
                     return trackList;
                 });

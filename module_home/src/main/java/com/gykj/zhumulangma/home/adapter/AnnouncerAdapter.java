@@ -25,9 +25,11 @@ public class AnnouncerAdapter extends BaseQuickAdapter<Announcer, BaseViewHolder
 
     @Override
     protected void convert(BaseViewHolder helper, Announcer item) {
-        Glide.with(mContext).load(item.getAvatarUrl()).into((ImageView) helper.getView(R.id.iv_bg));
-        helper.setText(R.id.tv_nickname,item.getNickname());
-        helper.setText(R.id.tv_fans, ZhumulangmaUtil.toWanYi(item.getFollowerCount()));
+        Glide.with(mContext).load(item.getAvatarUrl()).into((ImageView) helper.getView(R.id.iv_cover));
+        helper.setText(R.id.tv_name,item.getNickname());
         helper.setText(R.id.tv_vsignature,item.getVsignature());
+        helper.setText(R.id.tv_fans, ZhumulangmaUtil.toWanYi(item.getFollowerCount()));
+        helper.setText(R.id.tv_following,ZhumulangmaUtil.toWanYi(item.getFollowingCount()));
+        helper.setGone(R.id.tv_vip,item.isVerified());
     }
 }

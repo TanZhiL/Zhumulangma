@@ -201,6 +201,8 @@
         <receiver android:name="com.ximalaya.ting.android.opensdk.player.receive.WireControlReceiver"
             android:process=":player"
             android:exported="true" />
+
+
         <!-- 喜马拉雅听END -->
     </application>
 

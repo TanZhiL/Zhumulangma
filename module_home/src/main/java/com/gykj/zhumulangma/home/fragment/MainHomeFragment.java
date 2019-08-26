@@ -77,7 +77,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         pages.add(new HotFragment());
         pages.add(new CategoryFragment());
         pages.add(new FineFragment());
-        pages.add(new CategoryFragment());
+        pages.add(new AnnouncerFragment());
         pages.add(new RadioFragment());
 
         TFragmentPagerAdapter adapter = new TFragmentPagerAdapter(

@@ -14,6 +14,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.HotRadioAdapter;
+import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -27,7 +28,7 @@ public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel>
 
    private RecyclerView rv;
    private SmartRefreshLayout refreshLayout;
-   private HotRadioAdapter mAdapter;
+   private RadioAdapter mAdapter;
 
     private String keyword;
     public SearchRadioFragment() {
@@ -49,7 +50,7 @@ public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel>
         rv=view.findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(mContext));
         rv.setHasFixedSize(true);
-        mAdapter=new HotRadioAdapter(R.layout.home_item_hot_radio);
+        mAdapter=new RadioAdapter(R.layout.home_item_radio);
         mAdapter.bindToRecyclerView(rv);
         mAdapter.setOnItemClickListener(this);
         refreshLayout=view.findViewById(R.id.refreshLayout);
