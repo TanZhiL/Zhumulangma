@@ -1,5 +1,6 @@
 package com.gykj.zhumulangma.common.bean;
 
+import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -11,9 +12,15 @@ import me.yokeyword.fragmentation.ISupportFragment;
 public class NavigateBean {
    public String path;
    public ISupportFragment fragment;
+   public ExtraTransaction extraTransaction;
 
     public NavigateBean(String path, ISupportFragment fragment) {
         this.path = path;
         this.fragment = fragment;
+    }
+    public NavigateBean(String path, ISupportFragment fragment,ExtraTransaction extraTransaction) {
+        this.path = path;
+        this.fragment = fragment;
+        this.extraTransaction = extraTransaction;
     }
 }

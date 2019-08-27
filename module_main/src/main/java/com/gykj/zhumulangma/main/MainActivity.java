@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.main;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -82,14 +83,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void initData() {
-        TLog.d(XmPlayerManager.getInstance(this).isPlaying());
-        if(XmPlayerManager.getInstance(this).isPlaying()){
-            Track currSoundIgnoreKind = XmPlayerManager.getInstance(this).getCurrSoundIgnoreKind(true);
-            if (null == currSoundIgnoreKind) {
-                return;
+        new Handler().postDelayed(() -> {
+            TLog.d(XmPlayerManager.getInstance(MainActivity.this).isPlaying());
+            if (XmPlayerManager.getInstance(MainActivity.this).isPlaying()) {
+                Track currSoundIgnoreKind = XmPlayerManager.getInstance(MainActivity.this).getCurrSoundIgnoreKind(true);
+                if (null == currSoundIgnoreKind) {
+                    return;
+                }
+                globalPlay.play(currSoundIgnoreKind.getCoverUrlSmall());
             }
-            globalPlay.play(currSoundIgnoreKind.getCoverUrlMiddle());
-        }
+        }, 500);
+
     }
 
     @Override
@@ -97,60 +101,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         return false;
     }
 
-    @Override
-    public <T> void onEvent(BaseActivityEvent<T> event) {
-        super.onEvent(event);
-        switch (event.getCode()) {
-            case EventCode.MainCode.NAVIGATE:
-                NavigateBean navigateBean = (NavigateBean) event.getData();
-                if (null == navigateBean.fragment) {
-                    return;
-                }
-                switch (navigateBean.path) {
-                    case AppConstants.Router.User.F_MESSAGE:
-                        //登录拦截
-                   /*     if (!AccessTokenManager.getInstanse().hasLogin()) {
-                            goLogin();
-                        } else {
-                            start(navigateBean.fragment);
-                        }*/
-                        start(navigateBean.fragment);
-                        break;
-                    case AppConstants.Router.Home.F_PLAY_TRACK:
-                        extraTransaction().setCustomAnimations(
-                                com.gykj.zhumulangma.common.R.anim.push_bottom_in,
-                                com.gykj.zhumulangma.common.R.anim.no_anim,
-                                com.gykj.zhumulangma.common.R.anim.no_anim,
-                                com.gykj.zhumulangma.common.R.anim.push_bottom_out)
-                                .start(navigateBean.fragment);
-                        break;
-                    default:
-                        start(navigateBean.fragment);
-                        break;
-                }
-                break;
-            case EventCode.MainCode.HIDE_GP:
-                globalPlay.setVisibility(View.GONE);
-                break;
-            case EventCode.MainCode.SHOW_GP:
-                globalPlay.setVisibility(View.VISIBLE);
-                break;
-            case EventCode.MainCode.LOGIN:
-                goLogin();
-                break;
-        }
-    }
-
 
     @Override
     public void onClick(View v) {
         if (v == globalPlay) {
-            XmPlayerManager.getInstance(this).play();
-
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
-            if (null != navigation) {
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                        new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK, (ISupportFragment) navigation)));
+            if(null == XmPlayerManager.getInstance(this).getCurrSound(true)){
+                Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_RANK).navigation();
+                if (null != navigation) {
+                    EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                            new NavigateBean(AppConstants.Router.Home.F_RANK, (ISupportFragment) navigation,
+                                    extraTransaction().setCustomAnimations(
+                                            com.gykj.zhumulangma.common.R.anim.push_bottom_in,
+                                            com.gykj.zhumulangma.common.R.anim.no_anim,
+                                            com.gykj.zhumulangma.common.R.anim.no_anim,
+                                            com.gykj.zhumulangma.common.R.anim.push_bottom_out))));
+                }
+            }else {
+                XmPlayerManager.getInstance(this).play();
+                Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
+                if (null != navigation) {
+                    EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                            new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK, (ISupportFragment) navigation)));
+                }
             }
         }
     }
@@ -181,7 +153,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
         if (null == currSoundIgnoreKind) {
             return;
         }
-        globalPlay.play(currSoundIgnoreKind.getCoverUrlMiddle());
+        globalPlay.play(currSoundIgnoreKind.getCoverUrlSmall());
     }
 
     @Override
@@ -226,7 +198,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onPlayProgress(int i, int i1) {
-        globalPlay.setProgress((float) i/(float) i1);
+        globalPlay.setProgress((float) i / (float) i1);
     }
 
     @Override
@@ -246,7 +218,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onAdsStartBuffering() {
-    globalPlay.setProgress(0);
+        globalPlay.setProgress(0);
     }
 
     @Override
@@ -256,11 +228,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onStartPlayAds(Advertis advertis, int i) {
-        Log.e(TAG, "onStartPlayAds: "+advertis );
+        Log.e(TAG, "onStartPlayAds: " + advertis);
         String imageUrl = advertis.getImageUrl();
-        if(TextUtils.isEmpty(imageUrl)){
+        if (TextUtils.isEmpty(imageUrl)) {
             globalPlay.play(R.drawable.notification_default);
-        }else {
+        } else {
             globalPlay.play(imageUrl);
         }
     }
@@ -274,6 +246,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     public void onError(int i, int i1) {
 
     }
+
     class CustomAuthListener implements IXmlyAuthListener {
         @Override
         public void onComplete(Bundle bundle) {
@@ -282,6 +255,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
             EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.MainCode.LOGINSUCC));
             ToastUtil.showToast("登录成功");
         }
+
         @Override
         public void onXmlyException(final XmlyException e) {
             e.printStackTrace();
@@ -320,7 +294,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     }
 
 
-
     private long exitTime = 0;
 
     @Override
@@ -339,6 +312,54 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
             }
         }
     }
+
+    @Override
+    public <T> void onEvent(BaseActivityEvent<T> event) {
+        super.onEvent(event);
+        switch (event.getCode()) {
+            case EventCode.MainCode.NAVIGATE:
+                NavigateBean navigateBean = (NavigateBean) event.getData();
+                if (null == navigateBean.fragment) {
+                    return;
+                }
+                switch (navigateBean.path) {
+                    case AppConstants.Router.User.F_MESSAGE:
+                        //登录拦截
+                   /*     if (!AccessTokenManager.getInstanse().hasLogin()) {
+                            goLogin();
+                        } else {
+                            start(navigateBean.fragment);
+                        }*/
+                        start(navigateBean.fragment);
+                        break;
+                    case AppConstants.Router.Home.F_PLAY_TRACK:
+                        extraTransaction().setCustomAnimations(
+                                com.gykj.zhumulangma.common.R.anim.push_bottom_in,
+                                com.gykj.zhumulangma.common.R.anim.no_anim,
+                                com.gykj.zhumulangma.common.R.anim.no_anim,
+                                com.gykj.zhumulangma.common.R.anim.push_bottom_out).start(navigateBean.fragment);
+                        break;
+                    default:
+                        if(navigateBean.extraTransaction!=null){
+                            navigateBean.extraTransaction.start(navigateBean.fragment,ISupportFragment.SINGLETASK);
+                        }else {
+                            start(navigateBean.fragment,ISupportFragment.SINGLETASK);
+                        }
+                        break;
+                }
+                break;
+            case EventCode.MainCode.HIDE_GP:
+                globalPlay.hide();
+                break;
+            case EventCode.MainCode.SHOW_GP:
+                globalPlay.show();
+                break;
+            case EventCode.MainCode.LOGIN:
+                goLogin();
+                break;
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

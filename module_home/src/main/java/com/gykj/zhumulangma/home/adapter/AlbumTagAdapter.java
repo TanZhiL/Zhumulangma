@@ -20,20 +20,11 @@ public class AlbumTagAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-            TextView view=helper.getView(R.id.tv_keyword);
-        if(helper.getLayoutPosition()==0){
-            view.setTextColor(Color.parseColor("#ff0000"));
-            view.setBackgroundResource(R.drawable.shap_common_tag_first);
-        }else  if(helper.getLayoutPosition()==1){
-            view.setTextColor(Color.parseColor("#4a86e8"));
-            view.setBackgroundResource(R.drawable.shap_common_tag_second);
-        }else  if(helper.getLayoutPosition()==2){
-            view.setTextColor(Color.parseColor("#ff9900"));
-            view.setBackgroundResource(R.drawable.shap_common_tag_third);
-        }else {
-            view.setTextColor(Color.BLACK);
-            view.setBackgroundResource(R.drawable.shap_common_tag_normal);
-        }
-        helper.setText(R.id.tv_keyword,item);
+        TextView view = helper.getView(R.id.tv_keyword);
+
+        view.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+        view.setBackgroundResource(R.drawable.shap_common_tag_first);
+
+        helper.setText(R.id.tv_keyword, item);
     }
 }

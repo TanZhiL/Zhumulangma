@@ -20,6 +20,7 @@ import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.HistoryViewModel;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 /**
  * Author: Thomas.
@@ -29,7 +30,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
  */
 @Route(path = AppConstants.Router.Listen.F_HISTORY)
 public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implements OnLoadMoreListener,
-        BaseQuickAdapter.OnItemClickListener {
+        BaseQuickAdapter.OnItemClickListener, OnRefreshListener {
     private RefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
     private HistoryAdapter mHistoryAdapter;
@@ -42,7 +43,6 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
     @Override
     protected void initView(View view) {
         mRefreshLayout = fd(R.id.refreshLayout);
-        mRefreshLayout.setEnableRefresh(false);
         mRecyclerView = fd(R.id.rv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setHasFixedSize(true);
@@ -54,11 +54,13 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
     public void initListener() {
         super.initListener();
         mRefreshLayout.setOnLoadMoreListener(this);
+        mRefreshLayout.setOnRefreshListener(this);
         mHistoryAdapter.setOnItemClickListener(this);
     }
 
     @Override
     public void initData() {
+        mRefreshLayout.autoRefresh();
         mViewModel._getHistory();
     }
 
@@ -86,6 +88,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
     @Override
     public void initViewObservable() {
         mViewModel.getHistorySingleLiveEvent().observe(this, playHistoryBeans -> {
+          mRefreshLayout.finishRefresh();
             if (null == playHistoryBeans || (mHistoryAdapter.getData().size() == 0 && playHistoryBeans.size() == 0)) {
                 showNoDataView(true);
                 return;
@@ -130,5 +133,11 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
     @Override
     protected boolean lazyEnable() {
         return false;
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        //只做动画用
+        refreshLayout.finishRefresh(1000);
     }
 }
