@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -86,7 +85,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
     public void initData() {
         mViewModel.getBannerList();
         mViewModel.getTopList();
-        mViewModel.getLiveList();
+        mViewModel.getAnnouncerList();
     }
 
     private void initBanner() {
@@ -161,7 +160,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getLiveList();
+        mViewModel.getAnnouncerList();
     }
 
     @Override

@@ -46,7 +46,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
         mRecyclerView = fd(R.id.rv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setHasFixedSize(true);
-        mHistoryAdapter = new HistoryAdapter(R.layout.listen_item_history);
+        mHistoryAdapter = new HistoryAdapter(R.layout.listen_item_history,R.layout.listen_item_head_history);
         mHistoryAdapter.bindToRecyclerView(mRecyclerView);
     }
 
@@ -107,8 +107,11 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        PlayHistoryBean playHistoryBean = mHistoryAdapter.getData().get(position);
-        mViewModel.play(String.valueOf(playHistoryBean.getAlbumId()), playHistoryBean.getTrack());
+        HistoryViewModel.PlayHistorySection playHistorySection = mHistoryAdapter.getData().get(position);
+        if(!playHistorySection.isHeader){
+            PlayHistoryBean playHistoryBean = playHistorySection.t;
+            mViewModel.play(String.valueOf(playHistoryBean.getAlbumId()), playHistoryBean.getTrack());
+        }
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
+import com.chad.library.adapter.base.entity.SectionEntity;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
@@ -14,6 +15,9 @@ import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.util.DateUtil;
+import com.gykj.zhumulangma.common.util.log.TLog;
+import com.gykj.zhumulangma.listen.adapter.HistoryAdapter;
 import com.gykj.zhumulangma.listen.mvvm.model.HistoryModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
@@ -23,9 +27,13 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -42,7 +50,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Description:
  */
 public class HistoryViewModel extends BaseViewModel<HistoryModel> {
-    private SingleLiveEvent<List<PlayHistoryBean>> mHistorysSingleLiveEvent;
+    private SingleLiveEvent<List<PlayHistorySection>> mHistorysSingleLiveEvent;
     private static final int PAGESIZE = 20;
     private int curPage = 1;
 
@@ -52,11 +60,11 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
 
     public void _getHistory() {
         mModel.getHistory(curPage, PAGESIZE)
-                .doOnSubscribe(d->postShowInitLoadViewEvent(curPage==1))
-                .subscribe(playHistoryBeans -> {
+                .observeOn(Schedulers.io())
+                .map(playHistoryBeans -> convertSections(playHistoryBeans))
+                .subscribe(playHistorySections -> {
                     curPage++;
-                    postShowInitLoadViewEvent(false);
-                    getHistorySingleLiveEvent().postValue(playHistoryBeans);
+                    getHistorySingleLiveEvent().postValue(playHistorySections);
                 }, e -> {
                     e.printStackTrace();
                     postShowNoDataViewEvent(true);
@@ -82,13 +90,61 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                     }
                 }, e -> e.printStackTrace());
     }
+    private List<PlayHistorySection> convertSections(List<PlayHistoryBean> beans){
+        List<PlayHistorySection> sections=new ArrayList<>();
+        Map<String,List<PlayHistoryBean>> map=new LinkedHashMap<>();
 
+        for (PlayHistoryBean bean:beans) {
+            List<PlayHistoryBean> playHistoryBeans = map.get(dateCovert(bean.getDatatime()));
+            if(playHistoryBeans==null){
+                playHistoryBeans=new ArrayList<>();
+                map.put(dateCovert(bean.getDatatime()),playHistoryBeans);
+            }
+            playHistoryBeans.add(bean);
+        }
 
+        Iterator<Map.Entry<String, List<PlayHistoryBean>>> iterator = map.entrySet().iterator();
+
+        while (iterator.hasNext()){
+            Map.Entry entry = iterator.next();
+            String key =(String)entry.getKey();
+         //   TLog.d(key+":"+entry.getValue());
+            sections.add(new PlayHistorySection(true,key));
+            List<PlayHistoryBean> list = (List<PlayHistoryBean>) entry.getValue();
+            for (PlayHistoryBean bean : list) {
+                sections.add(new PlayHistorySection(bean));
+            }
+        }
+
+        return sections;
+    }
+    private String dateCovert(long datetime){
+
+        if(datetime > DateUtil.getDayBegin().getTime()){
+            return "今天";
+        }else if(datetime > DateUtil.getBeginDayOfYesterday().getTime()){
+            return "昨天";
+        }else {
+            return "更早";
+        }
+
+    }
     public void clear() {
         mModel.clearAll(PlayHistoryBean.class).subscribe();
     }
 
-    public SingleLiveEvent<List<PlayHistoryBean>> getHistorySingleLiveEvent() {
+    public SingleLiveEvent<List<PlayHistorySection>> getHistorySingleLiveEvent() {
         return mHistorysSingleLiveEvent = createLiveData(mHistorysSingleLiveEvent);
+    }
+
+
+    public class PlayHistorySection extends SectionEntity<PlayHistoryBean> {
+
+        public PlayHistorySection(boolean isHeader, String header) {
+            super(isHeader, header);
+        }
+        public PlayHistorySection(PlayHistoryBean bean) {
+            super(bean);
+        }
     }
 }

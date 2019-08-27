@@ -54,6 +54,9 @@ public interface  AppConstants {
     }
     interface Ximalaya{
         String SECRET="6a43f2188877ee43a950e8e07b6dcb6e";
+        /**
+         * 当前 DEMO 应用的回调页，第三方应用应该使用自己的回调页。
+         */
         String REDIRECT_URL = "http://api.ximalaya.com/openapi-collector-app/get_access_token";
         String REFRESH_TOKEN_URL = "https://api.ximalaya.com/oauth2/refresh_token?";
         int NOTIFICATION_ID = 10001;

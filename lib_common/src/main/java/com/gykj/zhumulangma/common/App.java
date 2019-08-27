@@ -441,15 +441,19 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
 
     @Override
     public void onPlayProgress(int i, int i1) {
-        Track currSound = XmPlayerManager.getInstance(this).getCurrSoundIgnoreKind(true);
-        if(null==currSound){
-            return;
+        try {
+            Track currSound = XmPlayerManager.getInstance(this).getCurrSoundIgnoreKind(true);
+            if(null==currSound){
+                return;
+            }
+            int currPos=XmPlayerManager.getInstance(this).getPlayCurrPositon();
+            int duration=XmPlayerManager.getInstance(this).getDuration();
+            model.insert(new PlayHistoryBean(currSound.getDataId(),currSound.getAlbum().getAlbumId(),
+                    currSound.getKind(),100 * currPos /duration,
+                    System.currentTimeMillis(),currSound)).subscribe();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        int currPos=XmPlayerManager.getInstance(this).getPlayCurrPositon();
-        int duration=XmPlayerManager.getInstance(this).getDuration();
-        model.insert(new PlayHistoryBean(currSound.getDataId(),currSound.getAlbum().getAlbumId(),
-                currSound.getKind(),100 * currPos /duration,
-                System.currentTimeMillis(),currSound)).subscribe();
     }
 
     @Override

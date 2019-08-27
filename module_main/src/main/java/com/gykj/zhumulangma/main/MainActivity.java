@@ -18,6 +18,7 @@ import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseActivity;
 import com.gykj.zhumulangma.common.util.ToastUtil;
+import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.fragment.MainFragment;
 import com.ximalaya.ting.android.opensdk.auth.call.IXmlyAuthListener;
@@ -46,29 +47,14 @@ import me.yokeyword.fragmentation.ISupportFragment;
 import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
 
 @Route(path = AppConstants.Router.Main.A_MAIN)
-public class MainActivity extends BaseActivity implements View.OnClickListener, MainFragment.onRootShowListener, IXmPlayerStatusListener, IXmAdsStatusListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener,
+        MainFragment.onRootShowListener, IXmPlayerStatusListener, IXmAdsStatusListener {
+
+    private XmlyAuthInfo mAuthInfo;
+    private XmlySsoHandler mSsoHandler;
+    private XmlyAuth2AccessToken mAccessToken;
 
     private GlobalPlay globalPlay;
-
-    /**
-     * 当前 DEMO 应用的回调页，第三方应用应该使用自己的回调页。
-     */
-
-
-    /**
-     * 喜马拉雅授权实体类对象
-     */
-    private XmlyAuthInfo mAuthInfo;
-
-    /**
-     * 喜马拉雅授权管理类对象
-     */
-    private XmlySsoHandler mSsoHandler;
-
-    /**
-     * 封装了 "access_token"，"refresh_token"，并提供了他们的管理功能
-     */
-    private XmlyAuth2AccessToken mAccessToken;
 
     @Override
     protected int onBindLayout() {
@@ -96,6 +82,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void initData() {
+        TLog.d(XmPlayerManager.getInstance(this).isPlaying());
         if(XmPlayerManager.getInstance(this).isPlaying()){
             Track currSoundIgnoreKind = XmPlayerManager.getInstance(this).getCurrSoundIgnoreKind(true);
             if (null == currSoundIgnoreKind) {
@@ -174,29 +161,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             globalPlay.setBackgroundColor(Color.TRANSPARENT);
         else
             globalPlay.setBackground(getResources().getDrawable(R.drawable.shap_common_widget_play));
-    }
-
-
-    // 用来计算返回键的点击间隔时间
-    private long exitTime = 0;
-
-    @Override
-    public void onBackPressedSupport() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            pop();
-        } else {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(this, "再按一次返回桌面", Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();
-            } else {
-            /*    finish();
-                android.os.Process.killProcess(android.os.Process.myPid());*/
-                Intent home = new Intent(Intent.ACTION_MAIN);
-                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                home.addCategory(Intent.CATEGORY_HOME);
-                startActivity(home);
-            }
-        }
     }
 
     private void goLogin() {
@@ -310,19 +274,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onError(int i, int i1) {
 
     }
-
-    /**
-     * 喜马拉雅认证授权回调类。
-     * 1. 客户端授权时，需要在 {@link #onActivityResult} 中调用 {@link XmlySsoHandler#authorizeCallBack} 后，
-     * 该回调才会被执行。
-     * 2. 非 SSO 授权时，当授权结束后，该回调就会被执行。
-     * <p>
-     * 注意：当认证授权成功时，喜马拉雅 OAuthSDK 中已经保存了 access_token uid 等信息，
-     * 需要使用时调用 { AccessTokenKeeper#readAccessToken(Context)}。
-     */
     class CustomAuthListener implements IXmlyAuthListener {
-
-        // 当认证授权成功时，回调该方法
         @Override
         public void onComplete(Bundle bundle) {
             parseAccessToken(bundle);
@@ -330,34 +282,24 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.MainCode.LOGINSUCC));
             ToastUtil.showToast("登录成功");
         }
-
-        // 当授权过程中发生异常（如回调地址无效等信息等）时，回调该方法
         @Override
         public void onXmlyException(final XmlyException e) {
             e.printStackTrace();
         }
 
-        // 当用户主动取消授权时，回调该方法
         @Override
         public void onCancel() {
         }
     }
 
     private void parseAccessToken(Bundle bundle) {
-        // 从 Bundle 中解析 access token
         mAccessToken = XmlyAuth2AccessToken.parseAccessToken(bundle);
         if (mAccessToken.isSessionValid()) {
-            /**
-             * 关键!!!!!!!!!!
-             * 结果返回之后将取回的结果设置到token管理器中
-             */
             AccessTokenManager.getInstanse().setAccessTokenAndUid(mAccessToken.getToken(), mAccessToken
                     .getRefreshToken(), mAccessToken.getExpiresAt(), mAccessToken.getUid());
         }
     }
 
-
-    // 用户退出登录，清空喜马拉雅授权 SDK 中保存的 access token 信息
     public void logout() {
         AccessTokenManager.getInstanse().loginOut(new ILoginOutCallBack() {
             @Override
@@ -377,6 +319,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
+
+
+    private long exitTime = 0;
+
+    @Override
+    public void onBackPressedSupport() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            pop();
+        } else {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(this, "再按一次返回桌面", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                Intent home = new Intent(Intent.ACTION_MAIN);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                home.addCategory(Intent.CATEGORY_HOME);
+                startActivity(home);
+            }
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -50,7 +50,7 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
         helper.setText(R.id.tv_title,item.getTrackTitle());
         helper.setText(R.id.tv_playcount, ZhumulangmaUtil.toWanYi(item.getPlayCount()));
         helper.setText(R.id.tv_duration,ZhumulangmaUtil.secondToTime(item.getDuration()));
-        helper.setText(R.id.tv_create_time, TimeUtils.millis2String(item.getCreatedAt(),new SimpleDateFormat("yyyy-MM")));
+        helper.setText(R.id.tv_create_time, TimeUtils.millis2String(item.getCreatedAt(),new SimpleDateFormat("yyyy-MM-dd")));
         if(null!=XmPlayerManager.getInstance(mContext).getCurrSound()){
             LottieAnimationView lavPlaying=helper.getView(R.id.lav_playing);
             PlayableModel currSound = XmPlayerManager.getInstance(mContext).getCurrSound();

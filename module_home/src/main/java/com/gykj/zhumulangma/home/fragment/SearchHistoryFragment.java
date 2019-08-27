@@ -22,14 +22,13 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 public class SearchHistoryFragment extends BaseMvvmFragment<SearchViewModel> implements View.OnClickListener {
     private static final String TAG = "HistoryFragment";
-    RecyclerView rvHistory;
-    TextView tvClear;
-    RecyclerView rvHot;
+   private RecyclerView rvHistory;
+   private TextView tvClear;
+   private RecyclerView rvHot;
 
-    SearchHistoryAdapter mHistoryAdapter;
+   private SearchHistoryAdapter mHistoryAdapter;
 
-
-    SearchHotAdapter mHotAdapter;
+   private SearchHotAdapter mHotAdapter;
 
     private onSearchListener mSearchListener;
     public SearchHistoryFragment() {

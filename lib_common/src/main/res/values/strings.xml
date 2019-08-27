@@ -30,5 +30,9 @@
     <string name="hasplay">已播:%d%%</string>
     <string name="memory">已占用%s，可用%s</string>
     <string name="lastplay">上次播放：%s</string>
+    <string name="favorite_count">喜欢%s</string>
+    <string name="following_count">已被%s人关注</string>
+    <string name="comment_count">评论%s</string>
+    <string name="playcount_createtime">%s次播放&#160;&#160;&#160;%s</string>
 
 </resources>

@@ -28,6 +28,12 @@
                 android:background="@drawable/user_bg">
 
                 <ImageView
+                    android:id="@+id/iv_bg"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
                     android:id="@+id/imageView10"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
@@ -75,9 +81,9 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/shap_home_circle_play"
+                    android:paddingLeft="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:paddingLeft="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -159,13 +165,14 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_album"
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/white">
 
                 <ImageView
-                    android:id="@+id/imageView24"
+                    android:id="@+id/iv_album_cover"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginStart="15dp"
@@ -177,7 +184,7 @@
                     app:srcCompat="@drawable/common_avatar" />
 
                 <TextView
-                    android:id="@+id/textView37"
+                    android:id="@+id/tv_album_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -188,8 +195,8 @@
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toStartOf="@+id/linearLayout12"
-                    app:layout_constraintStart_toEndOf="@+id/imageView24"
-                    app:layout_constraintTop_toTopOf="@+id/imageView24" />
+                    app:layout_constraintStart_toEndOf="@+id/iv_album_cover"
+                    app:layout_constraintTop_toTopOf="@+id/iv_album_cover" />
 
                 <TextView
                     android:id="@+id/textView38"
@@ -200,20 +207,20 @@
                     android:text="2274人订阅"
                     android:textColor="@color/colorGray"
                     android:textSize="11sp"
-                    app:layout_constraintStart_toEndOf="@+id/imageView24"
-                    app:layout_constraintTop_toBottomOf="@+id/textView37" />
+                    app:layout_constraintStart_toEndOf="@+id/iv_album_cover"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_album_name" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout12"
                     android:layout_width="68dp"
                     android:layout_height="27dp"
-                    android:padding="4dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="8dp"
                     android:background="@drawable/shap_common_circle_primary"
                     android:gravity="center"
                     android:orientation="horizontal"
+                    android:padding="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -235,6 +242,7 @@
             </android.support.constraint.ConstraintLayout>
 
             <TextView
+                android:id="@+id/tv_track_name"
                 android:layout_width="match_parent"
                 android:layout_height="39dp"
                 android:layout_marginTop="1dp"
@@ -247,6 +255,7 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/tv_playcount_createtime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -256,6 +265,7 @@
                 android:textSize="11sp" />
 
             <TextView
+                android:id="@+id/tv_track_intro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -270,7 +280,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingStart="11dp"
@@ -302,111 +312,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/white"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="11dp"
-                    android:text="主播"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="63dp">
-
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/imageView25"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:layout_marginStart="17dp"
-                        android:src="@drawable/common_avatar"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView39"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="逝水流年轻染尘"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        app:layout_constraintStart_toEndOf="@+id/imageView25"
-                        app:layout_constraintTop_toTopOf="@id/imageView25" />
-
-                    <TextView
-                        android:id="@+id/textView40"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:text="已被3294人关注"
-                        android:textColor="@color/colorGray"
-                        android:textSize="11sp"
-                        app:layout_constraintLeft_toRightOf="@id/imageView25"
-                        app:layout_constraintTop_toBottomOf="@id/textView39" />
-
-                    <ImageView
-                        android:id="@+id/imageView26"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_common_more_arrow"
-                        android:tint="@color/colorPrimaryDark"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </android.support.constraint.ConstraintLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginEnd="11dp"
-                    android:background="@drawable/shap_player_announcer_vsignature"
-                    android:gravity="center_vertical"
-                    android:minHeight="36dp"
-                    android:padding="16dp"
-                    android:text="喜欢音乐 喜欢我就多多关注啦"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="39dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="想向主播提问？"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="邀请TA开通问答"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="12sp" />
-                </LinearLayout>
+            <include layout="@layout/home_layout_announcer"/>
             </LinearLayout>
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/white">
 
                 <TextView
@@ -560,28 +476,30 @@
         android:id="@+id/ctb_trans"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleBarHeight="@dimen/simpleBarHeight"
-        app:statusBarColor="@color/transparent"
-        app:showBottomLine="false"
         app:centerType="textView"
         app:leftCustomView="@layout/common_layout_titlebar_left"
         app:leftType="customView"
         app:rightCustomView="@layout/common_layout_titlebar_right"
         app:rightType="customView"
-        app:titleBarColor="@color/transparent" />
+        app:showBottomLine="false"
+        app:statusBarColor="@color/transparent"
+        app:titleBarColor="@color/transparent"
+        app:titleBarHeight="@dimen/simpleBarHeight" />
+
     <com.wuhenzhizao.titlebar.widget.CommonTitleBar
         android:id="@+id/ctb_white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleBarHeight="@dimen/simpleBarHeight"
+        android:alpha="0"
         app:centerCustomView="@layout/common_layout_titlebar_center"
         app:centerType="customView"
         app:leftCustomView="@layout/common_layout_titlebar_left"
         app:leftType="customView"
         app:rightCustomView="@layout/common_layout_titlebar_right"
         app:rightType="customView"
-        android:alpha="0"
-        app:titleBarColor="@color/white" />
+        app:titleBarColor="@color/white"
+        app:titleBarHeight="@dimen/simpleBarHeight" />
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -590,7 +508,7 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/textView34"
+            android:id="@+id/tv_favorite_count"
             android:layout_width="50dp"
             android:layout_height="16dp"
             android:layout_marginEnd="8dp"
@@ -603,7 +521,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/textView35"
+            android:id="@+id/tv_comment_count"
             android:layout_width="50dp"
             android:layout_height="16dp"
             android:layout_marginEnd="2dp"
@@ -613,7 +531,7 @@
             android:textColor="@color/colorGray"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView34" />
+            app:layout_constraintEnd_toStartOf="@+id/tv_favorite_count" />
 
         <ImageView
             android:id="@+id/imageView22"
@@ -621,9 +539,9 @@
             android:layout_height="23dp"
             android:src="@drawable/ic_common_love_full"
             android:tint="@color/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@+id/textView34"
-            app:layout_constraintEnd_toEndOf="@+id/textView34"
-            app:layout_constraintStart_toStartOf="@+id/textView34" />
+            app:layout_constraintBottom_toTopOf="@+id/tv_favorite_count"
+            app:layout_constraintEnd_toEndOf="@+id/tv_favorite_count"
+            app:layout_constraintStart_toStartOf="@+id/tv_favorite_count" />
 
         <ImageView
             android:id="@+id/imageView23"
@@ -631,9 +549,9 @@
             android:layout_height="23dp"
             android:src="@drawable/ic_common_discuss"
             android:tint="@color/colorPrimaryDark"
-            app:layout_constraintBottom_toTopOf="@+id/textView35"
-            app:layout_constraintEnd_toEndOf="@+id/textView35"
-            app:layout_constraintStart_toStartOf="@+id/textView35" />
+            app:layout_constraintBottom_toTopOf="@+id/tv_comment_count"
+            app:layout_constraintEnd_toEndOf="@+id/tv_comment_count"
+            app:layout_constraintStart_toStartOf="@+id/tv_comment_count" />
 
         <EditText
             android:id="@+id/editText"
@@ -654,7 +572,7 @@
             android:textColorHint="#333333"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView35"
+            app:layout_constraintEnd_toStartOf="@+id/tv_comment_count"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>

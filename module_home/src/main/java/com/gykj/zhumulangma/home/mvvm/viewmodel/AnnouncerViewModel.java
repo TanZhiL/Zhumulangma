@@ -54,7 +54,7 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
                 getTopSingleLiveEvent().postValue(announcerList.getAnnouncerList()), e->e.printStackTrace());
     }
 
-    public void getLiveList() {
+    public void getAnnouncerList() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.VCATEGORY_ID, "0");
         map.put(DTransferConstants.CALC_DIMENSION, "1");

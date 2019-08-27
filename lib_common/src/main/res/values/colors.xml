@@ -8,6 +8,7 @@
     <color name="colorSimplebarText">@color/black</color>
 
     <color name="colorPrimary">#ff7050</color>
+    <color name="colorDefualt">#eeeeee</color>
     <color name="colorPrimaryDark">#999999</color>
     <color name="colorAccent">#55ccaa</color>
     <color name="colorGray">#505050</color>
