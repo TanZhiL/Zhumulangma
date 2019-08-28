@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/abl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#eeeeee">
+            android:background="@color/colorDefualt">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/c"
@@ -203,11 +199,12 @@
                         android:textSize="12sp" />
 
                     <ImageView
-                        android:id="@+id/imageView11"
+                        android:id="@+id/iv_select_page"
                         android:layout_width="17dp"
                         android:layout_height="17dp"
                         android:layout_marginStart="4dp"
-                        android:src="@drawable/ic_home_xuanji"
+                        android:src="@drawable/ic_common_more_arrow"
+                        android:rotation="90"
                         android:tint="@color/colorPrimaryDark"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_pagecount"
                         app:layout_constraintStart_toEndOf="@+id/tv_pagecount"
@@ -279,36 +276,30 @@
                         android:textSize="12sp" />
                 </LinearLayout>
             </android.support.constraint.ConstraintLayout>
-        </android.support.design.widget.AppBarLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never" />
 
             <FrameLayout
                 android:id="@+id/fl_mask"
                 android:layout_width="match_parent"
-                android:background="@color/transparent"
                 android:visibility="gone"
-                android:alpha="0"
-                android:layout_height="match_parent">
+                android:background="@color/white"
+                android:layout_weight="1"
+                android:layout_height="0dp">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_pager"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:nestedScrollingEnabled="true"
-                    android:background="@color/white"
+                    android:layout_height="match_parent"
                     />
             </FrameLayout>
-        </FrameLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/abl" />
 
     </android.support.design.widget.CoordinatorLayout>
-</android.support.constraint.ConstraintLayout>

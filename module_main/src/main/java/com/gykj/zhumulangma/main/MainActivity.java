@@ -337,7 +337,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                                 com.gykj.zhumulangma.common.R.anim.push_bottom_in,
                                 com.gykj.zhumulangma.common.R.anim.no_anim,
                                 com.gykj.zhumulangma.common.R.anim.no_anim,
-                                com.gykj.zhumulangma.common.R.anim.push_bottom_out).start(navigateBean.fragment);
+                                com.gykj.zhumulangma.common.R.anim.push_bottom_out).start(
+                                        navigateBean.fragment,ISupportFragment.SINGLETASK);
                         break;
                     default:
                         if(navigateBean.extraTransaction!=null){

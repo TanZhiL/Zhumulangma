@@ -39,6 +39,7 @@ import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumTagAdapter;
 import com.gykj.zhumulangma.home.adapter.AlbumTrackAdapter;
 import com.gykj.zhumulangma.home.adapter.TrackPagerAdapter;
+import com.gykj.zhumulangma.home.dialog.TrackPagerDialog;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumDetailViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
@@ -112,7 +113,6 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     private AlbumTrackAdapter mAlbumTrackAdapter;
     private AlbumTagAdapter mAlbumTagAdapter;
     private RecyclerView rvTag;
-
     public AlbumDetailFragment() {
     }
 
@@ -145,7 +145,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
         flMask=fd(R.id.fl_mask);
         rvPager=fd(R.id.rv_pager);
-//        rvPager.setHasFixedSize(true);
+        rvPager.setHasFixedSize(true);
         rvPager.setLayoutManager(new GridLayoutManager(mContext,4));
         mPagerAdapter=new TrackPagerAdapter(R.layout.home_item_pager);
         mPagerAdapter.bindToRecyclerView(rvPager);
@@ -162,7 +162,6 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);
         mAlbumTrackAdapter.bindToRecyclerView(recyclerView);
-
 
     }
 
@@ -335,6 +334,9 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     @Override
     public void onPageSelected(int position) {
         clActionbar.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+        if(position==0&&flMask.getVisibility()==View.VISIBLE){
+            switchCategory();
+        }
     }
 
     @Override
@@ -529,26 +531,20 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
 
     private void switchCategory() {
-        TLog.d(flMask.getVisibility() == View.VISIBLE);
         if (flMask.getVisibility() == View.VISIBLE) {
-
-            flMask.animate().withStartAction(() -> {
-                flMask.setAlpha(1);
-                flMask.setBackgroundColor(Color.TRANSPARENT);
-            }) .translationY(-rvPager.getHeight()).alpha(0).setDuration(200).withEndAction(() -> {
+            rvPager.animate().translationY(-rvPager.getHeight()).setDuration(200).withEndAction(() -> {
                 flMask.setVisibility(View.GONE);
+                viewpager.setVisibility(View.VISIBLE);
             });
-
+            fd(R.id.iv_select_page).animate().rotationBy(180).setDuration(200);
         } else {
-            flMask.setTranslationY(-rvPager.getHeight());
-            flMask.animate().withStartAction(() -> {
-                flMask.setAlpha(0);
-                flMask.setVisibility(View.VISIBLE);
-            }).translationY(0).alpha(1).setDuration(200).withEndAction(() -> flMask.setBackgroundColor(0x99000000));
-
+            viewpager.setVisibility(View.GONE);
+            flMask.setVisibility(View.VISIBLE);
+            rvPager.setTranslationY(-rvPager.getHeight());
+            rvPager.animate().translationY(0).setDuration(200);
+            fd(R.id.iv_select_page).animate().rotationBy(180).setDuration(200);
         }
     }
-
     @Override
     public void onPlayStart() {
         updatePlayStatus();
