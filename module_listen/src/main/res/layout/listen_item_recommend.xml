@@ -11,7 +11,7 @@
         android:layout_width="68dp"
         android:layout_height="68dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/hot_like"
+        android:src="@drawable/common_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -56,7 +56,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:tint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_common_zhuanji" />
+            android:src="@drawable/ic_common_ji" />
 
         <TextView
             android:id="@+id/tv_playcount"

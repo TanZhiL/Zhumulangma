@@ -277,6 +277,16 @@
                 android:textColor="@color/black"
                 android:textSize="15sp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+                <include layout="@layout/home_layout_announcer"/>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -308,16 +318,6 @@
                 android:text="查看更多推荐"
                 android:textColor="@color/colorGray"
                 android:textSize="14sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-            <include layout="@layout/home_layout_announcer"/>
-            </LinearLayout>
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"

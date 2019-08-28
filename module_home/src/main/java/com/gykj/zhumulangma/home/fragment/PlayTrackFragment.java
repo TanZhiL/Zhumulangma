@@ -1,13 +1,19 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,17 +22,22 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.BaseFragment;
+import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.widget.TScrollView;
 import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
+import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
@@ -35,11 +46,12 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_PLAY_TRACK)
-public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScrollListener, View.OnClickListener, IXmPlayerStatusListener {
+public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> implements TScrollView.OnScrollListener, View.OnClickListener, IXmPlayerStatusListener, BaseQuickAdapter.OnItemClickListener {
 
     private TScrollView msv;
     private CommonTitleBar ctbTrans;
@@ -56,7 +68,8 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
 
     private ImageView ivPlayPause;
     private ImageView ivBg;
-
+    private RecyclerView rvRelative;
+    private AlbumAdapter mAlbumAdapter;
     private Track mTrack;
 
     public PlayTrackFragment() {
@@ -83,9 +96,15 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
         ivBg = fd(R.id.iv_bg);
         ivPlayPause = fd(R.id.iv_play_pause);
         c = fd(R.id.c);
+        rvRelative=fd(R.id.rv_relative);
 
+        rvRelative.setLayoutManager(new LinearLayoutManager(mContext));
+
+        mAlbumAdapter=new AlbumAdapter(R.layout.home_item_album);
+        mAlbumAdapter.bindToRecyclerView(rvRelative);
         initBar();
     }
+
 
     private void initBar() {
 
@@ -139,6 +158,7 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
         fd(R.id.iv_next).setOnClickListener(this);
         fd(R.id.fl_play_pause).setOnClickListener(this);
         fd(R.id.cl_album).setOnClickListener(this);
+        mAlbumAdapter.setOnItemClickListener(this);
         XmPlayerManager.getInstance(mContext).addPlayerStatusListener(this);
     }
 
@@ -172,7 +192,14 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
                     ZhumulangmaUtil.toWanYi(currSoundIgnoreKind.getFavoriteCount())));
             ((TextView) fd(R.id.tv_comment_count)).setText(getString(R.string.comment_count,
                     ZhumulangmaUtil.toWanYi(currSoundIgnoreKind.getCommentCount())));
+
+            mViewModel.getRelativeAlbums(String.valueOf(mTrack.getDataId()));
         }
+    }
+
+    @Override
+    public void initViewObservable() {
+        mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> mAlbumAdapter.addData(albums));
     }
 
     @Override
@@ -292,5 +319,26 @@ public class PlayTrackFragment extends BaseFragment implements TScrollView.OnScr
     public void onDestroy() {
         super.onDestroy();
         XmPlayerManager.getInstance(mContext).removePlayerStatusListener(this);
+    }
+
+    @Override
+    public Class<PlayTrackViewModel> onBindViewModel() {
+        return PlayTrackViewModel.class;
+    }
+
+    @Override
+    public ViewModelProvider.Factory onBindViewModelFactory() {
+        return  ViewModelFactory.getInstance(mApplication);
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getData().get(position).getId())
+                .navigation();
+        NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
+        navigateBean.launchMode=STANDARD;
+        EventBus.getDefault().post(new BaseActivityEvent<>(
+                EventCode.MainCode.NAVIGATE,navigateBean));
     }
 }

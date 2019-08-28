@@ -64,7 +64,8 @@ ext {
             "labelview":"v1.1.2",
             "BaseItemLayout":"2.2.3",
             "FlowLayout":"v1.8",
-            "greendao":"3.2.2"
+            "greendao":"3.2.2",
+            "BasePopup":"2.2.1"
     ]
     //support配置
     support = [
@@ -146,6 +147,7 @@ ext {
             "labelview"                            :"com.github.linger1216:labelview:${versions["labelview"]}",
             "BaseItemLayout"                       :"com.maiml:baseitemlayoutlibrary:${versions["BaseItemLayout"]}",
             "FlowLayout"                           :"com.github.1002326270xc:LayoutManager-FlowLayout:${versions["FlowLayout"]}",
+            "BasePopup"                           :"com.github.razerdp:BasePopup:${versions["BasePopup"]}",
 
     ]
 

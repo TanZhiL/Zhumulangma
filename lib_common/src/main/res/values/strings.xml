@@ -33,6 +33,7 @@
     <string name="favorite_count">喜欢%s</string>
     <string name="following_count">已被%s人关注</string>
     <string name="comment_count">评论%s</string>
+    <string name="pagecount">选集(%d)</string>
     <string name="playcount_createtime">%s次播放&#160;&#160;&#160;%s</string>
 
 </resources>

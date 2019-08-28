@@ -18,7 +18,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
-import com.gykj.zhumulangma.home.adapter.HotStoryAdapter;
+import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -36,7 +36,7 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     private RecyclerView rv;
     private SmartRefreshLayout refreshLayout;
-    private HotStoryAdapter mAdapter;
+    private AlbumAdapter mAdapter;
 
 
     private String keyword;
@@ -62,7 +62,7 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
         rv = view.findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(mContext));
         rv.setHasFixedSize(true);
-        mAdapter = new HotStoryAdapter(R.layout.home_item_hot_story);
+        mAdapter = new AlbumAdapter(R.layout.home_item_album);
         mAdapter.bindToRecyclerView(rv);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         refreshLayout.setEnableRefresh(false);

@@ -341,9 +341,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                         break;
                     default:
                         if(navigateBean.extraTransaction!=null){
-                            navigateBean.extraTransaction.start(navigateBean.fragment,ISupportFragment.SINGLETASK);
+                            navigateBean.extraTransaction.start(navigateBean.fragment,navigateBean.launchMode);
                         }else {
-                            start(navigateBean.fragment,ISupportFragment.SINGLETASK);
+                            start(navigateBean.fragment,navigateBean.launchMode);
                         }
                         break;
                 }

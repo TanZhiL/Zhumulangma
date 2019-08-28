@@ -192,13 +192,13 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
-                        android:id="@+id/textView26"
+                        android:id="@+id/tv_pagecount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
-                        android:text="选集"
+                        android:text="选集(123)"
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
@@ -209,9 +209,9 @@
                         android:layout_marginStart="4dp"
                         android:src="@drawable/ic_home_xuanji"
                         android:tint="@color/colorPrimaryDark"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView26"
-                        app:layout_constraintStart_toEndOf="@+id/textView26"
-                        app:layout_constraintTop_toTopOf="@+id/textView26" />
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_pagecount"
+                        app:layout_constraintStart_toEndOf="@+id/tv_pagecount"
+                        app:layout_constraintTop_toTopOf="@+id/tv_pagecount" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -278,38 +278,37 @@
                         android:textColor="@color/black"
                         android:textSize="12sp" />
                 </LinearLayout>
-                <!--
-                                <TextView
-                                    android:id="@+id/textView28"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:layout_marginBottom="8dp"
-                                    android:text="批量下载"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-
-                                <ImageView
-                                    android:id="@+id/iv_batch_download"
-                                    android:layout_width="17dp"
-                                    android:layout_height="17dp"
-                                    android:layout_marginEnd="2dp"
-                                    android:src="@drawable/ic_common_piliang"
-                                    android:tint="@color/colorPrimaryDark"
-                                    app:layout_constraintBottom_toBottomOf="@+id/textView28"
-                                    app:layout_constraintEnd_toStartOf="@+id/textView28"
-                                    app:layout_constraintTop_toTopOf="@+id/textView28" />-->
             </android.support.constraint.ConstraintLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/abl" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never" />
+
+            <FrameLayout
+                android:id="@+id/fl_mask"
+                android:layout_width="match_parent"
+                android:background="@color/transparent"
+                android:visibility="gone"
+                android:alpha="0"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:nestedScrollingEnabled="true"
+                    android:background="@color/white"
+                    />
+            </FrameLayout>
+        </FrameLayout>
+
     </android.support.design.widget.CoordinatorLayout>
 </android.support.constraint.ConstraintLayout>

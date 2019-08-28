@@ -13,11 +13,13 @@ public class NavigateBean {
    public String path;
    public ISupportFragment fragment;
    public ExtraTransaction extraTransaction;
+   public @ISupportFragment.LaunchMode int  launchMode=ISupportFragment.SINGLETASK;
 
     public NavigateBean(String path, ISupportFragment fragment) {
         this.path = path;
         this.fragment = fragment;
     }
+
     public NavigateBean(String path, ISupportFragment fragment,ExtraTransaction extraTransaction) {
         this.path = path;
         this.fragment = fragment;

@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
@@ -146,7 +148,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
 
         mFreeAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                    .withLong(KeyCode.Home.ALBUMID,mFreeAdapter.getData().get(position).getId())
+                    .withLong(KeyCode.Home.ALBUMID, mFreeAdapter.getData().get(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
@@ -154,7 +156,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
         });
         mPaidAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                    .withLong(KeyCode.Home.ALBUMID,mPaidAdapter.getData().get(position).getId())
+                    .withLong(KeyCode.Home.ALBUMID, mPaidAdapter.getData().get(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
@@ -167,7 +169,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
     @Override
     public void initData() {
 
-            mViewModel.init(cid);
+        mViewModel.init(cid);
     }
 
     @Override
@@ -181,12 +183,21 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
     private void switchCategory() {
         if (flMask.getVisibility() == View.VISIBLE) {
 
-            flMask.animate().withStartAction(() -> flMask.setAlpha(1))
-                    .withEndAction(() -> flMask.setVisibility(View.GONE)).alpha(0).setDuration(200);
+            flMask.animate().withStartAction(() -> {
+                flMask.setAlpha(1);
+                flMask.setBackgroundColor(Color.TRANSPARENT);
+            }) .translationY(-rvCategory.getHeight()).alpha(0).setDuration(200).withEndAction(() -> {
+                flMask.setVisibility(View.GONE);
+            });
+
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
         } else {
-            flMask.setAlpha(0);
-            flMask.animate().withStartAction(() -> flMask.setVisibility(View.VISIBLE)).alpha(1).setDuration(200);
+            flMask.setTranslationY(-rvCategory.getHeight());
+            flMask.animate().withStartAction(() -> {
+                flMask.setAlpha(0);
+                flMask.setVisibility(View.VISIBLE);
+            }).translationY(0).alpha(1).setDuration(200).withEndAction(() -> flMask.setBackgroundColor(0x99000000));
+
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
         }
     }
@@ -283,6 +294,16 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
     protected View onBindBarCenterCustome() {
         llbarCenter = LayoutInflater.from(mContext).inflate(R.layout.home_layout_rank_bar_center, null);
         return llbarCenter;
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        if(flMask.getVisibility()==View.VISIBLE){
+            switchCategory();
+        }else {
+            pop();
+        }
+        return true;
     }
 
     @Override

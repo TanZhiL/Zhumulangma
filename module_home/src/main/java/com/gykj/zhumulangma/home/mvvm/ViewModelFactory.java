@@ -14,6 +14,7 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
@@ -71,6 +72,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new HomeViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(AnnouncerViewModel.class)) {
             return (T) new AnnouncerViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(PlayTrackViewModel.class)) {
+            return (T) new PlayTrackViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

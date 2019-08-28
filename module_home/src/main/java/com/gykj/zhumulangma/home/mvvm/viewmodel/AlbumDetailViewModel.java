@@ -13,6 +13,7 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
+import com.ximalaya.ting.android.opensdk.model.album.RelativeAlbums;
 import com.ximalaya.ting.android.opensdk.model.track.CommonTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -40,6 +41,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
 
     private SingleLiveEvent<Album> mAlbumSingleLiveEvent;
+    private SingleLiveEvent<List<Album>> mRelativeSingleLiveEvent;
     private SingleLiveEvent<List<Track>> mTracksUpSingleLiveEvent;
     private SingleLiveEvent<List<Track>> mTracksMoreSingleLiveEvent;
     private SingleLiveEvent<List<Track>> mTracksSortSingleLiveEvent;
@@ -119,27 +121,6 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
             }
         });
         return trackListObservable;
-       /* return mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime,
-                PlayHistoryBeanDao.Properties.AlbumId.eq(albumId)).doOnNext(playHistoryBeans -> {
-            if (!CollectionUtils.isEmpty(playHistoryBeans))
-                getLastplaySingleLiveEvent().setValue(playHistoryBeans.get(0).getTrack());
-        }).flatMap((Function<List<PlayHistoryBean>, ObservableSource<Integer>>) playHistoryBeans -> {
-            if (null == getLastplaySingleLiveEvent().getValue()) {
-                return Observable.just(1);
-            } else {
-                Map<String, String> map = new HashMap<>();
-                map.put(DTransferConstants.ALBUM_ID, albumId);
-                map.put(DTransferConstants.TRACK_ID, String.valueOf(getLastplaySingleLiveEvent().getValue().getDataId()));
-                return mModel.getLastPlayTracks(map).map(lastPlayTrackList -> lastPlayTrackList.getPageid());
-            }
-        }).flatMap((Function<Integer, ObservableSource<TrackList>>) integer -> {
-            curTrackPage = integer;
-            upTrackPage = integer - 1;
-            Map<String, String> map = new HashMap<>();
-            map.put(DTransferConstants.ALBUM_ID, albumId);
-            map.put(DTransferConstants.PAGE, String.valueOf(integer));
-            return mModel.getTracks(map);
-        }).observeOn(Schedulers.io());*/
     }
 
     public void getTrackList(String albumId, String sort) {
@@ -200,7 +181,6 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         return mAlbumSingleLiveEvent = createLiveData(mAlbumSingleLiveEvent);
     }
 
-
     public SingleLiveEvent<List<Track>> getTracksInitSingleLiveEvent() {
         return mTracksInitSingleLiveEvent = createLiveData(mTracksInitSingleLiveEvent);
     }
@@ -218,6 +198,10 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public SingleLiveEvent<Track> getLastplaySingleLiveEvent() {
         return mLastplaySingleLiveEvent = createLiveData(mLastplaySingleLiveEvent);
+    }
+
+    public SingleLiveEvent<List<Album>> getRelativeSingleLiveEvent() {
+        return mRelativeSingleLiveEvent=createLiveData(mRelativeSingleLiveEvent);
     }
 
     public CommonTrackList getCommonTrackList() {

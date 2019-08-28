@@ -25,7 +25,7 @@
         <FrameLayout
             android:id="@+id/fl_mask"
             android:layout_width="match_parent"
-            android:background="#99000000"
+            android:background="@color/transparent"
            android:visibility="gone"
             android:alpha="0"
             android:layout_height="match_parent">

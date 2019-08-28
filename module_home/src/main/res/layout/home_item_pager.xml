@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:padding="4dp"
+    android:layout_height="36dp">
+
+    <TextView
+        android:id="@+id/tv_page"
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/shap_common_circle_primary"
+        android:textColor="@color/white"
+        android:text="1~20" />
+</FrameLayout>

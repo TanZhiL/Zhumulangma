@@ -16,20 +16,20 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
-import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.DownloadAlbumAdapter;
 import com.gykj.zhumulangma.listen.adapter.DownloadTrackAdapter;
+import com.gykj.zhumulangma.listen.adapter.RecommendAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.DownloadViewModel;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.IDoSomethingProgress;
@@ -45,19 +45,22 @@ import java.util.Arrays;
 import java.util.List;
 
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
-public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements BaseQuickAdapter.OnItemChildClickListener {
+public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements BaseQuickAdapter.OnItemChildClickListener, OnLoadMoreListener {
 
     private TextView tvMemory;
     private ViewPager viewpager;
 
     private MagicIndicator magicIndicator;
-    private String[] tabs = {"专辑", "声音", "视频"};
+    private String[] tabs = {"专辑", "声音", "推荐"};
     private ViewGroup layoutDetail1, layoutDetail2, layoutDetail3;
 
     private RecyclerView rvAlbum;
     private RecyclerView rvTrack;
+    private RecyclerView rvRecommend;
+    private RefreshLayout mRefreshLayout;
     private DownloadAlbumAdapter mAlbumAdapter;
     private DownloadTrackAdapter mTrackAdapter;
+    private RecommendAdapter mRecommendAdapter;
     private List<XmDownloadAlbum> downloadAlbums;
     private List<Track> downloadTracks;
 
@@ -84,6 +87,9 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         ((RefreshLayout) layoutDetail2.findViewById(R.id.refreshLayout)).setEnableRefresh(false);
         ((RefreshLayout) layoutDetail2.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
 
+        mRefreshLayout=layoutDetail3.findViewById(R.id.refreshLayout);
+
+
         rvAlbum = layoutDetail1.findViewById(R.id.rv);
         rvAlbum.setHasFixedSize(true);
         rvAlbum.setLayoutManager(new LinearLayoutManager(mContext));
@@ -96,6 +102,11 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         mTrackAdapter = new DownloadTrackAdapter(R.layout.listen_item_download_track);
         mTrackAdapter.bindToRecyclerView(rvTrack);
 
+        rvRecommend = layoutDetail3.findViewById(R.id.rv);
+        rvRecommend.setHasFixedSize(true);
+        rvRecommend.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecommendAdapter = new RecommendAdapter(R.layout.listen_item_recommend);
+        mRecommendAdapter.bindToRecyclerView(rvRecommend);
 
         tvMemory = fd(R.id.tv_memory);
         viewpager = fd(R.id.viewpager);
@@ -112,6 +123,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         super.initListener();
         mAlbumAdapter.setOnItemChildClickListener(this);
         mTrackAdapter.setOnItemChildClickListener(this);
+        mRefreshLayout.setOnLoadMoreListener(this);
 
     }
 
@@ -127,7 +139,23 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         downloadTracks = XmDownloadManager.getInstance().getDownloadTracks(true);
 
         mTrackAdapter.setNewData(downloadTracks);
+        mViewModel.getRecommend();
 
+    }
+    @Override
+    public void initViewObservable() {
+    mViewModel.getColumnSingleLiveEvent().observe(this, columns -> {
+        if (null == columns || (mRecommendAdapter.getData().size() == 0 && columns.size() == 0)) {
+            showNoDataView(true);
+            return;
+        }
+        if (columns.size() > 0) {
+            mRecommendAdapter.addData(columns);
+            mRefreshLayout.finishLoadMore();
+        } else {
+            mRefreshLayout.finishLoadMoreWithNoMoreData();
+        }
+    });
     }
 
     @Override
@@ -178,8 +206,8 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     }
 
     @Override
-    public void initViewObservable() {
-
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        mViewModel.getRecommend();
     }
 
 

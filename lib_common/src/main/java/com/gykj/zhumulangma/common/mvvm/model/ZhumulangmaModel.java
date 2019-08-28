@@ -13,10 +13,12 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
+import com.ximalaya.ting.android.opensdk.model.album.RelativeAlbums;
 import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerList;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.column.ColumnList;
+import com.ximalaya.ting.android.opensdk.model.download.RecommendDownload;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
@@ -43,6 +45,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 获取焦点图
+     *
      * @param specificParams
      * @return
      */
@@ -64,6 +67,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 获取猜你喜欢
+     *
      * @param specificParams
      * @return
      */
@@ -85,6 +89,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 获取所有付费专辑
+     *
      * @param specificParams
      * @return
      */
@@ -106,6 +111,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 获取专辑列表
+     *
      * @param specificParams
      * @return
      */
@@ -127,6 +133,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 获取电台
+     *
      * @param specificParams
      * @return
      */
@@ -148,6 +155,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 获取精品听单内容
+     *
      * @param specificParams
      * @return
      */
@@ -169,6 +177,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 根据tag获取付费专辑
+     *
      * @param specificParams
      * @return
      */
@@ -190,6 +199,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 根据位置获取电台
+     *
      * @param specificParams
      * @return
      */
@@ -211,6 +221,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 获取电台排行
+     *
      * @param specificParams
      * @return
      */
@@ -228,10 +239,11 @@ public class ZhumulangmaModel extends CommonModel {
                         emitter.onError(new ResponseThrowable(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
-        }
+    }
 
     /**
      * 获取热词
+     *
      * @param specificParams
      * @return
      */
@@ -253,6 +265,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 搜索专辑
+     *
      * @param specificParams
      * @return
      */
@@ -274,6 +287,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 搜索声音
+     *
      * @param specificParams
      * @return
      */
@@ -295,6 +309,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 搜索电台
+     *
      * @param specificParams
      * @return
      */
@@ -316,6 +331,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 搜索主播
+     *
      * @param specificParams
      * @return
      */
@@ -336,7 +352,8 @@ public class ZhumulangmaModel extends CommonModel {
     }
 
     /**
-     *  批量获取专辑列表
+     * 批量获取专辑列表
+     *
      * @param specificParams
      * @return
      */
@@ -358,6 +375,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 专辑浏览，根据专辑ID获取专辑下的声音列表
+     *
      * @param specificParams
      * @return
      */
@@ -379,6 +397,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 根据上一次所听声音的id，获取此声音所在那一页的声音
+     *
      * @param specificParams
      * @return
      */
@@ -400,6 +419,7 @@ public class ZhumulangmaModel extends CommonModel {
 
     /**
      * 获取某个分类下的主播列表
+     *
      * @param specificParams
      * @return
      */
@@ -409,6 +429,72 @@ public class ZhumulangmaModel extends CommonModel {
                     @Override
                     public void onSuccess(@Nullable AnnouncerList announcerList) {
                         emitter.onNext(announcerList);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
+     * 获取某个声音的相关推荐专辑
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<RelativeAlbums> getRelativeAlbumsUseTrackId(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getRelativeAlbumsUseTrackId(specificParams,
+                new IDataCallBack<RelativeAlbums>() {
+                    @Override
+                    public void onSuccess(@Nullable RelativeAlbums relativeAlbums) {
+                        emitter.onNext(relativeAlbums);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
+     * 获取某个专辑的相关推荐
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<RelativeAlbums> getRelativeAlbums(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getRelativeAlbums(specificParams,
+                new IDataCallBack<RelativeAlbums>() {
+                    @Override
+                    public void onSuccess(@Nullable RelativeAlbums relativeAlbums) {
+                        emitter.onNext(relativeAlbums);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
+     * 获取下载听模块的推荐下载专辑
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<RecommendDownload> getRecommendDownloadList(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getRecommendDownloadList(specificParams,
+                new IDataCallBack<RecommendDownload>() {
+                    @Override
+                    public void onSuccess(@Nullable RecommendDownload recommendDownload) {
+                        emitter.onNext(recommendDownload);
                         emitter.onComplete();
                     }
 

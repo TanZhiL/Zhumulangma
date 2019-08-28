@@ -16,8 +16,8 @@ import java.util.List;
  * Created by 10719
  * on 2019/6/17
  */
-public class HotStoryAdapter extends BaseQuickAdapter<Album, BaseViewHolder> {
-    public HotStoryAdapter(int layoutResId) {
+public class AlbumAdapter extends BaseQuickAdapter<Album, BaseViewHolder> {
+    public AlbumAdapter(int layoutResId) {
         super(layoutResId);
     }
 

@@ -114,6 +114,7 @@ dependencies {
     api rootProject.ext.dependencies["BaseItemLayout"]
     api rootProject.ext.dependencies["FlowLayout"]
     api rootProject.ext.dependencies["greendao"]
+    api rootProject.ext.dependencies["BasePopup"]
 
     api files('libs/TingPhoneOpenSDK_7.0.8.jar')
     api files('libs/XmDownload_1.7.jar')

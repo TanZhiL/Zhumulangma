@@ -18,8 +18,7 @@ import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
-import com.gykj.zhumulangma.home.adapter.HotRadioAdapter;
-import com.gykj.zhumulangma.home.adapter.HotStoryAdapter;
+import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.adapter.HotTopicAdapter;
 import com.gykj.zhumulangma.home.adapter.HotMusicAdapter;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
@@ -47,10 +46,10 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     private HotLikeAdapter mLikeAdapter;
 
     private RecyclerView rvStory;
-    private HotStoryAdapter mStoryAdapter;
+    private AlbumAdapter mStoryAdapter;
 
     private RecyclerView rvBaby;
-    private HotStoryAdapter mBabyAdapter;
+    private AlbumAdapter mBabyAdapter;
 
     private RecyclerView rvMusic;
     private HotMusicAdapter mMusicAdapter;
@@ -195,7 +194,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     private void initStory() {
 
         rvStory = fd(R.id.rv_story);
-        mStoryAdapter = new HotStoryAdapter(R.layout.home_item_hot_story);
+        mStoryAdapter = new AlbumAdapter(R.layout.home_item_album);
         rvStory.setLayoutManager(new LinearLayoutManager(mContext));
         rvStory.setHasFixedSize(true);
         mStoryAdapter.bindToRecyclerView(rvStory);
@@ -203,7 +202,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
 
     private void initBaby() {
         rvBaby = fd(R.id.rv_baby);
-        mBabyAdapter = new HotStoryAdapter(R.layout.home_item_hot_story);
+        mBabyAdapter = new AlbumAdapter(R.layout.home_item_album);
         rvBaby.setLayoutManager(new LinearLayoutManager(mContext));
         rvBaby.setHasFixedSize(true);
         mBabyAdapter.bindToRecyclerView(rvBaby);
