@@ -52,7 +52,7 @@
                 android:background="@color/white">
 
                 <TextView
-                    android:id="@+id/textView20"
+                    android:id="@+id/tv_current"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -64,7 +64,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/textView21"
+                    android:id="@+id/tv_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -80,19 +80,20 @@
                     android:id="@+id/fl_play_pause"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:background="@drawable/shap_home_circle_play"
-                    android:paddingLeft="8dp"
+                    android:background="@color/transparent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/iv_play_pause"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_common_play"
-                        android:tint="@color/white" />
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lav_play_pause"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
+                        android:layout_gravity="center"
+                        app:lottie_fileName="lottie_play_pause.json"
+                        app:lottie_colorFilter="@color/colorPrimary"/>
+
                 </FrameLayout>
 
 

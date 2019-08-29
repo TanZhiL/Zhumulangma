@@ -40,7 +40,8 @@ public class ZhumulangmaUtil {
         long hours = second / 3600;            //转换小时
         second = second % 3600;                //剩余秒数
         long minutes = second /60;            //转换分钟
-        second = second % 60;                //剩余秒数
+        second = second % 60;
+        //剩余秒数
         if(days>0){
             return days + "天" + hours + "小时" + minutes + "分" + second + "秒";
         }else if(hours>0){
@@ -49,6 +50,24 @@ public class ZhumulangmaUtil {
             return minutes + "分" + second + "秒";
         }else{
             return  second + "秒";
+        }
+    }
+    public static String secondToTimeE(long second){
+        long days = second / 86400;            //转换天数
+        second = second % 86400;            //剩余秒数
+        long hours = second / 3600;            //转换小时
+        second = second % 3600;                //剩余秒数
+        long minutes = second /60;            //转换分钟
+        second = second % 60;
+        //剩余秒数
+        if(days>0){
+            return days + "天" + hours + "小时" + minutes + "分" + second + "秒";
+        }else if(hours>0){
+            return (hours<10?"0"+hours:hours)  + ":" + (minutes<10?"0"+minutes:minutes) + ":" + second + "";
+        } else if(minutes>0){
+            return (minutes<10?"0"+minutes:minutes) + ":" + (second<10?"0"+second:second) + "";
+        }else{
+            return    "00:" +  (second<10?"0"+second:second);
         }
     }
     public static String byte2FitMemorySize(final long byteSize) {

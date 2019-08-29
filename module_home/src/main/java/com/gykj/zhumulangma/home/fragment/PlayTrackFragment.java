@@ -1,22 +1,24 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
-import android.arch.lifecycle.Observer;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
@@ -37,7 +39,6 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
-import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
@@ -46,7 +47,6 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -66,7 +66,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private ImageView transRight1;
     private ImageView transRight2;
 
-    private ImageView ivPlayPause;
+    private LottieAnimationView lavPlayPause;
     private ImageView ivBg;
     private RecyclerView rvRelative;
     private AlbumAdapter mAlbumAdapter;
@@ -94,7 +94,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         ctbTrans = fd(R.id.ctb_trans);
         ctbWhite = fd(R.id.ctb_white);
         ivBg = fd(R.id.iv_bg);
-        ivPlayPause = fd(R.id.iv_play_pause);
+        lavPlayPause = fd(R.id.lav_play_pause);
         c = fd(R.id.c);
         rvRelative=fd(R.id.rv_relative);
 
@@ -103,6 +103,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         mAlbumAdapter=new AlbumAdapter(R.layout.home_item_album);
         mAlbumAdapter.bindToRecyclerView(rvRelative);
         initBar();
+        new Handler().postDelayed(()-> playAnim(),100);
     }
 
 
@@ -159,6 +160,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         fd(R.id.fl_play_pause).setOnClickListener(this);
         fd(R.id.cl_album).setOnClickListener(this);
         mAlbumAdapter.setOnItemClickListener(this);
+
         XmPlayerManager.getInstance(mContext).addPlayerStatusListener(this);
     }
 
@@ -193,6 +195,9 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             ((TextView) fd(R.id.tv_comment_count)).setText(getString(R.string.comment_count,
                     ZhumulangmaUtil.toWanYi(currSoundIgnoreKind.getCommentCount())));
 
+            ((TextView) fd(R.id.tv_duration)).setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
+            ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(
+                    XmPlayerManager.getInstance(mContext).getPlayCurrPositon()/1000));
             mViewModel.getRelativeAlbums(String.valueOf(mTrack.getDataId()));
         }
     }
@@ -264,17 +269,42 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onPlayStart() {
+      /*  if(!XmPlayerManager.getInstance(mContext).isPlaying()){
+        }*/
+        playAnim();
 
+    }
+
+    private void playAnim() {
+        lavPlayPause.setMinAndMaxFrame(55,90);
+        lavPlayPause.loop(false);
+        lavPlayPause.playAnimation();
+        lavPlayPause.addAnimatorListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                lavPlayPause.setMinAndMaxFrame(90,170);
+                lavPlayPause.loop(true);
+                lavPlayPause.playAnimation();
+                lavPlayPause.removeAnimatorListener(this);
+            }
+        });
     }
 
     @Override
     public void onPlayPause() {
+        pauseAnim();
+    }
 
+    private void pauseAnim() {
+        lavPlayPause.setMinAndMaxFrame(180,210);
+        lavPlayPause.loop(false);
+        lavPlayPause.playAnimation();
     }
 
     @Override
     public void onPlayStop() {
-
+        pauseAnim();
     }
 
     @Override
@@ -309,7 +339,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onPlayProgress(int i, int i1) {
-
+        ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(i/1000));
     }
 
     @Override

@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                 }
                 globalPlay.play(currSoundIgnoreKind.getCoverUrlSmall());
             }
-        }, 500);
+        }, 100);
 
     }
 
