@@ -11,22 +11,28 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.CollectionUtils;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
+import com.sunfusheng.marqueeview.IMarqueeItem;
+import com.sunfusheng.marqueeview.MarqueeView;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
+import com.ximalaya.ting.android.opensdk.model.word.HotWord;
 import com.youth.banner.loader.ImageLoader;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -43,14 +49,14 @@ import java.util.concurrent.TimeUnit;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_MAIN)
-public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements View.OnClickListener {
+public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements View.OnClickListener, MarqueeView.OnItemClickListener {
 
 
     private MagicIndicator magicIndicator;
     private String[] tabs = {"热门", "分类", "精品","主播", "广播"};
     private List<Fragment> pages = new ArrayList<>();
     private ViewPager viewpager;
-
+    private MarqueeView<String> mMarqueeView;
 
     public MainHomeFragment() {
     }
@@ -91,6 +97,8 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
+
+        mMarqueeView=fd(R.id.marqueeView);
     }
 
     @Override
@@ -98,7 +106,11 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         super.initListener();
         addDisposable(RxView.clicks(fd(R.id.ll_search)).throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
-                    Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH).navigation();
+                    Postcard build = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH);
+                    if(!CollectionUtils.isEmpty(mMarqueeView.getMessages())){
+                        build.withString(KeyCode.Home.HOTWORD,mMarqueeView.getMessages().get(mMarqueeView.getPosition()));
+                    }
+                    Object navigation = build.navigation();
                     EventBus.getDefault().post(new BaseActivityEvent<>(
                             EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
                 }));
@@ -112,7 +124,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
                     EventBus.getDefault().post(new BaseActivityEvent<>(
                             EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.User.F_MESSAGE, (ISupportFragment) navigation)));
                 }));
-
+        mMarqueeView.setOnItemClickListener(this);
     }
 
     @Override
@@ -153,9 +165,20 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     @Override
     public void initViewObservable() {
         mViewModel.getHotWordsSingleLiveEvent().observe(this, hotWords -> {
-            TextView hotword = fd(R.id.tv_search);
-            hotword.setText(hotWords.get(0).getSearchword());
+            List<String> words=new ArrayList<>(hotWords.size());
+            for(HotWord word:hotWords){
+                words.add(word.getSearchword());
+            }
+            mMarqueeView.startWithList(words);
         });
+    }
+
+    @Override
+    public void onItemClick(int position, TextView textView) {
+        Postcard build = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH);
+        Object navigation = build.withString(KeyCode.Home.HOTWORD,mMarqueeView.getMessages().get(position)).navigation();
+        EventBus.getDefault().post(new BaseActivityEvent<>(
+                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
     }
 
 
@@ -173,5 +196,21 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
             Glide.with(context).load(path).into(imageView);
         }
 
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        if(mMarqueeView!=null&&!CollectionUtils.isEmpty(mMarqueeView.getMessages())){
+            mMarqueeView.startFlipping();
+        }
+    }
+
+    @Override
+    public void onSupportInvisible() {
+        super.onSupportInvisible();
+        if(mMarqueeView!=null) {
+            mMarqueeView.stopFlipping();
+        }
     }
 }

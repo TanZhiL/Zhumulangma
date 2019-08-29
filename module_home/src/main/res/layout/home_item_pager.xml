@@ -11,7 +11,7 @@
         android:layout_height="28dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@drawable/shap_common_circle_primary"
-        android:textColor="@color/white"
+        android:background="@drawable/shap_common_defualt"
+        android:textColor="@color/black"
         android:text="1~20" />
 </FrameLayout>

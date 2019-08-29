@@ -48,6 +48,7 @@
                 android:src="@drawable/ic_common_search"
                 android:tint="#cccccc" />
 <requestFocus/>
+
             <EditText
                 android:id="@+id/et_keyword"
                 android:layout_width="wrap_content"
@@ -56,11 +57,10 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="我的一个道姑朋友"
-                android:textColorHint="#cccccc"
-                android:singleLine="true"
-                android:imeOptions="actionSearch"
                 android:ellipsize="end"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textColorHint="#cccccc"
                 android:textCursorDrawable="@drawable/shap_common_input_cursor"
                 android:textSize="12sp" />
 

@@ -26,6 +26,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RankCategotyAdapter;
 import com.gykj.zhumulangma.home.adapter.RankFreeAdapter;
@@ -192,7 +193,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
 
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
         } else {
-            flMask.setTranslationY(-rvCategory.getHeight());
+            flMask.setTranslationY(-rvCategory.getHeight()==0?-400:-rvCategory.getHeight());
             flMask.animate().withStartAction(() -> {
                 flMask.setAlpha(0);
                 flMask.setVisibility(View.VISIBLE);

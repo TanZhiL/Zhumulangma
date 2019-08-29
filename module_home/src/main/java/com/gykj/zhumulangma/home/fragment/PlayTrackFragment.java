@@ -244,8 +244,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, mTrack.getAlbum().getAlbumId())
                         .navigation();
+                NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
+                navigateBean.launchMode=STANDARD;
                 EventBus.getDefault().post(new BaseActivityEvent<>(
-                        EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                        EventCode.MainCode.NAVIGATE, navigateBean));
             }
         } else if (R.id.iv_pre == id) {
             XmPlayerManager.getInstance(mContext).playPre();

@@ -42,10 +42,10 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     private SingleLiveEvent<Album> mAlbumSingleLiveEvent;
     private SingleLiveEvent<List<Album>> mRelativeSingleLiveEvent;
-    private SingleLiveEvent<List<Track>> mTracksUpSingleLiveEvent;
-    private SingleLiveEvent<List<Track>> mTracksMoreSingleLiveEvent;
-    private SingleLiveEvent<List<Track>> mTracksSortSingleLiveEvent;
-    private SingleLiveEvent<List<Track>> mTracksInitSingleLiveEvent;
+    private SingleLiveEvent<TrackList> mTracksUpSingleLiveEvent;
+    private SingleLiveEvent<TrackList> mTracksMoreSingleLiveEvent;
+    private SingleLiveEvent<TrackList> mTracksSortSingleLiveEvent;
+    private SingleLiveEvent<TrackList> mTracksInitSingleLiveEvent;
     private SingleLiveEvent<Track> mLastplaySingleLiveEvent;
     private CommonTrackList mCommonTrackList = CommonTrackList.newInstance();
 
@@ -71,7 +71,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                     curTrackPage++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getTracksMoreSingleLiveEvent().postValue(
-                            trackList.getTracks());
+                            trackList);
                 }, e -> e.printStackTrace());
     }
 
@@ -83,7 +83,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                     curTrackPage++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getTracksInitSingleLiveEvent().postValue(
-                            trackList.getTracks());
+                            trackList);
                 }, e -> e.printStackTrace());
     }
 
@@ -139,11 +139,28 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                     curTrackPage ++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getTracksSortSingleLiveEvent().postValue(
-                            trackList.getTracks());
+                            trackList);
                 }, e -> e.printStackTrace());
 
     }
 
+    public void getTrackList(String albumId,int page) {
+
+        Map<String, String> map = new HashMap<>();
+        map.put(DTransferConstants.ALBUM_ID, albumId);
+        map.put(DTransferConstants.SORT, mSort);
+        map.put(DTransferConstants.PAGE, String.valueOf(page));
+        mModel.getTracks(map)
+                .observeOn(Schedulers.io())
+                .subscribe(trackList -> {
+                    upTrackPage = page-1;
+                    curTrackPage=page+1;
+                    mCommonTrackList.cloneCommonTrackList(trackList);
+                    getTracksSortSingleLiveEvent().postValue(
+                            trackList);
+                }, e -> e.printStackTrace());
+
+    }
     public void getTrackList(String albumId, boolean isUp) {
         int page;
 
@@ -167,11 +184,11 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                     if (isUp) {
                         upTrackPage--;
                         mCommonTrackList.updateCommonTrackList(0, trackList);
-                        getTracksUpSingleLiveEvent().postValue(trackList.getTracks());
+                        getTracksUpSingleLiveEvent().postValue(trackList);
                     } else {
                         curTrackPage++;
                         mCommonTrackList.updateCommonTrackList(mCommonTrackList.getTracks().size(), trackList);
-                        getTracksMoreSingleLiveEvent().postValue(trackList.getTracks());
+                        getTracksMoreSingleLiveEvent().postValue(trackList);
                     }
                 }, e -> e.printStackTrace());
 
@@ -181,18 +198,18 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         return mAlbumSingleLiveEvent = createLiveData(mAlbumSingleLiveEvent);
     }
 
-    public SingleLiveEvent<List<Track>> getTracksInitSingleLiveEvent() {
+    public SingleLiveEvent<TrackList> getTracksInitSingleLiveEvent() {
         return mTracksInitSingleLiveEvent = createLiveData(mTracksInitSingleLiveEvent);
     }
-  public SingleLiveEvent<List<Track>> getTracksUpSingleLiveEvent() {
+  public SingleLiveEvent<TrackList> getTracksUpSingleLiveEvent() {
         return mTracksUpSingleLiveEvent = createLiveData(mTracksUpSingleLiveEvent);
     }
 
-    public SingleLiveEvent<List<Track>> getTracksMoreSingleLiveEvent() {
+    public SingleLiveEvent<TrackList> getTracksMoreSingleLiveEvent() {
         return mTracksMoreSingleLiveEvent = createLiveData(mTracksMoreSingleLiveEvent);
     }
 
-    public SingleLiveEvent<List<Track>> getTracksSortSingleLiveEvent() {
+    public SingleLiveEvent<TrackList> getTracksSortSingleLiveEvent() {
         return mTracksSortSingleLiveEvent = createLiveData(mTracksSortSingleLiveEvent);
     }
 
@@ -206,5 +223,13 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public CommonTrackList getCommonTrackList() {
         return mCommonTrackList;
+    }
+
+    public int getCurTrackPage() {
+        return curTrackPage;
+    }
+
+    public int getUpTrackPage() {
+        return upTrackPage;
     }
 }

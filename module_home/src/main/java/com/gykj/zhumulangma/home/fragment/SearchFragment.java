@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
@@ -34,7 +35,8 @@ import me.yokeyword.fragmentation.ISupportFragment;
 public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements View.OnClickListener, SearchHistoryFragment.onSearchListener, View.OnFocusChangeListener, TextView.OnEditorActionListener {
 
     private EditText etKeyword;
-
+    @Autowired(name = KeyCode.Home.HOTWORD)
+    public String hotword;
     public SearchFragment() {
 
     }
@@ -56,7 +58,6 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             historyFragment.setSearchListener(SearchFragment.this);
             loadRootFragment(R.id.fl_container, historyFragment);
 
-
             KeyboardUtils.showSoftInput(etKeyword);
         },300);
 
@@ -76,7 +77,9 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
 
     @Override
     public void initData() {
-        mViewModel._getHotWords();
+        if(hotword!=null){
+            etKeyword.setHint(hotword);
+        }
     }
 
     @Override
@@ -131,8 +134,6 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
 
     @Override
     public void initViewObservable() {
-        mViewModel.getHotWordsSingleLiveEvent().observe(this, hotWords ->
-                etKeyword.setHint(hotWords.get(0).getSearchword()));
     }
 
     @Override

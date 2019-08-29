@@ -73,16 +73,17 @@
               android:layout_height="23dp"
               android:tint="#cccccc"
               android:src="@drawable/ic_common_search" />
-
-          <TextView
-              android:id="@+id/tv_search"
-              android:layout_width="wrap_content"
+          <com.sunfusheng.marqueeview.MarqueeView
+              android:id="@+id/marqueeView"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              app:mvAnimDuration="1000"
+              app:mvDirection="bottom_to_top"
+              app:mvInterval="3000"
+              app:mvTextColor="#cccccc"
+              app:mvTextSize="12sp"
               android:layout_weight="1"
-              android:layout_marginLeft="8dp"
-              android:textSize="12sp"
-              android:textColor="#cccccc"
-              tools:text="我的一个道姑朋友" />
+              app:mvSingleLine="true"/>
       </LinearLayout>
   </android.support.constraint.ConstraintLayout>
 

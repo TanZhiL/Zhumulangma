@@ -16,6 +16,7 @@ public interface KeyCode {
         String TYPE = "type";
         String TITLE = "title";
         String ALBUMID = "albumid";
+        String HOTWORD = "hotword";
     }
 
     interface Find {
