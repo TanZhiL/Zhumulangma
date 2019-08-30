@@ -6,10 +6,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -37,10 +39,16 @@ import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
+import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
+import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
+import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
+import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 
@@ -51,7 +59,9 @@ import java.text.SimpleDateFormat;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_PLAY_TRACK)
-public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> implements TScrollView.OnScrollListener, View.OnClickListener, IXmPlayerStatusListener, BaseQuickAdapter.OnItemClickListener {
+public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> implements
+        TScrollView.OnScrollListener, View.OnClickListener, IXmPlayerStatusListener,
+        BaseQuickAdapter.OnItemClickListener, IXmAdsStatusListener, OnSeekChangeListener {
 
     private TScrollView msv;
     private CommonTitleBar ctbTrans;
@@ -65,13 +75,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private ImageView transLeft;
     private ImageView transRight1;
     private ImageView transRight2;
-
+    private IndicatorSeekBar isbProgress;
     private LottieAnimationView lavPlayPause;
     private ImageView ivBg;
     private RecyclerView rvRelative;
     private AlbumAdapter mAlbumAdapter;
     private Track mTrack;
-
+    private boolean isPlaying;
     public PlayTrackFragment() {
 
     }
@@ -94,16 +104,19 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         ctbTrans = fd(R.id.ctb_trans);
         ctbWhite = fd(R.id.ctb_white);
         ivBg = fd(R.id.iv_bg);
-        lavPlayPause = fd(R.id.lav_play_pause);
+        isbProgress=fd(R.id.ib_progress);
         c = fd(R.id.c);
-        rvRelative=fd(R.id.rv_relative);
-
+        lavPlayPause = fd(R.id.lav_play_pause);
+        rvRelative = fd(R.id.rv_relative);
         rvRelative.setLayoutManager(new LinearLayoutManager(mContext));
-
-        mAlbumAdapter=new AlbumAdapter(R.layout.home_item_album);
+        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
         mAlbumAdapter.bindToRecyclerView(rvRelative);
         initBar();
-        new Handler().postDelayed(()-> playAnim(),100);
+        new Handler().postDelayed(() -> {
+            if (XmPlayerManager.getInstance(mContext).isPlaying()) {
+                playingAnim();
+            }
+        }, 100);
     }
 
 
@@ -148,7 +161,6 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         whiteRight2.setImageResource(R.drawable.ic_common_share);
         whiteRight2.setVisibility(View.VISIBLE);
     }
-
     @Override
     public void initListener() {
         super.initListener();
@@ -160,8 +172,19 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         fd(R.id.fl_play_pause).setOnClickListener(this);
         fd(R.id.cl_album).setOnClickListener(this);
         mAlbumAdapter.setOnItemClickListener(this);
-
+        isbProgress.setOnSeekChangeListener(this);
         XmPlayerManager.getInstance(mContext).addPlayerStatusListener(this);
+        XmPlayerManager.getInstance(mContext).addAdsStatusListener(this);
+        fd(R.id.tv_more_relative).setOnClickListener(view -> {
+            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+                    .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
+                    .withString(KeyCode.Home.TITLE, "更多推荐")
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
+
+        });
+
     }
 
     @Override
@@ -176,14 +199,14 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             ((TextView) fd(R.id.tv_track_name)).setText(currSoundIgnoreKind.getTrackTitle());
             ((TextView) fd(R.id.tv_announcer_name)).setText(currSoundIgnoreKind.getAnnouncer().getNickname());
             String vsignature = currSoundIgnoreKind.getAnnouncer().getVsignature();
-            if(TextUtils.isEmpty(vsignature)){
+            if (TextUtils.isEmpty(vsignature)) {
                 fd(R.id.tv_vsignature).setVisibility(View.GONE);
-            }else {
+            } else {
                 ((TextView) fd(R.id.tv_vsignature)).setText(vsignature);
             }
             ((TextView) fd(R.id.tv_following_count)).setText(getString(R.string.following_count,
                     ZhumulangmaUtil.toWanYi(currSoundIgnoreKind.getAnnouncer().getFollowingCount())));
-            fd(R.id.tv_vsignature).setVisibility(currSoundIgnoreKind.getAnnouncer().isVerified()?View.VISIBLE:View.GONE);
+            fd(R.id.tv_vsignature).setVisibility(currSoundIgnoreKind.getAnnouncer().isVerified() ? View.VISIBLE : View.GONE);
 
             ((TextView) fd(R.id.tv_album_name)).setText(currSoundIgnoreKind.getAlbum().getAlbumTitle());
             ((TextView) fd(R.id.tv_track_intro)).setText(currSoundIgnoreKind.getTrackIntro());
@@ -197,27 +220,18 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
             ((TextView) fd(R.id.tv_duration)).setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
             ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(
-                    XmPlayerManager.getInstance(mContext).getPlayCurrPositon()/1000));
+                    XmPlayerManager.getInstance(mContext).getPlayCurrPositon() / 1000));
             mViewModel.getRelativeAlbums(String.valueOf(mTrack.getDataId()));
+            isbProgress.setMax(currSoundIgnoreKind.getDuration());
+            isbProgress.setProgress((float) XmPlayerManager.getInstance(mContext).getPlayCurrPositon()/1000);
         }
     }
 
     @Override
     public void initViewObservable() {
-        mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> mAlbumAdapter.addData(albums));
+        mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> mAlbumAdapter.setNewData(albums));
     }
 
-    @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.HIDE_GP));
-    }
-
-    @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.SHOW_GP));
-    }
 
 
     @Override
@@ -250,7 +264,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                         .withLong(KeyCode.Home.ALBUMID, mTrack.getAlbum().getAlbumId())
                         .navigation();
                 NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
-                navigateBean.launchMode=STANDARD;
+                navigateBean.launchMode = STANDARD;
                 EventBus.getDefault().post(new BaseActivityEvent<>(
                         EventCode.MainCode.NAVIGATE, navigateBean));
             }
@@ -269,37 +283,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onPlayStart() {
-      /*  if(!XmPlayerManager.getInstance(mContext).isPlaying()){
-        }*/
         playAnim();
 
-    }
-
-    private void playAnim() {
-        lavPlayPause.setMinAndMaxFrame(55,90);
-        lavPlayPause.loop(false);
-        lavPlayPause.playAnimation();
-        lavPlayPause.addAnimatorListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                lavPlayPause.setMinAndMaxFrame(90,170);
-                lavPlayPause.loop(true);
-                lavPlayPause.playAnimation();
-                lavPlayPause.removeAnimatorListener(this);
-            }
-        });
     }
 
     @Override
     public void onPlayPause() {
         pauseAnim();
-    }
-
-    private void pauseAnim() {
-        lavPlayPause.setMinAndMaxFrame(180,210);
-        lavPlayPause.loop(false);
-        lavPlayPause.playAnimation();
     }
 
     @Override
@@ -309,12 +299,12 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onSoundPlayComplete() {
-
+        Log.d(TAG, "onSoundPlayComplete() called");
     }
 
     @Override
     public void onSoundPrepared() {
-
+        Log.d(TAG, "onSoundPrepared() called");
     }
 
     @Override
@@ -324,22 +314,25 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onBufferingStart() {
-
+        Log.d(TAG, "onBufferingStart() called");
     }
 
     @Override
     public void onBufferingStop() {
-
+        Log.d(TAG, "onBufferingStop() called");
     }
 
     @Override
     public void onBufferProgress(int i) {
-
+        Log.d(TAG, "onBufferProgress() called with: i = [" + i + "]");
     }
 
     @Override
     public void onPlayProgress(int i, int i1) {
-        ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(i/1000));
+        ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
+        if(!isTouch){
+            isbProgress.setProgress((float) i/1000);
+        }
     }
 
     @Override
@@ -351,6 +344,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     public void onDestroy() {
         super.onDestroy();
         XmPlayerManager.getInstance(mContext).removePlayerStatusListener(this);
+        XmPlayerManager.getInstance(mContext).removeAdsStatusListener(this);
     }
 
     @Override
@@ -360,7 +354,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return  ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(mApplication);
     }
 
     @Override
@@ -369,8 +363,112 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getData().get(position).getId())
                 .navigation();
         NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
-        navigateBean.launchMode=STANDARD;
+        navigateBean.launchMode = STANDARD;
         EventBus.getDefault().post(new BaseActivityEvent<>(
-                EventCode.MainCode.NAVIGATE,navigateBean));
+                EventCode.MainCode.NAVIGATE, navigateBean));
     }
+
+    @Override
+    public void onStartGetAdsInfo() {
+        Log.d(TAG, "onStartGetAdsInfo() called");
+    }
+
+    @Override
+    public void onGetAdsInfo(AdvertisList advertisList) {
+        Log.d(TAG, "onGetAdsInfo() called with: advertisList = [" + advertisList + "]");
+    }
+
+
+    @Override
+    public void onAdsStartBuffering() {
+        Log.d(TAG, "onAdsStartBuffering() called");
+    }
+
+    @Override
+    public void onAdsStopBuffering() {
+        Log.d(TAG, "onAdsStopBuffering() called");
+    }
+
+    @Override
+    public void onStartPlayAds(Advertis advertis, int i) {
+        playAnim();
+        Log.d(TAG, "onStartPlayAds() called with: advertis = [" + advertis + "], i = [" + i + "]");
+    }
+
+    @Override
+    public void onCompletePlayAds() {
+      //  playingAnim();
+        Log.d(TAG, "onCompletePlayAds() called");
+    }
+
+    @Override
+    public void onError(int i, int i1) {
+        Log.d(TAG, "onError() called with: i = [" + i + "], i1 = [" + i1 + "]");
+    }
+
+    @Override
+    public void onSeeking(SeekParams seekParams) {
+
+        TextView indicator = isbProgress.getIndicator().getTopContentView().findViewById(R.id.tv_indicator);
+        indicator.setText(ZhumulangmaUtil.secondToTimeE(seekParams.progress)
+                +"/"+ZhumulangmaUtil.secondToTimeE((long)seekParams.seekBar.getMax()));
+    }
+
+    @Override
+
+    public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+        isTouch=true;
+    }
+    boolean isTouch;
+    @Override
+    public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+        XmPlayerManager.getInstance(mContext).seekTo(seekBar.getProgress()*1000);
+        isTouch=true;
+    }
+
+    private void playAnim() {
+        if(!isPlaying){
+            lavPlayPause.setMinAndMaxFrame(55, 90);
+            lavPlayPause.loop(false);
+            lavPlayPause.playAnimation();
+            lavPlayPause.addAnimatorListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    super.onAnimationStart(animation);
+                }
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    playingAnim();
+                    lavPlayPause.removeAnimatorListener(this);
+                }
+            });
+        }
+    }
+
+    private void playingAnim() {
+        isPlaying=true;
+        lavPlayPause.setMinAndMaxFrame(90, 170);
+        lavPlayPause.loop(true);
+        lavPlayPause.playAnimation();
+    }
+
+    private void pauseAnim() {
+        isPlaying=false;
+        lavPlayPause.setMinAndMaxFrame(180, 210);
+        lavPlayPause.loop(false);
+        lavPlayPause.playAnimation();
+    }
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.HIDE_GP));
+    }
+
+    @Override
+    public void onSupportInvisible() {
+        super.onSupportInvisible();
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.SHOW_GP));
+    }
+
 }

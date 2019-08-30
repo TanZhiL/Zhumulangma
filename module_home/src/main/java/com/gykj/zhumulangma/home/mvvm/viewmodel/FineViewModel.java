@@ -38,7 +38,7 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public void getBannerList() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.CATEGORY_ID, "0");
+        map.put(DTransferConstants.CATEGORY_ID, "4");
         map.put(DTransferConstants.IMAGE_SCALE, "2");
         map.put(DTransferConstants.CONTAINS_PAID,"true");
         mModel.getCategoryBannersV2(map)

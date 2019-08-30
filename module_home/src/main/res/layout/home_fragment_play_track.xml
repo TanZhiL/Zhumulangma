@@ -29,9 +29,9 @@
 
                 <ImageView
                     android:id="@+id/iv_bg"
-                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/imageView10"
@@ -41,8 +41,28 @@
                     android:layout_marginBottom="16dp"
                     android:src="@drawable/ic_home_danmu"
                     android:tint="@color/white"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
+                <com.warkiz.widget.IndicatorSeekBar
+                    android:id="@+id/ib_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:isb_indicator_text_color="@color/black"
+                    app:isb_track_background_size="2dp"
+                    app:isb_indicator_color="@color/white"
+                    app:isb_track_progress_size="2dp"
+                    app:isb_progress="50"
+                    app:isb_min="0"
+                    app:isb_max="100"
+                    app:isb_show_indicator="rounded_rectangle"
+                    app:isb_show_thumb_text="false"
+                    app:isb_thumb_color="@color/white"
+                    app:isb_thumb_size="6dp"
+                    app:isb_track_background_color="#88eeeeee"
+                    app:isb_indicator_top_content_layout="@layout/home_layout_play_indicator"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:isb_track_progress_color="@color/colorPrimary"/>
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
@@ -91,9 +111,18 @@
                         android:layout_width="250dp"
                         android:layout_height="250dp"
                         android:layout_gravity="center"
-                        app:lottie_fileName="lottie_play_pause.json"
-                        app:lottie_colorFilter="@color/colorPrimary"/>
+                        app:lottie_colorFilter="@color/colorPrimary"
+                        app:lottie_fileName="lottie_play_pause.json" />
 
+                    <!--     <com.airbnb.lottie.LottieAnimationView
+                             android:id="@+id/lav_buffering"
+                             android:layout_width="100dp"
+                             android:layout_height="100dp"
+                             android:layout_gravity="center"
+                             app:lottie_fileName="lottie_buffering.json"
+                             app:lottie_loop="true"
+                             android:visibility="gone"
+                             app:lottie_colorFilter="@color/colorPrimary"/>-->
                 </FrameLayout>
 
 
@@ -103,7 +132,7 @@
                     android:layout_height="34dp"
                     android:layout_marginStart="24dp"
                     android:src="@drawable/ic_home_next"
-                    android:tint="@color/colorPrimary"
+                    android:tint="@color/selector_home_play"
                     app:layout_constraintBottom_toBottomOf="@+id/fl_play_pause"
                     app:layout_constraintStart_toEndOf="@+id/fl_play_pause"
                     app:layout_constraintTop_toTopOf="@+id/fl_play_pause" />
@@ -114,7 +143,7 @@
                     android:layout_height="34dp"
                     android:layout_marginEnd="24dp"
                     android:src="@drawable/ic_home_pre"
-                    android:tint="@color/colorPrimary"
+                    android:tint="@color/selector_home_play"
                     app:layout_constraintBottom_toBottomOf="@+id/fl_play_pause"
                     app:layout_constraintEnd_toStartOf="@+id/fl_play_pause"
                     app:layout_constraintTop_toTopOf="@+id/fl_play_pause" />
@@ -285,7 +314,8 @@
                 android:background="@color/white"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
-                <include layout="@layout/home_layout_announcer"/>
+
+                <include layout="@layout/home_layout_announcer" />
             </LinearLayout>
 
             <TextView
@@ -310,6 +340,7 @@
                 android:paddingEnd="4dp" />
 
             <TextView
+                android:id="@+id/tv_more_relative"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="1dp"

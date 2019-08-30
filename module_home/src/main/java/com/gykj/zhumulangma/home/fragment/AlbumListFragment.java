@@ -62,7 +62,6 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
         mAdapter.bindToRecyclerView(rv);
         mAdapter.setOnItemClickListener(this);
         refreshLayout = view.findViewById(R.id.refreshLayout);
-        refreshLayout.setEnableRefresh(false);
     }
 
     @Override
