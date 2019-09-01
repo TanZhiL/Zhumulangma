@@ -179,7 +179,7 @@ public class CircleProgressBar extends View
     /*    LinearGradient linearGradient = new LinearGradient(circleWidth, circleWidth, getMeasuredWidth()
                 - circleWidth, getMeasuredHeight() - circleWidth, colorArray, null, Shader.TileMode.MIRROR);
         circlePaint.setShader(linearGradient);*/
-        circlePaint.setShadowLayer(10, 10, 10, Color.RED);
+      //  circlePaint.setShadowLayer(10, 10, 10, Color.RED);
         circlePaint.setColor(secondColor); // 设置圆弧的颜色
         circlePaint.setStrokeCap(Paint.Cap.ROUND); // 把每段圆弧改成圆角的
 
