@@ -37,8 +37,11 @@ import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.widget.TScrollView;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
+import com.gykj.zhumulangma.home.dialog.PlaySchedulePopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
+import com.lxj.xpopup.XPopup;
+import com.ninetripods.sydialoglib.SYDialog;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
@@ -71,7 +74,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private ImageView whiteLeft;
     private ImageView whiteRight1;
     private ImageView whiteRight2;
-
+    private TextView tvSchedule;
     private ImageView transLeft;
     private ImageView transRight1;
     private ImageView transRight2;
@@ -82,6 +85,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private AlbumAdapter mAlbumAdapter;
     private Track mTrack;
     private boolean isPlaying;
+
+
+
+    private PlaySchedulePopup mSchedulePopup;
     public PlayTrackFragment() {
 
     }
@@ -106,6 +113,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         ivBg = fd(R.id.iv_bg);
         isbProgress=fd(R.id.ib_progress);
         c = fd(R.id.c);
+        tvSchedule=fd(R.id.tv_schedule);
         lavPlayPause = fd(R.id.lav_play_pause);
         rvRelative = fd(R.id.rv_relative);
         rvRelative.setLayoutManager(new LinearLayoutManager(mContext));
@@ -117,6 +125,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 playingAnim();
             }
         }, 100);
+        mSchedulePopup=new PlaySchedulePopup(mContext);
     }
 
 
@@ -171,6 +180,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         fd(R.id.iv_next).setOnClickListener(this);
         fd(R.id.fl_play_pause).setOnClickListener(this);
         fd(R.id.cl_album).setOnClickListener(this);
+        fd(R.id.iv_schedule).setOnClickListener(this);
+        tvSchedule.setOnClickListener(this);
         mAlbumAdapter.setOnItemClickListener(this);
         isbProgress.setOnSeekChangeListener(this);
         XmPlayerManager.getInstance(mContext).addPlayerStatusListener(this);
@@ -278,6 +289,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             } else {
                 XmPlayerManager.getInstance(mContext).play();
             }
+        }else if (R.id.tv_schedule == id||R.id.iv_schedule == id) {
+            new XPopup.Builder(getContext()).asCustom(new PlaySchedulePopup(mContext)).show();
         }
     }
 
@@ -471,4 +484,12 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.SHOW_GP));
     }
 
+    @Override
+    public boolean onBackPressedSupport() {
+        if(mSchedulePopup!=null&&mSchedulePopup.getPickerView()!=null&&mSchedulePopup.getPickerView().isShowing()){
+            mSchedulePopup.getPickerView().dismiss();
+            return true;
+        }
+        return super.onBackPressedSupport();
+    }
 }

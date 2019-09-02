@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="8dp"
+    android:layout_width="match_parent" android:layout_height="50dp">
+
+    <TextView
+        android:id="@+id/tv_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="不开启"
+        android:layout_marginLeft="8dp"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <RadioButton
+        android:id="@+id/rb_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_gravity="right|center_vertical" />
+</FrameLayout>

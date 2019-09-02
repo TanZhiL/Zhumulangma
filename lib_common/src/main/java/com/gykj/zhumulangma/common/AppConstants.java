@@ -65,6 +65,8 @@ public interface  AppConstants {
          String USER="user";
          String TOKEN="token";
          String HOST="host";
+         String PLAY_SCHEDULE_TYPE="play_schedule_type";
+         String PLAY_SCHEDULE_TIME="play_schedule_time";
     }
     interface Cache{
         String FACE="face";
