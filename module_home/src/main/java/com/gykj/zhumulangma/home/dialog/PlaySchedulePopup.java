@@ -120,6 +120,7 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
                     .setSubmitColor(mContext.getResources().getColor(R.color.colorPrimary))
                     .setCyclic(true,true,true)
                     .setLineSpacingMultiplier(2.6f)
+                    .setSelectOptions(0,1)
                     .setDecorView(((Activity)mContext).getWindow().getDecorView().findViewById(android.R.id.content))
                     .build();
             pickerView.setNPicker(Arrays.asList(mHours), Arrays.asList(mMinutes), null);

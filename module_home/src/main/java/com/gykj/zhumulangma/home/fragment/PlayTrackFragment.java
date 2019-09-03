@@ -121,8 +121,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         c = fd(R.id.c);
         tvSchedule = fd(R.id.tv_schedule);
         lavPlayPause = fd(R.id.lav_play_pause);
-        lavBuffering=fd(R.id.lav_buffering);
-      //  lavBuffering.setMinAndMaxFrame(0,60);
+        lavBuffering = fd(R.id.lav_buffering);
         rvRelative = fd(R.id.rv_relative);
         rvRelative.setLayoutManager(new LinearLayoutManager(mContext));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
@@ -130,7 +129,11 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         initBar();
         new Handler().postDelayed(() -> {
             if (XmPlayerManager.getInstance(mContext).isPlaying()) {
-                playingAnim();
+                if (XmPlayerManager.getInstance(mContext).isAdPlaying()) {
+                    bufferingAnim();
+                } else {
+                    playingAnim();
+                }
             }
         }, 100);
         mSchedulePopup = new PlaySchedulePopup(mContext, this);
@@ -189,6 +192,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         fd(R.id.iv_next).setOnClickListener(this);
         fd(R.id.fl_play_pause).setOnClickListener(this);
         fd(R.id.cl_album).setOnClickListener(this);
+        fd(R.id.tv_play_list).setOnClickListener(this);
+        fd(R.id.iv_play_list).setOnClickListener(this);
         fd(R.id.iv_schedule).setOnClickListener(this);
         tvSchedule.setOnClickListener(this);
         mAlbumAdapter.setOnItemClickListener(this);
@@ -242,11 +247,11 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             ((TextView) fd(R.id.tv_duration)).setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
             mViewModel.getRelativeAlbums(String.valueOf(mTrack.getDataId()));
             isbProgress.setMax(currSoundIgnoreKind.getDuration());
-            if(XmPlayerManager.getInstance(mContext).isPlaying()){
+            if (XmPlayerManager.getInstance(mContext).isPlaying()) {
                 ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(
                         XmPlayerManager.getInstance(mContext).getPlayCurrPositon() / 1000));
                 isbProgress.setProgress((float) XmPlayerManager.getInstance(mContext).getPlayCurrPositon() / 1000);
-            }else {
+            } else {
                 ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(0));
                 isbProgress.setProgress(0);
             }
@@ -265,7 +270,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             mHandler.removeCallbacksAndMessages(null);
         } else if (type == 1) {
             mHandler.postDelayed(() -> scheduleTime(), 1000);
-            tvSchedule.setText(ZhumulangmaUtil.secondToTimeE(XmPlayerManager.getInstance(mContext).getDuration()/1000 -
+            tvSchedule.setText(ZhumulangmaUtil.secondToTimeE(XmPlayerManager.getInstance(mContext).getDuration() / 1000 -
                     XmPlayerManager.getInstance(mContext).getPlayCurrPositon() / 1000));
         } else {
             if (System.currentTimeMillis() < time) {
@@ -330,6 +335,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             }
         } else if (R.id.tv_schedule == id || R.id.iv_schedule == id) {
             new XPopup.Builder(getContext()).asCustom(mSchedulePopup).show();
+        }else if (R.id.tv_schedule == id || R.id.iv_schedule == id) {
+            new XPopup.Builder(getContext()).asCustom(mSchedulePopup).show();
         }
     }
 
@@ -354,7 +361,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onSoundPlayComplete() {
 
-        if(SPUtils.getInstance().getInt(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0)==1){
+        if (SPUtils.getInstance().getInt(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0) == 1) {
             SPUtils.getInstance().put(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0);
             pauseAnim();
         }
@@ -380,9 +387,11 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onBufferingStop() {
-
-        if(XmPlayerManager.getInstance(mContext).isPlaying()){
+        TLog.d(XmPlayerManager.getInstance(mContext).isPlaying());
+        if (XmPlayerManager.getInstance(mContext).isPlaying()) {
             playingAnim();
+        } else {
+            pauseAnim();
         }
         Log.d(TAG, "onBufferingStop() called");
     }
@@ -462,13 +471,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onStartPlayAds(Advertis advertis, int i) {
-        playAnim();
+        bufferingAnim();
         Log.d(TAG, "onStartPlayAds() called with: advertis = [" + advertis + "], i = [" + i + "]");
     }
 
     @Override
     public void onCompletePlayAds() {
-        pauseAnim();
+        playAnim();
         Log.d(TAG, "onCompletePlayAds() called");
     }
 
@@ -501,14 +510,15 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     private void playAnim() {
         if (!isPlaying) {
+
+            lavBuffering.cancelAnimation();
+            lavBuffering.setVisibility(View.GONE);
+            lavPlayPause.setVisibility(View.VISIBLE);
+
             lavPlayPause.setMinAndMaxFrame(55, 90);
             lavPlayPause.loop(false);
             lavPlayPause.playAnimation();
             lavPlayPause.addAnimatorListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                    super.onAnimationStart(animation);
-                }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
@@ -521,9 +531,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     }
 
     private void playingAnim() {
-
+        lavPlayPause.removeAllAnimatorListeners();
         lavBuffering.cancelAnimation();
-
         lavBuffering.setVisibility(View.GONE);
         lavPlayPause.setVisibility(View.VISIBLE);
         isPlaying = true;
@@ -531,10 +540,11 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         lavPlayPause.loop(true);
         lavPlayPause.playAnimation();
     }
+
     private void bufferingAnim() {
 
         lavPlayPause.cancelAnimation();
-
+        isPlaying = false;
         lavPlayPause.setVisibility(View.GONE);
         lavBuffering.setVisibility(View.VISIBLE);
         lavBuffering.playAnimation();
@@ -542,7 +552,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     private void pauseAnim() {
         lavBuffering.cancelAnimation();
-
+        lavPlayPause.removeAllAnimatorListeners();
         lavBuffering.setVisibility(View.GONE);
         lavPlayPause.setVisibility(View.VISIBLE);
         isPlaying = false;

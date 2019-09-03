@@ -116,10 +116,10 @@
 
                          <com.airbnb.lottie.LottieAnimationView
                              android:id="@+id/lav_buffering"
-                             android:layout_width="100dp"
-                             android:layout_height="100dp"
+                             android:layout_width="80dp"
+                             android:layout_height="40dp"
                              android:layout_gravity="center"
-                             app:lottie_fileName="lottie_buffering.json"
+                             app:lottie_fileName="lottie_refreshing.json"
                              app:lottie_loop="true"
                              android:visibility="gone"
                              app:lottie_colorFilter="@color/colorPrimary"/>
@@ -161,7 +161,7 @@
 
 
                 <ImageView
-                    android:id="@+id/imageView21"
+                    android:id="@+id/iv_play_list"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
                     android:layout_marginStart="16dp"
@@ -172,15 +172,15 @@
                     app:layout_constraintTop_toTopOf="@+id/iv_pre" />
 
                 <TextView
-                    android:id="@+id/textView22"
+                    android:id="@+id/tv_play_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="列表"
                     android:textColor="@color/colorGray"
                     android:textSize="10sp"
-                    app:layout_constraintEnd_toEndOf="@+id/imageView21"
-                    app:layout_constraintStart_toStartOf="@+id/imageView21"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView21" />
+                    app:layout_constraintEnd_toEndOf="@+id/iv_play_list"
+                    app:layout_constraintStart_toStartOf="@+id/iv_play_list"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_play_list" />
 
                 <TextView
                     android:id="@+id/tv_schedule"
