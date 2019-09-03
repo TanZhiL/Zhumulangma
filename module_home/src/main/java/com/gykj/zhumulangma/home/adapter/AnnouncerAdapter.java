@@ -29,7 +29,7 @@ public class AnnouncerAdapter extends BaseQuickAdapter<Announcer, BaseViewHolder
         helper.setText(R.id.tv_name,item.getNickname());
         helper.setText(R.id.tv_vsignature,item.getVsignature());
         helper.setText(R.id.tv_fans, ZhumulangmaUtil.toWanYi(item.getFollowerCount()));
-        helper.setText(R.id.tv_following,ZhumulangmaUtil.toWanYi(item.getFollowingCount()));
+        helper.setText(R.id.tv_album,mContext.getString(R.string.zhuanji,String.valueOf(item.getReleasedAlbumCount())));
         helper.setGone(R.id.tv_vip,item.isVerified());
     }
 }

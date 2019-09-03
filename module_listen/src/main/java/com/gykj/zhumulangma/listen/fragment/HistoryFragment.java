@@ -30,7 +30,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
  */
 @Route(path = AppConstants.Router.Listen.F_HISTORY)
 public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implements OnLoadMoreListener,
-        BaseQuickAdapter.OnItemClickListener, OnRefreshListener {
+        BaseQuickAdapter.OnItemClickListener{
     private RefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
     private HistoryAdapter mHistoryAdapter;
@@ -54,13 +54,11 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
     public void initListener() {
         super.initListener();
         mRefreshLayout.setOnLoadMoreListener(this);
-        mRefreshLayout.setOnRefreshListener(this);
         mHistoryAdapter.setOnItemClickListener(this);
     }
 
     @Override
     public void initData() {
-        mRefreshLayout.autoRefresh();
         mViewModel._getHistory();
     }
 
@@ -88,7 +86,6 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
     @Override
     public void initViewObservable() {
         mViewModel.getHistorySingleLiveEvent().observe(this, playHistoryBeans -> {
-          mRefreshLayout.finishRefresh();
             if (null == playHistoryBeans || (mHistoryAdapter.getData().size() == 0 && playHistoryBeans.size() == 0)) {
                 showNoDataView(true);
                 return;
@@ -135,9 +132,4 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
         return false;
     }
 
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        //只做动画用
-        refreshLayout.finishRefresh(1000);
-    }
 }

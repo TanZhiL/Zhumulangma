@@ -54,7 +54,6 @@ public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel>
         mAdapter.bindToRecyclerView(rv);
         mAdapter.setOnItemClickListener(this);
         refreshLayout=view.findViewById(R.id.refreshLayout);
-        refreshLayout.setEnableRefresh(false);
         refreshLayout.setOnLoadMoreListener(this);
     }
 

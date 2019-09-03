@@ -65,7 +65,6 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
         mAdapter = new AlbumAdapter(R.layout.home_item_album);
         mAdapter.bindToRecyclerView(rv);
         refreshLayout = view.findViewById(R.id.refreshLayout);
-        refreshLayout.setEnableRefresh(false);
 
     }
 

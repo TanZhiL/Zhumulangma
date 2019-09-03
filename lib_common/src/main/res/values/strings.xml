@@ -20,6 +20,7 @@
 
     <string name="ji">%d集</string>
     <string name="ci">播放:%s次</string>
+    <string name="zhuanji">%s张专辑</string>
     <string name="zhubo">主播:%s</string>
     <string name="gong_ji">数量:共%d集</string>
     <string name="sb">订阅(%s)</string>

@@ -109,9 +109,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
         layoutFree = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         layoutPaid = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         rlFree = layoutFree.findViewById(R.id.refreshLayout);
-        rlFree.setEnableRefresh(false);
         rlPaid = layoutPaid.findViewById(R.id.refreshLayout);
-        rlPaid.setEnableRefresh(false);
         rvFree = layoutFree.findViewById(R.id.rv);
         rvPaid = layoutPaid.findViewById(R.id.rv);
         rvFree.setLayoutManager(new LinearLayoutManager(mContext));
