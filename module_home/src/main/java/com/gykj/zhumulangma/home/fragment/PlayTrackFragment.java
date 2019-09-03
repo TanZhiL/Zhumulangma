@@ -335,27 +335,75 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             }
         } else if (R.id.tv_schedule == id || R.id.iv_schedule == id) {
             new XPopup.Builder(getContext()).asCustom(mSchedulePopup).show();
-        }else if (R.id.tv_schedule == id || R.id.iv_schedule == id) {
+        } else if (R.id.tv_schedule == id || R.id.iv_schedule == id) {
             new XPopup.Builder(getContext()).asCustom(mSchedulePopup).show();
         }
     }
 
     @Override
+    public void onStartGetAdsInfo() {
+        Log.d(TAG, "onStartGetAdsInfo() called");
+    }
+
+    @Override
+    public void onGetAdsInfo(AdvertisList advertisList) {
+        Log.d(TAG, "onGetAdsInfo() called with: advertisList = [" + advertisList + "]");
+    }
+
+
+    @Override
+    public void onAdsStartBuffering() {
+        bufferingAnim();
+        Log.e(TAG, "onAdsStartBuffering() bufferingAnim");
+    }
+
+    @Override
+    public void onAdsStopBuffering() {
+     /*   if(XmPlayerManager.getInstance(mContext).isPlaying()){
+            playingAnim();
+        }*/
+        Log.d(TAG, "onAdsStopBuffering() called");
+    }
+
+
+    @Override
+    public void onStartPlayAds(Advertis advertis, int i) {
+        bufferingAnim();
+        Log.e(TAG, "onStartPlayAds() bufferingAnim with: advertis = [" + advertis + "], i = [" + i + "]");
+    }
+
+    @Override
+    public void onCompletePlayAds() {
+        //    playAnim();
+        //    Log.e(TAG, "onCompletePlayAds() playAnim");
+    }
+
+    @Override
+    public void onError(int i, int i1) {
+        Log.d(TAG, "onError() called with: i = [" + i + "], i1 = [" + i1 + "]");
+    }
+
+    @Override
     public void onPlayStart() {
-        playAnim();
-        Log.d(TAG, "onPlayStart() called");
+        TLog.d(XmPlayerManager.getInstance(mContext).isBuffering());
+        if (!XmPlayerManager.getInstance(mContext).isBuffering()) {
+
+            playAnim();
+            Log.e(TAG, "onPlayStart() playAnim");
+        }
+
     }
 
     @Override
     public void onPlayPause() {
         pauseAnim();
-        Log.d(TAG, "onPlayPause() called");
+        Log.e(TAG, "onPlayPause() pauseAnim");
     }
 
     @Override
     public void onPlayStop() {
         pauseAnim();
-        Log.d(TAG, "onPlayStop() called");
+        Log.e(TAG, "onPlayStop() pauseAnim");
     }
 
     @Override
@@ -363,7 +411,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
         if (SPUtils.getInstance().getInt(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0) == 1) {
             SPUtils.getInstance().put(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0);
-            pauseAnim();
+         //   pauseAnim();
+         //   Log.e(TAG, "onSoundPlayComplete() pauseAnim");
         }
         Log.d(TAG, "onSoundPlayComplete() called");
     }
@@ -381,17 +430,22 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onBufferingStart() {
-        bufferingAnim();
-        Log.d(TAG, "onBufferingStart() called");
+        TLog.d(XmPlayerManager.getInstance(mContext).isPlaying());
+        if(XmPlayerManager.getInstance(mContext).isPlaying()){
+            bufferingAnim();
+        }
+        Log.e(TAG, "onBufferingStart() bufferingAnim");
     }
 
     @Override
     public void onBufferingStop() {
         TLog.d(XmPlayerManager.getInstance(mContext).isPlaying());
         if (XmPlayerManager.getInstance(mContext).isPlaying()) {
-            playingAnim();
+            playAnim();
+            Log.e(TAG, "onBufferingStop() playAnim");
         } else {
             pauseAnim();
+            Log.e(TAG, "onBufferingStop() pauseAnim");
         }
         Log.d(TAG, "onBufferingStop() called");
     }
@@ -443,48 +497,6 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 EventCode.MainCode.NAVIGATE, navigateBean));
     }
 
-    @Override
-    public void onStartGetAdsInfo() {
-        Log.d(TAG, "onStartGetAdsInfo() called");
-    }
-
-    @Override
-    public void onGetAdsInfo(AdvertisList advertisList) {
-        Log.d(TAG, "onGetAdsInfo() called with: advertisList = [" + advertisList + "]");
-    }
-
-
-    @Override
-    public void onAdsStartBuffering() {
-        bufferingAnim();
-        Log.d(TAG, "onAdsStartBuffering() called");
-    }
-
-    @Override
-    public void onAdsStopBuffering() {
-     /*   if(XmPlayerManager.getInstance(mContext).isPlaying()){
-            playingAnim();
-        }*/
-        Log.d(TAG, "onAdsStopBuffering() called");
-    }
-
-
-    @Override
-    public void onStartPlayAds(Advertis advertis, int i) {
-        bufferingAnim();
-        Log.d(TAG, "onStartPlayAds() called with: advertis = [" + advertis + "], i = [" + i + "]");
-    }
-
-    @Override
-    public void onCompletePlayAds() {
-        playAnim();
-        Log.d(TAG, "onCompletePlayAds() called");
-    }
-
-    @Override
-    public void onError(int i, int i1) {
-        Log.d(TAG, "onError() called with: i = [" + i + "], i1 = [" + i1 + "]");
-    }
 
     @Override
     public void onSeeking(SeekParams seekParams) {
@@ -511,13 +523,12 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private void playAnim() {
         if (!isPlaying) {
 
-            lavBuffering.cancelAnimation();
-            lavBuffering.setVisibility(View.GONE);
-            lavPlayPause.setVisibility(View.VISIBLE);
-
             lavPlayPause.setMinAndMaxFrame(55, 90);
             lavPlayPause.loop(false);
             lavPlayPause.playAnimation();
+            lavBuffering.cancelAnimation();
+            lavBuffering.setVisibility(View.GONE);
+            lavPlayPause.setVisibility(View.VISIBLE);
             lavPlayPause.addAnimatorListener(new AnimatorListenerAdapter() {
 
                 @Override
@@ -532,33 +543,33 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     private void playingAnim() {
         lavPlayPause.removeAllAnimatorListeners();
-        lavBuffering.cancelAnimation();
-        lavBuffering.setVisibility(View.GONE);
-        lavPlayPause.setVisibility(View.VISIBLE);
         isPlaying = true;
         lavPlayPause.setMinAndMaxFrame(90, 170);
         lavPlayPause.loop(true);
         lavPlayPause.playAnimation();
+        lavBuffering.cancelAnimation();
+        lavBuffering.setVisibility(View.GONE);
+        lavPlayPause.setVisibility(View.VISIBLE);
     }
 
     private void bufferingAnim() {
 
         lavPlayPause.cancelAnimation();
+        lavBuffering.playAnimation();
         isPlaying = false;
         lavPlayPause.setVisibility(View.GONE);
         lavBuffering.setVisibility(View.VISIBLE);
-        lavBuffering.playAnimation();
     }
 
     private void pauseAnim() {
         lavBuffering.cancelAnimation();
         lavPlayPause.removeAllAnimatorListeners();
-        lavBuffering.setVisibility(View.GONE);
-        lavPlayPause.setVisibility(View.VISIBLE);
         isPlaying = false;
         lavPlayPause.setMinAndMaxFrame(180, 210);
         lavPlayPause.loop(false);
         lavPlayPause.playAnimation();
+        lavBuffering.setVisibility(View.GONE);
+        lavPlayPause.setVisibility(View.VISIBLE);
     }
 
     @Override

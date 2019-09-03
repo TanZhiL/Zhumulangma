@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -25,48 +26,64 @@ import io.reactivex.functions.Consumer;
 public class AlbumListViewModel extends BaseViewModel<ZhumulangmaModel> {
     private SingleLiveEvent<List<Album>> mLikeSingleLiveEvent;
     private SingleLiveEvent<List<Album>> mAlbumSingleLiveEvent;
-    private int curPage=1;
-    private static final int PAGESIZE=20;
+    private int curPage = 1;
+    private static final int PAGESIZE = 20;
+
     public AlbumListViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
 
-    public void _getGuessLikeAlbum(){
+    public void _getGuessLikeAlbum() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.LIKE_COUNT, "50");
         map.put(DTransferConstants.PAGE, String.valueOf(1));
         mModel.getGuessLikeAlbum(map)
-                .subscribe(gussLikeAlbumList -> getLikeSingleLiveEvent().postValue(
-                        gussLikeAlbumList.getAlbumList()), e->e.printStackTrace());
+                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
+                .subscribe(gussLikeAlbumList -> {
+                    postShowInitLoadViewEvent(false);
+                    getLikeSingleLiveEvent().postValue(
+                            gussLikeAlbumList.getAlbumList());
+                }, e -> e.printStackTrace());
     }
-    public void _getAlbumList(String type){
+
+    public void _getAlbumList(String type) {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, String.valueOf(type));
         map.put(DTransferConstants.CALC_DIMENSION, "3");
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getAlbumList(map)
+                .doOnSubscribe(disposable -> {
+                    if (curPage == 1)
+                        postShowInitLoadViewEvent(true);
+                })
                 .subscribe(albumList -> {
+                    postShowInitLoadViewEvent(false);
                     curPage++;
                     getAlbumSingleLiveEvent().postValue(albumList.getAlbums());
-                }, e->e.printStackTrace());
+                }, e -> e.printStackTrace());
     }
-    public void _getPaidList(){
+
+    public void _getPaidList() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         mModel.getAllPaidAlbums(map)
+                .doOnSubscribe(disposable -> {
+                    if (curPage == 1)
+                        postShowInitLoadViewEvent(true);
+                })
                 .subscribe(albumList -> {
                     curPage++;
                     getAlbumSingleLiveEvent().postValue(albumList.getAlbums());
-                }, e->e.printStackTrace());
+                }, e -> e.printStackTrace());
     }
 
     public SingleLiveEvent<List<Album>> getLikeSingleLiveEvent() {
-        return mLikeSingleLiveEvent=createLiveData(mLikeSingleLiveEvent);
+        return mLikeSingleLiveEvent = createLiveData(mLikeSingleLiveEvent);
     }
 
     public SingleLiveEvent<List<Album>> getAlbumSingleLiveEvent() {
-        return mAlbumSingleLiveEvent=createLiveData(mAlbumSingleLiveEvent);
+        return mAlbumSingleLiveEvent = createLiveData(mAlbumSingleLiveEvent);
     }
 }
