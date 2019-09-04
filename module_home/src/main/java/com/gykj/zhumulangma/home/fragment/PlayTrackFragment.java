@@ -602,6 +602,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         mPlayerManager.removePlayerStatusListener(this);
         mPlayerManager.removeAdsStatusListener(this);
         XmDownloadManager.getInstance().removeDownloadStatueListener(this);
+        mPlayerManager.setPlayListChangeListener(null);
     }
 
     @Override
@@ -814,6 +815,12 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onError(int i, String s, boolean b) throws RemoteException {
         ToastUtil.showToast(s);
+        if(isUp){
+            mPlayListPopup.getRefreshLayout().finishRefresh();
+        }else {
+            mPlayListPopup.getRefreshLayout().finishLoadMore();
+        }
+
     }
 
     @Override
