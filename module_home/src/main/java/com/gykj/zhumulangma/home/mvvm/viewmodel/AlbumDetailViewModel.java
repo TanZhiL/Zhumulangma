@@ -163,7 +163,6 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
     public void getTrackList(String albumId, boolean isUp) {
         int page;
-
         if (isUp) {
             page = upTrackPage;
             if (0 == page) {

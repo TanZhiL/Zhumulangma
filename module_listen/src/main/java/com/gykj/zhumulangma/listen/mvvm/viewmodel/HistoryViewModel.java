@@ -62,7 +62,13 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
         mModel.getHistory(curPage, PAGESIZE)
                 .observeOn(Schedulers.io())
                 .map(playHistoryBeans -> convertSections(playHistoryBeans))
+                .doOnSubscribe(d->{
+                    if(curPage==1){
+                        postShowInitLoadViewEvent(true);
+                    }
+                })
                 .subscribe(playHistorySections -> {
+                    postShowInitLoadViewEvent(false);
                     curPage++;
                     getHistorySingleLiveEvent().postValue(playHistorySections);
                 }, e -> {
@@ -108,7 +114,6 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
         while (iterator.hasNext()){
             Map.Entry entry = iterator.next();
             String key =(String)entry.getKey();
-         //   TLog.d(key+":"+entry.getValue());
             sections.add(new PlayHistorySection(true,key));
             List<PlayHistoryBean> list = (List<PlayHistoryBean>) entry.getValue();
             for (PlayHistoryBean bean : list) {

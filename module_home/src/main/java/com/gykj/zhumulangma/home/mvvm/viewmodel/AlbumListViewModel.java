@@ -74,6 +74,7 @@ public class AlbumListViewModel extends BaseViewModel<ZhumulangmaModel> {
                         postShowInitLoadViewEvent(true);
                 })
                 .subscribe(albumList -> {
+                    postShowInitLoadViewEvent(false);
                     curPage++;
                     getAlbumSingleLiveEvent().postValue(albumList.getAlbums());
                 }, e -> e.printStackTrace());

@@ -2,14 +2,10 @@ package com.gykj.zhumulangma.home.dialog;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioButton;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
@@ -25,9 +21,6 @@ import com.lxj.xpopup.util.XPopupUtils;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import java.util.Arrays;
-import java.util.List;
-
-import retrofit2.http.POST;
 
 /**
  * Author: Thomas.
@@ -59,7 +52,7 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.home_layout_play_schedule;
+        return R.layout.home_dialog_play_schedule;
     }
 
     @Override
