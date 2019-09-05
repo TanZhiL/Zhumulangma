@@ -25,6 +25,8 @@ import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
+import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -162,7 +164,15 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
+        mRadioAdapter.setOnItemClickListener((adapter, view, position) -> {
+            XmPlayerManager.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getData().get(position),-1,-1);
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO, (ISupportFragment) navigation)));
+        });
     }
+
+
 
     @Override
     public void initData() {

@@ -3,18 +3,15 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -51,7 +48,6 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.SimpleCallback;
-import com.ninetripods.sydialoglib.SYDialog;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
@@ -60,7 +56,6 @@ import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
 import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
-import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.IXmDataCallback;
@@ -76,14 +71,11 @@ import org.greenrobot.eventbus.EventBus;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
 import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_LABLES;
 import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_VALUES;
-import static com.lxj.xpopup.enums.PopupAnimation.TranslateAlphaFromBottom;
 import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 
 @Route(path = AppConstants.Router.Home.F_PLAY_TRACK)
@@ -96,7 +88,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private TScrollView msv;
     private CommonTitleBar ctbTrans;
     private CommonTitleBar ctbWhite;
-    private View c;
+    private View clController;
 
     private ImageView whiteLeft;
     private ImageView whiteRight1;
@@ -154,7 +146,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         ctbWhite = fd(R.id.ctb_white);
         ivBg = fd(R.id.iv_bg);
         isbProgress = fd(R.id.ib_progress);
-        c = fd(R.id.c);
+        clController = fd(R.id.cl_controller);
         tvSchedule = fd(R.id.tv_schedule);
         lavPlayPause = fd(R.id.lav_play_pause);
         clAction=fd(R.id.cl_action);
@@ -167,7 +159,6 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         tvPer15=fd(R.id.tv_pre15);
         tvNext15=fd(R.id.tv_next15);
         tvTempo=fd(R.id.tv_tempo);
-
 
         rvRelative.setLayoutManager(new LinearLayoutManager(mContext));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
@@ -359,8 +350,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onScroll(int scrollY) {
 
-        ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(scrollY, SizeUtils.dp2px(100), c.getTop() - SizeUtils.dp2px(80)));
-        ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(scrollY, SizeUtils.dp2px(100), c.getTop() - SizeUtils.dp2px(80)));
+        ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(scrollY, SizeUtils.dp2px(100), clController.getTop() - SizeUtils.dp2px(80)));
+        ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(scrollY, SizeUtils.dp2px(100), clController.getTop() - SizeUtils.dp2px(80)));
 
     }
 
@@ -377,15 +368,22 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                         .navigation();
                 NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
                 navigateBean.launchMode = STANDARD;
-                EventBus.getDefault().post(new BaseActivityEvent<>(
-                        EventCode.MainCode.NAVIGATE, navigateBean));
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigateBean));
             }
         } else if (R.id.lav_pre == id) {
             lavPlayPre.playAnimation();
-            mPlayerManager.playPre();
+            if(mPlayerManager.hasPreSound()){
+                mPlayerManager.playPre();
+            }else {
+                ToastUtil.showToast("没有更多");
+            }
         } else if (R.id.lav_next == id) {
             lavPlayNext.playAnimation();
-            mPlayerManager.playNext();
+            if(mPlayerManager.hasNextSound()){
+                mPlayerManager.playNext();
+            }else {
+                ToastUtil.showToast("没有更多");
+            }
         } else if (R.id.fl_play_pause == id) {
             if (mPlayerManager.isPlaying()) {
                 mPlayerManager.pause();

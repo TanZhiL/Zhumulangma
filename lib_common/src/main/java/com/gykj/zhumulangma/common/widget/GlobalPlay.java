@@ -72,9 +72,9 @@ public class GlobalPlay extends FrameLayout {
         mCircleProgressBar.setProgress((int) (progress*100));
     }
     public void show(){
-        this.animate().translationY(0).setDuration(200).withStartAction(()->setVisibility(VISIBLE));
+        this.animate().translationY(0).setDuration(300).withStartAction(()->setVisibility(VISIBLE));
     }
     public void hide(){
-        this.animate().translationY(getHeight()).setDuration(200).withEndAction(()->setVisibility(GONE));
+        this.animate().translationY(getHeight()).setDuration(300).withEndAction(()->setVisibility(GONE));
     }
 }

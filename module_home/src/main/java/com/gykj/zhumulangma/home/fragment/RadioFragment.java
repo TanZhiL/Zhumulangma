@@ -13,6 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
@@ -20,12 +26,17 @@ import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import me.yokeyword.fragmentation.ISupportFragment;
 
-public class RadioFragment extends BaseMvvmFragment<RadioViewModel> {
+
+public class RadioFragment extends BaseMvvmFragment<RadioViewModel>{
 
     private RecyclerView rvLocal;
     private RadioAdapter mLocalAdapter;
@@ -49,6 +60,23 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> {
     protected void initView(View view) {
         initLocal();
         initTop();
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        mLocalAdapter.setOnItemClickListener((adapter, view, position) -> {
+            XmPlayerManager.getInstance(mContext).playLiveRadioForSDK(mLocalAdapter.getData().get(position),-1,-1);
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO, (ISupportFragment) navigation)));
+        });
+        mTopAdapter.setOnItemClickListener((adapter, view, position) -> {
+            XmPlayerManager.getInstance(mContext).playLiveRadioForSDK(mTopAdapter.getData().get(position),-1,-1);
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO, (ISupportFragment) navigation)));
+        });
     }
 
     @Override
@@ -93,4 +121,6 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> {
         mViewModel.getLocalSingleLiveEvent().observe(this, radios -> mLocalAdapter.setNewData(radios));
         mViewModel.getTopSingleLiveEvent().observe(this, radios -> mTopAdapter.setNewData(radios));
     }
+
+
 }

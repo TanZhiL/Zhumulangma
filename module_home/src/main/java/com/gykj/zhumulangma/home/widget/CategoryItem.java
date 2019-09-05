@@ -17,11 +17,8 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.home.R;
-import com.gykj.zhumulangma.home.fragment.AlbumListFragment;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.HashMap;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 

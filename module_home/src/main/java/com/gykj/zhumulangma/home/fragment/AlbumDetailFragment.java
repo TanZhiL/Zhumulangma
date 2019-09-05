@@ -114,9 +114,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     private AlbumTagAdapter mAlbumTagAdapter;
     private RecyclerView rvTag;
 
-    public AlbumDetailFragment() {
-    }
-
+    public AlbumDetailFragment() {}
 
     @Override
     public void initView(View view) {
@@ -188,7 +186,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         addDisposable(RxView.clicks(fd(R.id.ll_play))
                 .throttleFirst(2, TimeUnit.SECONDS)
                 .subscribe(unit -> {
-                    TextView tvPlay = fd(R.id.ll_play);
+                    TextView tvPlay = fd(R.id.tv_play);
                     tvPlay.setText("继续播放");
                     if (mLastPlay != null) {
                         int index = mAlbumTrackAdapter.getData().indexOf(mLastPlay);

@@ -21,7 +21,8 @@ public interface  AppConstants {
             String F_SEARCH_RESULT="/home/search/result";
             String F_ALBUM_LIST="/home/album/list";
             String F_ALBUM_DETAIL="/home/album/detail";
-             String F_PLAY_TRACK="/home/track";
+             String F_PLAY_TRACK="/home/play_track";
+             String F_PLAY_RADIIO="/home/play_radio";
          }
          interface User{
              String F_MAIN="/user/main";

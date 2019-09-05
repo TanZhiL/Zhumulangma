@@ -23,7 +23,7 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="360dp"
-                android:background="@drawable/user_bg">
+                android:background="@drawable/image_placeholder">
 
                 <ImageView
                     android:id="@+id/iv_bg"
@@ -155,7 +155,7 @@
                 app:isb_track_progress_color="@color/colorPrimary"/>
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/c"
+                android:id="@+id/cl_controller"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
                 android:layout_marginTop="-5dp"
@@ -328,7 +328,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/common_avatar" />
+                    tools:src="@drawable/ic_common_image_placeholder" />
 
                 <TextView
                     android:id="@+id/tv_album_name"

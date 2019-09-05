@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="84dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:paddingLeft="11dp"
     android:paddingRight="11dp">
 
     <ImageView
-        android:id="@+id/imageView9"
+        android:id="@+id/iv_item_play"
         android:layout_width="23dp"
         android:layout_height="23dp"
         android:layout_marginRight="8dp"
@@ -23,13 +24,13 @@
         android:layout_width="68dp"
         android:layout_height="68dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/hot_like"
+        tools:src="@drawable/ic_common_image_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_radio_name"
         android:layout_width="0dp"
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
@@ -38,7 +39,7 @@
         android:text="小道士笔记【灵异玄幻-有声小说】"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@id/imageView9"
+        app:layout_constraintEnd_toStartOf="@id/iv_item_play"
         app:layout_constraintStart_toEndOf="@+id/iv_cover"
         app:layout_constraintTop_toTopOf="@+id/iv_cover" />
 
@@ -51,16 +52,16 @@
         android:text="《盗墓笔记》49"
         android:textColor="@color/colorGray"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@id/imageView9"
-        app:layout_constraintStart_toStartOf="@+id/tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintEnd_toStartOf="@id/iv_item_play"
+        app:layout_constraintStart_toStartOf="@+id/tv_radio_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_radio_name" />
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="17dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@id/imageView9"
-        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintEnd_toStartOf="@id/iv_item_play"
+        app:layout_constraintStart_toStartOf="@+id/tv_radio_name"
         app:layout_constraintTop_toBottomOf="@+id/tv_desc">
 
         <ImageView

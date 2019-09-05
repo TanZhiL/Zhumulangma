@@ -1,7 +1,6 @@
 package com.gykj.zhumulangma.home.adapter;
 
 import android.graphics.Color;
-import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -14,8 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.gykj.zhumulangma.home.R;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
-
-import java.util.List;
 
 /**
  * Created by 10719

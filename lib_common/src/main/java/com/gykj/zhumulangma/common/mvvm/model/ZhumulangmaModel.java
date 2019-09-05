@@ -19,6 +19,7 @@ import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerList;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.column.ColumnList;
 import com.ximalaya.ting.android.opensdk.model.download.RecommendDownload;
+import com.ximalaya.ting.android.opensdk.model.live.program.ProgramList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
@@ -504,5 +505,27 @@ public class ZhumulangmaModel extends CommonModel {
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
+    /**
+     * 获取直播节目详情
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<ProgramList> getProgram(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getProgram(specificParams,
+                new IDataCallBack<ProgramList>() {
+                    @Override
+                    public void onSuccess(@Nullable ProgramList programList) {
+                        emitter.onNext(programList);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
 
 }

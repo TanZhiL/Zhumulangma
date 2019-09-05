@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/user_bg">
+
+                <ImageView
+                    android:id="@+id/iv_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:src="@drawable/ic_home_danmu"
+                    android:tint="@color/white"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_program_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="24dp"
+            android:text="89.7魅力流行榜(中文榜)"
+            android:textColor="@color/white"
+            android:textSize="23sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_announcer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="主播：xiaopiu"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_program_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_program_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_program_name" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18：00~19：00"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_announcer_name"
+            app:layout_constraintStart_toStartOf="@+id/tv_announcer_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_announcer_name" />
+
+
+    </android.support.constraint.ConstraintLayout>
+            <com.warkiz.widget.IndicatorSeekBar
+                android:id="@+id/ib_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-5dp"
+                app:isb_indicator_text_color="@color/black"
+                app:isb_track_background_size="2dp"
+                app:isb_indicator_color="@color/white"
+                app:isb_track_progress_size="2dp"
+                app:isb_progress="50"
+                app:isb_min="0"
+                app:isb_clear_default_padding="true"
+                app:isb_track_rounded_corners="true"
+                app:isb_max="100"
+                app:isb_show_indicator="rounded_rectangle"
+                app:isb_show_thumb_text="false"
+                app:isb_thumb_color="@color/white"
+                app:isb_thumb_size="6dp"
+                app:isb_track_background_color="#88eeeeee"
+                app:isb_indicator_top_content_layout="@layout/home_layout_play_indicator"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:isb_track_progress_color="@color/colorPrimary"/>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/c"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginTop="-5dp"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_current"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="00:00"
+                    android:textColor="@color/colorGray"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="01:00"
+                    android:textColor="@color/colorGray"
+                    android:textSize="11sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <FrameLayout
+                    android:id="@+id/fl_play_pause"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lav_play_pause"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
+                        android:layout_gravity="center"
+                        app:lottie_colorFilter="@color/colorPrimary"
+                        app:lottie_fileName="lottie_play_pause.json" />
+
+                         <com.airbnb.lottie.LottieAnimationView
+                             android:id="@+id/lav_buffering"
+                             android:layout_width="48dp"
+                             android:layout_height="48dp"
+                             android:layout_gravity="center"
+                             app:lottie_fileName="lottie_buffering.json"
+                             app:lottie_loop="true"
+                             android:visibility="gone"
+                             app:lottie_colorFilter="@color/colorPrimary"/>
+                </FrameLayout>
+
+
+             <!--   <ImageView
+                    android:id="@+id/iv_next"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="24dp"
+                    android:src="@drawable/ic_home_next"
+                    android:visibility="gone"
+                    android:tint="@color/selector_home_play"
+                    app:layout_constraintBottom_toBottomOf="@+id/fl_play_pause"
+                    app:layout_constraintStart_toEndOf="@+id/fl_play_pause"
+                    app:layout_constraintTop_toTopOf="@+id/fl_play_pause" />-->
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lav_next"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="24dp"
+                    android:rotation="180"
+                    android:layout_gravity="center"
+                    app:lottie_colorFilter="@color/colorPrimary"
+                    app:lottie_fileName="lottie_play_next_pre.json"
+                    app:layout_constraintBottom_toBottomOf="@+id/fl_play_pause"
+                    app:layout_constraintStart_toEndOf="@+id/fl_play_pause"
+                    app:layout_constraintTop_toTopOf="@+id/fl_play_pause"/>
+
+             <!--   <ImageView
+                    android:id="@+id/iv_pre"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginEnd="24dp"
+                    android:src="@drawable/ic_home_pre"
+                    android:tint="@color/selector_home_play"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/fl_play_pause"
+                    app:layout_constraintEnd_toStartOf="@+id/fl_play_pause"
+                    app:layout_constraintTop_toTopOf="@+id/fl_play_pause" />-->
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lav_pre"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="24dp"
+                    app:lottie_colorFilter="@color/colorPrimary"
+                    app:lottie_fileName="lottie_play_next_pre.json"
+                    app:layout_constraintBottom_toBottomOf="@+id/fl_play_pause"
+                    app:layout_constraintEnd_toStartOf="@+id/fl_play_pause"
+                    app:layout_constraintTop_toTopOf="@+id/fl_play_pause"/>
+                <ImageView
+                    android:id="@+id/iv_history"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_common_history"
+                    android:tint="@color/colorPrimaryDark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/lav_pre" />
+
+
+                <ImageView
+                    android:id="@+id/iv_play_list"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_common_list"
+                    android:tint="@color/colorPrimaryDark"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/lav_pre" />
+
+                <TextView
+                    android:id="@+id/tv_play_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="节目单"
+                    android:textColor="@color/colorGray"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_play_list"
+                    app:layout_constraintStart_toStartOf="@+id/iv_play_list"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_play_list" />
+
+                <TextView
+                    android:id="@+id/tv_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="播放历史"
+                    android:textColor="@color/colorGray"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_history"
+                    app:layout_constraintStart_toStartOf="@+id/iv_history"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_history" />
+            </android.support.constraint.ConstraintLayout>
+<include layout="@layout/home_item_radio"/>
+</LinearLayout>

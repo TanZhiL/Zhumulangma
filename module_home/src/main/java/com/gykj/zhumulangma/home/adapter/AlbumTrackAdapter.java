@@ -1,6 +1,5 @@
 package com.gykj.zhumulangma.home.adapter;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -10,7 +9,6 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.gykj.zhumulangma.common.App;
-import com.gykj.zhumulangma.common.bean.AlbumTrackBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.bean.TrackDownloadBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
@@ -21,17 +19,8 @@ import com.gykj.zhumulangma.home.R;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
-import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
-import org.greenrobot.greendao.annotation.Id;
-
-import java.sql.RowId;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by 10719

@@ -75,7 +75,9 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REFRESH_TOKEN_UR
 public class App extends android.app.Application implements IXmPlayerStatusListener, IXmDownloadTrackCallBack {
     private static App mApplication;
     private static final String TAG = "App";
-    private ZhumulangmaModel model =new ZhumulangmaModel(this);
+    private XmPlayerManager mPlayerManager;
+    private ZhumulangmaModel model = new ZhumulangmaModel(this);
+
     //static 代码段可以防止内存泄露
     static {
 
@@ -104,6 +106,7 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
     public void onCreate() {
         super.onCreate();
         mApplication = this;
+        mPlayerManager = XmPlayerManager.getInstance(this);
         initGreenDao();
         initXmly();
         MultiDex.install(this);
@@ -175,7 +178,7 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
                 registerLoginTokenChangeListener(this);
             }
         }
-        if(!BaseUtil.isPlayerProcess(this)) {
+        if (!BaseUtil.isPlayerProcess(this)) {
             XmDownloadManager.Builder(this)
                     .maxDownloadThread(1)            // 最大的下载个数 默认为1 最大为3
                     //   .maxSpaceSize(Long.MAX_VALUE)	// 设置下载文件占用磁盘空间最大值，单位字节。不设置没有限制
@@ -190,13 +193,13 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
             XmDownloadManager.getInstance().addDownloadStatueListener(this);
         }
         // 此代码表示播放时会去监测下是否已经下载(setDownloadPlayPathCallback 方法已经废弃 请使用如下方法)
-        XmPlayerManager.getInstance(this).setCommonBusinessHandle(XmDownloadManager.getInstance());
+        mPlayerManager.setCommonBusinessHandle(XmDownloadManager.getInstance());
 
 
         try {
             Method method = XmPlayerConfig.getInstance(this).getClass().getDeclaredMethod("setUseSystemPlayer", Boolean.class);
             method.setAccessible(true);
-            method.invoke(XmPlayerConfig.getInstance(this),true);
+            method.invoke(XmPlayerConfig.getInstance(this), true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -204,12 +207,12 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
         try {
             Notification mNotification = XmNotificationCreater.getInstanse(this)
                     .initNotification(this.getApplicationContext(), Class.forName(ActivityUtils.getLauncherActivity()));
-            XmPlayerManager.getInstance(this).init(NOTIFICATION_ID, mNotification);
+            mPlayerManager.init(NOTIFICATION_ID, mNotification);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
-        XmPlayerManager.getInstance(this).addPlayerStatusListener(this);
+        mPlayerManager.addPlayerStatusListener(this);
 
     }
 
@@ -384,7 +387,7 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
     @Override
     public void onTerminate() {
         super.onTerminate();
-        XmPlayerManager.getInstance(this).removePlayerStatusListener(this);
+        mPlayerManager.removePlayerStatusListener(this);
         XmDownloadManager.getInstance().removeDownloadStatueListener(this);
         XmPlayerManager.release();
         CommonRequest.release();
@@ -397,9 +400,9 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
 
     @Override
     public void onPlayPause() {
-        Log.e(TAG, "onPlayPause: " );
+        Log.e(TAG, "onPlayPause: ");
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if(null!=notificationManager){
+        if (null != notificationManager) {
             notificationManager.cancel(NOTIFICATION_ID);
         }
     }
@@ -442,15 +445,18 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
     @Override
     public void onPlayProgress(int i, int i1) {
         try {
-            Track currSound = XmPlayerManager.getInstance(this).getCurrSoundIgnoreKind(true);
-            if(null==currSound){
+            Track currSound = mPlayerManager.getCurrSoundIgnoreKind(true);
+            if (null == currSound) {
                 return;
             }
-            int currPos=XmPlayerManager.getInstance(this).getPlayCurrPositon();
-            int duration=XmPlayerManager.getInstance(this).getDuration();
-            model.insert(new PlayHistoryBean(currSound.getDataId(),currSound.getAlbum().getAlbumId(),
-                    currSound.getKind(),100 * currPos /duration,
-                    System.currentTimeMillis(),currSound)).subscribe();
+            PlayableModel currSound1 = mPlayerManager.getCurrSound();
+            if (currSound1.getKind().equals(PlayableModel.KIND_TRACK)) {
+                int currPos = mPlayerManager.getPlayCurrPositon();
+                int duration = mPlayerManager.getDuration();
+                model.insert(new PlayHistoryBean(currSound.getDataId(), currSound.getAlbum().getAlbumId(),
+                        currSound.getKind(), 100 * currPos / duration,
+                        System.currentTimeMillis(), currSound)).subscribe();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -463,31 +469,31 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
 
     @Override
     public void onWaiting(Track track) {
-        model.insert(new TrackDownloadBean(track.getDataId(),XmDownloadManager.getInstance()
+        model.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
                 .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
     }
 
     @Override
     public void onStarted(Track track) {
-        model.insert(new TrackDownloadBean(track.getDataId(),XmDownloadManager.getInstance()
+        model.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
                 .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
     }
 
     @Override
     public void onSuccess(Track track) {
-        model.insert(new TrackDownloadBean(track.getDataId(),XmDownloadManager.getInstance()
+        model.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
                 .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
     }
 
     @Override
     public void onError(Track track, Throwable throwable) {
-        model.insert(new TrackDownloadBean(track.getDataId(),XmDownloadManager.getInstance()
+        model.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
                 .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
     }
 
     @Override
     public void onCancelled(Track track, com.ximalaya.ting.android.sdkdownloader.task.Callback.CancelledException e) {
-        model.insert(new TrackDownloadBean(track.getDataId(),XmDownloadManager.getInstance()
+        model.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
                 .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
     }
 

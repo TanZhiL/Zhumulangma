@@ -39,6 +39,7 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,11 +51,11 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
 @Route(path = AppConstants.Router.Main.A_MAIN)
 public class MainActivity extends BaseActivity implements View.OnClickListener,
         MainFragment.onRootShowListener, IXmPlayerStatusListener, IXmAdsStatusListener {
-
+    private XmPlayerManager mPlayerManager=XmPlayerManager.getInstance(this);
     private XmlyAuthInfo mAuthInfo;
     private XmlySsoHandler mSsoHandler;
     private XmlyAuth2AccessToken mAccessToken;
-
+    
     private GlobalPlay globalPlay;
 
     @Override
@@ -77,8 +78,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void initListener() {
         globalPlay.setOnClickListener(this);
-        XmPlayerManager.getInstance(this).addPlayerStatusListener(this);
-        XmPlayerManager.getInstance(this).addAdsStatusListener(this);
+        mPlayerManager.addPlayerStatusListener(this);
+        mPlayerManager.addAdsStatusListener(this);
     }
 
     @Override
@@ -104,8 +105,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
+
         if (v == globalPlay) {
-            if(null == XmPlayerManager.getInstance(this).getCurrSound(true)){
+            if (null == mPlayerManager.getCurrSound(true)) {
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_RANK).navigation();
                 if (null != navigation) {
                     EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
@@ -116,12 +118,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                                             com.gykj.zhumulangma.common.R.anim.no_anim,
                                             com.gykj.zhumulangma.common.R.anim.push_bottom_out))));
                 }
-            }else {
-                XmPlayerManager.getInstance(this).play();
-                Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
-                if (null != navigation) {
-                    EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                            new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK, (ISupportFragment) navigation)));
+            } else {
+                mPlayerManager.play();
+                if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_TRACK)) {
+                    Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
+                    if (null != navigation) {
+                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                                new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK, (ISupportFragment) navigation)));
+                    }
+                } else if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_SCHEDULE)) {
+                    Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
+                    if (null != navigation) {
+                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                                new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO, (ISupportFragment) navigation)));
+                    }
                 }
             }
         }
@@ -149,7 +159,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onPlayStart() {
-        Track currSoundIgnoreKind = XmPlayerManager.getInstance(this).getCurrSoundIgnoreKind(true);
+        Track currSoundIgnoreKind = mPlayerManager.getCurrSoundIgnoreKind(true);
         if (null == currSoundIgnoreKind) {
             return;
         }
@@ -198,6 +208,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onPlayProgress(int i, int i1) {
+
         globalPlay.setProgress((float) i / (float) i1);
     }
 
@@ -333,18 +344,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                         start(navigateBean.fragment);
                         break;
                     case AppConstants.Router.Home.F_PLAY_TRACK:
+                    case AppConstants.Router.Home.F_PLAY_RADIIO:
                         extraTransaction().setCustomAnimations(
                                 com.gykj.zhumulangma.common.R.anim.push_bottom_in,
                                 com.gykj.zhumulangma.common.R.anim.no_anim,
                                 com.gykj.zhumulangma.common.R.anim.no_anim,
                                 com.gykj.zhumulangma.common.R.anim.push_bottom_out).start(
-                                        navigateBean.fragment,ISupportFragment.SINGLETASK);
+                                navigateBean.fragment, ISupportFragment.SINGLETASK);
                         break;
                     default:
-                        if(navigateBean.extraTransaction!=null){
-                            navigateBean.extraTransaction.start(navigateBean.fragment,navigateBean.launchMode);
-                        }else {
-                            start(navigateBean.fragment,navigateBean.launchMode);
+                        if (navigateBean.extraTransaction != null) {
+                            navigateBean.extraTransaction.start(navigateBean.fragment, navigateBean.launchMode);
+                        } else {
+                            start(navigateBean.fragment, navigateBean.launchMode);
                         }
                         break;
                 }
@@ -364,7 +376,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        XmPlayerManager.getInstance(this).removePlayerStatusListener(this);
-        XmPlayerManager.getInstance(this).removeAdsStatusListener(this);
+        mPlayerManager.removePlayerStatusListener(this);
+        mPlayerManager.removeAdsStatusListener(this);
     }
 }
