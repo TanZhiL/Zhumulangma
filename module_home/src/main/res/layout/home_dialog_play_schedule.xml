@@ -17,7 +17,7 @@
         android:id="@+id/tv_close"
         android:layout_width="match_parent"
         android:text="关闭"
-        android:textColor="@color/black"
+        android:textColor="@color/colorGray"
         android:gravity="center"
         android:textSize="16sp"
         android:layout_height="50dp" />

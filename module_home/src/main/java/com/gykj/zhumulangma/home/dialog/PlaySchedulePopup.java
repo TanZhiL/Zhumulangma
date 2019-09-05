@@ -137,7 +137,7 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
         return pickerView;
     }
 
-    public static class PlayScheduleAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+    public  class PlayScheduleAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
         public PlayScheduleAdapter(int layoutResId) {
             super(layoutResId);

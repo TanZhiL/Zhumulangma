@@ -46,6 +46,7 @@ import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.dialog.PlayListPopup;
 import com.gykj.zhumulangma.home.dialog.PlaySchedulePopup;
+import com.gykj.zhumulangma.home.dialog.PlayTempoPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
 import com.lxj.xpopup.XPopup;
@@ -73,12 +74,15 @@ import com.ximalaya.ting.android.sdkdownloader.task.Callback;
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
+import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_LABLES;
+import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_VALUES;
 import static com.lxj.xpopup.enums.PopupAnimation.TranslateAlphaFromBottom;
 import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 
@@ -86,7 +90,8 @@ import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> implements
         TScrollView.OnScrollListener, View.OnClickListener, IXmPlayerStatusListener,
         BaseQuickAdapter.OnItemClickListener, IXmAdsStatusListener, OnSeekChangeListener,
-        PlaySchedulePopup.onSelectedListener, PlayListPopup.onActionListener, IXmDownloadTrackCallBack, IXmDataCallback {
+        PlaySchedulePopup.onSelectedListener, PlayListPopup.onActionListener, IXmDownloadTrackCallBack,
+        IXmDataCallback, PlayTempoPopup.onTempoSelectedListener {
 
     private TScrollView msv;
     private CommonTitleBar ctbTrans;
@@ -106,6 +111,14 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private ImageView ivBg;
     private RecyclerView rvRelative;
     private AlbumAdapter mAlbumAdapter;
+    private View clAction;
+
+    private TextView tvActionCur;
+    private TextView tvActionDur;
+    private TextView tvPer15;
+    private TextView tvNext15;
+    private TextView tvTempo;
+
     private Track mTrack;
     private boolean isPlaying;
 
@@ -144,10 +157,18 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         c = fd(R.id.c);
         tvSchedule = fd(R.id.tv_schedule);
         lavPlayPause = fd(R.id.lav_play_pause);
+        clAction=fd(R.id.cl_action);
         lavBuffering = fd(R.id.lav_buffering);
         rvRelative = fd(R.id.rv_relative);
         lavPlayNext = fd(R.id.lav_next);
         lavPlayPre = fd(R.id.lav_pre);
+        tvActionCur=fd(R.id.tv_action_cur);
+        tvActionDur=fd(R.id.tv_action_duration);
+        tvPer15=fd(R.id.tv_pre15);
+        tvNext15=fd(R.id.tv_next15);
+        tvTempo=fd(R.id.tv_tempo);
+
+
         rvRelative.setLayoutManager(new LinearLayoutManager(mContext));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
         mAlbumAdapter.bindToRecyclerView(rvRelative);
@@ -163,6 +184,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         }, 100);
         mSchedulePopup = new PlaySchedulePopup(mContext, this);
         mPlayListPopup = new PlayListPopup(mContext, this);
+
     }
 
 
@@ -219,9 +241,14 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         fd(R.id.tv_play_list).setOnClickListener(this);
         fd(R.id.iv_play_list).setOnClickListener(this);
         fd(R.id.iv_schedule).setOnClickListener(this);
+        ivBg.setOnClickListener(this);
+        clAction.setOnClickListener(this);
         lavPlayNext.setOnClickListener(this);
         lavPlayPre.setOnClickListener(this);
         tvSchedule.setOnClickListener(this);
+        tvPer15.setOnClickListener(this);
+        tvNext15.setOnClickListener(this);
+        tvTempo.setOnClickListener(this);
         mAlbumAdapter.setOnItemClickListener(this);
         isbProgress.setOnSeekChangeListener(this);
         mPlayerManager.addPlayerStatusListener(this);
@@ -271,6 +298,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     ZhumulangmaUtil.toWanYi(currSoundIgnoreKind.getCommentCount())));
 
             ((TextView) fd(R.id.tv_duration)).setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
+
             mViewModel.getRelativeAlbums(String.valueOf(mTrack.getDataId()));
             isbProgress.setMax(currSoundIgnoreKind.getDuration());
             if (mPlayerManager.isPlaying()) {
@@ -284,7 +312,9 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         }
         mHandler.removeCallbacksAndMessages(null);
         mHandler.postDelayed(() -> scheduleTime(), 0);
-
+        tvActionDur.setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
+        tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getPlayCurrPositon() / 1000));
+        tvTempo.setText(TEMPO_LABLES[Arrays.binarySearch(TEMPO_VALUES,XmPlayerManager.getInstance(mContext).getTempo())]);
     }
 
     private void scheduleTime() {
@@ -375,6 +405,16 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     mPlayListPopup.getRecyclerView().scrollToPosition(mPlayerManager.getCurrentIndex());
                 }
             }).enableDrag(false).asCustom(mPlayListPopup).show();
+        }else if(v==ivBg){
+            clAction.setVisibility(View.VISIBLE);
+        }else if(v==clAction){
+            clAction.setVisibility(View.GONE);
+        }else if(v==tvPer15){
+            mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon()-15*1000);
+        }else if(v==tvNext15){
+            mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon()+15*1000);
+        }else if(v==tvTempo){
+            new XPopup.Builder(getContext()).asCustom(new PlayTempoPopup(mContext,this)).show();
         }
     }
 
@@ -585,6 +625,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onPlayProgress(int i, int i1) {
         ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
+        tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
         if (!isTouch) {
             isbProgress.setProgress((float) i / 1000);
         }
@@ -636,7 +677,6 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     }
 
     @Override
-
     public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
         isTouch = true;
     }
@@ -826,5 +866,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public IBinder asBinder() {
         return null;
+    }
+
+    @Override
+    public void onTempoSelected(String tempo) {
+        tvTempo.setText(tempo);
     }
 }

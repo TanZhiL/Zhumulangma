@@ -17,7 +17,7 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/c"
                 android:layout_width="match_parent"
-                android:layout_height="205dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:background="@color/white"
                 android:paddingLeft="9dp"
@@ -141,25 +141,32 @@
                 </LinearLayout>
 
                 <View
+                    android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
                     android:background="@color/colorAccent"
-                    app:layout_constraintBottom_toTopOf="@id/tv_lastplay" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView23"
+                    tools:layout_editor_absoluteX="9dp" />
 
                 <TextView
                     android:id="@+id/tv_lastplay"
                     android:layout_width="0dp"
                     android:layout_height="38dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:singleLine="true"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.444"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view"
                     tools:text="上次播放：伦桑part2" />
 
             </android.support.constraint.ConstraintLayout>

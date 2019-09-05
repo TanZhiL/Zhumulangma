@@ -188,10 +188,13 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         addDisposable(RxView.clicks(fd(R.id.ll_play))
                 .throttleFirst(2, TimeUnit.SECONDS)
                 .subscribe(unit -> {
+                    TextView tvPlay = fd(R.id.ll_play);
+                    tvPlay.setText("继续播放");
                     if (mLastPlay != null) {
                         int index = mAlbumTrackAdapter.getData().indexOf(mLastPlay);
                         if (index != -1) {
                             mLastPlay = mAlbumTrackAdapter.getData().get(index);
+                            tvLastplay.setVisibility(View.VISIBLE);
                             tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                             XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(),
                                     index);
@@ -205,6 +208,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                         }
                     } else {
                         mLastPlay = mAlbumTrackAdapter.getData().get(0);
+                        tvLastplay.setVisibility(View.VISIBLE);
                         tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                         XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(), 0);
                         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
@@ -319,8 +323,10 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         });
         mViewModel.getLastplaySingleLiveEvent().observe(this, track -> {
             if (null != track) {
+
                 tvPlay.setText("继续播放");
                 mLastPlay = track;
+                tvLastplay.setVisibility(View.VISIBLE);
                 tvLastplay.setText(getString(R.string.lastplay, track.getTrackTitle()));
             }
         });
@@ -372,6 +378,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         if (adapter == mAlbumTrackAdapter) {
             playerManager.playList(mViewModel.getCommonTrackList(), position);
             mLastPlay = mAlbumTrackAdapter.getData().get(position);
+            tvLastplay.setVisibility(View.VISIBLE);
             tvLastplay.setText(getString(R.string.lastplay, mAlbumTrackAdapter.getData().get(position).getTrackTitle()));
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
             if (null != navigation) {
@@ -441,6 +448,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
         if (mAlbumId == track.getAlbum().getAlbumId()) {
             mLastPlay = track;
+            tvLastplay.setVisibility(View.VISIBLE);
             tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
         }
         for (int i = 0; i < tracks.size(); i++) {
