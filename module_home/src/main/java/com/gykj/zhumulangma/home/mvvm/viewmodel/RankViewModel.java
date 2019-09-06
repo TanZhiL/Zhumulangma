@@ -77,7 +77,7 @@ public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.CALC_DIMENSION, "3");
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         mModel.getAlbumList(map)
-                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
+                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(freePage==1))
                 .doFinally(() -> postShowInitLoadViewEvent(false))
                 .subscribe(albumList -> {
                             freePage++;
