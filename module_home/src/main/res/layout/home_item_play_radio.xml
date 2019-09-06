@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/selector_common_item"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_height="55dp">
+    <View
+        android:layout_width="match_parent"
+        android:background="#f0f0f0"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="1dp"/>
+
+    <LinearLayout
+        android:id="@+id/textView32"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lav_playing"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:background="@color/transparent"
+                android:visibility="gone"
+                app:lottie_autoPlay="true"
+                app:lottie_colorFilter="@color/colorPrimary"
+                app:lottie_fileName="lottie_playing.json"
+                app:lottie_loop="true" />
+
+            <!--      <ImageView
+              android:id="@+id/iv_playing"
+              android:layout_width="24dp"
+              android:layout_height="24dp"
+              android:tint="@color/colorPrimary"
+              android:src="@drawable/ic_home_playing" />-->
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="@color/textColorPrimary"
+                android:text="伦桑part1"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_announcer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="伦桑part1"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+<FrameLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_zhibo"
+        android:layout_width="30dp"
+        android:layout_height="16dp"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:background="@drawable/shap_common_primary_coner"
+        android:textColor="@color/white"
+        android:text="直播" />
+
+    <TextView
+        android:id="@+id/tv_huiting"
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="回听:" />
+</FrameLayout>
+
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:layout_marginStart="8dp"
+            android:text="19:00-20:00" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

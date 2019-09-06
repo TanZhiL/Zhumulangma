@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fl_container"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:layout_height="53dp">
-<View
-    android:id="@+id/v_line"
-    android:layout_width="match_parent"
-    android:layout_height="8dp"
-    android:background="@color/colorDefualt"/>
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@color/colorDefualt"
+        tools:visibility="visible" />
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="45dp"
         android:textColor="@color/black"
         android:layout_marginStart="11dp"
         android:layout_marginEnd="11dp"

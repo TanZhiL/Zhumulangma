@@ -41,7 +41,7 @@ import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.TScrollView;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
-import com.gykj.zhumulangma.home.dialog.PlayListPopup;
+import com.gykj.zhumulangma.home.dialog.PlayTrackPopup;
 import com.gykj.zhumulangma.home.dialog.PlaySchedulePopup;
 import com.gykj.zhumulangma.home.dialog.PlayTempoPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -82,7 +82,7 @@ import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> implements
         TScrollView.OnScrollListener, View.OnClickListener, IXmPlayerStatusListener,
         BaseQuickAdapter.OnItemClickListener, IXmAdsStatusListener, OnSeekChangeListener,
-        PlaySchedulePopup.onSelectedListener, PlayListPopup.onActionListener, IXmDownloadTrackCallBack,
+        PlaySchedulePopup.onSelectedListener, PlayTrackPopup.onActionListener, IXmDownloadTrackCallBack,
         IXmDataCallback, PlayTempoPopup.onTempoSelectedListener {
 
     private TScrollView msv;
@@ -118,7 +118,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private LottieAnimationView lavPlayNext;
     private LottieAnimationView lavPlayPre;
     private PlaySchedulePopup mSchedulePopup;
-    private PlayListPopup mPlayListPopup;
+    private PlayTrackPopup mPlayTrackPopup;
 
     private boolean isUp;
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mContext);
@@ -149,16 +149,16 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         clController = fd(R.id.cl_controller);
         tvSchedule = fd(R.id.tv_schedule);
         lavPlayPause = fd(R.id.lav_play_pause);
-        clAction=fd(R.id.cl_action);
+        clAction = fd(R.id.cl_action);
         lavBuffering = fd(R.id.lav_buffering);
         rvRelative = fd(R.id.rv_relative);
         lavPlayNext = fd(R.id.lav_next);
         lavPlayPre = fd(R.id.lav_pre);
-        tvActionCur=fd(R.id.tv_action_cur);
-        tvActionDur=fd(R.id.tv_action_duration);
-        tvPer15=fd(R.id.tv_pre15);
-        tvNext15=fd(R.id.tv_next15);
-        tvTempo=fd(R.id.tv_tempo);
+        tvActionCur = fd(R.id.tv_action_cur);
+        tvActionDur = fd(R.id.tv_action_duration);
+        tvPer15 = fd(R.id.tv_pre15);
+        tvNext15 = fd(R.id.tv_next15);
+        tvTempo = fd(R.id.tv_tempo);
 
         rvRelative.setLayoutManager(new LinearLayoutManager(mContext));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
@@ -174,7 +174,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             }
         }, 100);
         mSchedulePopup = new PlaySchedulePopup(mContext, this);
-        mPlayListPopup = new PlayListPopup(mContext, this);
+        mPlayTrackPopup = new PlayTrackPopup(mContext, this);
 
     }
 
@@ -305,7 +305,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         mHandler.postDelayed(() -> scheduleTime(), 0);
         tvActionDur.setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
         tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getPlayCurrPositon() / 1000));
-        tvTempo.setText(TEMPO_LABLES[Arrays.binarySearch(TEMPO_VALUES,XmPlayerManager.getInstance(mContext).getTempo())]);
+        tvTempo.setText(TEMPO_LABLES[Arrays.binarySearch(TEMPO_VALUES, XmPlayerManager.getInstance(mContext).getTempo())]);
     }
 
     private void scheduleTime() {
@@ -372,16 +372,16 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             }
         } else if (R.id.lav_pre == id) {
             lavPlayPre.playAnimation();
-            if(mPlayerManager.hasPreSound()){
+            if (mPlayerManager.hasPreSound()) {
                 mPlayerManager.playPre();
-            }else {
+            } else {
                 ToastUtil.showToast("没有更多");
             }
         } else if (R.id.lav_next == id) {
             lavPlayNext.playAnimation();
-            if(mPlayerManager.hasNextSound()){
+            if (mPlayerManager.hasNextSound()) {
                 mPlayerManager.playNext();
-            }else {
+            } else {
                 ToastUtil.showToast("没有更多");
             }
         } else if (R.id.fl_play_pause == id) {
@@ -393,50 +393,60 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         } else if (R.id.tv_schedule == id || R.id.iv_schedule == id) {
             new XPopup.Builder(getContext()).asCustom(mSchedulePopup).show();
         } else if (R.id.tv_play_list == id || R.id.iv_play_list == id) {
-            new XPopup.Builder(getContext()).popupAnimation(TranslateFromBottom).setPopupCallback(new SimpleCallback() {
-                @Override
-                public void onCreated() {
-                    super.onCreated();
-                    XmDownloadManager.getInstance().addDownloadStatueListener(PlayTrackFragment.this);
-                    mPlayerManager.setPlayListChangeListener(PlayTrackFragment.this);
-                    mPlayListPopup.getTrackAdapter().setNewData(mPlayerManager.getPlayList());
-                    mPlayListPopup.getRecyclerView().scrollToPosition(mPlayerManager.getCurrentIndex());
-                }
-            }).enableDrag(false).asCustom(mPlayListPopup).show();
-        }else if(v==ivBg){
+            new XPopup.Builder(getContext()).popupAnimation(TranslateFromBottom).setPopupCallback(
+                    new SimpleCallback() {
+                        @Override
+                        public void onCreated() {
+                            super.onCreated();
+                            mPlayerManager.setPlayListChangeListener(PlayTrackFragment.this);
+                            mPlayTrackPopup.getTrackAdapter().setNewData(mPlayerManager.getPlayList());
+                            mPlayTrackPopup.getRecyclerView().scrollToPosition(mPlayerManager.getCurrentIndex());
+                        }
+                        @Override
+                        public void onShow() {
+                            super.onShow();
+                            XmDownloadManager.getInstance().addDownloadStatueListener(PlayTrackFragment.this);
+                        }
+
+                        @Override
+                        public void onDismiss() {
+                            XmDownloadManager.getInstance().removeDownloadStatueListener(PlayTrackFragment.this);
+                        }
+                    }).enableDrag(false).asCustom(mPlayTrackPopup).show();
+        } else if (v == ivBg) {
             clAction.setVisibility(View.VISIBLE);
-        }else if(v==clAction){
+        } else if (v == clAction) {
             clAction.setVisibility(View.GONE);
-        }else if(v==tvPer15){
-            mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon()-15*1000);
-        }else if(v==tvNext15){
-            mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon()+15*1000);
-        }else if(v==tvTempo){
-            new XPopup.Builder(getContext()).asCustom(new PlayTempoPopup(mContext,this)).show();
+        } else if (v == tvPer15) {
+            mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon() - 15 * 1000);
+        } else if (v == tvNext15) {
+            mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon() + 15 * 1000);
+        } else if (v == tvTempo) {
+            new XPopup.Builder(getContext()).asCustom(new PlayTempoPopup(mContext, this)).show();
         }
     }
 
     @Override
     public void onNewBundle(Bundle args) {
         super.onNewBundle(args);
-        if (mPlayListPopup.getTrackAdapter() != null) {
-            mPlayListPopup.getTrackAdapter().setNewData(mPlayerManager.getPlayList());
-            mPlayListPopup.getRecyclerView().scrollToPosition(
+        if (mPlayTrackPopup.getTrackAdapter() != null) {
+            mPlayTrackPopup.getTrackAdapter().setNewData(mPlayerManager.getPlayList());
+            mPlayTrackPopup.getRecyclerView().scrollToPosition(
                     mPlayerManager.getPlayList().indexOf(mPlayerManager.getCurrSoundIgnoreKind(true)));
         }
     }
 
     private void updateDownloadStatus(Track track) {
-        List<Track> tracks = mPlayListPopup.getTrackAdapter().getData();
-        int index = mPlayListPopup.getTrackAdapter().getData().indexOf(track);
+        List<Track> tracks = mPlayTrackPopup.getTrackAdapter().getData();
+        int index = mPlayTrackPopup.getTrackAdapter().getData().indexOf(track);
 
         if (index != -1) {
             DownloadState downloadStatus = XmDownloadManager.getInstance()
                     .getSingleTrackDownloadStatus(tracks.get(index).getDataId());
 
-            View ivDownload = mPlayListPopup.getTrackAdapter().getViewByPosition(index, R.id.iv_download);
-            View progress = mPlayListPopup.getTrackAdapter().getViewByPosition(index, R.id.progressBar);
-            View ivDownloadSucc = mPlayListPopup.getTrackAdapter().getViewByPosition(index, R.id.iv_downloadsucc);
+            View ivDownload = mPlayTrackPopup.getTrackAdapter().getViewByPosition(index, R.id.iv_download);
+            View progress = mPlayTrackPopup.getTrackAdapter().getViewByPosition(index, R.id.progressBar);
+            View ivDownloadSucc = mPlayTrackPopup.getTrackAdapter().getViewByPosition(index, R.id.iv_downloadsucc);
             if (ivDownload == null || progress == null || ivDownloadSucc == null) {
                 return;
             }
@@ -465,19 +475,19 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     }
 
     private void updatePlayStatus() {
-        if (mPlayListPopup.getTrackAdapter() == null) {
+        if (mPlayTrackPopup.getTrackAdapter() == null) {
             return;
         }
         Track track = mPlayerManager.getCurrSoundIgnoreKind(true);
         if (null == track) {
             return;
         }
-        List<Track> tracks = mPlayListPopup.getTrackAdapter().getData();
+        List<Track> tracks = mPlayTrackPopup.getTrackAdapter().getData();
 
         for (int i = 0; i < tracks.size(); i++) {
-            LottieAnimationView lavPlaying = (LottieAnimationView) mPlayListPopup.getTrackAdapter()
+            LottieAnimationView lavPlaying = (LottieAnimationView) mPlayTrackPopup.getTrackAdapter()
                     .getViewByPosition(i, R.id.lav_playing);
-            TextView tvTitle = (TextView) mPlayListPopup.getTrackAdapter()
+            TextView tvTitle = (TextView) mPlayTrackPopup.getTrackAdapter()
                     .getViewByPosition(i, R.id.tv_title);
             if (null != lavPlaying && tvTitle != null) {
                 if (tracks.get(i).getDataId() == track.getDataId()) {
@@ -770,27 +780,27 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onRefresh() {
-        isUp=true;
+        isUp = true;
         mPlayerManager.getPrePlayList();
         List<Track> playList = mPlayerManager.getPlayList();
-        mPlayListPopup.getRefreshLayout().finishRefresh();
-        if (mPlayListPopup.getTrackAdapter().getData().size() != playList.size()) {
-            mPlayListPopup.getTrackAdapter().addData(0,
-                    playList.subList(0,playList.size()-mPlayListPopup.getTrackAdapter().getData().size()));
+        mPlayTrackPopup.getRefreshLayout().finishRefresh();
+        if (mPlayTrackPopup.getTrackAdapter().getData().size() != playList.size()) {
+            mPlayTrackPopup.getTrackAdapter().addData(0,
+                    playList.subList(0, playList.size() - mPlayTrackPopup.getTrackAdapter().getData().size()));
         }
     }
 
     @Override
     public void onLoadMore() {
-        isUp=false;
+        isUp = false;
         mPlayerManager.getNextPlayList();
     }
 
     @Override
     public void onSort() {
         mPlayerManager.permutePlayList();
-        mPlayListPopup.getTrackAdapter().setNewData(mPlayerManager.getPlayList());
-        mPlayListPopup.getRecyclerView().scrollToPosition(mPlayerManager.getCurrentIndex());
+        mPlayTrackPopup.getTrackAdapter().setNewData(mPlayerManager.getPlayList());
+        mPlayTrackPopup.getRecyclerView().scrollToPosition(mPlayerManager.getCurrentIndex());
     }
 
     @Override
@@ -837,26 +847,26 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onDataReady(List<Track> list, boolean b, boolean b1) throws RemoteException {
-    if(isUp){
-        mPlayListPopup.getRefreshLayout().finishRefresh();
-        mPlayListPopup.getTrackAdapter().addData(0,list);
-    }else {
-       if(CollectionUtils.isEmpty(list)){
-           mPlayListPopup.getRefreshLayout().finishLoadMoreWithNoMoreData();
-       } else {
-            mPlayListPopup.getRefreshLayout().finishLoadMore();
-            mPlayListPopup.getTrackAdapter().addData(list);
+        if (isUp) {
+            mPlayTrackPopup.getRefreshLayout().finishRefresh();
+            mPlayTrackPopup.getTrackAdapter().addData(0, list);
+        } else {
+            if (CollectionUtils.isEmpty(list)) {
+                mPlayTrackPopup.getRefreshLayout().finishLoadMoreWithNoMoreData();
+            } else {
+                mPlayTrackPopup.getRefreshLayout().finishLoadMore();
+                mPlayTrackPopup.getTrackAdapter().addData(list);
+            }
         }
-    }
     }
 
     @Override
     public void onError(int i, String s, boolean b) throws RemoteException {
         ToastUtil.showToast(s);
-        if(isUp){
-            mPlayListPopup.getRefreshLayout().finishRefresh();
-        }else {
-            mPlayListPopup.getRefreshLayout().finishLoadMore();
+        if (isUp) {
+            mPlayTrackPopup.getRefreshLayout().finishRefresh();
+        } else {
+            mPlayTrackPopup.getRefreshLayout().finishLoadMore();
         }
 
     }

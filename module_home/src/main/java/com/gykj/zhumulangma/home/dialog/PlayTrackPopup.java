@@ -25,7 +25,7 @@ import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class PlayListPopup extends BottomPopupView implements View.OnClickListener,
+public class PlayTrackPopup extends BottomPopupView implements View.OnClickListener,
         OnRefreshLoadMoreListener, BaseQuickAdapter.OnItemClickListener,
         BaseQuickAdapter.OnItemChildClickListener {
 
@@ -37,7 +37,7 @@ public class PlayListPopup extends BottomPopupView implements View.OnClickListen
     private ImageView ivShunxu;
     private TextView tvShunxu;
 
-    public PlayListPopup(@NonNull Context context, @NonNull onActionListener listener) {
+    public PlayTrackPopup(@NonNull Context context, @NonNull onActionListener listener) {
         super(context);
         mContext = context;
         mActionListener = listener;
@@ -45,7 +45,7 @@ public class PlayListPopup extends BottomPopupView implements View.OnClickListen
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.home_dialog_play_list;
+        return R.layout.home_dialog_play_track;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class PlayListPopup extends BottomPopupView implements View.OnClickListen
         recyclerView = findViewById(R.id.rv);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mTrackAdapter = new PlayTrackAdapter(R.layout.home_item_play_list);
+        mTrackAdapter = new PlayTrackAdapter(R.layout.home_item_play_track);
         mTrackAdapter.bindToRecyclerView(recyclerView);
         mTrackAdapter.setOnItemClickListener(this);
         mTrackAdapter.setOnItemChildClickListener(this);

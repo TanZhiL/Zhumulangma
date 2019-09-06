@@ -18,6 +18,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -28,10 +29,14 @@ import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.home.adapter.PlayRadioAdapter;
+import com.gykj.zhumulangma.home.dialog.PlayRadioPopup;
 import com.gykj.zhumulangma.home.dialog.PlaySchedulePopup;
+import com.gykj.zhumulangma.home.dialog.PlayTrackPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayRadioViewModel;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
@@ -40,20 +45,25 @@ import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
 import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
 import com.ximalaya.ting.android.opensdk.model.live.program.Program;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
+import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
+import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 import me.yokeyword.fragmentation.ISupportFragment;
+
+import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 
 /**
  * Author: Thomas.
@@ -64,7 +74,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
 @Route(path = AppConstants.Router.Home.F_PLAY_RADIIO)
 public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> implements View.OnClickListener,
         PlaySchedulePopup.onSelectedListener, IXmPlayerStatusListener, IXmAdsStatusListener, OnSeekChangeListener {
-
+    private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd:HH:mm", Locale.getDefault());
     private PlaySchedulePopup mSchedulePopup;
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mContext);
     private Schedule mSchedule;
@@ -74,6 +84,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     private LottieAnimationView lavPlayNext;
     private LottieAnimationView lavPlayPre;
     private boolean isPlaying;
+
+    private PlayRadioPopup mPlayRadioPopup;
 
     @Override
     protected int onBindLayout() {
@@ -105,6 +117,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
                 }
             }
         }, 100);
+
+        mPlayRadioPopup=new PlayRadioPopup(mContext);
     }
 
     @Override
@@ -183,6 +197,51 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         mViewModel.getProgramsSingleLiveEvent().observe(this, programList ->
                 ((TextView) fd(R.id.tv_desc)).setText(getString(R.string.playing,
                         programList.getmProgramList().get(0).getProgramName())));
+        mViewModel.getYestodaySingleLiveEvent().observe(this, schedules ->
+                mPlayRadioPopup.getYestodayAdapter().setNewData(schedules));
+        mViewModel.getTodaySingleLiveEvent().observe(this, schedules ->
+                mPlayRadioPopup.getTodayAdapter().setNewData(schedules));
+        mViewModel.getTomorrowSingleLiveEvent().observe(this, schedules ->
+                mPlayRadioPopup.getTomorrowAdapter().setNewData(schedules));
+    }
+
+
+    private void updatePlayStatus() {
+        updatePlayStatus(mPlayRadioPopup.getYestodayAdapter());
+        updatePlayStatus(mPlayRadioPopup.getTodayAdapter());
+    }
+
+    private void updatePlayStatus(PlayRadioAdapter adapter) {
+        if (adapter== null) {
+            return;
+        }
+        Schedule schedule = (Schedule) mPlayerManager.getCurrSound();
+        if (null == schedule) {
+            return;
+        }
+        List<Schedule> schedules = adapter.getData();
+
+        for (int i = 0; i < schedules.size(); i++) {
+            LottieAnimationView lavPlaying = (LottieAnimationView) adapter
+                    .getViewByPosition(i, R.id.lav_playing);
+            TextView tvTitle = (TextView) adapter
+                    .getViewByPosition(i, R.id.tv_title);
+            if (null != lavPlaying && tvTitle != null) {
+                if (schedules.get(i).getDataId() == schedule.getDataId()) {
+                    lavPlaying.setVisibility(View.VISIBLE);
+                    tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
+                    if (XmPlayerManager.getInstance(mContext).isPlaying()) {
+                        lavPlaying.playAnimation();
+                    } else {
+                        lavPlaying.pauseAnimation();
+                    }
+                } else {
+                    lavPlaying.cancelAnimation();
+                    tvTitle.setTextColor(mContext.getResources().getColor(R.color.textColorPrimary));
+                    lavPlaying.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 
     @Override
@@ -246,10 +305,22 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
             NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Listen.F_HISTORY, (ISupportFragment) navigation);
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigateBean));
         } else if (id == R.id.iv_play_list || id == R.id.tv_play_list) {
+            /*
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO_LIST)
                     .withString(KeyCode.Home.RADIO_ID, String.valueOf(mSchedule.getRadioId())).navigation();
             NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO_LIST, (ISupportFragment) navigation);
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigateBean));
+       */
+            if(mSchedule==null){
+                return;
+            }
+            new XPopup.Builder(getContext()).popupAnimation(TranslateFromBottom).setPopupCallback(new SimpleCallback() {
+                @Override
+                public void onCreated() {
+                    super.onCreated();
+                   mViewModel._getSchedules(String.valueOf(mSchedule.getRadioId()));
+                }
+            }).enableDrag(false).asCustom(mPlayRadioPopup).show();
         } else if (R.id.fl_play_pause == id) {
             if (mPlayerManager.isPlaying()) {
                 mPlayerManager.pause();
@@ -271,6 +342,19 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
                 ToastUtil.showToast("没有更多");
             }
         }
+    }
+
+    @Override
+    public void onNewBundle(Bundle args) {
+        super.onNewBundle(args);
+        new Handler().postDelayed(()->{
+            if(mSchedule==null){
+                return;
+            }
+            if (mPlayRadioPopup.getYestodayAdapter() != null) {
+                mViewModel._getSchedules(mSchedule.getRadioName());
+            }
+        },100);
     }
 
     @Override
@@ -324,6 +408,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     public void onPlayStart() {
+        updatePlayStatus();
         TLog.d(mPlayerManager.isBuffering());
         if (!mPlayerManager.isBuffering()) {
 
@@ -335,12 +420,14 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     public void onPlayPause() {
+        updatePlayStatus();
         pauseAnim();
         Log.e(TAG, "onPlayPause() pauseAnim");
     }
 
     @Override
     public void onPlayStop() {
+        updatePlayStatus();
         pauseAnim();
         Log.e(TAG, "onPlayStop() pauseAnim");
     }
@@ -348,6 +435,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     @Override
     public void onSoundPlayComplete() {
 
+        updatePlayStatus();
         if (SPUtils.getInstance().getInt(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0) == 1) {
             SPUtils.getInstance().put(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0);
 
@@ -359,11 +447,13 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     public void onSoundPrepared() {
+        updatePlayStatus();
         Log.d(TAG, "onSoundPrepared() called");
     }
 
     @Override
     public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
+        updatePlayStatus();
         Log.d(TAG, "onSoundSwitch() called with: playableModel = [" + playableModel + "], playableModel1 = [" + playableModel1 + "]");
         initData();
     }

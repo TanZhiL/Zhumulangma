@@ -364,7 +364,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/shap_common_circle_primary"
+                    android:background="@drawable/shap_common_primary_coner"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="4dp"

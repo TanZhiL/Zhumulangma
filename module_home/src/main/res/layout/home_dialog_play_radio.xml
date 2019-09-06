@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="@color/white"
+    android:layout_height="wrap_content">
     <net.lucode.hackware.magicindicator.MagicIndicator
         android:id="@+id/magic_indicator"
         android:layout_width="match_parent"
@@ -12,7 +13,18 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="300dp"
         android:overScrollMode="never" />
+    <View
+        android:layout_width="match_parent"
+        android:background="#f0f0f0"
+        android:layout_height="1dp"/>
+    <TextView
+        android:id="@+id/tv_close"
+        android:layout_width="match_parent"
+        android:text="关闭"
+        android:textColor="@color/colorGray"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:layout_height="50dp" />
 </LinearLayout>
