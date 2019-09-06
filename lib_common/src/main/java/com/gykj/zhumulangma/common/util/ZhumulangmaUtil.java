@@ -63,7 +63,7 @@ public class ZhumulangmaUtil {
         if(days>0){
             return days + "天" + hours + "小时" + minutes + "分" + second + "秒";
         }else if(hours>0){
-            return (hours<10?"0"+hours:hours)  + ":" + (minutes<10?"0"+minutes:minutes) + ":" + second + "";
+            return (hours<10?"0"+hours:hours)  + ":" + (minutes<10?"0"+minutes:minutes) + ":" + (second<10?"0"+second:second) + "";
         } else if(minutes>0){
             return (minutes<10?"0"+minutes:minutes) + ":" + (second<10?"0"+second:second) + "";
         }else{

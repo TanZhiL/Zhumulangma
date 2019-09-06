@@ -16,6 +16,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -165,7 +166,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mRadioAdapter.setOnItemClickListener((adapter, view, position) -> {
-            XmPlayerManager.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getData().get(position),-1,-1);
+            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getData().get(position));
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO, (ISupportFragment) navigation)));

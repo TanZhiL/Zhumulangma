@@ -123,7 +123,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
 
         return sections;
     }
-    private String dateCovert(long datetime){
+    public String dateCovert(long datetime){
 
         if(datetime > DateUtil.getDayBegin().getTime()){
             return "今天";

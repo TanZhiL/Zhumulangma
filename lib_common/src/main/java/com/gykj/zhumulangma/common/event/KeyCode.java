@@ -17,6 +17,7 @@ public interface KeyCode {
         String TITLE = "title";
         String ALBUMID = "albumid";
         String HOTWORD = "hotword";
+        String RADIO_ID = "radioId";
     }
 
     interface Find {

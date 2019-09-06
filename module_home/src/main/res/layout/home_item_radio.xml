@@ -36,7 +36,7 @@
         android:layout_marginStart="8dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="小道士笔记【灵异玄幻-有声小说】"
+        tools:text="小道士笔记【灵异玄幻-有声小说】"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/iv_item_play"
@@ -49,7 +49,7 @@
         android:layout_height="23dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="《盗墓笔记》49"
+        tools:text="《盗墓笔记》49"
         android:textColor="@color/colorGray"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/iv_item_play"
@@ -74,7 +74,7 @@
             android:id="@+id/tv_playcount"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="3596.2万"
+            tools:text="3596.2万"
             android:textColor="#505050"
             android:textSize="12sp" />
     </LinearLayout>

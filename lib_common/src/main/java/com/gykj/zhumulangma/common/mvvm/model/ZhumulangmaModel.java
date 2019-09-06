@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.common.mvvm.model;
 import android.app.Application;
 import android.support.annotation.Nullable;
 
+import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.bean.SearchHistoryBean;
 import com.gykj.zhumulangma.common.dao.SearchHistoryBeanDao;
@@ -21,6 +22,9 @@ import com.ximalaya.ting.android.opensdk.model.column.ColumnList;
 import com.ximalaya.ting.android.opensdk.model.download.RecommendDownload;
 import com.ximalaya.ting.android.opensdk.model.live.program.ProgramList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
+import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
+import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
+import com.ximalaya.ting.android.opensdk.model.live.schedule.ScheduleList;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
@@ -526,6 +530,51 @@ public class ZhumulangmaModel extends CommonModel {
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
+    /**
+     * 批量获取电台接口
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<RadioListById> getRadiosByIds(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getRadiosByIds(specificParams,
+                new IDataCallBack<RadioListById>() {
+                    @Override
+                    public void onSuccess(@Nullable RadioListById radioListById) {
+                        emitter.onNext(radioListById);
+                        emitter.onComplete();
+                    }
 
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
 
+    /**
+     * 获取节目列表
+     *
+     * @param specificParams
+     * @return
+     */
+    public  Observable<List<Schedule>> getSchedules(Map<String, String> specificParams) {
+        return Observable.create((ObservableOnSubscribe<List<Schedule>>) emitter -> CommonRequest.getSchedules(specificParams,
+                new IDataCallBack<ScheduleList>() {
+                    @Override
+                    public void onSuccess(@Nullable ScheduleList scheduleList) {
+                        if (CollectionUtils.isEmpty(scheduleList.getmScheduleList())) {
+                            emitter.onError(new Exception("节目列表为空"));
+                        } else {
+                            emitter.onNext(scheduleList.getmScheduleList());
+                            emitter.onComplete();
+                        }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
 }

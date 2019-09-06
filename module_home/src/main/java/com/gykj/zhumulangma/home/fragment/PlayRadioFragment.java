@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -44,8 +45,13 @@ import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
+import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -68,6 +74,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     private LottieAnimationView lavPlayNext;
     private LottieAnimationView lavPlayPre;
     private boolean isPlaying;
+
     @Override
     protected int onBindLayout() {
         return R.layout.home_fragment_play_radio;
@@ -105,6 +112,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         super.initListener();
         fd(R.id.iv_history).setOnClickListener(this);
         fd(R.id.tv_history).setOnClickListener(this);
+        fd(R.id.tv_play_list).setOnClickListener(this);
+        fd(R.id.iv_play_list).setOnClickListener(this);
         fd(R.id.fl_play_pause).setOnClickListener(this);
         lavPlayNext.setOnClickListener(this);
         lavPlayPre.setOnClickListener(this);
@@ -115,38 +124,67 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     public void initData() {
-        mSchedule = (Schedule) mPlayerManager.getCurrSound();
+        new Handler().postDelayed(() -> {
+            try {
+                mSchedule = (Schedule) mPlayerManager.getCurrSound();
+                setTitle(new String[]{mSchedule.getRadioName()});
+                ((TextView) fd(R.id.tv_radio_name)).setText(mSchedule.getRadioName());
+                ((TextView) fd(R.id.tv_playcount)).setText(ZhumulangmaUtil.toWanYi(mSchedule.getRadioPlayCount()) + "人听过");
+                mViewModel._getPrograms(String.valueOf(mSchedule.getRadioId()));
 
-        setTitle(new String[]{mSchedule.getRadioName()});
-        ((TextView) fd(R.id.tv_radio_name)).setText(mSchedule.getRadioName());
-        ((TextView) fd(R.id.tv_playcount)).setText(ZhumulangmaUtil.toWanYi(mSchedule.getRadioPlayCount()) + "人听过");
-        mViewModel._getPrograms(String.valueOf(mSchedule.getRadioId()));
-        TLog.d(mSchedule.getStartTime());
-        TLog.d(mSchedule.getEndTime());
-        ((TextView) fd(R.id.tv_time)).setText(mSchedule.getStartTime().substring(mSchedule.getStartTime().length()-5)+ "~"
-                +mSchedule.getEndTime().substring(mSchedule.getEndTime().length()-5));
-        isbProgress.setUserSeekAble(mPlayerManager.getCurrPlayType() == XmPlayListControl.PLAY_SOURCE_TRACK);
+                ((TextView) fd(R.id.tv_time)).setText(mSchedule.getStartTime().substring(mSchedule.getStartTime().length() - 5) + "~"
+                        + mSchedule.getEndTime().substring(mSchedule.getEndTime().length() - 5));
+                isbProgress.setUserSeekAble(mPlayerManager.getCurrPlayType() == XmPlayListControl.PLAY_SOURCE_TRACK);
 
-    }
-
-    @Override
-    public void initViewObservable() {
-            mViewModel.getProgramsSingleLiveEvent().observe(this, programList -> {
-                Program program = programList.getmProgramList().get(0);
+                Program program = mSchedule.getRelatedProgram();
                 ((TextView) fd(R.id.tv_program_name)).setText(program.getProgramName());
-                ((TextView) fd(R.id.tv_desc)).setText(getString(R.string.playing, program.getProgramName()));
                 Glide.with(this).load(program.getBackPicUrl()).into((ImageView) fd(R.id.iv_cover));
-                StringBuilder sb=new StringBuilder();
+                StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < program.getAnnouncerList().size(); i++) {
                     sb.append(program.getAnnouncerList().get(i).getNickName());
-                    if(i!=program.getAnnouncerList().size()-1){
+                    if (i != program.getAnnouncerList().size() - 1) {
                         sb.append(",");
                     }
                 }
                 ((TextView) fd(R.id.tv_announcer_name)).setText("主播: "
-                        + (TextUtils.isEmpty(sb.toString())? mSchedule.getRadioName():sb.toString()));
-            });
+                        + (TextUtils.isEmpty(sb.toString()) ? mSchedule.getRadioName() : sb.toString()));
+                initProgress(mPlayerManager.getPlayCurrPositon(), mPlayerManager.getDuration());
+            } catch (Exception e) {
+                e.printStackTrace();
+                ToastUtil.showToast("网络异常");
+                pop();
+            }
+        }, 100);
+
     }
+
+    private void initProgress(int cur, int dur) {
+        if (BaseUtil.isInTime(mSchedule.getStartTime() + "-" + mSchedule.getEndTime()) == 0) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd:HH:mm", Locale.getDefault());
+            try {
+                long start = sdf.parse(mSchedule.getStartTime()).getTime();
+                long end = sdf.parse(mSchedule.getEndTime()).getTime();
+                cur = (int) (System.currentTimeMillis() - start);
+                dur = (int) (end - start);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(cur / 1000));
+        ((TextView) fd(R.id.tv_duration)).setText(ZhumulangmaUtil.secondToTimeE(dur / 1000));
+        if (!isTouch) {
+            isbProgress.setMax((float) dur / 1000);
+            isbProgress.setProgress((float) cur / 1000);
+        }
+    }
+
+    @Override
+    public void initViewObservable() {
+        mViewModel.getProgramsSingleLiveEvent().observe(this, programList ->
+                ((TextView) fd(R.id.tv_desc)).setText(getString(R.string.playing,
+                        programList.getmProgramList().get(0).getProgramName())));
+    }
+
     @Override
     protected int onBindBarLeftStyle() {
         return BarStyle.LEFT_ICON;
@@ -207,24 +245,29 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_HISTORY).navigation();
             NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Listen.F_HISTORY, (ISupportFragment) navigation);
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigateBean));
-        }else if (R.id.fl_play_pause == id) {
+        } else if (id == R.id.iv_play_list || id == R.id.tv_play_list) {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO_LIST)
+                    .withString(KeyCode.Home.RADIO_ID, String.valueOf(mSchedule.getRadioId())).navigation();
+            NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO_LIST, (ISupportFragment) navigation);
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigateBean));
+        } else if (R.id.fl_play_pause == id) {
             if (mPlayerManager.isPlaying()) {
                 mPlayerManager.pause();
             } else {
                 mPlayerManager.play();
             }
-        }else if (R.id.lav_pre == id) {
+        } else if (R.id.lav_pre == id) {
             lavPlayPre.playAnimation();
-            if(mPlayerManager.hasPreSound()){
+            if (mPlayerManager.hasPreSound()) {
                 mPlayerManager.playPre();
-            }else {
+            } else {
                 ToastUtil.showToast("没有更多");
             }
         } else if (R.id.lav_next == id) {
             lavPlayNext.playAnimation();
-            if(mPlayerManager.hasNextSound()){
+            if (mPlayerManager.hasNextSound()) {
                 mPlayerManager.playNext();
-            }else {
+            } else {
                 ToastUtil.showToast("没有更多");
             }
         }
@@ -354,12 +397,11 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     public void onPlayProgress(int i, int i1) {
-        ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
-        ((TextView) fd(R.id.tv_duration)).setText(ZhumulangmaUtil.secondToTimeE(i1 / 1000));
-        if (!isTouch) {
-            isbProgress.setMax((float) i1 / 1000);
-            isbProgress.setProgress((float) i / 1000);
+        if (mSchedule == null) {
+            return;
         }
+        initProgress(i, i1);
+
     }
 
     @Override
@@ -438,6 +480,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         mPlayerManager.seekTo(seekBar.getProgress() * 1000);
         isTouch = false;
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

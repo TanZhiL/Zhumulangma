@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -19,6 +20,7 @@ import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseActivity;
 import com.gykj.zhumulangma.common.util.ToastUtil;
+import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.fragment.MainFragment;
@@ -35,14 +37,20 @@ import com.ximalaya.ting.android.opensdk.httputil.XimalayaException;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
 import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
+import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
+import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -51,11 +59,11 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
 @Route(path = AppConstants.Router.Main.A_MAIN)
 public class MainActivity extends BaseActivity implements View.OnClickListener,
         MainFragment.onRootShowListener, IXmPlayerStatusListener, IXmAdsStatusListener {
-    private XmPlayerManager mPlayerManager=XmPlayerManager.getInstance(this);
+    private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(this);
     private XmlyAuthInfo mAuthInfo;
     private XmlySsoHandler mSsoHandler;
     private XmlyAuth2AccessToken mAccessToken;
-    
+
     private GlobalPlay globalPlay;
 
     @Override
@@ -208,8 +216,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onPlayProgress(int i, int i1) {
+        initProgress(i, i1);
+    }
 
-        globalPlay.setProgress((float) i / (float) i1);
+    private void initProgress(int cur, int dur) {
+        if (mPlayerManager.getCurrPlayType() == XmPlayListControl.PLAY_SOURCE_RADIO) {
+            try {
+                Schedule schedule = (Schedule) mPlayerManager.getCurrSound();
+                if (BaseUtil.isInTime(schedule.getStartTime() + "-" + schedule.getEndTime()) == 0) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd:HH:mm", Locale.getDefault());
+                    long start = sdf.parse(schedule.getStartTime()).getTime();
+                    long end = sdf.parse(schedule.getEndTime()).getTime();
+                    cur = (int) (System.currentTimeMillis() - start);
+                    dur = (int) (end - start);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        globalPlay.setProgress((float)cur /(float)dur);
     }
 
     @Override
@@ -258,24 +283,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     }
 
-    class CustomAuthListener implements IXmlyAuthListener {
-        @Override
-        public void onComplete(Bundle bundle) {
-            parseAccessToken(bundle);
-            App.registerLoginTokenChangeListener(MainActivity.this.getApplicationContext());
-            EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.MainCode.LOGINSUCC));
-            ToastUtil.showToast("登录成功");
-        }
-
-        @Override
-        public void onXmlyException(final XmlyException e) {
-            e.printStackTrace();
-        }
-
-        @Override
-        public void onCancel() {
-        }
+class CustomAuthListener implements IXmlyAuthListener {
+    @Override
+    public void onComplete(Bundle bundle) {
+        parseAccessToken(bundle);
+        App.registerLoginTokenChangeListener(MainActivity.this.getApplicationContext());
+        EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.MainCode.LOGINSUCC));
+        ToastUtil.showToast("登录成功");
     }
+
+    @Override
+    public void onXmlyException(final XmlyException e) {
+        e.printStackTrace();
+    }
+
+    @Override
+    public void onCancel() {
+    }
+
+}
 
     private void parseAccessToken(Bundle bundle) {
         mAccessToken = XmlyAuth2AccessToken.parseAccessToken(bundle);

@@ -37,7 +37,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="24dp"
-            android:text="89.7魅力流行榜(中文榜)"
+            tools:text="89.7魅力流行榜(中文榜)"
             android:textColor="@color/white"
             android:textSize="23sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="主播：xiaopiu"
+            tools:text="主播：xiaopiu"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/tv_program_name"
@@ -61,7 +61,7 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="18：00~19：00"
+            tools:text="18：00~19：00"
             android:textColor="@color/white"
             android:textSize="11sp"
             app:layout_constraintEnd_toEndOf="@+id/tv_announcer_name"
@@ -79,8 +79,6 @@
                 app:isb_track_background_size="2dp"
                 app:isb_indicator_color="@color/white"
                 app:isb_track_progress_size="2dp"
-                app:isb_progress="50"
-                app:isb_min="0"
                 app:isb_clear_default_padding="true"
                 app:isb_track_rounded_corners="true"
                 app:isb_max="100"
@@ -118,11 +116,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="01:00"
                     android:textColor="@color/colorGray"
                     android:textSize="11sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="01:00:00" />
 
 
                 <FrameLayout

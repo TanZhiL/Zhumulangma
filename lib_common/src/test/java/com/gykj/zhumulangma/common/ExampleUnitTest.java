@@ -11,6 +11,8 @@ import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +89,21 @@ public class ExampleUnitTest {
 
         stringObservable.subscribe();
     }
+@Test
+public void  test2(){
 
 
+    Calendar calendar = Calendar.getInstance();
+    System.out.println(calendar.get(7));
+
+
+    Calendar calendar1 = Calendar.getInstance();
+   calendar1.add(Calendar.DAY_OF_MONTH,-1);
+System.out.println(calendar1.get(7));
+
+    Calendar calendar2 = Calendar.getInstance();
+    calendar2.add(Calendar.DAY_OF_MONTH,1);
+    System.out.println(calendar2.get(7));
+}
 
 }

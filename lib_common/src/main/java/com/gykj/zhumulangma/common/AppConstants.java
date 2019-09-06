@@ -23,6 +23,7 @@ public interface  AppConstants {
             String F_ALBUM_DETAIL="/home/album/detail";
              String F_PLAY_TRACK="/home/play_track";
              String F_PLAY_RADIIO="/home/play_radio";
+             String F_PLAY_RADIIO_LIST="/home/play_radio_list";
          }
          interface User{
              String F_MAIN="/user/main";

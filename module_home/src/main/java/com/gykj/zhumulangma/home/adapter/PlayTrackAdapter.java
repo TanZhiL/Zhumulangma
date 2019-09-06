@@ -18,8 +18,8 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
  * Created by 10719
  * on 2019/6/17
  */
-public class PlayListAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
-    public PlayListAdapter(int layoutResId) {
+public class PlayTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
+    public PlayTrackAdapter(int layoutResId) {
             super(layoutResId);
     }
     private ZhumulangmaModel model =new ZhumulangmaModel(App.getInstance());

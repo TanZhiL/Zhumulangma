@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
@@ -91,6 +92,11 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
                 return;
             }
             if (playHistoryBeans.size() > 0) {
+                if(!CollectionUtils.isEmpty(mHistoryAdapter.getData())&&mViewModel.dateCovert(
+                        mHistoryAdapter.getData().get(mHistoryAdapter.getData().size()-1).t.getDatatime())
+                        .equals(playHistoryBeans.get(0).header)){
+                    playHistoryBeans.remove(0);
+                }
                 mHistoryAdapter.addData(playHistoryBeans);
                 mRefreshLayout.finishLoadMore();
             } else {

@@ -10,13 +10,8 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.home.R;
-import com.gykj.zhumulangma.home.adapter.AlbumTrackAdapter;
-import com.gykj.zhumulangma.home.adapter.PlayListAdapter;
-import com.lxj.xpopup.animator.PopupAnimator;
+import com.gykj.zhumulangma.home.adapter.PlayTrackAdapter;
 import com.lxj.xpopup.core.BottomPopupView;
-import com.lxj.xpopup.enums.PopupStatus;
-import com.lxj.xpopup.util.KeyboardUtils;
-import com.lxj.xpopup.util.XPopupUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -34,7 +29,7 @@ public class PlayListPopup extends BottomPopupView implements View.OnClickListen
         OnRefreshLoadMoreListener, BaseQuickAdapter.OnItemClickListener,
         BaseQuickAdapter.OnItemChildClickListener {
 
-    private PlayListAdapter mTrackAdapter;
+    private PlayTrackAdapter mTrackAdapter;
     private Context mContext;
     private SmartRefreshLayout refreshLayout;
     private onActionListener mActionListener;
@@ -61,7 +56,7 @@ public class PlayListPopup extends BottomPopupView implements View.OnClickListen
         recyclerView = findViewById(R.id.rv);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mTrackAdapter = new PlayListAdapter(R.layout.home_item_play_list);
+        mTrackAdapter = new PlayTrackAdapter(R.layout.home_item_play_list);
         mTrackAdapter.bindToRecyclerView(recyclerView);
         mTrackAdapter.setOnItemClickListener(this);
         mTrackAdapter.setOnItemChildClickListener(this);
@@ -146,7 +141,7 @@ public class PlayListPopup extends BottomPopupView implements View.OnClickListen
         mActionListener.onTrackItemClick(adapter, view, position);
     }
 
-    public PlayListAdapter getTrackAdapter() {
+    public PlayTrackAdapter getTrackAdapter() {
         return mTrackAdapter;
     }
 
