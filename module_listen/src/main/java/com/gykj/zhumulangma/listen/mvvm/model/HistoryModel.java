@@ -11,6 +11,7 @@ import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.net.http.RxAdapter;
 import com.gykj.zhumulangma.common.util.log.TLog;
+import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class HistoryModel extends ZhumulangmaModel {
             List<PlayHistoryBean> list = new ArrayList<>();
             String sql = "SELECT a.* FROM "+ PlayHistoryBeanDao.TABLENAME+
                     " a WHERE 1>( SELECT COUNT(*) FROM "+ PlayHistoryBeanDao.TABLENAME
-                    +" WHERE "+PlayHistoryBeanDao.Properties.AlbumId.columnName+" = a."+PlayHistoryBeanDao.Properties.AlbumId.columnName
+                    +" WHERE "+PlayHistoryBeanDao.Properties.GroupId.columnName+" = a."+PlayHistoryBeanDao.Properties.GroupId.columnName
                     +" AND "+PlayHistoryBeanDao.Properties.Datatime.columnName+" > a."+PlayHistoryBeanDao.Properties.Datatime.columnName
                     +")  ORDER BY a."+PlayHistoryBeanDao.Properties.Datatime.columnName+
                     " DESC LIMIT "+pagesize+" OFFSET "+((page-1)*20);
@@ -65,11 +66,12 @@ public class HistoryModel extends ZhumulangmaModel {
 
                         list.add(new PlayHistoryBean(
                                 c.getLong(c.getColumnIndex(PlayHistoryBeanDao.Properties.SoundId.columnName)),
-                                c.getLong(c.getColumnIndex(PlayHistoryBeanDao.Properties.AlbumId.columnName)),
+                                c.getLong(c.getColumnIndex(PlayHistoryBeanDao.Properties.GroupId.columnName)),
                                 c.getString(c.getColumnIndex(PlayHistoryBeanDao.Properties.Kind.columnName)),
                                 c.getInt(c.getColumnIndex(PlayHistoryBeanDao.Properties.Percent.columnName)),
                                 c.getLong(c.getColumnIndex(PlayHistoryBeanDao.Properties.Datatime.columnName)),
-                                new Gson().fromJson(c.getString(c.getColumnIndex(PlayHistoryBeanDao.Properties.Track.columnName)), Track.class)
+                                new Gson().fromJson(c.getString(c.getColumnIndex(PlayHistoryBeanDao.Properties.Track.columnName)), Track.class),
+                                new Gson().fromJson(c.getString(c.getColumnIndex(PlayHistoryBeanDao.Properties.Schedule.columnName)), Schedule.class)
                         ));
                     } while (c.moveToNext());
                 }

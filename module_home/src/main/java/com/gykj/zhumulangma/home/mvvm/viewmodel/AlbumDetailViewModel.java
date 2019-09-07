@@ -11,6 +11,7 @@ import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
+import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.RelativeAlbums;
@@ -88,8 +89,9 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
 
     private Observable<TrackList> getTrackInitObservable(String albumId) {
-        Observable<TrackList> trackListObservable = mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime,
-                PlayHistoryBeanDao.Properties.AlbumId.eq(albumId)).doOnNext(playHistoryBeans -> {
+        Observable<TrackList> trackListObservable = mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime
+               , PlayHistoryBeanDao.Properties.GroupId.eq(albumId),
+                PlayHistoryBeanDao.Properties.Kind.eq(PlayableModel.KIND_TRACK)).doOnNext(playHistoryBeans -> {
             if (!CollectionUtils.isEmpty(playHistoryBeans))
                 getLastplaySingleLiveEvent().setValue(playHistoryBeans.get(0).getTrack());
         }).flatMap((Function<List<PlayHistoryBean>, ObservableSource<TrackList>>) playHistoryBeans -> {

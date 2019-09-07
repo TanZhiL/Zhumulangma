@@ -86,6 +86,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     private boolean isPlaying;
 
     private PlayRadioPopup mPlayRadioPopup;
+    private Handler mHandler;
 
     @Override
     protected int onBindLayout() {
@@ -138,7 +139,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     public void initData() {
-        new Handler().postDelayed(() -> {
+        mHandler = new Handler();
+        mHandler.postDelayed(() -> {
             try {
                 mSchedule = (Schedule) mPlayerManager.getCurrSound();
                 setTitle(new String[]{mSchedule.getRadioName()});
@@ -301,6 +303,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.iv_history || id == R.id.tv_history) {
+            pop();
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_HISTORY).navigation();
             NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Listen.F_HISTORY, (ISupportFragment) navigation);
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigateBean));
@@ -574,6 +577,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
         mPlayerManager.removePlayerStatusListener(this);
         mPlayerManager.removeAdsStatusListener(this);
     }

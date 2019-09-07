@@ -9,7 +9,9 @@ import org.greenrobot.greendao.internal.DaoConfig;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.DatabaseStatement;
 
+import com.gykj.zhumulangma.common.bean.PlayHistoryBean.ScheduleConverter;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean.TrackConverter;
+import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
@@ -28,14 +30,16 @@ public class PlayHistoryBeanDao extends AbstractDao<PlayHistoryBean, Long> {
      */
     public static class Properties {
         public final static Property SoundId = new Property(0, long.class, "soundId", true, "_id");
-        public final static Property AlbumId = new Property(1, long.class, "albumId", false, "ALBUM_ID");
+        public final static Property GroupId = new Property(1, long.class, "groupId", false, "GROUP_ID");
         public final static Property Kind = new Property(2, String.class, "kind", false, "KIND");
         public final static Property Percent = new Property(3, int.class, "percent", false, "PERCENT");
         public final static Property Datatime = new Property(4, long.class, "datatime", false, "DATATIME");
         public final static Property Track = new Property(5, String.class, "track", false, "TRACK");
+        public final static Property Schedule = new Property(6, String.class, "schedule", false, "SCHEDULE");
     }
 
     private final TrackConverter trackConverter = new TrackConverter();
+    private final ScheduleConverter scheduleConverter = new ScheduleConverter();
 
     public PlayHistoryBeanDao(DaoConfig config) {
         super(config);
@@ -50,11 +54,12 @@ public class PlayHistoryBeanDao extends AbstractDao<PlayHistoryBean, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"PLAY_HISTORY_BEAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY NOT NULL ," + // 0: soundId
-                "\"ALBUM_ID\" INTEGER NOT NULL ," + // 1: albumId
+                "\"GROUP_ID\" INTEGER NOT NULL ," + // 1: groupId
                 "\"KIND\" TEXT," + // 2: kind
                 "\"PERCENT\" INTEGER NOT NULL ," + // 3: percent
                 "\"DATATIME\" INTEGER NOT NULL ," + // 4: datatime
-                "\"TRACK\" TEXT);"); // 5: track
+                "\"TRACK\" TEXT," + // 5: track
+                "\"SCHEDULE\" TEXT);"); // 6: schedule
     }
 
     /** Drops the underlying database table. */
@@ -67,7 +72,7 @@ public class PlayHistoryBeanDao extends AbstractDao<PlayHistoryBean, Long> {
     protected final void bindValues(DatabaseStatement stmt, PlayHistoryBean entity) {
         stmt.clearBindings();
         stmt.bindLong(1, entity.getSoundId());
-        stmt.bindLong(2, entity.getAlbumId());
+        stmt.bindLong(2, entity.getGroupId());
  
         String kind = entity.getKind();
         if (kind != null) {
@@ -79,6 +84,11 @@ public class PlayHistoryBeanDao extends AbstractDao<PlayHistoryBean, Long> {
         Track track = entity.getTrack();
         if (track != null) {
             stmt.bindString(6, trackConverter.convertToDatabaseValue(track));
+        }
+ 
+        Schedule schedule = entity.getSchedule();
+        if (schedule != null) {
+            stmt.bindString(7, scheduleConverter.convertToDatabaseValue(schedule));
         }
     }
 
@@ -86,7 +96,7 @@ public class PlayHistoryBeanDao extends AbstractDao<PlayHistoryBean, Long> {
     protected final void bindValues(SQLiteStatement stmt, PlayHistoryBean entity) {
         stmt.clearBindings();
         stmt.bindLong(1, entity.getSoundId());
-        stmt.bindLong(2, entity.getAlbumId());
+        stmt.bindLong(2, entity.getGroupId());
  
         String kind = entity.getKind();
         if (kind != null) {
@@ -98,6 +108,11 @@ public class PlayHistoryBeanDao extends AbstractDao<PlayHistoryBean, Long> {
         Track track = entity.getTrack();
         if (track != null) {
             stmt.bindString(6, trackConverter.convertToDatabaseValue(track));
+        }
+ 
+        Schedule schedule = entity.getSchedule();
+        if (schedule != null) {
+            stmt.bindString(7, scheduleConverter.convertToDatabaseValue(schedule));
         }
     }
 
@@ -110,11 +125,12 @@ public class PlayHistoryBeanDao extends AbstractDao<PlayHistoryBean, Long> {
     public PlayHistoryBean readEntity(Cursor cursor, int offset) {
         PlayHistoryBean entity = new PlayHistoryBean( //
             cursor.getLong(offset + 0), // soundId
-            cursor.getLong(offset + 1), // albumId
+            cursor.getLong(offset + 1), // groupId
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // kind
             cursor.getInt(offset + 3), // percent
             cursor.getLong(offset + 4), // datatime
-            cursor.isNull(offset + 5) ? null : trackConverter.convertToEntityProperty(cursor.getString(offset + 5)) // track
+            cursor.isNull(offset + 5) ? null : trackConverter.convertToEntityProperty(cursor.getString(offset + 5)), // track
+            cursor.isNull(offset + 6) ? null : scheduleConverter.convertToEntityProperty(cursor.getString(offset + 6)) // schedule
         );
         return entity;
     }
@@ -122,11 +138,12 @@ public class PlayHistoryBeanDao extends AbstractDao<PlayHistoryBean, Long> {
     @Override
     public void readEntity(Cursor cursor, PlayHistoryBean entity, int offset) {
         entity.setSoundId(cursor.getLong(offset + 0));
-        entity.setAlbumId(cursor.getLong(offset + 1));
+        entity.setGroupId(cursor.getLong(offset + 1));
         entity.setKind(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setPercent(cursor.getInt(offset + 3));
         entity.setDatatime(cursor.getLong(offset + 4));
         entity.setTrack(cursor.isNull(offset + 5) ? null : trackConverter.convertToEntityProperty(cursor.getString(offset + 5)));
+        entity.setSchedule(cursor.isNull(offset + 6) ? null : scheduleConverter.convertToEntityProperty(cursor.getString(offset + 6)));
      }
     
     @Override

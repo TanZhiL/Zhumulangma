@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.common.bean;
 
 import com.google.gson.Gson;
+import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 import org.greenrobot.greendao.annotation.Convert;
@@ -19,22 +20,44 @@ import org.greenrobot.greendao.converter.PropertyConverter;
 public class PlayHistoryBean {
     @Id
     long soundId;
-    long albumId;
+    long groupId;
     String kind;
     int percent;
     long datatime;
     @Convert(converter =TrackConverter.class,columnType = String.class)
     Track track;
-    @Generated(hash = 661660988)
-    public PlayHistoryBean(long soundId, long albumId, String kind, int percent,
-            long datatime, Track track) {
+    @Convert(converter =ScheduleConverter.class,columnType = String.class)
+    Schedule schedule;
+    
+    @Generated(hash = 926881078)
+    public PlayHistoryBean(long soundId, long groupId, String kind, int percent, long datatime, Track track,
+            Schedule schedule) {
         this.soundId = soundId;
-        this.albumId = albumId;
+        this.groupId = groupId;
+        this.kind = kind;
+        this.percent = percent;
+        this.datatime = datatime;
+        this.track = track;
+        this.schedule = schedule;
+    }
+
+    public PlayHistoryBean(long soundId, long groupId, String kind, int percent, long datatime, Track track) {
+        this.soundId = soundId;
+        this.groupId = groupId;
         this.kind = kind;
         this.percent = percent;
         this.datatime = datatime;
         this.track = track;
     }
+
+    public PlayHistoryBean(long soundId,long groupId,String kind, long datatime, Schedule schedule) {
+        this.soundId = soundId;
+        this.kind = kind;
+        this.datatime = datatime;
+        this.groupId = groupId;
+        this.schedule = schedule;
+    }
+
     @Generated(hash = 1831795327)
     public PlayHistoryBean() {
     }
@@ -68,12 +91,6 @@ public class PlayHistoryBean {
     public void setTrack(Track track) {
         this.track = track;
     }
-    public long getAlbumId() {
-        return this.albumId;
-    }
-    public void setAlbumId(long albumId) {
-        this.albumId = albumId;
-    }
 
     public static class TrackConverter implements PropertyConverter<Track, String> {
         @Override
@@ -92,16 +109,49 @@ public class PlayHistoryBean {
             return new Gson().toJson(entityProperty);
         }
     }
+    public static class ScheduleConverter implements PropertyConverter<Schedule, String> {
+        @Override
+        public Schedule convertToEntityProperty(String databaseValue) {
+            if (databaseValue == null) {
+                return null;
+            }
+            return new Gson().fromJson(databaseValue, Schedule.class);
+        }
+
+        @Override
+        public String convertToDatabaseValue(Schedule entityProperty) {
+            if (entityProperty == null) {
+                return null;
+            }
+            return new Gson().toJson(entityProperty);
+        }
+    }
 
     @Override
     public String toString() {
         return "PlayHistoryBean{" +
                 "soundId=" + soundId +
-                ", albumId=" + albumId +
+                ", groupId=" + groupId +
                 ", kind='" + kind + '\'' +
                 ", percent=" + percent +
                 ", datatime=" + datatime +
                 ", track=" + track +
+                ", schedule=" + schedule +
                 '}';
+    }
+
+    public Schedule getSchedule() {
+        return this.schedule;
+    }
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
+    public long getGroupId() {
+        return this.groupId;
+    }
+
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
     }
 }

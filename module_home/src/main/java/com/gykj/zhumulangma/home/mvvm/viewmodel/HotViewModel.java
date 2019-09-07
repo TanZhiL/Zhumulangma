@@ -113,7 +113,7 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
 
         Map<String, String> map = new HashMap<String, String>();
         //电台类型：1-国家台，2-省市台，3-网络台
-        map.put(DTransferConstants.RADIOTYPE, "1");
+        map.put(DTransferConstants.RADIOTYPE, "3");
         map.put(DTransferConstants.PAGE_SIZE, "3");
         curRadioPage = curRadioPage >= totalRadioPage ? 1 : curRadioPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curRadioPage++));

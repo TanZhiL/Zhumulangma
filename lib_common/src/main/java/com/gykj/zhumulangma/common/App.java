@@ -18,6 +18,7 @@ import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.mvvm.model.CommonModel;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.gykj.zhumulangma.common.util.log.TLog;
@@ -30,11 +31,13 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.httputil.XimalayaException;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
+import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.appnotification.NotificationColorUtils;
 import com.ximalaya.ting.android.opensdk.player.appnotification.XmNotificationCreater;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerConfig;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
@@ -76,7 +79,6 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
     private static App mApplication;
     private static final String TAG = "App";
     private XmPlayerManager mPlayerManager;
-    private ZhumulangmaModel model = new ZhumulangmaModel(this);
 
     //static 代码段可以防止内存泄露
     static {
@@ -395,7 +397,19 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
 
     @Override
     public void onPlayStart() {
-
+        try {
+            PlayableModel currSound = mPlayerManager.getCurrSound();
+            if (null == currSound) {
+                return;
+            }
+            if (currSound.getKind().equals(PlayableModel.KIND_SCHEDULE)) {
+                Schedule schedule=(Schedule)currSound;
+                CommonModel.insert(new PlayHistoryBean(currSound.getDataId(),schedule.getRadioId(),currSound.getKind(),
+                        System.currentTimeMillis(), schedule)).subscribe();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -445,17 +459,17 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
     @Override
     public void onPlayProgress(int i, int i1) {
         try {
-            Track currSound = mPlayerManager.getCurrSoundIgnoreKind(true);
+            PlayableModel currSound = mPlayerManager.getCurrSound();
             if (null == currSound) {
                 return;
             }
-            PlayableModel currSound1 = mPlayerManager.getCurrSound();
-            if (currSound1.getKind().equals(PlayableModel.KIND_TRACK)) {
+            if (currSound.getKind().equals(PlayableModel.KIND_TRACK)) {
+                Track track=(Track)currSound;
                 int currPos = mPlayerManager.getPlayCurrPositon();
                 int duration = mPlayerManager.getDuration();
-                model.insert(new PlayHistoryBean(currSound.getDataId(), currSound.getAlbum().getAlbumId(),
+                CommonModel.insert(new PlayHistoryBean(currSound.getDataId(),track.getAlbum().getAlbumId(),
                         currSound.getKind(), 100 * currPos / duration,
-                        System.currentTimeMillis(), currSound)).subscribe();
+                        System.currentTimeMillis(), track)).subscribe();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -469,31 +483,31 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
 
     @Override
     public void onWaiting(Track track) {
-        model.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
+        CommonModel.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
                 .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
     }
 
     @Override
     public void onStarted(Track track) {
-        model.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
+        CommonModel.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
                 .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
     }
 
     @Override
     public void onSuccess(Track track) {
-        model.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
+        CommonModel.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
                 .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
     }
 
     @Override
     public void onError(Track track, Throwable throwable) {
-        model.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
+        CommonModel.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
                 .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
     }
 
     @Override
     public void onCancelled(Track track, com.ximalaya.ting.android.sdkdownloader.task.Callback.CancelledException e) {
-        model.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
+        CommonModel.insert(new TrackDownloadBean(track.getDataId(), XmDownloadManager.getInstance()
                 .getSingleTrackDownloadStatus(track.getDataId()))).subscribe();
     }
 

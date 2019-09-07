@@ -230,7 +230,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                     cur = (int) (System.currentTimeMillis() - start);
                     dur = (int) (end - start);
                 }
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

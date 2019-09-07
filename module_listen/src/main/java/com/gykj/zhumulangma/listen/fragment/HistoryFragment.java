@@ -2,11 +2,9 @@ package com.gykj.zhumulangma.listen.fragment;
 
 import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProvider;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -15,13 +13,13 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.HistoryAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.HistoryViewModel;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 /**
  * Author: Thomas.
@@ -47,7 +45,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
         mRecyclerView = fd(R.id.rv);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setHasFixedSize(true);
-        mHistoryAdapter = new HistoryAdapter(R.layout.listen_item_history,R.layout.listen_item_head_history);
+        mHistoryAdapter = new HistoryAdapter(null);
         mHistoryAdapter.bindToRecyclerView(mRecyclerView);
     }
 
@@ -93,7 +91,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
             }
             if (playHistoryBeans.size() > 0) {
                 if(!CollectionUtils.isEmpty(mHistoryAdapter.getData())&&mViewModel.dateCovert(
-                        mHistoryAdapter.getData().get(mHistoryAdapter.getData().size()-1).t.getDatatime())
+                        mHistoryAdapter.getData().get(mHistoryAdapter.getData().size()-1).data.getDatatime())
                         .equals(playHistoryBeans.get(0).header)){
                     playHistoryBeans.remove(0);
                 }
@@ -113,10 +111,14 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        HistoryViewModel.PlayHistorySection playHistorySection = mHistoryAdapter.getData().get(position);
-        if(!playHistorySection.isHeader){
-            PlayHistoryBean playHistoryBean = playHistorySection.t;
-            mViewModel.play(String.valueOf(playHistoryBean.getAlbumId()), playHistoryBean.getTrack());
+        HistoryViewModel.PlayHistoryItem playHistoryItem = mHistoryAdapter.getData().get(position);
+        if(playHistoryItem.itemType!= HistoryViewModel.PlayHistoryItem.HEADER){
+            if(playHistoryItem.itemType== HistoryViewModel.PlayHistoryItem.TRACK){
+                mViewModel.play(String.valueOf(playHistoryItem.data.getGroupId()),
+                        playHistoryItem.data.getTrack());
+            }else {
+                mViewModel.play(String.valueOf(playHistoryItem.data.getGroupId()));
+            }
         }
     }
 

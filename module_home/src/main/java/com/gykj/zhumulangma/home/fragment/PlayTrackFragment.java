@@ -402,6 +402,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                             mPlayTrackPopup.getTrackAdapter().setNewData(mPlayerManager.getPlayList());
                             mPlayTrackPopup.getRecyclerView().scrollToPosition(mPlayerManager.getCurrentIndex());
                         }
+
                         @Override
                         public void onShow() {
                             super.onShow();
@@ -647,6 +648,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(mHandler!=null)
         mHandler.removeCallbacksAndMessages(null);
         mPlayerManager.removePlayerStatusListener(this);
         mPlayerManager.removeAdsStatusListener(this);

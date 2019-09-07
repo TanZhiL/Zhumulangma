@@ -169,7 +169,7 @@ public class CommonModel extends BaseModel {
      * @param <T>
      * @return
      */
-    public <T> Observable<T> insert(T entity){
+    public static  <T> Observable<T> insert(T entity){
 
         return  Observable.create(emitter -> {
             try {
