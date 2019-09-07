@@ -34,7 +34,7 @@ public class SearchHotAdapter extends BaseQuickAdapter<HotWord, BaseViewHolder> 
             view.setTextColor(Color.parseColor("#ff9900"));
             view.setBackgroundResource(R.drawable.shap_common_tag_third);
         }else {
-            view.setTextColor(Color.BLACK);
+            view.setTextColor(mContext.getResources().getColor(R.color.textColorPrimary));
             view.setBackgroundResource(R.drawable.shap_common_tag_normal);
         }
         helper.setText(R.id.tv_keyword,item.getSearchword());

@@ -78,7 +78,7 @@
             android:text="伦桑part1"
             android:singleLine="true"
             android:ellipsize="end"
-            android:textColor="@color/black"
+            android:textColor="@color/textColorPrimary"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -145,7 +145,7 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="@+id/tv_create_time"
         app:layout_constraintTop_toBottomOf="@+id/tv_create_time"
-        android:tint="@color/black"
+        android:tint="@color/textColorPrimary"
         android:visibility="gone"
        android:src="@drawable/ic_home_track_download" />
 

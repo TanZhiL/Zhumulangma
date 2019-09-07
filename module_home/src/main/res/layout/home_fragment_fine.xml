@@ -77,7 +77,7 @@
                         android:layout_height="23dp"
                         android:gravity="center"
                         android:text="畅销榜"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -105,7 +105,7 @@
                         android:layout_height="23dp"
                         android:gravity="center"
                         android:text="新品榜"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -133,7 +133,7 @@
                         android:layout_height="23dp"
                         android:gravity="center"
                         android:text="巅峰会员"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -161,7 +161,7 @@
                         android:layout_height="23dp"
                         android:gravity="center"
                         android:text="有声书"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -189,7 +189,7 @@
                         android:layout_height="23dp"
                         android:gravity="center"
                         android:text="筛选"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -217,7 +217,7 @@
                         android:layout_height="23dp"
                         android:gravity="center"
                         android:text="已购"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="12sp" />
                 </LinearLayout>
 

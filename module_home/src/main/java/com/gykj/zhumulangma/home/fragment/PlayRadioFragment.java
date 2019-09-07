@@ -72,8 +72,9 @@ import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
  * Description:
  */
 @Route(path = AppConstants.Router.Home.F_PLAY_RADIIO)
-public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> implements View.OnClickListener,
-        PlaySchedulePopup.onSelectedListener, IXmPlayerStatusListener, IXmAdsStatusListener, OnSeekChangeListener {
+public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> implements
+        View.OnClickListener, PlaySchedulePopup.onSelectedListener, IXmPlayerStatusListener,
+        IXmAdsStatusListener, OnSeekChangeListener {
     private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd:HH:mm", Locale.getDefault());
     private PlaySchedulePopup mSchedulePopup;
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mContext);
@@ -170,7 +171,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
                 ToastUtil.showToast("网络异常");
                 pop();
             }
-        }, 100);
+        }, 200);
 
     }
 

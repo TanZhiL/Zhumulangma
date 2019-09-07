@@ -29,7 +29,7 @@
             android:gravity="center_vertical"
             android:paddingStart="11dp"
             android:text="内容简介"
-            android:textColor="@color/black"
+            android:textColor="@color/textColorPrimary"
             android:textSize="16sp" />
         <TextView
             android:id="@+id/tv_intro"
@@ -41,7 +41,7 @@
             android:paddingEnd="11dp"
             android:paddingBottom="16dp"
             android:text="对于一个声控来说…没有一副好嗓音…真的心塞塞，只能听听伦桑的声音抚慰抚慰耳朵了【躺     "
-            android:textColor="@color/black"
+            android:textColor="@color/textColorPrimary"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -69,7 +69,7 @@
             android:background="@color/white"
             android:paddingStart="11dp"
             android:text="专辑标签"
-            android:textColor="@color/black"
+            android:textColor="@color/textColorPrimary"
             android:textSize="16sp" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_tag"

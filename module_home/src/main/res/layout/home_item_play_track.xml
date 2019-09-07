@@ -68,7 +68,7 @@
         android:layout_width="17dp"
         android:layout_height="17dp"
         android:layout_marginEnd="16dp"
-        android:tint="@color/black"
+        android:tint="@color/textColorPrimary"
         android:visibility="gone"
         android:src="@drawable/ic_home_track_download" />
 

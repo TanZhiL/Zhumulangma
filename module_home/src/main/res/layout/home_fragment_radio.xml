@@ -61,7 +61,7 @@
                 android:layout_marginTop="2dp"
                 android:gravity="center"
                 android:text="国家台"
-                android:textColor="@color/black"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -88,7 +88,7 @@
                 android:layout_marginTop="2dp"
                 android:gravity="center"
                 android:text="省市台"
-                android:textColor="@color/black"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -115,7 +115,7 @@
                 android:layout_marginTop="2dp"
                 android:gravity="center"
                 android:text="本地台"
-                android:textColor="@color/black"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -142,7 +142,7 @@
                 android:layout_marginTop="2dp"
                 android:gravity="center"
                 android:text="网络台"
-                android:textColor="@color/black"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="12sp" />
         </LinearLayout>
 

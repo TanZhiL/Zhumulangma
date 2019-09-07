@@ -12,6 +12,6 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:background="@drawable/shap_common_defualt"
-        android:textColor="@color/black"
+        android:textColor="@color/textColorPrimary"
         android:text="1~20" />
 </FrameLayout>

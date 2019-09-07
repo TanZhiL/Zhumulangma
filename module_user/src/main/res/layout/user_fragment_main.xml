@@ -268,7 +268,7 @@
                 app:right_text_color="@color/colorGray"
                 app:right_text_margin="8"
                 app:right_text_size="11"
-                app:text_color="@color/black"
+                app:text_color="@color/textColorPrimary"
                 app:text_size="14" />
 
         </android.support.constraint.ConstraintLayout>

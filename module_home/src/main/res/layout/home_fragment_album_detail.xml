@@ -50,7 +50,7 @@
                         android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="15sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/iv_cover"

@@ -575,7 +575,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                     viewByPosition.setTextColor(Color.WHITE);
                 } else {
                     viewByPosition.setBackgroundResource(R.drawable.shap_common_defualt);
-                    viewByPosition.setTextColor(Color.BLACK);
+                    viewByPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
                 }
             }
         }

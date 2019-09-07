@@ -76,7 +76,7 @@
                             android:layout_height="18dp"
                             android:gravity="center"
                             android:text="排行榜"
-                            android:textColor="@color/black"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -104,7 +104,7 @@
                             android:layout_height="18dp"
                             android:gravity="center"
                             android:text="精品"
-                            android:textColor="@color/black"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -132,7 +132,7 @@
                             android:layout_height="18dp"
                             android:gravity="center"
                             android:text="巅峰会员"
-                            android:textColor="@color/black"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -160,7 +160,7 @@
                             android:layout_height="18dp"
                             android:gravity="center"
                             android:text="听清远"
-                            android:textColor="@color/black"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -188,7 +188,7 @@
                             android:layout_height="18dp"
                             android:gravity="center"
                             android:text="小雅音响"
-                            android:textColor="@color/black"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -216,7 +216,7 @@
                             android:layout_height="18dp"
                             android:gravity="center"
                             android:text="听单"
-                            android:textColor="@color/black"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -244,7 +244,7 @@
                             android:layout_height="18dp"
                             android:gravity="center"
                             android:text="今日必听"
-                            android:textColor="@color/black"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -272,7 +272,7 @@
                             android:layout_height="18dp"
                             android:gravity="center"
                             android:text="边听边读"
-                            android:textColor="@color/black"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -300,7 +300,7 @@
                             android:layout_height="18dp"
                             android:gravity="center"
                             android:text="热门分享"
-                            android:textColor="@color/black"
+                            android:textColor="@color/textColorPrimary"
                             android:textSize="12sp" />
                     </LinearLayout>
 
@@ -396,7 +396,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="23dp"
                     android:textSize="14sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorPrimary"
                     android:gravity="center_vertical"
                     android:text="小雅音响"
                     />

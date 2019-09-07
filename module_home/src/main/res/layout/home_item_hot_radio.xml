@@ -45,7 +45,7 @@
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="来看一只小可爱啦~"
-            android:textColor="@color/black"
+            android:textColor="@color/textColorPrimary"
             android:textSize="16sp" />
 
     </LinearLayout>

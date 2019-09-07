@@ -15,7 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="猜你喜欢"
-        android:textColor="@color/black"
+        android:textColor="@color/textColorPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

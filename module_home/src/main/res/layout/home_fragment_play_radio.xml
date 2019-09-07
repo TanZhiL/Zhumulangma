@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-5dp"
-                app:isb_indicator_text_color="@color/black"
+                app:isb_indicator_text_color="@color/textColorPrimary"
                 app:isb_track_background_size="2dp"
                 app:isb_indicator_color="@color/white"
                 app:isb_track_progress_size="2dp"

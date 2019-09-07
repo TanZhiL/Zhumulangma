@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:text_size  = "14"
-            app:text_color = "@color/black"
+            app:text_color = "@color/textColorPrimary"
             app:icon_margin_left = "16"
             app:icon_text_margin = "8"
             app:margin_right = "12"

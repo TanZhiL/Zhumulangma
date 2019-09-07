@@ -22,7 +22,7 @@
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
         android:text="【格物致知】魅族PRO7文化歌单"
-        android:textColor="@color/black"
+        android:textColor="@color/textColorPrimary"
         android:textSize="16sp"
         android:ellipsize="end"
         android:singleLine="true"

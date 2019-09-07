@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:text="喜欢"
                         android:layout_marginTop="2dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -77,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:text="已购"
                         android:layout_marginTop="2dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:text="历史"
                         android:layout_marginTop="2dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -134,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:text="下载"
                         android:layout_marginTop="2dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="12sp" />
 
                 </LinearLayout>

@@ -14,7 +14,7 @@
         app:centerCustomView="@layout/common_layout_titlebar_center"
         app:leftType="customView"
         app:leftCustomView="@layout/common_layout_titlebar_left"
-        app:rightTextColor="@color/black"
+        app:rightTextColor="@color/textColorPrimary"
         app:rightType="customView"
         app:rightCustomView="@layout/common_layout_titlebar_right"
         android:visibility="gone"

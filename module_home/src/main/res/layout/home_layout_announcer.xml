@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:paddingStart="11dp"
         android:text="主播"
-        android:textColor="@color/black"
+        android:textColor="@color/textColorPrimary"
         android:textSize="16sp" />
 
     <android.support.constraint.ConstraintLayout
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="逝水流年轻染尘"
-            android:textColor="@color/black"
+            android:textColor="@color/textColorPrimary"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/iv_announcer_cover"
             app:layout_constraintTop_toTopOf="@id/iv_announcer_cover" />
@@ -90,7 +90,7 @@
         android:visibility="gone"
         android:padding="16dp"
         android:text="喜欢音乐 喜欢我就多多关注啦"
-        android:textColor="@color/black"
+        android:textColor="@color/textColorPrimary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -105,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="想向主播提问？"
-            android:textColor="@color/black"
+            android:textColor="@color/textColorPrimary"
             android:textSize="12sp" />
 
         <TextView

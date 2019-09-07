@@ -136,7 +136,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-5dp"
-                app:isb_indicator_text_color="@color/black"
+                app:isb_indicator_text_color="@color/textColorPrimary"
                 app:isb_track_background_size="2dp"
                 app:isb_indicator_color="@color/white"
                 app:isb_track_progress_size="2dp"
@@ -339,7 +339,7 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="伦桑老大"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorPrimary"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toStartOf="@+id/linearLayout12"
                     app:layout_constraintStart_toEndOf="@+id/iv_album_cover"
@@ -398,7 +398,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="8dp"
                 android:text="伦桑-故梦"
-                android:textColor="@color/black"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="16sp" />
 
             <TextView
@@ -421,7 +421,7 @@
                 android:paddingEnd="11dp"
                 android:paddingBottom="16dp"
                 android:text="对于一个声控来说…没有一副好嗓音…真的心塞塞，只能听听伦桑的声音抚慰抚慰耳朵了【躺     "
-                android:textColor="@color/black"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="15sp" />
 
             <LinearLayout
@@ -443,7 +443,7 @@
                 android:gravity="center_vertical"
                 android:paddingStart="11dp"
                 android:text="相关推荐"
-                android:textColor="@color/black"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="16sp" />
 
             <android.support.v7.widget.RecyclerView
@@ -480,7 +480,7 @@
                     android:gravity="center_vertical"
                     android:paddingStart="11dp"
                     android:text="评论(1)"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorPrimary"
                     android:textSize="16sp"
                     app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -540,7 +540,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
                     android:text="我最爱的古风歌"
-                    android:textColor="@color/black"
+                    android:textColor="@color/textColorPrimary"
                     android:textSize="14sp"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView27"
@@ -717,7 +717,7 @@
             android:inputType="textPersonName"
             android:paddingStart="12dp"
             android:paddingEnd="8dp"
-            android:textColor="@color/black"
+            android:textColor="@color/textColorPrimary"
             android:textColorHint="#333333"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -11,7 +11,7 @@
     android:textSize="11sp"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:textColor="@color/black"
+    android:textColor="@color/textColorPrimary"
     android:background="@drawable/shap_common_tag_normal"
     android:gravity="center_vertical"
     android:layout_height="18dp" />

@@ -5,7 +5,7 @@
     <color name="colorHint">#ffa6a6a6</color>
     <color name="colorDefualtBg">#F7F8FC</color>
 
-    <color name="colorSimplebarText">@color/black</color>
+    <color name="colorSimplebarText">@color/textColorPrimary</color>
 
     <color name="colorPrimary">#ff7050</color>
     <color name="colorDefualt">#eeeeee</color>
