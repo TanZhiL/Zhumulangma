@@ -15,6 +15,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.FineAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -33,7 +34,8 @@ import java.util.List;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 
-public class FineFragment extends BaseMvvmFragment<FineViewModel> implements View.OnClickListener, OnBannerListener {
+public class FineFragment extends BaseMvvmFragment<FineViewModel> implements
+        View.OnClickListener, OnBannerListener {
 
     Banner banner;
 
@@ -183,6 +185,8 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements Vie
                 EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
+            case 3:
+                mViewModel.play(bannerV2.getTrackId());
         }
     }
 }

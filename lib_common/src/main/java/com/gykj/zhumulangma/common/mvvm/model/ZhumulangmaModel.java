@@ -27,6 +27,7 @@ import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.ScheduleList;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
+import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
 
@@ -569,6 +570,31 @@ public class ZhumulangmaModel extends CommonModel {
                             emitter.onNext(scheduleList.getmScheduleList());
                             emitter.onComplete();
                         }
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
+
+
+    /**
+     * 搜索声音，支持的筛选条件包括声音ID、标题、所属专辑ID、所属专辑标题、
+     * 所属主播ID或昵称、标签、是否付费、分类ID或分类名等，并可指定排序字段。
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<SearchTrackListV2> searchTrackV2(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.searchTrackV2(specificParams,
+                new IDataCallBack<SearchTrackListV2>() {
+                    @Override
+                    public void onSuccess(@Nullable SearchTrackListV2 searchTrackListV2) {
+                        emitter.onNext(searchTrackListV2);
+                        emitter.onComplete();
                     }
 
                     @Override

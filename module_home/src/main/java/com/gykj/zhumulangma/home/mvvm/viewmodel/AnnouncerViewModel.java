@@ -3,7 +3,12 @@ package com.gykj.zhumulangma.home.mvvm.viewmodel;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -11,12 +16,21 @@ import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerList;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
+import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
+import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import me.yokeyword.fragmentation.ISupportFragment;
 
 public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
 
@@ -64,6 +78,38 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
             curPage++;
             getAnnouncerSingleLiveEvent().postValue(announcerList.getAnnouncerList());
         }, e->e.printStackTrace());
+    }
+    public void play(long trackId) {
+
+        Map<String, String> map = new HashMap<>();
+        map.put(DTransferConstants.ID, String.valueOf(trackId));
+        mModel.searchTrackV2(map)
+                .flatMap((Function<SearchTrackListV2, ObservableSource<LastPlayTrackList>>)
+                        searchTrackListV2 -> {
+                            Map<String, String> map1 = new HashMap<>();
+                            map1.put(DTransferConstants.ALBUM_ID, String.valueOf(
+                                    searchTrackListV2.getTracks().get(0).getAlbum().getAlbumId()));
+                            map1.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
+                            return   mModel.getLastPlayTracks(map1);
+                        })
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
+                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .subscribe(trackList -> {
+                    for (int i = 0; i < trackList.getTracks().size(); i++) {
+                        if(trackList.getTracks().get(i).getDataId()==trackId){
+                            XmPlayerManager.getInstance(getApplication()).playList(trackList,i);
+                            break;
+                        }
+                    }
+                    Object navigation = ARouter.getInstance()
+                            .build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
+                    if (null != navigation) {
+                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                                new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK,
+                                        (ISupportFragment) navigation)));
+                    }
+                }, e -> e.printStackTrace());
     }
 
 

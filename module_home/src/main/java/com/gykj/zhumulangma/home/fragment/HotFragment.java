@@ -17,6 +17,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.RadioUtil;
+import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -71,11 +72,13 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     protected int onBindLayout() {
         return R.layout.home_fragment_hot;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
     }
+
     @Override
     protected void initView(View view) {
         initAction();
@@ -118,7 +121,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         });
         fd(R.id.baby_refresh).setOnClickListener(this);
         fd(R.id.ih_baby).setOnClickListener(view -> {
-             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, 6)
                     .withString(KeyCode.Home.TITLE, "宝贝最爱")
                     .navigation();
@@ -172,7 +175,6 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO, (ISupportFragment) navigation)));
         });
     }
-
 
 
     @Override
@@ -242,7 +244,6 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     private void initTopic() {
 
 
-
         rvTopic = fd(R.id.rv_topic);
         mTopicAdapter = new HotTopicAdapter(R.layout.home_item_hot_topic);
         rvTopic.setLayoutManager(new LinearLayoutManager(mContext));
@@ -286,7 +287,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     @Override
     public void OnBannerClick(int position) {
         BannerV2 bannerV2 = mViewModel.getBannerV2SingleLiveEvent().getValue().get(position);
-        switch (bannerV2.getBannerContentType()){
+        switch (bannerV2.getBannerContentType()) {
             case 2:
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
@@ -294,21 +295,25 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
                 EventBus.getDefault().post(new BaseActivityEvent<>(
                         EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
+            case 3:
+                mViewModel.play(bannerV2.getTrackId());
+
+                break;
         }
     }
 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if(banner!=null)
-        banner.startAutoPlay();
+        if (banner != null)
+            banner.startAutoPlay();
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        if(banner!=null)
-        banner.stopAutoPlay();
+        if (banner != null)
+            banner.stopAutoPlay();
     }
 
     @Override
@@ -324,7 +329,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
             mViewModel.getHotMusicList();
         } else if (id == R.id.radio_refresh) {
             mViewModel.getRadioList();
-        }else if (id == R.id.fl_rank) {
+        } else if (id == R.id.fl_rank) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_RANK).navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RANK, (ISupportFragment) navigation)));

@@ -64,8 +64,8 @@ public class RxAdapter {
     public static ObservableTransformer exceptionTransformer() {
 
         return observable -> observable
-//                .flatMap(new HandleFuc())
-//                .retryWhen(new RetryWithNewToken())//拦截需要处理的异常
+                .flatMap(new HandleFuc())
+                .retryWhen(new RetryWithNewToken())//拦截需要处理的异常
                 .onErrorResumeNext(new HttpResponseFunc());
     }
 

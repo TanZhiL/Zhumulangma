@@ -114,8 +114,8 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
         HistoryViewModel.PlayHistoryItem playHistoryItem = mHistoryAdapter.getData().get(position);
         if(playHistoryItem.itemType!= HistoryViewModel.PlayHistoryItem.HEADER){
             if(playHistoryItem.itemType== HistoryViewModel.PlayHistoryItem.TRACK){
-                mViewModel.play(String.valueOf(playHistoryItem.data.getGroupId()),
-                        playHistoryItem.data.getTrack());
+                mViewModel.play(playHistoryItem.data.getGroupId(),
+                        playHistoryItem.data.getTrack().getDataId());
             }else {
                 mViewModel.play(String.valueOf(playHistoryItem.data.getGroupId()));
             }

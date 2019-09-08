@@ -60,6 +60,7 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.IXmDataCallback;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.DownloadState;
@@ -372,6 +373,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             }
         } else if (R.id.lav_pre == id) {
             lavPlayPre.playAnimation();
+            if(mPlayerManager.getPlayMode()== XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM){
+                mPlayerManager.playPre();
+                return;
+            }
             if (mPlayerManager.hasPreSound()) {
                 mPlayerManager.playPre();
             } else {
@@ -379,6 +384,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             }
         } else if (R.id.lav_next == id) {
             lavPlayNext.playAnimation();
+            if(mPlayerManager.getPlayMode()== XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM){
+                mPlayerManager.playNext();
+                return;
+            }
             if (mPlayerManager.hasNextSound()) {
                 mPlayerManager.playNext();
             } else {

@@ -163,4 +163,10 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     protected boolean lazyEnable() {
         return false;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        KeyboardUtils.hideSoftInput(etKeyword);
+    }
 }

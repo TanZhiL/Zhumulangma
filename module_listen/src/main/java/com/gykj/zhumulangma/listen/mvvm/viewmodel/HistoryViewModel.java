@@ -88,18 +88,22 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                 });
     }
 
-    public void play(String albumId, Track track) {
+    public void play(long albumId,long trackId) {
 
         Map<String, String> map = new HashMap<>();
-        map.put(DTransferConstants.ALBUM_ID, albumId);
-        map.put(DTransferConstants.TRACK_ID, String.valueOf(track.getDataId()));
+        map.put(DTransferConstants.ALBUM_ID, String.valueOf(albumId));
+        map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
                 .doFinally(() -> postShowInitLoadViewEvent(false))
                 .subscribe(trackList -> {
-                    XmPlayerManager.getInstance(getApplication()).playList(trackList,
-                            trackList.getTracks().indexOf(track));
+                    for (int i = 0; i < trackList.getTracks().size(); i++) {
+                        if(trackList.getTracks().get(i).getDataId()==trackId){
+                            XmPlayerManager.getInstance(getApplication()).playList(trackList,i);
+                            break;
+                        }
+                    }
                     Object navigation = ARouter.getInstance()
                             .build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
                     if (null != navigation) {
@@ -143,7 +147,8 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                         schedulex.setEndTime(simpleDateFormat.format(calendar0.getTime()) + ":" + schedulex.getEndTime());
                     }
                     schedulesx.addAll(schedules);
-                }).flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
+                })
+                .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                 RadioUtil.getSchedules(today))
                 .doOnNext(schedules -> {
                     Iterator var7 = schedules.iterator();
@@ -153,7 +158,8 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                         schedulex.setEndTime(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":" + schedulex.getEndTime());
                     }
                     schedulesx.addAll(schedules);
-                }).flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
+                })
+                .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                 RadioUtil.getSchedules(tomorrow))
                 .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
                 .doFinally(() -> postShowInitLoadViewEvent(false))

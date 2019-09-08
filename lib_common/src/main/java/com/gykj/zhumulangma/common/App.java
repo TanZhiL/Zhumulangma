@@ -155,8 +155,8 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
      * 初始化GreenDao,直接在Application中进行初始化操作
      */
     private void initGreenDao() {
-        QueryBuilder.LOG_SQL = true;
-        QueryBuilder.LOG_VALUES = true;
+        QueryBuilder.LOG_SQL = false;
+        QueryBuilder.LOG_VALUES = false;
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "zhumulangma.db");
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);

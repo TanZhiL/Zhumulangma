@@ -16,6 +16,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -40,7 +41,8 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Created by 10719
  * on 2019/6/12
  */
-public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> implements OnLoadMoreListener, OnBannerListener {
+public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> implements
+        OnLoadMoreListener, OnBannerListener {
 
     private static final String TAG = "AnnouncerFragment";
     Banner banner;
@@ -174,6 +176,8 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
                 EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
+            case 3:
+                mViewModel.play(bannerV2.getTrackId());
         }
     }
 }

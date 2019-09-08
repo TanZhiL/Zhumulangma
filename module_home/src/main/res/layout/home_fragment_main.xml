@@ -1,99 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-  <android.support.constraint.ConstraintLayout
-      android:id="@+id/cl_titlebar"
-      android:layout_width="match_parent"
-      app:layout_constraintTop_toTopOf="parent"
-      android:background="@color/white"
-      android:layout_height="wrap_content">
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent">
 
-      <ImageView
-          android:id="@+id/iv_message"
-          android:layout_width="28dp"
-          android:layout_height="28dp"
-          android:layout_marginStart="15dp"
-          android:src="@drawable/ic_common_message"
-          android:tint="@color/colorGray"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/iv_message"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/ic_common_message"
+            android:tint="@color/colorGray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-      <ImageView
-          android:id="@+id/iv_download"
-          android:layout_width="28dp"
-          android:layout_height="28dp"
-          android:layout_marginTop="8dp"
-          android:tint="@color/colorGray"
-          android:layout_marginEnd="17dp"
-          android:layout_marginBottom="8dp"
-          android:src="@drawable/ic_common_download"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/iv_download"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_common_download"
+            android:tint="@color/colorGray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-      <ImageView
-          android:id="@+id/iv_history"
-          android:layout_width="28dp"
-          android:layout_height="28dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="6dp"
-          android:tint="@color/colorGray"
-          android:layout_marginBottom="8dp"
-          android:src="@drawable/ic_common_history"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toStartOf="@+id/iv_download"
-          app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/iv_history"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_common_history"
+            android:tint="@color/colorGray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_download"
+            app:layout_constraintTop_toTopOf="parent" />
 
-      <LinearLayout
-          android:id="@+id/ll_search"
-          android:layout_width="220dp"
-          android:layout_height="34dp"
-          android:layout_marginStart="8dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginEnd="8dp"
-          android:layout_marginBottom="8dp"
-          android:background="@drawable/shap_common_input"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toStartOf="@+id/iv_history"
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:layout_width="220dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shap_common_input"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
 
-          android:gravity="center_vertical"
-          app:layout_constraintStart_toEndOf="@+id/iv_message"
-          android:paddingLeft="8dp"
-          android:paddingRight="8dp"
-          app:layout_constraintTop_toTopOf="parent">
+            android:paddingRight="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_history"
+            app:layout_constraintStart_toEndOf="@+id/iv_message"
+            app:layout_constraintTop_toTopOf="parent">
 
-          <ImageView
-              android:id="@+id/imageView6"
-              android:layout_width="23dp"
-              android:layout_height="23dp"
-              android:tint="#cccccc"
-              android:src="@drawable/ic_common_search" />
-          <com.sunfusheng.marqueeview.MarqueeView
-              android:id="@+id/marqueeView"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              app:mvAnimDuration="1000"
-              app:mvDirection="bottom_to_top"
-              app:mvInterval="3000"
-              app:mvTextColor="#cccccc"
-              app:mvTextSize="12sp"
-              android:layout_weight="1"
-              app:mvSingleLine="true"/>
-      </LinearLayout>
-  </android.support.constraint.ConstraintLayout>
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:src="@drawable/ic_common_search"
+                android:tint="#cccccc" />
+
+            <com.sunfusheng.marqueeview.MarqueeView
+                android:id="@+id/marqueeView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:mvAnimDuration="1000"
+                app:mvDirection="bottom_to_top"
+                app:mvInterval="3000"
+                app:mvSingleLine="true"
+                app:mvTextColor="#cccccc"
+                app:mvTextSize="12sp" />
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 
     <net.lucode.hackware.magicindicator.MagicIndicator
         android:id="@+id/magic_indicator"
         android:layout_width="match_parent"
+        android:layout_height="39dp"
         android:background="#f0f0f0"
-        app:layout_constraintTop_toBottomOf="@+id/cl_titlebar"
-        android:layout_height="39dp" />
+        app:layout_constraintTop_toBottomOf="@+id/cl_titlebar" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
