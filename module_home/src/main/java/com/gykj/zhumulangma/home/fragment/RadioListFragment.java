@@ -186,7 +186,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
         switch (type) {
             case LOCAL:
                 mViewModel.getRadioList(RadioListViewModel.PROVINCE,
-                        SPUtils.getInstance().getString(AppConstants.SP.PROVINCE_CODE));
+                        SPUtils.getInstance().getString(AppConstants.SP.PROVINCE_CODE,AppConstants.Defualt.PROVINCE_CODE));
                 break;
             case HISTORY:
                 mViewModel._getHistory();
