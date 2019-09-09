@@ -1,7 +1,6 @@
-package com.gykj.zhumulangma.listen.mvvm.model;
+package com.gykj.zhumulangma.home.mvvm.model;
 
 import android.app.Application;
-import android.app.ListActivity;
 import android.database.Cursor;
 
 import com.google.gson.Gson;
@@ -10,50 +9,49 @@ import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.net.http.RxAdapter;
-import com.gykj.zhumulangma.common.util.log.TLog;
+import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 
-public class HistoryModel extends ZhumulangmaModel {
+public class RadioModel extends ZhumulangmaModel {
 
-    public HistoryModel(Application application) {
+    public RadioModel(Application application) {
         super(application);
     }
 
     public Observable<List<PlayHistoryBean>> getHistory(int page,int pagesize) {
-        return io.reactivex.Observable.create((ObservableOnSubscribe<List<PlayHistoryBean>>) emitter -> {
+        return Observable.create((ObservableOnSubscribe<List<PlayHistoryBean>>) emitter -> {
             /**
              * SELECT
              *     a.*
              *   FROM
              *     PLAY_HISTORY_BEAN a
              *   WHERE
+             * 		KIND='schedule'
+             * 		AND
              *     1 > (
              *       SELECT
              *         count(*)
              *       FROM
              *         PLAY_HISTORY_BEAN
              *       WHERE
-             *         ALBUM_ID = a.ALBUM_ID
+             *         GROUP_ID = a.GROUP_ID
              *       AND DATATIME > a.DATATIME
              *     )
-             *   ORDER BY
-             *     a.DATATIME desc
              */
             List<PlayHistoryBean> list = new ArrayList<>();
             String sql = "SELECT a.* FROM "+ PlayHistoryBeanDao.TABLENAME+
-                    " a WHERE 1>( SELECT COUNT(*) FROM "+ PlayHistoryBeanDao.TABLENAME
+                    " a WHERE "+PlayHistoryBeanDao.Properties.Kind.columnName+" = '"+PlayableModel.KIND_SCHEDULE
+                    +"' AND 1>( SELECT COUNT(*) FROM "+ PlayHistoryBeanDao.TABLENAME
                     +" WHERE "+PlayHistoryBeanDao.Properties.GroupId.columnName+" = a."+PlayHistoryBeanDao.Properties.GroupId.columnName
                     +" AND "+PlayHistoryBeanDao.Properties.Datatime.columnName+" > a."+PlayHistoryBeanDao.Properties.Datatime.columnName
-                    +")  ORDER BY a."+PlayHistoryBeanDao.Properties.Datatime.columnName+
+                    +") ORDER BY a."+PlayHistoryBeanDao.Properties.Datatime.columnName+
                     " DESC LIMIT "+pagesize+" OFFSET "+((page-1)*pagesize);
 
            /* String sql = "SELECT * FROM "+ PlayHistoryBeanDao.TABLENAME+

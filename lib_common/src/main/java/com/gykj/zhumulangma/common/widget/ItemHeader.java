@@ -45,6 +45,11 @@ public class ItemHeader extends FrameLayout {
 
     }
 
+    public void setTitle(String title) {
+       mTitle=title;
+       tvTitle.setText(title);
+    }
+
     private void getAttrs(TypedArray typedArray) {
         mTitle=typedArray.getString(R.styleable.ItemHeader_ih_title);
         mRightText=typedArray.getString(R.styleable.ItemHeader_ih_right_text);

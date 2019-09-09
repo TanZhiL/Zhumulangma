@@ -116,7 +116,7 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
     }
     @Override
     protected Integer[] onBindBarRightIcon() {
-        return new Integer[]{R.drawable.ic_common_share};
+        return new Integer[]{R.drawable.ic_common_search};
     }
 
     @Override

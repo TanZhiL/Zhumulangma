@@ -65,7 +65,7 @@ public class RxAdapter {
 
         return observable -> observable
                 .flatMap(new HandleFuc())
-                .retryWhen(new RetryWithNewToken())//拦截需要处理的异常
+//                .retryWhen(new RetryWithNewToken())//拦截需要处理的异常
                 .onErrorResumeNext(new HttpResponseFunc());
     }
 

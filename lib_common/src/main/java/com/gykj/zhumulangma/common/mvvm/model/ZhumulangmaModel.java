@@ -22,6 +22,7 @@ import com.ximalaya.ting.android.opensdk.model.column.ColumnList;
 import com.ximalaya.ting.android.opensdk.model.download.RecommendDownload;
 import com.ximalaya.ting.android.opensdk.model.live.program.ProgramList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
+import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListByCategory;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.ScheduleList;
@@ -603,4 +604,27 @@ public class ZhumulangmaModel extends CommonModel {
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
+
+    /**
+     * 根据电台分类获取直播电台数据。
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<RadioListByCategory> getRadiosByCategory(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getRadiosByCategory(specificParams,
+                new IDataCallBack<RadioListByCategory>() {
+                    @Override
+                    public void onSuccess(@Nullable RadioListByCategory radioListByCategory) {
+                        emitter.onNext(radioListByCategory);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
 }

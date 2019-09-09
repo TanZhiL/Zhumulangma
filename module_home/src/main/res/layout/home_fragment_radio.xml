@@ -14,9 +14,7 @@
         android:layout_width="match_parent"
         app:trh_color="@color/white"
         android:layout_height="50dp"/>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:overScrollMode="never"
@@ -30,7 +28,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/c1"
         android:layout_width="match_parent"
-        android:layout_height="182dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:paddingLeft="11dp"
         android:paddingTop="8dp"
@@ -39,15 +37,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/ll_country"
             android:layout_width="84dp"
             android:layout_height="81dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout3"
+            app:layout_constraintEnd_toStartOf="@+id/ll_province"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout2"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout2">
+            app:layout_constraintStart_toEndOf="@+id/ll_local"
+            app:layout_constraintTop_toTopOf="@+id/ll_local">
 
             <ImageView
                 android:layout_width="34dp"
@@ -66,15 +64,15 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
+            android:id="@+id/ll_province"
             android:layout_width="84dp"
             android:layout_height="81dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout4"
+            app:layout_constraintEnd_toStartOf="@+id/ll_internet"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout">
+            app:layout_constraintStart_toEndOf="@+id/ll_country"
+            app:layout_constraintTop_toTopOf="@+id/ll_country">
 
             <ImageView
                 android:layout_width="34dp"
@@ -93,12 +91,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/ll_local"
             android:layout_width="84dp"
             android:layout_height="81dp"
             android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+            app:layout_constraintEnd_toStartOf="@+id/ll_country"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -120,15 +118,15 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout4"
+            android:id="@+id/ll_internet"
             android:layout_width="84dp"
             android:layout_height="81dp"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/linearLayout3"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout3">
+            app:layout_constraintStart_toEndOf="@+id/ll_province"
+            app:layout_constraintTop_toTopOf="@+id/ll_province">
 
             <ImageView
                 android:layout_width="34dp"
@@ -146,21 +144,22 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <TextView
+        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
             android:id="@+id/textView7"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:background="#f0f0f0"
             android:gravity="center"
             android:text="新闻台"
+            app:rci_id="5"
             android:textColor="@color/colorGray"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/textView8"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/ll_local" />
 
-        <TextView
+        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
             android:id="@+id/textView12"
             android:layout_width="0dp"
             android:layout_height="45dp"
@@ -168,6 +167,7 @@
             android:background="#f0f0f0"
             android:gravity="center"
             android:text="体育台"
+            app:rci_id="2"
             android:textColor="@color/colorGray"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/textView18"
@@ -175,7 +175,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-        <TextView
+        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
             android:id="@+id/textView8"
             android:layout_width="0dp"
             android:layout_height="45dp"
@@ -184,6 +184,7 @@
             android:background="#f0f0f0"
             android:gravity="center"
             android:text="音乐台"
+            app:rci_id="14"
             android:textColor="@color/colorGray"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/textView10"
@@ -191,13 +192,14 @@
             app:layout_constraintStart_toEndOf="@+id/textView7"
             app:layout_constraintTop_toTopOf="@+id/textView7" />
 
-        <TextView
+        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
             android:id="@+id/textView10"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginEnd="1dp"
             android:background="#f0f0f0"
             android:gravity="center"
+            app:rci_id="1"
             android:text="交通台"
             android:textColor="@color/colorGray"
             android:textSize="14sp"
@@ -206,12 +208,13 @@
             app:layout_constraintStart_toEndOf="@+id/textView8"
             app:layout_constraintTop_toTopOf="@+id/textView8" />
 
-        <TextView
+        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
             android:id="@+id/tv_search"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:background="#f0f0f0"
             android:gravity="center"
+            app:rci_id="11"
             android:text="经济台"
             android:textColor="@color/colorGray"
             android:textSize="14sp"
@@ -220,7 +223,7 @@
             app:layout_constraintStart_toEndOf="@+id/textView10"
             app:layout_constraintTop_toTopOf="@+id/textView8" />
 
-        <TextView
+        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
             android:id="@+id/textView17"
             android:layout_width="0dp"
             android:layout_height="45dp"
@@ -228,6 +231,7 @@
             android:background="#f0f0f0"
             android:gravity="center"
             android:text="曲艺台"
+            app:rci_id="8"
             android:textColor="@color/colorGray"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/textView19"
@@ -245,16 +249,28 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView17"
             app:layout_constraintTop_toTopOf="@+id/textView12">
-
-            <ImageView
-                android:layout_width="45dp"
+            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:layout_marginEnd="1dp"
+                android:background="#f0f0f0"
+                android:gravity="center"
+                android:text="综合台"
+                app:rci_id="12"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"/>
+            <ImageView
+                android:id="@+id/iv_more"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:tint="@color/colorPrimary"
+                android:background="#f0f0f0"
                 android:src="@drawable/ic_home_radio_down" />
+
         </FrameLayout>
 
-        <TextView
+        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
             android:id="@+id/textView18"
             android:layout_width="0dp"
             android:layout_height="45dp"
@@ -263,13 +279,173 @@
             android:background="#f0f0f0"
             android:gravity="center"
             android:text="文艺台"
+            app:rci_id="4"
             android:textColor="@color/colorGray"
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/textView17"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView12"
             app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_more"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/textView12">
+
+
+            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                android:id="@+id/textView25"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="1dp"
+                android:background="#f0f0f0"
+                android:gravity="center"
+                android:text="都市台"
+                app:rci_id="13"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView30"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                android:id="@+id/textView30"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="1dp"
+                android:background="#f0f0f0"
+                android:gravity="center"
+                app:rci_id="10"
+                android:text="生活台"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView25"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView29"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                android:id="@+id/textView29"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="1dp"
+                android:background="#f0f0f0"
+                android:gravity="center"
+                android:text="外语台"
+                app:rci_id="3"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView30"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView27"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                android:id="@+id/textView27"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:background="#f0f0f0"
+                android:gravity="center"
+                app:rci_id="6"
+                android:text="方言台"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView29"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView33"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="1dp"
+                android:background="#f0f0f0"
+                android:gravity="center"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView35"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView34"
+                app:layout_constraintTop_toTopOf="@+id/textView34" />
+
+            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                android:id="@+id/textView36"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="1dp"
+                android:background="#f0f0f0"
+                android:gravity="center"
+                android:text="旅游台"
+                app:rci_id="7"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView34"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView27" />
+
+            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                android:id="@+id/textView34"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="1dp"
+                android:background="#f0f0f0"
+                android:gravity="center"
+                app:rci_id="15"
+                android:text="其他台"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/textView33"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView36"
+                app:layout_constraintTop_toTopOf="@+id/textView36" />
+
+
+            <FrameLayout
+                android:id="@+id/textView35"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:background="#f0f0f0"
+                android:textColor="@color/colorGray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="1dp"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textView33"
+                app:layout_constraintTop_toTopOf="@+id/textView33" >
+                <ImageView
+                    android:id="@+id/iv_less"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:tint="@color/colorPrimary"
+                    android:background="#f0f0f0"
+                    android:rotation="180"
+                    android:src="@drawable/ic_home_radio_down" />
+            </FrameLayout>
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
+
+    <com.gykj.zhumulangma.common.widget.ItemHeader
+        android:id="@+id/ih_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:ih_right_text="更多"
+        app:ih_title="最近收听"
+        app:layout_constraintTop_toBottomOf="@id/c1" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintTop_toBottomOf="@id/ih_history" />
+
     <com.gykj.zhumulangma.common.widget.ItemHeader
         android:id="@+id/ih_local"
         android:layout_width="match_parent"
@@ -277,7 +453,7 @@
         android:layout_marginTop="8dp"
         app:ih_right_text="更多"
         app:ih_title="长沙"
-        app:layout_constraintTop_toBottomOf="@id/c1" />
+        app:layout_constraintTop_toBottomOf="@id/rv_history" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_local"
         android:layout_width="match_parent"

@@ -121,6 +121,7 @@ dependencies {
     api files('libs/TingPhoneOpenSDK_7.0.8.jar')
     api files('libs/XmDownload_1.7.jar')
     api files('libs/XmlyOAuth2SDK_V1.11.jar')
+    api 'com.amap.api:location:latest.integration'
 }
 greendao {
     //数据库的schema版本，也可以理解为数据库版本号

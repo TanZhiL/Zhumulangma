@@ -27,24 +27,24 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Created by 10719
  * on 2019/6/11
  */
-public class CategoryItem extends FrameLayout {
+public class AlbumCategoryItem extends FrameLayout {
 
     private int icon;
     private String title="分类一";
     private  int categoryId;
 
-    public CategoryItem(@NonNull Context context) {
+    public AlbumCategoryItem(@NonNull Context context) {
         this(context,null);
     }
 
-    public CategoryItem(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public AlbumCategoryItem(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs,0);
     }
 
-    public CategoryItem(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public AlbumCategoryItem(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.CategoryItem,defStyleAttr,0);
+        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.AlbumCategoryItem,defStyleAttr,0);
         getAttrs(typedArray);
         typedArray.recycle();
 
@@ -67,9 +67,9 @@ public class CategoryItem extends FrameLayout {
     }
 
     private void getAttrs(TypedArray typedArray) {
-        icon=typedArray.getResourceId(R.styleable.CategoryItem_ci_icon,icon);
-        categoryId=typedArray.getInt(R.styleable.CategoryItem_ci_id,3);
-        title=typedArray.getString(R.styleable.CategoryItem_ci_title);
+        icon=typedArray.getResourceId(R.styleable.AlbumCategoryItem_aci_icon,icon);
+        categoryId=typedArray.getInt(R.styleable.AlbumCategoryItem_aci_id,3);
+        title=typedArray.getString(R.styleable.AlbumCategoryItem_aci_title);
     }
 
 

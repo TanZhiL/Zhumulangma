@@ -8,6 +8,7 @@ import android.support.annotation.VisibleForTesting;
 
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
+import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumDetailViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumListViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
@@ -16,6 +17,7 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayRadioViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioListViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
@@ -58,7 +60,7 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
         }else if (modelClass.isAssignableFrom(FineViewModel.class)) {
             return (T) new FineViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(RadioViewModel.class)) {
-            return (T) new RadioViewModel(mApplication, new ZhumulangmaModel(mApplication));
+            return (T) new RadioViewModel(mApplication, new RadioModel(mApplication));
         }else if (modelClass.isAssignableFrom(SearchViewModel.class)) {
             return (T) new SearchViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(SearchResultViewModel.class)) {
@@ -77,6 +79,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new PlayTrackViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(PlayRadioViewModel.class)) {
             return (T) new PlayRadioViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(RadioListViewModel.class)) {
+            return (T) new RadioListViewModel(mApplication, new RadioModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

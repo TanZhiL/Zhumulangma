@@ -20,6 +20,7 @@ public interface  AppConstants {
             String F_RANK="/home/rank";
             String F_SEARCH_RESULT="/home/search/result";
             String F_ALBUM_LIST="/home/album/list";
+            String F_RADIO_LIST="/home/radio/list";
             String F_ALBUM_DETAIL="/home/album/detail";
              String F_PLAY_TRACK="/home/play_track";
              String F_PLAY_RADIIO="/home/play_radio";
@@ -67,8 +68,18 @@ public interface  AppConstants {
          String USER="user";
          String TOKEN="token";
          String HOST="host";
+         String CITY_CODE="city_code";
+         String CITY_NAME="city_name";
+         String PROVINCE_CODE="province_code";
+         String PROVINCE_NAME="province_name";
          String PLAY_SCHEDULE_TYPE="play_schedule_type";
          String PLAY_SCHEDULE_TIME="play_schedule_time";
+    }
+    interface Defualt{
+        String CITY_CODE="4301";
+        String CITY_NAME="长沙";
+        String PROVINCE_CODE="430000";
+        String PROVINCE_NAME="湖南";
     }
     interface Cache{
         String FACE="face";

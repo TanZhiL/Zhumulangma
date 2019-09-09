@@ -11,11 +11,12 @@ import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
+import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.live.program.Program;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
@@ -38,48 +39,100 @@ import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import me.yokeyword.fragmentation.ISupportFragment;
 
-public class RadioViewModel extends BaseViewModel<RadioModel> {
+/**
+ * Author: Thomas.
+ * Date: 2019/8/14 10:21
+ * Email: 1071931588@qq.com
+ * Description:
+ */
+public class RadioListViewModel extends BaseViewModel<RadioModel> {
+    public static final String COUNTRY="1";
+    public static final String PROVINCE="2";
+    public static final String INTERNET="3";
 
+    private SingleLiveEvent<List<Radio>> mRadioSingleLiveEvent;
     private SingleLiveEvent<List<PlayHistoryBean>> mHistorySingleLiveEvent;
-    private SingleLiveEvent<List<Radio>> mLocalSingleLiveEvent;
-    private SingleLiveEvent<List<Radio>> mTopSingleLiveEvent;
-
-    private int totalLocalPage =1;
-    private int curLocalPage=1;
-    private String cityCode="4301";
-
-    public RadioViewModel(@NonNull Application application, RadioModel model) {
+    private int curPage = 1;
+    private static final int PAGESIZE = 20;
+    private String mProvinceCode="";
+    public RadioListViewModel(@NonNull Application application, RadioModel model) {
         super(application, model);
     }
 
-    public void _getHistory() {
-        mModel.getHistory(1,5)
-                .subscribe(historyBeans -> getHistorySingleLiveEvent().postValue(historyBeans), e->e.printStackTrace());
-    }
+    public void getLocalCity(String cityCode) {
 
-
-    public void getLocalList(String cityCode) {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CITY_CODE, cityCode);
-        map.put(DTransferConstants.PAGE_SIZE, "3");
-        curLocalPage=curLocalPage>=totalLocalPage?1:curLocalPage;
-        map.put(DTransferConstants.PAGE,String.valueOf(curLocalPage++));
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
+        map.put(DTransferConstants.PAGE,String.valueOf(curPage));
         mModel.getRadiosByCity(map)
+                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(curPage == 1))
                 .subscribe(radioList -> {
-                    totalLocalPage=radioList.getTotalPage();
-                    getLocalSingleLiveEvent().postValue(radioList.getRadios());
+                    postShowInitLoadViewEvent(false);
+                    curPage++;
+                    getRadioSingleLiveEvent().postValue(radioList.getRadios());
                 }, e->e.printStackTrace());
     }
 
+    public void getRadioList(String flag,String extras) {
 
-    public void getTopList() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.RADIO_COUNT, "3");
+        //电台类型：1-国家台，2-省市台，3-网络台
+        map.put(DTransferConstants.RADIOTYPE, flag);
+        if(flag.equals(PROVINCE)){
+            if(!extras.equals(mProvinceCode)){
+                curPage=1;
+                mProvinceCode=extras;
+            }
+            map.put(DTransferConstants.PROVINCECODE, extras);
+        }
+        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
+        mModel.getRadios(map)
+                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(curPage == 1))
+                .subscribe(radioList -> {
+                    postShowInitLoadViewEvent(false);
+                    curPage++;
+                    getRadioSingleLiveEvent().postValue(radioList.getRadios());
+                }, e->e.printStackTrace());
 
-        mModel.getRankRadios(map)
-                .subscribe(radioList -> getTopSingleLiveEvent().postValue(radioList.getRadios())
-                        , e->e.printStackTrace());
     }
+
+    public void _getRadiosByCategory(String type) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.RADIO_CATEGORY_ID, String.valueOf(type));
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
+        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
+        mModel.getRadiosByCategory(map)
+                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(curPage == 1))
+                .subscribe(listByCategory -> {
+                    postShowInitLoadViewEvent(false);
+                    curPage++;
+                    getRadioSingleLiveEvent().postValue(listByCategory.getRadios());
+                }, e -> e.printStackTrace());
+    }
+
+    public void _getRankRadios() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.RADIO_COUNT, String.valueOf(PAGESIZE));
+        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
+        mModel.getRankRadios(map)
+                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(curPage == 1))
+                .subscribe(radioList -> {
+                    postShowInitLoadViewEvent(false);
+                    curPage++;
+                    getRadioSingleLiveEvent().postValue(radioList.getRadios());
+                }, e->e.printStackTrace());
+    }
+
+    public void _getHistory() {
+        mModel.getHistory(curPage,PAGESIZE)
+                .subscribe(historyBeans -> {
+                    curPage++;
+                    getHistorySingleLiveEvent().postValue(historyBeans);
+                }, e->e.printStackTrace());
+    }
+
     private Radio radio;
     public void play(String radioId) {
         List<Schedule> schedulesx=new ArrayList<>();
@@ -189,15 +242,10 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
             }
         }
     }
+    public SingleLiveEvent<List<Radio>> getRadioSingleLiveEvent() {
+        return mRadioSingleLiveEvent=createLiveData(mRadioSingleLiveEvent);
+    }
     public SingleLiveEvent<List<PlayHistoryBean>> getHistorySingleLiveEvent() {
         return mHistorySingleLiveEvent=createLiveData(mHistorySingleLiveEvent);
-    }
-
-    public SingleLiveEvent<List<Radio>> getLocalSingleLiveEvent() {
-        return mLocalSingleLiveEvent=createLiveData(mLocalSingleLiveEvent);
-    }
-
-    public SingleLiveEvent<List<Radio>> getTopSingleLiveEvent() {
-        return mTopSingleLiveEvent=createLiveData(mTopSingleLiveEvent);
     }
 }

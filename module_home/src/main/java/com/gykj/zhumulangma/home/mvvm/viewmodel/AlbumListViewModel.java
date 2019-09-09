@@ -54,8 +54,7 @@ public class AlbumListViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getAlbumList(map)
                 .doOnSubscribe(disposable -> {
-                    if (curPage == 1)
-                        postShowInitLoadViewEvent(true);
+                        postShowInitLoadViewEvent(curPage == 1);
                 })
                 .subscribe(albumList -> {
                     postShowInitLoadViewEvent(false);

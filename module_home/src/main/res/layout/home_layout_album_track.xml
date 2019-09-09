@@ -126,8 +126,8 @@
             android:overScrollMode="never"
             />
     </FrameLayout>
-
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+<include layout="@layout/common_layout_refresh_loadmore"/>
+    <!--<com.scwang.smartrefresh.layout.SmartRefreshLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -146,5 +146,5 @@
             android:overScrollMode="never"
             android:nestedScrollingEnabled="true"/>
 
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
 </LinearLayout>

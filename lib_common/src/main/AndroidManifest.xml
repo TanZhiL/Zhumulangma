@@ -16,6 +16,7 @@
     <permission
         android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -42,11 +43,22 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- 喜马拉雅配置END -->
-    <application
-        android:networkSecurityConfig="@xml/network_security_config"
-        >
+    <!--高德定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!--高德定位END-->
+    <application android:networkSecurityConfig="@xml/network_security_config">
 
 
         <meta-data
@@ -61,7 +73,15 @@
             android:value="aeebdaf70f4efad44a8bc5f6c7847f11" />
         <meta-data
             android:name="pack_id"
-            android:value="${applicationId}" /> <!-- 喜马拉雅配置END -->
+            android:value="${applicationId}" />
+        <!-- 喜马拉雅配置END -->
+
+        <!--高德定位-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="cc8521395d0b822f3f686ad32cec8fcc">
+        </meta-data>
+        <!--高德定位END-->
         <!-- 极光推送配置 -->
         <!--
    <service
@@ -185,10 +205,13 @@
             android:windowSoftInputMode="adjustResize" />
 
         <service
-            android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService" android:exported="true"
+            android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService"
+            android:exported="true"
             android:process=":player" />
+
         <receiver
-            android:name="com.ximalaya.ting.android.opensdk.player.receive.PlayerReceiver" android:exported="true"
+            android:name="com.ximalaya.ting.android.opensdk.player.receive.PlayerReceiver"
+            android:exported="true"
             android:process=":player">
             <intent-filter>
                 <action android:name="com.ximalaya.ting.android.ACTION_CONTROL_START_PAUSE" />
@@ -198,12 +221,16 @@
                 <action android:name="com.ximalaya.ting.android.ACTION_CONTROL_RELEASE_SERVICE" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.ximalaya.ting.android.opensdk.player.receive.WireControlReceiver"
-            android:process=":player"
-            android:exported="true" />
+        <receiver
+            android:name="com.ximalaya.ting.android.opensdk.player.receive.WireControlReceiver"
+            android:exported="true"
+            android:process=":player" />
 
 
         <!-- 喜马拉雅听END -->
+        <!--高德定位-->
+        <service android:name="com.amap.api.location.APSService" />
+        <!--高德定位END-->
     </application>
 
 </manifest>

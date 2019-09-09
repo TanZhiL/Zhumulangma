@@ -102,6 +102,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
         flMask = fd(R.id.fl_mask);
 
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
+        ivCategoryDown.setVisibility(View.VISIBLE);
         tvTitle = llbarCenter.findViewById(R.id.tv_title);
         tvTitle.setText(c_labels[0]);
         layoutFree = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
@@ -188,6 +189,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
             });
 
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.SHOW_GP));
         } else {
             flMask.setTranslationY(-rvCategory.getHeight()==0?-400:-rvCategory.getHeight());
             flMask.animate().withStartAction(() -> {
@@ -196,6 +198,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
             }).translationY(0).alpha(1).setDuration(200).withEndAction(() -> flMask.setBackgroundColor(0x99000000));
 
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.HIDE_GP));
         }
     }
 
@@ -203,6 +206,9 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         switchCategory();
+        if(cid.equals(c_ids[position])){
+            return;
+        }
         tvTitle.setText(c_labels[position]);
         cid = c_ids[position];
         mFreeAdapter.setNewData(null);
