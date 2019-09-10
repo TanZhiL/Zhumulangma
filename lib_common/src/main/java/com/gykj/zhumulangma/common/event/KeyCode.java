@@ -18,6 +18,8 @@ public interface KeyCode {
         String ALBUMID = "albumid";
         String HOTWORD = "hotword";
         String RADIO_ID = "radioId";
+        String ANNOUNCER_ID = "announcerId";
+        String ANNOUNCER_NAME= "announcerName";
     }
 
     interface Find {

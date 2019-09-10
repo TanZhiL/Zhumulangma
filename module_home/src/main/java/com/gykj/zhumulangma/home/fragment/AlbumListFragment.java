@@ -32,8 +32,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 @Route(path = AppConstants.Router.Home.F_ALBUM_LIST)
 public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> implements BaseQuickAdapter.OnItemClickListener,
         OnLoadMoreListener {
-
+    //猜你喜欢
     public static final int LIKE = 0;
+    //付费精品
     public static final int PAID = -1;
 
     @Autowired(name = KeyCode.Home.TYPE)

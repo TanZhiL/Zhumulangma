@@ -12,6 +12,7 @@ import com.gykj.zhumulangma.common.net.http.RxAdapter;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
+import com.ximalaya.ting.android.opensdk.model.album.AnnouncerListByIds;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.RelativeAlbums;
@@ -26,6 +27,7 @@ import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListByCategory;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.ScheduleList;
+import com.ximalaya.ting.android.opensdk.model.track.AnnouncerTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
@@ -617,6 +619,71 @@ public class ZhumulangmaModel extends CommonModel {
                     @Override
                     public void onSuccess(@Nullable RadioListByCategory radioListByCategory) {
                         emitter.onNext(radioListByCategory);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
+     * 根据一批主播ID批量获取主播信息
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<AnnouncerListByIds> getAnnouncersBatch(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getAnnouncersBatch(specificParams,
+                new IDataCallBack<AnnouncerListByIds>() {
+                    @Override
+                    public void onSuccess(@Nullable AnnouncerListByIds announcerListByIds) {
+                        emitter.onNext(announcerListByIds);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
+     * 获取主播的专辑列表
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<AlbumList> getAlbumsByAnnouncer(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getAlbumsByAnnouncer(specificParams,
+                new IDataCallBack<AlbumList>() {
+                    @Override
+                    public void onSuccess(@Nullable AlbumList albumList) {
+                        emitter.onNext(albumList);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+    /**
+     *  获取某个主播的声音列表
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<AnnouncerTrackList> getTracksByAnnouncer(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getTracksByAnnouncer(specificParams,
+                new IDataCallBack<AnnouncerTrackList>() {
+                    @Override
+                    public void onSuccess(@Nullable AnnouncerTrackList trackList) {
+                        emitter.onNext(trackList);
                         emitter.onComplete();
                     }
 

@@ -10,13 +10,13 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
-import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -42,14 +42,14 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * on 2019/6/12
  */
 public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> implements
-        OnLoadMoreListener, OnBannerListener {
+        OnLoadMoreListener, OnBannerListener, BaseQuickAdapter.OnItemClickListener {
 
     private static final String TAG = "AnnouncerFragment";
     Banner banner;
     CircleImageView ivTop1;
     CircleImageView ivTop2;
     CircleImageView ivTop3;
-    RecyclerView rvLive;
+    RecyclerView rvAnnouncer;
     SmartRefreshLayout refreshLayout;
 
     private AnnouncerAdapter mAnnouncerAdapter;
@@ -69,7 +69,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
         ivTop1=view.findViewById(R.id.iv_top1);
         ivTop2=view.findViewById(R.id.iv_top2);
         ivTop3=view.findViewById(R.id.iv_top3);
-        rvLive =view.findViewById(R.id.rl_live);
+        rvAnnouncer =view.findViewById(R.id.rl_live);
         refreshLayout=view.findViewById(R.id.refreshLayout);
 
         initBanner();
@@ -81,6 +81,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
         super.initListener();
         banner.setOnBannerListener(this);
         refreshLayout.setOnLoadMoreListener(this);
+        mAnnouncerAdapter.setOnItemClickListener(this);
     }
 
     @Override
@@ -98,9 +99,9 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
 
     private void initList() {
         mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
-        rvLive.setLayoutManager(new LinearLayoutManager(mContext));
-        rvLive.setHasFixedSize(true);
-        mAnnouncerAdapter.bindToRecyclerView(rvLive);
+        rvAnnouncer.setLayoutManager(new LinearLayoutManager(mContext));
+        rvAnnouncer.setHasFixedSize(true);
+        mAnnouncerAdapter.bindToRecyclerView(rvAnnouncer);
     }
 
 
@@ -179,5 +180,15 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
             case 3:
                 mViewModel.play(bannerV2.getTrackId());
         }
+    }
+
+    @Override
+    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+                .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getData().get(position).getAnnouncerId())
+                .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getData().get(position).getNickname())
+                .navigation();
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
     }
 }

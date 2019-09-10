@@ -312,6 +312,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
             mHistoryBean=bean;
             if(bean.getKind().equals(PlayableModel.KIND_TRACK)){
                 globalPlay.setImage(bean.getTrack().getCoverUrlSmall());
+                globalPlay.setProgress(bean.getPercent());
             }else {
                 globalPlay.setImage(bean.getSchedule().getRelatedProgram().getBackPicUrl());
             }

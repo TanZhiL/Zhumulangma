@@ -73,13 +73,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
         mModel.getHistory(curPage, PAGESIZE)
                 .observeOn(Schedulers.io())
                 .map(playHistoryBeans -> convertSections(playHistoryBeans))
-                .doOnSubscribe(d->{
-                    if(curPage==1){
-                        postShowInitLoadViewEvent(true);
-                    }
-                })
                 .subscribe(playHistorySections -> {
-                    postShowInitLoadViewEvent(false);
                     curPage++;
                     getHistorySingleLiveEvent().postValue(playHistorySections);
                 }, e -> {

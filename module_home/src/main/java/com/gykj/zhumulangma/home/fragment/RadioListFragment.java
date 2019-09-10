@@ -48,13 +48,19 @@ import me.yokeyword.fragmentation.ISupportFragment;
 @Route(path = AppConstants.Router.Home.F_RADIO_LIST)
 public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> implements BaseQuickAdapter.OnItemClickListener,
         OnLoadMoreListener, View.OnClickListener {
-
+    //本地台
     public static final int LOCAL = 999;
+    //国家台
     public static final int COUNTRY = 998;
+    //省市台
     public static final int PROVINCE = 997;
+    //网络台
     public static final int INTERNET = 996;
+    //排行榜
     public static final int RANK = 995;
+    //播放历史
     public static final int HISTORY = 994;
+    //当地台
     public static final int LOCAL_CITY = 993;
 
     @Autowired(name = KeyCode.Home.TYPE)
@@ -92,7 +98,6 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
 
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
         tvTitle = llbarCenter.findViewById(R.id.tv_title);
-
         if(type==HISTORY){
             mHistoryAdapter=new RadioHistoryAdapter(R.layout.home_item_radio);
             mHistoryAdapter.bindToRecyclerView(rv);
@@ -227,7 +232,10 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
 
     @Override
     protected Integer[] onBindBarRightIcon() {
-        return new Integer[]{R.drawable.ic_common_share};
+        if(type==HISTORY||type==LOCAL||type==COUNTRY||type==PROVINCE||type==INTERNET||type==RANK||type==LOCAL_CITY){
+            return null;
+        }
+        return new Integer[]{R.drawable.ic_common_search};
     }
 
     @Override
@@ -236,10 +244,6 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
         return llbarCenter;
     }
 
-    @Override
-    protected int onBindBarRightStyle() {
-        return BarStyle.RIGHT_ICON;
-    }
 
     @Override
     protected int onBindBarCenterStyle() {

@@ -22,9 +22,9 @@ public interface  AppConstants {
             String F_ALBUM_LIST="/home/album/list";
             String F_RADIO_LIST="/home/radio/list";
             String F_ALBUM_DETAIL="/home/album/detail";
-             String F_PLAY_TRACK="/home/play_track";
-             String F_PLAY_RADIIO="/home/play_radio";
-             String F_PLAY_RADIIO_LIST="/home/play_radio_list";
+             String F_PLAY_TRACK="/home/play/track";
+             String F_PLAY_RADIIO="/home/play/radio";
+             String F_ANNOUNCER_DETAIL="/home/announcer/detail";
          }
          interface User{
              String F_MAIN="/user/main";
