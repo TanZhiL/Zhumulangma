@@ -16,7 +16,7 @@ import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.gykj.zhumulangma.common.net.config.API;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.main.R;
-import com.gykj.zhumulangma.main.mvvm.MainViewModelFactory;
+import com.gykj.zhumulangma.main.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.main.mvvm.viewmodel.LoginViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
 
@@ -86,7 +86,7 @@ public class LoginFragment extends BaseMvvmFragment<LoginViewModel> implements V
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return MainViewModelFactory.getInstance(App.getInstance());
+        return ViewModelFactory.getInstance(App.getInstance());
     }
 
     @Override

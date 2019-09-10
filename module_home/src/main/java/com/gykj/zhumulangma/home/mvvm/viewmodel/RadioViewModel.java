@@ -148,7 +148,8 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
                                     new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO,
                                             (ISupportFragment) navigation)));
                         }
-                    }else {
+                    }
+               /*     else {
                         Schedule schedule = ModelUtil.radioToSchedule(radio);
                         if (schedule == null) {
                             return;
@@ -162,7 +163,7 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
                                     new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO,
                                             (ISupportFragment) navigation)));
                         }
-                    }
+                    }*/
                 }, e -> e.printStackTrace());
     }
     private void fillData(List<Schedule> schedulesx) {

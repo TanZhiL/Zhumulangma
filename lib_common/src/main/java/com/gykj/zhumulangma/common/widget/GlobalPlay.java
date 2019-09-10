@@ -77,4 +77,11 @@ public class GlobalPlay extends FrameLayout {
     public void hide(){
         this.animate().translationY(getHeight()).setDuration(300).withEndAction(()->setVisibility(GONE));
     }
+
+    public void setImage(String url){
+        Glide.with(getContext()).load(url).into(civAvatar);
+    }
+    public void setImage(@DrawableRes int res){
+        Glide.with(getContext()).load(res).into(civAvatar);
+    }
 }

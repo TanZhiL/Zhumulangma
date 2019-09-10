@@ -203,7 +203,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
                 mViewModel.getRadioList(RadioListViewModel.INTERNET, null);
                 break;
             case RANK:
-                mViewModel._getRankRadios();
+               refreshLayout.finishLoadMoreWithNoMoreData();
                 break;
                 case LOCAL_CITY:
                 mViewModel.getLocalCity(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE));

@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -84,7 +85,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         TScrollView.OnScrollListener, View.OnClickListener, IXmPlayerStatusListener,
         BaseQuickAdapter.OnItemClickListener, IXmAdsStatusListener, OnSeekChangeListener,
         PlaySchedulePopup.onSelectedListener, PlayTrackPopup.onActionListener, IXmDownloadTrackCallBack,
-        IXmDataCallback, PlayTempoPopup.onTempoSelectedListener {
+        IXmDataCallback, PlayTempoPopup.onTempoSelectedListener, View.OnTouchListener {
 
     private TScrollView msv;
     private CommonTitleBar ctbTrans;
@@ -243,6 +244,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         tvTempo.setOnClickListener(this);
         mAlbumAdapter.setOnItemClickListener(this);
         isbProgress.setOnSeekChangeListener(this);
+        isbProgress.setOnTouchListener(this);
         mPlayerManager.addPlayerStatusListener(this);
         mPlayerManager.addAdsStatusListener(this);
         fd(R.id.tv_more_relative).setOnClickListener(view -> {
@@ -700,7 +702,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         isTouch = true;
     }
 
-    boolean isTouch;
+    //解决点击进度条跳动的问题
+     private boolean isTouch;
 
     @Override
     public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
@@ -890,5 +893,17 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onTempoSelected(String tempo) {
         tvTempo.setText(tempo);
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction()==MotionEvent.ACTION_DOWN){
+            isTouch=true;
+        }else if(event.getAction()==MotionEvent.ACTION_UP){
+            mHandler.postDelayed(()-> isTouch=false,200);
+
+        }
+        return false;
     }
 }

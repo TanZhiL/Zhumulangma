@@ -1,9 +1,12 @@
 package com.gykj.zhumulangma.main;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,15 +18,19 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseActivity;
+import com.gykj.zhumulangma.common.mvvm.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.fragment.MainFragment;
+import com.gykj.zhumulangma.main.mvvm.ViewModelFactory;
+import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
 import com.ximalaya.ting.android.opensdk.auth.call.IXmlyAuthListener;
 import com.ximalaya.ting.android.opensdk.auth.exception.XmlyException;
 import com.ximalaya.ting.android.opensdk.auth.handler.XmlySsoHandler;
@@ -57,13 +64,13 @@ import me.yokeyword.fragmentation.ISupportFragment;
 import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
 
 @Route(path = AppConstants.Router.Main.A_MAIN)
-public class MainActivity extends BaseActivity implements View.OnClickListener,
+public class MainActivity extends BaseMvvmActivity<MainViewModel> implements View.OnClickListener,
         MainFragment.onRootShowListener, IXmPlayerStatusListener, IXmAdsStatusListener {
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(this);
     private XmlyAuthInfo mAuthInfo;
     private XmlySsoHandler mSsoHandler;
     private XmlyAuth2AccessToken mAccessToken;
-
+    private PlayHistoryBean mHistoryBean;
     private GlobalPlay globalPlay;
 
     @Override
@@ -100,6 +107,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
                     return;
                 }
                 globalPlay.play(currSoundIgnoreKind.getCoverUrlSmall());
+            }else {
+                mViewModel.getLastSound();
             }
         }, 100);
 
@@ -116,15 +125,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
         if (v == globalPlay) {
             if (null == mPlayerManager.getCurrSound(true)) {
-                Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_RANK).navigation();
-                if (null != navigation) {
-                    EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                            new NavigateBean(AppConstants.Router.Home.F_RANK, (ISupportFragment) navigation,
-                                    extraTransaction().setCustomAnimations(
-                                            com.gykj.zhumulangma.common.R.anim.push_bottom_in,
-                                            com.gykj.zhumulangma.common.R.anim.no_anim,
-                                            com.gykj.zhumulangma.common.R.anim.no_anim,
-                                            com.gykj.zhumulangma.common.R.anim.push_bottom_out))));
+                if(mHistoryBean==null){
+                    Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_RANK).navigation();
+                    if (null != navigation) {
+                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                                new NavigateBean(AppConstants.Router.Home.F_RANK, (ISupportFragment) navigation,
+                                        extraTransaction().setCustomAnimations(
+                                                com.gykj.zhumulangma.common.R.anim.push_bottom_in,
+                                                com.gykj.zhumulangma.common.R.anim.no_anim,
+                                                com.gykj.zhumulangma.common.R.anim.no_anim,
+                                                com.gykj.zhumulangma.common.R.anim.push_bottom_out))));
+                    }
+                }else {
+                    mViewModel.play(mHistoryBean);
                 }
             } else {
                 mPlayerManager.play();
@@ -283,7 +296,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener,
 
     }
 
-class CustomAuthListener implements IXmlyAuthListener {
+    @Override
+    public Class<MainViewModel> onBindViewModel() {
+        return MainViewModel.class;
+    }
+
+    @Override
+    public ViewModelProvider.Factory onBindViewModelFactory() {
+        return ViewModelFactory.getInstance(mApplication);
+    }
+
+    @Override
+    public void initViewObservable() {
+        mViewModel.getHistorySingleLiveEvent().observe(this, bean -> {
+            mHistoryBean=bean;
+            if(bean.getKind().equals(PlayableModel.KIND_TRACK)){
+                globalPlay.setImage(bean.getTrack().getCoverUrlSmall());
+            }else {
+                globalPlay.setImage(bean.getSchedule().getRelatedProgram().getBackPicUrl());
+            }
+        });
+        mViewModel.getCoverSingleLiveEvent().observe(this, s -> globalPlay.play(s));
+    }
+
+    class CustomAuthListener implements IXmlyAuthListener {
     @Override
     public void onComplete(Bundle bundle) {
         parseAccessToken(bundle);

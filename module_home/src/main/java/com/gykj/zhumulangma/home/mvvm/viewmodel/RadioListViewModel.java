@@ -114,8 +114,8 @@ public class RadioListViewModel extends BaseViewModel<RadioModel> {
 
     public void _getRankRadios() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.RADIO_COUNT, String.valueOf(PAGESIZE));
-        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
+        //获取前100名
+        map.put(DTransferConstants.RADIO_COUNT, "100");
         mModel.getRankRadios(map)
                 .doOnSubscribe(disposable -> postShowInitLoadViewEvent(curPage == 1))
                 .subscribe(radioList -> {
@@ -201,7 +201,8 @@ public class RadioListViewModel extends BaseViewModel<RadioModel> {
                                     new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO,
                                             (ISupportFragment) navigation)));
                         }
-                    }else {
+                    }
+               /*     else {
                         Schedule schedule = ModelUtil.radioToSchedule(radio);
                         if (schedule == null) {
                             return;
@@ -215,7 +216,7 @@ public class RadioListViewModel extends BaseViewModel<RadioModel> {
                                     new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO,
                                             (ISupportFragment) navigation)));
                         }
-                    }
+                    }*/
                 }, e -> e.printStackTrace());
     }
     private void fillData(List<Schedule> schedulesx) {

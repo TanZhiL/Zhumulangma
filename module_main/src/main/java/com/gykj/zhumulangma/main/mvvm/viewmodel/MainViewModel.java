@@ -1,12 +1,10 @@
-package com.gykj.zhumulangma.listen.mvvm.viewmodel;
+package com.gykj.zhumulangma.main.mvvm.viewmodel;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
-import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.chad.library.adapter.base.entity.SectionEntity;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
@@ -16,20 +14,13 @@ import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
-import com.gykj.zhumulangma.common.util.DateUtil;
 import com.gykj.zhumulangma.common.util.RadioUtil;
-import com.gykj.zhumulangma.common.util.log.TLog;
-import com.gykj.zhumulangma.listen.adapter.HistoryAdapter;
-import com.gykj.zhumulangma.listen.mvvm.model.HistoryModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.live.program.Program;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
-import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
-import com.ximalaya.ting.android.opensdk.model.track.Track;
-import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 import com.ximalaya.ting.android.opensdk.util.ModelUtil;
@@ -41,54 +32,55 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/20 13:56
+ * Date: 2019/9/10 8:23
  * Email: 1071931588@qq.com
  * Description:
  */
-public class HistoryViewModel extends BaseViewModel<HistoryModel> {
-    private SingleLiveEvent<List<PlayHistoryItem>> mHistorysSingleLiveEvent;
-    private static final int PAGESIZE = 20;
-    private int curPage = 1;
+public class MainViewModel extends BaseViewModel<ZhumulangmaModel> {
 
-    public HistoryViewModel(@NonNull Application application, HistoryModel model) {
+    private SingleLiveEvent<PlayHistoryBean> mHistorySingleLiveEvent;
+    private SingleLiveEvent<String> mCoverSingleLiveEvent;
+
+    public MainViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
 
-    public void _getHistory() {
-        mModel.getHistory(curPage, PAGESIZE)
-                .observeOn(Schedulers.io())
-                .map(playHistoryBeans -> convertSections(playHistoryBeans))
-                .doOnSubscribe(d->{
-                    if(curPage==1){
-                        postShowInitLoadViewEvent(true);
+    public void getLastSound() {
+        mModel.listDesc(PlayHistoryBean.class, 0, 0, PlayHistoryBeanDao.Properties.Datatime, null)
+                .subscribe(historyBeans -> {
+                    if (!CollectionUtils.isEmpty(historyBeans)) {
+                        getHistorySingleLiveEvent().postValue(historyBeans.get(0));
                     }
-                })
-                .subscribe(playHistorySections -> {
-                    postShowInitLoadViewEvent(false);
-                    curPage++;
-                    getHistorySingleLiveEvent().postValue(playHistorySections);
-                }, e -> {
-                    e.printStackTrace();
-                    postShowNoDataViewEvent(true);
-                });
+                }, e -> e.printStackTrace());
     }
 
-    public void play(long albumId,long trackId) {
+    public SingleLiveEvent<PlayHistoryBean> getHistorySingleLiveEvent() {
+        return mHistorySingleLiveEvent = createLiveData(mHistorySingleLiveEvent);
+    }
+
+    public void play(PlayHistoryBean historyBean) {
+        switch (historyBean.getKind()) {
+            case PlayableModel.KIND_TRACK:
+                play(historyBean.getGroupId(), historyBean.getTrack().getDataId());
+                break;
+            case PlayableModel.KIND_SCHEDULE:
+                play(String.valueOf(historyBean.getGroupId()));
+                break;
+        }
+    }
+
+    public void play(long albumId, long trackId) {
 
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.ALBUM_ID, String.valueOf(albumId));
@@ -99,8 +91,9 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                 .doFinally(() -> postShowInitLoadViewEvent(false))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
-                        if(trackList.getTracks().get(i).getDataId()==trackId){
-                            XmPlayerManager.getInstance(getApplication()).playList(trackList,i);
+                        if (trackList.getTracks().get(i).getDataId() == trackId) {
+                            getCoverSingleLiveEvent().postValue(trackList.getTracks().get(i).getCoverUrlSmall());
+                            XmPlayerManager.getInstance(getApplication()).playList(trackList, i);
                             break;
                         }
                     }
@@ -115,8 +108,9 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
     }
 
     private Radio radio;
+
     public void play(String radioId) {
-        List<Schedule> schedulesx=new ArrayList<>();
+        List<Schedule> schedulesx = new ArrayList<>();
         Map<String, String> yestoday = new HashMap();
         yestoday.put("radio_id", radioId);
         Calendar calendar0 = Calendar.getInstance();
@@ -149,7 +143,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                     schedulesx.addAll(schedules);
                 })
                 .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
-                RadioUtil.getSchedules(today))
+                        RadioUtil.getSchedules(today))
                 .doOnNext(schedules -> {
                     Iterator var7 = schedules.iterator();
                     while (var7.hasNext()) {
@@ -160,7 +154,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                     schedulesx.addAll(schedules);
                 })
                 .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
-                RadioUtil.getSchedules(tomorrow))
+                        RadioUtil.getSchedules(tomorrow))
                 .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
                 .doFinally(() -> postShowInitLoadViewEvent(false))
                 .subscribe(schedules -> {
@@ -173,8 +167,9 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                     schedulesx.addAll(schedules);
                     fillData(schedulesx);
 
-                    if(!CollectionUtils.isEmpty(schedulesx)){
-                        XmPlayerManager.getInstance(getApplication()).playSchedule(schedulesx,-1);
+                    if (!CollectionUtils.isEmpty(schedulesx)) {
+                        getCoverSingleLiveEvent().postValue(radio.getCoverUrlSmall());
+                        XmPlayerManager.getInstance(getApplication()).playSchedule(schedulesx, -1);
                         Object navigation = ARouter.getInstance()
                                 .build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
                         if (null != navigation) {
@@ -183,7 +178,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                                             (ISupportFragment) navigation)));
                         }
                     }
-                /*    else {
+                  /*  else {
                         Schedule schedule = ModelUtil.radioToSchedule(radio);
                         if (schedule == null) {
                             return;
@@ -200,52 +195,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                     }*/
                 }, e -> e.printStackTrace());
     }
-    private List<PlayHistoryItem> convertSections(List<PlayHistoryBean> beans){
-        List<PlayHistoryItem> sections=new ArrayList<>();
-        Map<String,List<PlayHistoryBean>> map=new LinkedHashMap<>();
 
-        for (PlayHistoryBean bean:beans) {
-            List<PlayHistoryBean> playHistoryBeans = map.get(dateCovert(bean.getDatatime()));
-            if(playHistoryBeans==null){
-                playHistoryBeans=new ArrayList<>();
-                map.put(dateCovert(bean.getDatatime()),playHistoryBeans);
-            }
-            playHistoryBeans.add(bean);
-        }
-
-        Iterator<Map.Entry<String, List<PlayHistoryBean>>> iterator = map.entrySet().iterator();
-
-        while (iterator.hasNext()){
-            Map.Entry entry = iterator.next();
-            String key =(String)entry.getKey();
-            sections.add(new PlayHistoryItem(PlayHistoryItem.HEADER,key));
-            List<PlayHistoryBean> list = (List<PlayHistoryBean>) entry.getValue();
-            for (PlayHistoryBean bean : list) {
-                sections.add(new PlayHistoryItem(bean.getKind().equals(PlayableModel.KIND_TRACK) ?
-                        PlayHistoryItem.TRACK:PlayHistoryItem.SCHEDULE,bean));
-            }
-        }
-
-        return sections;
-    }
-    public String dateCovert(long datetime){
-
-        if(datetime > DateUtil.getDayBegin().getTime()){
-            return "今天";
-        }else if(datetime > DateUtil.getBeginDayOfYesterday().getTime()){
-            return "昨天";
-        }else {
-            return "更早";
-        }
-
-    }
-    public void clear() {
-        mModel.clearAll(PlayHistoryBean.class).subscribe();
-    }
-
-    public SingleLiveEvent<List<PlayHistoryItem>> getHistorySingleLiveEvent() {
-        return mHistorysSingleLiveEvent = createLiveData(mHistorysSingleLiveEvent);
-    }
     private void fillData(List<Schedule> schedulesx) {
         if (!CollectionUtils.isEmpty(schedulesx)) {
             Iterator var = schedulesx.iterator();
@@ -271,27 +221,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
         }
     }
 
-    public class PlayHistoryItem implements MultiItemEntity {
-        public static final int HEADER = 1;
-        public static final int TRACK = 2;
-        public static final int SCHEDULE = 3;
-        public int itemType;
-        public PlayHistoryBean data;
-        public String header;
-
-        public PlayHistoryItem(int itemType,PlayHistoryBean data) {
-            this.itemType = itemType;
-            this.data=data;
-        }
-        public PlayHistoryItem(int itemType,String header) {
-            this.itemType = itemType;
-            this.header=header;
-        }
-
-        @Override
-        public int getItemType() {
-            return itemType;
-        }
-
+    public SingleLiveEvent<String> getCoverSingleLiveEvent() {
+        return mCoverSingleLiveEvent=createLiveData(mCoverSingleLiveEvent);
     }
 }
