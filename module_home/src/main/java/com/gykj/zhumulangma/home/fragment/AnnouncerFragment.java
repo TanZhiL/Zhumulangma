@@ -24,6 +24,7 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -43,8 +44,8 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> implements
-        OnLoadMoreListener, OnBannerListener, BaseQuickAdapter.OnItemClickListener {
+public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> implements OnBannerListener,
+        BaseQuickAdapter.OnItemClickListener, OnRefreshLoadMoreListener {
 
     private static final String TAG = "AnnouncerFragment";
     Banner banner;
@@ -83,13 +84,13 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
         super.initListener();
         banner.setOnBannerListener(this);
         refreshLayout.setOnLoadMoreListener(this);
+        refreshLayout.setOnRefreshLoadMoreListener(this);
         mAnnouncerAdapter.setOnItemClickListener(this);
     }
 
     @Override
     public void initData() {
         mViewModel.getBannerList();
-        mViewModel.getTopList();
         mViewModel.getAnnouncerList();
     }
 
@@ -192,5 +193,10 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
                 new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        mViewModel.getAnnouncerList();
     }
 }

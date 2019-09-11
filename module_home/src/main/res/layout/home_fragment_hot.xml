@@ -12,7 +12,6 @@
     <com.gykj.zhumulangma.common.widget.TRefreshHeader
         android:id="@+id/header"
         android:layout_width="match_parent"
-        app:trh_color="@color/white"
         android:layout_height="50dp"/>
 <ScrollView
     android:layout_width="match_parent"

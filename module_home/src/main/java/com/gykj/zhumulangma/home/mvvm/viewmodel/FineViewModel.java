@@ -55,7 +55,8 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "4");
         map.put(DTransferConstants.IMAGE_SCALE, "2");
-        map.put(DTransferConstants.CONTAINS_PAID,"true");
+        //是否需要输出付费内容：true-是；false-否；（默认不输出付费内容）
+//        map.put(DTransferConstants.CONTAINS_PAID,"true");
         mModel.getCategoryBannersV2(map)
                 .subscribe(bannerV2List ->
                                 getBannerV2SingleLiveEvent().postValue(bannerV2List.getBannerV2s())
@@ -64,7 +65,7 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public void getDailyList() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.PAGE_SIZE, "3");
+        map.put(DTransferConstants.PAGE_SIZE, "5");
         curDailyPage = curDailyPage >= totalDailyPage ? 1 : curDailyPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curDailyPage++));
         mModel.getPaidAlbumByTag(map)
@@ -78,7 +79,7 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
     public void getBookList() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.TAG_NAME, "有声书");
-        map.put(DTransferConstants.PAGE_SIZE, "3");
+        map.put(DTransferConstants.PAGE_SIZE, "5");
         curBookPage = curBookPage >= totalBookPage ? 1 : curBookPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curBookPage++));
         mModel.getPaidAlbumByTag(map)
@@ -92,7 +93,7 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
     public void getClassRoomList() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.TAG_NAME, "精品-小课");
-        map.put(DTransferConstants.PAGE_SIZE, "3");
+        map.put(DTransferConstants.PAGE_SIZE, "5");
         curClassRoomPage = curClassRoomPage >= totalClassRoomPage ? 1 : curClassRoomPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curClassRoomPage++));
         mModel.getPaidAlbumByTag(map)

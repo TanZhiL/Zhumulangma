@@ -46,7 +46,6 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
 
     private int totalLocalPage =1;
     private int curLocalPage=1;
-    private String cityCode="4301";
 
     public RadioViewModel(@NonNull Application application, RadioModel model) {
         super(application, model);
@@ -61,7 +60,7 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
     public void getLocalList(String cityCode) {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CITY_CODE, cityCode);
-        map.put(DTransferConstants.PAGE_SIZE, "3");
+        map.put(DTransferConstants.PAGE_SIZE, "5");
         curLocalPage=curLocalPage>=totalLocalPage?1:curLocalPage;
         map.put(DTransferConstants.PAGE,String.valueOf(curLocalPage++));
         mModel.getRadiosByCity(map)
@@ -74,7 +73,7 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
 
     public void getTopList() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.RADIO_COUNT, "3");
+        map.put(DTransferConstants.RADIO_COUNT, "5");
 
         mModel.getRankRadios(map)
                 .subscribe(radioList -> getTopSingleLiveEvent().postValue(radioList.getRadios())

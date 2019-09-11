@@ -82,7 +82,7 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "3");
         map.put(DTransferConstants.CALC_DIMENSION, "3");
-        map.put(DTransferConstants.PAGE_SIZE, "3");
+        map.put(DTransferConstants.PAGE_SIZE, "5");
         curStoryPage = curStoryPage >= totalStoryPage ? 1 : curStoryPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curStoryPage++));
         mModel.getAlbumList(map)
@@ -98,7 +98,7 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "6");
         map.put(DTransferConstants.CALC_DIMENSION, "3");
-        map.put(DTransferConstants.PAGE_SIZE, "3");
+        map.put(DTransferConstants.PAGE_SIZE, "5");
         curBabyPage = curBabyPage >= totalBabyPage ? 1 : curBabyPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curBabyPage++));
         mModel.getAlbumList(map)
@@ -114,7 +114,7 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "2");
         map.put(DTransferConstants.CALC_DIMENSION, "3");
-        map.put(DTransferConstants.PAGE_SIZE, "3");
+        map.put(DTransferConstants.PAGE_SIZE, "6");
         curMusicPage = curMusicPage >= totalMusicPage ? 1 : curMusicPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curMusicPage++));
         mModel.getAlbumList(map)
@@ -130,7 +130,7 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<String, String>();
         //电台类型：1-国家台，2-省市台，3-网络台
         map.put(DTransferConstants.RADIOTYPE, "3");
-        map.put(DTransferConstants.PAGE_SIZE, "3");
+        map.put(DTransferConstants.PAGE_SIZE, "5");
         curRadioPage = curRadioPage >= totalRadioPage ? 1 : curRadioPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curRadioPage++));
         mModel.getRadios(map)

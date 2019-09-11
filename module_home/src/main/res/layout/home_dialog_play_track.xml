@@ -79,26 +79,8 @@
 
 
     </android.support.constraint.ConstraintLayout>
+    <include android:layout_height="250dp"   android:layout_width="match_parent" layout="@layout/common_layout_refresh_loadmore"/>
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/refreshLayout"
-        android:layout_width="match_parent"
-        app:srlFooterTriggerRate="0"
-        app:srlEnableNestedScrolling="true"
-        android:layout_height="250dp"
-        app:srlEnableLoadMoreWhenContentNotFull="false"
-        android:background="@color/white">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"/>
-
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <View
         android:layout_width="match_parent"

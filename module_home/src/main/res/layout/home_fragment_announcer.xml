@@ -31,10 +31,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_marginRight="11dp"
-            android:background="@drawable/shap_home_announcer"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/banner">
+            android:visibility="gone"
+            android:background="@drawable/shap_home_announcer">
 
             <ImageView
                 android:id="@+id/imageView5"
@@ -103,6 +101,29 @@
                 app:layout_constraintRight_toLeftOf="@id/iv_top2"
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="45dp">
+    <View
+        android:layout_width="3dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:background="@color/colorPrimary"/>
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        android:paddingStart="11dp"
+        android:text="热门主播"
+        android:textStyle="bold"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="16sp" />
+
+</LinearLayout>
 
 
     </android.support.design.widget.AppBarLayout>
@@ -113,7 +134,11 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:srlFooterTriggerRate="0">
-
+        <com.gykj.zhumulangma.common.widget.TRefreshHeader
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            app:lottie_colorFilter="@color/colorHint"
+            android:layout_height="50dp"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rl_live"
             android:layout_width="match_parent"

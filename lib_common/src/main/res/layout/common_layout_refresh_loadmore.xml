@@ -10,7 +10,11 @@
     android:layout_height="match_parent"
     app:srlEnableLoadMoreWhenContentNotFull="false"
     android:background="@color/white">
-
+    <com.gykj.zhumulangma.common.widget.TRefreshHeader
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        app:lottie_colorFilter="@color/colorHint"
+        android:layout_height="50dp"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"

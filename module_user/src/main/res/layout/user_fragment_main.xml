@@ -27,7 +27,7 @@
         <com.gykj.zhumulangma.common.widget.TRefreshHeader
             android:id="@+id/header"
             android:layout_width="match_parent"
-            app:trh_color="@color/white"
+            app:lottie_colorFilter="@color/white"
             android:layout_height="50dp"/>
     <com.gykj.zhumulangma.common.widget.TScrollView
         android:id="@+id/msv"

@@ -438,6 +438,9 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     }
 
     private void updatePlayStatus() {
+        if(playerManager.getCurrSound().getKind() !=PlayableModel.KIND_TRACK){
+            return;
+        }
         Track track = playerManager.getCurrSoundIgnoreKind(true);
         if (null == track) {
             return;

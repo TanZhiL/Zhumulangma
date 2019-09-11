@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.common.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,6 +14,10 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieProperty;
+import com.airbnb.lottie.SimpleColorFilter;
+import com.airbnb.lottie.model.KeyPath;
+import com.airbnb.lottie.value.LottieValueCallback;
 import com.gykj.zhumulangma.common.R;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshKernel;
@@ -27,9 +32,8 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
  * Description:
  */
 public class TRefreshHeader extends LinearLayout implements RefreshHeader {
-
+    SimpleColorFilter filter;
     private LottieAnimationView mAnimationView;
-    private int color;
 
     public TRefreshHeader(Context context) {
         super(context);
@@ -38,8 +42,10 @@ public class TRefreshHeader extends LinearLayout implements RefreshHeader {
 
     public TRefreshHeader(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TRefreshHeader);
-        color = typedArray.getColor(R.styleable.TRefreshHeader_trh_color, Color.GRAY);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LottieAnimationView);
+        filter = new SimpleColorFilter(
+                typedArray.getColor(R.styleable.LottieAnimationView_lottie_colorFilter,
+                        context.getResources().getColor(R.color.colorHint)));
         typedArray.recycle();
         initView(context);
     }
@@ -52,7 +58,11 @@ public class TRefreshHeader extends LinearLayout implements RefreshHeader {
     private void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.common_widget_refersheader, this);
         mAnimationView = view.findViewById(R.id.animation_view);
-        mAnimationView.setColorFilter(color);
+
+        KeyPath keyPath = new KeyPath("**");
+        LottieValueCallback<ColorFilter> callback = new LottieValueCallback<ColorFilter>(filter);
+        mAnimationView.addValueCallback(keyPath, LottieProperty.COLOR_FILTER, callback);
+
     }
 
 
