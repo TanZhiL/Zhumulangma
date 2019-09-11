@@ -49,9 +49,6 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
 
     private static final String TAG = "AnnouncerFragment";
     Banner banner;
-    CircleImageView ivTop1;
-    CircleImageView ivTop2;
-    CircleImageView ivTop3;
     RecyclerView rvAnnouncer;
     SmartRefreshLayout refreshLayout;
 
@@ -69,11 +66,8 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
     }
     protected void initView(View view) {
 
-        ivTop1=view.findViewById(R.id.iv_top1);
-        ivTop2=view.findViewById(R.id.iv_top2);
-        ivTop3=view.findViewById(R.id.iv_top3);
-        rvAnnouncer =view.findViewById(R.id.rl_live);
-        refreshLayout=view.findViewById(R.id.refreshLayout);
+        rvAnnouncer =fd(R.id.rv_announcer);
+        refreshLayout=fd(R.id.refreshLayout);
 
         initBanner();
         initList();
@@ -84,7 +78,6 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
         super.initListener();
         banner.setOnBannerListener(this);
         refreshLayout.setOnLoadMoreListener(this);
-        refreshLayout.setOnRefreshLoadMoreListener(this);
         mAnnouncerAdapter.setOnItemClickListener(this);
     }
 
@@ -103,7 +96,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
     private void initList() {
         mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
         rvAnnouncer.setLayoutManager(new LinearLayoutManager(mContext));
-        rvAnnouncer.setHasFixedSize(true);
+//        rvAnnouncer.setHasFixedSize(true);
         mAnnouncerAdapter.bindToRecyclerView(rvAnnouncer);
     }
 
@@ -143,11 +136,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
             }
             banner.setImages(images).setImageLoader(new MainHomeFragment.GlideImageLoader()).start();
         });
-        mViewModel.getTopSingleLiveEvent().observe(this, announcers -> {
-            Glide.with(mContext).load(announcers.get(0).getAvatarUrl()).into(ivTop1);
-            Glide.with(mContext).load(announcers.get(1).getAvatarUrl()).into(ivTop2);
-            Glide.with(mContext).load(announcers.get(2).getAvatarUrl()).into(ivTop3);
-        });
+
 
         mViewModel.getAnnouncerSingleLiveEvent().observe(this, announcers -> {
             if(null==announcers||(mAnnouncerAdapter.getData().size()==0&&announcers.size()==0)){
@@ -182,6 +171,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
                 break;
             case 3:
                 mViewModel.play(bannerV2.getTrackId());
+                break;
             case 1:
                 Object navigation1 = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID,bannerV2.getBannerUid())

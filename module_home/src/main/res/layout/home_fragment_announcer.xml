@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
 <android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -150,4 +150,83 @@
 
         </android.support.v7.widget.RecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-</android.support.design.widget.CoordinatorLayout>
+</android.support.design.widget.CoordinatorLayout>-->
+<com.scwang.smartrefresh.layout.SmartRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:srlEnableNestedScrolling="true"
+    app:srlEnablePreviewInEditMode="true">
+    <com.gykj.zhumulangma.common.widget.TRefreshHeader
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:background="@color/white"
+        android:overScrollMode="never">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
+            android:descendantFocusability="blocksDescendants"
+            android:layout_height="wrap_content">
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="158dp"
+                app:indicator_drawable_unselected="@drawable/shap_common_circle_white"
+                app:indicator_height="7dp"
+                app:indicator_margin="3dp"
+                app:indicator_width="7dp" >
+            </com.youth.banner.Banner>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="45dp">
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:background="@color/colorPrimary"/>
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical"
+                    android:background="@color/white"
+                    android:paddingStart="11dp"
+                    android:text="热门主播"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+            <View android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#f0f0f0"
+                />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_announcer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"/>
+        </LinearLayout>
+    </ScrollView>
+    <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        app:srlTextSizeTitle="12sp"
+        app:srlDrawableSize="16dp"
+        app:srlFinishDuration="0"
+        android:layout_height="wrap_content"/>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
