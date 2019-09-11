@@ -734,7 +734,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             lavPlayPause.loop(false);
             lavPlayPause.playAnimation();
             lavBuffering.cancelAnimation();
-            lavBuffering.setVisibility(View.GONE);
+            lavBuffering.setVisibility(View.INVISIBLE);
             lavPlayPause.setVisibility(View.VISIBLE);
             lavPlayPause.addAnimatorListener(new AnimatorListenerAdapter() {
 
@@ -755,7 +755,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         lavPlayPause.loop(true);
         lavPlayPause.playAnimation();
         lavBuffering.cancelAnimation();
-        lavBuffering.setVisibility(View.GONE);
+        lavBuffering.setVisibility(View.INVISIBLE);
         lavPlayPause.setVisibility(View.VISIBLE);
     }
 
@@ -764,7 +764,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         lavPlayPause.cancelAnimation();
         lavBuffering.playAnimation();
         isPlaying = false;
-        lavPlayPause.setVisibility(View.GONE);
+        lavPlayPause.setVisibility(View.INVISIBLE);
         lavBuffering.setVisibility(View.VISIBLE);
     }
 
@@ -775,7 +775,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         lavPlayPause.setMinAndMaxFrame(180, 210);
         lavPlayPause.loop(false);
         lavPlayPause.playAnimation();
-        lavBuffering.setVisibility(View.GONE);
+        lavBuffering.setVisibility(View.INVISIBLE);
         lavPlayPause.setVisibility(View.VISIBLE);
     }
 

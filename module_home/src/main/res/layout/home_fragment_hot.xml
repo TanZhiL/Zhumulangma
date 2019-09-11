@@ -416,12 +416,14 @@
                 android:layout_marginTop="8dp"
                 app:ih_right_text="更多"
                 app:ih_title="精选专题"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/layout_ad" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintTop_toBottomOf="@id/ih_topic" />
 

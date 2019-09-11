@@ -185,7 +185,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         mViewModel.getHotBabyList();
         mViewModel.getHotMusicList();
         mViewModel.getRadioList();
-        mViewModel.getTopicList();
+    //    mViewModel.getTopicList();
     }
 
     private void initBanner() {

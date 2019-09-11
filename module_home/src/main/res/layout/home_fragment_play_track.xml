@@ -717,7 +717,6 @@
             android:paddingStart="12dp"
             android:paddingEnd="8dp"
             android:textColor="@color/textColorPrimary"
-            android:textColorHint="#333333"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_comment_count"

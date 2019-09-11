@@ -45,22 +45,20 @@ import java.util.Arrays;
 import java.util.List;
 
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
-public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements BaseQuickAdapter.OnItemChildClickListener, OnLoadMoreListener {
+public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements
+        BaseQuickAdapter.OnItemChildClickListener {
 
     private TextView tvMemory;
     private ViewPager viewpager;
 
     private MagicIndicator magicIndicator;
-    private String[] tabs = {"专辑", "声音", "推荐"};
-    private ViewGroup layoutDetail1, layoutDetail2, layoutDetail3;
+    private String[] tabs = {"专辑", "声音"};
+    private ViewGroup layoutDetail1, layoutDetail2;
 
     private RecyclerView rvAlbum;
     private RecyclerView rvTrack;
-    private RecyclerView rvRecommend;
-    private RefreshLayout mRefreshLayout;
     private DownloadAlbumAdapter mAlbumAdapter;
     private DownloadTrackAdapter mTrackAdapter;
-    private RecommendAdapter mRecommendAdapter;
     private List<XmDownloadAlbum> downloadAlbums;
     private List<Track> downloadTracks;
 
@@ -80,14 +78,10 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
 
         layoutDetail1 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         layoutDetail2 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
-        layoutDetail3 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
-        ((RefreshLayout) layoutDetail1.findViewById(R.id.refreshLayout)).setEnableRefresh(false);
+
         ((RefreshLayout) layoutDetail1.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
 
-        ((RefreshLayout) layoutDetail2.findViewById(R.id.refreshLayout)).setEnableRefresh(false);
         ((RefreshLayout) layoutDetail2.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
-
-        mRefreshLayout=layoutDetail3.findViewById(R.id.refreshLayout);
 
 
         rvAlbum = layoutDetail1.findViewById(R.id.rv);
@@ -102,17 +96,11 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         mTrackAdapter = new DownloadTrackAdapter(R.layout.listen_item_download_track);
         mTrackAdapter.bindToRecyclerView(rvTrack);
 
-        rvRecommend = layoutDetail3.findViewById(R.id.rv);
-        rvRecommend.setHasFixedSize(true);
-        rvRecommend.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecommendAdapter = new RecommendAdapter(R.layout.listen_item_recommend);
-        mRecommendAdapter.bindToRecyclerView(rvRecommend);
-
         tvMemory = fd(R.id.tv_memory);
         viewpager = fd(R.id.viewpager);
         viewpager.setAdapter(new DownloadPagerAdapter());
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 50));
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 100));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
@@ -123,7 +111,6 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         super.initListener();
         mAlbumAdapter.setOnItemChildClickListener(this);
         mTrackAdapter.setOnItemChildClickListener(this);
-        mRefreshLayout.setOnLoadMoreListener(this);
 
     }
 
@@ -144,18 +131,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     }
     @Override
     public void initViewObservable() {
-    mViewModel.getColumnSingleLiveEvent().observe(this, columns -> {
-        if (null == columns || (mRecommendAdapter.getData().size() == 0 && columns.size() == 0)) {
-            showNoDataView(true);
-            return;
-        }
-        if (columns.size() > 0) {
-            mRecommendAdapter.addData(columns);
-            mRefreshLayout.finishLoadMore();
-        } else {
-            mRefreshLayout.finishLoadMoreWithNoMoreData();
-        }
-    });
+
     }
 
     @Override
@@ -205,16 +181,12 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         return ViewModelFactory.getInstance(mApplication);
     }
 
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getRecommend();
-    }
 
 
     class DownloadPagerAdapter extends PagerAdapter {
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @NonNull
@@ -227,9 +199,6 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                     break;
                 case 1:
                     view = layoutDetail2;
-                    break;
-                case 2:
-                    view = layoutDetail3;
                     break;
             }
             container.addView(view);
