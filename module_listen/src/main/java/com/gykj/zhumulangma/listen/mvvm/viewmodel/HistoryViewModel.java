@@ -165,8 +165,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                         schedulex.setEndTime(simpleDateFormat.format(calendar1.getTime()) + ":" + schedulex.getEndTime());
                     }
                     schedulesx.addAll(schedules);
-                    fillData(schedulesx);
-
+                    RadioUtil.fillData(schedulesx,radio);
                     if(!CollectionUtils.isEmpty(schedulesx)){
                         XmPlayerManager.getInstance(getApplication()).playSchedule(schedulesx,-1);
                         Object navigation = ARouter.getInstance()
@@ -239,30 +238,6 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
 
     public SingleLiveEvent<List<PlayHistoryItem>> getHistorySingleLiveEvent() {
         return mHistorysSingleLiveEvent = createLiveData(mHistorysSingleLiveEvent);
-    }
-    private void fillData(List<Schedule> schedulesx) {
-        if (!CollectionUtils.isEmpty(schedulesx)) {
-            Iterator var = schedulesx.iterator();
-            while (var.hasNext()) {
-                Schedule schedulex = (Schedule) var.next();
-                Program program = schedulex.getRelatedProgram();
-                if (program == null) {
-                    program = new Program();
-                    schedulex.setRelatedProgram(program);
-                }
-                program.setBackPicUrl(radio.getCoverUrlLarge());
-                schedulex.setRadioId(radio.getDataId());
-                schedulex.setRadioName(radio.getRadioName());
-                schedulex.setRadioPlayCount(radio.getRadioPlayCount());
-                if (BaseUtil.isInTime(schedulex.getStartTime() + "-" + schedulex.getEndTime()) == 0) {
-                    program.setRate24AacUrl(radio.getRate24AacUrl());
-                    program.setRate24TsUrl(radio.getRate24TsUrl());
-                    program.setRate64AacUrl(radio.getRate64AacUrl());
-                    program.setRate64TsUrl(radio.getRate64TsUrl());
-                    break;
-                }
-            }
-        }
     }
 
     public class PlayHistoryItem implements MultiItemEntity {

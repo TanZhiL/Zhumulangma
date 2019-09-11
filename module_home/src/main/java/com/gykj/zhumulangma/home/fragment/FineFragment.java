@@ -57,11 +57,13 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements
     protected int onBindLayout() {
         return R.layout.home_fragment_fine;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
     }
+
     @Override
     protected void initView(View view) {
         initBanner();
@@ -163,21 +165,21 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if(banner!=null)
-        banner.startAutoPlay();
+        if (banner != null)
+            banner.startAutoPlay();
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        if(banner!=null)
-        banner.stopAutoPlay();
+        if (banner != null)
+            banner.stopAutoPlay();
     }
 
     @Override
     public void OnBannerClick(int position) {
         BannerV2 bannerV2 = mViewModel.getBannerV2SingleLiveEvent().getValue().get(position);
-        switch (bannerV2.getBannerContentType()){
+        switch (bannerV2.getBannerContentType()) {
             case 2:
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
@@ -187,6 +189,14 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements
                 break;
             case 3:
                 mViewModel.play(bannerV2.getTrackId());
+            case 1:
+                Object navigation1 = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid())
+                        .navigation();
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                        new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
+
+                break;
         }
     }
 }

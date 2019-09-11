@@ -150,6 +150,18 @@
        android:src="@drawable/ic_home_track_download" />
 
     <ImageView
+        android:id="@+id/iv_paid"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_create_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_create_time"
+        android:tint="@color/colorPrimary"
+        android:visibility="gone"
+        android:src="@drawable/ic_common_paid" />
+
+    <ImageView
         android:id="@+id/iv_downloadsucc"
         android:layout_width="17dp"
         android:layout_height="17dp"

@@ -182,6 +182,14 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
                 break;
             case 3:
                 mViewModel.play(bannerV2.getTrackId());
+            case 1:
+                Object navigation1 = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+                        .withLong(KeyCode.Home.ANNOUNCER_ID,bannerV2.getBannerUid())
+                        .navigation();
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                        new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
+
+                break;
         }
     }
 

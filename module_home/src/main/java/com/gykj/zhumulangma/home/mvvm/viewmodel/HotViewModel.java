@@ -14,6 +14,7 @@ import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
+import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.column.Column;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
@@ -24,11 +25,13 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -62,8 +65,17 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.CATEGORY_ID, "1");
         map.put(DTransferConstants.IMAGE_SCALE, "2");
         mModel.getCategoryBannersV2(map)
-                .subscribe(bannerV2List ->
-                                getBannerV2SingleLiveEvent().postValue(bannerV2List.getBannerV2s())
+                .subscribe(bannerV2List -> {
+                    List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
+                    Iterator<BannerV2> iterator = bannerV2s.iterator();
+                    while (iterator.hasNext()){
+                        BannerV2 next = iterator.next();
+                        if(next.getBannerContentType()==5||next.getBannerContentType()==6){
+                            iterator.remove();
+                        }
+                    }
+                    HotViewModel.this.getBannerV2SingleLiveEvent().postValue(bannerV2s);
+                }
                         , e -> e.printStackTrace());
     }
 

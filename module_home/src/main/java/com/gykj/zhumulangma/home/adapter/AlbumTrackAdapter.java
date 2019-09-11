@@ -63,6 +63,7 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
                         helper.setGone(R.id.iv_downloadsucc,false);
                         helper.setGone(R.id.progressBar,false);
                         helper.setGone(R.id.iv_download,true);
+                        helper.setGone(R.id.iv_paid,false);
                         return;
                     }
                     switch (trackDownloadBeans.get(0).getStatus()){
@@ -70,12 +71,14 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
                             helper.setGone(R.id.iv_downloadsucc,true);
                             helper.setGone(R.id.progressBar,false);
                             helper.setGone(R.id.iv_download,false);
+                            helper.setGone(R.id.iv_paid,false);
                             break;
                         case STARTED:
                         case WAITING:
                             helper.setGone(R.id.iv_downloadsucc,false);
                             helper.setGone(R.id.progressBar,true);
                             helper.setGone(R.id.iv_download,false);
+                            helper.setGone(R.id.iv_paid,false);
                             break;
                         case STOPPED:
                         case NOADD:
@@ -83,9 +86,17 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
                             helper.setGone(R.id.iv_downloadsucc,false);
                             helper.setGone(R.id.progressBar,false);
                             helper.setGone(R.id.iv_download,true);
+                            helper.setGone(R.id.iv_paid,false);
                             break;
                     }
                 },e->e.printStackTrace());
+
+        if(!item.isAuthorized()){
+            helper.setGone(R.id.iv_downloadsucc,false);
+            helper.setGone(R.id.progressBar,false);
+            helper.setGone(R.id.iv_download,false);
+            helper.setGone(R.id.iv_paid,true);
+        }
         model.list(PlayHistoryBean.class, PlayHistoryBeanDao.Properties.SoundId.eq(item.getDataId()),
                 PlayHistoryBeanDao.Properties.Kind.eq(item.getKind()))
                 .subscribe(playHistoryBeans -> {

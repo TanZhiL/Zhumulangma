@@ -46,19 +46,21 @@ import java.util.List;
 
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
 public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements
-        BaseQuickAdapter.OnItemChildClickListener {
+        BaseQuickAdapter.OnItemChildClickListener{
 
     private TextView tvMemory;
     private ViewPager viewpager;
 
     private MagicIndicator magicIndicator;
-    private String[] tabs = {"专辑", "声音"};
-    private ViewGroup layoutDetail1, layoutDetail2;
+    private String[] tabs = {"专辑", "声音", "下载中"};
+    private ViewGroup layoutDetail1, layoutDetail2, layoutDetail3;
 
     private RecyclerView rvAlbum;
     private RecyclerView rvTrack;
+    private RecyclerView rvRecommend;
     private DownloadAlbumAdapter mAlbumAdapter;
     private DownloadTrackAdapter mTrackAdapter;
+    private RecommendAdapter mRecommendAdapter;
     private List<XmDownloadAlbum> downloadAlbums;
     private List<Track> downloadTracks;
 
@@ -75,13 +77,17 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     @Override
     protected void initView(View view) {
 
-
         layoutDetail1 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         layoutDetail2 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
-
+        layoutDetail3 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
+        ((RefreshLayout) layoutDetail1.findViewById(R.id.refreshLayout)).setEnableRefresh(false);
         ((RefreshLayout) layoutDetail1.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
 
+        ((RefreshLayout) layoutDetail2.findViewById(R.id.refreshLayout)).setEnableRefresh(false);
         ((RefreshLayout) layoutDetail2.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
+
+        ((RefreshLayout) layoutDetail3.findViewById(R.id.refreshLayout)).setEnableRefresh(false);
+        ((RefreshLayout) layoutDetail3.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
 
 
         rvAlbum = layoutDetail1.findViewById(R.id.rv);
@@ -96,11 +102,17 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         mTrackAdapter = new DownloadTrackAdapter(R.layout.listen_item_download_track);
         mTrackAdapter.bindToRecyclerView(rvTrack);
 
+        rvRecommend = layoutDetail3.findViewById(R.id.rv);
+        rvRecommend.setHasFixedSize(true);
+        rvRecommend.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecommendAdapter = new RecommendAdapter(R.layout.listen_item_recommend);
+        mRecommendAdapter.bindToRecyclerView(rvRecommend);
+
         tvMemory = fd(R.id.tv_memory);
         viewpager = fd(R.id.viewpager);
         viewpager.setAdapter(new DownloadPagerAdapter());
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 100));
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 50));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
@@ -124,9 +136,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         mAlbumAdapter.setNewData(downloadAlbums);
 
         downloadTracks = XmDownloadManager.getInstance().getDownloadTracks(true);
-
         mTrackAdapter.setNewData(downloadTracks);
-        mViewModel.getRecommend();
 
     }
     @Override
@@ -182,11 +192,10 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     }
 
 
-
     class DownloadPagerAdapter extends PagerAdapter {
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @NonNull
@@ -199,6 +208,9 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                     break;
                 case 1:
                     view = layoutDetail2;
+                    break;
+                case 2:
+                    view = layoutDetail3;
                     break;
             }
             container.addView(view);

@@ -21,6 +21,7 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +60,17 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
 //        map.put(DTransferConstants.CONTAINS_PAID,"true");
         mModel.getCategoryBannersV2(map)
                 .subscribe(bannerV2List ->
-                                getBannerV2SingleLiveEvent().postValue(bannerV2List.getBannerV2s())
+                        {
+                            List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
+                            Iterator<BannerV2> iterator = bannerV2s.iterator();
+                            while (iterator.hasNext()) {
+                                BannerV2 next = iterator.next();
+                                if (next.getBannerContentType() == 5 || next.getBannerContentType() == 6) {
+                                    iterator.remove();
+                                }
+                            }
+                            getBannerV2SingleLiveEvent().postValue(bannerV2s);
+                        }
                         , throwable -> throwable.printStackTrace());
     }
 

@@ -136,7 +136,7 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
                         schedulex.setEndTime(simpleDateFormat.format(calendar1.getTime()) + ":" + schedulex.getEndTime());
                     }
                     schedulesx.addAll(schedules);
-                    fillData(schedulesx);
+                    RadioUtil.fillData(schedulesx,radio);
 
                     if(!CollectionUtils.isEmpty(schedulesx)){
                         XmPlayerManager.getInstance(getApplication()).playSchedule(schedulesx,-1);
@@ -164,30 +164,6 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
                         }
                     }*/
                 }, e -> e.printStackTrace());
-    }
-    private void fillData(List<Schedule> schedulesx) {
-        if (!CollectionUtils.isEmpty(schedulesx)) {
-            Iterator var = schedulesx.iterator();
-            while (var.hasNext()) {
-                Schedule schedulex = (Schedule) var.next();
-                Program program = schedulex.getRelatedProgram();
-                if (program == null) {
-                    program = new Program();
-                    schedulex.setRelatedProgram(program);
-                }
-                program.setBackPicUrl(radio.getCoverUrlLarge());
-                schedulex.setRadioId(radio.getDataId());
-                schedulex.setRadioName(radio.getRadioName());
-                schedulex.setRadioPlayCount(radio.getRadioPlayCount());
-                if (BaseUtil.isInTime(schedulex.getStartTime() + "-" + schedulex.getEndTime()) == 0) {
-                    program.setRate24AacUrl(radio.getRate24AacUrl());
-                    program.setRate24TsUrl(radio.getRate24TsUrl());
-                    program.setRate64AacUrl(radio.getRate64AacUrl());
-                    program.setRate64TsUrl(radio.getRate64TsUrl());
-                    break;
-                }
-            }
-        }
     }
     public SingleLiveEvent<List<PlayHistoryBean>> getHistorySingleLiveEvent() {
         return mHistorySingleLiveEvent=createLiveData(mHistorySingleLiveEvent);

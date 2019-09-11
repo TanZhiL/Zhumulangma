@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_home_play_listloop" />
-                            <entry key="sourceFile" value="C:\Users\10719\Desktop\icon\home_play_listloop.svg" />
+                            <entry key="outputName" value="ic_common_paid" />
+                            <entry key="sourceFile" value="C:\Users\10719\Desktop\icon\common_paid.svg" />
                           </map>
                         </option>
                       </PersistentState>

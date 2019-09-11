@@ -125,7 +125,7 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
 
     @Override
     protected Integer[] onBindBarRightIcon() {
-        if (type == ANNOUNCER) {
+        if (type == ANNOUNCER||type == LIKE) {
             return null;
 
         }

@@ -90,7 +90,7 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
                         schedulex.setStartTime(simpleDateFormat.format(calendar0.getTime()) + ":" + schedulex.getStartTime());
                         schedulex.setEndTime(simpleDateFormat.format(calendar0.getTime()) + ":" + schedulex.getEndTime());
                     }
-                    fillData(schedules);
+                    RadioUtil.fillData(schedules,radio);
                     getYestodaySingleLiveEvent().postValue(schedules);
                 }).flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                 RadioUtil.getSchedules(today))
@@ -101,7 +101,7 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
                         schedulex.setStartTime(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":" + schedulex.getStartTime());
                         schedulex.setEndTime(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":" + schedulex.getEndTime());
                     }
-                    fillData(schedules);
+                    RadioUtil.fillData(schedules,radio);
                     getTodaySingleLiveEvent().postValue(schedules);
                 }).flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                 RadioUtil.getSchedules(tomorrow))
@@ -114,35 +114,11 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
                         schedulex.setStartTime(simpleDateFormat.format(calendar1.getTime()) + ":" + schedulex.getStartTime());
                         schedulex.setEndTime(simpleDateFormat.format(calendar1.getTime()) + ":" + schedulex.getEndTime());
                     }
-                    fillData(schedules);
+                    RadioUtil.fillData(schedules,radio);
                     getTomorrowSingleLiveEvent().postValue(schedules);
                 }, e -> e.printStackTrace());
     }
 
-    private void fillData(List<Schedule> schedulesx) {
-        if (!CollectionUtils.isEmpty(schedulesx)) {
-            Iterator var = schedulesx.iterator();
-            while (var.hasNext()) {
-                Schedule schedulex = (Schedule) var.next();
-                Program program = schedulex.getRelatedProgram();
-                if (program == null) {
-                    program = new Program();
-                    schedulex.setRelatedProgram(program);
-                }
-                program.setBackPicUrl(radio.getCoverUrlLarge());
-                schedulex.setRadioId(radio.getDataId());
-                schedulex.setRadioName(radio.getRadioName());
-                schedulex.setRadioPlayCount(radio.getRadioPlayCount());
-                if (BaseUtil.isInTime(schedulex.getStartTime() + "-" + schedulex.getEndTime()) == 0) {
-                    program.setRate24AacUrl(radio.getRate24AacUrl());
-                    program.setRate24TsUrl(radio.getRate24TsUrl());
-                    program.setRate64AacUrl(radio.getRate64AacUrl());
-                    program.setRate64TsUrl(radio.getRate64TsUrl());
-                    break;
-                }
-            }
-        }
-    }
 
     public SingleLiveEvent<ProgramList> getProgramsSingleLiveEvent() {
         return mProgramsSingleLiveEvent = createLiveData(mProgramsSingleLiveEvent);
