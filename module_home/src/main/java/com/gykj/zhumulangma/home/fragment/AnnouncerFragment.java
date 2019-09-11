@@ -38,8 +38,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
- * Created by 10719
- * on 2019/6/12
+ * Author: Thomas.
+ * Date: 2019/9/10 8:23
+ * Email: 1071931588@qq.com
+ * Description:
  */
 public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> implements
         OnLoadMoreListener, OnBannerListener, BaseQuickAdapter.OnItemClickListener {

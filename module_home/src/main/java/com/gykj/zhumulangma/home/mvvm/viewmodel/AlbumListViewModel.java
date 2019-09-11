@@ -63,6 +63,20 @@ public class AlbumListViewModel extends BaseViewModel<ZhumulangmaModel> {
                 }, e -> e.printStackTrace());
     }
 
+    public void _getAlbumList(long announcerId) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.AID, String.valueOf(announcerId));
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
+        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
+        mModel.getAlbumsByAnnouncer(map)
+                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(curPage == 1))
+                .subscribe(albumList -> {
+                    postShowInitLoadViewEvent(false);
+                    curPage++;
+                    getAlbumSingleLiveEvent().postValue(albumList.getAlbums());
+                }, e -> e.printStackTrace());
+    }
+
     public void _getPaidList() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));

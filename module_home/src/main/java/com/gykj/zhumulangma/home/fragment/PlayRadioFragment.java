@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,7 +75,7 @@ import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 @Route(path = AppConstants.Router.Home.F_PLAY_RADIIO)
 public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> implements
         View.OnClickListener, PlaySchedulePopup.onSelectedListener, IXmPlayerStatusListener,
-        IXmAdsStatusListener, OnSeekChangeListener {
+        IXmAdsStatusListener, OnSeekChangeListener, View.OnTouchListener {
     private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd:HH:mm", Locale.getDefault());
     private PlaySchedulePopup mSchedulePopup;
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mContext);
@@ -136,6 +137,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         mPlayerManager.addPlayerStatusListener(this);
         mPlayerManager.addAdsStatusListener(this);
         isbProgress.setOnSeekChangeListener(this);
+        isbProgress.setOnTouchListener(this);
     }
 
     @Override
@@ -593,4 +595,14 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         return ViewModelFactory.getInstance(mApplication);
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (event.getAction()==MotionEvent.ACTION_DOWN){
+            isTouch=true;
+        }else if(event.getAction()==MotionEvent.ACTION_UP){
+            mHandler.postDelayed(()-> isTouch=false,500);
+
+        }
+        return false;
+    }
 }

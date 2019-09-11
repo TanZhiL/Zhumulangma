@@ -20,6 +20,8 @@ public interface  AppConstants {
             String F_RANK="/home/rank";
             String F_SEARCH_RESULT="/home/search/result";
             String F_ALBUM_LIST="/home/album/list";
+            String F_TRACK_LIST="/home/track/list";
+            String F_ANNOUNCER_LIST="/home/announcer/list";
             String F_RADIO_LIST="/home/radio/list";
             String F_ALBUM_DETAIL="/home/album/detail";
              String F_PLAY_TRACK="/home/play/track";

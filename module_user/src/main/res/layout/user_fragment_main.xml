@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <FrameLayout
@@ -111,6 +112,17 @@
                     android:textSize="10sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView13"
                     app:layout_constraintStart_toEndOf="@+id/textView13" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="11sp"
+                    android:textColor="@color/white"
+                    android:text="这个人很懒,什么都没留下..."
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textView14" />
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout

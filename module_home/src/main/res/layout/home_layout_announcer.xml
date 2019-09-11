@@ -17,6 +17,7 @@
         android:textSize="16sp" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_announcer"
         android:layout_width="match_parent"
         android:layout_height="63dp">
 

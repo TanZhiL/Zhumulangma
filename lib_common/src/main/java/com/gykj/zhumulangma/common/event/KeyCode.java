@@ -19,6 +19,7 @@ public interface KeyCode {
         String HOTWORD = "hotword";
         String RADIO_ID = "radioId";
         String ANNOUNCER_ID = "announcerId";
+        String CATEGORY_ID = "categoryId";
         String ANNOUNCER_NAME= "announcerName";
     }
 

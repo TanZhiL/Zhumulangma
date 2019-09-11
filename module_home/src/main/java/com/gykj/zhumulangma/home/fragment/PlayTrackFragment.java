@@ -69,6 +69,7 @@ import com.ximalaya.ting.android.sdkdownloader.downloadutil.IXmDownloadTrackCall
 import com.ximalaya.ting.android.sdkdownloader.task.Callback;
 
 import org.greenrobot.eventbus.EventBus;
+import org.w3c.dom.EntityReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -234,6 +235,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         fd(R.id.tv_play_list).setOnClickListener(this);
         fd(R.id.iv_play_list).setOnClickListener(this);
         fd(R.id.iv_schedule).setOnClickListener(this);
+        fd(R.id.cl_announcer).setOnClickListener(this);
         ivBg.setOnClickListener(this);
         clAction.setOnClickListener(this);
         lavPlayNext.setOnClickListener(this);
@@ -265,7 +267,9 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         Track currSoundIgnoreKind = mPlayerManager.getCurrSoundIgnoreKind(true);
         if (null != currSoundIgnoreKind) {
             mTrack = currSoundIgnoreKind;
-            Glide.with(this).load(currSoundIgnoreKind.getCoverUrlLarge()).into(ivBg);
+
+            Glide.with(this).load(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlLarge())
+                    ? currSoundIgnoreKind.getAlbum().getCoverUrlLarge():currSoundIgnoreKind.getCoverUrlLarge()).into(ivBg);
             Glide.with(this).load(currSoundIgnoreKind.getAnnouncer().getAvatarUrl()).into((ImageView) fd(R.id.iv_announcer_cover));
             Glide.with(this).load(currSoundIgnoreKind.getAlbum().getCoverUrlMiddle()).into((ImageView) fd(R.id.iv_album_cover));
 
@@ -435,6 +439,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon() + 15 * 1000);
         } else if (v == tvTempo) {
             new XPopup.Builder(getContext()).asCustom(new PlayTempoPopup(mContext, this)).show();
+        }else if(id==R.id.cl_announcer){
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+                    .withLong(KeyCode.Home.ANNOUNCER_ID, mTrack.getAnnouncer().getAnnouncerId())
+                    .withString(KeyCode.Home.ANNOUNCER_NAME, mTrack.getAnnouncer().getNickname())
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                    new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
         }
     }
 
@@ -610,9 +621,14 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
-        updatePlayStatus();
+
         Log.d(TAG, "onSoundSwitch() called with: playableModel = [" + playableModel + "], playableModel1 = [" + playableModel1 + "]");
-        initData();
+        if(playableModel1!=null){
+            updatePlayStatus();
+            initData();
+        }else {
+            pauseAnim();
+        }
     }
 
     @Override
@@ -901,7 +917,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         if (event.getAction()==MotionEvent.ACTION_DOWN){
             isTouch=true;
         }else if(event.getAction()==MotionEvent.ACTION_UP){
-            mHandler.postDelayed(()-> isTouch=false,200);
+            mHandler.postDelayed(()-> isTouch=false,500);
 
         }
         return false;

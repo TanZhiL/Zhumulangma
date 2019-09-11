@@ -17,6 +17,7 @@ import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.RelativeAlbums;
 import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList;
+import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerCategoryList;
 import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerList;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.column.ColumnList;
@@ -684,6 +685,28 @@ public class ZhumulangmaModel extends CommonModel {
                     @Override
                     public void onSuccess(@Nullable AnnouncerTrackList trackList) {
                         emitter.onNext(trackList);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
+     *  获取某个主播的声音列表
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<AnnouncerCategoryList> getAnnouncerCategoryList(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getAnnouncerCategoryList(specificParams,
+                new IDataCallBack<AnnouncerCategoryList>() {
+                    @Override
+                    public void onSuccess(@Nullable AnnouncerCategoryList categoryList) {
+                        emitter.onNext(categoryList);
                         emitter.onComplete();
                     }
 

@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.main.mvvm.viewmodel;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
@@ -92,7 +93,9 @@ public class MainViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {
-                            getCoverSingleLiveEvent().postValue(trackList.getTracks().get(i).getCoverUrlSmall());
+                            String coverUrlSmall = trackList.getTracks().get(i).getCoverUrlSmall();
+                            getCoverSingleLiveEvent().postValue(TextUtils.isEmpty(coverUrlSmall)
+                                    ?trackList.getTracks().get(i).getAlbum().getCoverUrlLarge():coverUrlSmall);
                             XmPlayerManager.getInstance(getApplication()).playList(trackList, i);
                             break;
                         }

@@ -106,7 +106,8 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 if (null == currSoundIgnoreKind) {
                     return;
                 }
-                globalPlay.play(currSoundIgnoreKind.getCoverUrlSmall());
+                globalPlay.play(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlSmall())
+                        ?currSoundIgnoreKind.getAlbum().getCoverUrlLarge():currSoundIgnoreKind.getCoverUrlSmall());
             }else {
                 mViewModel.getLastSound();
             }
@@ -184,7 +185,8 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         if (null == currSoundIgnoreKind) {
             return;
         }
-        globalPlay.play(currSoundIgnoreKind.getCoverUrlSmall());
+        globalPlay.play(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlSmall())
+                ?currSoundIgnoreKind.getAlbum().getCoverUrlLarge():currSoundIgnoreKind.getCoverUrlSmall());
     }
 
     @Override
@@ -311,13 +313,19 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         mViewModel.getHistorySingleLiveEvent().observe(this, bean -> {
             mHistoryBean=bean;
             if(bean.getKind().equals(PlayableModel.KIND_TRACK)){
-                globalPlay.setImage(bean.getTrack().getCoverUrlSmall());
+                globalPlay.setImage(TextUtils.isEmpty(bean.getTrack().getCoverUrlSmall())
+                        ?bean.getTrack().getAlbum().getCoverUrlLarge():bean.getTrack().getCoverUrlSmall());
                 globalPlay.setProgress(bean.getPercent());
             }else {
                 globalPlay.setImage(bean.getSchedule().getRelatedProgram().getBackPicUrl());
             }
         });
-        mViewModel.getCoverSingleLiveEvent().observe(this, s -> globalPlay.play(s));
+        mViewModel.getCoverSingleLiveEvent().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                globalPlay.play(s);
+            }
+        });
     }
 
     class CustomAuthListener implements IXmlyAuthListener {

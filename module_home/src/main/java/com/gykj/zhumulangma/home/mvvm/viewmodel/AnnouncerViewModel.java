@@ -40,7 +40,6 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
     private SingleLiveEvent<List<Announcer>> mTopSingleLiveEvent;
 
 
-
     private int curPage = 1;
 
     public AnnouncerViewModel(@NonNull Application application, ZhumulangmaModel model) {
@@ -51,7 +50,7 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "0");
         map.put(DTransferConstants.IMAGE_SCALE, "2");
-        map.put(DTransferConstants.CONTAINS_PAID,"true");
+        map.put(DTransferConstants.CONTAINS_PAID, "true");
         mModel.getCategoryBannersV2(map)
                 .subscribe(bannerV2List ->
                                 getBannerV2SingleLiveEvent().postValue(bannerV2List.getBannerV2s())
@@ -65,20 +64,36 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.CALC_DIMENSION, "1");
         map.put(DTransferConstants.PAGE_SIZE, "3");
         mModel.getAnnouncerList(map).subscribe(announcerList ->
-                getTopSingleLiveEvent().postValue(announcerList.getAnnouncerList()), e->e.printStackTrace());
+                getTopSingleLiveEvent().postValue(announcerList.getAnnouncerList()), e -> e.printStackTrace());
     }
 
     public void getAnnouncerList() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.VCATEGORY_ID, "0");
         map.put(DTransferConstants.CALC_DIMENSION, "1");
-        map.put(DTransferConstants.PAGE_SIZE,PAGESIZE);
-        map.put(DTransferConstants.PAGE,String.valueOf(curPage));
+        map.put(DTransferConstants.PAGE_SIZE, PAGESIZE);
+        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getAnnouncerList(map).subscribe(announcerList -> {
             curPage++;
             getAnnouncerSingleLiveEvent().postValue(announcerList.getAnnouncerList());
-        }, e->e.printStackTrace());
+        }, e -> e.printStackTrace());
     }
+
+    public void getAnnouncerList(long categoryId) {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.VCATEGORY_ID, String.valueOf(categoryId));
+        map.put(DTransferConstants.CALC_DIMENSION, "1");
+        map.put(DTransferConstants.PAGE_SIZE, PAGESIZE);
+        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
+        mModel.getAnnouncerList(map)
+                .doOnSubscribe(d -> postShowInitLoadViewEvent(curPage == 1))
+                .subscribe(announcerList -> {
+                    postShowInitLoadViewEvent(false);
+                    curPage++;
+                    getAnnouncerSingleLiveEvent().postValue(announcerList.getAnnouncerList());
+                }, e -> e.printStackTrace());
+    }
+
     public void play(long trackId) {
 
         Map<String, String> map = new HashMap<>();
@@ -90,15 +105,15 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
                             map1.put(DTransferConstants.ALBUM_ID, String.valueOf(
                                     searchTrackListV2.getTracks().get(0).getAlbum().getAlbumId()));
                             map1.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
-                            return   mModel.getLastPlayTracks(map1);
+                            return mModel.getLastPlayTracks(map1);
                         })
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
                 .doFinally(() -> postShowInitLoadViewEvent(false))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
-                        if(trackList.getTracks().get(i).getDataId()==trackId){
-                            XmPlayerManager.getInstance(getApplication()).playList(trackList,i);
+                        if (trackList.getTracks().get(i).getDataId() == trackId) {
+                            XmPlayerManager.getInstance(getApplication()).playList(trackList, i);
                             break;
                         }
                     }

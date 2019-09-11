@@ -36,9 +36,12 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
     public static final int LIKE = 0;
     //付费精品
     public static final int PAID = -1;
-
+    //主播专辑
+    public static final int ANNOUNCER = 999;
     @Autowired(name = KeyCode.Home.TYPE)
     public int type;
+    @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
+    public long announcerId;
     @Autowired(name = KeyCode.Home.TITLE)
     public String title;
     private RecyclerView rv;
@@ -56,18 +59,19 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
 
     @Override
     protected void initView(View view) {
-        rv=fd(R.id.rv);
+        rv = fd(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(mContext));
         rv.setHasFixedSize(true);
         mAdapter = new AlbumAdapter(R.layout.home_item_album);
         mAdapter.bindToRecyclerView(rv);
-        mAdapter.setOnItemClickListener(this);
+
         refreshLayout = view.findViewById(R.id.refreshLayout);
     }
 
     @Override
     public void initListener() {
         super.initListener();
+        mAdapter.setOnItemClickListener(this);
         refreshLayout.setOnLoadMoreListener(this);
     }
 
@@ -77,10 +81,11 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
         if (type == LIKE) {
             mViewModel._getGuessLikeAlbum();
             refreshLayout.setNoMoreData(true);
-        }else if(type==PAID) {
+        } else if (type == PAID) {
             mViewModel._getPaidList();
-        }
-        else {
+        } else if (type == ANNOUNCER) {
+            mViewModel._getAlbumList(announcerId);
+        } else {
             mViewModel._getAlbumList(String.valueOf(type));
         }
     }
@@ -90,7 +95,7 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                .withLong(KeyCode.Home.ALBUMID,mAdapter.getData().get(position).getId())
+                .withLong(KeyCode.Home.ALBUMID, mAdapter.getData().get(position).getId())
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
                 EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
@@ -98,8 +103,10 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-      if(type==PAID) {
+        if (type == PAID) {
             mViewModel._getPaidList();
+        } else if (type == ANNOUNCER) {
+            mViewModel._getAlbumList(announcerId);
         } else {
             mViewModel._getAlbumList(String.valueOf(type));
         }
@@ -115,15 +122,16 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }
+
     @Override
     protected Integer[] onBindBarRightIcon() {
+        if (type == ANNOUNCER) {
+            return null;
+
+        }
         return new Integer[]{R.drawable.ic_common_search};
     }
 
-    @Override
-    protected int onBindBarRightStyle() {
-        return BarStyle.RIGHT_ICON;
-    }
     @Override
     public void initViewObservable() {
         mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> {

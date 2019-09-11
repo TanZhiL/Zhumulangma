@@ -10,8 +10,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
@@ -20,6 +25,10 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+
+import org.greenrobot.eventbus.EventBus;
+
+import me.yokeyword.fragmentation.ISupportFragment;
 
 
 public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewModel> implements OnLoadMoreListener,
@@ -76,7 +85,12 @@ public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewMo
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+                .withLong(KeyCode.Home.ANNOUNCER_ID, mAdapter.getData().get(position).getAnnouncerId())
+                .withString(KeyCode.Home.ANNOUNCER_NAME, mAdapter.getData().get(position).getNickname())
+                .navigation();
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
     }
     @Override
     public Class<SearchResultViewModel> onBindViewModel() {

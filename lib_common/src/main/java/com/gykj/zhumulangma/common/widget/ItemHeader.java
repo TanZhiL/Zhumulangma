@@ -40,6 +40,8 @@ public class ItemHeader extends FrameLayout {
         tvRightText=findViewById(R.id.tv_right_text);
         ivArrow=findViewById(R.id.iv_arrow);
 
+
+
         tvTitle.setText(mTitle);
         tvRightText.setText(mRightText);
 

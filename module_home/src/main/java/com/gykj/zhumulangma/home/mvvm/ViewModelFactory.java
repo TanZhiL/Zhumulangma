@@ -23,6 +23,7 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.TrackListViewModel;
 
 /**
  * Author: Thomas.
@@ -84,6 +85,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new RadioListViewModel(mApplication, new RadioModel(mApplication));
         }else if (modelClass.isAssignableFrom(AnnouncerDetailViewModel.class)) {
             return (T) new AnnouncerDetailViewModel(mApplication, new RadioModel(mApplication));
+        }else if (modelClass.isAssignableFrom(TrackListViewModel.class)) {
+            return (T) new TrackListViewModel(mApplication, new RadioModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }
