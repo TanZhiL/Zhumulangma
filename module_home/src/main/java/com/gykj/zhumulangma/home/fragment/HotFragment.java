@@ -170,9 +170,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         });
         mRadioAdapter.setOnItemClickListener((adapter, view, position) -> {
             RadioUtil.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getData().get(position));
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         });
     }
 
@@ -338,9 +336,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         } else if (id == R.id.radio_refresh) {
             mViewModel.getRadioList();
         } else if (id == R.id.fl_rank) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_RANK).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RANK, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.Home.F_RANK);
         }
     }
 }

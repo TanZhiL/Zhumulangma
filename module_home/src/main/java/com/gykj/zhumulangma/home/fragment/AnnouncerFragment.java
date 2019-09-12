@@ -17,6 +17,8 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.log.TLog;
+import com.gykj.zhumulangma.common.widget.TScrollView;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -45,7 +47,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Description:
  */
 public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> implements OnBannerListener,
-        BaseQuickAdapter.OnItemClickListener, OnRefreshLoadMoreListener {
+        BaseQuickAdapter.OnItemClickListener, OnRefreshLoadMoreListener, TScrollView.OnScrollListener {
 
     private static final String TAG = "AnnouncerFragment";
     Banner banner;
@@ -79,6 +81,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
         banner.setOnBannerListener(this);
         refreshLayout.setOnLoadMoreListener(this);
         mAnnouncerAdapter.setOnItemClickListener(this);
+        ((TScrollView)fd(R.id.tsv_content)).setOnScrollListener(this);
     }
 
     @Override
@@ -196,5 +199,12 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mViewModel.getAnnouncerList();
+    }
+
+    @Override
+    public void onScroll(int scrollY) {
+        TLog.d(scrollY);
+        TLog.d(fd(R.id.ll_title).getTop());
+        fd(R.id.fl_title_top).setVisibility(scrollY>fd(R.id.ll_title).getTop()?View.VISIBLE:View.GONE);
     }
 }

@@ -106,16 +106,12 @@ public class MainDiscoverFragment extends BaseFragment {
     @Override
     protected void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.User.F_MESSAGE).navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
-                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.User.F_MESSAGE, (ISupportFragment) navigation)));
+        navigateTo(AppConstants.Router.User.F_MESSAGE);
     }
     @Override
     protected void onRight1Click(View v) {
         super.onRight1Click(v);
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH).navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
-                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
+        navigateTo(AppConstants.Router.Home.F_SEARCH);
     }
     @Override
     protected int onBindBarLeftStyle() {

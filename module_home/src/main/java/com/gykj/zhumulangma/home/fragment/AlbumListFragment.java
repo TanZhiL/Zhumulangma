@@ -93,7 +93,6 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, mAdapter.getData().get(position).getId())
                 .navigation();

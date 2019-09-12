@@ -15,11 +15,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.listen.R;
@@ -47,7 +49,8 @@ import java.util.List;
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
 public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements
         BaseQuickAdapter.OnItemChildClickListener{
-
+    @Autowired(name = KeyCode.Listen.TAB_INDEX)
+    public int tabIndex;
     private TextView tvMemory;
     private ViewPager viewpager;
 
@@ -116,6 +119,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
+        viewpager.setCurrentItem(tabIndex);
     }
 
     @Override

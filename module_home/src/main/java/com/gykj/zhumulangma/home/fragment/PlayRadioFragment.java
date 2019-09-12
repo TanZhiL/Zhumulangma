@@ -307,16 +307,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         int id = v.getId();
         if (id == R.id.iv_history || id == R.id.tv_history) {
             pop();
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_HISTORY).navigation();
-            NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Listen.F_HISTORY, (ISupportFragment) navigation);
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigateBean));
+            navigateTo(AppConstants.Router.Listen.F_HISTORY);
         } else if (id == R.id.iv_play_list || id == R.id.tv_play_list) {
-            /*
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO_LIST)
-                    .withString(KeyCode.Home.RADIO_ID, String.valueOf(mSchedule.getRadioId())).navigation();
-            NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO_LIST, (ISupportFragment) navigation);
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigateBean));
-       */
             if(mSchedule==null){
                 return;
             }

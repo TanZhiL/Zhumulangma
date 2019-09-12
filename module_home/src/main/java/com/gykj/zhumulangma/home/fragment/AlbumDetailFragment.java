@@ -86,12 +86,8 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     private ViewGroup layoutDetail;
     private ViewGroup layoutTracks;
 
-    private SmartRefreshLayout refreshLayout;
-    private RecyclerView recyclerView;
-
     private Album mAlbum;
     private String mSort = "asc";
-    private boolean isSort = false;
 
     private ImageView ivCover;
     private TextView tvAlbum;
@@ -100,15 +96,17 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     private TextView tvTrackcount;
     private TextView tvSbcount;
     private TextView tvPlay;
-
+    private XmPlayerManager playerManager = XmPlayerManager.getInstance(mContext);
+    private SmartRefreshLayout refreshLayout;
+    private RecyclerView recyclerView;
     private FrameLayout flMask;
     private RecyclerView rvPager;
     private TrackPagerAdapter mPagerAdapter;
-    private int mSelectPage = 0;
+  //  private int mSelectPage = 0;
 
     private String[] tabs = {"简介", "节目"};
     private TextView tvLastplay;
-    private XmPlayerManager playerManager = XmPlayerManager.getInstance(mContext);
+
     private Track mLastPlay;
     private AlbumTrackAdapter mAlbumTrackAdapter;
     private AlbumTagAdapter mAlbumTagAdapter;
@@ -173,6 +171,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         mAlbumTrackAdapter.setOnItemClickListener(this);
         mAlbumTrackAdapter.setOnItemChildClickListener(this);
         layoutTracks.findViewById(R.id.ll_select).setOnClickListener(this);
+        layoutTracks.findViewById(R.id.ll_download).setOnClickListener(this);
         flMask.setOnClickListener(this);
         addDisposable(RxView.clicks(layoutTracks.findViewById(R.id.ll_sort))
                 .throttleFirst(2, TimeUnit.SECONDS)
@@ -180,8 +179,8 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                     if (flMask.getVisibility() == View.VISIBLE) {
                         return;
                     }
-                    isSort = true;
-                    refreshLayout.autoRefresh();
+                    mSort = "asc".equals(mSort) ? "desc" : "asc";
+                    mViewModel.getTrackList(String.valueOf(mAlbumId), mSort);
                 }));
         addDisposable(RxView.clicks(fd(R.id.ll_play))
                 .throttleFirst(2, TimeUnit.SECONDS)
@@ -192,28 +191,20 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                         int index = mAlbumTrackAdapter.getData().indexOf(mLastPlay);
                         if (index != -1) {
                             mLastPlay = mAlbumTrackAdapter.getData().get(index);
-                            tvLastplay.setVisibility(View.VISIBLE);
+                            fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
                             tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                             XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(),
                                     index);
-                            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
-                            if (null != navigation) {
-                                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                                        new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK, (ISupportFragment) navigation)));
-                            }
+                            navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
                         } else {
                             mViewModel.getTrackList(String.valueOf(mAlbumId));
                         }
                     } else {
                         mLastPlay = mAlbumTrackAdapter.getData().get(0);
-                        tvLastplay.setVisibility(View.VISIBLE);
+                        fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
                         tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                         XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(), 0);
-                        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
-                        if (null != navigation) {
-                            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                                    new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK, (ISupportFragment) navigation)));
-                        }
+                        navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
                     }
                 }));
         mPagerAdapter.setOnItemClickListener(this);
@@ -272,11 +263,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
             mAlbumTrackAdapter.setNewData(tracks.getTracks());
             XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(),
                     mAlbumTrackAdapter.getData().indexOf(mLastPlay));
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
-            if (null != navigation) {
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                        new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK, (ISupportFragment) navigation)));
-            }
+            navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
         });
 
         mViewModel.getTracksUpSingleLiveEvent().observe(this, tracks -> {
@@ -305,8 +292,6 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         });
 
         mViewModel.getTracksSortSingleLiveEvent().observe(this, tracks -> {
-            isSort = false;
-            mSelectPage = 0;
             if (CollectionUtils.isEmpty(tracks.getTracks())) {
                 if (0 == mAlbumTrackAdapter.getData().size()) {
                     showNoDataView(true);
@@ -324,7 +309,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
                 tvPlay.setText("继续播放");
                 mLastPlay = track;
-                tvLastplay.setVisibility(View.VISIBLE);
+                fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
                 tvLastplay.setText(getString(R.string.lastplay, track.getTrackTitle()));
             }
         });
@@ -356,14 +341,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        if (isSort) {
-            mSort = "asc".equals(mSort) ? "desc" : "asc";
-            mViewModel.getTrackList(String.valueOf(mAlbumId), mSort);
-        } else if (mSelectPage != 0) {
-            mViewModel.getTrackList(String.valueOf(mAlbumId), mSelectPage);
-        } else {
             mViewModel.getTrackList(String.valueOf(mAlbumId), true);
-        }
     }
 
     @Override
@@ -376,17 +354,12 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         if (adapter == mAlbumTrackAdapter) {
             playerManager.playList(mViewModel.getCommonTrackList(), position);
             mLastPlay = mAlbumTrackAdapter.getData().get(position);
-            tvLastplay.setVisibility(View.VISIBLE);
+            fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
             tvLastplay.setText(getString(R.string.lastplay, mAlbumTrackAdapter.getData().get(position).getTrackTitle()));
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
-            if (null != navigation) {
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                        new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK, (ISupportFragment) navigation)));
-            }
+            navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
         } else {
             switchCategory();
-            mSelectPage = position + 1;
-            refreshLayout.autoRefresh();
+            mViewModel.getTrackList(String.valueOf(mAlbumId),  position + 1);
         }
     }
 
@@ -449,7 +422,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
         if (mAlbumId == track.getAlbum().getAlbumId()) {
             mLastPlay = track;
-            tvLastplay.setVisibility(View.VISIBLE);
+            fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
             tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
         }
         for (int i = 0; i < tracks.size(); i++) {
@@ -663,6 +636,12 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         int id = v.getId();
         if (R.id.ll_select == id || R.id.fl_mask == id) {
             switchCategory();
+        }else if(id==R.id.ll_download){
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_BATCH_DOWNLOAD)
+                    .withLong(KeyCode.Home.ALBUMID,mAlbumId)
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_BATCH_DOWNLOAD, (ISupportFragment) navigation)));
         }
     }
 

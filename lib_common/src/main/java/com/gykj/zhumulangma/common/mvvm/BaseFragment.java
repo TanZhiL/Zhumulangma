@@ -18,7 +18,11 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.App;
+import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.R;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.IBaseView;
 import com.gykj.zhumulangma.common.status.EmptyCallback;
@@ -36,6 +40,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import me.yokeyword.fragmentation.ExtraTransaction;
+import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
@@ -531,4 +537,39 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         return new DefaultHorizontalAnimator();
     }
 
+    protected void navigateTo(String path){
+        Object navigation = ARouter.getInstance().build(path).navigation();
+        if (null != navigation) {
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                    new NavigateBean(path, (ISupportFragment) navigation)));
+        }
+    }
+    protected void navigateTo(String path,int launchMode){
+        Object navigation = ARouter.getInstance().build(path).navigation();
+        NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
+        navigateBean.launchMode=launchMode;
+        if (null != navigation) {
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                    new NavigateBean(path, (ISupportFragment) navigation)));
+        }
+    }
+    protected void navigateTo(String path, int launchMode, ExtraTransaction extraTransaction){
+        Object navigation = ARouter.getInstance().build(path).navigation();
+        NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
+        navigateBean.launchMode=launchMode;
+        navigateBean.extraTransaction=extraTransaction;
+        if (null != navigation) {
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                    new NavigateBean(path, (ISupportFragment) navigation)));
+        }
+    }
+    protected void navigateTo(String path, ExtraTransaction extraTransaction){
+        Object navigation = ARouter.getInstance().build(path).navigation();
+        NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
+        navigateBean.extraTransaction=extraTransaction;
+        if (null != navigation) {
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                    new NavigateBean(path, (ISupportFragment) navigation)));
+        }
+    }
 }

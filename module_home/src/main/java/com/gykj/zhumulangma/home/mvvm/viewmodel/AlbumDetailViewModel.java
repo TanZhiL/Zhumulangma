@@ -21,6 +21,7 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -66,9 +67,11 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
                 .doOnNext(batchAlbumList -> getAlbumSingleLiveEvent().postValue(
                         batchAlbumList.getAlbums().get(0)))
-                .flatMap((Function<BatchAlbumList, ObservableSource<TrackList>>) batchAlbumList -> getTrackInitObservable(albumId))
+                .flatMap((Function<BatchAlbumList, ObservableSource<TrackList>>) batchAlbumList ->
+                        getTrackInitObservable(albumId))
                 .doFinally(() -> postShowInitLoadViewEvent(false))
                 .subscribe(trackList -> {
+                    setOrder(trackList);
                     curTrackPage++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getTracksMoreSingleLiveEvent().postValue(
@@ -76,11 +79,24 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                 }, e -> e.printStackTrace());
     }
 
+    private void setOrder(TrackList trackList) {
+        List<Track> tracks = trackList.getTracks();
+        for (int i = 0; i <tracks.size(); i++) {
+            if(mSort.equals("asc")){
+                tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((curTrackPage-1)*20+i));
+            }else {
+                tracks.get(i).setOrderPositionInAlbum((curTrackPage-1)*20+i+1);
+            }
+        }
+    }
+
+
     public void getTrackList(String albumId) {
         getTrackInitObservable(albumId)
                 .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
                 .doFinally(() -> postShowInitLoadViewEvent(false))
                 .subscribe(trackList -> {
+                    setOrder(trackList);
                     curTrackPage++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getTracksInitSingleLiveEvent().postValue(
@@ -99,6 +115,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
                 Map<String, String> map = new HashMap<>();
                 map.put(DTransferConstants.ALBUM_ID, albumId);
+                map.put(DTransferConstants.SORT, mSort);
                 map.put(DTransferConstants.PAGE, String.valueOf(1));
                 return mModel.getTracks(map).doOnNext(trackList -> {
                     curTrackPage = 1;
@@ -107,6 +124,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
             } else {
                 Map<String, String> map = new HashMap<>();
                 map.put(DTransferConstants.ALBUM_ID, albumId);
+                map.put(DTransferConstants.SORT, mSort);
                 map.put(DTransferConstants.TRACK_ID, String.valueOf(getLastplaySingleLiveEvent()
                         .getValue().getDataId()));
                 return mModel.getLastPlayTracks(map)
@@ -116,7 +134,6 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                         })
                         .map(lastPlayTrackList -> {
                     TrackList trackList = new TrackList();
-//                    trackList.setAlbumId(Integer.parseInt(albumId));
                     trackList.cloneCommonTrackList(lastPlayTrackList);
                     return trackList;
                 });
@@ -135,8 +152,11 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.SORT, mSort);
         map.put(DTransferConstants.PAGE, String.valueOf(curTrackPage));
         mModel.getTracks(map)
+                .doOnSubscribe(d->postShowInitLoadViewEvent(curTrackPage==1))
                 .observeOn(Schedulers.io())
                 .subscribe(trackList -> {
+                    postShowInitLoadViewEvent(false);
+                    setOrder(trackList);
                     upTrackPage = 0;
                     curTrackPage ++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
@@ -154,9 +174,14 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE, String.valueOf(page));
         mModel.getTracks(map)
                 .observeOn(Schedulers.io())
+                .doOnSubscribe(d->postShowInitLoadViewEvent(true))
                 .subscribe(trackList -> {
-                    upTrackPage = page-1;
-                    curTrackPage=page+1;
+                    postShowInitLoadViewEvent(false);
+                    upTrackPage = page;
+                    curTrackPage=page;
+                    setOrder(trackList);
+                    upTrackPage--;
+                    curTrackPage++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getTracksSortSingleLiveEvent().postValue(
                             trackList);
@@ -183,10 +208,12 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .observeOn(Schedulers.io())
                 .subscribe(trackList -> {
                     if (isUp) {
+                        setUpOrder(trackList);
                         upTrackPage--;
                         mCommonTrackList.updateCommonTrackList(0, trackList);
                         getTracksUpSingleLiveEvent().postValue(trackList);
                     } else {
+                        setOrder(trackList);
                         curTrackPage++;
                         mCommonTrackList.updateCommonTrackList(mCommonTrackList.getTracks().size(), trackList);
                         getTracksMoreSingleLiveEvent().postValue(trackList);
@@ -194,7 +221,16 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                 }, e -> e.printStackTrace());
 
     }
-
+    private void setUpOrder(TrackList trackList) {
+        List<Track> tracks = trackList.getTracks();
+        for (int i = 0; i <tracks.size(); i++) {
+            if(mSort.equals("asc")){
+                tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((upTrackPage-1)*20+i));
+            }else {
+                tracks.get(i).setOrderPositionInAlbum((upTrackPage-1)*20+i+1);
+            }
+        }
+    }
     public SingleLiveEvent<Album> getAlbumSingleLiveEvent() {
         return mAlbumSingleLiveEvent = createLiveData(mAlbumSingleLiveEvent);
     }

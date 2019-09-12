@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:id="@+id/ll_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_pagecount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="选集(0)"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/iv_select_page"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginStart="4dp"
+                android:src="@drawable/ic_common_more_arrow"
+                android:rotation="90"
+                android:tint="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_pagecount"
+                app:layout_constraintStart_toEndOf="@+id/tv_pagecount"
+                app:layout_constraintTop_toTopOf="@+id/tv_pagecount" />
+        </LinearLayout>
+
+
+    </android.support.constraint.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#f0f0f0"/>
+    <FrameLayout
+        android:id="@+id/fl_mask"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:visibility="gone">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </FrameLayout>
+<include android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    layout="@layout/common_layout_refresh_loadmore"/>
+
+  <android.support.constraint.ConstraintLayout
+      android:id="@+id/cl_action"
+      android:layout_width="match_parent"
+      android:background="@color/white"
+      android:layout_height="50dp">
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    app:layout_constraintTop_toTopOf="parent"
+    android:background="#f0f0f0"/>
+      <CheckBox
+          android:id="@+id/checkBox"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="8dp"
+          android:layout_marginTop="8dp"
+          android:layout_marginBottom="8dp"
+          android:text="全选本页"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+      <TextView
+          android:id="@+id/textView4"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:background="@color/colorPrimary"
+          android:text="立即下载"
+          android:gravity="center"
+          app:layout_constraintWidth_percent="0.4"
+          android:textColor="@color/white"
+          android:textSize="16sp"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+  </android.support.constraint.ConstraintLayout>
+</LinearLayout>

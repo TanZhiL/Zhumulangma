@@ -151,6 +151,11 @@
         </android.support.v7.widget.RecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </android.support.design.widget.CoordinatorLayout>-->
+
+
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 <com.scwang.smartrefresh.layout.SmartRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -159,12 +164,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:srlEnableNestedScrolling="true"
-    app:srlEnablePreviewInEditMode="true">
+    app:srlEnablePreviewInEditMode="false">
     <com.gykj.zhumulangma.common.widget.TRefreshHeader
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.gykj.zhumulangma.common.widget.TScrollView
+        android:id="@+id/tsv_content"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -188,8 +195,10 @@
                 app:indicator_width="7dp" >
             </com.youth.banner.Banner>
             <LinearLayout
+                android:id="@+id/ll_title"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
+                android:background="@color/white"
                 android:layout_height="45dp">
                 <View
                     android:layout_width="3dp"
@@ -221,7 +230,7 @@
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"/>
         </LinearLayout>
-    </ScrollView>
+    </com.gykj.zhumulangma.common.widget.TScrollView>
     <com.scwang.smartrefresh.layout.footer.ClassicsFooter
         android:background="@color/white"
         android:layout_width="match_parent"
@@ -230,3 +239,40 @@
         app:srlFinishDuration="0"
         android:layout_height="wrap_content"/>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_title_top"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingBottom="1dp"
+            android:layout_height="46dp">
+            <View
+                android:layout_width="3dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:background="@color/colorPrimary"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center_vertical"
+                android:background="@color/white"
+                android:paddingStart="11dp"
+                android:text="热门主播"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:background="#f0f0f0"
+            />
+    </FrameLayout>
+
+</FrameLayout>

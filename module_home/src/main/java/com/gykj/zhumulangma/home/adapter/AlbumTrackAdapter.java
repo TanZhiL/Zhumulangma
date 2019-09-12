@@ -15,6 +15,7 @@ import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.dao.TrackDownloadBeanDao;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
+import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -39,6 +40,7 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
         helper.setText(R.id.tv_title,item.getTrackTitle());
         helper.setText(R.id.tv_playcount, ZhumulangmaUtil.toWanYi(item.getPlayCount()));
         helper.setText(R.id.tv_duration,ZhumulangmaUtil.secondToTime(item.getDuration()));
+        helper.setText(R.id.tv_index,item.getOrderPositionInAlbum()+"");
         helper.setText(R.id.tv_create_time, TimeUtils.millis2String(item.getCreatedAt(),new SimpleDateFormat("yyyy-MM-dd")));
         if(null!=XmPlayerManager.getInstance(mContext).getCurrSound()){
             LottieAnimationView lavPlaying=helper.getView(R.id.lav_playing);

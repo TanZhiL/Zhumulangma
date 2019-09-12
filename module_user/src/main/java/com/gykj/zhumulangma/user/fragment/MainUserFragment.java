@@ -217,17 +217,11 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
     public void onClick(View v) {
         int id = v.getId();
         if (R.id.ll_download == id) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
         }else if (R.id.ll_history == id) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_HISTORY).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_HISTORY, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.Listen.F_HISTORY);
         } else if (v == whiteLeft || v == transLeft) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.User.F_MESSAGE).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.User.F_MESSAGE, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.User.F_MESSAGE);
         }
     }
 

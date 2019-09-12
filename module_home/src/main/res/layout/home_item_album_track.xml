@@ -24,17 +24,18 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:visibility="gone"
         android:background="@drawable/shap_common_track_cover"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="16dp"
         android:layout_height="16dp"
+        android:src="@drawable/ic_common_play"
         android:tint="@color/white"
         android:visibility="gone"
-        android:src="@drawable/ic_common_play"
         app:layout_constraintBottom_toBottomOf="@id/iv_cover"
         app:layout_constraintEnd_toEndOf="@+id/iv_cover"
         app:layout_constraintStart_toStartOf="@+id/iv_cover"
@@ -194,4 +195,17 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/tv_create_time"
         app:layout_constraintTop_toBottomOf="@+id/tv_create_time" />
+
+    <TextView
+        android:id="@+id/tv_index"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_cover"
+        app:layout_constraintEnd_toEndOf="@+id/iv_cover"
+        app:layout_constraintStart_toStartOf="@+id/iv_cover"
+        app:layout_constraintTop_toTopOf="@+id/iv_cover" />
 </android.support.constraint.ConstraintLayout>

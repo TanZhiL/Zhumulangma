@@ -170,9 +170,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mAdapter) {
             RadioUtil.getInstance(mContext).playLiveRadioForSDK(mAdapter.getData().get(position));
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         } else if (adapter == mProvinceAdapter) {
             switchCategory();
             if (provinceCode != mProvinceAdapter.getData().get(position).getProvince_code()) {

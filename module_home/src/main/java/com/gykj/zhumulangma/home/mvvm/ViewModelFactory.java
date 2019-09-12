@@ -13,6 +13,7 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumDetailViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumListViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerDetailViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.BatchDownloadViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
@@ -87,6 +88,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new AnnouncerDetailViewModel(mApplication, new RadioModel(mApplication));
         }else if (modelClass.isAssignableFrom(TrackListViewModel.class)) {
             return (T) new TrackListViewModel(mApplication, new RadioModel(mApplication));
+        }else if (modelClass.isAssignableFrom(BatchDownloadViewModel.class)) {
+            return (T) new BatchDownloadViewModel(mApplication, new RadioModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

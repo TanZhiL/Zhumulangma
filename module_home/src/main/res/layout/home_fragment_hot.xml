@@ -318,9 +318,9 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_like"
                 android:layout_width="match_parent"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
                 android:background="@color/white"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 app:layout_constraintTop_toBottomOf="@id/ih_like"
                 android:nestedScrollingEnabled="false"
                 android:layout_height="wrap_content"/>
@@ -447,8 +447,8 @@
                 android:layout_width="match_parent"
                 app:layout_constraintTop_toBottomOf="@id/ih_music"
                 android:background="@color/white"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:nestedScrollingEnabled="false"
                 android:layout_height="wrap_content"/>
             <include

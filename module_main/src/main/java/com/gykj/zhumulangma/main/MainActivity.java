@@ -127,33 +127,22 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         if (v == globalPlay) {
             if (null == mPlayerManager.getCurrSound(true)) {
                 if(mHistoryBean==null){
-                    Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_RANK).navigation();
-                    if (null != navigation) {
-                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                                new NavigateBean(AppConstants.Router.Home.F_RANK, (ISupportFragment) navigation,
-                                        extraTransaction().setCustomAnimations(
-                                                com.gykj.zhumulangma.common.R.anim.push_bottom_in,
-                                                com.gykj.zhumulangma.common.R.anim.no_anim,
-                                                com.gykj.zhumulangma.common.R.anim.no_anim,
-                                                com.gykj.zhumulangma.common.R.anim.push_bottom_out))));
-                    }
+
+                    navigateTo(AppConstants.Router.Home.F_RANK,extraTransaction().setCustomAnimations(
+                            com.gykj.zhumulangma.common.R.anim.push_bottom_in,
+                            com.gykj.zhumulangma.common.R.anim.no_anim,
+                            com.gykj.zhumulangma.common.R.anim.no_anim,
+                            com.gykj.zhumulangma.common.R.anim.push_bottom_out));
                 }else {
                     mViewModel.play(mHistoryBean);
                 }
             } else {
                 mPlayerManager.play();
                 if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_TRACK)) {
-                    Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
-                    if (null != navigation) {
-                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                                new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK, (ISupportFragment) navigation)));
-                    }
+                    navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+
                 } else if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_SCHEDULE)) {
-                    Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
-                    if (null != navigation) {
-                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                                new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO, (ISupportFragment) navigation)));
-                    }
+                    navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
                 }
             }
         }

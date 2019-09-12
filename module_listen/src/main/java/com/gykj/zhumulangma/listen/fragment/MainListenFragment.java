@@ -112,32 +112,22 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
     public void onClick(View v) {
         int id = v.getId();
         if(R.id.ll_download==id){
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
         }else  if(R.id.ll_history==id){
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_HISTORY).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_HISTORY, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.Listen.F_HISTORY);
         }else  if(R.id.ll_favorite==id){
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_FAVORITE).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_FAVORITE, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.Listen.F_FAVORITE);
         }
     }
     @Override
     protected void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.User.F_MESSAGE).navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
-                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.User.F_MESSAGE, (ISupportFragment) navigation)));
+        navigateTo(AppConstants.Router.User.F_MESSAGE);
     }
 
     @Override
     protected void onRight1Click(View v) {
         super.onRight1Click(v);
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH).navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
-                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
+        navigateTo(AppConstants.Router.Home.F_SEARCH);
     }
 }

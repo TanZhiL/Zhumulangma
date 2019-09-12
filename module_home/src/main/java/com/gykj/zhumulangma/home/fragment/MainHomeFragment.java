@@ -119,10 +119,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         fd(R.id.iv_history).setOnClickListener(this);
         addDisposable(RxView.clicks(fd(R.id.iv_message)).throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
-                    Object navigation = ARouter.getInstance().build(AppConstants.Router.User.F_MESSAGE)
-                            .navigation();
-                    EventBus.getDefault().post(new BaseActivityEvent<>(
-                            EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.User.F_MESSAGE, (ISupportFragment) navigation)));
+                    navigateTo(AppConstants.Router.User.F_MESSAGE);
                 }));
         mMarqueeView.setOnItemClickListener(this);
     }
@@ -141,13 +138,9 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.iv_download) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
         } else if (id == R.id.iv_history) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_HISTORY).navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_HISTORY, (ISupportFragment) navigation)));
+            navigateTo(AppConstants.Router.Listen.F_HISTORY);
         }
 
     }
