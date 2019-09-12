@@ -1,15 +1,13 @@
-﻿##注意:请将lib_common下manifest中喜马拉雅key替换为自己的,不然会提示访问超过限制.
+﻿###注意:请将lib_common下manifest中喜马拉雅key替换为自己的,不然会提示访问超过限制.
 ###本项目仅提供学习参考,不可作为商用.
 <p align="center">
-   <a href="https://developer.android.com/about/versions/android-4.0.html">
+
     <img src="https://img.shields.io/badge/API-19%2B-blue.svg?style=flat-square" alt="Min Sdk Version" />
-  </a>
-  <a href="http://www.apache.org/licenses/LICENSE-2.0">
+	
     <img src="http://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square" alt="License" />
-  </a>
-  <a href="https://menxindiaolong.blog.csdn.net">
+	
     <img src="https://img.shields.io/badge/Author-Thomas-orange.svg?style=flat-square" alt="Author" />
-  </a>
+
 </p>
 
 
@@ -19,7 +17,15 @@
 * 第一次发布
 
 ### 功能演示
-
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/device-2019-09-12-175916.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/device-2019-09-12-175955.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/device-2019-09-12-180026.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/device-2019-09-12-180059.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/device-2019-09-12-180125.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/device-2019-09-12-180147.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/device-2019-09-12-180213.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/device-2019-09-12-180235.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/device-2019-09-12-180305.png)
 
 ### 主要功能(包括不仅限于):
 * 专辑展示
