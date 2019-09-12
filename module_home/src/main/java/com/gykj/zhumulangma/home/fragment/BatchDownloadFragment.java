@@ -57,6 +57,7 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
     private RecyclerView recyclerView;
     private FrameLayout flMask;
     private RecyclerView rvPager;
+
     private TrackPagerAdapter mPagerAdapter;
 
     private DownloadTrackAdapter mDownloadTrackAdapter;
