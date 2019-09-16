@@ -186,9 +186,7 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
                 .subscribe(permission -> {
                     if (permission.granted) {
                         mLocationClient.startLocation();
-                    } else if (permission.shouldShowRequestPermissionRationale) {
-                        ToastUtil.showToast("无法获取本地电台,请允许应用获取位置信息");
-                    } else {
+                    }else {
                         ToastUtil.showToast("无法获取本地电台,请允许应用获取位置信息");
                     }
                 });

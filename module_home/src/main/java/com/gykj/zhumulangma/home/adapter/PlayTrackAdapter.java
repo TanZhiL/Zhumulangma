@@ -5,14 +5,11 @@ import android.view.View;
 import com.airbnb.lottie.LottieAnimationView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.gykj.zhumulangma.common.App;
-import com.gykj.zhumulangma.common.bean.TrackDownloadBean;
-import com.gykj.zhumulangma.common.dao.TrackDownloadBeanDao;
-import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.home.R;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
+import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
 /**
  * Created by 10719
@@ -22,7 +19,6 @@ public class PlayTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
     public PlayTrackAdapter(int layoutResId) {
             super(layoutResId);
     }
-    private ZhumulangmaModel model =new ZhumulangmaModel(App.getInstance());
 
     @Override
     protected void convert(BaseViewHolder helper, Track item) {
@@ -47,41 +43,37 @@ public class PlayTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
 
 
         }
-        model.list(TrackDownloadBean.class,TrackDownloadBeanDao.Properties.TrackId.eq(item.getDataId()))
-                .subscribe(trackDownloadBeans -> {
-                    if(trackDownloadBeans.size()==0){
-                        helper.setGone(R.id.iv_downloadsucc,false);
-                        helper.setGone(R.id.progressBar,false);
-                        helper.setGone(R.id.iv_download,true);
-                        helper.setGone(R.id.iv_paid,false);
-                        return;
-                    }
-                    switch (trackDownloadBeans.get(0).getStatus()){
-                        case FINISHED:
-                            helper.setGone(R.id.iv_downloadsucc,true);
-                            helper.setGone(R.id.progressBar,false);
-                            helper.setGone(R.id.iv_download,false);
-                            helper.setGone(R.id.iv_paid,false);
-                            break;
-                        case STARTED:
-                        case WAITING:
-                            helper.setGone(R.id.iv_downloadsucc,false);
-                            helper.setGone(R.id.progressBar,true);
-                            helper.setGone(R.id.iv_download,false);
-                            helper.setGone(R.id.iv_paid,false);
-                            break;
-                        case STOPPED:
-                        case NOADD:
-                        case ERROR:
-                            helper.setGone(R.id.iv_downloadsucc,false);
-                            helper.setGone(R.id.progressBar,false);
-                            helper.setGone(R.id.iv_download,true);
-                            helper.setGone(R.id.iv_paid,false);
-                            break;
-                    }
-                },e->e.printStackTrace());
-
-        if(!item.isAuthorized()){
+        switch (XmDownloadManager.getInstance().getSingleTrackDownloadStatus(item.getDataId())) {
+            case FINISHED:
+                helper.setGone(R.id.iv_downloadsucc, true);
+                helper.setGone(R.id.progressBar, false);
+                helper.setGone(R.id.iv_download, false);
+                helper.setGone(R.id.iv_paid, false);
+                break;
+            case STARTED:
+            case WAITING:
+                helper.setGone(R.id.iv_downloadsucc, false);
+                helper.setGone(R.id.progressBar, true);
+                helper.setGone(R.id.iv_download, false);
+                helper.setGone(R.id.iv_paid, false);
+                break;
+            case STOPPED:
+            case NOADD:
+            case ERROR:
+                if(item.isCanDownload()){
+                    helper.setGone(R.id.iv_downloadsucc, false);
+                    helper.setGone(R.id.progressBar, false);
+                    helper.setGone(R.id.iv_download, true);
+                    helper.setGone(R.id.iv_paid, false);
+                }else {
+                    helper.setGone(R.id.iv_downloadsucc, false);
+                    helper.setGone(R.id.progressBar, false);
+                    helper.setGone(R.id.iv_download, false);
+                    helper.setGone(R.id.iv_paid, false);
+                }
+                break;
+        }
+        if(item.isPaid()){
             helper.setGone(R.id.iv_downloadsucc,false);
             helper.setGone(R.id.progressBar,false);
             helper.setGone(R.id.iv_download,false);

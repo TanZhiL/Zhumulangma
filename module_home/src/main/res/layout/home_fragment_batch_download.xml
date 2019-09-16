@@ -70,41 +70,59 @@
     android:layout_height="0dp"
     android:layout_weight="1"
     layout="@layout/common_layout_refresh_loadmore"/>
-
-  <android.support.constraint.ConstraintLayout
-      android:id="@+id/cl_action"
-      android:layout_width="match_parent"
-      android:background="@color/white"
-      android:layout_height="50dp">
-<View
+<LinearLayout
+    android:id="@+id/cl_action"
     android:layout_width="match_parent"
-    android:layout_height="1dp"
-    app:layout_constraintTop_toTopOf="parent"
-    android:background="#f0f0f0"/>
-      <CheckBox
-          android:id="@+id/checkBox"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="8dp"
-          android:layout_marginTop="8dp"
-          android:layout_marginBottom="8dp"
-          android:text="全选本页"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
 
-      <TextView
-          android:id="@+id/textView4"
-          android:layout_width="0dp"
-          android:layout_height="match_parent"
-          android:background="@color/colorPrimary"
-          android:text="立即下载"
-          android:gravity="center"
-          app:layout_constraintWidth_percent="0.4"
-          android:textColor="@color/white"
-          android:textSize="16sp"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintTop_toTopOf="parent" />
-  </android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_memory"
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:background="#cddefa"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="已占用4.50MB，可用7.9G"
+        android:textColor="#4a86e8"
+        android:textSize="11sp"
+        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="50dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="#f0f0f0"/>
+        <CheckBox
+            android:id="@+id/cb_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="全选本页"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_batch_download"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorHint"
+            android:text="立即下载"
+            android:gravity="center"
+            app:layout_constraintWidth_percent="0.4"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
 </LinearLayout>

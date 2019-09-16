@@ -18,5 +18,5 @@
     <string name="comment_count">评论%s</string>
     <string name="pagecount">选集(%d)</string>
     <string name="playcount_createtime">%s次播放&#160;&#160;&#160;&#160;%s</string>
-
+    <string name="selected_num">共选了%d条声音,占用%s，可用空间%s</string>
 </resources>

@@ -102,7 +102,6 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     private FrameLayout flMask;
     private RecyclerView rvPager;
     private TrackPagerAdapter mPagerAdapter;
-  //  private int mSelectPage = 0;
 
     private String[] tabs = {"简介", "节目"};
     private TextView tvLastplay;

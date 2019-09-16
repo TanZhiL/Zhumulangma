@@ -83,9 +83,9 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         List<Track> tracks = trackList.getTracks();
         for (int i = 0; i <tracks.size(); i++) {
             if(mSort.equals("asc")){
-                tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((curTrackPage-1)*20+i));
+                tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((curTrackPage-1)*20+i)-1);
             }else {
-                tracks.get(i).setOrderPositionInAlbum((curTrackPage-1)*20+i+1);
+                tracks.get(i).setOrderPositionInAlbum((curTrackPage-1)*20+i);
             }
         }
     }
@@ -225,9 +225,9 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         List<Track> tracks = trackList.getTracks();
         for (int i = 0; i <tracks.size(); i++) {
             if(mSort.equals("asc")){
-                tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((upTrackPage-1)*20+i));
+                tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((upTrackPage-1)*20+i)-1);
             }else {
-                tracks.get(i).setOrderPositionInAlbum((upTrackPage-1)*20+i+1);
+                tracks.get(i).setOrderPositionInAlbum((upTrackPage-1)*20+i);
             }
         }
     }

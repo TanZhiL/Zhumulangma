@@ -43,7 +43,7 @@ public class BatchDownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
     private void setOrder(TrackList trackList) {
         List<Track> tracks = trackList.getTracks();
         for (int i = 0; i < tracks.size(); i++) {
-            tracks.get(i).setOrderPositionInAlbum((curTrackPage-1)*PAGESIEZ+i+1);
+            tracks.get(i).setOrderPositionInAlbum((curTrackPage-1)*PAGESIEZ+i);
         }
     }
 
@@ -125,7 +125,7 @@ public class BatchDownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
     private void setUpOrder(TrackList trackList) {
         List<Track> tracks = trackList.getTracks();
         for (int i = 0; i < tracks.size(); i++) {
-            tracks.get(i).setOrderPositionInAlbum((upTrackPage-1)*PAGESIEZ+i+1);
+            tracks.get(i).setOrderPositionInAlbum((upTrackPage-1)*PAGESIEZ+i);
         }
     }
 

@@ -137,6 +137,14 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
+        fd(R.id.ih_radio).setOnClickListener(view -> {
+            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
+                    .withInt(KeyCode.Home.TYPE, RadioListFragment.INTERNET)
+                    .withString(KeyCode.Home.TITLE, "网络台")
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
+        });
 
         fd(R.id.radio_refresh).setOnClickListener(this);
         fd(R.id.topic_refresh).setOnClickListener(this);

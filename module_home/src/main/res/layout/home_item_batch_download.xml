@@ -69,7 +69,8 @@
     </LinearLayout>
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/cb"
+        android:clickable="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -86,10 +87,10 @@
         android:layout_marginEnd="8dp"
         android:text="999"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/checkBox2"
+        app:layout_constraintBottom_toBottomOf="@+id/cb"
         app:layout_constraintEnd_toStartOf="@+id/tv_title"
-        app:layout_constraintStart_toEndOf="@+id/checkBox2"
-        app:layout_constraintTop_toTopOf="@+id/checkBox2" />
+        app:layout_constraintStart_toEndOf="@+id/cb"
+        app:layout_constraintTop_toTopOf="@+id/cb" />
 
     <View
         android:layout_width="0dp"

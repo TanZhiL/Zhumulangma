@@ -27,28 +27,26 @@ import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.DownloadAlbumAdapter;
 import com.gykj.zhumulangma.listen.adapter.DownloadTrackAdapter;
-import com.gykj.zhumulangma.listen.adapter.RecommendAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.DownloadViewModel;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.IDoSomethingProgress;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.IDownloadManager;
+import com.ximalaya.ting.android.sdkdownloader.downloadutil.IXmDownloadTrackCallBack;
 import com.ximalaya.ting.android.sdkdownloader.exception.BaseRuntimeException;
-import com.ximalaya.ting.android.sdkdownloader.model.XmDownloadAlbum;
+import com.ximalaya.ting.android.sdkdownloader.task.Callback;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
 public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements
-        BaseQuickAdapter.OnItemChildClickListener{
+        BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack {
     @Autowired(name = KeyCode.Listen.TAB_INDEX)
     public int tabIndex;
     private TextView tvMemory;
@@ -63,9 +61,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     private RecyclerView rvRecommend;
     private DownloadAlbumAdapter mAlbumAdapter;
     private DownloadTrackAdapter mTrackAdapter;
-    private RecommendAdapter mRecommendAdapter;
-    private List<XmDownloadAlbum> downloadAlbums;
-    private List<Track> downloadTracks;
+    private DownloadTrackAdapter mDownloadingAdapter;
 
     public DownloadFragment() {
 
@@ -108,8 +104,8 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         rvRecommend = layoutDetail3.findViewById(R.id.rv);
         rvRecommend.setHasFixedSize(true);
         rvRecommend.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecommendAdapter = new RecommendAdapter(R.layout.listen_item_recommend);
-        mRecommendAdapter.bindToRecyclerView(rvRecommend);
+        mDownloadingAdapter = new DownloadTrackAdapter(R.layout.listen_item_download_track);
+        mDownloadingAdapter.bindToRecyclerView(rvRecommend);
 
         tvMemory = fd(R.id.tv_memory);
         viewpager = fd(R.id.viewpager);
@@ -127,7 +123,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         super.initListener();
         mAlbumAdapter.setOnItemChildClickListener(this);
         mTrackAdapter.setOnItemChildClickListener(this);
-
+        XmDownloadManager.getInstance().addDownloadStatueListener(this);
     }
 
     @Override
@@ -135,14 +131,12 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         tvMemory.setText(getString(R.string.memory,
                 XmDownloadManager.getInstance().getHumanReadableDownloadOccupation(IDownloadManager.Auto),
                 SystemUtil.getRomTotalSize(mContext)));
-        downloadAlbums = XmDownloadManager.getInstance().getDownloadAlbums(true);
 
-        mAlbumAdapter.setNewData(downloadAlbums);
-
-        downloadTracks = XmDownloadManager.getInstance().getDownloadTracks(true);
-        mTrackAdapter.setNewData(downloadTracks);
-
+        mAlbumAdapter.setNewData(XmDownloadManager.getInstance().getDownloadAlbums(true));
+        mTrackAdapter.setNewData(XmDownloadManager.getInstance().getDownloadTracks(true));
+        mDownloadingAdapter.setNewData(XmDownloadManager.getInstance().getDownloadTracks(false));
     }
+
     @Override
     public void initViewObservable() {
 
@@ -154,33 +148,12 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         if (adapter instanceof DownloadAlbumAdapter) {
             if (id == R.id.ll_delete) {
 
-                mViewModel.clearAlbum(downloadAlbums.get(position).getAlbumId());
-
-                XmDownloadManager.getInstance().clearDownloadedAlbum(downloadAlbums.get(position).getAlbumId(), new IDoSomethingProgress() {
-                    @Override
-                    public void begin() {
-                        showInitLoadView(true);
-                    }
-
-                    @Override
-                    public void success() {
-                        initData();
-                        showInitLoadView(false);
-                    }
-
-                    @Override
-                    public void fail(BaseRuntimeException e) {
-                        e.printStackTrace();
-                        showInitLoadView(false);
-                    }
-                });
+                XmDownloadManager.getInstance().clearDownloadedAlbum(mAlbumAdapter.getData().get(position).getAlbumId(), null);
 
             }
         } else {
             if (id == R.id.ll_delete) {
-                XmDownloadManager.getInstance().clearDownloadedTrack(downloadTracks.get(position).getDataId());
-                mViewModel.clearTrack(downloadTracks.get(position).getDataId());
-                new Handler().postDelayed(()->initData(),200);
+                XmDownloadManager.getInstance().clearDownloadedTrack(mTrackAdapter.getData().get(position).getDataId());
             }
         }
     }
@@ -193,6 +166,41 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
+    }
+
+    @Override
+    public void onWaiting(Track track) {
+
+    }
+
+    @Override
+    public void onStarted(Track track) {
+
+    }
+
+    @Override
+    public void onSuccess(Track track) {
+
+    }
+
+    @Override
+    public void onError(Track track, Throwable throwable) {
+        throwable.printStackTrace();
+    }
+
+    @Override
+    public void onCancelled(Track track, Callback.CancelledException e) {
+
+    }
+
+    @Override
+    public void onProgress(Track track, long l, long l1) {
+
+    }
+
+    @Override
+    public void onRemoved() {
+        initData();
     }
 
 
@@ -248,5 +256,11 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         magicIndicator.setLayoutParams(layoutParams);
 
         return frameLayout;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        XmDownloadManager.getInstance().removeDownloadStatueListener(this);
     }
 }
