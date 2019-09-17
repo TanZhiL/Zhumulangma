@@ -91,7 +91,7 @@ public class TrackListFragment extends BaseMvvmFragment<TrackListViewModel> impl
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Track track = mAdapter.getData().get(position);
+        Track track = mAdapter.getItem(position);
         mViewModel.play(track.getAlbum().getAlbumId(),track.getDataId());
     }
 

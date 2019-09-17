@@ -146,7 +146,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
 
         mFreeAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                    .withLong(KeyCode.Home.ALBUMID, mFreeAdapter.getData().get(position).getId())
+                    .withLong(KeyCode.Home.ALBUMID, mFreeAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
@@ -154,7 +154,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
         });
         mPaidAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                    .withLong(KeyCode.Home.ALBUMID, mPaidAdapter.getData().get(position).getId())
+                    .withLong(KeyCode.Home.ALBUMID, mPaidAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,

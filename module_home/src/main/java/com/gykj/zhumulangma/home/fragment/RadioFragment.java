@@ -131,15 +131,15 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
         mLocalAdapter.setOnItemClickListener((adapter, view, position) -> {
-            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mLocalAdapter.getData().get(position));
+            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mLocalAdapter.getItem(position));
             navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         });
         mTopAdapter.setOnItemClickListener((adapter, view, position) -> {
-            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mTopAdapter.getData().get(position));
+            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mTopAdapter.getItem(position));
             navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         });
         mHistoryAdapter.setOnItemClickListener((adapter, view, position) ->
-                mViewModel.play(String.valueOf(mHistoryAdapter.getData().get(position).getSchedule().getRadioId())));
+                mViewModel.play(String.valueOf(mHistoryAdapter.getItem(position).getSchedule().getRadioId())));
     }
 
     @Override

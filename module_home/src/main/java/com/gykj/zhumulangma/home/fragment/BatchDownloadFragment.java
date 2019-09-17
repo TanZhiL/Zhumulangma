@@ -26,6 +26,7 @@ import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
+import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.DownloadTrackAdapter;
 import com.gykj.zhumulangma.home.adapter.TrackPagerAdapter;
@@ -37,10 +38,14 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.DownloadState;
+import com.ximalaya.ting.android.sdkdownloader.downloadutil.IDoSomethingProgress;
+import com.ximalaya.ting.android.sdkdownloader.exception.AddDownloadException;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -73,7 +78,8 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
     private TextView tvSize;
     private View tvDownload;
 
-    private Handler mHandler=new Handler();
+    private Handler mHandler = new Handler();
+
     @Override
     protected int onBindLayout() {
         return R.layout.home_fragment_batch_download;
@@ -134,13 +140,13 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
 
         mViewModel.getTracksUpSingleLiveEvent().observe(this, tracks -> {
             if (tracks == null || CollectionUtils.isEmpty(tracks.getTracks())) {
-                ((CheckBox) fd(R.id.cb_all)).setChecked(false);
                 if (0 == mDownloadTrackAdapter.getData().size()) {
                     showNoDataView(true);
                 } else {
                     refreshLayout.finishRefresh();
                 }
             } else {
+                ((CheckBox) fd(R.id.cb_all)).setChecked(false);
                 mDownloadTrackAdapter.addData(0, tracks.getTracks());
                 refreshLayout.finishRefresh();
             }
@@ -167,6 +173,12 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
     }
 
     @Override
+    protected void onRevisible() {
+        super.onRevisible();
+        mDownloadTrackAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
         EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.SHOW_GP));
@@ -179,7 +191,7 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
 
     @Override
     protected Integer[] onBindBarRightIcon() {
-        return new Integer[]{R.drawable.ic_home_track_download};
+        return new Integer[]{R.drawable.ic_common_download};
     }
 
     @Override
@@ -195,10 +207,14 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mDownloadTrackAdapter) {
+            Track track = mDownloadTrackAdapter.getItem(position);
+            if (XmDownloadManager.getInstance().getSingleTrackDownloadStatus(track.getDataId()) != DownloadState.NOADD) {
+                return;
+            }
             CheckBox checkBox = view.findViewById(R.id.cb);
             checkBox.setChecked(!checkBox.isChecked());
             boolean checked = checkBox.isChecked();
-            Track track = mDownloadTrackAdapter.getData().get(position);
+
             if (checked) {
                 mTotalSize += track.getDownloadSize();
                 mDownloadTrackAdapter.getSelectedTracks().add(track);
@@ -271,22 +287,53 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
             if (CollectionUtils.isEmpty(selectedTracks)) {
                 return;
             }
+
+            Collections.sort(selectedTracks, (o1, o2) ->
+                    Integer.compare(o1.getOrderPositionInAlbum(), o2.getOrderPositionInAlbum()));
             List<Long> trackIds = new ArrayList<>();
             Iterator<Track> iterator = selectedTracks.iterator();
             while (iterator.hasNext()) {
                 trackIds.add(iterator.next().getDataId());
-                iterator.remove();
             }
-            mTotalSize = 0;
-            tvSize.setVisibility(View.GONE);
-            tvDownload.setEnabled(false);
-            ((CheckBox) fd(R.id.cb_all)).setChecked(false);
-            tvDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
-            XmDownloadManager.getInstance().downloadTracks(trackIds, true,null);
-            mHandler.postDelayed(()-> {
-                ToastUtil.showToast("已加入下载队列");
-                mDownloadTrackAdapter.notifyDataSetChanged();
-            },200);
+            TLog.d(trackIds);
+            XmDownloadManager.getInstance().downloadTracks(trackIds, true, new IDoSomethingProgress<AddDownloadException>() {
+                @Override
+                public void begin() {
+
+                }
+
+                @Override
+                public void success() {
+                    mTotalSize = 0;
+                    tvSize.setVisibility(View.GONE);
+                    tvDownload.setEnabled(false);
+                    ((CheckBox) fd(R.id.cb_all)).setChecked(false);
+                    tvDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
+                    ToastUtil.showToast("已加入下载队列");
+                    selectedTracks.clear();
+                    mDownloadTrackAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void fail(AddDownloadException e) {
+                   if(e.getCode()==AddDownloadException.CODE_NULL){
+                       ToastUtil.showToast("参数不能为null");
+                   }else if(e.getCode()==AddDownloadException.CODE_MAX_OVER){
+                       ToastUtil.showToast("批量下载个数超过最大值");
+                   }else if(e.getCode()==AddDownloadException.CODE_NOT_FIND_TRACK){
+                       ToastUtil.showToast("不能找到相应的声音");
+                   }else if(e.getCode()==AddDownloadException.CODE_MAX_DOWNLOADING_COUNT){
+                       ToastUtil.showToast("同时下载的音频个数不能超过500");
+                   }else if(e.getCode()==AddDownloadException.CODE_DISK_OVER){
+                       ToastUtil.showToast("磁盘已满");
+                   }else if(e.getCode()==AddDownloadException.CODE_MAX_SPACE_OVER){
+                       ToastUtil.showToast("下载的音频超过了设置的最大空间");
+                   }else if(e.getCode()==AddDownloadException.CODE_NO_PAY_SOUND){
+                       ToastUtil.showToast("下载的付费音频中有没有支付");
+                   }
+                }
+            });
+
         }
     }
 
@@ -295,12 +342,12 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
         for (int i = 0; i < mPagerAdapter.getData().size(); i++) {
             Iterator<Track> iterator = mDownloadTrackAdapter.getSelectedTracks().iterator();
             View ivSelected = mPagerAdapter.getViewByPosition(i, R.id.iv_selected);
-            if(ivSelected!=null){
+            if (ivSelected != null) {
                 ivSelected.setVisibility(View.GONE);
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     Track next = iterator.next();
-                    int page = next.getOrderPositionInAlbum()/BatchDownloadViewModel.PAGESIEZ;
-                    if(page==i){
+                    int page = next.getOrderPositionInAlbum() / BatchDownloadViewModel.PAGESIEZ;
+                    if (page == i) {
                         ivSelected.setVisibility(View.VISIBLE);
                         break;
                     }

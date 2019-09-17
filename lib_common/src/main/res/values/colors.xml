@@ -13,7 +13,7 @@
     <color name="colorAccent">#55ccaa</color>
     <color name="colorGray">#505050</color>
     <color name="colorBg">#ffffff</color>
-
+    <color name="colorLine">#f0f0f0</color>
     <color name="transparent">#00000000</color> <!--透明色 -->
     <color name="white">#FFFFFF</color> <!--白色 -->
     <color name="ivory">#FFFFF0</color> <!--象牙色 -->

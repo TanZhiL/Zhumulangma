@@ -660,6 +660,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onPlayProgress(int i, int i1) {
+        TLog.d(isTouch);
         ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
         tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
         if (!isTouch) {
@@ -696,7 +697,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getData().get(position).getId())
+                .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
                 .navigation();
         NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
         navigateBean.launchMode = STANDARD;
@@ -716,6 +717,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
         isTouch = true;
+        Log.d(TAG, "onStartTrackingTouch() called with: seekBar = [" + seekBar + "]");
     }
 
     //解决点击进度条跳动的问题
@@ -724,7 +726,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
         mPlayerManager.seekTo(seekBar.getProgress() * 1000);
-        isTouch = false;
+        mHandler.postDelayed(touchRunable,200);
+        Log.d(TAG, "onStopTrackingTouch() called with: seekBar = [" + seekBar + "]");
     }
 
     private void playAnim() {
@@ -915,11 +918,20 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction()==MotionEvent.ACTION_DOWN){
+            Log.d(TAG, "onTouch() ACTION_DOWN");
+            mHandler.removeCallbacks(touchRunable);
             isTouch=true;
         }else if(event.getAction()==MotionEvent.ACTION_UP){
-            mHandler.postDelayed(()-> isTouch=false,500);
-
+            Log.d(TAG, "onTouch() ACTION_UP");
         }
         return false;
     }
+
+    private Runnable touchRunable= new Runnable() {
+        @Override
+        public void run() {
+            isTouch=false;
+            Log.d(TAG, "run() called");
+        }
+    };
 }

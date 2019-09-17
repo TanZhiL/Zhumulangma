@@ -146,8 +146,8 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
                 break;
             case PROVINCE:
                 ivCategoryDown.setVisibility(View.VISIBLE);
-                tvTitle.setText(mProvinceAdapter.getData().get(0).getProvince_name());
-                provinceCode = mProvinceAdapter.getData().get(0).getProvince_code();
+                tvTitle.setText(mProvinceAdapter.getItem(0).getProvince_name());
+                provinceCode = mProvinceAdapter.getItem(0).getProvince_code();
                 mViewModel.getRadioList(RadioListViewModel.PROVINCE, String.valueOf(provinceCode));
                 break;
             case INTERNET:
@@ -169,18 +169,18 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mAdapter) {
-            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mAdapter.getData().get(position));
+            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mAdapter.getItem(position));
             navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         } else if (adapter == mProvinceAdapter) {
             switchCategory();
-            if (provinceCode != mProvinceAdapter.getData().get(position).getProvince_code()) {
-                provinceCode = mProvinceAdapter.getData().get(position).getProvince_code();
-                tvTitle.setText(mProvinceAdapter.getData().get(position).getProvince_name());
+            if (provinceCode != mProvinceAdapter.getItem(position).getProvince_code()) {
+                provinceCode = mProvinceAdapter.getItem(position).getProvince_code();
+                tvTitle.setText(mProvinceAdapter.getItem(position).getProvince_name());
                 mAdapter.setNewData(null);
                 mViewModel.getRadioList(RadioListViewModel.PROVINCE, String.valueOf(provinceCode));
             }
         }else if(adapter==mHistoryAdapter){
-            mViewModel.play(String.valueOf(mHistoryAdapter.getData().get(position).getSchedule().getRadioId()));
+            mViewModel.play(String.valueOf(mHistoryAdapter.getItem(position).getSchedule().getRadioId()));
         }
     }
 
@@ -199,7 +199,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
                 break;
             case PROVINCE:
                 ivCategoryDown.setVisibility(View.VISIBLE);
-                tvTitle.setText(mProvinceAdapter.getData().get(0).getProvince_name());
+                tvTitle.setText(mProvinceAdapter.getItem(0).getProvince_name());
                 mViewModel.getRadioList(RadioListViewModel.PROVINCE, String.valueOf(provinceCode));
                 break;
             case INTERNET:

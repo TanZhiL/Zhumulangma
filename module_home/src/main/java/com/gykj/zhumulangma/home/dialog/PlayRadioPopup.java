@@ -129,7 +129,7 @@ public class PlayRadioPopup extends BottomPopupView implements View.OnClickListe
         if (adapter == mYestodayAdapter) {
             XmPlayerManager.getInstance(mContext).playSchedule(list, position);
         } else if (adapter == mTodayAdapter) {
-            Schedule schedule = mTodayAdapter.getData().get(position);
+            Schedule schedule = mTodayAdapter.getItem(position);
             try {
                 long start = sdf.parse(schedule.getStartTime()).getTime();
                 if (start > System.currentTimeMillis()) {

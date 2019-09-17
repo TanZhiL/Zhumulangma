@@ -32,6 +32,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
@@ -55,7 +56,9 @@ import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.DownloadState;
+import com.ximalaya.ting.android.sdkdownloader.downloadutil.IDoSomethingProgress;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.IXmDownloadTrackCallBack;
+import com.ximalaya.ting.android.sdkdownloader.exception.AddDownloadException;
 import com.ximalaya.ting.android.sdkdownloader.task.Callback;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -189,7 +192,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                     if (mLastPlay != null) {
                         int index = mAlbumTrackAdapter.getData().indexOf(mLastPlay);
                         if (index != -1) {
-                            mLastPlay = mAlbumTrackAdapter.getData().get(index);
+                            mLastPlay = mAlbumTrackAdapter.getItem(index);
                             fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
                             tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                             XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(),
@@ -199,7 +202,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                             mViewModel.getTrackList(String.valueOf(mAlbumId));
                         }
                     } else {
-                        mLastPlay = mAlbumTrackAdapter.getData().get(0);
+                        mLastPlay = mAlbumTrackAdapter.getItem(0);
                         fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
                         tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                         XmPlayerManager.getInstance(mContext).playList(mViewModel.getCommonTrackList(), 0);
@@ -314,6 +317,12 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         });
     }
 
+    @Override
+    protected void onRevisible() {
+        super.onRevisible();
+        mAlbumTrackAdapter.notifyDataSetChanged();
+    }
+
     private void setPager(int totalcount) {
         int pagesize = 20;
         long includeTrackCount = totalcount;
@@ -352,9 +361,9 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mAlbumTrackAdapter) {
             playerManager.playList(mViewModel.getCommonTrackList(), position);
-            mLastPlay = mAlbumTrackAdapter.getData().get(position);
+            mLastPlay = mAlbumTrackAdapter.getItem(position);
             fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
-            tvLastplay.setText(getString(R.string.lastplay, mAlbumTrackAdapter.getData().get(position).getTrackTitle()));
+            tvLastplay.setText(getString(R.string.lastplay, mAlbumTrackAdapter.getItem(position).getTrackTitle()));
             navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
         } else {
             switchCategory();
@@ -367,7 +376,36 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         int id = view.getId();
         if (R.id.iv_download == id) {
             XmDownloadManager.getInstance().downloadSingleTrack(
-                    mAlbumTrackAdapter.getData().get(position).getDataId(), null);
+                    mAlbumTrackAdapter.getItem(position).getDataId(), new IDoSomethingProgress<AddDownloadException>() {
+                        @Override
+                        public void begin() {
+
+                        }
+
+                        @Override
+                        public void success() {
+
+                        }
+
+                        @Override
+                        public void fail(AddDownloadException e) {
+                            if(e.getCode()==AddDownloadException.CODE_NULL){
+                                ToastUtil.showToast("参数不能为null");
+                            }else if(e.getCode()==AddDownloadException.CODE_MAX_OVER){
+                                ToastUtil.showToast("批量下载个数超过最大值");
+                            }else if(e.getCode()==AddDownloadException.CODE_NOT_FIND_TRACK){
+                                ToastUtil.showToast("不能找到相应的声音");
+                            }else if(e.getCode()==AddDownloadException.CODE_MAX_DOWNLOADING_COUNT){
+                                ToastUtil.showToast("同时下载的音频个数不能超过500");
+                            }else if(e.getCode()==AddDownloadException.CODE_DISK_OVER){
+                                ToastUtil.showToast("磁盘已满");
+                            }else if(e.getCode()==AddDownloadException.CODE_MAX_SPACE_OVER){
+                                ToastUtil.showToast("下载的音频超过了设置的最大空间");
+                            }else if(e.getCode()==AddDownloadException.CODE_NO_PAY_SOUND){
+                                ToastUtil.showToast("下载的付费音频中有没有支付");
+                            }
+                        }
+                    });
         }
     }
 
@@ -452,7 +490,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         int index = mAlbumTrackAdapter.getData().indexOf(track);
         if (index != -1) {
             TextView tvHasplay = (TextView) mAlbumTrackAdapter.getViewByPosition(index, R.id.tv_hasplay);
-            if (null != tvHasplay && mAlbumTrackAdapter.getData().get(index).getDataId() == track.getDataId()) {
+            if (null != tvHasplay && mAlbumTrackAdapter.getItem(index).getDataId() == track.getDataId()) {
                 tvHasplay.setText(getString(R.string.hasplay, 100 * currPos / duration));
             }
         }

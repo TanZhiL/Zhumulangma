@@ -150,34 +150,34 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         fd(R.id.topic_refresh).setOnClickListener(this);
         mLikeAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                    .withLong(KeyCode.Home.ALBUMID, mLikeAdapter.getData().get(position).getId())
+                    .withLong(KeyCode.Home.ALBUMID, mLikeAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mStoryAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                    .withLong(KeyCode.Home.ALBUMID, mStoryAdapter.getData().get(position).getId())
+                    .withLong(KeyCode.Home.ALBUMID, mStoryAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mBabyAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                    .withLong(KeyCode.Home.ALBUMID, mBabyAdapter.getData().get(position).getId())
+                    .withLong(KeyCode.Home.ALBUMID, mBabyAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mMusicAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                    .withLong(KeyCode.Home.ALBUMID, mMusicAdapter.getData().get(position).getId())
+                    .withLong(KeyCode.Home.ALBUMID, mMusicAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mRadioAdapter.setOnItemClickListener((adapter, view, position) -> {
-            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getData().get(position));
+            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getItem(position));
             navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         });
     }

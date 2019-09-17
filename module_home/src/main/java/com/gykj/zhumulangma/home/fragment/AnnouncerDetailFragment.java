@@ -298,12 +298,12 @@ public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailVie
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mAlbumAdapter) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                    .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getData().get(position).getId())
+                    .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         } else {
-            Track track = mTrackAdapter.getData().get(position);
+            Track track = mTrackAdapter.getItem(position);
             mViewModel.play(track.getAlbum().getAlbumId(), track.getDataId());
         }
     }

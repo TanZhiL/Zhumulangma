@@ -158,7 +158,7 @@ public class PlayTrackPopup extends BottomPopupView implements View.OnClickListe
         int id = view.getId();
         if (R.id.iv_download == id) {
             XmDownloadManager.getInstance().downloadSingleTrack(
-                    mTrackAdapter.getData().get(position).getDataId(), null);
+                    mTrackAdapter.getItem(position).getDataId(), null);
         }
     }
 

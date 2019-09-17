@@ -105,8 +105,8 @@ public class AnnouncerListFragment extends BaseMvvmFragment<AnnouncerViewModel>
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
-                .withLong(KeyCode.Home.ANNOUNCER_ID, mAdapter.getData().get(position).getAnnouncerId())
-                .withString(KeyCode.Home.ANNOUNCER_NAME, mAdapter.getData().get(position).getNickname())
+                .withLong(KeyCode.Home.ANNOUNCER_ID, mAdapter.getItem(position).getAnnouncerId())
+                .withString(KeyCode.Home.ANNOUNCER_NAME, mAdapter.getItem(position).getNickname())
                 .navigation();
         NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation);
         navigateBean.launchMode=STANDARD;

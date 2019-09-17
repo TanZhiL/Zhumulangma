@@ -86,7 +86,7 @@ public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        RadioUtil.getInstance(mContext).playLiveRadioForSDK(mAdapter.getData().get(position));
+        RadioUtil.getInstance(mContext).playLiveRadioForSDK(mAdapter.getItem(position));
         navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
     }
     @Override

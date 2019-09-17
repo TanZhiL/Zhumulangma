@@ -182,10 +182,10 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
                     //   .maxSpaceSize(Long.MAX_VALUE)	// 设置下载文件占用磁盘空间最大值，单位字节。不设置没有限制
                     .connectionTimeOut(15000)        // 下载时连接超时的时间 ,单位毫秒 默认 30000
                     .readTimeOut(15000)                // 下载时读取的超时时间 ,单位毫秒 默认 30000
-                    .fifo(false)                    // 等待队列的是否优先执行先加入的任务. false表示后添加的先执行(不会改变当前正在下载的音频的状态) 默认为true
+               //     .fifo(false)                    // 等待队列的是否优先执行先加入的任务. false表示后添加的先执行(不会改变当前正在下载的音频的状态) 默认为true
                     .maxRetryCount(3)                // 出错时重试的次数 默认2次
                     .requestTracker(requestTracker)                // 出错时重试的次数 默认2次
-                    .progressCallBackMaxTimeSpan(1000)//  进度条progress 更新的频率 默认是800
+                    .progressCallBackMaxTimeSpan(10)//  进度条progress 更新的频率 默认是800
                     .savePath(getExternalFilesDir("mp3").getAbsolutePath())    // 保存的地址 会检查这个地址是否有效
                     .create();
 

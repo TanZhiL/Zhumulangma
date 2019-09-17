@@ -75,7 +75,7 @@ public class SearchTrackFragment extends BaseMvvmFragment<SearchResultViewModel>
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-        mViewModel.play(String.valueOf(mAdapter.getData().get(position).getAlbum().getAlbumId()),mAdapter.getData().get(position));
+        mViewModel.play(String.valueOf(mAdapter.getItem(position).getAlbum().getAlbumId()),mAdapter.getItem(position));
 
     }
 

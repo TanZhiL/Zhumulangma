@@ -91,7 +91,7 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                .withLong(KeyCode.Home.ALBUMID, mAdapter.getData().get(position).getId())
+                .withLong(KeyCode.Home.ALBUMID, mAdapter.getItem(position).getId())
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
                 EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));

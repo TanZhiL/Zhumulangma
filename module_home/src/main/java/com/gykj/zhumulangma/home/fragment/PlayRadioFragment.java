@@ -566,7 +566,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     @Override
     public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
         mPlayerManager.seekTo(seekBar.getProgress() * 1000);
-        isTouch = false;
+        mHandler.postDelayed(touchRunable,200);
+        Log.d(TAG, "onStopTrackingTouch() called with: seekBar = [" + seekBar + "]");
     }
 
     @Override
@@ -590,11 +591,20 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction()==MotionEvent.ACTION_DOWN){
+            Log.d(TAG, "onTouch() ACTION_DOWN");
+            mHandler.removeCallbacks(touchRunable);
             isTouch=true;
         }else if(event.getAction()==MotionEvent.ACTION_UP){
-            mHandler.postDelayed(()-> isTouch=false,500);
-
+            Log.d(TAG, "onTouch() ACTION_UP");
         }
         return false;
     }
+
+    private Runnable touchRunable= new Runnable() {
+        @Override
+        public void run() {
+            isTouch=false;
+            Log.d(TAG, "run() called");
+        }
+    };
 }

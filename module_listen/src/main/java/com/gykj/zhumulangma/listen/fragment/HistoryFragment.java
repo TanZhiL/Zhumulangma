@@ -91,7 +91,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
             }
             if (playHistoryBeans.size() > 0) {
                 if(!CollectionUtils.isEmpty(mHistoryAdapter.getData())&&mViewModel.dateCovert(
-                        mHistoryAdapter.getData().get(mHistoryAdapter.getData().size()-1).data.getDatatime())
+                        mHistoryAdapter.getItem(mHistoryAdapter.getData().size()-1).data.getDatatime())
                         .equals(playHistoryBeans.get(0).header)){
                     playHistoryBeans.remove(0);
                 }
@@ -111,7 +111,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        HistoryViewModel.PlayHistoryItem playHistoryItem = mHistoryAdapter.getData().get(position);
+        HistoryViewModel.PlayHistoryItem playHistoryItem = mHistoryAdapter.getItem(position);
         if(playHistoryItem.itemType!= HistoryViewModel.PlayHistoryItem.HEADER){
             if(playHistoryItem.itemType== HistoryViewModel.PlayHistoryItem.TRACK){
                 mViewModel.play(playHistoryItem.data.getGroupId(),
