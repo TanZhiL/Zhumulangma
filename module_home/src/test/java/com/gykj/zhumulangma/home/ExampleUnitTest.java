@@ -2,8 +2,6 @@ package com.gykj.zhumulangma.home;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -12,6 +10,11 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+      String s="搜索\"a\"";
+
+        int start = s.indexOf("\"");
+        int end = s.lastIndexOf("\"");
+        System.out.println(start);
+        System.out.println(end);
     }
 }

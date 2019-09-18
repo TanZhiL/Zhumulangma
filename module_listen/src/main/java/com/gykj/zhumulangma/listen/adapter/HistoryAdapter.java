@@ -8,7 +8,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.listen.R;
-import com.gykj.zhumulangma.listen.mvvm.viewmodel.HistoryViewModel;
+import com.gykj.zhumulangma.listen.bean.PlayHistoryItem;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
@@ -18,23 +18,23 @@ import java.util.List;
  * Created by 10719
  * on 2019/6/17
  */
-public class HistoryAdapter extends BaseMultiItemQuickAdapter<HistoryViewModel.PlayHistoryItem, BaseViewHolder> {
+public class HistoryAdapter extends BaseMultiItemQuickAdapter<PlayHistoryItem, BaseViewHolder> {
 
-    public HistoryAdapter(List<HistoryViewModel.PlayHistoryItem> data) {
+    public HistoryAdapter(List<PlayHistoryItem> data) {
         super(data);
-        addItemType(HistoryViewModel.PlayHistoryItem.HEADER,R.layout.listen_item_history_header);
-        addItemType(HistoryViewModel.PlayHistoryItem.TRACK,R.layout.listen_item_history_track);
-        addItemType(HistoryViewModel.PlayHistoryItem.SCHEDULE,R.layout.listen_item_history_schedule);
+        addItemType(PlayHistoryItem.HEADER,R.layout.listen_item_history_header);
+        addItemType(PlayHistoryItem.TRACK,R.layout.listen_item_history_track);
+        addItemType(PlayHistoryItem.SCHEDULE,R.layout.listen_item_history_schedule);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, HistoryViewModel.PlayHistoryItem item) {
+    protected void convert(BaseViewHolder helper, PlayHistoryItem item) {
         switch (helper.getItemViewType()) {
-            case HistoryViewModel.PlayHistoryItem.HEADER:
+            case PlayHistoryItem.HEADER:
                 helper.setText(R.id.tv_date,item.header);
                 helper.setGone(R.id.v_line,helper.getAdapterPosition()!=0);
                 break;
-            case HistoryViewModel.PlayHistoryItem.TRACK:
+            case PlayHistoryItem.TRACK:
                 Track track = item.data.getTrack();
                 Glide.with(mContext).load(track.getCoverUrlMiddle()).into((ImageView) helper.getView(R.id.iv_cover));
                 helper.setText(R.id.tv_title, track.getAlbum().getAlbumTitle());
@@ -42,7 +42,7 @@ public class HistoryAdapter extends BaseMultiItemQuickAdapter<HistoryViewModel.P
                 helper.setText(R.id.tv_duration, ZhumulangmaUtil.secondToTime(track.getDuration()));
                 helper.setText(R.id.tv_hasplay, mContext.getString(R.string.hasplay, item.data.getPercent()));
                 break;
-            case HistoryViewModel.PlayHistoryItem.SCHEDULE:
+            case PlayHistoryItem.SCHEDULE:
                 Schedule schedule = item.data.getSchedule();
                 Glide.with(mContext).load(schedule.getRelatedProgram().getBackPicUrl()).into((ImageView) helper.getView(R.id.iv_cover));
                 helper.setText(R.id.tv_title, schedule.getRadioName());

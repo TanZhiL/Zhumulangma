@@ -34,12 +34,10 @@ import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
-import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumTagAdapter;
 import com.gykj.zhumulangma.home.adapter.AlbumTrackAdapter;
 import com.gykj.zhumulangma.home.adapter.TrackPagerAdapter;
-import com.gykj.zhumulangma.home.dialog.TrackPagerDialog;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumDetailViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
@@ -90,7 +88,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     private ViewGroup layoutTracks;
 
     private Album mAlbum;
-    private String mSort = "asc";
+    private String mSort = "time_desc";
 
     private ImageView ivCover;
     private TextView tvAlbum;
@@ -181,7 +179,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                     if (flMask.getVisibility() == View.VISIBLE) {
                         return;
                     }
-                    mSort = "asc".equals(mSort) ? "desc" : "asc";
+                    mSort = "time_desc".equals(mSort) ? "time_asc" : "time_desc";
                     mViewModel.getTrackList(String.valueOf(mAlbumId), mSort);
                 }));
         addDisposable(RxView.clicks(fd(R.id.ll_play))
@@ -328,7 +326,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
         long includeTrackCount = totalcount;
         ((TextView) fd(R.id.tv_pagecount)).setText(getString(R.string.pagecount, (int) includeTrackCount));
         List<String> list = new ArrayList<>();
-        if (mSort.equals("asc")) {
+        if (mSort.equals("time_desc")) {
             for (int i = 0; i < includeTrackCount / pagesize; i++) {
                 list.add(includeTrackCount - (i * pagesize) + "~" + (includeTrackCount - ((i + 1) * pagesize) + 1));
             }
@@ -342,6 +340,7 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
             if (includeTrackCount % pagesize != 0) {
                 list.add((includeTrackCount / pagesize * pagesize + 1) + "~" + includeTrackCount);
             }
+
         }
         mPagerAdapter.setNewData(list);
     }

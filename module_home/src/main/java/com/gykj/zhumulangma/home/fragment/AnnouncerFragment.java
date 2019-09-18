@@ -80,7 +80,6 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
         mAnnouncerAdapter.setOnItemClickListener(this);
         ((NestedScrollView)fd(R.id.tsv_content)).setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (nestedScrollView, i, i1, i2, i3) -> {
-            TLog.d(i1);
             TLog.d(fd(R.id.ll_title).getTop());
             fd(R.id.fl_title_top).setVisibility(i1>fd(R.id.ll_title).getTop()?View.VISIBLE:View.GONE);
         });

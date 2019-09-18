@@ -7,7 +7,6 @@ import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
-import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.CommonTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
@@ -35,6 +34,7 @@ public class BatchDownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
     private int upTrackPage = 0;
     private int curTrackPage = 1;
     public  static final int PAGESIEZ=50;
+    private String mSort = "time_desc";
     public BatchDownloadViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
@@ -43,13 +43,14 @@ public class BatchDownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
     private void setOrder(TrackList trackList) {
         List<Track> tracks = trackList.getTracks();
         for (int i = 0; i < tracks.size(); i++) {
-            tracks.get(i).setOrderPositionInAlbum((curTrackPage-1)*PAGESIEZ+i);
+            tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((curTrackPage-1)*PAGESIEZ+i)-1);
         }
     }
 
     public void getTrackList(String albumId) {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.ALBUM_ID, albumId);
+        map.put(DTransferConstants.SORT, mSort);
         map.put(DTransferConstants.PAGE, String.valueOf(curTrackPage));
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIEZ));
         mModel.getTracks(map)
@@ -69,6 +70,7 @@ public class BatchDownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.ALBUM_ID, albumId);
         map.put(DTransferConstants.PAGE, String.valueOf(page));
+        map.put(DTransferConstants.SORT, mSort);
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIEZ));
         mModel.getTracks(map)
                 .observeOn(Schedulers.io())
@@ -101,6 +103,7 @@ public class BatchDownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
 
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.ALBUM_ID, albumId);
+        map.put(DTransferConstants.SORT, mSort);
         map.put(DTransferConstants.PAGE, String.valueOf(page));
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIEZ));
 
@@ -125,7 +128,7 @@ public class BatchDownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
     private void setUpOrder(TrackList trackList) {
         List<Track> tracks = trackList.getTracks();
         for (int i = 0; i < tracks.size(); i++) {
-            tracks.get(i).setOrderPositionInAlbum((upTrackPage-1)*PAGESIEZ+i);
+            tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((upTrackPage-1)*PAGESIEZ+i)-1);
         }
     }
 

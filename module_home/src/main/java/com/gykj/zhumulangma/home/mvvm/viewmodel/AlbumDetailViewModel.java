@@ -2,7 +2,6 @@ package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
@@ -14,22 +13,16 @@ import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
-import com.ximalaya.ting.android.opensdk.model.album.RelativeAlbums;
 import com.ximalaya.ting.android.opensdk.model.track.CommonTrackList;
-import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -54,7 +47,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     private int upTrackPage = 0;
     private int curTrackPage = 1;
-    private String mSort = "asc";
+    private String mSort = "time_desc";
 
     public AlbumDetailViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
@@ -82,7 +75,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
     private void setOrder(TrackList trackList) {
         List<Track> tracks = trackList.getTracks();
         for (int i = 0; i <tracks.size(); i++) {
-            if(mSort.equals("asc")){
+            if(mSort.equals("time_desc")){
                 tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((curTrackPage-1)*20+i)-1);
             }else {
                 tracks.get(i).setOrderPositionInAlbum((curTrackPage-1)*20+i);
@@ -224,7 +217,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
     private void setUpOrder(TrackList trackList) {
         List<Track> tracks = trackList.getTracks();
         for (int i = 0; i <tracks.size(); i++) {
-            if(mSort.equals("asc")){
+            if(mSort.equals("time_desc")){
                 tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((upTrackPage-1)*20+i)-1);
             }else {
                 tracks.get(i).setOrderPositionInAlbum((upTrackPage-1)*20+i);

@@ -5,34 +5,23 @@ import android.support.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
-import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.chad.library.adapter.base.entity.SectionEntity;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
-import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.util.DateUtil;
 import com.gykj.zhumulangma.common.util.RadioUtil;
-import com.gykj.zhumulangma.common.util.log.TLog;
-import com.gykj.zhumulangma.listen.adapter.HistoryAdapter;
+import com.gykj.zhumulangma.listen.bean.PlayHistoryItem;
 import com.gykj.zhumulangma.listen.mvvm.model.HistoryModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
-import com.ximalaya.ting.android.opensdk.model.live.program.Program;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
-import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
-import com.ximalaya.ting.android.opensdk.model.track.Track;
-import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
-import com.ximalaya.ting.android.opensdk.util.BaseUtil;
-import com.ximalaya.ting.android.opensdk.util.ModelUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -44,12 +33,9 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -240,27 +226,4 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
         return mHistorysSingleLiveEvent = createLiveData(mHistorysSingleLiveEvent);
     }
 
-    public class PlayHistoryItem implements MultiItemEntity {
-        public static final int HEADER = 1;
-        public static final int TRACK = 2;
-        public static final int SCHEDULE = 3;
-        public int itemType;
-        public PlayHistoryBean data;
-        public String header;
-
-        public PlayHistoryItem(int itemType,PlayHistoryBean data) {
-            this.itemType = itemType;
-            this.data=data;
-        }
-        public PlayHistoryItem(int itemType,String header) {
-            this.itemType = itemType;
-            this.header=header;
-        }
-
-        @Override
-        public int getItemType() {
-            return itemType;
-        }
-
-    }
 }

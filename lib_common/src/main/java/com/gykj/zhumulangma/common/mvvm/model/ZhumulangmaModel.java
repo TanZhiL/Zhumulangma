@@ -4,9 +4,6 @@ import android.app.Application;
 import android.support.annotation.Nullable;
 
 import com.blankj.utilcode.util.CollectionUtils;
-import com.gykj.zhumulangma.common.App;
-import com.gykj.zhumulangma.common.bean.SearchHistoryBean;
-import com.gykj.zhumulangma.common.dao.SearchHistoryBeanDao;
 import com.gykj.zhumulangma.common.net.http.ResponseThrowable;
 import com.gykj.zhumulangma.common.net.http.RxAdapter;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
@@ -34,18 +31,12 @@ import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
+import com.ximalaya.ting.android.opensdk.model.word.SuggestWords;
 
-import org.greenrobot.greendao.AbstractDao;
-import org.greenrobot.greendao.Property;
-import org.greenrobot.greendao.query.QueryBuilder;
-import org.greenrobot.greendao.query.WhereCondition;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 
 public class ZhumulangmaModel extends CommonModel {
@@ -707,6 +698,29 @@ public class ZhumulangmaModel extends CommonModel {
                     @Override
                     public void onSuccess(@Nullable AnnouncerCategoryList categoryList) {
                         emitter.onNext(categoryList);
+                        emitter.onComplete();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                    }
+                })).compose(RxAdapter.exceptionTransformer());
+    }
+
+
+    /**
+     *   获取某个关键词的联想词
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<SuggestWords> getSuggestWord(Map<String, String> specificParams) {
+        return Observable.create(emitter -> CommonRequest.getSuggestWord(specificParams,
+                new IDataCallBack<SuggestWords>() {
+                    @Override
+                    public void onSuccess(@Nullable SuggestWords suggestWords) {
+                        emitter.onNext(suggestWords);
                         emitter.onComplete();
                     }
 

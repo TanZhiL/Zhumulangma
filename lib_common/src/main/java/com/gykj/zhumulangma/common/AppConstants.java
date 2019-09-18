@@ -19,6 +19,7 @@ public interface  AppConstants {
             String F_SEARCH="/home/search";
             String F_RANK="/home/rank";
             String F_SEARCH_RESULT="/home/search/result";
+            String F_SEARCH_SUGGEST="/home/search/suggest";
             String F_ALBUM_LIST="/home/album/list";
             String F_TRACK_LIST="/home/track/list";
             String F_ANNOUNCER_LIST="/home/announcer/list";

@@ -45,7 +45,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -289,7 +288,7 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
             }
 
             Collections.sort(selectedTracks, (o1, o2) ->
-                    Integer.compare(o1.getOrderPositionInAlbum(), o2.getOrderPositionInAlbum()));
+                    Integer.compare(o2.getOrderPositionInAlbum(), o1.getOrderPositionInAlbum()));
             List<Long> trackIds = new ArrayList<>();
             Iterator<Track> iterator = selectedTracks.iterator();
             while (iterator.hasNext()) {
@@ -389,13 +388,14 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
         int pagesize = 50;
         ((TextView) fd(R.id.tv_pagecount)).setText(getString(R.string.pagecount, totalcount));
         List<String> list = new ArrayList<>();
-
         for (int i = 0; i < totalcount / pagesize; i++) {
-            list.add((i * pagesize + 1) + "~" + ((i + 1) * pagesize));
+            list.add(totalcount - (i * pagesize) + "~" + (totalcount - ((i + 1) * pagesize) + 1));
         }
         if (totalcount % pagesize != 0) {
-            list.add((totalcount / pagesize * pagesize + 1) + "~" + totalcount);
+            list.add(totalcount - totalcount / pagesize * pagesize + "~1");
         }
+
+
         mPagerAdapter.setNewData(list);
     }
 

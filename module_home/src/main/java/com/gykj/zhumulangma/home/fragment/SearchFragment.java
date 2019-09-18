@@ -3,6 +3,9 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -13,7 +16,6 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.FragmentUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.SearchHistoryBean;
@@ -32,11 +34,15 @@ import java.util.concurrent.TimeUnit;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_SEARCH)
-public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements View.OnClickListener, SearchHistoryFragment.onSearchListener, View.OnFocusChangeListener, TextView.OnEditorActionListener {
+public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
+        View.OnClickListener, SearchHistoryFragment.onSearchListener, View.OnFocusChangeListener,
+        TextView.OnEditorActionListener, TextWatcher, SearchSuggestFragment.onSearchListener {
 
     private EditText etKeyword;
     @Autowired(name = KeyCode.Home.HOTWORD)
     public String hotword;
+    private SearchSuggestFragment mSuggestFragment;
+    private Handler mHandler=new Handler();
     public SearchFragment() {
 
     }
@@ -52,7 +58,9 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
         etKeyword = fd(R.id.et_keyword);
-
+        mSuggestFragment= (SearchSuggestFragment) ARouter.getInstance()
+                .build(AppConstants.Router.Home.F_SEARCH_SUGGEST).navigation();
+        mSuggestFragment.setSearchListener(this);
         etKeyword.postDelayed(() -> {
             SearchHistoryFragment historyFragment = new SearchHistoryFragment();
             historyFragment.setSearchListener(SearchFragment.this);
@@ -70,6 +78,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         fd(R.id.iv_pop).setOnClickListener(this);
         etKeyword.setOnFocusChangeListener(this);
         etKeyword.setOnEditorActionListener(this);
+        etKeyword.addTextChangedListener(this);
         addDisposable(RxView.clicks(fd(R.id.tv_search))
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> preSearch()));
@@ -79,6 +88,8 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     public void initData() {
         if(hotword!=null){
             etKeyword.setHint(hotword);
+        }else {
+            mViewModel._getHotWords();
         }
     }
 
@@ -92,13 +103,15 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         int id = v.getId();
         if (id == R.id.iv_pop) {
             hideSoftInput();
-            new Handler().postDelayed(() -> pop(), 200);
+           mHandler.postDelayed(() -> pop(), 200);
         }
     }
 
     @Override
     public void onSearch(String keyword) {
+        etKeyword.removeTextChangedListener(this);
         etKeyword.setText(keyword);
+        etKeyword.addTextChangedListener(this);
         search(keyword);
     }
 
@@ -109,6 +122,9 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         mViewModel.insertHistory(searchHistoryBean);
         etKeyword.clearFocus();
         hideSoftInput();
+        if (getTopChildFragment() instanceof SearchSuggestFragment) {
+            ((BaseFragment) getTopChildFragment()).pop();
+        }
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH_RESULT)
                 .withString(KeyCode.Home.KEYWORD, keyword).navigation();
         if (null != navigation)
@@ -134,6 +150,8 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
 
     @Override
     public void initViewObservable() {
+        mViewModel.getHotWordsSingleLiveEvent().observe(this, hotWords ->
+                etKeyword.setHint(hotWords.get(0).getSearchword()));
     }
 
     @Override
@@ -145,7 +163,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     }
 
     private void preSearch() {
-        if (FragmentUtils.getTop(getChildFragmentManager()) instanceof SearchResultFragment) {
+        if (getTopChildFragment() instanceof SearchResultFragment) {
             return;
         }
         if (etKeyword.getText().toString().trim().length() != 0) {
@@ -159,6 +177,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
 
     }
 
+
     @Override
     protected boolean lazyEnable() {
         return false;
@@ -168,5 +187,34 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     public void onDestroy() {
         super.onDestroy();
         KeyboardUtils.hideSoftInput(etKeyword);
+        mHandler.removeCallbacksAndMessages(null);
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if(TextUtils.isEmpty(s.toString().trim())){
+            if (getTopChildFragment() instanceof SearchSuggestFragment) {
+                ((BaseFragment) getTopChildFragment()).pop();
+            }
+        }else {
+            if (!(getTopChildFragment() instanceof SearchSuggestFragment)) {
+                ((BaseFragment)getTopChildFragment()).start(mSuggestFragment);
+                mHandler.postDelayed(()-> mSuggestFragment.loadSuggest(s.toString()),200);
+
+            }else {
+                mSuggestFragment.loadSuggest(s.toString());
+            }
+        }
+    }
+
 }
