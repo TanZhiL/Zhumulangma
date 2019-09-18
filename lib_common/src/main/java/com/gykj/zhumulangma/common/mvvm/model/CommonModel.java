@@ -2,11 +2,9 @@ package com.gykj.zhumulangma.common.mvvm.model;
 
 import android.app.Application;
 
-import com.gykj.zhumulangma.common.App;
-import com.gykj.zhumulangma.common.bean.UploadFileBean;
+import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.net.CommonService;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
-import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
 import com.gykj.zhumulangma.common.net.http.RxAdapter;
 
 import org.greenrobot.greendao.AbstractDao;
@@ -20,7 +18,6 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import okhttp3.MultipartBody;
 
 /**
  * Author: Thomas.
@@ -50,7 +47,7 @@ public class CommonModel extends BaseModel {
             List<T> list = new ArrayList<>();
             try {
 
-                QueryBuilder<T> builder = App.getDaoSession().queryBuilder(cls);
+                QueryBuilder<T> builder = AppHelper.getDaoSession().queryBuilder(cls);
                 if(page!=0&&pagesize!=0){
                     builder=builder.offset((page-1)*pagesize).limit(pagesize);
                 }
@@ -79,7 +76,7 @@ public class CommonModel extends BaseModel {
             public void subscribe(ObservableEmitter<List<T>> emitter) throws Exception {
                 List<T> list = new ArrayList<>();
                 try {
-                    list= App.getDaoSession().queryRaw(cls, where, selectionArgs);
+                    list= AppHelper.getDaoSession().queryRaw(cls, where, selectionArgs);
                 } catch (Exception e) {
                     emitter.onError(e);
                 }
@@ -134,7 +131,7 @@ public class CommonModel extends BaseModel {
     public <T> Observable<Boolean> clearAll(Class<T> cls){
         return  Observable.create(emitter -> {
             try {
-                App.getDaoSession().deleteAll(cls);
+                AppHelper.getDaoSession().deleteAll(cls);
             } catch (Exception e) {
                 emitter.onError(e);
             }
@@ -152,7 +149,7 @@ public class CommonModel extends BaseModel {
     public <T,K> Observable<Boolean> clear(Class<T> cls,K key){
         return  Observable.create(emitter -> {
             try {
-                AbstractDao<T, K> tkAbstractDao = (AbstractDao<T, K>) App.getDaoSession().getDao(cls);
+                AbstractDao<T, K> tkAbstractDao = (AbstractDao<T, K>) AppHelper.getDaoSession().getDao(cls);
                 tkAbstractDao.deleteByKey(key);
             } catch (Exception e) {
                 emitter.onError(e);
@@ -173,7 +170,7 @@ public class CommonModel extends BaseModel {
 
         return  Observable.create(emitter -> {
             try {
-                App.getDaoSession().insertOrReplace(entity);
+                AppHelper.getDaoSession().insertOrReplace(entity);
             } catch (Exception e) {
                 emitter.onError(e);
             }

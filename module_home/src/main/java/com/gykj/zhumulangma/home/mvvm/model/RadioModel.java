@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import com.google.gson.Gson;
 import com.gykj.zhumulangma.common.App;
+import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
@@ -58,7 +59,7 @@ public class RadioModel extends ZhumulangmaModel {
                     " GROUP BY "+PlayHistoryBeanDao.Properties.AlbumId.columnName+
                     "  ORDER BY "+PlayHistoryBeanDao.Properties.Datatime.columnName+
                     " DESC LIMIT ? OFFSET ?";*/
-            try (Cursor c = App.getDaoSession().getDatabase().rawQuery(sql,null)) {
+            try (Cursor c = AppHelper.getDaoSession().getDatabase().rawQuery(sql,null)) {
                 if (c.moveToFirst()) {
                     do {
 

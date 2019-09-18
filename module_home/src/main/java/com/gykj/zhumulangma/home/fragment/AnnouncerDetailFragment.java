@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -27,14 +28,12 @@ import com.google.gson.reflect.TypeToken;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.AnnouncerCategoryBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.bean.ProvinceBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.widget.ItemHeader;
-import com.gykj.zhumulangma.common.widget.TScrollView;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.adapter.AnnouncerTrackAdapter;
@@ -45,23 +44,19 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
-import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
-import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
-import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerCategoryList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
 public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailViewModel> implements
-        TScrollView.OnScrollListener, View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
+       View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
     public long mAnnouncerId;
     @Autowired(name = KeyCode.Home.ANNOUNCER_NAME)
@@ -70,7 +65,7 @@ public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailVie
     private Announcer mAnnouncer;
     private CommonTitleBar ctbTrans;
     private CommonTitleBar ctbWhite;
-    private TScrollView mScrollView;
+    private NestedScrollView mScrollView;
     private ImageView parallax;
     private View flParallax;
     private SmartRefreshLayout refreshLayout;
@@ -153,7 +148,12 @@ public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailVie
     @Override
     public void initListener() {
         super.initListener();
-        mScrollView.setOnScrollListener(this);
+        mScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (nestedScrollView, i, scrollY, i2, i3) -> {
+            flParallax.setTranslationY(-scrollY);
+            ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
+            ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
+        });
         refreshLayout.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -255,12 +255,7 @@ public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailVie
         return false;
     }
 
-    @Override
-    public void onScroll(int scrollY) {
-        flParallax.setTranslationY(-scrollY);
-        ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
-        ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
-    }
+
 
 
     @Override

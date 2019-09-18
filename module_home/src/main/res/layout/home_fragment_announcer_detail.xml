@@ -35,11 +35,10 @@
             android:layout_height="50dp"
             app:lottie_colorFilter="@color/white" />
 
-        <com.gykj.zhumulangma.common.widget.TScrollView
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/msv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:nestedScrollingEnabled="true"
             android:overScrollMode="never"
             android:scrollbars="none">
 
@@ -245,7 +244,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView13" />
             </android.support.constraint.ConstraintLayout>
 
-        </com.gykj.zhumulangma.common.widget.TScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <com.wuhenzhizao.titlebar.widget.CommonTitleBar

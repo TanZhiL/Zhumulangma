@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -39,12 +40,11 @@ import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
-import com.gykj.zhumulangma.common.widget.TScrollView;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
-import com.gykj.zhumulangma.home.dialog.PlayTrackPopup;
 import com.gykj.zhumulangma.home.dialog.PlaySchedulePopup;
 import com.gykj.zhumulangma.home.dialog.PlayTempoPopup;
+import com.gykj.zhumulangma.home.dialog.PlayTrackPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
 import com.lxj.xpopup.XPopup;
@@ -69,7 +69,6 @@ import com.ximalaya.ting.android.sdkdownloader.downloadutil.IXmDownloadTrackCall
 import com.ximalaya.ting.android.sdkdownloader.task.Callback;
 
 import org.greenrobot.eventbus.EventBus;
-import org.w3c.dom.EntityReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -83,12 +82,12 @@ import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 
 @Route(path = AppConstants.Router.Home.F_PLAY_TRACK)
 public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> implements
-        TScrollView.OnScrollListener, View.OnClickListener, IXmPlayerStatusListener,
+        NestedScrollView.OnScrollChangeListener, View.OnClickListener, IXmPlayerStatusListener,
         BaseQuickAdapter.OnItemClickListener, IXmAdsStatusListener, OnSeekChangeListener,
         PlaySchedulePopup.onSelectedListener, PlayTrackPopup.onActionListener, IXmDownloadTrackCallBack,
         IXmDataCallback, PlayTempoPopup.onTempoSelectedListener, View.OnTouchListener {
 
-    private TScrollView msv;
+    private NestedScrollView msv;
     private CommonTitleBar ctbTrans;
     private CommonTitleBar ctbWhite;
     private View clController;
@@ -227,7 +226,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void initListener() {
         super.initListener();
-        msv.setOnScrollListener(this);
+        msv.setOnScrollChangeListener(this);
         whiteLeft.setOnClickListener(this);
         transLeft.setOnClickListener(this);
         fd(R.id.fl_play_pause).setOnClickListener(this);
@@ -354,13 +353,6 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         return false;
     }
 
-    @Override
-    public void onScroll(int scrollY) {
-
-        ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(scrollY, SizeUtils.dp2px(100), clController.getTop() - SizeUtils.dp2px(80)));
-        ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(scrollY, SizeUtils.dp2px(100), clController.getTop() - SizeUtils.dp2px(80)));
-
-    }
 
 
     @Override
@@ -934,4 +926,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             Log.d(TAG, "run() called");
         }
     };
+
+    @Override
+    public void onScrollChange(NestedScrollView nestedScrollView, int i, int scrollY, int i2, int i3) {
+        ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(scrollY, SizeUtils.dp2px(100), clController.getTop() - SizeUtils.dp2px(80)));
+        ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(scrollY, SizeUtils.dp2px(100), clController.getTop() - SizeUtils.dp2px(80)));
+    }
 }

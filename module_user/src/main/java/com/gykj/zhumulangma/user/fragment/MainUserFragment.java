@@ -6,21 +6,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
-import com.gykj.zhumulangma.common.widget.TScrollView;
 import com.gykj.zhumulangma.user.R;
 import com.maiml.library.BaseItemLayout;
 import com.maiml.library.config.ConfigAttrs;
@@ -31,22 +26,17 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import me.yokeyword.fragmentation.ISupportFragment;
-
 @Route(path = AppConstants.Router.User.F_MAIN)
-public class MainUserFragment extends BaseFragment implements TScrollView.OnScrollListener, BaseItemLayout.OnBaseItemClick, View.OnClickListener {
+public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnBaseItemClick, View.OnClickListener {
 
 
     private CommonTitleBar ctbTrans;
     private CommonTitleBar ctbWhite;
     private BaseItemLayout bilUser;
-    private TScrollView mScrollView;
+    private NestedScrollView mScrollView;
     private ImageView parallax;
     private View flParallax;
     private SmartRefreshLayout refreshLayout;
@@ -166,7 +156,12 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
     @Override
     public void initListener() {
         super.initListener();
-        mScrollView.setOnScrollListener(this);
+        mScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (nestedScrollView, i, scrollY, i2, i3) -> {
+            flParallax.setTranslationY(-scrollY);
+            ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
+            ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
+        });
         refreshLayout.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -199,13 +194,6 @@ public class MainUserFragment extends BaseFragment implements TScrollView.OnScro
     @Override
     protected boolean enableSimplebar() {
         return false;
-    }
-
-    @Override
-    public void onScroll(int scrollY) {
-        flParallax.setTranslationY(-scrollY);
-        ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
-        ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
     }
 
     @Override

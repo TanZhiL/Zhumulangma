@@ -1,31 +1,24 @@
 package com.gykj.zhumulangma.main;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
-import com.gykj.zhumulangma.common.mvvm.BaseActivity;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.util.ToastUtil;
-import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.fragment.MainFragment;
@@ -55,7 +48,6 @@ import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -156,17 +148,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
             globalPlay.setBackground(getResources().getDrawable(R.drawable.shap_common_widget_play));
     }
 
-    private void goLogin() {
-        try {
-            mAuthInfo = new XmlyAuthInfo(this, CommonRequest.getInstanse().getAppKey(), CommonRequest.getInstanse()
-                    .getPackId(), REDIRECT_URL, CommonRequest.getInstanse().getAppKey());
-        } catch (XimalayaException e) {
-            e.printStackTrace();
-        }
-        mSsoHandler = new XmlySsoHandler(this, mAuthInfo);
-
-        mSsoHandler.authorize(new CustomAuthListener());
-    }
 
     @Override
     public void onPlayStart() {
@@ -268,7 +249,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     @Override
     public void onStartPlayAds(Advertis advertis, int i) {
-        Log.e(TAG, "onStartPlayAds: " + advertis);
         String imageUrl = advertis.getImageUrl();
         if (TextUtils.isEmpty(imageUrl)) {
             globalPlay.play(R.drawable.notification_default);
@@ -309,60 +289,9 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 globalPlay.setImage(bean.getSchedule().getRelatedProgram().getBackPicUrl());
             }
         });
-        mViewModel.getCoverSingleLiveEvent().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                globalPlay.play(s);
-            }
-        });
+        mViewModel.getCoverSingleLiveEvent().observe(this, s -> globalPlay.play(s));
     }
 
-    class CustomAuthListener implements IXmlyAuthListener {
-    @Override
-    public void onComplete(Bundle bundle) {
-        parseAccessToken(bundle);
-        App.registerLoginTokenChangeListener(MainActivity.this.getApplicationContext());
-        EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.MainCode.LOGINSUCC));
-        ToastUtil.showToast("登录成功");
-    }
-
-    @Override
-    public void onXmlyException(final XmlyException e) {
-        e.printStackTrace();
-    }
-
-    @Override
-    public void onCancel() {
-    }
-
-}
-
-    private void parseAccessToken(Bundle bundle) {
-        mAccessToken = XmlyAuth2AccessToken.parseAccessToken(bundle);
-        if (mAccessToken.isSessionValid()) {
-            AccessTokenManager.getInstanse().setAccessTokenAndUid(mAccessToken.getToken(), mAccessToken
-                    .getRefreshToken(), mAccessToken.getExpiresAt(), mAccessToken.getUid());
-        }
-    }
-
-    public void logout() {
-        AccessTokenManager.getInstanse().loginOut(new ILoginOutCallBack() {
-            @Override
-            public void onSuccess() {
-                if (mAccessToken != null && mAccessToken.isSessionValid()) {
-                    AccessTokenKeeper.clear(MainActivity.this);
-                    mAccessToken = new XmlyAuth2AccessToken();
-                }
-                CommonRequest.getInstanse().setITokenStateChange(null);
-            }
-
-            @Override
-            public void onFail(int errorCode, String errorMessage) {
-                CommonRequest.getInstanse().setITokenStateChange(null);
-            }
-        });
-
-    }
 
 
     private long exitTime = 0;
@@ -439,4 +368,63 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         mPlayerManager.removePlayerStatusListener(this);
         mPlayerManager.removeAdsStatusListener(this);
     }
+
+
+    private void goLogin() {
+        try {
+            mAuthInfo = new XmlyAuthInfo(this, CommonRequest.getInstanse().getAppKey(), CommonRequest.getInstanse()
+                    .getPackId(), REDIRECT_URL, CommonRequest.getInstanse().getAppKey());
+        } catch (XimalayaException e) {
+            e.printStackTrace();
+        }
+        mSsoHandler = new XmlySsoHandler(this, mAuthInfo);
+        mSsoHandler.authorize(new CustomAuthListener());
+    }
+
+    class CustomAuthListener implements IXmlyAuthListener {
+        @Override
+        public void onComplete(Bundle bundle) {
+            parseAccessToken(bundle);
+            AppHelper.registerLoginTokenChangeListener(MainActivity.this.getApplicationContext());
+            EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.MainCode.LOGINSUCC));
+            ToastUtil.showToast("登录成功");
+        }
+
+        @Override
+        public void onXmlyException(final XmlyException e) {
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onCancel() {
+        }
+
+    }
+    private void parseAccessToken(Bundle bundle) {
+        mAccessToken = XmlyAuth2AccessToken.parseAccessToken(bundle);
+        if (mAccessToken.isSessionValid()) {
+            AccessTokenManager.getInstanse().setAccessTokenAndUid(mAccessToken.getToken(), mAccessToken
+                    .getRefreshToken(), mAccessToken.getExpiresAt(), mAccessToken.getUid());
+        }
+    }
+
+    public void logout() {
+        AccessTokenManager.getInstanse().loginOut(new ILoginOutCallBack() {
+            @Override
+            public void onSuccess() {
+                if (mAccessToken != null && mAccessToken.isSessionValid()) {
+                    AccessTokenKeeper.clear(MainActivity.this);
+                    mAccessToken = new XmlyAuth2AccessToken();
+                }
+                CommonRequest.getInstanse().setITokenStateChange(null);
+            }
+
+            @Override
+            public void onFail(int errorCode, String errorMessage) {
+                CommonRequest.getInstanse().setITokenStateChange(null);
+            }
+        });
+
+    }
+
 }

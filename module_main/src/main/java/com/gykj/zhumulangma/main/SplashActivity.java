@@ -1,8 +1,11 @@
 package com.gykj.zhumulangma.main;
 
 import android.content.Intent;
+import android.os.Bundle;
 
-import com.gykj.zhumulangma.common.mvvm.BaseActivity;
+import androidx.annotation.Nullable;
+
+import com.gykj.zhumulangma.common.mvvm.SupportActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,30 +17,17 @@ import java.util.TimerTask;
  * Version:     V1.0.0<br>
  * Update:     <br>
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends SupportActivity {
 
     @Override
-    public int onBindLayout() {
-        return R.layout.main_activity_splash;
-    }
-
-    @Override
-    public void initView() {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity_splash);
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 startActivity(new Intent(SplashActivity.this,MainActivity.class));
             }
-        },500);
-    }
-
-    @Override
-    public void initData() {
-    }
-
-
-    @Override
-    public boolean enableSimplebar() {
-        return false;
+        },1000);
     }
 }

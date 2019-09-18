@@ -4,12 +4,12 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -18,14 +18,12 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.log.TLog;
-import com.gykj.zhumulangma.common.widget.TScrollView;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
@@ -37,7 +35,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -47,7 +44,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Description:
  */
 public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> implements OnBannerListener,
-        BaseQuickAdapter.OnItemClickListener, OnRefreshLoadMoreListener, TScrollView.OnScrollListener {
+        BaseQuickAdapter.OnItemClickListener, OnRefreshLoadMoreListener{
 
     private static final String TAG = "AnnouncerFragment";
     Banner banner;
@@ -81,7 +78,12 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
         banner.setOnBannerListener(this);
         refreshLayout.setOnLoadMoreListener(this);
         mAnnouncerAdapter.setOnItemClickListener(this);
-        ((TScrollView)fd(R.id.tsv_content)).setOnScrollListener(this);
+        ((NestedScrollView)fd(R.id.tsv_content)).setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (nestedScrollView, i, i1, i2, i3) -> {
+            TLog.d(i1);
+            TLog.d(fd(R.id.ll_title).getTop());
+            fd(R.id.fl_title_top).setVisibility(i1>fd(R.id.ll_title).getTop()?View.VISIBLE:View.GONE);
+        });
     }
 
     @Override
@@ -99,7 +101,6 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
     private void initList() {
         mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
         rvAnnouncer.setLayoutManager(new LinearLayoutManager(mContext));
-//        rvAnnouncer.setHasFixedSize(true);
         mAnnouncerAdapter.bindToRecyclerView(rvAnnouncer);
     }
 
@@ -189,8 +190,8 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
-                .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getItem(position).getAnnouncerId())
-                .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getItem(position).getNickname())
+                .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getData().get(position).getAnnouncerId())
+                .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getData().get(position).getNickname())
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
                 new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
@@ -201,10 +202,4 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
         mViewModel.getAnnouncerList();
     }
 
-    @Override
-    public void onScroll(int scrollY) {
-        TLog.d(scrollY);
-        TLog.d(fd(R.id.ll_title).getTop());
-        fd(R.id.fl_title_top).setVisibility(scrollY>fd(R.id.ll_title).getTop()?View.VISIBLE:View.GONE);
-    }
 }

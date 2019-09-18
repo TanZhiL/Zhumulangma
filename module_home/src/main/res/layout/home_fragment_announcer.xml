@@ -163,13 +163,12 @@
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:srlEnableNestedScrolling="true"
     app:srlEnablePreviewInEditMode="false">
     <com.gykj.zhumulangma.common.widget.TRefreshHeader
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
-    <com.gykj.zhumulangma.common.widget.TScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/tsv_content"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -227,10 +226,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"/>
         </LinearLayout>
-    </com.gykj.zhumulangma.common.widget.TScrollView>
+    </android.support.v4.widget.NestedScrollView>
     <com.scwang.smartrefresh.layout.footer.ClassicsFooter
         android:background="@color/white"
         android:layout_width="match_parent"

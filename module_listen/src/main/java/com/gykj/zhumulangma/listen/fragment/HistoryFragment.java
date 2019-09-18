@@ -69,7 +69,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
 
     @Override
     protected Integer[] onBindBarRightIcon() {
-        return new Integer[]{R.drawable.ic_listen_delete};
+        return new Integer[]{R.drawable.ic_listen_history_delete};
     }
 
     @Override
