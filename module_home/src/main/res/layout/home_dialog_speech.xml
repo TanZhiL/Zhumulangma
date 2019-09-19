@@ -6,13 +6,13 @@
     android:layout_height="150dp"
     android:background="@drawable/shap_common_defualt"
     android:layout_gravity="center">
-
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lav_playing"
+        android:id="@+id/lav_loading"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
-        app:lottie_fileName="lottie_playing.json"
+        android:visibility="gone"
+        app:lottie_fileName="lottie_refreshing.json"
         app:lottie_colorFilter="@color/colorPrimary"
         android:background="@color/transparent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -21,5 +21,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lav_speech"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        app:lottie_fileName="lottie_speech.json"
+        app:lottie_colorFilter="@color/colorPrimary"
+        android:background="@color/transparent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true" />
+
 
 </android.support.constraint.ConstraintLayout>

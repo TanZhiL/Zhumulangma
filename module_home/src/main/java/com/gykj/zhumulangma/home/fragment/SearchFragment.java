@@ -301,10 +301,22 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             new XPopup.Builder(mContext).popupAnimation(PopupAnimation.NoAnimation)
                     .dismissOnTouchOutside(false).setPopupCallback(new SimpleCallback(){
                 @Override
+                public void onCreated() {
+                    super.onCreated();
+                    lavSpeech = mSpeechPopup.getPopupImplView().findViewById(R.id.lav_playing);
+                }
+
+                @Override
+                public void onShow() {
+                    super.onShow();
+                    lavSpeech.findViewById(R.id.lav_speech).setVisibility(View.VISIBLE);
+                    lavSpeech.findViewById(R.id.lav_loading).setVisibility(View.GONE);
+                }
+
+                @Override
                 public void onDismiss() {
                     super.onDismiss();
                     mIat.cancel();
-                    lavSpeech = mSpeechPopup.getPopupImplView().findViewById(R.id.lav_playing);
                 }
             }).asCustom(mSpeechPopup).show();
         }
@@ -323,7 +335,8 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         @Override
         public void onEndOfSpeech() {
             // 此回调表示：检测到了语音的尾端点，已经进入识别过程，不再接受语音输入
-            mSpeechPopup.dismiss();
+            lavSpeech.findViewById(R.id.lav_speech).setVisibility(View.GONE);
+            lavSpeech.findViewById(R.id.lav_loading).setVisibility(View.VISIBLE);
         }
 
         @Override
