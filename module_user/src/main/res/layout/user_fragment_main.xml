@@ -62,6 +62,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+                    android:id="@+id/imageView"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:layout_marginTop="8dp"
@@ -114,14 +115,19 @@
 
                 <TextView
                     android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:textSize="11sp"
-                    android:textColor="@color/white"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:ellipsize="end"
+                    android:gravity="bottom"
                     android:text="这个人很懒,什么都没留下..."
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView14" />
+                    app:layout_constraintEnd_toEndOf="@+id/imageView"
+                    app:layout_constraintStart_toStartOf="@+id/textView14"
+                    app:layout_constraintTop_toBottomOf="@+id/textView14" />
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout

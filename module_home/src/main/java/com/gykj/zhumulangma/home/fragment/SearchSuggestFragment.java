@@ -13,8 +13,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.SearchSuggestAdapter;
@@ -23,6 +28,9 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import org.greenrobot.eventbus.EventBus;
+
+import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
@@ -33,7 +41,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * Description:
  */
 @Route(path = AppConstants.Router.Home.F_SEARCH_SUGGEST)
-public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> implements BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
+public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> implements BaseQuickAdapter.OnItemClickListener, View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
     private SmartRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
@@ -70,6 +78,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
     public void initListener() {
         super.initListener();
         mSuggestAdapter.setOnItemClickListener(this);
+        mSuggestAdapter.setOnItemChildClickListener(this);
     }
 
     @Override
@@ -121,7 +130,11 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
         SearchSuggestItem item = mSuggestAdapter.getItem(position);
 
         if (item.itemType== SearchSuggestItem.ALBUM){
-            mSearchListener.onSearch(item.mAlbumResult.getAlbumTitle());
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                    .withLong(KeyCode.Home.ALBUMID,item.mAlbumResult.getAlbumId())
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         }else {
             mSearchListener.onSearch(item.mQueryResult.getKeyword());
         }
@@ -130,6 +143,17 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
     @Override
     public void onClick(View v) {
         mSearchListener.onSearch(mKeyword);
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        SearchSuggestItem item = mSuggestAdapter.getItem(position);
+        mViewModel.play(String.valueOf(item.mAlbumResult.getAlbumId()));
+        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                .withLong(KeyCode.Home.ALBUMID,item.mAlbumResult.getAlbumId())
+                .navigation();
+        EventBus.getDefault().post(new BaseActivityEvent<>(
+                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
 

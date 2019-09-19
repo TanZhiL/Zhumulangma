@@ -23,6 +23,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
+import com.gykj.zhumulangma.common.util.UiUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchViewModel;
@@ -58,6 +59,8 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
         etKeyword = fd(R.id.et_keyword);
+        UiUtil.setEditTextInhibitInputSpace(etKeyword);
+        UiUtil.setEditTextInhibitInputSpeChat(etKeyword);
         mSuggestFragment= (SearchSuggestFragment) ARouter.getInstance()
                 .build(AppConstants.Router.Home.F_SEARCH_SUGGEST).navigation();
         mSuggestFragment.setSearchListener(this);
@@ -209,7 +212,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         }else {
             if (!(getTopChildFragment() instanceof SearchSuggestFragment)) {
                 ((BaseFragment)getTopChildFragment()).start(mSuggestFragment);
-                mHandler.postDelayed(()-> mSuggestFragment.loadSuggest(s.toString()),200);
+                mHandler.postDelayed(()-> mSuggestFragment.loadSuggest(s.toString()),50);
 
             }else {
                 mSuggestFragment.loadSuggest(s.toString());
