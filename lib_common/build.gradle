@@ -37,9 +37,7 @@ android {
 }
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
-
     api rootProject.ext.support["design"]
     api rootProject.ext.support["support-v4"]
     api rootProject.ext.support["appcompat-v7"]
@@ -102,7 +100,7 @@ dependencies {
     api rootProject.ext.dependencies["picture_library"]
     api rootProject.ext.dependencies["PickerView"]
     api rootProject.ext.dependencies["rxbinding"]
-    api rootProject.ext.dependencies["lib-dialog"]
+  //  api rootProject.ext.dependencies["lib-dialog"]
     debugApi rootProject.ext.dependencies["doraemonkit"]
     releaseApi rootProject.ext.dependencies["doraemonkit-no-op"]
     api rootProject.ext.dependencies["AVLoading"]
@@ -117,11 +115,11 @@ dependencies {
     api rootProject.ext.dependencies["BasePopup"]
     api rootProject.ext.dependencies["MarqueeView"]
     api rootProject.ext.dependencies["xpopup"]
-
     api files('libs/TingPhoneOpenSDK_7.0.8.jar')
     api files('libs/XmDownload_1.7.jar')
     api files('libs/XmlyOAuth2SDK_V1.11.jar')
     api 'com.amap.api:location:latest.integration'
+    implementation files('libs/Msc.jar')
 }
 greendao {
     //数据库的schema版本，也可以理解为数据库版本号

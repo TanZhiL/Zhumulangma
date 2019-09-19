@@ -31,6 +31,7 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
 public class App extends android.app.Application implements IXmPlayerStatusListener {
     private static App mApplication;
     private static final String TAG = "App";
+
     static {
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> new TRefreshHeader(context));
@@ -52,26 +53,25 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
     public void onCreate() {
         super.onCreate();
 
-        Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
+        Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
         mApplication = this;
         XmPlayerManager.getInstance(this).addPlayerStatusListener(this);
-        Executors.newCachedThreadPool().execute(()->
+        Executors.newCachedThreadPool().execute(() ->
                 AppHelper.init(this)
-                .initXmly()
-                .initXmlyDownloader()
-                .initXmlyPlayer()
-                .initGreenDao()
-                .initLog()
-                .initMultiDex()
-                .initRouter()
-                .initNet()
-                .initFragmentation()
-                .initDoraemonKit()
-                .initUtils());
-        Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
+                        .initXmly()
+                        .initXmlyDownloader()
+                        .initXmlyPlayer()
+                        .initGreenDao()
+                        .initLog()
+                        .initMultiDex()
+                        .initRouter()
+                        .initNet()
+                        .initFragmentation()
+                        .initDoraemonKit()
+                        .initSpeech()
+                        .initUtils());
+        Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
     }
-
-
 
 
     @Override

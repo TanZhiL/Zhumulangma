@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.gykj.zhumulangma.listen.R;
-
 
 public class SubscribeFragment extends Fragment {
 
@@ -22,7 +20,7 @@ public class SubscribeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
+        textView.setText("后续功能");
         return textView;
     }
 

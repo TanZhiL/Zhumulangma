@@ -59,6 +59,9 @@ public interface  AppConstants {
     interface Agora{
          String ID="8b7694dd12fe4c9db395a5660bbb0916";
     }
+    interface Speech{
+        String ID="5d1ec054";
+    }
     interface Ximalaya{
         String SECRET="6a43f2188877ee43a950e8e07b6dcb6e";
         /**

@@ -17,6 +17,8 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.gykj.zhumulangma.common.util.log.TLog;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
@@ -360,4 +362,8 @@ public class AppHelper {
         }
     };
 
+    public AppHelper initSpeech() {
+        SpeechUtility.createUtility(mApplication, SpeechConstant.APPID +"="+AppConstants.Speech.ID);
+        return this;
+    }
 }

@@ -65,7 +65,7 @@
                 android:textSize="12sp" />
 
             <ImageView
-                android:id="@+id/imageView7"
+                android:id="@+id/iv_speech"
                 android:layout_width="23dp"
                 android:layout_height="23dp"
                 android:src="@drawable/ic_common_voice"

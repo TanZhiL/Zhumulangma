@@ -48,7 +48,7 @@
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:tint="@color/textColorPrimary"
-            app:srcCompat="@drawable/ic_common_play" />
+            app:srcCompat="@drawable/ic_common_play_circle" />
 
         <TextView
             android:id="@+id/textView14"
