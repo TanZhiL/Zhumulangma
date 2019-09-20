@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="clip_horizontal|clip_vertical"
+    android:dither="true"
+    android:src="@mipmap/ic_launcher_ting"
+    android:tileMode="disabled"/>-->
+    <!--属性解释-->
+    <!--android:src 图片资源id-->
+    <!--android:antialias是否开启抗锯齿，应该开启-->
+    <!--android:dither是否开启抖动效果，应该开启-->
+    <!--android:filter是否开启过滤效果，应该开启-->
+    <!--android:gravity对图片进行定位-->
+    <!--android:mipMap纹理映射，一般为false-->
+    <!--android:tileMode平铺模式四个值：disabled（默认值即关闭平铺模式）、clamp、repeat、mirror-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<item>
+    <shape>
+        <solid android:color="@color/white"/>
+    </shape>
+</item>
+<item android:bottom="100dp">
+    <bitmap   android:src="@drawable/ic_logo"
+        android:gravity="center" />
+</item>
+</layer-list>

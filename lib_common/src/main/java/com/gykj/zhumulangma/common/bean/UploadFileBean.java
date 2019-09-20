@@ -10,7 +10,7 @@ public class UploadFileBean {
 
     /**
      * file_id : 201907310430544147
-     * file_name : ic_launcher
+     * file_name : ic_launcher_ting
      * file_type : png
      * file_path : /upload/temp/c21681e2d41d1762ccf1c41ed737181d.png
      * file_size : 59310
