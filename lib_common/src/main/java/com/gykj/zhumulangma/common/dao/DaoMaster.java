@@ -23,16 +23,16 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void createAllTables(Database db, boolean ifNotExists) {
         PlayHistoryBeanDao.createTable(db, ifNotExists);
         SearchHistoryBeanDao.createTable(db, ifNotExists);
-        LikeBeanDao.createTable(db, ifNotExists);
         SubscribeBeanDao.createTable(db, ifNotExists);
+        FavoriteBeanDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
         PlayHistoryBeanDao.dropTable(db, ifExists);
         SearchHistoryBeanDao.dropTable(db, ifExists);
-        LikeBeanDao.dropTable(db, ifExists);
         SubscribeBeanDao.dropTable(db, ifExists);
+        FavoriteBeanDao.dropTable(db, ifExists);
     }
 
     /**
@@ -53,8 +53,8 @@ public class DaoMaster extends AbstractDaoMaster {
         super(db, SCHEMA_VERSION);
         registerDaoClass(PlayHistoryBeanDao.class);
         registerDaoClass(SearchHistoryBeanDao.class);
-        registerDaoClass(LikeBeanDao.class);
         registerDaoClass(SubscribeBeanDao.class);
+        registerDaoClass(FavoriteBeanDao.class);
     }
 
     public DaoSession newSession() {

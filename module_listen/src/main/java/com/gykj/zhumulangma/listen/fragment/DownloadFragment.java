@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
@@ -27,7 +26,6 @@ import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.SystemUtil;
-import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.CircleProgressBar;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.DownloadAlbumAdapter;
@@ -54,12 +52,11 @@ import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
 public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements
-        BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack, BaseQuickAdapter.OnItemClickListener, View.OnClickListener, IXmPlayerStatusListener {
+        BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack,
+        BaseQuickAdapter.OnItemClickListener, View.OnClickListener, IXmPlayerStatusListener {
     @Autowired(name = KeyCode.Listen.TAB_INDEX)
     public int tabIndex;
     private TextView tvMemory;

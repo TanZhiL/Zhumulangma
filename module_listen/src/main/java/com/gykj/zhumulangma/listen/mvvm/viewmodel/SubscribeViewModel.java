@@ -53,7 +53,7 @@ public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
 
     public void getSubscribes() {
-        mModel.listDesc(SubscribeBean.class, curPage, PAGESIZE, SubscribeBeanDao.Properties.Datetiem)
+        mModel.listDesc(SubscribeBean.class, curPage, PAGESIZE, SubscribeBeanDao.Properties.Datetime)
                 .subscribe(subscribeBeans ->
                 {
                     if (subscribeBeans.size() > 0)
@@ -62,10 +62,12 @@ public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
                 }, e -> e.printStackTrace());
     }
 
+
     public void refresh() {
         curPage = 1;
         getSubscribes();
     }
+
     long trackId=-1;
     public void play(String albumId) {
         mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime
@@ -124,6 +126,7 @@ public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
     public SingleLiveEvent<List<SubscribeBean>> getSubscribesSingleLiveEvent() {
         return mSubscribesSingleLiveEvent = createLiveData(mSubscribesSingleLiveEvent);
     }
+
     public SingleLiveEvent<List<Album>> getLikeSingleLiveEvent() {
         return mLikeSingleLiveEvent = createLiveData(mLikeSingleLiveEvent);
     }

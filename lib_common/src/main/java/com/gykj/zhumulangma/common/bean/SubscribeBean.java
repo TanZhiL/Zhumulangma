@@ -21,18 +21,20 @@ public class SubscribeBean {
     long albumId;
     @Convert(converter = AlbumConverter.class,columnType = String.class)
     Album album;
-    long datetiem;
+    long datetime;
 
-    @Generated(hash = 1498488567)
-    public SubscribeBean(long albumId, Album album, long datetiem) {
+
+    @Generated(hash = 400642637)
+    public SubscribeBean(long albumId, Album album, long datetime) {
         this.albumId = albumId;
         this.album = album;
-        this.datetiem = datetiem;
+        this.datetime = datetime;
     }
 
     @Generated(hash = 781367487)
     public SubscribeBean() {
     }
+
 
     public long getAlbumId() {
         return this.albumId;
@@ -50,12 +52,12 @@ public class SubscribeBean {
         this.album = album;
     }
 
-    public long getDatetiem() {
-        return this.datetiem;
+    public long getDatetime() {
+        return this.datetime;
     }
 
-    public void setDatetiem(long datetiem) {
-        this.datetiem = datetiem;
+    public void setDatetime(long datetime) {
+        this.datetime = datetime;
     }
 
     public static class AlbumConverter implements PropertyConverter<Album, String> {

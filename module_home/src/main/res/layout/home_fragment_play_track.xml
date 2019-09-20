@@ -397,6 +397,7 @@
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="4dp"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -713,15 +714,25 @@
             app:layout_constraintEnd_toStartOf="@+id/tv_favorite_count" />
 
         <ImageView
-            android:id="@+id/imageView22"
+            android:id="@+id/iv_unlike"
             android:layout_width="23dp"
             android:layout_height="23dp"
+            android:visibility="gone"
             android:src="@drawable/ic_common_love_full"
             android:tint="@color/colorPrimary"
             app:layout_constraintBottom_toTopOf="@+id/tv_favorite_count"
             app:layout_constraintEnd_toEndOf="@+id/tv_favorite_count"
             app:layout_constraintStart_toStartOf="@+id/tv_favorite_count" />
-
+        <ImageView
+            android:id="@+id/iv_like"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:visibility="gone"
+            android:src="@drawable/ic_common_love"
+            android:tint="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/tv_favorite_count"
+            app:layout_constraintEnd_toEndOf="@+id/tv_favorite_count"
+            app:layout_constraintStart_toStartOf="@+id/tv_favorite_count" />
         <ImageView
             android:id="@+id/imageView23"
             android:layout_width="23dp"

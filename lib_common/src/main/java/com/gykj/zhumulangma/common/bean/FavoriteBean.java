@@ -16,23 +16,27 @@ import org.greenrobot.greendao.annotation.Generated;
  * Description:
  */
 @Entity
-public class LikeBean {
+public class FavoriteBean {
     @Id
     long trackId;
     @Convert(converter = TrackConverter.class,columnType = String.class)
     Track track;
-    long datetiem;
+    long datetime;
 
-    @Generated(hash = 2028030783)
-    public LikeBean(long trackId, Track track, long datetiem) {
+
+
+    @Generated(hash = 991451167)
+    public FavoriteBean(long trackId, Track track, long datetime) {
         this.trackId = trackId;
         this.track = track;
-        this.datetiem = datetiem;
+        this.datetime = datetime;
     }
 
-    @Generated(hash = 1258777425)
-    public LikeBean() {
+    @Generated(hash = 653294794)
+    public FavoriteBean() {
     }
+    
+  
 
     public long getTrackId() {
         return this.trackId;
@@ -50,12 +54,12 @@ public class LikeBean {
         this.track = track;
     }
 
-    public long getDatetiem() {
-        return this.datetiem;
+    public long getDatetime() {
+        return this.datetime;
     }
 
-    public void setDatetiem(long datetiem) {
-        this.datetiem = datetiem;
+    public void setDatetime(long datetime) {
+        this.datetime = datetime;
     }
 
     public static class TrackConverter implements PropertyConverter<Track, String> {

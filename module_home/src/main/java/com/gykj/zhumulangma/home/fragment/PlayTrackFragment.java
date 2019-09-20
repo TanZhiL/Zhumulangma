@@ -271,6 +271,18 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     if(mTrack!=null)
                     mViewModel.unsubscribe(mTrack.getAlbum().getAlbumId());
                 }));
+        addDisposable(RxView.clicks(fd(R.id.iv_like))
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(unit -> {
+                    if(mTrack!=null)
+                        mViewModel.like(mTrack);
+                }));
+        addDisposable(RxView.clicks(fd(R.id.iv_unlike))
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(unit -> {
+                    if(mTrack!=null)
+                        mViewModel.unlike(mTrack);
+                }));
     }
 
     @Override
@@ -320,6 +332,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 isbProgress.setProgress(0);
             }
             mViewModel.getSubscribe(String.valueOf(mTrack.getAlbum().getAlbumId()));
+            mViewModel.getFavorite(String.valueOf(mTrack.getDataId()));
         }
         mHandler.removeCallbacksAndMessages(null);
         mHandler.postDelayed(() -> scheduleTime(), 0);
@@ -355,6 +368,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         mViewModel.getSubscribeSingleLiveEvent().observe(this, aBoolean -> {
             fd(R.id.ll_subscribe).setVisibility(aBoolean?View.GONE:View.VISIBLE);
             fd(R.id.ll_unsubscribe).setVisibility(aBoolean?View.VISIBLE:View.GONE);
+        });
+        mViewModel.getFavoriteSingleLiveEvent().observe(this, aBoolean -> {
+            fd(R.id.iv_like).setVisibility(aBoolean?View.GONE:View.VISIBLE);
+            fd(R.id.iv_unlike).setVisibility(aBoolean?View.VISIBLE:View.GONE);
         });
         mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> mAlbumAdapter.setNewData(albums));
 
