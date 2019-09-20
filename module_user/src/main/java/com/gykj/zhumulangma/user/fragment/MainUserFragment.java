@@ -116,7 +116,7 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
         valueList.add("扫一扫");
         valueList.add("我喜欢的");
         valueList.add("更多");
-        valueList.add("帮助与反馈");
+        valueList.add("关于");
         valueList.add("设置");
 
         List<Integer> resIdList = new ArrayList<>();
@@ -180,6 +180,7 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
         });
         fd(R.id.ll_download).setOnClickListener(this);
         fd(R.id.ll_history).setOnClickListener(this);
+        fd(R.id.ll_favorit).setOnClickListener(this);
         whiteLeft.setOnClickListener(this);
         whiteRight.setOnClickListener(this);
         transLeft.setOnClickListener(this);
@@ -208,6 +209,8 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
             navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
         }else if (R.id.ll_history == id) {
             navigateTo(AppConstants.Router.Listen.F_HISTORY);
+        }else if (R.id.ll_favorit == id) {
+            navigateTo(AppConstants.Router.Listen.F_FAVORITE);
         } else if (v == whiteLeft || v == transLeft) {
             navigateTo(AppConstants.Router.User.F_MESSAGE);
         }

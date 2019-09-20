@@ -16,8 +16,6 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 
-import java.util.concurrent.Executors;
-
 import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
 
 /**
@@ -50,13 +48,11 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
 
     @Override
     public void onCreate() {
-        super.onCreate();
-
         Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
+        super.onCreate();
         mApplication = this;
         XmPlayerManager.getInstance(this).addPlayerStatusListener(this);
-        Executors.newCachedThreadPool().execute(() ->
-                AppHelper.init(this)
+        AppHelper.init(this)
                         .initXmly()
                         .initXmlyDownloader()
                         .initXmlyPlayer()
@@ -68,7 +64,7 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
                         .initFragmentation()
                         .initDoraemonKit()
                         .initSpeech()
-                        .initUtils());
+                        .initUtils();
         Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
     }
 
@@ -76,11 +72,11 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
     @Override
     public void onTerminate() {
         super.onTerminate();
+        Log.d(TAG, "onTerminate() called");
         XmPlayerManager.getInstance(this).removePlayerStatusListener(this);
         XmPlayerManager.release();
         CommonRequest.release();
     }
-
     @Override
     public void onPlayStart() {
         try {

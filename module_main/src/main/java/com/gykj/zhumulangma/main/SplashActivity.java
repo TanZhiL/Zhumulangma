@@ -2,13 +2,11 @@ package com.gykj.zhumulangma.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.annotation.Nullable;
 
 import com.gykj.zhumulangma.common.mvvm.SupportActivity;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Description: <SplashActivity><br>
@@ -23,11 +21,6 @@ public class SplashActivity extends SupportActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity_splash);
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashActivity.this,MainActivity.class));
-            }
-        },1000);
+        new Handler().postDelayed(()-> startActivity(new Intent(SplashActivity.this,MainActivity.class)),1000);
     }
 }

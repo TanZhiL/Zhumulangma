@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.gykj.zhumulangma.common">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -72,7 +73,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <!--讯飞语音END-->
-    <application android:networkSecurityConfig="@xml/network_security_config">
+    <application
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:networkSecurityConfig="@xml/network_security_config"
+        tools:replace="android:theme"
+        >
 
 
         <meta-data

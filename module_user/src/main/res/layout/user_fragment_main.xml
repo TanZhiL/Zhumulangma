@@ -166,7 +166,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linearLayout10"
+                    android:id="@+id/ll_favorit"
                     android:layout_width="84dp"
                     android:layout_height="70dp"
                     android:gravity="center"
@@ -180,13 +180,13 @@
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:tint="@color/white"
-                        android:src="@drawable/ic_common_star" />
+                        android:src="@drawable/ic_common_love" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="订阅"
+                        android:text="喜欢"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -199,7 +199,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/ll_history"
                     app:layout_constraintEnd_toStartOf="@+id/ll_download"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/linearLayout10"
+                    app:layout_constraintStart_toEndOf="@+id/ll_favorit"
                     app:layout_constraintTop_toTopOf="@id/ll_history"
                     app:layout_constraintVertical_bias="0.526" />
 
@@ -236,7 +236,7 @@
                     android:layout_height="35dp"
                     android:background="@color/white"
                     app:layout_constraintBottom_toBottomOf="@id/ll_history"
-                    app:layout_constraintEnd_toStartOf="@+id/linearLayout10"
+                    app:layout_constraintEnd_toStartOf="@+id/ll_favorit"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/ll_history"
                     app:layout_constraintTop_toTopOf="@id/ll_history" />

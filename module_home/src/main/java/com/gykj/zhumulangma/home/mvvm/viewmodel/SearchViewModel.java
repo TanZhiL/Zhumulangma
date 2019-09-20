@@ -92,9 +92,10 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .subscribe(suggestItems -> getWordsSingleLiveEvent().postValue(suggestItems), e -> e.printStackTrace());
     }
 
-    long trackId=-1;
+    private long trackId=-1;
 
     public void play(String albumId) {
+        trackId=-1;
          mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime
                 , PlayHistoryBeanDao.Properties.GroupId.eq(albumId),
                 PlayHistoryBeanDao.Properties.Kind.eq(PlayableModel.KIND_TRACK)).doOnNext(playHistoryBeans -> {
