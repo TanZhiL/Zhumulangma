@@ -43,7 +43,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import cn.jpush.android.api.JPushInterface;
 import me.yokeyword.fragmentation.Fragmentation;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -168,11 +167,6 @@ public class AppHelper {
         return this;
     }
 
-    public AppHelper initPush(){
-        JPushInterface.setDebugMode(true);
-        JPushInterface.init(mApplication);
-        return this;
-    }
     public AppHelper initFragmentation(){
 
         // 建议在Application里初始化

@@ -396,6 +396,7 @@
                     android:background="@drawable/shap_common_tag_first"
                     android:gravity="center"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:padding="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
