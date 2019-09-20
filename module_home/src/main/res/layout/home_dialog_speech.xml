@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="150dp"
     android:layout_height="150dp"
-    android:background="@drawable/shap_common_defualt"
+    android:background="@drawable/shap_common_circle_white"
     android:layout_gravity="center">
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lav_loading"

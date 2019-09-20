@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/imageView4"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:tint="@color/colorHint"
@@ -23,7 +23,7 @@
         android:id="@+id/tv_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
+        android:layout_marginStart="70dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:textColor="@color/textColorPrimary"

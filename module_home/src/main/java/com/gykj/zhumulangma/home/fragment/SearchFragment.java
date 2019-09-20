@@ -15,7 +15,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -28,7 +27,6 @@ import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.SpeechUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
-import com.gykj.zhumulangma.common.util.UiUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.dialog.SpeechPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -69,7 +67,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     private HashMap<String, String> mIatResults = new LinkedHashMap<>();
     private Handler mHandler = new Handler();
     private SpeechPopup mSpeechPopup;
-    private LottieAnimationView lavSpeech;
+    private View vDialog;
     public SearchFragment() {
 
     }
@@ -85,8 +83,8 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
         etKeyword = fd(R.id.et_keyword);
-        UiUtil.setEditTextInhibitInputSpace(etKeyword);
-        UiUtil.setEditTextInhibitInputSpeChat(etKeyword);
+    //    UiUtil.setEditTextInhibitInputSpace(etKeyword);
+     //   UiUtil.setEditTextInhibitInputSpeChat(etKeyword);
         mSuggestFragment = (SearchSuggestFragment) ARouter.getInstance()
                 .build(AppConstants.Router.Home.F_SEARCH_SUGGEST).navigation();
         mSuggestFragment.setSearchListener(this);
@@ -100,10 +98,9 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         //不支持x86
         mIat = SpeechRecognizer.createRecognizer(mContext, mInitListener);
         try {
-            //无标点
-            mIat.setParameter(SpeechConstant.ASR_PTT, "0");
             //返回json类型
             mIat.setParameter(SpeechConstant.RESULT_TYPE, "json");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -303,14 +300,14 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
                 @Override
                 public void onCreated() {
                     super.onCreated();
-                    lavSpeech = mSpeechPopup.getPopupImplView().findViewById(R.id.lav_playing);
+                    vDialog = mSpeechPopup.getPopupImplView();
                 }
 
                 @Override
                 public void onShow() {
                     super.onShow();
-                    lavSpeech.findViewById(R.id.lav_speech).setVisibility(View.VISIBLE);
-                    lavSpeech.findViewById(R.id.lav_loading).setVisibility(View.GONE);
+                    vDialog.findViewById(R.id.lav_speech).setVisibility(View.VISIBLE);
+                    vDialog.findViewById(R.id.lav_loading).setVisibility(View.GONE);
                 }
 
                 @Override
@@ -335,8 +332,8 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         @Override
         public void onEndOfSpeech() {
             // 此回调表示：检测到了语音的尾端点，已经进入识别过程，不再接受语音输入
-            lavSpeech.findViewById(R.id.lav_speech).setVisibility(View.GONE);
-            lavSpeech.findViewById(R.id.lav_loading).setVisibility(View.VISIBLE);
+            vDialog.findViewById(R.id.lav_speech).setVisibility(View.GONE);
+            vDialog.findViewById(R.id.lav_loading).setVisibility(View.VISIBLE);
         }
 
         @Override

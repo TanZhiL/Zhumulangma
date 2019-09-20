@@ -1,17 +1,10 @@
-﻿###注意:请将lib_common下manifest中喜马拉雅key替换为自己的,不然会提示访问超过限制.
-###本项目仅提供学习参考,不可作为商用.
-<p align="center">
-
-    <img src="https://img.shields.io/badge/API-19%2B-blue.svg?style=flat-square" alt="Min Sdk Version" />
-
-    <img src="http://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square" alt="License" />
-
-    <img src="https://img.shields.io/badge/Author-Thomas-orange.svg?style=flat-square" alt="Author" />
-
-</p>
-
+﻿### 注意:请将lib_common下manifest中喜马拉雅key替换为自己的,不然会提示访问超过限制.
+### 本项目仅提供学习参考,不可作为商用.
 
 ### 更新日志：
+###### 珠穆朗玛FM 1.0 2019-09.20
+* 声音批量下载
+* 语音搜索
 ###### 珠穆朗玛FM 1.0 2019-09.13
 完成基功能
 * 第一次发布
@@ -34,10 +27,10 @@
 * 声音下载
 * 历史播放展示及播放
 ### 待完善(包括不仅限于):
-* 声音批量下载
 * 用户登陆
 * 专辑订阅
 * 声音喜欢
+* 更多
 
 ### 项目架构
 本项目采用retrofit+rxjava2+rxandroid+arouter+mvvm+fragmentation实现单activity多fragme组件化架构
