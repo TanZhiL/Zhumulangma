@@ -6,18 +6,13 @@
 * 声音批量下载
 * 语音搜索
 ###### 珠穆朗玛FM 1.0 2019-09.13
-完成基功能
 * 第一次发布
 
 ### 功能演示
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/1.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/2.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/3.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/4.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/5.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/6.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/7.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/8.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/1.png)![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/2.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/3.png)![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/4.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/5.png)![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/6.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/7.png)![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/8.png)
 
 ### 主要功能(包括不仅限于):
 * 专辑展示
@@ -90,13 +85,14 @@ sourceSets {
 * okhttp https://github.com/square/okhttp 
 * retrofit https://github.com/square/retrofit
 * rxpermissions 权限 https://github.com/tbruyelle/RxPermissions
+* BaseRecyclerViewAdapterHelper https://github.com/CymChad/BaseRecyclerViewAdapterHelper
 * loadsir 状态管理 https://github.com/KingJA/LoadSir
 * lottie动画 https://github.com/airbnb/lottie-android
 * SmartRefreshLayout https://github.com/scwang90/SmartRefreshLayout
 * MagicIndicator https://github.com/hackware1993/MagicIndicator
 ### 致谢
 * 感谢所有开源库的大佬
-* mvvm借鉴https://github.com/geduo83/FlyTour 
+* mvvm借鉴 https://github.com/geduo83/FlyTour 
 * 原型平台 https://www.xiaopiu.com/
 ### 问题反馈
 欢迎加星，打call https://github.com/1071931588/Zhumulangma-mvvm
