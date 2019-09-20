@@ -11,6 +11,7 @@ import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.listen.mvvm.model.HistoryModel;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.DownloadViewModel;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.HistoryViewModel;
+import com.gykj.zhumulangma.listen.mvvm.viewmodel.SubscribeViewModel;
 
 /**
  * Author: Thomas.
@@ -48,6 +49,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new HistoryViewModel(mApplication, new HistoryModel(mApplication));
         }else if (modelClass.isAssignableFrom(DownloadViewModel.class)) {
             return (T) new DownloadViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(SubscribeViewModel.class)) {
+            return (T) new SubscribeViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }
 
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());

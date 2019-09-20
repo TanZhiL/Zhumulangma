@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
+import com.gykj.zhumulangma.common.bean.SubscribeBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
+import com.gykj.zhumulangma.common.dao.SubscribeBeanDao;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
@@ -42,6 +44,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
     private SingleLiveEvent<TrackList> mTracksSortSingleLiveEvent;
     private SingleLiveEvent<TrackList> mTracksInitSingleLiveEvent;
     private SingleLiveEvent<Track> mLastplaySingleLiveEvent;
+    private SingleLiveEvent<Boolean> mSubscribeSingleLiveEvent;
     private CommonTrackList mCommonTrackList = CommonTrackList.newInstance();
 
 
@@ -53,15 +56,28 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         super(application, model);
     }
 
+    public void unsubscribe(Album album){
+        mModel.remove(SubscribeBean.class,album.getId()).subscribe(aBoolean ->
+                getSubscribeSingleLiveEvent().postValue(false), e->e.printStackTrace());
+
+    }
+    public void subscribe(Album album){
+      mModel.insert(new SubscribeBean(album.getId(),album,System.currentTimeMillis()))
+              .subscribe(subscribeBean -> getSubscribeSingleLiveEvent().postValue(true), e->e.printStackTrace());
+    }
+
     public void getAlbumDetail(String albumId) {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.ALBUM_IDS, albumId);
-        mModel.getBatch(map)
-                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
+
+        mModel.list(SubscribeBean.class, SubscribeBeanDao.Properties.AlbumId.eq(albumId))
+                .doOnNext(subscribeBeans -> getSubscribeSingleLiveEvent().postValue(subscribeBeans.size() > 0))
+                .flatMap((Function<List<SubscribeBean>, ObservableSource<BatchAlbumList>>) subscribeBeans -> mModel.getBatch(map))
                 .doOnNext(batchAlbumList -> getAlbumSingleLiveEvent().postValue(
                         batchAlbumList.getAlbums().get(0)))
                 .flatMap((Function<BatchAlbumList, ObservableSource<TrackList>>) batchAlbumList ->
                         getTrackInitObservable(albumId))
+                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
                 .doFinally(() -> postShowInitLoadViewEvent(false))
                 .subscribe(trackList -> {
                     setOrder(trackList);
@@ -74,11 +90,11 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     private void setOrder(TrackList trackList) {
         List<Track> tracks = trackList.getTracks();
-        for (int i = 0; i <tracks.size(); i++) {
-            if(mSort.equals("time_desc")){
-                tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((curTrackPage-1)*20+i)-1);
-            }else {
-                tracks.get(i).setOrderPositionInAlbum((curTrackPage-1)*20+i);
+        for (int i = 0; i < tracks.size(); i++) {
+            if (mSort.equals("time_desc")) {
+                tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount() - ((curTrackPage - 1) * 20 + i) - 1);
+            } else {
+                tracks.get(i).setOrderPositionInAlbum((curTrackPage - 1) * 20 + i);
             }
         }
     }
@@ -99,7 +115,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     private Observable<TrackList> getTrackInitObservable(String albumId) {
         Observable<TrackList> trackListObservable = mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime
-               , PlayHistoryBeanDao.Properties.GroupId.eq(albumId),
+                , PlayHistoryBeanDao.Properties.GroupId.eq(albumId),
                 PlayHistoryBeanDao.Properties.Kind.eq(PlayableModel.KIND_TRACK)).doOnNext(playHistoryBeans -> {
             if (!CollectionUtils.isEmpty(playHistoryBeans))
                 getLastplaySingleLiveEvent().setValue(playHistoryBeans.get(0).getTrack());
@@ -126,17 +142,17 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                             upTrackPage = lastPlayTrackList.getPageid() - 1;
                         })
                         .map(lastPlayTrackList -> {
-                    TrackList trackList = new TrackList();
-                    trackList.cloneCommonTrackList(lastPlayTrackList);
-                    return trackList;
-                });
+                            TrackList trackList = new TrackList();
+                            trackList.cloneCommonTrackList(lastPlayTrackList);
+                            return trackList;
+                        });
             }
         });
         return trackListObservable;
     }
 
     public void getTrackList(String albumId, String sort) {
-        if(!sort.equals(mSort)){
+        if (!sort.equals(mSort)) {
             curTrackPage = 1;
             mSort = sort;
         }
@@ -145,13 +161,13 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.SORT, mSort);
         map.put(DTransferConstants.PAGE, String.valueOf(curTrackPage));
         mModel.getTracks(map)
-                .doOnSubscribe(d->postShowInitLoadViewEvent(curTrackPage==1))
+                .doOnSubscribe(d -> postShowInitLoadViewEvent(curTrackPage == 1))
                 .observeOn(Schedulers.io())
                 .subscribe(trackList -> {
                     postShowInitLoadViewEvent(false);
                     setOrder(trackList);
                     upTrackPage = 0;
-                    curTrackPage ++;
+                    curTrackPage++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getTracksSortSingleLiveEvent().postValue(
                             trackList);
@@ -159,7 +175,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     }
 
-    public void getTrackList(String albumId,int page) {
+    public void getTrackList(String albumId, int page) {
 
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.ALBUM_ID, albumId);
@@ -167,11 +183,11 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE, String.valueOf(page));
         mModel.getTracks(map)
                 .observeOn(Schedulers.io())
-                .doOnSubscribe(d->postShowInitLoadViewEvent(true))
+                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
                 .subscribe(trackList -> {
                     postShowInitLoadViewEvent(false);
                     upTrackPage = page;
-                    curTrackPage=page;
+                    curTrackPage = page;
                     setOrder(trackList);
                     upTrackPage--;
                     curTrackPage++;
@@ -181,6 +197,7 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                 }, e -> e.printStackTrace());
 
     }
+
     public void getTrackList(String albumId, boolean isUp) {
         int page;
         if (isUp) {
@@ -214,16 +231,18 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                 }, e -> e.printStackTrace());
 
     }
+
     private void setUpOrder(TrackList trackList) {
         List<Track> tracks = trackList.getTracks();
-        for (int i = 0; i <tracks.size(); i++) {
-            if(mSort.equals("time_desc")){
-                tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount()-((upTrackPage-1)*20+i)-1);
-            }else {
-                tracks.get(i).setOrderPositionInAlbum((upTrackPage-1)*20+i);
+        for (int i = 0; i < tracks.size(); i++) {
+            if (mSort.equals("time_desc")) {
+                tracks.get(i).setOrderPositionInAlbum(trackList.getTotalCount() - ((upTrackPage - 1) * 20 + i) - 1);
+            } else {
+                tracks.get(i).setOrderPositionInAlbum((upTrackPage - 1) * 20 + i);
             }
         }
     }
+
     public SingleLiveEvent<Album> getAlbumSingleLiveEvent() {
         return mAlbumSingleLiveEvent = createLiveData(mAlbumSingleLiveEvent);
     }
@@ -231,7 +250,8 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
     public SingleLiveEvent<TrackList> getTracksInitSingleLiveEvent() {
         return mTracksInitSingleLiveEvent = createLiveData(mTracksInitSingleLiveEvent);
     }
-  public SingleLiveEvent<TrackList> getTracksUpSingleLiveEvent() {
+
+    public SingleLiveEvent<TrackList> getTracksUpSingleLiveEvent() {
         return mTracksUpSingleLiveEvent = createLiveData(mTracksUpSingleLiveEvent);
     }
 
@@ -248,7 +268,11 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
 
     public SingleLiveEvent<List<Album>> getRelativeSingleLiveEvent() {
-        return mRelativeSingleLiveEvent=createLiveData(mRelativeSingleLiveEvent);
+        return mRelativeSingleLiveEvent = createLiveData(mRelativeSingleLiveEvent);
+    }
+
+    public SingleLiveEvent<Boolean> getSubscribeSingleLiveEvent() {
+        return mSubscribeSingleLiveEvent = createLiveData(mSubscribeSingleLiveEvent);
     }
 
     public CommonTrackList getCommonTrackList() {

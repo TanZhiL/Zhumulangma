@@ -142,11 +142,11 @@ public class CommonModel extends BaseModel {
 
     }
     /**
-     * 清空所有记录
+     * 删除一条记录
      * @param <T>
      * @return
      */
-    public <T,K> Observable<Boolean> clear(Class<T> cls,K key){
+    public <T,K> Observable<Boolean> remove(Class<T> cls,K key){
         return  Observable.create(emitter -> {
             try {
                 AbstractDao<T, K> tkAbstractDao = (AbstractDao<T, K>) AppHelper.getDaoSession().getDao(cls);
@@ -166,7 +166,7 @@ public class CommonModel extends BaseModel {
      * @param <T>
      * @return
      */
-    public static  <T> Observable<T> insert(T entity){
+    public  <T> Observable<T> insert(T entity){
 
         return  Observable.create(emitter -> {
             try {

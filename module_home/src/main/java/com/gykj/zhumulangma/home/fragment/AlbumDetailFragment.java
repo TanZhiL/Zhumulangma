@@ -111,7 +111,6 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
     private AlbumTrackAdapter mAlbumTrackAdapter;
     private AlbumTagAdapter mAlbumTagAdapter;
     private RecyclerView rvTag;
-
     public AlbumDetailFragment() {}
 
     @Override
@@ -215,6 +214,13 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
                 changePageStatus();
             }
         });
+
+        addDisposable(RxView.clicks(fd(R.id.ll_subscribe))
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(unit -> mViewModel.subscribe(mAlbum)));
+        addDisposable(RxView.clicks(fd(R.id.ll_unsubscribe))
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(unit -> mViewModel.unsubscribe(mAlbum)));
     }
 
     @Override
@@ -224,6 +230,11 @@ public class AlbumDetailFragment extends BaseMvvmFragment<AlbumDetailViewModel> 
 
     @Override
     public void initViewObservable() {
+        mViewModel.getSubscribeSingleLiveEvent().observe(this, aBoolean -> {
+            fd(R.id.ll_subscribe).setVisibility(aBoolean?View.GONE:View.VISIBLE);
+            fd(R.id.ll_unsubscribe).setVisibility(aBoolean?View.VISIBLE:View.GONE);
+        });
+
         mViewModel.getAlbumSingleLiveEvent().observe(this, album -> {
             mAlbum = album;
             Glide.with(mContext).load(mAlbum.getCoverUrlMiddle()).into(ivCover);

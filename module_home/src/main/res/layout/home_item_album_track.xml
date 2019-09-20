@@ -172,7 +172,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_create_time"
         android:tint="@color/colorAccent"
         android:visibility="gone"
-        android:src="@drawable/ic_home_track_dowloadsucc" />
+        android:src="@drawable/ic_common_succ" />
 
     <TextView
         android:id="@+id/tv_hasplay"

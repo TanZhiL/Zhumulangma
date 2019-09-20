@@ -60,6 +60,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                 .observeOn(Schedulers.io())
                 .map(playHistoryBeans -> convertSections(playHistoryBeans))
                 .subscribe(playHistorySections -> {
+                    if(playHistorySections.size()>0)
                     curPage++;
                     getHistorySingleLiveEvent().postValue(playHistorySections);
                 }, e -> {

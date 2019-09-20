@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.App;
-import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -43,7 +42,6 @@ import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
-import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 
@@ -505,7 +503,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
 
     protected void onReload(View v) {
-//        mLoadService.showCallback(InitLoadingCallback.class);
+        mLoadService.showSuccess();
         initData();
     }
 

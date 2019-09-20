@@ -89,6 +89,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
                 return;
             }
             if (playHistoryBeans.size() > 0) {
+                //两页衔接处处理
                 if(!CollectionUtils.isEmpty(mHistoryAdapter.getData())&&mViewModel.dateCovert(
                         mHistoryAdapter.getItem(mHistoryAdapter.getData().size()-1).data.getDatatime())
                         .equals(playHistoryBeans.get(0).header)){

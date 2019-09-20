@@ -8,13 +8,9 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.listen.R;
 
@@ -22,13 +18,9 @@ import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Listen.F_MAIN)
 public class MainListenFragment extends BaseFragment implements View.OnClickListener {
@@ -56,7 +48,7 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
         viewpager=fd(R.id.viewpager);
 
         pages.add(new SubscribeFragment());
-        pages.add(new SubscribeFragment());
+        pages.add(new RecommendFragment());
 
         TFragmentPagerAdapter adapter = new TFragmentPagerAdapter(
                 getChildFragmentManager(),pages);

@@ -77,7 +77,7 @@
         android:layout_width="17dp"
         android:layout_height="17dp"
         android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_home_track_dowloadsucc"
+        android:src="@drawable/ic_common_succ"
         android:tint="@color/colorAccent"
         android:visibility="gone"/>
 

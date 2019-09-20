@@ -47,6 +47,7 @@ import com.gykj.zhumulangma.home.dialog.PlayTempoPopup;
 import com.gykj.zhumulangma.home.dialog.PlayTrackPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
+import com.jakewharton.rxbinding3.view.RxView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.warkiz.widget.IndicatorSeekBar;
@@ -73,6 +74,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -257,7 +259,18 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
 
         });
-
+        addDisposable(RxView.clicks(fd(R.id.ll_subscribe))
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(unit -> {
+                    if(mTrack!=null)
+                    mViewModel.subscribe(String.valueOf(mTrack.getAlbum().getAlbumId()));
+                }));
+        addDisposable(RxView.clicks(fd(R.id.ll_unsubscribe))
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(unit -> {
+                    if(mTrack!=null)
+                    mViewModel.unsubscribe(mTrack.getAlbum().getAlbumId());
+                }));
     }
 
     @Override
@@ -306,6 +319,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(0));
                 isbProgress.setProgress(0);
             }
+            mViewModel.getSubscribe(String.valueOf(mTrack.getAlbum().getAlbumId()));
         }
         mHandler.removeCallbacksAndMessages(null);
         mHandler.postDelayed(() -> scheduleTime(), 0);
@@ -338,6 +352,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void initViewObservable() {
+        mViewModel.getSubscribeSingleLiveEvent().observe(this, aBoolean -> {
+            fd(R.id.ll_subscribe).setVisibility(aBoolean?View.GONE:View.VISIBLE);
+            fd(R.id.ll_unsubscribe).setVisibility(aBoolean?View.VISIBLE:View.GONE);
+        });
         mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> mAlbumAdapter.setNewData(albums));
 
     }

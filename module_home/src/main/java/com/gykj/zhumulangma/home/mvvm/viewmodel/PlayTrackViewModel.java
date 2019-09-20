@@ -3,13 +3,14 @@ package com.gykj.zhumulangma.home.mvvm.viewmodel;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.gykj.zhumulangma.common.bean.SubscribeBean;
+import com.gykj.zhumulangma.common.dao.SubscribeBeanDao;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
-import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
-import com.ximalaya.ting.android.opensdk.model.album.RelativeAlbums;
+import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.track.CommonTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
@@ -18,7 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -34,6 +36,7 @@ public class PlayTrackViewModel extends BaseViewModel<ZhumulangmaModel> {
     private SingleLiveEvent<TrackList> mTracksUpSingleLiveEvent;
     private SingleLiveEvent<TrackList> mTracksMoreSingleLiveEvent;
     private SingleLiveEvent<TrackList> mTracksSortSingleLiveEvent;
+    private SingleLiveEvent<Boolean> mSubscribeSingleLiveEvent;
     private CommonTrackList mCommonTrackList = CommonTrackList.newInstance();
 
     private int upTrackPage = 0;
@@ -44,6 +47,26 @@ public class PlayTrackViewModel extends BaseViewModel<ZhumulangmaModel> {
         super(application, model);
     }
 
+    public void unsubscribe(long albumId){
+        mModel.remove(SubscribeBean.class,albumId).subscribe(aBoolean ->
+                getSubscribeSingleLiveEvent().postValue(false), e->e.printStackTrace());
+
+    }
+    public void subscribe(String albumId){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.ALBUM_IDS, albumId);
+        mModel.getBatch(map)
+                .flatMap((Function<BatchAlbumList, ObservableSource<SubscribeBean>>) albumList ->
+                        mModel.insert(new SubscribeBean(albumList.getAlbums().get(0).getId(),
+                        albumList.getAlbums().get(0),System.currentTimeMillis())))
+                .subscribe(subscribeBean -> getSubscribeSingleLiveEvent().postValue(true), e->e.printStackTrace());
+    }
+
+    public void getSubscribe(String albumId){
+        mModel.list(SubscribeBean.class, SubscribeBeanDao.Properties.AlbumId.eq(albumId))
+                .subscribe(subscribeBeans ->
+                        getSubscribeSingleLiveEvent().postValue(subscribeBeans.size() > 0), e->e.printStackTrace());
+    }
     public void getRelativeAlbums(String trackId){
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.TRACKID, trackId);
@@ -141,6 +164,10 @@ public class PlayTrackViewModel extends BaseViewModel<ZhumulangmaModel> {
     public SingleLiveEvent<TrackList> getTracksSortSingleLiveEvent() {
         return mTracksSortSingleLiveEvent = createLiveData(mTracksSortSingleLiveEvent);
     }
+    public SingleLiveEvent<Boolean> getSubscribeSingleLiveEvent() {
+        return mSubscribeSingleLiveEvent = createLiveData(mSubscribeSingleLiveEvent);
+    }
+
     public CommonTrackList getCommonTrackList() {
         return mCommonTrackList;
     }

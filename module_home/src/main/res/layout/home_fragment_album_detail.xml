@@ -45,7 +45,7 @@
                 <TextView
                     android:id="@+id/tv_album"
                     android:layout_width="0dp"
-                    android:layout_height="34dp"
+                    android:layout_height="25dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:ellipsize="end"
@@ -80,6 +80,17 @@
                     tools:text="播放：5625次" />
 
                 <TextView
+                    android:id="@+id/tv_sbcount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/colorGray"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@+id/tv_trackcount"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_trackcount"
+                    tools:text="订阅:41.7万" />
+
+                <TextView
                     android:id="@+id/tv_trackcount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -90,12 +101,32 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_playcount"
                     tools:text="数量:102集" />
             </android.support.constraint.ConstraintLayout>
-
             <LinearLayout
-                android:id="@+id/textView23"
+                android:id="@+id/ll_unsubscribe"
                 android:layout_width="162dp"
                 android:layout_height="34dp"
-                android:layout_marginTop="8dp"
+                android:background="@drawable/shap_common_gray_coner"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_common_succ"
+                    android:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:text="已订" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_subscribe"
+                android:layout_width="162dp"
+                android:layout_height="34dp"
                 android:background="@drawable/shap_common_primary"
                 android:gravity="center"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,17 +135,17 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_common_star"
+                    android:src="@drawable/ic_common_pluse"
                     android:tint="@color/white" />
 
                 <TextView
-                    android:id="@+id/tv_sbcount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    tools:text="订阅(41.7万)" />
+                    android:text="订阅" />
             </LinearLayout>
+
 
 
             <LinearLayout
@@ -125,7 +156,7 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView23">
+                app:layout_constraintTop_toTopOf="@+id/ll_subscribe">
 
                 <ImageView
                     android:layout_width="20dp"
@@ -155,7 +186,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
                 android:background="@color/colorAccent"
-                app:layout_constraintTop_toBottomOf="@+id/textView23"
+                app:layout_constraintTop_toBottomOf="@+id/ll_play"
                 tools:layout_editor_absoluteX="9dp" />
 
             <TextView

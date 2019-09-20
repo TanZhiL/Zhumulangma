@@ -327,7 +327,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/ic_common_image_placeholder" />
+                    tools:src="@drawable/image_placeholder" />
 
                 <TextView
                     android:id="@+id/tv_album_name"
@@ -340,7 +340,7 @@
                     android:text="伦桑老大"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="15sp"
-                    app:layout_constraintEnd_toStartOf="@+id/linearLayout12"
+                    app:layout_constraintEnd_toStartOf="@+id/ll_subscribe"
                     app:layout_constraintStart_toEndOf="@+id/iv_album_cover"
                     app:layout_constraintTop_toTopOf="@+id/iv_album_cover" />
 
@@ -355,15 +355,45 @@
                     android:textSize="11sp"
                     app:layout_constraintStart_toEndOf="@+id/iv_album_cover"
                     app:layout_constraintTop_toBottomOf="@+id/tv_album_name" />
-
                 <LinearLayout
-                    android:id="@+id/linearLayout12"
+                    android:id="@+id/ll_unsubscribe"
                     android:layout_width="68dp"
                     android:layout_height="27dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="24dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/shap_common_primary_coner"
+                    android:background="@drawable/shap_common_gray_coner"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:padding="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_common_succ"
+                        android:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="已订"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_subscribe"
+                    android:layout_width="68dp"
+                    android:layout_height="27dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/shap_common_primary"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="4dp"
@@ -374,7 +404,7 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_common_star"
+                        android:src="@drawable/ic_common_pluse"
                         android:tint="@color/white" />
 
                     <TextView
@@ -385,6 +415,7 @@
                         android:textColor="@color/white"
                         android:textSize="14sp" />
                 </LinearLayout>
+                
             </android.support.constraint.ConstraintLayout>
 
             <TextView

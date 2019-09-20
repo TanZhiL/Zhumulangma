@@ -5,7 +5,7 @@
     <string name="zhuanji">%s张专辑</string>
     <string name="zhubo">主播:%s</string>
     <string name="gong_ji">数量:共%d集</string>
-    <string name="sb">订阅(%s)</string>
+    <string name="sb">订阅:%s</string>
     <string name="playing">正在直播: %s</string>
     <string name="qian">%s前</string>
     <string name="update">%d更新</string>

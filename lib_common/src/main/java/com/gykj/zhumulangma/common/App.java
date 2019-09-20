@@ -5,7 +5,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
-import com.gykj.zhumulangma.common.mvvm.model.CommonModel;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -91,8 +90,8 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
             }
             if (currSound.getKind().equals(PlayableModel.KIND_SCHEDULE)) {
                 Schedule schedule = (Schedule) currSound;
-                CommonModel.insert(new PlayHistoryBean(currSound.getDataId(), schedule.getRadioId(), currSound.getKind(),
-                        System.currentTimeMillis(), schedule)).subscribe();
+                AppHelper.getDaoSession().insertOrReplace(new PlayHistoryBean(currSound.getDataId(), schedule.getRadioId(), currSound.getKind(),
+                        System.currentTimeMillis(), schedule));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,9 +152,9 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
                 Track track = (Track) currSound;
                 int currPos = XmPlayerManager.getInstance(this).getPlayCurrPositon();
                 int duration = XmPlayerManager.getInstance(this).getDuration();
-                CommonModel.insert(new PlayHistoryBean(currSound.getDataId(), track.getAlbum().getAlbumId(),
+                AppHelper.getDaoSession().insertOrReplace(new PlayHistoryBean(currSound.getDataId(), track.getAlbum().getAlbumId(),
                         currSound.getKind(), 100 * currPos / duration,
-                        System.currentTimeMillis(), track)).subscribe();
+                        System.currentTimeMillis(), track));
             }
         } catch (Exception e) {
             e.printStackTrace();
