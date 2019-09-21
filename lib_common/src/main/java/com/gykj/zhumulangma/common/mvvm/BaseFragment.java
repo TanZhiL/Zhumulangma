@@ -1,7 +1,6 @@
 package com.gykj.zhumulangma.common.mvvm;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -15,9 +14,12 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.BarUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -61,11 +63,12 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     private ViewStub mViewStubContent;
     protected LoadService mLoadService;
     protected CommonTitleBar mSimpleTitleBar;
-    private Handler mLoadingHandler=new Handler();
+    private Handler mLoadingHandler = new Handler();
     protected App mApplication;
 
-    private boolean isFirst=true;
-   protected interface BarStyle {
+    private boolean isFirst = true;
+
+    protected interface BarStyle {
         //左边
         int LEFT_BACK = 0;
         int LEFT_BACK_TEXT = 1;
@@ -83,10 +86,11 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApplication= App.getInstance();
+        mApplication = App.getInstance();
         ARouter.getInstance().inject(this);
         EventBus.getDefault().register(this);
     }
+
     /**
      * 添加订阅
      */
@@ -96,6 +100,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
         mCompositeDisposable.add(mDisposable);
     }
+
     /**
      * 取消所有订阅
      */
@@ -104,6 +109,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             mCompositeDisposable.clear();
         }
     }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -113,17 +119,16 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.common_fragment_root, container, false);
+        mView = inflater.inflate(R.layout.common_layout_root, container, false);
         initCommonView(mView);
         initParam();
-        mViewStubContent = mView.findViewById(R.id.view_stub_content);
         //不采用懒加载
-        if(!lazyEnable()){
+        if (!lazyEnable()) {
             loadView();
             initView(mView);
             initListener();
         }
-       return attachToSwipeBack(mView);
+        return attachToSwipeBack(mView);
     }
 
 
@@ -132,7 +137,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         super.onLazyInitView(savedInstanceState);
 
         //采用懒加载
-        if(lazyEnable()){
+        if (lazyEnable()) {
             loadView();
             initView(mView);
             initListener();
@@ -145,8 +150,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     public void onEnterAnimationEnd(Bundle savedInstanceState) {
         super.onEnterAnimationEnd(savedInstanceState);
         //不采用懒加载
-        if(!lazyEnable()){
-
+        if (!lazyEnable()) {
             initData();
         }
     }
@@ -158,7 +162,8 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
-        contentView.setBackgroundColor(getResources().getColor(R.color.colorLine));
+        mView.setBackgroundColor(getResources().getColor(R.color.colorLine));
+
         LoadSir loadSir = new LoadSir.Builder()
                 .addCallback(new InitLoadingCallback())
                 .addCallback(new EmptyCallback())
@@ -192,6 +197,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     protected void initCommonView(View view) {
         mSimpleTitleBar = mView.findViewById(R.id.ctb_simple);
+        mViewStubContent = mView.findViewById(R.id.view_stub_content);
         if (enableSimplebar()) {
             mSimpleTitleBar.setBackgroundResource(R.drawable.shap_common_simplebar);
             mSimpleTitleBar.setVisibility(View.VISIBLE);
@@ -360,9 +366,10 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         return null;
     }
 
-    protected boolean lazyEnable(){
+    protected boolean lazyEnable() {
         return true;
     }
+
     protected void setTitle(String[] strings) {
         if (!enableSimplebar()) {
             throw new IllegalStateException("导航栏中不可用,请设置enableSimplebar为true");
@@ -429,9 +436,11 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public <T> void onEvent(BaseFragmentEvent<T> event) {
     }
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public <T> void onEventSticky(BaseFragmentEvent<T> event) {
     }
+
     protected abstract int onBindLayout();
 
     protected abstract void initView(View view);
@@ -450,6 +459,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     protected boolean enableSimplebar() {
         return true;
     }
+
     protected boolean enableSwipeBack() {
         return true;
     }
@@ -482,20 +492,20 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     public void showTransLoadingView(String tip) {
-        if (null==tip) {
+        if (null == tip) {
             mLoadingHandler.removeCallbacksAndMessages(null);
             mLoadService.showSuccess();
         } else {
-            if(0==tip.length()){
-                tip="加载中...";
+            if (0 == tip.length()) {
+                tip = "加载中...";
             }
             String finalTip = tip;
             mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
-                TextView tvTip= view1.findViewById(R.id.tv_tip);
+                TextView tvTip = view1.findViewById(R.id.tv_tip);
                 tvTip.setText(finalTip);
             });
             //延时100毫秒显示,避免闪屏
-            mLoadingHandler.postDelayed(()-> mLoadService.showCallback(LoadingCallback.class),100);
+            mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 100);
         }
     }
 
@@ -508,16 +518,18 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if(!isFirst){
+        if (!isFirst) {
             onRevisible();
         }
-            isFirst=false;
+        isFirst = false;
     }
 
     /**
      * 再次可见
      */
-    protected void onRevisible(){}
+    protected void onRevisible() {
+    }
+
     /**
      * findViewById
      *
@@ -528,41 +540,45 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     protected <T extends View> T fd(@IdRes int id) {
         return mView.findViewById(id);
     }
+
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
         return new DefaultHorizontalAnimator();
     }
 
-    protected void navigateTo(String path){
+    protected void navigateTo(String path) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         if (null != navigation) {
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
-    protected void navigateTo(String path,int launchMode){
+
+    protected void navigateTo(String path, int launchMode) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
-        navigateBean.launchMode=launchMode;
+        navigateBean.launchMode = launchMode;
         if (null != navigation) {
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
-    protected void navigateTo(String path, int launchMode, ExtraTransaction extraTransaction){
+
+    protected void navigateTo(String path, int launchMode, ExtraTransaction extraTransaction) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
-        navigateBean.launchMode=launchMode;
-        navigateBean.extraTransaction=extraTransaction;
+        navigateBean.launchMode = launchMode;
+        navigateBean.extraTransaction = extraTransaction;
         if (null != navigation) {
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
-    protected void navigateTo(String path, ExtraTransaction extraTransaction){
+
+    protected void navigateTo(String path, ExtraTransaction extraTransaction) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
-        navigateBean.extraTransaction=extraTransaction;
+        navigateBean.extraTransaction = extraTransaction;
         if (null != navigation) {
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));

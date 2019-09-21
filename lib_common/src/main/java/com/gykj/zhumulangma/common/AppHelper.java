@@ -63,12 +63,19 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REFRESH_TOKEN_UR
  */
 public class AppHelper {
     private static Application mApplication;
-
+    private static volatile AppHelper instance;
     private AppHelper(){}
 
-    public static AppHelper init(Application application){
-        mApplication=application;
-        return new AppHelper();
+    public static AppHelper getInstance(Application application){
+        if(instance==null){
+            synchronized (AppHelper.class){
+                if(instance==null){
+                    mApplication=application;
+                    instance=new AppHelper();
+                }
+            }
+        }
+        return instance;
     }
     public AppHelper initXmly(){
         ConstantsOpenSdk.isDebug = true;

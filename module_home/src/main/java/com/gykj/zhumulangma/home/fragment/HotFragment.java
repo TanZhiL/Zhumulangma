@@ -331,7 +331,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     }
     @Override
     protected boolean lazyEnable() {
-        return false;
+        return true;
     }
     @Override
     public void onClick(View v) {

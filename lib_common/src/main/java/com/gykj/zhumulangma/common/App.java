@@ -17,6 +17,9 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
 
 /**
@@ -31,6 +34,7 @@ public class App extends Application {
     private static final String TAG = "App";
     //记录启动时间
     public static long attachTime;
+
     public static App getInstance() {
         return mApplication;
     }
@@ -51,7 +55,7 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        attachTime=System.currentTimeMillis();
+        attachTime = System.currentTimeMillis();
         Log.d(TAG, "attachBaseContext() called " + System.currentTimeMillis());
     }
 
@@ -59,22 +63,22 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
         mApplication = this;
+        Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
+                AppHelper.getInstance(this)
+                        .initMultiDex()
+                        .initFragmentation()
+                        .initSpeech()
+                        .initDoraemonKit()
+                        .initLog()
+                        .initXmly()
+                        .initGreenDao()
+                        .initNet()
+                        .initRouter()
+                        .initXmlyPlayer()
+                        .initUtils()
+                        .initXmlyDownloader();
         XmPlayerManager.getInstance(this).addPlayerStatusListener(mPlayerStatusListener);
-        AppHelper.init(this)
-                .initMultiDex()
-                .initXmly()
-                .initXmlyDownloader()
-                .initXmlyPlayer()
-                .initGreenDao()
-                .initLog()
-                .initRouter()
-                .initNet()
-                .initFragmentation()
-                .initDoraemonKit()
-                .initSpeech()
-                .initUtils();
         Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
     }
 

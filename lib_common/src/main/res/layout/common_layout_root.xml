@@ -12,6 +12,7 @@
         app:titleBarHeight="@dimen/simpleBarHeight"
         app:centerType="customView"
         app:statusBarMode="dark"
+        app:statusBarColor="@color/white"
         app:centerCustomView="@layout/common_layout_titlebar_center"
         app:leftType="customView"
         app:leftCustomView="@layout/common_layout_titlebar_left"

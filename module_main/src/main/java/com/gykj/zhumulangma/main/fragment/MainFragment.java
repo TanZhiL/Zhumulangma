@@ -116,6 +116,11 @@ public class MainFragment extends BaseFragment {
         mShowListener = showListener;
     }
 
+    @Override
+    protected boolean lazyEnable() {
+        return true;
+    }
+
     public interface onRootShowListener {
         void onRootShow(boolean isVisible);
     }

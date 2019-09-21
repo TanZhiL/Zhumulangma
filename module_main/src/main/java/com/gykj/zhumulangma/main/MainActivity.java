@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -23,9 +26,13 @@ import com.gykj.zhumulangma.common.mvvm.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
+import com.gykj.zhumulangma.main.dialog.SplashAdPopup;
 import com.gykj.zhumulangma.main.fragment.MainFragment;
 import com.gykj.zhumulangma.main.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.animator.PopupAnimator;
+import com.lxj.xpopup.enums.PopupAnimation;
 import com.ximalaya.ting.android.opensdk.auth.call.IXmlyAuthListener;
 import com.ximalaya.ting.android.opensdk.auth.exception.XmlyException;
 import com.ximalaya.ting.android.opensdk.auth.handler.XmlySsoHandler;
@@ -72,6 +79,16 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     @Override
     protected int onBindLayout() {
         return R.layout.main_activity_main;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+     /*   new XPopup.Builder(this).popupAnimation(PopupAnimation.NoAnimation)
+                .asCustom(new SplashAdPopup(this)).show();*/
+        Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
     }
 
     @Override

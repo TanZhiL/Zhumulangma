@@ -11,8 +11,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -79,7 +81,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApplication= App.getInstance();
-        setContentView(R.layout.common_activity_root);
+        setContentView(R.layout.common_layout_root);
         EventBus.getDefault().register(this);
         ARouter.getInstance().inject(this);
         initCommonView();
@@ -115,7 +117,6 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
             mSimpleTitleBar.setVisibility(View.VISIBLE);
             initSimplebar();
         }
-
         viewStubContent.setLayoutResource(onBindLayout());
         View contentView = viewStubContent.inflate();
 
