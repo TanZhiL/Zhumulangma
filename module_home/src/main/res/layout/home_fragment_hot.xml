@@ -9,10 +9,6 @@
     app:srlEnableNestedScrolling="true"
     app:srlEnableLoadMore="false"
     app:srlEnablePreviewInEditMode="false">
-    <com.gykj.zhumulangma.common.widget.TRefreshHeader
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
 <android.support.v4.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"

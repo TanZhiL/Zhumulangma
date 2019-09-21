@@ -37,6 +37,7 @@ public class TRefreshHeader extends LinearLayout implements RefreshHeader {
 
     public TRefreshHeader(Context context) {
         super(context);
+        filter = new SimpleColorFilter(context.getResources().getColor(R.color.colorHint));
         initView(context);
     }
 

@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.common.mvvm;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -114,20 +115,14 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.common_fragment_root, container, false);
         initCommonView(mView);
+        initParam();
+        mViewStubContent = mView.findViewById(R.id.view_stub_content);
         //不采用懒加载
-   /*     if(!lazyEnable()){
-            mViewStubContent = mView.findViewById(R.id.view_stub_content);
+        if(!lazyEnable()){
             loadView();
             initView(mView);
             initListener();
-            initParam();
-            initData();
-        }*/
-        mViewStubContent = mView.findViewById(R.id.view_stub_content);
-        loadView();
-        initView(mView);
-        initListener();
-        initParam();
+        }
        return attachToSwipeBack(mView);
     }
 
@@ -138,8 +133,10 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
         //采用懒加载
         if(lazyEnable()){
+            loadView();
+            initView(mView);
+            initListener();
             initData();
-
         }
 
     }
@@ -161,6 +158,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
+        contentView.setBackgroundColor(getResources().getColor(R.color.colorLine));
         LoadSir loadSir = new LoadSir.Builder()
                 .addCallback(new InitLoadingCallback())
                 .addCallback(new EmptyCallback())

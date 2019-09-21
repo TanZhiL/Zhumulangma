@@ -52,7 +52,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!--讯飞语音END-->
     <application
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:theme="@style/TTheme"
         android:icon="@mipmap/ic_launcher_ting"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:theme">

@@ -32,7 +32,7 @@
         <com.gykj.zhumulangma.common.widget.TRefreshHeader
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             app:lottie_colorFilter="@color/white" />
 
         <android.support.v4.widget.NestedScrollView

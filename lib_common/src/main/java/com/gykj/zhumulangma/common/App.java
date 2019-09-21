@@ -1,5 +1,6 @@
 package com.gykj.zhumulangma.common;
 
+import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.util.Log;
@@ -25,9 +26,14 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
  * Version:     V1.0.0<br>
  * Update:     <br>
  */
-public class App extends android.app.Application implements IXmPlayerStatusListener {
+public class App extends Application {
     private static App mApplication;
     private static final String TAG = "App";
+    //记录启动时间
+    public static long attachTime;
+    public static App getInstance() {
+        return mApplication;
+    }
 
     static {
         //设置全局的Header构建器
@@ -42,29 +48,33 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
         });
     }
 
-    public static App getInstance() {
-        return mApplication;
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        attachTime=System.currentTimeMillis();
+        Log.d(TAG, "attachBaseContext() called " + System.currentTimeMillis());
     }
+
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
         super.onCreate();
+        Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
         mApplication = this;
-        XmPlayerManager.getInstance(this).addPlayerStatusListener(this);
+        XmPlayerManager.getInstance(this).addPlayerStatusListener(mPlayerStatusListener);
         AppHelper.init(this)
-                        .initXmly()
-                        .initXmlyDownloader()
-                        .initXmlyPlayer()
-                        .initGreenDao()
-                        .initLog()
-                        .initMultiDex()
-                        .initRouter()
-                        .initNet()
-                        .initFragmentation()
-                        .initDoraemonKit()
-                        .initSpeech()
-                        .initUtils();
+                .initMultiDex()
+                .initXmly()
+                .initXmlyDownloader()
+                .initXmlyPlayer()
+                .initGreenDao()
+                .initLog()
+                .initRouter()
+                .initNet()
+                .initFragmentation()
+                .initDoraemonKit()
+                .initSpeech()
+                .initUtils();
         Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
     }
 
@@ -73,93 +83,96 @@ public class App extends android.app.Application implements IXmPlayerStatusListe
     public void onTerminate() {
         super.onTerminate();
         Log.d(TAG, "onTerminate() called");
-        XmPlayerManager.getInstance(this).removePlayerStatusListener(this);
+        XmPlayerManager.getInstance(this).removePlayerStatusListener(mPlayerStatusListener);
         XmPlayerManager.release();
         CommonRequest.release();
     }
-    @Override
-    public void onPlayStart() {
-        try {
-            PlayableModel currSound = XmPlayerManager.getInstance(this).getCurrSound();
-            if (null == currSound) {
-                return;
+
+    private IXmPlayerStatusListener mPlayerStatusListener = new IXmPlayerStatusListener() {
+
+        @Override
+        public void onPlayStart() {
+            try {
+                PlayableModel currSound = XmPlayerManager.getInstance(App.this).getCurrSound();
+                if (null == currSound) {
+                    return;
+                }
+                if (currSound.getKind().equals(PlayableModel.KIND_SCHEDULE)) {
+                    Schedule schedule = (Schedule) currSound;
+                    AppHelper.getDaoSession().insertOrReplace(new PlayHistoryBean(currSound.getDataId(), schedule.getRadioId(), currSound.getKind(),
+                            System.currentTimeMillis(), schedule));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (currSound.getKind().equals(PlayableModel.KIND_SCHEDULE)) {
-                Schedule schedule = (Schedule) currSound;
-                AppHelper.getDaoSession().insertOrReplace(new PlayHistoryBean(currSound.getDataId(), schedule.getRadioId(), currSound.getKind(),
-                        System.currentTimeMillis(), schedule));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-    }
 
-    @Override
-    public void onPlayPause() {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (null != notificationManager) {
-            notificationManager.cancel(NOTIFICATION_ID);
-        }
-    }
-
-    @Override
-    public void onPlayStop() {
-
-    }
-
-    @Override
-    public void onSoundPlayComplete() {
-
-    }
-
-    @Override
-    public void onSoundPrepared() {
-
-    }
-
-    @Override
-    public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
-
-    }
-
-    @Override
-    public void onBufferingStart() {
-
-    }
-
-    @Override
-    public void onBufferingStop() {
-
-    }
-
-    @Override
-    public void onBufferProgress(int i) {
-
-    }
-
-    @Override
-    public void onPlayProgress(int i, int i1) {
-        try {
-            PlayableModel currSound = XmPlayerManager.getInstance(this).getCurrSound();
-            if (null == currSound) {
-                return;
+        @Override
+        public void onPlayPause() {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            if (null != notificationManager) {
+                notificationManager.cancel(NOTIFICATION_ID);
             }
-            if (currSound.getKind().equals(PlayableModel.KIND_TRACK)) {
-                Track track = (Track) currSound;
-                int currPos = XmPlayerManager.getInstance(this).getPlayCurrPositon();
-                int duration = XmPlayerManager.getInstance(this).getDuration();
-                AppHelper.getDaoSession().insertOrReplace(new PlayHistoryBean(currSound.getDataId(), track.getAlbum().getAlbumId(),
-                        currSound.getKind(), 100 * currPos / duration,
-                        System.currentTimeMillis(), track));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-    }
 
-    @Override
-    public boolean onError(XmPlayerException e) {
-        return false;
-    }
+        @Override
+        public void onPlayStop() {
 
+        }
+
+        @Override
+        public void onSoundPlayComplete() {
+
+        }
+
+        @Override
+        public void onSoundPrepared() {
+
+        }
+
+        @Override
+        public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
+
+        }
+
+        @Override
+        public void onBufferingStart() {
+
+        }
+
+        @Override
+        public void onBufferingStop() {
+
+        }
+
+        @Override
+        public void onBufferProgress(int i) {
+
+        }
+
+        @Override
+        public void onPlayProgress(int i, int i1) {
+            try {
+                PlayableModel currSound = XmPlayerManager.getInstance(App.this).getCurrSound();
+                if (null == currSound) {
+                    return;
+                }
+                if (currSound.getKind().equals(PlayableModel.KIND_TRACK)) {
+                    Track track = (Track) currSound;
+                    int currPos = XmPlayerManager.getInstance(App.this).getPlayCurrPositon();
+                    int duration = XmPlayerManager.getInstance(App.this).getDuration();
+                    AppHelper.getDaoSession().insertOrReplace(new PlayHistoryBean(currSound.getDataId(), track.getAlbum().getAlbumId(),
+                            currSound.getKind(), 100 * currPos / duration,
+                            System.currentTimeMillis(), track));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public boolean onError(XmPlayerException e) {
+            return false;
+        }
+    };
 }

@@ -41,6 +41,11 @@ public class CategoryFragment extends BaseFragment {
     }
 
     @Override
+    protected boolean lazyEnable() {
+        return false;
+    }
+
+    @Override
     protected boolean enableSimplebar() {
         return false;
     }

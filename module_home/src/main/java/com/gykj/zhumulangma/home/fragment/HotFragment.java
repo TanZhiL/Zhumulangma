@@ -329,7 +329,10 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         if (banner != null)
             banner.stopAutoPlay();
     }
-
+    @Override
+    protected boolean lazyEnable() {
+        return false;
+    }
     @Override
     public void onClick(View v) {
         int id = v.getId();

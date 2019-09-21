@@ -134,11 +134,6 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:srlFooterTriggerRate="0">
-        <com.gykj.zhumulangma.common.widget.TRefreshHeader
-            android:id="@+id/header"
-            android:layout_width="match_parent"
-            app:lottie_colorFilter="@color/colorHint"
-            android:layout_height="50dp"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rl_live"
             android:layout_width="match_parent"
@@ -164,10 +159,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:srlEnablePreviewInEditMode="false">
-    <com.gykj.zhumulangma.common.widget.TRefreshHeader
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/tsv_content"
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -6,10 +6,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -52,6 +54,8 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import me.yokeyword.fragmentation.ISupportFragment;
+import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
 
@@ -81,7 +85,15 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         globalPlay = fd(R.id.gp);
 
     }
-
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(!hasFocus){
+            return;
+        }
+        Log.d(TAG, "onWindowFocusChanged() called "+System.currentTimeMillis());
+        TLog.d(System.currentTimeMillis()- App.attachTime);
+    }
     @Override
     public void initListener() {
         globalPlay.setOnClickListener(this);
@@ -406,6 +418,11 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
             AccessTokenManager.getInstanse().setAccessTokenAndUid(mAccessToken.getToken(), mAccessToken
                     .getRefreshToken(), mAccessToken.getExpiresAt(), mAccessToken.getUid());
         }
+    }
+
+    @Override
+    public FragmentAnimator onCreateFragmentAnimator() {
+        return new DefaultNoAnimator();
     }
 
     public void logout() {

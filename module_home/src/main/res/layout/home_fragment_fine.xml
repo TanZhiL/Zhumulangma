@@ -9,11 +9,6 @@
     app:srlEnableNestedScrolling="true"
     app:srlEnableLoadMore="false"
     app:srlEnablePreviewInEditMode="false">
-    <com.gykj.zhumulangma.common.widget.TRefreshHeader
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-
-        android:layout_height="50dp"/>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

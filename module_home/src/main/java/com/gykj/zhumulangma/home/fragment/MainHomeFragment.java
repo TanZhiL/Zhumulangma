@@ -206,4 +206,8 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
             mMarqueeView.stopFlipping();
         }
     }
+    @Override
+    protected boolean lazyEnable() {
+        return false;
+    }
 }
