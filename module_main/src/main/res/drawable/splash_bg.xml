@@ -18,7 +18,7 @@
         <solid android:color="@color/white"/>
     </shape>
 </item>
-<item android:bottom="100dp">
+<item android:bottom="150dp">
     <bitmap   android:src="@drawable/ic_logo"
         android:gravity="center" />
 </item>

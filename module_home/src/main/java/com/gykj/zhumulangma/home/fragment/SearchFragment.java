@@ -22,7 +22,9 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.SearchHistoryBean;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseFragment;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.SpeechUtil;
@@ -45,6 +47,7 @@ import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -246,6 +249,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     public void onSupportInvisible() {
         super.onSupportInvisible();
         KeyboardUtils.hideSoftInput(etKeyword);
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.SHOW_GP));
     }
 
     @Override
@@ -371,5 +375,9 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         etKeyword.setText(resultBuffer.toString());
         etKeyword.setSelection(etKeyword.length());
     }
-
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.HIDE_GP));
+    }
 }

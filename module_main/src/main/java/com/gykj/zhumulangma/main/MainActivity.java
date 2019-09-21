@@ -83,7 +83,9 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        //清除全屏显示
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //显示广告
      /*   new XPopup.Builder(this).popupAnimation(PopupAnimation.NoAnimation)
                 .asCustom(new SplashAdPopup(this)).show();*/
         Log.d(TAG, "onCreate() called "+System.currentTimeMillis());

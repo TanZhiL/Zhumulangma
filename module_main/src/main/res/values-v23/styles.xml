@@ -1,5 +1,6 @@
 <resources>
     <style name="AppTheme.SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@drawable/splash_bg</item>
     </style>
 </resources>

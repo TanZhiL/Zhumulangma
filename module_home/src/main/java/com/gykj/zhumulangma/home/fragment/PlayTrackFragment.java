@@ -687,7 +687,6 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onPlayProgress(int i, int i1) {
-        TLog.d(isTouch);
         ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
         tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
         if (!isTouch) {

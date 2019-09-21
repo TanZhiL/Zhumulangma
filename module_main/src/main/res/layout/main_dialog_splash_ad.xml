@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_ad"
-        android:background="@color/black"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:text="这是广告(点击关闭)"
-        tools:layout_editor_absoluteX="266dp"
-        tools:layout_editor_absoluteY="217dp" />
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_ad"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="40dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="这是广告(点击关闭)"
+            android:textColor="@color/black" />
+
+
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="120dp"
+            android:background="@color/white"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_logo" />
+
+    </LinearLayout>
+
 </FrameLayout>
