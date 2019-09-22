@@ -14,6 +14,8 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.AppHelper;
@@ -32,7 +34,9 @@ import com.gykj.zhumulangma.main.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.animator.PopupAnimator;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.enums.PopupAnimation;
+import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.ximalaya.ting.android.opensdk.auth.call.IXmlyAuthListener;
 import com.ximalaya.ting.android.opensdk.auth.exception.XmlyException;
 import com.ximalaya.ting.android.opensdk.auth.handler.XmlySsoHandler;
@@ -57,6 +61,7 @@ import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -85,11 +90,36 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //清除全屏显示
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //显示广告
-     /*   new XPopup.Builder(this).popupAnimation(PopupAnimation.NoAnimation)
-                .asCustom(new SplashAdPopup(this)).show();*/
         Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
         super.onCreate(savedInstanceState);
+        long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(AppConstants.SP.AD_TIME, 0);
+        //显示广告
+        if(adOffset>5*60*1000&&new File(getFilesDir().getAbsolutePath()+AppConstants.Defualt.AD_NAME)
+                .exists()){
+            BasePopupView show = new XPopup.Builder(this).popupAnimation(PopupAnimation.NoAnimation)
+                    .setPopupCallback(new SimpleCallback() {
+                        @Override
+                        public void onDismiss() {
+                            super.onDismiss();
+                             SPUtils.getInstance().put(AppConstants.SP.AD_TIME,System.currentTimeMillis());
+                            mViewModel._getBing();
+                        }
+
+                        @Override
+                        public boolean onBackPressed() {
+                            Log.d(TAG, "onBackPressed() called");
+                            Intent home = new Intent(Intent.ACTION_MAIN);
+                            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            home.addCategory(Intent.CATEGORY_HOME);
+                            startActivity(home);
+                            return true;
+                        }
+                    })
+                    .asCustom(new SplashAdPopup(this)).show();
+            show.isShow();
+        }else {
+            mViewModel._getBing();
+        }
         Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
     }
 

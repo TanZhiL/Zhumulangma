@@ -147,10 +147,6 @@ public class AppHelper {
         TLog.init(AppConfig.LOGER);
         return this;
     }
-    public AppHelper initMultiDex(){
-        MultiDex.install(mApplication);
-        return this;
-    }
 
     public AppHelper initRouter(){
 

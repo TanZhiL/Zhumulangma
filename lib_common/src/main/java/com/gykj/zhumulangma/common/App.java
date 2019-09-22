@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.common;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
@@ -55,8 +56,9 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        attachTime = System.currentTimeMillis();
         Log.d(TAG, "attachBaseContext() called " + System.currentTimeMillis());
+        MultiDex.install(mApplication);
+        attachTime = System.currentTimeMillis();
     }
 
 
@@ -66,7 +68,6 @@ public class App extends Application {
         mApplication = this;
         Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
                 AppHelper.getInstance(this)
-                        .initMultiDex()
                         .initFragmentation()
                         .initSpeech()
                         .initDoraemonKit()

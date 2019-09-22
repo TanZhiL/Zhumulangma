@@ -21,11 +21,11 @@ public interface API {
     /**
      * 测试环境
      */
-   String OFFLINE_HOST1 = "http://192.168.1.41:8082/demo-hzzmap/";
+   String OFFLINE_HOST1 = "https://cn.bing.com/";
    String OFFLINE_HOST2 = "http://192.168.31.105:8767/";
     /**
      * 正式环境
      */
-    String ONLINE_HOST1 = "http://121.201.127.153:8082/demo-hzzmap/";
+    String ONLINE_HOST1 = "https://cn.bing.com/";
     String ONLINE_HOST2 = "http://192.168.31.105:8767/";
 }

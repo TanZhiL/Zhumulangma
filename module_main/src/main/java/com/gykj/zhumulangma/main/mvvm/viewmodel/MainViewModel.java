@@ -6,7 +6,10 @@ import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
+import com.blankj.utilcode.util.FileIOUtils;
+import com.blankj.utilcode.util.FileUtils;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.BingBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
@@ -15,7 +18,9 @@ import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.net.config.API;
 import com.gykj.zhumulangma.common.util.RadioUtil;
+import com.gykj.zhumulangma.main.mvvm.model.MainModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.live.program.Program;
@@ -25,6 +30,7 @@ import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 import com.ximalaya.ting.android.opensdk.util.ModelUtil;
+import com.ximalaya.ting.android.sdkdownloader.util.IOUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -40,7 +46,12 @@ import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import me.yokeyword.fragmentation.ISupportFragment;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Author: Thomas.
@@ -48,12 +59,12 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class MainViewModel extends BaseViewModel<ZhumulangmaModel> {
+public class MainViewModel extends BaseViewModel<MainModel> {
 
     private SingleLiveEvent<PlayHistoryBean> mHistorySingleLiveEvent;
     private SingleLiveEvent<String> mCoverSingleLiveEvent;
 
-    public MainViewModel(@NonNull Application application, ZhumulangmaModel model) {
+    public MainViewModel(@NonNull Application application, MainModel model) {
         super(application, model);
     }
 
@@ -223,7 +234,21 @@ public class MainViewModel extends BaseViewModel<ZhumulangmaModel> {
             }
         }
     }
-
+    public void _getBing(){
+        mModel.getBing("js","1")
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .subscribe(bingBean -> {
+                    OkHttpClient client = new OkHttpClient.Builder().build();
+                    Request request=new Request.Builder().url(API.OFFLINE_HOST1
+                            +bingBean.getImages().get(0).getUrl()).get().build();
+                    Response execute = client.newCall(request).execute();
+                    if(execute.isSuccessful()){
+                        FileIOUtils.writeFileFromIS(getApplication().getFilesDir().getAbsolutePath()
+                                +AppConstants.Defualt.AD_NAME,execute.body().byteStream());
+                    }
+                }, e->e.printStackTrace());
+    }
     public SingleLiveEvent<String> getCoverSingleLiveEvent() {
         return mCoverSingleLiveEvent=createLiveData(mCoverSingleLiveEvent);
     }

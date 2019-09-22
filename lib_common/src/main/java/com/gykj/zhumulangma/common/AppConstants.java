@@ -81,12 +81,14 @@ public interface  AppConstants {
          String PROVINCE_NAME="province_name";
          String PLAY_SCHEDULE_TYPE="play_schedule_type";
          String PLAY_SCHEDULE_TIME="play_schedule_time";
+         String AD_TIME="ad_time";
     }
     interface Defualt{
         String CITY_CODE="4301";
         String CITY_NAME="长沙";
         String PROVINCE_CODE="430000";
         String PROVINCE_NAME="湖南";
+        String AD_NAME="/ad.jpg";
     }
     interface Cache{
         String FACE="face";

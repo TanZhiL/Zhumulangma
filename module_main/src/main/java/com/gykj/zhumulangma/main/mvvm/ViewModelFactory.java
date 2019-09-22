@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
+import com.gykj.zhumulangma.main.mvvm.model.MainModel;
 import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
 
 /**
@@ -46,7 +47,7 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
        if (modelClass.isAssignableFrom(MainViewModel.class)) {
-          return (T) new MainViewModel(mApplication, new ZhumulangmaModel(mApplication));
+          return (T) new MainViewModel(mApplication, new MainModel(mApplication));
       }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }
