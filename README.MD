@@ -13,10 +13,10 @@
 * 第一次发布
 
 ### 功能演示
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/1.png)![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/2.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/3.png)![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/4.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/5.png)![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/6.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/7.png)![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/8.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/1.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/3.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/5.png)
+![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/7.png)
 
 ### 主要功能(包括不仅限于):
 * 专辑展示
@@ -33,6 +33,12 @@
 * 修复bug
 * 更多
 
+### 快速体验
+
+扫描二维码下载：
+![](screenshot/download.png)
+
+如果二维码图片不可见，[点我下载体验](https://www.pgyer.com/o9hT)
 ### 项目架构
 本项目采用retrofit+rxjava2+rxandroid+arouter+mvvm+fragmentation实现单activity多fragme组件化架构
 * lib_common：属于功能组件，支撑业务组件的基础，提供多数业务组件需要的功能;
