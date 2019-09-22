@@ -8,6 +8,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.BingBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -192,21 +193,6 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                                             (ISupportFragment) navigation)));
                         }
                     }
-                  /*  else {
-                        Schedule schedule = ModelUtil.radioToSchedule(radio);
-                        if (schedule == null) {
-                            return;
-                        }
-                        schedulesx.add(schedule);
-                        XmPlayerManager.getInstance(getApplication()).playSchedule(schedulesx, -1);
-                        Object navigation = ARouter.getInstance()
-                                .build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
-                        if (null != navigation) {
-                            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
-                                    new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO,
-                                            (ISupportFragment) navigation)));
-                        }
-                    }*/
                 }, e -> e.printStackTrace());
     }
 
@@ -239,6 +225,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe(bingBean -> {
+                    SPUtils.getInstance().put(AppConstants.SP.AD_LABEL,bingBean.getImages().get(0).getCopyright());
                     OkHttpClient client = new OkHttpClient.Builder().build();
                     Request request=new Request.Builder().url(API.OFFLINE_HOST1
                             +bingBean.getImages().get(0).getUrl()).get().build();

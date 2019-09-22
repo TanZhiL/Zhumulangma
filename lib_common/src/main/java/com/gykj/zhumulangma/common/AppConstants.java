@@ -82,6 +82,7 @@ public interface  AppConstants {
          String PLAY_SCHEDULE_TYPE="play_schedule_type";
          String PLAY_SCHEDULE_TIME="play_schedule_time";
          String AD_TIME="ad_time";
+         String AD_LABEL="ad_label";
     }
     interface Defualt{
         String CITY_CODE="4301";

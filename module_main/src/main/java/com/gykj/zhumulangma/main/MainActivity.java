@@ -94,9 +94,10 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         super.onCreate(savedInstanceState);
         long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(AppConstants.SP.AD_TIME, 0);
         //显示广告
+        TLog.d(adOffset);
         if(adOffset>5*60*1000&&new File(getFilesDir().getAbsolutePath()+AppConstants.Defualt.AD_NAME)
                 .exists()){
-            BasePopupView show = new XPopup.Builder(this).popupAnimation(PopupAnimation.NoAnimation)
+            new XPopup.Builder(this).customAnimator(new SplashAdPopup.AlphaAnimator())
                     .setPopupCallback(new SimpleCallback() {
                         @Override
                         public void onDismiss() {
@@ -116,7 +117,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                         }
                     })
                     .asCustom(new SplashAdPopup(this)).show();
-            show.isShow();
         }else {
             mViewModel._getBing();
         }
