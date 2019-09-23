@@ -9,14 +9,11 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -26,16 +23,12 @@ import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.util.ToastUtil;
-import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.dialog.SplashAdPopup;
 import com.gykj.zhumulangma.main.fragment.MainFragment;
 import com.gykj.zhumulangma.main.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.animator.PopupAnimator;
-import com.lxj.xpopup.core.BasePopupView;
-import com.lxj.xpopup.enums.PopupAnimation;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.ximalaya.ting.android.opensdk.auth.call.IXmlyAuthListener;
 import com.ximalaya.ting.android.opensdk.auth.exception.XmlyException;
@@ -94,7 +87,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         super.onCreate(savedInstanceState);
         long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(AppConstants.SP.AD_TIME, 0);
         //显示广告
-        TLog.d(adOffset);
         if(adOffset>5*60*1000&&new File(getFilesDir().getAbsolutePath()+AppConstants.Defualt.AD_NAME)
                 .exists()){
             new XPopup.Builder(this).customAnimator(new SplashAdPopup.AlphaAnimator())
@@ -117,7 +109,8 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                         }
                     })
                     .asCustom(new SplashAdPopup(this)).show();
-        }else {
+        }else if(!new File(getFilesDir().getAbsolutePath()+AppConstants.Defualt.AD_NAME)
+                .exists()){
             mViewModel._getBing();
         }
         Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
@@ -140,8 +133,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         if(!hasFocus){
             return;
         }
-        Log.d(TAG, "onWindowFocusChanged() called "+System.currentTimeMillis());
-        TLog.d(System.currentTimeMillis()- App.attachTime);
     }
     @Override
     public void initListener() {
@@ -153,7 +144,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     @Override
     public void initData() {
         new Handler().postDelayed(() -> {
-            TLog.d(XmPlayerManager.getInstance(MainActivity.this).isPlaying());
             if (XmPlayerManager.getInstance(MainActivity.this).isPlaying()) {
                 Track currSoundIgnoreKind = XmPlayerManager.getInstance(MainActivity.this).getCurrSoundIgnoreKind(true);
                 if (null == currSoundIgnoreKind) {

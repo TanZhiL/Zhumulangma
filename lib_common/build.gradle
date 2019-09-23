@@ -115,7 +115,9 @@ dependencies {
     api files('libs/XmDownload_1.7.jar')
     api files('libs/XmlyOAuth2SDK_V1.11.jar')
     api 'com.amap.api:location:latest.integration'
-    implementation files('libs/Msc.jar')
+    api files('libs/Msc.jar')
+    api 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    api 'com.tencent.tinker:tinker-android-lib:1.9.9'
 }
 greendao {
     //数据库的schema版本，也可以理解为数据库版本号

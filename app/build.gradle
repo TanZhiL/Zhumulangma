@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
-
+apply from: 'tinker-support.gradle'
 android {
+    signingConfigs {
+        release {
+            storeFile file('E:\\Project\\Android\\thomas.jks')
+            storePassword '123698745'
+            keyAlias = 'thomas'
+            keyPassword '123698745'
+        }
+    }
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
@@ -16,6 +24,7 @@ android {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
             abiFilters "armeabi","x86" //,"armeabi-v7a" //,"x86_64" , "arm64-v8a",
         }
+        signingConfig signingConfigs.release
     }
     buildTypes {
         release {

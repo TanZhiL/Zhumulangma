@@ -4,7 +4,6 @@ import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -19,6 +18,8 @@ import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
@@ -145,6 +146,14 @@ public class AppHelper {
 
     public AppHelper initLog(){
         TLog.init(AppConfig.LOGER);
+        return this;
+    }
+
+    public AppHelper initBugly(){
+        Beta.largeIconId = R.drawable.ic_launcher_ting;
+        Beta.smallIconId = R.drawable.ic_launcher_ting;
+        Beta.upgradeDialogLayoutId = R.layout.common_dialog_update;
+        Bugly.init(mApplication,AppConstants.Bugly.ID, false);
         return this;
     }
 

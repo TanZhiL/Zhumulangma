@@ -62,6 +62,9 @@ public interface  AppConstants {
     interface Speech{
         String ID="5d1ec054";
     }
+    interface Bugly{
+        String ID="849542e8da";
+    }
     interface Ximalaya{
         String SECRET="6a43f2188877ee43a950e8e07b6dcb6e";
         /**

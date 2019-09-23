@@ -117,7 +117,6 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
         valueList.add("我喜欢的");
         valueList.add("更多");
         valueList.add("关于");
-        valueList.add("设置");
 
         List<Integer> resIdList = new ArrayList<>();
 
@@ -132,7 +131,6 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
         resIdList.add(R.drawable.user_like);
         resIdList.add(R.drawable.user_more);
         resIdList.add(R.drawable.user_help);
-        resIdList.add(R.drawable.user_setting);
 
         ConfigAttrs attrs = new ConfigAttrs(); // 把全部参数的配置，委托给ConfigAttrs类处理。
 

@@ -10,6 +10,7 @@ import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.tencent.bugly.beta.Beta;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
@@ -17,9 +18,6 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
 
@@ -33,8 +31,6 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
 public class App extends Application {
     private static App mApplication;
     private static final String TAG = "App";
-    //记录启动时间
-    public static long attachTime;
 
     public static App getInstance() {
         return mApplication;
@@ -56,9 +52,8 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        Log.d(TAG, "attachBaseContext() called " + System.currentTimeMillis());
         MultiDex.install(mApplication);
-        attachTime = System.currentTimeMillis();
+        Beta.installTinker();
     }
 
 
@@ -78,6 +73,7 @@ public class App extends Application {
                         .initRouter()
                         .initXmlyPlayer()
                         .initUtils()
+                        .initBugly()
                         .initXmlyDownloader();
         XmPlayerManager.getInstance(this).addPlayerStatusListener(mPlayerStatusListener);
         Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
