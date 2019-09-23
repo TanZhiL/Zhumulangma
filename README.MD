@@ -9,14 +9,13 @@
 * 声音喜欢
 * 优化启动速度
 * 加入模拟广告页
+* 集成Bugly异常上报,全量更新,热更新
 ###### 珠穆朗玛FM 1.0 2019-09.13
 * 第一次发布
 
 ### 功能演示
 ![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/1.png)
 ![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/3.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/5.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/7.png)
 
 ### 主要功能(包括不仅限于):
 * 专辑展示

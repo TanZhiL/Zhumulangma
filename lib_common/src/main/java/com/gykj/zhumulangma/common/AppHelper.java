@@ -115,7 +115,7 @@ public class AppHelper {
         return this;
     }
     public AppHelper initXmlyDownloader(){
-        if (!BaseUtil.isPlayerProcess(mApplication)) {
+        if (BaseUtil.isMainProcess(mApplication)) {
             XmDownloadManager.Builder(mApplication)
                     .maxDownloadThread(1)            // 最大的下载个数 默认为1 最大为3
                     //   .maxSpaceSize(Long.MAX_VALUE)	// 设置下载文件占用磁盘空间最大值，单位字节。不设置没有限制
@@ -150,10 +150,12 @@ public class AppHelper {
     }
 
     public AppHelper initBugly(){
-        Beta.largeIconId = R.drawable.ic_launcher_ting;
-        Beta.smallIconId = R.drawable.ic_launcher_ting;
-        Beta.upgradeDialogLayoutId = R.layout.common_dialog_update;
-        Bugly.init(mApplication,AppConstants.Bugly.ID, false);
+        if (BaseUtil.isMainProcess(mApplication)) {
+            Beta.largeIconId = R.drawable.ic_launcher_ting;
+            Beta.smallIconId = R.drawable.ic_launcher_ting;
+            Beta.upgradeDialogLayoutId = R.layout.common_dialog_update;
+            Bugly.init(mApplication, AppConstants.Bugly.ID, false);
+        }
         return this;
     }
 
