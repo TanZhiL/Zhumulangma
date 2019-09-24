@@ -63,6 +63,8 @@ public class App extends Application {
         mApplication = this;
         Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
                 AppHelper.getInstance(this)
+                        .initLeakCanary()
+                        .initCrashHandler()
                         .initFragmentation()
                         .initSpeech()
                         .initDoraemonKit()

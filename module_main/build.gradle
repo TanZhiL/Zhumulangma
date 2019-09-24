@@ -3,7 +3,7 @@ android {
     defaultConfig {
         //如果是独立模块，则使用当前组件的包名
         if (isModule.toBoolean()) {
-            applicationId "com.gykj.zhumulangma.main"
+            applicationId rootProject.ext.android.applicationId
         }
     }
 }

@@ -14,13 +14,11 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.BarUtils;
-import com.blankj.utilcode.util.SizeUtils;
 import com.gykj.zhumulangma.common.App;
+import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -190,6 +188,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         clearDisposable();
+        AppHelper.refWatcher.watch(this);
     }
 
     protected void initParam() {

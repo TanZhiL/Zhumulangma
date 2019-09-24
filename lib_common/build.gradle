@@ -99,6 +99,8 @@ dependencies {
     api rootProject.ext.dependencies["rxbinding"]
     debugApi rootProject.ext.dependencies["doraemonkit"]
     releaseApi rootProject.ext.dependencies["doraemonkit-no-op"]
+    debugApi rootProject.ext.dependencies["leakcanary"]
+    releaseApi rootProject.ext.dependencies["leakcanary-no-op"]
     api rootProject.ext.dependencies["AVLoading"]
     api rootProject.ext.dependencies["EasyNavigation"]
     api rootProject.ext.dependencies["MagicIndicator"]

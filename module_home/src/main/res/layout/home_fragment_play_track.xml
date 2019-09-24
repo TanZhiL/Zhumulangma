@@ -743,8 +743,8 @@
             app:layout_constraintEnd_toEndOf="@+id/tv_comment_count"
             app:layout_constraintStart_toStartOf="@+id/tv_comment_count" />
 
-        <EditText
-            android:id="@+id/editText"
+        <TextView
+            android:id="@+id/tv_comment"
             android:layout_width="0dp"
             android:layout_height="34dp"
             android:layout_marginStart="16dp"
@@ -753,12 +753,11 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/shap_common_input"
             android:ems="10"
-            android:enabled="false"
-            android:hint="期待你的神评论"
-            android:inputType="textPersonName"
+            android:gravity="center_vertical"
+            android:text="期待你的神评论..."
             android:paddingStart="12dp"
             android:paddingEnd="8dp"
-            android:textColor="@color/textColorPrimary"
+            android:textColor="@color/colorHint"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_comment_count"

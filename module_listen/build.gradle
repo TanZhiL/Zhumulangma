@@ -2,7 +2,7 @@ apply from: "../module.build.gradle"
 android {
     defaultConfig {
         if (isModule.toBoolean()) {
-            applicationId "com.gykj.zhumulangma.listen"
+            applicationId rootProject.ext.android.applicationId
         }
     }
 }

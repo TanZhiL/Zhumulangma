@@ -4,10 +4,12 @@ import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Looper;
 import android.text.TextUtils;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.Utils;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
@@ -15,9 +17,13 @@ import com.gykj.zhumulangma.common.dao.DaoSession;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
+import com.gykj.zhumulangma.common.util.SystemUtil;
+import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants;
@@ -65,20 +71,33 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REFRESH_TOKEN_UR
 public class AppHelper {
     private static Application mApplication;
     private static volatile AppHelper instance;
-    private AppHelper(){}
+    public static RefWatcher refWatcher;
 
-    public static AppHelper getInstance(Application application){
-        if(instance==null){
-            synchronized (AppHelper.class){
-                if(instance==null){
-                    mApplication=application;
-                    instance=new AppHelper();
+
+    private AppHelper() {
+    }
+
+    public static AppHelper getInstance(Application application) {
+        if (instance == null) {
+            synchronized (AppHelper.class) {
+                if (instance == null) {
+                    mApplication = application;
+                    instance = new AppHelper();
                 }
             }
         }
         return instance;
     }
-    public AppHelper initXmly(){
+
+    public AppHelper initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(mApplication)) {
+            return this;
+        }
+        refWatcher = LeakCanary.install(mApplication);
+        return this;
+    }
+
+    public AppHelper initXmly() {
         ConstantsOpenSdk.isDebug = true;
         CommonRequest.getInstanse().init(mApplication, AppConstants.Ximalaya.SECRET);
         CommonRequest.getInstanse().setDefaultPagesize(20);
@@ -92,7 +111,7 @@ public class AppHelper {
         return this;
     }
 
-    public AppHelper initXmlyPlayer(){
+    public AppHelper initXmlyPlayer() {
         try {
             Method method = XmPlayerConfig.getInstance(mApplication).getClass().getDeclaredMethod("setUseSystemPlayer", Boolean.class);
             method.setAccessible(true);
@@ -114,7 +133,8 @@ public class AppHelper {
         }
         return this;
     }
-    public AppHelper initXmlyDownloader(){
+
+    public AppHelper initXmlyDownloader() {
         if (BaseUtil.isMainProcess(mApplication)) {
             XmDownloadManager.Builder(mApplication)
                     .maxDownloadThread(1)            // 最大的下载个数 默认为1 最大为3
@@ -130,11 +150,14 @@ public class AppHelper {
         }
         return this;
     }
+
     private static DaoSession daoSession;
+
     public static DaoSession getDaoSession() {
         return daoSession;
     }
-    public AppHelper initGreenDao(){
+
+    public AppHelper initGreenDao() {
         QueryBuilder.LOG_SQL = false;
         QueryBuilder.LOG_VALUES = false;
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mApplication, "zhumulangma.db");
@@ -144,24 +167,30 @@ public class AppHelper {
         return this;
     }
 
-    public AppHelper initLog(){
+    public AppHelper initLog() {
         TLog.init(AppConfig.LOGER);
         return this;
     }
 
-    public AppHelper initBugly(){
+    public AppHelper initBugly() {
         if (BaseUtil.isMainProcess(mApplication)) {
             Beta.largeIconId = R.drawable.ic_launcher_ting;
             Beta.smallIconId = R.drawable.ic_launcher_ting;
             Beta.upgradeDialogLayoutId = R.layout.common_dialog_update;
-            Bugly.init(mApplication, AppConstants.Bugly.ID, false);
+
+            Beta.canNotifyUserRestart = true;
+            //生产环境
+//            Bugly.init(mApplication, AppConstants.Bugly.ID, false);
+            //开发设备
+            Bugly.setIsDevelopmentDevice(mApplication, true);
+            Bugly.init(mApplication, AppConstants.Bugly.ID, true);
         }
         return this;
     }
 
-    public AppHelper initRouter(){
+    public AppHelper initRouter() {
 
-        if (AppConfig.ISDEBUGAROUTER) {
+        if (BuildConfig.IS_DEBUG) {
             // 这两行必须写在init之前，否则这些配置在init过程中将无效
             ARouter.openLog();     // 打印日志
             ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
@@ -171,17 +200,38 @@ public class AppHelper {
         return this;
     }
 
-    public AppHelper initNet(){
+    public AppHelper initNet() {
         RetrofitManager.init(mApplication);
         return this;
     }
 
-    public AppHelper initUtils(){
+    public AppHelper initUtils() {
         Utils.init(mApplication);
         return this;
     }
 
-    public AppHelper initFragmentation(){
+    public AppHelper initCrashHandler() {
+        CrashUtils.init((crashInfo, e) -> {
+            //使用Toast来显示异常信息
+            new Thread() {
+                @Override
+                public void run() {
+                    Looper.prepare();
+                    ToastUtil.showToast("程序发生未知异常,正在重启");
+                    Looper.loop();
+                }
+            }.start();
+            try {
+                Thread.sleep(1000);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            SystemUtil.restartApp(mApplication);
+        });
+        return this;
+    }
+
+    public AppHelper initFragmentation() {
 
         // 建议在Application里初始化
         Fragmentation.builder()
@@ -191,7 +241,13 @@ public class AppHelper {
                 .install();
         return this;
     }
-    public AppHelper initDoraemonKit(){
+
+    public AppHelper initSpeech() {
+        SpeechUtility.createUtility(mApplication, SpeechConstant.APPID + "=" + AppConstants.Speech.ID);
+        return this;
+    }
+
+    public AppHelper initDoraemonKit() {
         if (AppConfig.ISDORAEMONKIT) {
             //调试助手
             DoraemonKit.install(mApplication);
@@ -328,6 +384,7 @@ public class AppHelper {
         }
         return false;
     }
+
     private RequestTracker requestTracker = new RequestTracker() {
         @Override
         public void onWaiting(RequestParams params) {
@@ -369,9 +426,4 @@ public class AppHelper {
             Logger.log("TingApplication : onFinished " + request);
         }
     };
-
-    public AppHelper initSpeech() {
-        SpeechUtility.createUtility(mApplication, SpeechConstant.APPID +"="+AppConstants.Speech.ID);
-        return this;
-    }
 }

@@ -2,7 +2,7 @@ apply from: "../module.build.gradle"
 android {
     defaultConfig {
         if (isModule.toBoolean()) {
-            applicationId "com.gykj.zhumulangma.user"
+            applicationId rootProject.ext.android.applicationId
         }
     }
 }

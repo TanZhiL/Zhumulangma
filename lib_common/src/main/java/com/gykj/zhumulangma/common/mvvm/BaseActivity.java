@@ -11,14 +11,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.App;
+import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -28,6 +27,7 @@ import com.gykj.zhumulangma.common.status.EmptyCallback;
 import com.gykj.zhumulangma.common.status.ErrorCallback;
 import com.gykj.zhumulangma.common.status.InitLoadingCallback;
 import com.gykj.zhumulangma.common.status.LoadingCallback;
+import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -356,6 +356,8 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         super.onDestroy();
         EventBus.getDefault().unregister(this);
         clearDisposable();
+        SystemUtil.fixInputMethodManagerLeak(this);
+        AppHelper.refWatcher.watch(this);
     }
 
 

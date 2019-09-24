@@ -3,7 +3,7 @@ ext {
     android = [
             compileSdkVersion: 28,
             buildToolsVersion: "28.0.3",
-            applicationId    : "com.gykj.thomas",
+            applicationId    : "com.gykj.zhumulangma",
             minSdkVersion    : 21,
             targetSdkVersion : 28,
             versionCode      : 1,
@@ -67,7 +67,8 @@ ext {
             "greendao":"3.2.2",
             "BasePopup":"2.2.1",
             "MarqueeView":"1.4.1",
-            "xpopup":"1.8.9"
+            "xpopup":"1.8.9",
+            "leakcanary":"1.5",
     ]
     //support配置
     support = [
@@ -123,6 +124,8 @@ ext {
             "doraemonkit"                          : "com.didichuxing.doraemonkit:doraemonkit:${versions["doraemonkit"]}",
             "doraemonkit-no-op"                    : "com.didichuxing.doraemonkit:doraemonkit-no-op:${versions["doraemonkit"]}",
             "rxbinding"                            :"com.jakewharton.rxbinding3:rxbinding:${versions["rxbinding"]}",
+            "leakcanary"                           :"com.squareup.leakcanary:leakcanary-android:${versions["leakcanary"]}",
+            "leakcanary-no-op"                     :"com.squareup.leakcanary:leakcanary-android-no-op:${versions["leakcanary"]}",
 
             //***************************************界面类*************************************************
             "MultiImageSelector"                   :"com.github.lovetuzitong:MultiImageSelector:${versions["MultiImageSelector"]}",

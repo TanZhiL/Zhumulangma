@@ -1,15 +1,17 @@
 package com.gykj.zhumulangma.common.util;
 
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
-import android.media.AudioManager;
+import android.content.Intent;
 import android.os.Environment;
 import android.os.StatFs;
 import android.text.TextUtils;
 import android.text.format.Formatter;
-import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
+import com.blankj.utilcode.util.ActivityUtils;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -315,6 +317,23 @@ e.printStackTrace();
         }
         return false;
     }
+    /**
+     * 清除缓存，重启app
+     *
+     * @param context
+     */
+    public static void restartApp(Context context) {
 
+        Intent intent = new Intent(context, ActivityUtils.getLauncherActivity().getClass());
+        PendingIntent restartIntent = PendingIntent.getActivity(
+                context, 0, intent, 0);
+        AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (mgr != null) {
+            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 5* 1000,
+                    restartIntent);
+        }
+        //结束进程之前可以把你程序的注销或者退出代码放在这段代码之前
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
 }
 

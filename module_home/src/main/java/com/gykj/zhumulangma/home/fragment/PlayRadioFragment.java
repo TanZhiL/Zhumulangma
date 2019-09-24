@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +22,6 @@ import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
-import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.PlayRadioAdapter;
 import com.gykj.zhumulangma.home.dialog.PlayRadioPopup;
@@ -353,34 +351,26 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     public void onStartGetAdsInfo() {
-        Log.d(TAG, "onStartGetAdsInfo() called");
     }
 
     @Override
     public void onGetAdsInfo(AdvertisList advertisList) {
-        Log.d(TAG, "onGetAdsInfo() called with: advertisList = [" + advertisList + "]");
     }
 
 
     @Override
     public void onAdsStartBuffering() {
         bufferingAnim();
-        Log.e(TAG, "onAdsStartBuffering() bufferingAnim");
     }
 
     @Override
     public void onAdsStopBuffering() {
-     /*   if(mPlayerManager.isPlaying()){
-            playingAnim();
-        }*/
-        Log.d(TAG, "onAdsStopBuffering() called");
     }
 
 
     @Override
     public void onStartPlayAds(Advertis advertis, int i) {
         bufferingAnim();
-        Log.e(TAG, "onStartPlayAds() bufferingAnim with: advertis = [" + advertis + "], i = [" + i + "]");
     }
 
     @Override
@@ -391,17 +381,14 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     public void onError(int i, int i1) {
-        Log.d(TAG, "onError() called with: i = [" + i + "], i1 = [" + i1 + "]");
     }
 
     @Override
     public void onPlayStart() {
         updatePlayStatus();
-        TLog.d(mPlayerManager.isBuffering());
         if (!mPlayerManager.isBuffering()) {
 
             playAnim();
-            Log.e(TAG, "onPlayStart() playAnim");
         }
 
     }
@@ -410,14 +397,12 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     public void onPlayPause() {
         updatePlayStatus();
         pauseAnim();
-        Log.e(TAG, "onPlayPause() pauseAnim");
     }
 
     @Override
     public void onPlayStop() {
         updatePlayStatus();
         pauseAnim();
-        Log.e(TAG, "onPlayStop() pauseAnim");
     }
 
     @Override
@@ -430,47 +415,37 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         } else if (!mPlayerManager.hasNextSound()) {
             pauseAnim();
         }
-        Log.d(TAG, "onSoundPlayComplete() hasNextSound:" + mPlayerManager.hasNextSound());
     }
 
     @Override
     public void onSoundPrepared() {
         updatePlayStatus();
-        Log.d(TAG, "onSoundPrepared() called");
     }
 
     @Override
     public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
         updatePlayStatus();
-        Log.d(TAG, "onSoundSwitch() called with: playableModel = [" + playableModel + "], playableModel1 = [" + playableModel1 + "]");
         initData();
     }
 
     @Override
     public void onBufferingStart() {
-        TLog.d(mPlayerManager.isPlaying());
         if (mPlayerManager.isPlaying()) {
             bufferingAnim();
         }
-        Log.e(TAG, "onBufferingStart() bufferingAnim");
     }
 
     @Override
     public void onBufferingStop() {
-        TLog.d(mPlayerManager.isPlaying());
         if (mPlayerManager.isPlaying()) {
             playAnim();
-            Log.e(TAG, "onBufferingStop() playAnim");
         } else {
             pauseAnim();
-            Log.e(TAG, "onBufferingStop() pauseAnim");
         }
-        Log.d(TAG, "onBufferingStop() called");
     }
 
     @Override
     public void onBufferProgress(int i) {
-        Log.d(TAG, "onBufferProgress() called with: i = [" + i + "]");
     }
 
     @Override
@@ -557,7 +532,6 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
         mPlayerManager.seekTo(seekBar.getProgress() * 1000);
         mHandler.postDelayed(touchRunable,200);
-        Log.d(TAG, "onStopTrackingTouch() called with: seekBar = [" + seekBar + "]");
     }
 
     @Override
@@ -581,11 +555,9 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction()==MotionEvent.ACTION_DOWN){
-            Log.d(TAG, "onTouch() ACTION_DOWN");
             mHandler.removeCallbacks(touchRunable);
             isTouch=true;
         }else if(event.getAction()==MotionEvent.ACTION_UP){
-            Log.d(TAG, "onTouch() ACTION_UP");
         }
         return false;
     }
@@ -594,7 +566,6 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         @Override
         public void run() {
             isTouch=false;
-            Log.d(TAG, "run() called");
         }
     };
 }
