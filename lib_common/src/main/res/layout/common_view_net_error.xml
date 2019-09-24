@@ -14,17 +14,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/common_empty_pic_net"
-            android:layout_centerInParent="true"
             android:gravity="center_horizontal"
             />
-        <Button
+        <TextView
             android:id="@+id/btn_net_refresh"
             android:layout_width="122dp"
             android:layout_height="35dp"
             android:layout_marginTop="16dp"
-            android:textSize="16sp"
-            android:textColor="#FFFFFF"
-            android:text="刷新"
+            android:textSize="12sp"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:text="立即刷新"
             android:layout_gravity="center_horizontal"
             />
     </LinearLayout>

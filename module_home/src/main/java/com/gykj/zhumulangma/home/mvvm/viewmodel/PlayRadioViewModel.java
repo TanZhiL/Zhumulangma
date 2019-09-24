@@ -3,24 +3,17 @@ package com.gykj.zhumulangma.home.mvvm.viewmodel;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.util.RadioUtil;
-import com.gykj.zhumulangma.common.util.log.TLog;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
-import com.ximalaya.ting.android.opensdk.model.live.program.Program;
 import com.ximalaya.ting.android.opensdk.model.live.program.ProgramList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
-import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
-import com.ximalaya.ting.android.opensdk.util.BaseUtil;
-import com.ximalaya.ting.android.opensdk.util.ModelUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.ObservableSource;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 /**
@@ -105,8 +97,8 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
                     getTodaySingleLiveEvent().postValue(schedules);
                 }).flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                 RadioUtil.getSchedules(tomorrow))
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(schedules -> {
                     Iterator var7 = schedules.iterator();
                     while (var7.hasNext()) {

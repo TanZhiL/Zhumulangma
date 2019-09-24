@@ -7,17 +7,14 @@ import android.text.TextUtils;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileIOUtils;
-import com.blankj.utilcode.util.FileUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.bean.BingBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.net.config.API;
 import com.gykj.zhumulangma.common.util.RadioUtil;
@@ -30,8 +27,6 @@ import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
-import com.ximalaya.ting.android.opensdk.util.ModelUtil;
-import com.ximalaya.ting.android.sdkdownloader.util.IOUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -45,11 +40,9 @@ import java.util.Map;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import me.yokeyword.fragmentation.ISupportFragment;
-import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -100,8 +93,8 @@ public class MainViewModel extends BaseViewModel<MainModel> {
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {
@@ -170,8 +163,8 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                 })
                 .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                         RadioUtil.getSchedules(tomorrow))
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(schedules -> {
                     Iterator var7 = schedules.iterator();
                     while (var7.hasNext()) {

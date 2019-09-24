@@ -54,8 +54,8 @@ public class BatchDownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE, String.valueOf(curTrackPage));
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIEZ));
         mModel.getTracks(map)
-                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(disposable ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(trackList -> {
                     setOrder(trackList);
                     curTrackPage++;
@@ -74,9 +74,9 @@ public class BatchDownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIEZ));
         mModel.getTracks(map)
                 .observeOn(Schedulers.io())
-                .doOnSubscribe(d->postShowInitLoadViewEvent(true))
+                .doOnSubscribe(d->  postShowLoadingViewEvent(""))
                 .subscribe(trackList -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     upTrackPage = page;
                     curTrackPage=page;
                     setOrder(trackList);

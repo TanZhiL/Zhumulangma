@@ -12,17 +12,14 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
-import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
-import com.ximalaya.ting.android.opensdk.model.live.program.Program;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
+import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
-import com.ximalaya.ting.android.opensdk.util.BaseUtil;
-import com.ximalaya.ting.android.opensdk.util.ModelUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -34,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -43,45 +41,79 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
     private SingleLiveEvent<List<PlayHistoryBean>> mHistorySingleLiveEvent;
     private SingleLiveEvent<List<Radio>> mLocalSingleLiveEvent;
     private SingleLiveEvent<List<Radio>> mTopSingleLiveEvent;
+    private SingleLiveEvent<Void> mRefreshSingleLiveEvent;
 
-    private int totalLocalPage =1;
-    private int curLocalPage=1;
+    private int totalLocalPage = 1;
+    private int curLocalPage = 1;
+
+    private String mCityCode;
 
     public RadioViewModel(@NonNull Application application, RadioModel model) {
         super(application, model);
     }
+public void refresh(){
+    mModel.getHistory(1, 5)
+            .doOnNext(historyBeans -> getHistorySingleLiveEvent().postValue(historyBeans))
+            .flatMap(new Function<List<PlayHistoryBean>, ObservableSource<RadioList>>() {
+                @Override
+                public ObservableSource<RadioList> apply(List<PlayHistoryBean> historyBeans) throws Exception {
+                    return getLocalListObservable(mCityCode);
+                }
+            })
+            .flatMap(new Function<RadioList, ObservableSource<RadioList>>() {
+                @Override
+                public ObservableSource<RadioList> apply(RadioList radioList) throws Exception {
+                    return getTopListObservable();
+                }
+            })
+            .doFinally(()->getRefreshSingleLiveEvent().call())
+            .subscribe(r->{},e->e.printStackTrace());
+
+}
 
     public void _getHistory() {
-        mModel.getHistory(1,5)
-                .subscribe(historyBeans -> getHistorySingleLiveEvent().postValue(historyBeans), e->e.printStackTrace());
+        mModel.getHistory(1, 5)
+                .subscribe(historyBeans -> getHistorySingleLiveEvent().postValue(historyBeans), e -> e.printStackTrace());
     }
 
 
     public void getLocalList(String cityCode) {
+        mCityCode=cityCode;
+        getLocalListObservable(cityCode).subscribe(r -> {
+        }, e -> e.printStackTrace());
+    }
+
+    private Observable<RadioList> getLocalListObservable(String cityCode) {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CITY_CODE, cityCode);
         map.put(DTransferConstants.PAGE_SIZE, "5");
-        curLocalPage=curLocalPage>=totalLocalPage?1:curLocalPage;
-        map.put(DTransferConstants.PAGE,String.valueOf(curLocalPage++));
-        mModel.getRadiosByCity(map)
-                .subscribe(radioList -> {
-                    totalLocalPage=radioList.getTotalPage();
+        curLocalPage = curLocalPage >= totalLocalPage ? 1 : curLocalPage;
+        map.put(DTransferConstants.PAGE, String.valueOf(curLocalPage++));
+        return mModel.getRadiosByCity(map)
+                .doOnNext(radioList -> {
+                    totalLocalPage = radioList.getTotalPage();
                     getLocalSingleLiveEvent().postValue(radioList.getRadios());
-                }, e->e.printStackTrace());
+                });
     }
 
 
     public void getTopList() {
+        getTopListObservable().subscribe(r -> {
+        }, e -> e.printStackTrace());
+    }
+
+    private Observable<RadioList> getTopListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.RADIO_COUNT, "5");
 
-        mModel.getRankRadios(map)
-                .subscribe(radioList -> getTopSingleLiveEvent().postValue(radioList.getRadios())
-                        , e->e.printStackTrace());
+        return mModel.getRankRadios(map)
+                .doOnNext(radioList -> getTopSingleLiveEvent().postValue(radioList.getRadios()));
     }
+
     private Radio radio;
+
     public void play(String radioId) {
-        List<Schedule> schedulesx=new ArrayList<>();
+        List<Schedule> schedulesx = new ArrayList<>();
         Map<String, String> yestoday = new HashMap();
         yestoday.put("radio_id", radioId);
         Calendar calendar0 = Calendar.getInstance();
@@ -126,8 +158,8 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
                 })
                 .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                         RadioUtil.getSchedules(tomorrow))
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(schedules -> {
                     Iterator var7 = schedules.iterator();
                     while (var7.hasNext()) {
@@ -136,10 +168,10 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
                         schedulex.setEndTime(simpleDateFormat.format(calendar1.getTime()) + ":" + schedulex.getEndTime());
                     }
                     schedulesx.addAll(schedules);
-                    RadioUtil.fillData(schedulesx,radio);
+                    RadioUtil.fillData(schedulesx, radio);
 
-                    if(!CollectionUtils.isEmpty(schedulesx)){
-                        XmPlayerManager.getInstance(getApplication()).playSchedule(schedulesx,-1);
+                    if (!CollectionUtils.isEmpty(schedulesx)) {
+                        XmPlayerManager.getInstance(getApplication()).playSchedule(schedulesx, -1);
                         Object navigation = ARouter.getInstance()
                                 .build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
                         if (null != navigation) {
@@ -165,15 +197,19 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
                     }*/
                 }, e -> e.printStackTrace());
     }
+
     public SingleLiveEvent<List<PlayHistoryBean>> getHistorySingleLiveEvent() {
-        return mHistorySingleLiveEvent=createLiveData(mHistorySingleLiveEvent);
+        return mHistorySingleLiveEvent = createLiveData(mHistorySingleLiveEvent);
     }
 
     public SingleLiveEvent<List<Radio>> getLocalSingleLiveEvent() {
-        return mLocalSingleLiveEvent=createLiveData(mLocalSingleLiveEvent);
+        return mLocalSingleLiveEvent = createLiveData(mLocalSingleLiveEvent);
     }
 
     public SingleLiveEvent<List<Radio>> getTopSingleLiveEvent() {
-        return mTopSingleLiveEvent=createLiveData(mTopSingleLiveEvent);
+        return mTopSingleLiveEvent = createLiveData(mTopSingleLiveEvent);
+    }
+    public SingleLiveEvent<Void> getRefreshSingleLiveEvent() {
+        return mRefreshSingleLiveEvent = createLiveData(mRefreshSingleLiveEvent);
     }
 }

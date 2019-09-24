@@ -76,8 +76,8 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if(trackList.getTracks().get(i).getDataId()==trackId){
@@ -142,8 +142,8 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                 })
                 .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                 RadioUtil.getSchedules(tomorrow))
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(schedules -> {
                     Iterator var7 = schedules.iterator();
                     while (var7.hasNext()) {

@@ -9,11 +9,13 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
+import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
+import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
@@ -25,8 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.datatype.DatatypeConstants;
-
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
@@ -38,6 +39,7 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
     private SingleLiveEvent<List<Album>> mDailySingleLiveEvent;
     private SingleLiveEvent<List<Album>> mBookSingleLiveEvent;
     private SingleLiveEvent<List<Album>> mClassRoomSingleLiveEvent;
+    private SingleLiveEvent<Void> mRefreshSingleLiveEvent;
 
 
     private int totalDailyPage = 1;
@@ -52,67 +54,95 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
         super(application, model);
     }
 
+
+    public void init(){
+        getBannerListObservable()
+                .flatMap((Function<BannerV2List, ObservableSource<AlbumList>>) bannerV2List -> getDailyListObservable())
+                .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getBookListObservable())
+                .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getClassRoomListObservable())
+                .doFinally(()->getRefreshSingleLiveEvent().call())
+                .subscribe(r->{},e->e.printStackTrace());
+    }
+
     public void getBannerList() {
+        getBannerListObservable().subscribe(r -> {
+        }, e -> e.printStackTrace());
+    }
+
+    private Observable<BannerV2List> getBannerListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "4");
         map.put(DTransferConstants.IMAGE_SCALE, "2");
         //是否需要输出付费内容：true-是；false-否；（默认不输出付费内容）
 //        map.put(DTransferConstants.CONTAINS_PAID,"true");
-        mModel.getCategoryBannersV2(map)
-                .subscribe(bannerV2List ->
-                        {
-                            List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
-                            Iterator<BannerV2> iterator = bannerV2s.iterator();
-                            while (iterator.hasNext()) {
-                                BannerV2 next = iterator.next();
-                                if (next.getBannerContentType() == 5 || next.getBannerContentType() == 6) {
-                                    iterator.remove();
-                                }
-                            }
-                            getBannerV2SingleLiveEvent().postValue(bannerV2s);
+        return mModel.getCategoryBannersV2(map)
+                .doOnNext(bannerV2List ->
+                {
+                    List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
+                    Iterator<BannerV2> iterator = bannerV2s.iterator();
+                    while (iterator.hasNext()) {
+                        BannerV2 next = iterator.next();
+                        if (next.getBannerContentType() == 5 || next.getBannerContentType() == 6) {
+                            iterator.remove();
                         }
-                        , throwable -> throwable.printStackTrace());
+                    }
+                    getBannerV2SingleLiveEvent().postValue(bannerV2s);
+                });
     }
 
     public void getDailyList() {
+        getDailyListObservable().subscribe(r -> {
+        }, e -> e.printStackTrace());
+    }
+
+    private Observable<AlbumList> getDailyListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.PAGE_SIZE, "5");
         curDailyPage = curDailyPage >= totalDailyPage ? 1 : curDailyPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curDailyPage++));
-        mModel.getPaidAlbumByTag(map)
-                .subscribe(albumList -> {
+        return mModel.getPaidAlbumByTag(map)
+                .doOnNext(albumList -> {
                     totalDailyPage = albumList.getTotalPage();
                     getDailySingleLiveEvent().postValue(albumList.getAlbums());
-                }, e -> e.printStackTrace());
+                });
     }
 
-
     public void getBookList() {
+        getBookListObservable().subscribe(r -> {
+        }, e -> e.printStackTrace());
+    }
+
+    private Observable<AlbumList> getBookListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.TAG_NAME, "有声书");
         map.put(DTransferConstants.PAGE_SIZE, "5");
         curBookPage = curBookPage >= totalBookPage ? 1 : curBookPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curBookPage++));
-        mModel.getPaidAlbumByTag(map)
-                .subscribe(albumList -> {
+        return mModel.getPaidAlbumByTag(map)
+                .doOnNext(albumList -> {
                     totalBookPage = albumList.getTotalPage();
                     getBookSingleLiveEvent().postValue(albumList.getAlbums());
-                }, e -> e.printStackTrace());
+                });
     }
 
-
     public void getClassRoomList() {
+        getClassRoomListObservable().subscribe(r -> {
+        }, e -> e.printStackTrace());
+    }
+
+    private Observable<AlbumList> getClassRoomListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.TAG_NAME, "精品-小课");
         map.put(DTransferConstants.PAGE_SIZE, "5");
         curClassRoomPage = curClassRoomPage >= totalClassRoomPage ? 1 : curClassRoomPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curClassRoomPage++));
-        mModel.getPaidAlbumByTag(map)
-                .subscribe(albumList -> {
+        return mModel.getPaidAlbumByTag(map)
+                .doOnNext(albumList -> {
                     totalClassRoomPage = albumList.getTotalPage();
                     getClassRoomSingleLiveEvent().postValue(albumList.getAlbums());
-                }, e -> e.printStackTrace());
+                });
     }
+
     public void play(long trackId) {
 
         Map<String, String> map = new HashMap<>();
@@ -124,15 +154,15 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
                             map1.put(DTransferConstants.ALBUM_ID, String.valueOf(
                                     searchTrackListV2.getTracks().get(0).getAlbum().getAlbumId()));
                             map1.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
-                            return   mModel.getLastPlayTracks(map1);
+                            return mModel.getLastPlayTracks(map1);
                         })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
-                        if(trackList.getTracks().get(i).getDataId()==trackId){
-                            XmPlayerManager.getInstance(getApplication()).playList(trackList,i);
+                        if (trackList.getTracks().get(i).getDataId() == trackId) {
+                            XmPlayerManager.getInstance(getApplication()).playList(trackList, i);
                             break;
                         }
                     }
@@ -161,5 +191,7 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
     public SingleLiveEvent<List<Album>> getClassRoomSingleLiveEvent() {
         return mClassRoomSingleLiveEvent = createLiveData(mClassRoomSingleLiveEvent);
     }
-
+    public SingleLiveEvent<Void> getRefreshSingleLiveEvent() {
+        return mRefreshSingleLiveEvent = createLiveData(mRefreshSingleLiveEvent);
+    }
 }

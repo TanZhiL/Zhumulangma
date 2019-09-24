@@ -168,7 +168,7 @@ public class AppHelper {
     }
 
     public AppHelper initLog() {
-        TLog.init(AppConfig.LOGER);
+        TLog.init(true);
         return this;
     }
 
@@ -248,14 +248,12 @@ public class AppHelper {
     }
 
     public AppHelper initDoraemonKit() {
-        if (AppConfig.ISDORAEMONKIT) {
             //调试助手
             DoraemonKit.install(mApplication);
             // H5任意门功能需要，非必须
             DoraemonKit.setWebDoorCallback((context, s) -> {
                 // 使用自己的H5容器打开这个链接
             });
-        }
         return this;
     }
 

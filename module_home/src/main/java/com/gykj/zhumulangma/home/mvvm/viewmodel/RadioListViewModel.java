@@ -11,19 +11,14 @@ import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
-import com.ximalaya.ting.android.opensdk.model.album.Album;
-import com.ximalaya.ting.android.opensdk.model.live.program.Program;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
-import com.ximalaya.ting.android.opensdk.util.BaseUtil;
-import com.ximalaya.ting.android.opensdk.util.ModelUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,9 +61,9 @@ public class RadioListViewModel extends BaseViewModel<RadioModel> {
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         map.put(DTransferConstants.PAGE,String.valueOf(curPage));
         mModel.getRadiosByCity(map)
-                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(curPage == 1))
+                .doOnSubscribe(disposable -> postShowLoadingViewEvent(curPage == 1?"":null))
                 .subscribe(radioList -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     curPage++;
                     getRadioSingleLiveEvent().postValue(radioList.getRadios());
                 }, e->e.printStackTrace());
@@ -89,9 +84,9 @@ public class RadioListViewModel extends BaseViewModel<RadioModel> {
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         mModel.getRadios(map)
-                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(curPage == 1))
+                .doOnSubscribe(disposable -> postShowLoadingViewEvent(curPage == 1?"":null))
                 .subscribe(radioList -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     curPage++;
                     getRadioSingleLiveEvent().postValue(radioList.getRadios());
                 }, e->e.printStackTrace());
@@ -104,9 +99,9 @@ public class RadioListViewModel extends BaseViewModel<RadioModel> {
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getRadiosByCategory(map)
-                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(curPage == 1))
+                .doOnSubscribe(disposable -> postShowLoadingViewEvent(curPage == 1?"":null))
                 .subscribe(listByCategory -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     curPage++;
                     getRadioSingleLiveEvent().postValue(listByCategory.getRadios());
                 }, e -> e.printStackTrace());
@@ -117,9 +112,9 @@ public class RadioListViewModel extends BaseViewModel<RadioModel> {
         //获取前100名
         map.put(DTransferConstants.RADIO_COUNT, "100");
         mModel.getRankRadios(map)
-                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(curPage == 1))
+                .doOnSubscribe(disposable -> postShowLoadingViewEvent(curPage == 1?"":null))
                 .subscribe(radioList -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     curPage++;
                     getRadioSingleLiveEvent().postValue(radioList.getRadios());
                 }, e->e.printStackTrace());
@@ -180,8 +175,8 @@ public class RadioListViewModel extends BaseViewModel<RadioModel> {
                 })
                 .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                         RadioUtil.getSchedules(tomorrow))
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(schedules -> {
                     Iterator var7 = schedules.iterator();
                     while (var7.hasNext()) {

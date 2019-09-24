@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.mvvm.BaseFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.user.R;
 
 

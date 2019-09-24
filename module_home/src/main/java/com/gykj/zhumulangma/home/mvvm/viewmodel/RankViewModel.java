@@ -15,9 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.ObservableSource;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 /**
@@ -45,7 +42,7 @@ public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
         map1.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
 
         mModel.getPaidAlbumByTag(map1)
-                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
+                .doOnSubscribe(disposable ->  postShowLoadingViewEvent(""))
                 .doOnNext(albumList -> {
                     paidPage++;
                     getPaidSingleLiveEvent().postValue(albumList.getAlbums());
@@ -58,7 +55,7 @@ public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
                     map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
                     return mModel.getAlbumList(map);
                 })
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(albumList -> {
                             freePage++;
                             getFreeSingleLiveEvent().postValue(albumList.getAlbums());

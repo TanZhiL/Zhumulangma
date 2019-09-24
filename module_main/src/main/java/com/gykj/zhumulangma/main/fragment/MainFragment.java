@@ -4,13 +4,12 @@ package com.gykj.zhumulangma.main.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.mvvm.BaseFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.main.R;
 import com.next.easynavigation.view.EasyNavigationBar;
 

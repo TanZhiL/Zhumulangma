@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.mvvm;
+package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,7 +22,6 @@ import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.IBaseView;
 import com.gykj.zhumulangma.common.status.EmptyCallback;
 import com.gykj.zhumulangma.common.status.ErrorCallback;
 import com.gykj.zhumulangma.common.status.InitLoadingCallback;
@@ -380,7 +379,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     }
 
 
-    public void showInitLoadView(boolean show) {
+    public void showInitView(boolean show) {
         if (!show) {
             mLoadService.showSuccess();
         } else {
@@ -389,7 +388,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     }
 
 
-    public void showNetWorkErrView(boolean show) {
+    public void showNetErrView(boolean show) {
         if (!show) {
             mLoadService.showSuccess();
         } else {
@@ -406,21 +405,23 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         }
     }
 
-    public void showTransLoadingView(String tip) {
-        if (null==tip) {
+
+    public void showLoadingView(String tip) {
+        if (null == tip) {
             mLoadingHandler.removeCallbacksAndMessages(null);
             mLoadService.showSuccess();
         } else {
-            if(0==tip.length()){
-                tip="加载中...";
-            }
-            String finalTip = tip;
+
             mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
-                TextView tvTip= view1.findViewById(R.id.tv_tip);
-                tvTip.setText(finalTip);
+                TextView tvTip = view1.findViewById(R.id.tv_tip);
+                if(tip.length()==0){
+                    tvTip.setVisibility(View.GONE);
+                }else {
+                    tvTip.setText(tip);
+                }
             });
             //延时100毫秒显示,避免闪屏
-            mLoadingHandler.postDelayed(()-> mLoadService.showCallback(LoadingCallback.class),100);
+            mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 100);
         }
     }
 

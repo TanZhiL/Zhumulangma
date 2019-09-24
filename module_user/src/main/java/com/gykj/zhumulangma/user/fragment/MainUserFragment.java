@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.SizeUtils;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.mvvm.BaseFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
 import com.maiml.library.BaseItemLayout;
@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
+import com.tencent.bugly.beta.Beta;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import java.util.ArrayList;
@@ -115,7 +116,7 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
         valueList.add("分享赚钱");
         valueList.add("扫一扫");
         valueList.add("我喜欢的");
-        valueList.add("更多");
+        valueList.add("检查更新");
         valueList.add("关于");
 
         List<Integer> resIdList = new ArrayList<>();
@@ -143,7 +144,6 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
                 .setItemMarginTop(2, 8)
                 .setItemMarginTop(3, 8)
                 .setItemMarginTop(7, 8)
-                .setItemMarginTop(10, 8)
                 .setItemMode(Mode.ARROW)
                 .setArrowResId(R.drawable.common_arrow_enter); //设置箭头资源值;
         bilUser.setConfigAttrs(attrs)
@@ -156,10 +156,10 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
         super.initListener();
         mScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (nestedScrollView, i, scrollY, i2, i3) -> {
-            flParallax.setTranslationY(-scrollY);
-            ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
-            ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
-        });
+                    flParallax.setTranslationY(-scrollY);
+                    ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
+                    ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
+                });
         refreshLayout.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
@@ -170,8 +170,8 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
             public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
                 ctbTrans.setAlpha(1 - (float) offset / ctbTrans.getHeight());
 
-                parallax.setScaleX((float) (1+percent*0.2));
-                parallax.setScaleY((float) (1+percent*0.2));
+                parallax.setScaleX((float) (1 + percent * 0.2));
+                parallax.setScaleY((float) (1 + percent * 0.2));
 
                 flParallax.setTranslationY(offset);
             }
@@ -197,7 +197,9 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
 
     @Override
     public void onItemClick(int position) {
-
+        if (position == 9) {
+            Beta.checkUpgrade();
+        }
     }
 
     @Override
@@ -210,9 +212,9 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
         int id = v.getId();
         if (R.id.ll_download == id) {
             navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
-        }else if (R.id.ll_history == id) {
+        } else if (R.id.ll_history == id) {
             navigateTo(AppConstants.Router.Listen.F_HISTORY);
-        }else if (R.id.ll_favorit == id) {
+        } else if (R.id.ll_favorit == id) {
             navigateTo(AppConstants.Router.Listen.F_FAVORITE);
         } else if (v == whiteLeft || v == transLeft) {
             navigateTo(AppConstants.Router.User.F_MESSAGE);

@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.mvvm;
+package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
-import com.gykj.zhumulangma.common.mvvm.view.IBaseView;
 import com.gykj.zhumulangma.common.status.EmptyCallback;
 import com.gykj.zhumulangma.common.status.ErrorCallback;
 import com.gykj.zhumulangma.common.status.InitLoadingCallback;
@@ -160,6 +160,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
+
         mView.setBackgroundColor(getResources().getColor(R.color.colorLine));
 
         LoadSir loadSir = new LoadSir.Builder()
@@ -169,12 +170,8 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                 .addCallback(new LoadingCallback())
                 .setDefaultCallback(LoadingCallback.class)
                 .build();
-        mLoadService = loadSir.register(onBindLoadSirView() == null ? contentView : onBindLoadSirView(), new Callback.OnReloadListener() {
-            @Override
-            public void onReload(View v) {
-                BaseFragment.this.onReload(v);
-            }
-        });
+        mLoadService = loadSir.register(onBindLoadSirView() == null ? contentView : onBindLoadSirView(),
+                (Callback.OnReloadListener) v -> BaseFragment.this.onReload(v));
         mLoadService.showSuccess();
     }
 
@@ -464,20 +461,26 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
 
-    public void showInitLoadView(boolean show) {
-        if (!show) {
-            mLoadService.showSuccess();
-        } else {
-            mLoadService.showCallback(InitLoadingCallback.class);
-        }
+    public void showInitView(boolean show) {
+
+            if (!show) {
+                mLoadService.showSuccess();
+            } else {
+                mLoadService.showCallback(InitLoadingCallback.class);
+            }
     }
 
 
-    public void showNetWorkErrView(boolean show) {
-        if (!show) {
-            mLoadService.showSuccess();
+    public void showNetErrView(boolean show) {
+        Fragment parentFragment = getParentFragment();
+        if (parentFragment != null) {
+            ((BaseFragment) parentFragment).showNetErrView(show);
         } else {
-            mLoadService.showCallback(ErrorCallback.class);
+            if (!show) {
+                mLoadService.showSuccess();
+            } else {
+                mLoadService.showCallback(ErrorCallback.class);
+            }
         }
     }
 
@@ -490,21 +493,27 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
     }
 
-    public void showTransLoadingView(String tip) {
-        if (null == tip) {
-            mLoadingHandler.removeCallbacksAndMessages(null);
-            mLoadService.showSuccess();
+    public void showLoadingView(String tip) {
+        Fragment parentFragment = getParentFragment();
+        if (parentFragment != null&& ((BaseFragment) parentFragment).enableSimplebar()) {
+            ((BaseFragment) parentFragment).showLoadingView(tip);
         } else {
-            if (0 == tip.length()) {
-                tip = "加载中...";
+            if (null == tip) {
+                mLoadingHandler.removeCallbacksAndMessages(null);
+                mLoadService.showSuccess();
+            } else {
+
+                mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
+                    TextView tvTip = view1.findViewById(R.id.tv_tip);
+                    if (tip.length() == 0) {
+                        tvTip.setVisibility(View.GONE);
+                    } else {
+                        tvTip.setText(tip);
+                    }
+                });
+                //延时100毫秒显示,避免闪屏
+                mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 100);
             }
-            String finalTip = tip;
-            mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
-                TextView tvTip = view1.findViewById(R.id.tv_tip);
-                tvTip.setText(finalTip);
-            });
-            //延时100毫秒显示,避免闪屏
-            mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 100);
         }
     }
 

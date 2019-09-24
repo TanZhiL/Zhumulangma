@@ -67,7 +67,7 @@ public class App extends Application {
                         .initCrashHandler()
                         .initFragmentation()
                         .initSpeech()
-                        .initDoraemonKit()
+                   //     .initDoraemonKit()
                         .initLog()
                         .initXmly()
                         .initGreenDao()

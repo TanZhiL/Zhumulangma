@@ -14,8 +14,6 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
-import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList;
-import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
@@ -27,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -58,11 +55,11 @@ public class SearchResultViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getSearchedAlbums(map)
                 .doOnSubscribe(d->{
                     if(curAlbumPage==1){
-                        postShowInitLoadViewEvent(true);
+                         postShowLoadingViewEvent("");
                     }
                 })
                 .subscribe(albumList -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     curAlbumPage++;
                     getAlbumSingleLiveEvent().postValue(albumList.getAlbums());
                 }, e->e.printStackTrace());
@@ -75,11 +72,11 @@ public class SearchResultViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getSearchedTracks(map)
                 .doOnSubscribe(d->{
                     if(curTrackPage==1){
-                        postShowInitLoadViewEvent(true);
+                         postShowLoadingViewEvent("");
                     }
                 })
                 .subscribe(albumList -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     curTrackPage++;
                     getTrackSingleLiveEvent().postValue(albumList.getTracks());
                 }, e->e.printStackTrace());
@@ -92,11 +89,11 @@ public class SearchResultViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getSearchAnnouncers(map)
                 .doOnSubscribe(d->{
                     if(curAnnouncerPage==1){
-                        postShowInitLoadViewEvent(true);
+                         postShowLoadingViewEvent("");
                     }
                 })
                 .subscribe(announcerList -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     curAnnouncerPage++;
                     getAnnouncerSingleLiveEvent().postValue(announcerList.getAnnouncerList());
                 }, e->e.printStackTrace());
@@ -108,11 +105,11 @@ public class SearchResultViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getSearchedRadios(map)
                 .doOnSubscribe(d->{
                     if(curRadioPage==1){
-                        postShowInitLoadViewEvent(true);
+                         postShowLoadingViewEvent("");
                     }
                 })
                 .subscribe(radioList -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     curRadioPage++;
                     getRadioSingleLiveEvent().postValue(radioList.getRadios());
                 }, e->e.printStackTrace());

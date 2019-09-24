@@ -1,7 +1,7 @@
 package com.gykj.zhumulangma;
 
 
-import com.gykj.zhumulangma.common.mvvm.BaseActivity;
+import com.gykj.zhumulangma.common.mvvm.view.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 

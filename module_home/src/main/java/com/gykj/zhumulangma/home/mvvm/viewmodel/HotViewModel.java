@@ -13,9 +13,14 @@ import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
+import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
+import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.column.Column;
+import com.ximalaya.ting.android.opensdk.model.column.ColumnList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
+import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
@@ -27,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
@@ -40,6 +46,7 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
     private SingleLiveEvent<List<Column>> mTopicSingleLiveEvent;
     private SingleLiveEvent<List<Album>> mMusicSingleLiveEvent;
     private SingleLiveEvent<List<Radio>> mRadioSingleLiveEvent;
+    private SingleLiveEvent<Void> mRefreshSingleLiveEvent;
 
     private int totalStoryPage = 1;
     private int totalBabyPage = 1;
@@ -58,84 +65,120 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
 
     public void getBannerList() {
+        getBannerListObervable().subscribe(r -> {}, e -> e.printStackTrace());
+    }
+
+    public void init() {
+        getBannerListObervable()
+                .flatMap((Function<BannerV2List, ObservableSource<GussLikeAlbumList>>) bannerV2List ->
+                        getGussLikeListObservable())
+                .flatMap((Function<GussLikeAlbumList, ObservableSource<AlbumList>>) gussLikeAlbumList ->
+                        getHotStoryListObservable())
+                .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getHotBabyListObservable())
+                .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getHotMusicListObservable())
+                .flatMap((Function<AlbumList, ObservableSource<RadioList>>) albumList -> getRadioListObservable())
+                .flatMap((Function<RadioList, ObservableSource<ColumnList>>) radioList -> getTopicListObservable())
+                .doFinally(() -> getRefreshSingleLiveEvent().call())
+                .subscribe(columnList -> {}, e -> e.printStackTrace());
+    }
+
+    private Observable<BannerV2List> getBannerListObervable() {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.CATEGORY_ID, "1");
         map.put(DTransferConstants.IMAGE_SCALE, "2");
-        mModel.getCategoryBannersV2(map)
-                .subscribe(bannerV2List -> {
+        return mModel.getCategoryBannersV2(map)
+                .doOnNext(bannerV2List -> {
                     List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
                     Iterator<BannerV2> iterator = bannerV2s.iterator();
-                    while (iterator.hasNext()){
+                    while (iterator.hasNext()) {
                         BannerV2 next = iterator.next();
                         //阉割听单
-                        if(next.getBannerContentType()==5||next.getBannerContentType()==6){
+                        if (next.getBannerContentType() == 5 || next.getBannerContentType() == 6) {
                             iterator.remove();
                         }
                     }
                     HotViewModel.this.getBannerV2SingleLiveEvent().postValue(bannerV2s);
-                }
-                        , e -> e.printStackTrace());
+                });
     }
 
+
     public void getGussLikeList() {
+        getGussLikeListObservable().subscribe(r -> {}, e -> e.printStackTrace());
+    }
+
+    private Observable<GussLikeAlbumList> getGussLikeListObservable() {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.LIKE_COUNT, "6");
         map.put(DTransferConstants.PAGE, String.valueOf(2));
-        mModel.getGuessLikeAlbum(map)
-                .subscribe(gussLikeAlbumList ->
-                                getLikeSingleLiveEvent().postValue(gussLikeAlbumList.getAlbumList())
-                        , e -> e.printStackTrace());
+        return mModel.getGuessLikeAlbum(map)
+                .doOnNext(gussLikeAlbumList ->
+                        getLikeSingleLiveEvent().postValue(gussLikeAlbumList.getAlbumList()));
     }
 
 
     public void getHotStoryList() {
+        getHotStoryListObservable().subscribe(r -> {}, e -> e.printStackTrace());
+    }
+
+    private Observable<AlbumList> getHotStoryListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "3");
         map.put(DTransferConstants.CALC_DIMENSION, "3");
         map.put(DTransferConstants.PAGE_SIZE, "5");
         curStoryPage = curStoryPage >= totalStoryPage ? 1 : curStoryPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curStoryPage++));
-        mModel.getAlbumList(map)
-                .subscribe(albumList -> {
-                            totalStoryPage = albumList.getTotalPage();
-                            getStorySingleLiveEvent().postValue(albumList.getAlbums());
-                        }
-                        , e -> e.printStackTrace());
+        return mModel.getAlbumList(map)
+                .doOnNext(albumList -> {
+                    totalStoryPage = albumList.getTotalPage();
+                    getStorySingleLiveEvent().postValue(albumList.getAlbums());
+                });
     }
 
-
     public void getHotBabyList() {
+        getHotBabyListObservable().subscribe(r -> {}, e -> e.printStackTrace());
+
+    }
+
+    private Observable<AlbumList> getHotBabyListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "6");
         map.put(DTransferConstants.CALC_DIMENSION, "3");
         map.put(DTransferConstants.PAGE_SIZE, "5");
         curBabyPage = curBabyPage >= totalBabyPage ? 1 : curBabyPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curBabyPage++));
-        mModel.getAlbumList(map)
-                .subscribe(albumList -> {
-                            totalBabyPage = albumList.getTotalPage();
-                            getBadySingleLiveEvent().postValue(albumList.getAlbums());
-                        }
-                        , e -> e.printStackTrace());
+        return mModel.getAlbumList(map)
+                .doOnNext(albumList -> {
+                    totalBabyPage = albumList.getTotalPage();
+                    getBadySingleLiveEvent().postValue(albumList.getAlbums());
+                });
 
     }
 
     public void getHotMusicList() {
+        getHotMusicListObservable().subscribe(r -> {}, e -> e.printStackTrace());
+    }
+
+    private Observable<AlbumList> getHotMusicListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "2");
         map.put(DTransferConstants.CALC_DIMENSION, "3");
         map.put(DTransferConstants.PAGE_SIZE, "6");
         curMusicPage = curMusicPage >= totalMusicPage ? 1 : curMusicPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curMusicPage++));
-        mModel.getAlbumList(map)
-                .subscribe(albumList -> {
-                            totalMusicPage = albumList.getTotalPage();
-                            getMusicSingleLiveEvent().postValue(albumList.getAlbums());
-                        }
-                        , e -> e.printStackTrace());
+        return mModel.getAlbumList(map)
+                .doOnNext(albumList -> {
+                    totalMusicPage = albumList.getTotalPage();
+                    getMusicSingleLiveEvent().postValue(albumList.getAlbums());
+                });
     }
 
     public void getRadioList() {
+
+        getRadioListObservable().subscribe(r -> {}, e -> e.printStackTrace());
+
+    }
+
+    private Observable<RadioList> getRadioListObservable() {
 
         Map<String, String> map = new HashMap<String, String>();
         //电台类型：1-国家台，2-省市台，3-网络台
@@ -143,26 +186,29 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE_SIZE, "5");
         curRadioPage = curRadioPage >= totalRadioPage ? 1 : curRadioPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curRadioPage++));
-        mModel.getRadios(map)
-                .subscribe(radioList -> {
-                            totalRadioPage = radioList.getTotalPage();
-                            getRadioSingleLiveEvent().postValue(radioList.getRadios());
-                        }
-                        , e -> e.printStackTrace());
+        return mModel.getRadios(map)
+                .doOnNext(radioList -> {
+                    totalRadioPage = radioList.getTotalPage();
+                    getRadioSingleLiveEvent().postValue(radioList.getRadios());
+                });
 
     }
 
     public void getTopicList() {
+        getTopicListObservable().subscribe(r -> {}, e -> e.printStackTrace());
+    }
+
+    public Observable<ColumnList> getTopicListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         curTopicPage = curTopicPage >= totalTopicPage ? 1 : curTopicPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curTopicPage++));
-        mModel.getColumnList(map)
-                .subscribe(columnList -> {
-                            totalTopicPage = columnList.getTotalPage();
-                            getTopicSingleLiveEvent().postValue(columnList.getColumns());
-                        }
-                        , e -> e.printStackTrace());
+        return mModel.getColumnList(map)
+                .doOnNext(columnList -> {
+                    totalTopicPage = columnList.getTotalPage();
+                    getTopicSingleLiveEvent().postValue(columnList.getColumns());
+                });
     }
+
     public void play(long trackId) {
 
         Map<String, String> map = new HashMap<>();
@@ -170,19 +216,19 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.searchTrackV2(map)
                 .flatMap((Function<SearchTrackListV2, ObservableSource<LastPlayTrackList>>)
                         searchTrackListV2 -> {
-                    Map<String, String> map1 = new HashMap<>();
-                    map1.put(DTransferConstants.ALBUM_ID, String.valueOf(
-                            searchTrackListV2.getTracks().get(0).getAlbum().getAlbumId()));
-                    map1.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
-                    return   mModel.getLastPlayTracks(map1);
-                })
+                            Map<String, String> map1 = new HashMap<>();
+                            map1.put(DTransferConstants.ALBUM_ID, String.valueOf(
+                                    searchTrackListV2.getTracks().get(0).getAlbum().getAlbumId()));
+                            map1.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
+                            return mModel.getLastPlayTracks(map1);
+                        })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
-                        if(trackList.getTracks().get(i).getDataId()==trackId){
-                            XmPlayerManager.getInstance(getApplication()).playList(trackList,i);
+                        if (trackList.getTracks().get(i).getDataId() == trackId) {
+                            XmPlayerManager.getInstance(getApplication()).playList(trackList, i);
                             break;
                         }
                     }
@@ -195,6 +241,7 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
                     }
                 }, e -> e.printStackTrace());
     }
+
     public SingleLiveEvent<List<BannerV2>> getBannerV2SingleLiveEvent() {
         return mBannerV2SingleLiveEvent = createLiveData(mBannerV2SingleLiveEvent);
     }
@@ -221,5 +268,9 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public SingleLiveEvent<List<Radio>> getRadioSingleLiveEvent() {
         return mRadioSingleLiveEvent = createLiveData(mRadioSingleLiveEvent);
+    }
+
+    public SingleLiveEvent<Void> getRefreshSingleLiveEvent() {
+        return mRefreshSingleLiveEvent = createLiveData(mRefreshSingleLiveEvent);
     }
 }

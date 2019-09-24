@@ -77,8 +77,8 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                         batchAlbumList.getAlbums().get(0)))
                 .flatMap((Function<BatchAlbumList, ObservableSource<TrackList>>) batchAlbumList ->
                         getTrackInitObservable(albumId))
-                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(disposable ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(trackList -> {
                     setOrder(trackList);
                     curTrackPage++;
@@ -102,8 +102,8 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public void getTrackList(String albumId) {
         getTrackInitObservable(albumId)
-                .doOnSubscribe(disposable -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(disposable ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(trackList -> {
                     setOrder(trackList);
                     curTrackPage++;
@@ -161,10 +161,10 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.SORT, mSort);
         map.put(DTransferConstants.PAGE, String.valueOf(curTrackPage));
         mModel.getTracks(map)
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(curTrackPage == 1))
+                .doOnSubscribe(d -> postShowLoadingViewEvent(curTrackPage == 1?"":null))
                 .observeOn(Schedulers.io())
                 .subscribe(trackList -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     setOrder(trackList);
                     upTrackPage = 0;
                     curTrackPage++;
@@ -183,9 +183,9 @@ public class AlbumDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE, String.valueOf(page));
         mModel.getTracks(map)
                 .observeOn(Schedulers.io())
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
                 .subscribe(trackList -> {
-                    postShowInitLoadViewEvent(false);
+                    postShowLoadingViewEvent(null);
                     upTrackPage = page;
                     curTrackPage = page;
                     setOrder(trackList);

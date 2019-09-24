@@ -37,17 +37,17 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
 
     public final class UIChangeLiveData extends SingleLiveEvent {
         private SingleLiveEvent<Boolean> showInitLoadViewEvent;
-        private SingleLiveEvent<String> showTransLoadingViewEvent;
+        private SingleLiveEvent<String> showLoadingViewEvent;
         private SingleLiveEvent<Boolean> showNoDataViewEvent;
         private SingleLiveEvent<Boolean> showNetWorkErrViewEvent;
         private SingleLiveEvent<ISupportFragment> startFragmentEvent;
         private SingleLiveEvent<Void> finishSelfEvent;
-        public SingleLiveEvent<Boolean> getShowInitLoadViewEvent() {
+        public SingleLiveEvent<Boolean> getShowInitViewEvent() {
             return showInitLoadViewEvent = createLiveData(showInitLoadViewEvent);
         }
 
-        public SingleLiveEvent<String> getShowTransLoadingViewEvent() {
-            return showTransLoadingViewEvent = createLiveData(showTransLoadingViewEvent);
+        public SingleLiveEvent<String> getShowLoadingViewEvent() {
+            return showLoadingViewEvent = createLiveData(showLoadingViewEvent);
         }
 
         public SingleLiveEvent<Boolean> getShowNoDataViewEvent() {
@@ -79,9 +79,9 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
         public static String BUNDLE = "BUNDLE";
     }
 
-    public void postShowInitLoadViewEvent(boolean show) {
+    public void postShowLoadingViewEvent(String tip) {
         if (mUIChangeLiveData != null) {
-            mUIChangeLiveData.showInitLoadViewEvent.postValue(show);
+            mUIChangeLiveData.showLoadingViewEvent.postValue(tip);
         }
     }
 
@@ -91,9 +91,9 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
         }
     }
 
-    public void postShowTransLoadingViewEvent(String tip) {
+    public void postShowInitViewEvent(boolean show) {
         if (mUIChangeLiveData != null) {
-            mUIChangeLiveData.showTransLoadingViewEvent.postValue(tip);
+            mUIChangeLiveData.showInitLoadViewEvent.postValue(show);
         }
     }
 
@@ -102,10 +102,10 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
             mUIChangeLiveData.showNetWorkErrViewEvent.postValue(show);
         }
     }
-    public void postStartFragmentEvent(ISupportFragment fragment) {
+/*    public void postStartFragmentEvent(ISupportFragment fragment) {
 
         mUIChangeLiveData.startFragmentEvent.postValue(fragment);
-    }
+    }*/
 
 
 

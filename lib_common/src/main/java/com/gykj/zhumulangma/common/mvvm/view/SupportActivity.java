@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.mvvm;
+package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;

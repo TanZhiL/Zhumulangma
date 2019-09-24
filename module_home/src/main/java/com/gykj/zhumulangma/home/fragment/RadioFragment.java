@@ -2,67 +2,47 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.Manifest;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
-import android.media.Image;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.BaseFragment;
-import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
-import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.common.widget.ItemHeader;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.adapter.RadioHistoryAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
-import com.tbruyelle.rxpermissions2.Permission;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
-import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
-import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
-import com.ximalaya.ting.android.opensdk.model.live.radio.CityList;
-import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
-import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 
-public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements View.OnClickListener {
+public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements View.OnClickListener, OnRefreshLoadMoreListener {
 
     private RecyclerView rvHistory;
     private RadioHistoryAdapter mHistoryAdapter;
@@ -106,6 +86,7 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
         fd(R.id.ll_country).setOnClickListener(this);
         fd(R.id.ll_province).setOnClickListener(this);
         fd(R.id.ll_internet).setOnClickListener(this);
+        ((SmartRefreshLayout)fd(R.id.refreshLayout)).setOnRefreshLoadMoreListener(this);
         fd(R.id.ih_top).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.RANK)
@@ -168,7 +149,6 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
         option.setMockEnable(true);
         // 设置定位回调监听
         mLocationClient.setLocationListener(aMapLocation -> {
-            TLog.d(aMapLocation.toString());
             if(!TextUtils.isEmpty(aMapLocation.getAdCode())&&!cityCode.equals(aMapLocation.getAdCode().substring(0,4))){
                 String city = aMapLocation.getCity();
                 String province = aMapLocation.getProvince();
@@ -249,6 +229,7 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
                 fd(R.id.ih_history).setVisibility(View.VISIBLE);
             }
         });
+        mViewModel.getRefreshSingleLiveEvent().observe(this, aVoid -> ((SmartRefreshLayout)fd(R.id.refreshLayout)).finishRefresh());
     }
 
     @Override
@@ -296,5 +277,15 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         }
+    }
+
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        mViewModel.refresh();
     }
 }

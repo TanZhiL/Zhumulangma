@@ -1,22 +1,24 @@
-package com.gykj.zhumulangma.common.mvvm;
+package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProvider.Factory;
 import android.arch.lifecycle.ViewModelProviders;
 
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.util.log.TLog;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
- * Description: <BaseMvpFragment><br>
+ * Description: <BaseMvvmActivity><br>
  * Author:      mxdl<br>
  * Date:        2019/06/30<br>
  * Version:     V1.0.0<br>
  * Update:     <br>
  */
-public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFragment {
+public abstract class BaseMvvmActivity<VM extends BaseViewModel> extends BaseActivity {
     protected VM mViewModel;
+    @Override
     public void initParam() {
         initViewModel();
         initBaseViewObservable();
@@ -30,22 +32,25 @@ public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFra
         return ViewModelProviders.of(this,onBindViewModelFactory()).get(onBindViewModel());
     }
     public abstract Class<VM> onBindViewModel();
-    public abstract ViewModelProvider.Factory onBindViewModelFactory();
+    public abstract Factory onBindViewModelFactory();
     public abstract void initViewObservable();
 
     protected void initBaseViewObservable() {
-        mViewModel.getUC().getShowInitLoadViewEvent().observe(this, (Observer<Boolean>) show -> showInitLoadView(show));
-        mViewModel.getUC().getShowTransLoadingViewEvent().observe(this, (Observer<String>) tip -> showTransLoadingView(tip));
+        mViewModel.getUC().getShowInitViewEvent().observe(this, (Observer<Boolean>) show -> showInitView(show));
+        mViewModel.getUC().getShowLoadingViewEvent().observe(this, (Observer<String>) show -> {
+            TLog.v("MYTAG","view postShowTransLoadingViewEvent start...");
+            showLoadingView(show);
+        });
         mViewModel.getUC().getShowNoDataViewEvent().observe(this, (Observer<Boolean>) show -> showNoDataView(show));
-        mViewModel.getUC().getShowNetWorkErrViewEvent().observe(this, (Observer<Boolean>) show -> showNetWorkErrView(show));
+        mViewModel.getUC().getShowNetWorkErrViewEvent().observe(this, (Observer<Boolean>) show -> showNetErrView(show));
 
-        mViewModel.getUC().getFinishSelfEvent().observe(this, (Observer<Void>) v -> pop());
+        mViewModel.getUC().getFinishSelfEvent().observe(this, (Observer<Void>) v -> finish());
+
         mViewModel.getUC().getStartFragmentEvent().observe(this, (Observer<ISupportFragment>) fragment -> {
             if(null!=fragment){
                 start(fragment);
             }
         });
     }
-
 
 }

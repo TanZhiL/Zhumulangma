@@ -12,9 +12,7 @@ import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
-import com.ximalaya.ting.android.opensdk.model.track.AnnouncerTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
-import com.ximalaya.ting.android.opensdk.model.track.TrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -24,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -43,15 +40,12 @@ public class TrackListViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.AID, String.valueOf(announcerId));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
-        mModel.getTracksByAnnouncer(map).doOnSubscribe(d->postShowInitLoadViewEvent(curPage==1))
-                .subscribe(new Consumer<AnnouncerTrackList>() {
-                    @Override
-                    public void accept(AnnouncerTrackList trackList) throws Exception {
-                        curPage++;
-                        postShowInitLoadViewEvent(false);
-                        getTrackListSingleLiveEvent().postValue(trackList.getTracks());
-                    }
-                },e->e.printStackTrace());
+        mModel.getTracksByAnnouncer(map).doOnSubscribe(d-> postShowLoadingViewEvent(curPage==1?"":null))
+                .subscribe(trackList -> {
+                    curPage++;
+                    postShowLoadingViewEvent(null);
+                    getTrackListSingleLiveEvent().postValue(trackList.getTracks());
+                }, e->e.printStackTrace());
     }
     public void play(long albumId,long trackId) {
 
@@ -60,8 +54,8 @@ public class TrackListViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if(trackList.getTracks().get(i).getDataId()==trackId){

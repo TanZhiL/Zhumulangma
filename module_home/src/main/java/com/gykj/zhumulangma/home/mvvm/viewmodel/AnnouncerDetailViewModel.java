@@ -25,7 +25,6 @@ import java.util.Map;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -64,8 +63,8 @@ public class AnnouncerDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                     map12.put(DTransferConstants.PAGE_SIZE, String.valueOf(5));
                     return mModel.getTracksByAnnouncer(map12);
                 })
-                .doOnSubscribe(d->postShowInitLoadViewEvent(true))
-                .doFinally(()->postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d->  postShowLoadingViewEvent(""))
+                .doFinally(()-> postShowLoadingViewEvent(null))
                 .subscribe(trackList -> getTrackListSingleLiveEvent().postValue(trackList), e -> e.printStackTrace());
     }
     public void play(long albumId,long trackId) {
@@ -75,8 +74,8 @@ public class AnnouncerDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d -> postShowInitLoadViewEvent(true))
-                .doFinally(() -> postShowInitLoadViewEvent(false))
+                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
+                .doFinally(() -> postShowLoadingViewEvent(null))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if(trackList.getTracks().get(i).getDataId()==trackId){

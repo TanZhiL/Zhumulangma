@@ -16,7 +16,7 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
@@ -76,7 +76,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
     public void initListener() {
         super.initListener();
         banner.setOnBannerListener(this);
-        refreshLayout.setOnLoadMoreListener(this);
+        refreshLayout.setOnRefreshLoadMoreListener(this);
         mAnnouncerAdapter.setOnItemClickListener(this);
         ((NestedScrollView)fd(R.id.tsv_content)).setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (nestedScrollView, i, i1, i2, i3) -> {
@@ -87,8 +87,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
 
     @Override
     public void initData() {
-        mViewModel.getBannerList();
-        mViewModel.getAnnouncerList();
+     mViewModel.init();
     }
 
     private void initBanner() {
@@ -153,13 +152,11 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
                 refreshLayout.finishLoadMoreWithNoMoreData();
             }
         });
+
+        mViewModel.getRefreshSingleLiveEvent().observe(this, aVoid -> refreshLayout.finishRefresh());
     }
 
 
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getAnnouncerList();
-    }
 
     @Override
     public void OnBannerClick(int position) {
@@ -198,7 +195,11 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getAnnouncerList();
+        mViewModel.init();
     }
 
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        mViewModel.getAnnouncerList();
+    }
 }
