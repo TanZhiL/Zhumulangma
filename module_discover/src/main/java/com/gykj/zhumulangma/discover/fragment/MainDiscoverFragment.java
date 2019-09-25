@@ -140,7 +140,7 @@ public class MainDiscoverFragment extends BaseFragment implements BaseItemLayout
     @Override
     public void onItemClick(int position) {
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
-                .withString(KeyCode.Discover.PATH, "https://www.baidu.com/")
+                .withString(KeyCode.Discover.PATH, "https://h5.m.taobao.com/?sprefer=sypc00")
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));

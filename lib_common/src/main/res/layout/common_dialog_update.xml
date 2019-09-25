@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="@color/transparent"
         android:backgroundTint="@color/whitesmoke"
-        android:background="@drawable/ic_common_close" />
+        android:background="@drawable/ic_common_update_close" />
 
 
     <ImageView

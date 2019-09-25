@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -45,8 +44,6 @@ import com.just.agentweb.AgentWebUIControllerImplBase;
 import com.just.agentweb.DefaultDownloadImpl;
 import com.just.agentweb.DefaultWebClient;
 import com.just.agentweb.IAgentWebSettings;
-import com.just.agentweb.MiddlewareWebChromeBase;
-import com.just.agentweb.MiddlewareWebClientBase;
 import com.just.agentweb.PermissionInterceptor;
 import com.just.agentweb.WebChromeClient;
 import com.just.agentweb.WebListenerManager;
@@ -68,8 +65,6 @@ public class WebFragment extends BaseFragment {
     public String path;
     private ImageView ivClose;
     private AlertDialog mAlertDialog;
-    private MiddlewareChromeClient mMiddleWareWebChrome;
-    private MiddlewareWebViewClient mMiddleWareWebClient;
 
     @Override
     protected int onBindLayout() {
@@ -79,7 +74,7 @@ public class WebFragment extends BaseFragment {
     @Override
     protected void initView(View view) {
         ivClose = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);
-        ivClose.setImageResource(R.drawable.dk_close_icon);
+        ivClose.setImageResource(R.drawable.ic_common_web_close);
     }
 
     @Override
@@ -97,7 +92,6 @@ public class WebFragment extends BaseFragment {
     @Override
     public void initData() {
 
-        CoolIndicatorLayout mCoolIndicatorLayout = new CoolIndicatorLayout(this.getActivity());
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(fd(R.id.fl_container), new FrameLayout.LayoutParams(-1, -1))
 //                .setCustomIndicator(mCoolIndicatorLayout)
@@ -109,14 +103,11 @@ public class WebFragment extends BaseFragment {
                 .setSecurityType(AgentWeb.SecurityType.STRICT_CHECK) //严格模式 Android 4.2.2 以下会放弃注入对象 ，使用AgentWebView没影响。
                 .setAgentWebUIController(new UIController(getActivity())) //自定义UI  AgentWeb3.0.0 加入。
                 .setMainFrameErrorView(R.layout.agentweb_error_page, -1) //参数1是错误显示的布局，参数2点击刷新控件ID -1表示点击整个布局都刷新， AgentWeb 3.0.0 加入。
-                .useMiddlewareWebChrome(getMiddlewareWebChrome()) //设置WebChromeClient中间件，支持多个WebChromeClient，AgentWeb 3.0.0 加入。
-                .additionalHttpHeader("http://www.jd.com/", "cookie", "41bc7ddf04a26b91803f6b11817a5a1c")
-                .useMiddlewareWebClient(getMiddlewareWebClient()) //设置WebViewClient中间件，支持多个WebViewClient， AgentWeb 3.0.0 加入。
                 .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)//打开其他页面时，弹窗质询用户前往其他应用 AgentWeb 3.0.0 加入。
                 .interceptUnkownUrl() //拦截找不到相关页面的Url AgentWeb 3.0.0 加入。
                 .createAgentWeb()//创建AgentWeb。
                 .ready()
-                .go("http://www.jd.com/");
+                .go(path);
         AgentWebConfig.debug();
         // AgentWeb 没有把WebView的功能全面覆盖 ，所以某些设置 AgentWeb 没有提供 ， 请从WebView方面入手设置。
         mAgentWeb.getWebCreator().getWebView().setOverScrollMode(WebView.OVER_SCROLL_NEVER);
@@ -264,15 +255,10 @@ public class WebFragment extends BaseFragment {
         //
         @Override
         public boolean shouldOverrideUrlLoading(final WebView view, String url) {
-
-            Log.i(TAG, "view:" + new Gson().toJson(view.getHitTestResult()));
-            Log.i(TAG, "mWebViewClient shouldOverrideUrlLoading:" + url);
             //优酷想唤起自己应用播放该视频 ， 下面拦截地址返回 true  则会在应用内 H5 播放 ，禁止优酷唤起播放该视频， 如果返回 false ， DefaultWebClient  会根据intent 协议处理 该地址 ， 首先匹配该应用存不存在 ，如果存在 ， 唤起该应用播放 ， 如果不存在 ， 则跳到应用市场下载该应用 .
             if (url.startsWith("intent://") && url.contains("com.youku.phone")) {
                 return true;
             }
-			/*else if (isAlipay(view, mUrl))   //1.2.5开始不用调用该方法了 ，只要引入支付宝sdk即可 ， DefaultWebClient 默认会处理相应url调起支付宝
-			    return true;*/
             return super.shouldOverrideUrlLoading(view, url);
         }
 
@@ -280,7 +266,6 @@ public class WebFragment extends BaseFragment {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             timer.put(url, System.currentTimeMillis());
-            Log.d(TAG, "onPageStarted() called with: view = [" + view + "], url = [" + url + "], favicon = [" + favicon + "]");
             if (url.equals(path)) {
                 ivClose.setVisibility(View.GONE);
             } else {
@@ -295,23 +280,14 @@ public class WebFragment extends BaseFragment {
             if (timer.get(url) != null) {
                 long overTime = System.currentTimeMillis();
                 Long startTime = timer.get(url);
-                Log.i(TAG, "  page mUrl:" + url + "  used time:" + (overTime - startTime));
             }
 
         }
-        /*错误页回调该方法 ， 如果重写了该方法， 上面传入了布局将不会显示 ， 交由开发者实现，注意参数对齐。*/
-	   /* public void onMainFrameError(AbsAgentWebUIController agentWebUIController, WebView view, int errorCode, String description, String failingUrl) {
-
-            Log.i(TAG, "AgentWebFragment onMainFrameError");
-            agentWebUIController.onMainFrameError(view,errorCode,description,failingUrl);
-
-        }*/
 
         @Override
         public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
             super.onReceivedHttpError(view, request, errorResponse);
 
-//			Log.i(TAG, "onReceivedHttpError:" + 3 + "  request:" + mGson.toJson(request) + "  errorResponse:" + mGson.toJson(errorResponse));
         }
 
         @Override
@@ -324,7 +300,6 @@ public class WebFragment extends BaseFragment {
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
 
-//			Log.i(TAG, "onReceivedError:" + errorCode + "  description:" + description + "  errorResponse:" + failingUrl);
         }
     };
     protected PermissionInterceptor mPermissionInterceptor = new PermissionInterceptor() {
@@ -338,7 +313,6 @@ public class WebFragment extends BaseFragment {
          */
         @Override
         public boolean intercept(String url, String[] permissions, String action) {
-            Log.i(TAG, "mUrl:" + url + "  permission:" + new Gson().toJson(permissions) + " action:" + action);
             return false;
         }
     };
@@ -347,7 +321,6 @@ public class WebFragment extends BaseFragment {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            Log.i("CommonWebChromeClient", "onProgressChanged:" + newProgress + "  view:" + view);
         }
 
         @Override
@@ -373,12 +346,11 @@ public class WebFragment extends BaseFragment {
         @Override
         public void onShowMessage(String message, String from) {
             super.onShowMessage(message, from);
-            Log.i(TAG, "message:" + message);
         }
 
         @Override
         public void onSelectItemsPrompt(WebView view, String url, String[] items, Handler.Callback callback) {
-            super.onSelectItemsPrompt(view, url, items, callback); // 使用默认的UI
+            super.onSelectItemsPrompt(view, url, items, callback);
         }
 
 
@@ -387,7 +359,7 @@ public class WebFragment extends BaseFragment {
          */
    /* @Override
     public void onSelectItemsPrompt(WebView view, String mUrl, String[] ways, final Handler.Callback callback) {
-        //super.onSelectItemsPrompt(view,mUrl,ways,callback); //这行应该注释或者删除掉
+
         final AlertDialog mAlertDialog = new AlertDialog.Builder(mActivity)//
                 .setSingleChoiceItems(ways, -1, new DialogInterface.OnClickListener() {
                     @Override
@@ -413,69 +385,8 @@ public class WebFragment extends BaseFragment {
 
     }*/
     }
-    /**
-     * MiddlewareWebClientBase 是 AgentWeb 3.0.0 提供一个强大的功能，
-     * 如果用户需要使用 AgentWeb 提供的功能， 不想重写 WebClientView方
-     * 法覆盖AgentWeb提供的功能，那么 MiddlewareWebClientBase 是一个
-     * 不错的选择 。
-     *
-     * @return
-     */
-    protected MiddlewareWebClientBase getMiddlewareWebClient() {
-        return this.mMiddleWareWebClient = new MiddlewareWebViewClient() {
-            /**
-             *
-             * @param view
-             * @param url
-             * @return
-             */
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.e(TAG, "MiddlewareWebClientBase#shouldOverrideUrlLoading url:" + url);
-				/*if (url.startsWith("agentweb")) { // 拦截 url，不执行 DefaultWebClient#shouldOverrideUrlLoading
-					Log.i(TAG, "agentweb scheme ~");
-					return true;
-				}*/
 
-                if (super.shouldOverrideUrlLoading(view, url)) { // 执行 DefaultWebClient#shouldOverrideUrlLoading
-                    return true;
-                }
-                // do you work
-                return false;
-            }
 
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                Log.e(TAG, "MiddlewareWebClientBase#shouldOverrideUrlLoading request url:" + request.getUrl().toString());
-                return super.shouldOverrideUrlLoading(view, request);
-            }
-        };
-    }
-
-    protected MiddlewareWebChromeBase getMiddlewareWebChrome() {
-        return this.mMiddleWareWebChrome = new MiddlewareChromeClient() {
-        };
-    }
-    /**
-     * Created by cenxiaozhong on 2017/12/16.
-     * After agentweb 3.0.0  ， allow dev to custom self WebChromeClient's MiddleWare  .
-     */
-    public class MiddlewareChromeClient extends MiddlewareWebChromeBase {
-        public MiddlewareChromeClient() {
-        }
-
-        @Override
-        public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-            Log.i("Info","onJsAlert:"+url);
-            return super.onJsAlert(view, url, message, result);
-        }
-
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            super.onProgressChanged(view, newProgress);
-            Log.i("Info","onProgressChanged:");
-        }
-    }
     private void showDialog() {
 
         if (mAlertDialog == null) {
@@ -485,7 +396,7 @@ public class WebFragment extends BaseFragment {
                         if (mAlertDialog != null) {
                             mAlertDialog.dismiss();
                         }
-                    })//
+                    })
                     .setPositiveButton("确定", (dialog, which) -> {
 
                         if (mAlertDialog != null) {
@@ -497,52 +408,9 @@ public class WebFragment extends BaseFragment {
         mAlertDialog.show();
 
     }
-    /**
-     * Created by cenxiaozhong on 2017/12/16.
-     *
-     *
-     * 方法的执行顺序，例如下面用了7个中间件一个 WebViewClient
-     *
-     * .useMiddlewareWebClient(getMiddlewareWebClient())  // 1
-     * .useMiddlewareWebClient(getMiddlewareWebClient())  // 2
-     * .useMiddlewareWebClient(getMiddlewareWebClient())  // 3
-     * .useMiddlewareWebClient(getMiddlewareWebClient())  // 4
-     * .useMiddlewareWebClient(getMiddlewareWebClient())  // 5
-     * .useMiddlewareWebClient(getMiddlewareWebClient())  // 6
-     * .useMiddlewareWebClient(getMiddlewareWebClient())  // 7
-     *  DefaultWebClient                                  // 8
-     *  .setWebViewClient(mWebViewClient)                 // 9
-     *
-     *
-     * 典型的洋葱模型
-     * 对象内部的方法执行顺序: 1->2->3->4->5->6->7->8->9->8->7->6->5->4->3->2->1
-     *
-     *
-     * 中断中间件的执行， 删除super.methodName(...) 这行即可
-     *
-     */
 
-    public class MiddlewareWebViewClient extends MiddlewareWebClientBase {
 
-        public MiddlewareWebViewClient() {
-        }
 
-        private int count = 1;
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            Log.i("Info", "MiddlewareWebViewClient -- >  shouldOverrideUrlLoading:" + request.getUrl().toString() + "  c:" + (count++));
-            return super.shouldOverrideUrlLoading(view, request);
-
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.i("Info", "MiddlewareWebViewClient -- >  shouldOverrideUrlLoading:" + url + "  c:" + (count++));
-            return super.shouldOverrideUrlLoading(view, url);
-
-        }
-    }
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();

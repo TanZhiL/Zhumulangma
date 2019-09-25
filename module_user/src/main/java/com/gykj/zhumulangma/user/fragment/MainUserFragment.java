@@ -204,11 +204,6 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
     }
 
     @Override
-    protected boolean lazyEnable() {
-        return false;
-    }
-
-    @Override
     public void onClick(View v) {
         int id = v.getId();
         if (R.id.ll_download == id) {

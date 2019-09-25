@@ -29,6 +29,7 @@
         android:id="@+id/iv_left"
         android:layout_width="28dp"
         android:layout_height="28dp"
+        android:layout_marginStart="8dp"
         android:tint="@color/colorPrimaryDark"
         android:visibility="gone"/>
 </LinearLayout>
