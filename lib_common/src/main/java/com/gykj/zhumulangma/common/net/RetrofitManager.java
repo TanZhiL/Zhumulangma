@@ -10,6 +10,7 @@ import com.gykj.zhumulangma.common.net.config.API;
 import com.gykj.zhumulangma.common.util.log.TLog;
 
 import java.io.IOException;
+import java.net.Proxy;
 import java.util.List;
 
 import okhttp3.HttpUrl;
@@ -61,6 +62,8 @@ public class RetrofitManager {
 
         //动态改变baseUrl拦截器
         okHttpBuilder.addInterceptor(new BaseUrlInterceptor());
+        //防抓包
+        okHttpBuilder.proxy(Proxy.NO_PROXY);
         mRetrofit = new Retrofit.Builder()
                 .client(okHttpBuilder.build())
                 .baseUrl(API.ONLINE_HOST1)

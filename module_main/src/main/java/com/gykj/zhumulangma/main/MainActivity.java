@@ -362,7 +362,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     public <T> void onEvent(BaseActivityEvent<T> event) {
         super.onEvent(event);
         switch (event.getCode()) {
-            case EventCode.MainCode.NAVIGATE:
+            case EventCode.Main.NAVIGATE:
                 NavigateBean navigateBean = (NavigateBean) event.getData();
                 if (null == navigateBean.fragment) {
                     return;
@@ -395,13 +395,13 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                         break;
                 }
                 break;
-            case EventCode.MainCode.HIDE_GP:
+            case EventCode.Main.HIDE_GP:
                 globalPlay.hide();
                 break;
-            case EventCode.MainCode.SHOW_GP:
+            case EventCode.Main.SHOW_GP:
                 globalPlay.show();
                 break;
-            case EventCode.MainCode.LOGIN:
+            case EventCode.Main.LOGIN:
                 goLogin();
                 break;
         }
@@ -431,7 +431,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         public void onComplete(Bundle bundle) {
             parseAccessToken(bundle);
             AppHelper.registerLoginTokenChangeListener(MainActivity.this.getApplicationContext());
-            EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.MainCode.LOGINSUCC));
+            EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Main.LOGINSUCC));
             ToastUtil.showToast("登录成功");
         }
 

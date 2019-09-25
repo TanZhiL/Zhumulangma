@@ -461,7 +461,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     protected void navigateTo(String path){
         Object navigation = ARouter.getInstance().build(path).navigation();
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
@@ -470,7 +470,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
         navigateBean.launchMode=launchMode;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
@@ -479,7 +479,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
         navigateBean.extraTransaction=extraTransaction;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
@@ -489,7 +489,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         navigateBean.launchMode=launchMode;
         navigateBean.extraTransaction=extraTransaction;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }

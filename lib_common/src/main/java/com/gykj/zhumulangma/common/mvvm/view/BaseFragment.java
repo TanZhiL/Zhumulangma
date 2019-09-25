@@ -230,39 +230,19 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
             View backView = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
             backView.setVisibility(View.VISIBLE);
-            backView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pop();
-                }
-            });
+            backView.setOnClickListener(v -> onSimpleBackClick());
         } else if (onBindBarLeftStyle() == BarStyle.LEFT_BACK_TEXT) {
             View backIcon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
             backIcon.setVisibility(View.VISIBLE);
-            backIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pop();
-                }
-            });
+            backIcon.setOnClickListener(v -> onSimpleBackClick());
             View backTv = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.tv_back);
             backTv.setVisibility(View.VISIBLE);
-            backTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pop();
-                }
-            });
+            backTv.setOnClickListener(v -> onSimpleBackClick());
         } else if (onBindBarLeftStyle() == BarStyle.LEFT_ICON && onBindBarLeftIcon() != null) {
             ImageView icon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);
             icon.setVisibility(View.VISIBLE);
             icon.setImageResource(onBindBarLeftIcon());
-            icon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onLeftIconClick(v);
-                }
-            });
+            icon.setOnClickListener(v -> onLeftIconClick(v));
         }
 
         switch (onBindBarRightStyle()) {
@@ -323,7 +303,9 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
 
     }
-
+    protected void onSimpleBackClick(){
+        pop();
+    }
     protected int onBindBarRightStyle() {
         return BarStyle.RIGHT_ICON;
     }
@@ -557,7 +539,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     protected void navigateTo(String path) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
@@ -567,7 +549,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
         navigateBean.launchMode = launchMode;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
@@ -578,7 +560,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         navigateBean.launchMode = launchMode;
         navigateBean.extraTransaction = extraTransaction;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
@@ -588,7 +570,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
         navigateBean.extraTransaction = extraTransaction;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }

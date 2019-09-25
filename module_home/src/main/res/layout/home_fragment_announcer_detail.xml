@@ -30,6 +30,7 @@
 
         <com.gykj.zhumulangma.common.widget.TRefreshHeader
             android:id="@+id/header"
+            app:lottie_colorFilter="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

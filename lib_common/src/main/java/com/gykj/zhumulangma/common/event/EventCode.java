@@ -8,7 +8,7 @@ package com.gykj.zhumulangma.common.event;
  * Update:     <br>
  */
 public interface EventCode {
-    interface MainCode {
+    interface Main {
         int JPUSH = 1000;
         int NAVIGATE=1001;
         int HIDE_GP=1002;

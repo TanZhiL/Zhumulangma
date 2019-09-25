@@ -184,7 +184,7 @@ public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailVie
                     .withString(KeyCode.Home.TITLE, mAnnouncerName)
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
         fd(R.id.ih_track).setOnClickListener(v -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_TRACK_LIST)
@@ -192,7 +192,7 @@ public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailVie
                     .withString(KeyCode.Home.TITLE, mAnnouncerName)
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_TRACK_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_TRACK_LIST, (ISupportFragment) o)));
         });
 
         fd(R.id.tv_more).setOnClickListener(this);
@@ -269,7 +269,7 @@ public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailVie
                     .withString(KeyCode.Home.TITLE, ((TextView)fd(R.id.tv_category)).getText().toString())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_LIST, (ISupportFragment) o)));
         }
 
     }
@@ -296,7 +296,7 @@ public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailVie
                     .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         } else {
             Track track = mTrackAdapter.getItem(position);
             mViewModel.play(track.getAlbum().getAlbumId(), track.getDataId());

@@ -89,7 +89,7 @@ public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewMo
                 .withLong(KeyCode.Home.ANNOUNCER_ID, mAdapter.getItem(position).getAnnouncerId())
                 .withString(KeyCode.Home.ANNOUNCER_NAME, mAdapter.getItem(position).getNickname())
                 .navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                 new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
     }
     @Override

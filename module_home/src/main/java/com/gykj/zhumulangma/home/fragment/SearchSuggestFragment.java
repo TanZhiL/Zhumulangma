@@ -134,7 +134,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
                     .withLong(KeyCode.Home.ALBUMID,item.mAlbumResult.getAlbumId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         }else {
             mSearchListener.onSearch(item.mQueryResult.getKeyword());
         }
@@ -153,7 +153,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
                 .withLong(KeyCode.Home.ALBUMID,item.mAlbumResult.getAlbumId())
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
-                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
 

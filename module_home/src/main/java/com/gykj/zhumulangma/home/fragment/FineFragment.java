@@ -186,7 +186,7 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
                         .navigation();
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
             case 3:
@@ -196,7 +196,7 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements
                 Object navigation1 = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid())
                         .navigation();
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
 
                 break;

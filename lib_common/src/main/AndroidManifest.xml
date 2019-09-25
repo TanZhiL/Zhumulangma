@@ -59,6 +59,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!--Bugly END-->
+
     <application
         android:icon="@mipmap/ic_launcher_ting"
         android:networkSecurityConfig="@xml/network_security_config">

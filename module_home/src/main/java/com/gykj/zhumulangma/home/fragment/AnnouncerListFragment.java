@@ -106,7 +106,7 @@ public class AnnouncerListFragment extends BaseMvvmFragment<AnnouncerViewModel>
                 .navigation();
         NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation);
         navigateBean.launchMode=STANDARD;
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,navigateBean));
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,navigateBean));
     }
 
     @Override

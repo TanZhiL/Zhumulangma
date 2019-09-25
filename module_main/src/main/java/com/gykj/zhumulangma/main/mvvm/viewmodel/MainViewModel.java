@@ -108,7 +108,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                     Object navigation = ARouter.getInstance()
                             .build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
                     if (null != navigation) {
-                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                                 new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK,
                                         (ISupportFragment) navigation)));
                     }
@@ -181,7 +181,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                         Object navigation = ARouter.getInstance()
                                 .build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
                         if (null != navigation) {
-                            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                                     new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO,
                                             (ISupportFragment) navigation)));
                         }
@@ -218,7 +218,9 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .subscribe(bingBean -> {
-                    SPUtils.getInstance().put(AppConstants.SP.AD_LABEL,bingBean.getImages().get(0).getCopyright());
+                    if(bingBean.getImages().get(0).getCopyrightlink().equals(SPUtils.getInstance().getString(AppConstants.SP.AD_URL))){
+                        return;
+                    }
                     OkHttpClient client = new OkHttpClient.Builder().build();
                     Request request=new Request.Builder().url(API.OFFLINE_HOST1
                             +bingBean.getImages().get(0).getUrl()).get().build();
@@ -226,6 +228,8 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                     if(execute.isSuccessful()){
                         FileIOUtils.writeFileFromIS(getApplication().getFilesDir().getAbsolutePath()
                                 +AppConstants.Defualt.AD_NAME,execute.body().byteStream());
+                        SPUtils.getInstance().put(AppConstants.SP.AD_LABEL,bingBean.getImages().get(0).getCopyright());
+                        SPUtils.getInstance().put(AppConstants.SP.AD_URL,bingBean.getImages().get(0).getCopyrightlink());
                     }
                 }, e->e.printStackTrace());
     }

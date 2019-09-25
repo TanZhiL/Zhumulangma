@@ -168,7 +168,7 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.HIDE_GP));
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
     }
 
     @Override
@@ -180,7 +180,7 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.SHOW_GP));
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
     }
 
     @Override
@@ -431,7 +431,7 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
                 .withInt(KeyCode.Listen.TAB_INDEX, 2)
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
-                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
+                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.gykj.zhumulangma.home.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
@@ -38,7 +37,7 @@ public class RadioCategoryItem extends android.support.v7.widget.AppCompatTextVi
                     .withString(KeyCode.Home.TITLE,getText().toString())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE,new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE,new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
     }
 

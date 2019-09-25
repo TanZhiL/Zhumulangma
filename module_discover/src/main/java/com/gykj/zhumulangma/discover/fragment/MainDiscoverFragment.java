@@ -6,18 +6,27 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.discover.R;
 import com.maiml.library.BaseItemLayout;
 import com.maiml.library.config.ConfigAttrs;
 import com.maiml.library.config.Mode;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import me.yokeyword.fragmentation.ISupportFragment;
+
 @Route(path = AppConstants.Router.Discover.F_MAIN)
-public class MainDiscoverFragment extends BaseFragment {
+public class MainDiscoverFragment extends BaseFragment implements BaseItemLayout.OnBaseItemClick {
     private BaseItemLayout bilFine;
 
     @Override
@@ -68,7 +77,7 @@ public class MainDiscoverFragment extends BaseFragment {
                 .setItemMarginTop(1)
                 .setRightText(0, "2")
                 .setRightText(4, "1")
-                .setItemMarginTop(0,0)
+                .setItemMarginTop(0,1)
                 .setItemMarginTop(1, 8)
                 .setItemMarginTop(3, 8)
                 .setItemMarginTop(5, 8)
@@ -78,16 +87,14 @@ public class MainDiscoverFragment extends BaseFragment {
                 .setArrowResId(R.drawable.common_arrow_enter); //设置箭头资源值;
 
         bilFine.setConfigAttrs(attrs)
-                .create(); //
+                .create();
 
     }
 
     @Override
     public void initListener() {
         super.initListener();
-        bilFine.setOnBaseItemClick(position -> {
-
-        });
+        bilFine.setOnBaseItemClick(this);
     }
 
     @Override
@@ -128,5 +135,14 @@ public class MainDiscoverFragment extends BaseFragment {
     @Override
     protected String[] onBindBarTitleText() {
         return  new String[]{"发现"};
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
+                .withString(KeyCode.Discover.PATH, "https://www.baidu.com/")
+                .navigation();
+        EventBus.getDefault().post(new BaseActivityEvent<>(
+                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
     }
 }

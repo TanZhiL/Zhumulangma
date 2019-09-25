@@ -258,7 +258,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     .withString(KeyCode.Home.TITLE, "更多推荐")
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
 
         });
         addDisposable(RxView.clicks(fd(R.id.ll_subscribe))
@@ -404,7 +404,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                         .navigation();
                 NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
                 navigateBean.launchMode = STANDARD;
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE, navigateBean));
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE, navigateBean));
             }
         } else if (R.id.lav_pre == id) {
             lavPlayPre.playAnimation();
@@ -473,7 +473,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     .withLong(KeyCode.Home.ANNOUNCER_ID, mTrack.getAnnouncer().getAnnouncerId())
                     .withString(KeyCode.Home.ANNOUNCER_NAME, mTrack.getAnnouncer().getNickname())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
         }else if (R.id.tv_comment == id) {
            new XPopup.Builder(mContext).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
@@ -705,7 +705,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
         navigateBean.launchMode = STANDARD;
         EventBus.getDefault().post(new BaseActivityEvent<>(
-                EventCode.MainCode.NAVIGATE, navigateBean));
+                EventCode.Main.NAVIGATE, navigateBean));
     }
 
 
@@ -786,13 +786,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.HIDE_GP));
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.SHOW_GP));
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
     }
 
     @Override

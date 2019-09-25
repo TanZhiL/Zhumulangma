@@ -1,13 +1,14 @@
 package com.gykj.zhumulangma.main.dialog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +23,7 @@ import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class SplashAdPopup extends FullScreenPopupView {
+public class SplashAdPopup extends FullScreenPopupView implements View.OnClickListener {
     private Context mContext;
 
     public SplashAdPopup(@NonNull Context context) {
@@ -57,7 +58,16 @@ public class SplashAdPopup extends FullScreenPopupView {
                     post(() -> dismiss());
                 }
             }, 1, 1, TimeUnit.SECONDS);
+            ivAd.setOnClickListener(this);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        String path = SPUtils.getInstance().getString(AppConstants.SP.AD_URL);
+        Uri uri = Uri.parse(path);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        mContext.startActivity(intent);
     }
 
     public static class AlphaAnimator extends PopupAnimator {

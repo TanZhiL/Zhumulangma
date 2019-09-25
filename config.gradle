@@ -69,6 +69,8 @@ ext {
             "MarqueeView":"1.4.1",
             "xpopup":"1.8.9",
             "leakcanary":"1.5",
+            "agentweb":"4.1.2",
+            "CoolIndicator":"v1.0.0"
     ]
     //support配置
     support = [
@@ -126,6 +128,10 @@ ext {
             "rxbinding"                            :"com.jakewharton.rxbinding3:rxbinding:${versions["rxbinding"]}",
             "leakcanary"                           :"com.squareup.leakcanary:leakcanary-android:${versions["leakcanary"]}",
             "leakcanary-no-op"                     :"com.squareup.leakcanary:leakcanary-android-no-op:${versions["leakcanary"]}",
+            "agentweb"                             :"com.just.agentweb:agentweb:${versions["agentweb"]}",
+            "filechooser"                             :"com.just.agentweb:filechooser:${versions["agentweb"]}",
+            "downloader"                             :"com.download.library:Downloader:${versions["agentweb"]}",
+
 
             //***************************************界面类*************************************************
             "MultiImageSelector"                   :"com.github.lovetuzitong:MultiImageSelector:${versions["MultiImageSelector"]}",
@@ -155,6 +161,7 @@ ext {
             "BasePopup"                            :"com.github.razerdp:BasePopup:${versions["BasePopup"]}",
             "MarqueeView"                          :"com.sunfusheng:MarqueeView:${versions["MarqueeView"]}",
             "xpopup"                               :"com.lxj:xpopup:${versions["xpopup"]}",
+            "CoolIndicator"                        :"com.github.Justson:CoolIndicator:${versions["CoolIndicator"]}",
 
     ]
 

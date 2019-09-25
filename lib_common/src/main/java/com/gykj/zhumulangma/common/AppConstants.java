@@ -38,6 +38,7 @@ public interface  AppConstants {
          }
          interface  Discover{
              String F_MAIN="/discover/main";
+             String F_WEB="/discover/web";
          }
          interface Listen{
              String F_MAIN="/listen/main";
@@ -45,12 +46,7 @@ public interface  AppConstants {
              String F_HISTORY="/listen/history";
              String F_FAVORITE="/listen/favorite";
          }
-         interface Player{
-             String F_PLAY_TRACK="/player/track";
-             String F_HAPPEN="/pollution/happen";
-             String F_ACCEPT="/pollution/accept";
-             String F_FEEDBACK="/pollution/feedback";
-         }
+
     }
     interface ArcSoft{
          String ID="5Z9BcusHbDyyojuZ2VCgYiVNkSP6JWAHHk6QjyLVMn9W";
@@ -86,6 +82,7 @@ public interface  AppConstants {
          String PLAY_SCHEDULE_TIME="play_schedule_time";
          String AD_TIME="ad_time";
          String AD_LABEL="ad_label";
+         String AD_URL="ad_url";
     }
     interface Defualt{
         String CITY_CODE="4301";

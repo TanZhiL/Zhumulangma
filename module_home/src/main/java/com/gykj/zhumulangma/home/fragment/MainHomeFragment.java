@@ -113,7 +113,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
                     }
                     Object navigation = build.navigation();
                     EventBus.getDefault().post(new BaseActivityEvent<>(
-                            EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
+                            EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
                 }));
 
         fd(R.id.iv_download).setOnClickListener(this);
@@ -172,7 +172,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         Postcard build = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH);
         Object navigation = build.withString(KeyCode.Home.HOTWORD,mMarqueeView.getMessages().get(position)).navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
-                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
+                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
     }
 
 

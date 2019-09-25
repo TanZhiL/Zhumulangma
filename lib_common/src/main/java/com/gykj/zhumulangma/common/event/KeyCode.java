@@ -26,6 +26,9 @@ public interface KeyCode {
     interface Listen {
         String TAB_INDEX="tab_index";
     }
+    interface Discover {
+        String PATH="path";
+    }
 
     interface Video {
         String CHANNEL="channel";

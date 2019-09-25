@@ -212,6 +212,7 @@ public class AppHelper {
 
     public AppHelper initCrashHandler() {
         CrashUtils.init((crashInfo, e) -> {
+            e.printStackTrace();
             //使用Toast来显示异常信息
             new Thread() {
                 @Override
@@ -288,7 +289,7 @@ public class AppHelper {
 
             @Override
             public void tokenLosted() {
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.LOGIN));
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.LOGIN));
             }
         });
     }

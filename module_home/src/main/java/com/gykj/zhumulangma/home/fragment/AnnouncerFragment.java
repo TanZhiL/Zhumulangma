@@ -167,7 +167,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
                         .navigation();
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
             case 3:
@@ -177,7 +177,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
                 Object navigation1 = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID,bannerV2.getBannerUid())
                         .navigation();
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
 
                 break;
@@ -190,7 +190,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
                 .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getData().get(position).getAnnouncerId())
                 .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getData().get(position).getNickname())
                 .navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.NAVIGATE,
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                 new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
     }
 

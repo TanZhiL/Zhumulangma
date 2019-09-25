@@ -299,7 +299,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
             });
 
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.SHOW_GP));
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
         } else {
             flMask.setTranslationY(-rvCategory.getHeight() == 0 ? -400 : -rvCategory.getHeight());
             flMask.animate().withStartAction(() -> {
@@ -308,7 +308,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
             }).translationY(0).alpha(1).setDuration(200).withEndAction(() -> flMask.setBackgroundColor(0x99000000));
 
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.HIDE_GP));
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
         }
     }
 

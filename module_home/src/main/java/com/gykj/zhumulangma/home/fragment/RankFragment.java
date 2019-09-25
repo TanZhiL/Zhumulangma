@@ -149,7 +149,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
                     .withLong(KeyCode.Home.ALBUMID, mFreeAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
                     (ISupportFragment) navigation)));
         });
         mPaidAdapter.setOnItemClickListener((adapter, view, position) -> {
@@ -157,7 +157,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
                     .withLong(KeyCode.Home.ALBUMID, mPaidAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
                     (ISupportFragment) navigation)));
         });
         rlFree.setOnLoadMoreListener(refreshLayout -> mViewModel.getFreeRank(cid));
@@ -189,7 +189,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
             });
 
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.SHOW_GP));
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
         } else {
             flMask.setTranslationY(-rvCategory.getHeight()==0?-400:-rvCategory.getHeight());
             flMask.animate().withStartAction(() -> {
@@ -198,7 +198,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
             }).translationY(0).alpha(1).setDuration(200).withEndAction(() -> flMask.setBackgroundColor(0x99000000));
 
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.MainCode.HIDE_GP));
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
         }
     }
 

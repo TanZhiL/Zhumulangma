@@ -140,6 +140,6 @@ public class RecommendFragment  extends BaseMvvmFragment<SubscribeViewModel> imp
                 .withLong(KeyCode.Home.ALBUMID, mRecommendAdapter.getItem(position).getId())
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
-                EventCode.MainCode.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 }

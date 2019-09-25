@@ -8,7 +8,7 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
         android:layout_width="50dp"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_gravity="center"
         app:lottie_fileName="lottie_refreshing.json"
         app:lottie_colorFilter="@color/colorHint"
