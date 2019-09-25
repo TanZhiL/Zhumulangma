@@ -2,7 +2,7 @@
 ### 本项目仅提供学习参考,不可作为商用.
 
 ### 更新日志：
-###### 珠穆朗玛FM 1.0 2019-09.20
+###### 珠穆朗玛FM 1.0 2019-09.25
 * 布局优化,避免过渡绘制
 ###### 珠穆朗玛FM 1.0 2019-09.20
 * 声音批量下载
@@ -16,8 +16,8 @@
 * 第一次发布
 
 ### 功能演示
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/1.png)
-![在这里插入图片描述](https://github.com/1071931588/Zhumulangma-mvvm/blob/master/screenshot/3.png)
+![在这里插入图片描述](https://github.com/TanZhiL/Zhumulangma/blob/master/screenshot/1.png)
+![在这里插入图片描述](https://github.com/TanZhiL/Zhumulangma/blob/master/screenshot/3.png)
 
 ### 主要功能(包括不仅限于):
 * 专辑展示
@@ -108,7 +108,7 @@ sourceSets {
 * mvvm借鉴 https://github.com/geduo83/FlyTour 
 * 原型平台 https://www.xiaopiu.com/
 ### 问题反馈
-欢迎加星，打call https://github.com/1071931588/Zhumulangma-mvvm
+欢迎加星，打call https://github.com/TanZhiL/Zhumulangma
 * email：1071931588@qq.com
 ### 关于作者
 菜鸡Thomas
