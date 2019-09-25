@@ -38,7 +38,6 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:paddingBottom="8dp"
             android:layout_height="match_parent">
 
 
@@ -272,6 +271,7 @@
             </LinearLayout>
 
             <com.maiml.library.BaseItemLayout
+                android:background="@color/colorLine"
                 android:id="@+id/bil_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

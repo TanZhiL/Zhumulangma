@@ -77,6 +77,7 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mView.setBackground(null);
         setSwipeBackEnable(false);
     }
 

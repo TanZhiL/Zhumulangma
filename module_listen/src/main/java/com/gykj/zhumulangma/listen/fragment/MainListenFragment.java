@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.listen.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -40,6 +41,7 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mView.setBackgroundColor(Color.WHITE);
         setSwipeBackEnable(false);
     }
     @Override

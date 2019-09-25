@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -87,6 +88,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         mApplication = App.getInstance();
         ARouter.getInstance().inject(this);
         EventBus.getDefault().register(this);
+
     }
 
     /**
@@ -118,6 +120,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.common_layout_root, container, false);
+        mView.setBackgroundColor(Color.WHITE);
         initCommonView(mView);
         initParam();
         //不采用懒加载
@@ -160,9 +163,6 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
-
-        mView.setBackgroundColor(getResources().getColor(R.color.colorLine));
-
         LoadSir loadSir = new LoadSir.Builder()
                 .addCallback(new InitLoadingCallback())
                 .addCallback(new EmptyCallback())

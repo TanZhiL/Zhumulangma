@@ -7,16 +7,20 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
-
+        android:layout_height="match_parent">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/iv_ad"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
         <ImageView
             android:id="@+id/iv_ad"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="50dp"
             android:src="@drawable/th"
-            android:background="@color/white"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@id/iv_logo"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +32,6 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginBottom="50dp"
-            android:background="@color/white"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_logo"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -37,7 +40,7 @@
 
         <TextView
             android:id="@+id/tv_time"
-            android:layout_width="80dp"
+            android:layout_width="72dp"
             android:layout_height="26dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"

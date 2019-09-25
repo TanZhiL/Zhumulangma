@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="84dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_cover"

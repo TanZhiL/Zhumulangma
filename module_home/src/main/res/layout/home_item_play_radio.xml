@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/selector_common_item"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:layout_height="55dp">

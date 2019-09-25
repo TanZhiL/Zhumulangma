@@ -51,6 +51,7 @@ public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewMo
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mView.setBackground(null);
         setSwipeBackEnable(false);
     }
     @Override

@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,8 +19,8 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
+import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -69,6 +70,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mView.setBackgroundColor(Color.WHITE);
         setSwipeBackEnable(false);
     }
 

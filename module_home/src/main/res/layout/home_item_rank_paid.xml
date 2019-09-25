@@ -3,7 +3,6 @@
     android:id="@+id/c5"
     android:layout_width="match_parent"
     android:layout_height="79dp"
-    android:background="@color/white"
     android:paddingLeft="11dp"
     android:paddingRight="11dp"
     xmlns:android="http://schemas.android.com/apk/res/android"

@@ -65,6 +65,7 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mView.setBackground(null);
         setSwipeBackEnable(false);
     }
 

@@ -1,7 +1,6 @@
 package com.gykj.zhumulangma.main;
 
 import android.arch.lifecycle.ViewModelProvider;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.AppHelper;
@@ -84,7 +84,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         //清除全屏显示
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);    //布局优化
         long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(AppConstants.SP.AD_TIME, 0);
         //显示广告
         if(adOffset>5*60*1000&&new File(getFilesDir().getAbsolutePath()+AppConstants.Defualt.AD_NAME)
@@ -100,11 +100,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
                         @Override
                         public boolean onBackPressed() {
-                            Log.d(TAG, "onBackPressed() called");
-                            Intent home = new Intent(Intent.ACTION_MAIN);
-                            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            home.addCategory(Intent.CATEGORY_HOME);
-                            startActivity(home);
+                            ActivityUtils.startHomeActivity();
                             return true;
                         }
                     })
@@ -113,6 +109,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 .exists()){
             mViewModel._getBing();
         }
+        setTheme(R.style.NullTheme);
         Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
     }
 
@@ -130,8 +127,8 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if(!hasFocus){
-            return;
+        if(hasFocus){
+            Log.d(TAG, "onWindowFocusChanged() called "+System.currentTimeMillis());
         }
     }
     @Override
@@ -356,10 +353,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 Toast.makeText(this, "再按一次返回桌面", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
-                Intent home = new Intent(Intent.ACTION_MAIN);
-                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                home.addCategory(Intent.CATEGORY_HOME);
-                startActivity(home);
+                ActivityUtils.startHomeActivity();
             }
         }
     }

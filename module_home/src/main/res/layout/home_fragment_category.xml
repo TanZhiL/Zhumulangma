@@ -8,11 +8,19 @@
     android:overScrollMode="never"
     android:scrollbars="none"
     >
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:paddingBottom="8dp"
         android:layout_height="wrap_content">
-
+        <View
+            android:id="@+id/vline"
+            style="@style/SecondVLine"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem2"
             android:layout_width="0dp"
@@ -20,11 +28,17 @@
             app:aci_title="付费精品"
             app:aci_id="-1"
             app:aci_icon="@drawable/ic_home_category_ffjp"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
-
+<View
+    android:id="@+id/line1"
+    android:layout_width="0dp"
+    style="@style/SecondHLine"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/categoryItem2"
+    />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem"
             android:layout_width="0dp"
@@ -32,381 +46,463 @@
             app:aci_title="有声书"
             app:aci_id="3"
             app:aci_icon="@drawable/ic_home_category_yss"
-            android:layout_marginStart="1dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem2" />
+            app:layout_constraintStart_toEndOf="@+id/vline" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem3"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="1dp"
             app:aci_id="2"
             app:aci_title="音乐"
             app:aci_icon="@drawable/ic_home_category_yy"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem4"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem" />
+            app:layout_constraintTop_toBottomOf="@id/line1" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem4"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="4"
             app:aci_title="娱乐"
             app:aci_icon="@drawable/ic_home_category_yl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem3"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem3" />
-
+        <View
+            android:id="@+id/line2"
+            android:layout_width="0dp"
+            style="@style/SecondHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem3"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem5"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="1dp"
             app:aci_id="12"
             app:aci_title="相声评书"
             app:aci_icon="@drawable/ic_home_category_xsps"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem6"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem4" />
+            app:layout_constraintTop_toBottomOf="@id/line2" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem6"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="6"
             app:aci_title="儿童"
             app:aci_icon="@drawable/ic_home_category_et"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem5"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem5" />
 
-
+        <View
+            android:id="@+id/line3"
+            android:layout_width="0dp"
+            style="@style/PrimaryHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem6"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem7"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="8dp"
             app:aci_id="29"
             app:aci_title="3D体验馆"
             app:aci_icon="@drawable/ic_home_category_3dtyg"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem8"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem6" />
+            app:layout_constraintTop_toBottomOf="@id/line3" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem8"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="1"
             app:aci_title="头条"
             app:aci_icon="@drawable/ic_home_category_tt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem7"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem7" />
-
+        <View
+            android:id="@+id/line4"
+            android:layout_width="0dp"
+            style="@style/SecondHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem7"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem9"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="1dp"
             app:aci_id="28"
             app:aci_title="脱口秀"
             app:aci_icon="@drawable/ic_home_category_tkx"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem10"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem8" />
+            app:layout_constraintTop_toBottomOf="@id/line4" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem10"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="10"
             app:aci_title="情感生活"
             app:aci_icon="@drawable/ic_home_category_qgsh"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem9"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem9" />
+
+        <View
+            android:id="@+id/line5"
+            android:layout_width="0dp"
+            style="@style/SecondHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem9"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
         android:id="@+id/categoryItem11"
         android:layout_width="0dp"
        android:layout_height="41dp"
-        android:layout_marginTop="1dp"
         app:aci_id="9"
         app:aci_title="历史"
             app:aci_icon="@drawable/ic_home_category_ls"
-        app:layout_constraintEnd_toStartOf="@+id/categoryItem12"
+        app:layout_constraintEnd_toStartOf="@+id/vline"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryItem10" />
+        app:layout_constraintTop_toBottomOf="@id/line5" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem12"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="39"
             app:aci_title="人文"
             app:aci_icon="@drawable/ic_home_category_rw"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem11"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem11" />
-
+        <View
+            android:id="@+id/line6"
+            android:layout_width="0dp"
+            style="@style/PrimaryHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem11"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem13"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="8dp"
             app:aci_id="38"
             app:aci_title="英语"
             app:aci_icon="@drawable/ic_home_category_yiny"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem14"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem12" />
+            app:layout_constraintTop_toBottomOf="@id/line6" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem14"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="32"
             app:aci_title="小语种"
             app:aci_icon="@drawable/ic_home_category_xyz"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem13"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem13" />
-
+        <View
+            android:id="@+id/line7"
+            android:layout_width="0dp"
+            style="@style/SecondHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem13"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem15"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="1dp"
             app:aci_id="13"
             app:aci_title="教育培训"
             app:aci_icon="@drawable/ic_home_category_jypx"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem16"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem14" />
+            app:layout_constraintTop_toBottomOf="@id/line7" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem16"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="15"
             app:aci_title="广播剧"
             app:aci_icon="@drawable/ic_home_category_gbj"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem15"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem15" />
+        <View
+            android:id="@+id/line8"
+            android:layout_width="0dp"
+            style="@style/SecondHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem15"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem17"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="1dp"
             app:aci_id="16"
             app:aci_title="戏曲"
             app:aci_icon="@drawable/ic_home_category_xq"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem18"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem16" />
+            app:layout_constraintTop_toBottomOf="@id/line8" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem18"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="40"
             app:aci_title="国学书院"
             app:aci_icon="@drawable/ic_home_category_gxsy"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem17"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem17" />
+        <View
+            android:id="@+id/line9"
+            android:layout_width="0dp"
+            style="@style/PrimaryHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem17"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem19"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="8dp"
             app:aci_id="17"
             app:aci_title="电台"
             app:aci_icon="@drawable/ic_home_category_dt"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem20"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem18" />
+            app:layout_constraintTop_toBottomOf="@id/line9" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem20"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="8"
             app:aci_title="商业财经"
             app:aci_icon="@drawable/ic_home_category_sycj"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem19"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem19" />
+        <View
+            android:id="@+id/line10"
+            android:layout_width="0dp"
+            style="@style/SecondHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem19"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem21"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="1dp"
             app:aci_id="18"
             app:aci_title="IT科技"
             app:aci_icon="@drawable/ic_home_category_itkj"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem22"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem20" />
+            app:layout_constraintTop_toBottomOf="@id/line10" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem22"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="7"
             app:aci_title="健康养生"
             app:aci_icon="@drawable/ic_home_category_jkys"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem21"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem21" />
+        <View
+            android:id="@+id/line11"
+            android:layout_width="0dp"
+            style="@style/SecondHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem21"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem23"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="1dp"
             app:aci_id="22"
             app:aci_title="旅游"
             app:aci_icon="@drawable/ic_home_category_ly"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem24"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem22" />
+            app:layout_constraintTop_toBottomOf="@id/line11" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem24"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="21"
             app:aci_title="汽车"
             app:aci_icon="@drawable/ic_home_category_qc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem23"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem23" />
-
+        <View
+            android:id="@+id/line12"
+            android:layout_width="0dp"
+            style="@style/PrimaryHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem23"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem25"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="8dp"
             app:aci_id="24"
             app:aci_title="动漫游戏"
             app:aci_icon="@drawable/ic_home_category_dmyx"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem26"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem24" />
+            app:layout_constraintTop_toBottomOf="@id/line12" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem26"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="23"
             app:aci_title="电影"
             app:aci_icon="@drawable/ic_home_category_dy"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem25"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem25" />
-
+        <View
+            android:id="@+id/line13"
+            android:layout_width="0dp"
+            style="@style/SecondHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem25"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem27"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="1dp"
             app:aci_id="41"
             app:aci_title="党团课"
             app:aci_icon="@drawable/ic_home_category_dtk"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem28"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem26" />
+            app:layout_constraintTop_toBottomOf="@id/line13" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem28"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="30"
             app:aci_title="名校公开课"
             app:aci_icon="@drawable/ic_home_category_mxgkk"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem27"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem27" />
+        <View
+            android:id="@+id/line14"
+            android:layout_width="0dp"
+            style="@style/SecondHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem27"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem29"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginTop="1dp"
             app:aci_id="31"
             app:aci_title="时尚生活"
             app:aci_icon="@drawable/ic_home_category_sssh"
-            app:layout_constraintEnd_toStartOf="@+id/categoryItem30"
+            app:layout_constraintEnd_toStartOf="@+id/vline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryItem28" />
+            app:layout_constraintTop_toBottomOf="@id/line14" />
 
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
             android:id="@+id/categoryItem30"
             android:layout_width="0dp"
            android:layout_height="41dp"
-            android:layout_marginStart="1dp"
             app:aci_id="34"
             app:aci_title="诗歌"
             app:aci_icon="@drawable/ic_home_category_sg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/categoryItem29"
+            app:layout_constraintStart_toEndOf="@+id/vline"
             app:layout_constraintTop_toTopOf="@id/categoryItem29" />
-
+        <View
+            android:id="@+id/line15"
+            android:layout_width="0dp"
+            style="@style/PrimaryHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem29"
+            />
         <com.gykj.zhumulangma.home.widget.AlbumCategoryItem
         android:id="@+id/categoryItem31"
         android:layout_width="0dp"
        android:layout_height="41dp"
-        android:layout_marginTop="8dp"
         app:aci_id="46"
             app:aci_icon="@drawable/ic_home_category_ppzs"
         app:aci_title="品牌之声"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryItem30" />
+        app:layout_constraintTop_toBottomOf="@id/line15" />
+        <View
+            android:id="@+id/line16"
+            android:layout_width="0dp"
+            style="@style/PrimaryHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryItem31"
+            />
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

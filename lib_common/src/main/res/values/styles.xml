@@ -2,5 +2,22 @@
     <!-- Base application theme. -->
     <style name="NotificationText" parent="android:TextAppearance.StatusBar.EventContent" />
     <style name="NotificationTitle" parent="android:TextAppearance.StatusBar.EventContent.Title" />
+    <style name="PrimaryHLine" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@color/colorLine</item>
+        <item name="android:layout_height">@dimen/mainLine</item>
 
+    </style>
+    <style name="PrimaryVLine" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@color/colorLine</item>
+        <item name="android:layout_width">@dimen/mainLine</item>
+
+    </style>
+    <style name="SecondHLine" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@color/colorLine</item>
+        <item name="android:layout_height">@dimen/secondLine</item>
+    </style>
+    <style name="SecondVLine" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@color/colorLine</item>
+        <item name="android:layout_width">@dimen/secondLine</item>
+    </style>
 </resources>

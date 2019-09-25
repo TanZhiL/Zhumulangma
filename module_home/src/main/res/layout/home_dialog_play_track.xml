@@ -10,8 +10,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/cl_actionbar"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/white">
+        android:layout_height="45dp">
 
         <LinearLayout
             android:id="@+id/ll_shuxu"

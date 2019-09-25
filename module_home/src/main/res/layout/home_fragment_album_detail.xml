@@ -6,20 +6,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/transparent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/abl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorDefualt">
+        android:background="@color/transparent">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/c"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@color/white"
             android:paddingLeft="9dp"
             android:paddingRight="9dp"
             android:paddingBottom="8dp"
@@ -101,6 +99,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_playcount"
                     tools:text="数量:102集" />
             </android.support.constraint.ConstraintLayout>
+
             <LinearLayout
                 android:id="@+id/ll_unsubscribe"
                 android:layout_width="162dp"
@@ -119,10 +118,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="已订"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:text="已订" />
+                    android:textSize="14sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_subscribe"
                 android:layout_width="162dp"
@@ -141,11 +141,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="订阅"
                     android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:text="订阅" />
+                    android:textSize="14sp" />
             </LinearLayout>
-
 
 
             <LinearLayout
@@ -209,11 +208,14 @@
 
         </android.support.constraint.ConstraintLayout>
 
+        <View
+            style="@style/PrimaryHLine"
+            android:layout_width="match_parent" />
+
         <net.lucode.hackware.magicindicator.MagicIndicator
             android:id="@+id/magic_indicator"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:background="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/c" />
 
     </android.support.design.widget.AppBarLayout>

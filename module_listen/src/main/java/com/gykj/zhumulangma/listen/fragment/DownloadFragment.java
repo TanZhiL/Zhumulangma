@@ -2,7 +2,6 @@ package com.gykj.zhumulangma.listen.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
-import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -506,7 +505,6 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     @Override
     protected View onBindBarCenterCustome() {
         magicIndicator = new MagicIndicator(mContext);
-        magicIndicator.setBackgroundColor(Color.WHITE);
         FrameLayout frameLayout = new FrameLayout(mContext);
         frameLayout.addView(magicIndicator);
         ViewGroup.LayoutParams layoutParams = magicIndicator.getLayoutParams();

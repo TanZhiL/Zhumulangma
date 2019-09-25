@@ -17,14 +17,12 @@
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:descendantFocusability="blocksDescendants"
-    android:paddingBottom="8dp"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/c1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:paddingLeft="11dp"
         android:paddingTop="8dp"
         android:paddingRight="11dp"
@@ -239,7 +237,6 @@
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:background="#f0f0f0"
-            android:textColor="@color/colorGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView17"
@@ -248,19 +245,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginEnd="1dp"
-                android:background="#f0f0f0"
                 android:gravity="center"
+                android:textColor="@color/colorGray"
                 android:text="综合台"
                 app:rci_id="12"
-                android:textColor="@color/colorGray"
                 android:textSize="14sp"/>
             <ImageView
                 android:id="@+id/iv_more"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:tint="@color/colorPrimary"
                 android:background="#f0f0f0"
+                android:tint="@color/colorPrimary"
                 android:src="@drawable/ic_home_radio_down" />
 
         </FrameLayout>
@@ -363,7 +359,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorGray"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView35"
+                app:layout_constraintEnd_toStartOf="@+id/iv_less"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textView34"
                 app:layout_constraintTop_toTopOf="@+id/textView34" />
@@ -401,74 +397,96 @@
                 app:layout_constraintTop_toTopOf="@+id/textView36" />
 
 
-            <FrameLayout
-                android:id="@+id/textView35"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:background="#f0f0f0"
-                android:textColor="@color/colorGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="1dp"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView33"
-                app:layout_constraintTop_toTopOf="@+id/textView33" >
                 <ImageView
                     android:id="@+id/iv_less"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:tint="@color/colorPrimary"
-                    android:background="#f0f0f0"
                     android:rotation="180"
-                    android:src="@drawable/ic_home_radio_down" />
-            </FrameLayout>
+                    android:src="@drawable/ic_home_radio_down"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:background="#f0f0f0"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="1dp"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textView33"
+                    app:layout_constraintTop_toTopOf="@+id/textView33"/>
+
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
+    <View
+        android:id="@+id/line1"
+        android:layout_width="0dp"
+        style="@style/PrimaryHLine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/c1"
+        />
     <com.gykj.zhumulangma.common.widget.ItemHeader
         android:id="@+id/ih_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:ih_right_text="更多"
         app:ih_title="最近收听"
-        app:layout_constraintTop_toBottomOf="@id/c1" />
+        app:layout_constraintTop_toBottomOf="@id/line1" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/ih_history" />
-
+    <View
+        android:id="@+id/line2"
+        android:layout_width="0dp"
+        style="@style/PrimaryHLine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_history"
+        />
     <com.gykj.zhumulangma.common.widget.ItemHeader
         android:id="@+id/ih_local"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:ih_right_text="更多"
         app:ih_title="长沙"
-        app:layout_constraintTop_toBottomOf="@id/rv_history" />
+        app:layout_constraintTop_toBottomOf="@id/line2" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_local"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/ih_local" />
+    <View
+        android:id="@+id/line3"
+        android:layout_width="0dp"
+        style="@style/PrimaryHLine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_local"
+        />
     <com.gykj.zhumulangma.common.widget.ItemHeader
         android:id="@+id/ih_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         app:ih_right_text="更多"
         app:ih_title="排行榜"
-        app:layout_constraintTop_toBottomOf="@id/rv_local" />
+        app:layout_constraintTop_toBottomOf="@id/line3" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/ih_top" />
+    <View
+        android:id="@+id/line4"
+        android:layout_width="0dp"
+        style="@style/PrimaryHLine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_top"
+        />
 </android.support.constraint.ConstraintLayout>
 </ScrollView>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

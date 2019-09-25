@@ -2,4 +2,8 @@
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_bg</item>
     </style>
+
+    <style name="NullTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@null</item>
+    </style>
 </resources>

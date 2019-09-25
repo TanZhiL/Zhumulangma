@@ -1,5 +1,6 @@
 package com.gykj.zhumulangma.discover.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -27,6 +28,7 @@ public class MainDiscoverFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mView.setBackgroundColor(Color.WHITE);
         setSwipeBackEnable(false);
     }
 
@@ -66,6 +68,7 @@ public class MainDiscoverFragment extends BaseFragment {
                 .setItemMarginTop(1)
                 .setRightText(0, "2")
                 .setRightText(4, "1")
+                .setItemMarginTop(0,0)
                 .setItemMarginTop(1, 8)
                 .setItemMarginTop(3, 8)
                 .setItemMarginTop(5, 8)

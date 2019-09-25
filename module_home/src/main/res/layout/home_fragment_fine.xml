@@ -19,7 +19,6 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="8dp"
     android:descendantFocusability="blocksDescendants"
     android:layout_height="wrap_content">
     <com.youth.banner.Banner
@@ -31,21 +30,23 @@
         app:indicator_margin="3dp"
         app:indicator_width="7dp" >
     </com.youth.banner.Banner>
+
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
             android:layout_width="match_parent"
             android:layout_height="84dp"
-            android:scrollbars="none"
             android:overScrollMode="never"
-           app:layout_constraintTop_toTopOf="parent">
+            android:scrollbars="none"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -63,8 +64,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
-                            android:tint="@color/white"
-                            android:src="@drawable/ic_home_fine_cxb"/>
+                            android:src="@drawable/ic_home_fine_cxb"
+                            android:tint="@color/white" />
                     </FrameLayout>
 
                     <TextView
@@ -91,8 +92,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
-                            android:tint="@color/white"
-                            android:src="@drawable/ic_home_fine_xpb"/>
+                            android:src="@drawable/ic_home_fine_xpb"
+                            android:tint="@color/white" />
                     </FrameLayout>
 
                     <TextView
@@ -119,8 +120,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
-                            android:tint="@color/white"
-                            android:src="@drawable/ic_home_fine_dfhy"/>
+                            android:src="@drawable/ic_home_fine_dfhy"
+                            android:tint="@color/white" />
                     </FrameLayout>
 
                     <TextView
@@ -147,8 +148,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
-                            android:tint="@color/white"
-                            android:src="@drawable/ic_home_fine_yss"/>
+                            android:src="@drawable/ic_home_fine_yss"
+                            android:tint="@color/white" />
                     </FrameLayout>
 
                     <TextView
@@ -175,8 +176,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
-                            android:tint="@color/white"
-                            android:src="@drawable/ic_home_fine_sx" />
+                            android:src="@drawable/ic_home_fine_sx"
+                            android:tint="@color/white" />
                     </FrameLayout>
 
                     <TextView
@@ -203,8 +204,8 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_gravity="center"
-                            android:tint="@color/white"
-                            android:src="@drawable/ic_home_fine_yg"/>
+                            android:src="@drawable/ic_home_fine_yg"
+                            android:tint="@color/white" />
                     </FrameLayout>
 
                     <TextView
@@ -219,12 +220,28 @@
             </LinearLayout>
         </HorizontalScrollView>
 
+        <View
+            android:id="@+id/line1"
+            style="@style/PrimaryHLine"
+            android:layout_width="0dp"
+            android:layout_height="6dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/horizontalScrollView" />
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/c4"
             android:layout_width="match_parent"
             android:layout_height="143dp"
-            android:layout_marginTop="6dp"
-            app:layout_constraintTop_toBottomOf="@id/horizontalScrollView">
+            app:layout_constraintTop_toBottomOf="@id/line1">
+
+            <View
+                android:id="@+id/line2"
+                style="@style/PrimaryVLine"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/imageView3"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toTopOf="@id/imageView3" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -234,20 +251,16 @@
                 android:src="@drawable/home_fine_ssf"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="2"
-                app:layout_constraintStart_toEndOf="@+id/iv_download"
+                app:layout_constraintStart_toEndOf="@+id/line2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/iv_download"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="8dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/home_fine_jrth"
-                app:layout_constraintEnd_toStartOf="@+id/imageView3"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_weight="3"
+                app:layout_constraintEnd_toStartOf="@+id/line2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -258,8 +271,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="今日特惠"
-                android:textSize="18sp"
                 android:textColor="@color/white"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView4"
                 app:layout_constraintEnd_toEndOf="@+id/iv_download"
                 app:layout_constraintTop_toBottomOf="@+id/iv_download" />
@@ -270,8 +283,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="限时五折抢购"
-                android:textSize="18sp"
                 android:textColor="@color/white"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/iv_download"
                 app:layout_constraintEnd_toEndOf="@+id/iv_download"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -284,26 +297,41 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="9.9元超值"
-                android:textSize="18sp"
                 android:textColor="@color/white"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/imageView3"
                 app:layout_constraintTop_toTopOf="@+id/imageView3" />
-        </android.support.constraint.ConstraintLayout>
 
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.6" />
+        </android.support.constraint.ConstraintLayout>
+        <View
+            android:id="@+id/line8"
+            style="@style/PrimaryHLine"
+            android:layout_width="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/c4" />
         <com.gykj.zhumulangma.common.widget.ItemHeader
             android:id="@+id/ih_daily"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:ih_right_text="更多"
             app:ih_title="每日优选"
-            app:layout_constraintTop_toBottomOf="@id/c4" />
+            app:layout_constraintTop_toBottomOf="@id/line8" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_daily"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/ih_daily" />
+
         <include
             android:id="@+id/daily_refresh"
             layout="@layout/common_layout_item_refresh"
@@ -311,14 +339,21 @@
             android:layout_height="45dp"
             app:layout_constraintTop_toBottomOf="@id/rv_daily" />
 
+        <View
+            android:id="@+id/line3"
+            android:layout_width="0dp"
+            style="@style/PrimaryHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/daily_refresh"
+            />
         <com.gykj.zhumulangma.common.widget.ItemHeader
             android:id="@+id/ih_book"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             app:ih_right_text="更多"
             app:ih_title="有声读物"
-            app:layout_constraintTop_toBottomOf="@id/daily_refresh" />
+            app:layout_constraintTop_toBottomOf="@id/line3" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_book"
@@ -326,21 +361,28 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/ih_book" />
+
         <include
             android:id="@+id/book_refresh"
             layout="@layout/common_layout_item_refresh"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             app:layout_constraintTop_toBottomOf="@id/rv_book" />
-
+        <View
+            android:id="@+id/line4"
+            android:layout_width="0dp"
+            style="@style/PrimaryHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/book_refresh"
+            />
         <com.gykj.zhumulangma.common.widget.ItemHeader
             android:id="@+id/ih_classroom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             app:ih_right_text="更多"
             app:ih_title="小课堂"
-            app:layout_constraintTop_toBottomOf="@id/book_refresh" />
+            app:layout_constraintTop_toBottomOf="@id/line4" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_classroom"
@@ -348,13 +390,21 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             app:layout_constraintTop_toBottomOf="@id/ih_classroom" />
+
         <include
             android:id="@+id/classroom_refresh"
             layout="@layout/common_layout_item_refresh"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             app:layout_constraintTop_toBottomOf="@id/rv_classroom" />
-
+        <View
+            android:id="@+id/line5"
+            android:layout_width="0dp"
+            style="@style/PrimaryHLine"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/classroom_refresh"
+            />
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>

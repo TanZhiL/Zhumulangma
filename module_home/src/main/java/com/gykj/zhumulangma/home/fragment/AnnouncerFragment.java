@@ -61,6 +61,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mView.setBackground(null);
         setSwipeBackEnable(false);
     }
     protected void initView(View view) {

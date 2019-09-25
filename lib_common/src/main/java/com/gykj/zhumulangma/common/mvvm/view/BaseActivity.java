@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.R;
@@ -79,6 +80,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        KeyboardUtils.fixSoftInputLeaks(this);
         mApplication= App.getInstance();
         setContentView(R.layout.common_layout_root);
         EventBus.getDefault().register(this);

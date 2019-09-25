@@ -271,7 +271,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         } else {
             if (!(getTopChildFragment() instanceof SearchSuggestFragment)) {
                 ((BaseFragment) getTopChildFragment()).start(mSuggestFragment);
-                mHandler.postDelayed(() -> mSuggestFragment.loadSuggest(s.toString()), 50);
+                mHandler.postDelayed(() -> mSuggestFragment.loadSuggest(s.toString()), 100);
 
             } else {
                 mSuggestFragment.loadSuggest(s.toString());

@@ -54,6 +54,7 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mView.setBackgroundColor(Color.WHITE);
         setSwipeBackEnable(false);
     }
 
@@ -147,7 +148,7 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
                 .setItemMode(Mode.ARROW)
                 .setArrowResId(R.drawable.common_arrow_enter); //设置箭头资源值;
         bilUser.setConfigAttrs(attrs)
-                .create(); //
+                .create();
         bilUser.setOnBaseItemClick(this);
     }
 
