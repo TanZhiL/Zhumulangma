@@ -28,7 +28,7 @@ import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.status.EmptyCallback;
 import com.gykj.zhumulangma.common.status.ErrorCallback;
-import com.gykj.zhumulangma.common.status.InitLoadingCallback;
+import com.gykj.zhumulangma.common.status.InitCallback;
 import com.gykj.zhumulangma.common.status.LoadingCallback;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -164,7 +164,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
         LoadSir loadSir = new LoadSir.Builder()
-                .addCallback(new InitLoadingCallback())
+                .addCallback(new InitCallback())
                 .addCallback(new EmptyCallback())
                 .addCallback(new ErrorCallback())
                 .addCallback(new LoadingCallback())
@@ -303,9 +303,11 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
 
     }
-    protected void onSimpleBackClick(){
+
+    protected void onSimpleBackClick() {
         pop();
     }
+
     protected int onBindBarRightStyle() {
         return BarStyle.RIGHT_ICON;
     }
@@ -424,7 +426,8 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     protected abstract void initView(View view);
 
     @Override
-    public void initView() {
+    public final void initView() {
+
     }
 
     public abstract void initData();
@@ -445,11 +448,11 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     public void showInitView(boolean show) {
 
-            if (!show) {
-                mLoadService.showSuccess();
-            } else {
-                mLoadService.showCallback(InitLoadingCallback.class);
-            }
+        if (!show) {
+            mLoadService.showSuccess();
+        } else {
+            mLoadService.showCallback(InitCallback.class);
+        }
     }
 
 
@@ -477,7 +480,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     public void showLoadingView(String tip) {
         Fragment parentFragment = getParentFragment();
-        if (parentFragment != null&& ((BaseFragment) parentFragment).enableSimplebar()) {
+        if (parentFragment != null && ((BaseFragment) parentFragment).enableSimplebar()) {
             ((BaseFragment) parentFragment).showLoadingView(tip);
         } else {
             if (null == tip) {

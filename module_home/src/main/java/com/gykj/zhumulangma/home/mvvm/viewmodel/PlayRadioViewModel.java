@@ -97,8 +97,8 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
                     getTodaySingleLiveEvent().postValue(schedules);
                 }).flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                 RadioUtil.getSchedules(tomorrow))
-                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
-                .doFinally(() -> postShowLoadingViewEvent(null))
+                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
+                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
                 .subscribe(schedules -> {
                     Iterator var7 = schedules.iterator();
                     while (var7.hasNext()) {

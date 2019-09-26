@@ -52,22 +52,13 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
         super(application, model);
     }
 public void refresh(){
+    curLocalPage = 1;
     mModel.getHistory(1, 5)
             .doOnNext(historyBeans -> getHistorySingleLiveEvent().postValue(historyBeans))
-            .flatMap(new Function<List<PlayHistoryBean>, ObservableSource<RadioList>>() {
-                @Override
-                public ObservableSource<RadioList> apply(List<PlayHistoryBean> historyBeans) throws Exception {
-                    return getLocalListObservable(mCityCode);
-                }
-            })
-            .flatMap(new Function<RadioList, ObservableSource<RadioList>>() {
-                @Override
-                public ObservableSource<RadioList> apply(RadioList radioList) throws Exception {
-                    return getTopListObservable();
-                }
-            })
+            .flatMap((Function<List<PlayHistoryBean>, ObservableSource<RadioList>>) historyBeans -> getLocalListObservable(mCityCode))
+            .flatMap((Function<RadioList, ObservableSource<RadioList>>) radioList -> getTopListObservable())
             .doFinally(()->getRefreshSingleLiveEvent().call())
-            .subscribe(r->{},e->e.printStackTrace());
+            .subscribe(r->{},e->  e.printStackTrace());
 
 }
 
@@ -158,8 +149,8 @@ public void refresh(){
                 })
                 .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                         RadioUtil.getSchedules(tomorrow))
-                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
-                .doFinally(() -> postShowLoadingViewEvent(null))
+                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
+                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
                 .subscribe(schedules -> {
                     Iterator var7 = schedules.iterator();
                     while (var7.hasNext()) {
@@ -180,21 +171,6 @@ public void refresh(){
                                             (ISupportFragment) navigation)));
                         }
                     }
-               /*     else {
-                        Schedule schedule = ModelUtil.radioToSchedule(radio);
-                        if (schedule == null) {
-                            return;
-                        }
-                        schedulesx.add(schedule);
-                        XmPlayerManager.getInstance(getApplication()).playSchedule(schedulesx, -1);
-                        Object navigation = ARouter.getInstance()
-                                .build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
-                        if (null != navigation) {
-                            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
-                                    new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO,
-                                            (ISupportFragment) navigation)));
-                        }
-                    }*/
                 }, e -> e.printStackTrace());
     }
 

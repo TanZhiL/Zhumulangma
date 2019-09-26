@@ -11,7 +11,6 @@ import com.gykj.zhumulangma.common.mvvm.model.BaseModel;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Description: <BaseViewModel><br>
@@ -20,98 +19,65 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Version:     V1.0.0<br>
  * Update:     <br>
  */
-public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel,Consumer<Disposable> {
+public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel, Consumer<Disposable> {
     protected M mModel;
-    protected UIChangeLiveData mUIChangeLiveData;
+
+    private SingleLiveEvent<Boolean> showInitLoadViewEvent;
+    private SingleLiveEvent<String> showLoadingViewEvent;
+    private SingleLiveEvent<Boolean> showEmptyViewEvent;
+    private SingleLiveEvent<Boolean> showNetErrViewEvent;
+    private SingleLiveEvent<Void> finishSelfEvent;
 
     public BaseViewModel(@NonNull Application application, M model) {
         super(application);
         this.mModel = model;
     }
-    public UIChangeLiveData getUC() {
-        if (mUIChangeLiveData == null) {
-            mUIChangeLiveData = new UIChangeLiveData();
-        }
-        return mUIChangeLiveData;
+
+    /**
+     * 初始化时loading视图
+     * @return
+     */
+    public SingleLiveEvent<Boolean> getShowInitViewEvent() {
+        return showInitLoadViewEvent = createLiveData(showInitLoadViewEvent);
     }
 
-    public final class UIChangeLiveData extends SingleLiveEvent {
-        private SingleLiveEvent<Boolean> showInitLoadViewEvent;
-        private SingleLiveEvent<String> showLoadingViewEvent;
-        private SingleLiveEvent<Boolean> showNoDataViewEvent;
-        private SingleLiveEvent<Boolean> showNetWorkErrViewEvent;
-        private SingleLiveEvent<ISupportFragment> startFragmentEvent;
-        private SingleLiveEvent<Void> finishSelfEvent;
-        public SingleLiveEvent<Boolean> getShowInitViewEvent() {
-            return showInitLoadViewEvent = createLiveData(showInitLoadViewEvent);
-        }
-
-        public SingleLiveEvent<String> getShowLoadingViewEvent() {
-            return showLoadingViewEvent = createLiveData(showLoadingViewEvent);
-        }
-
-        public SingleLiveEvent<Boolean> getShowNoDataViewEvent() {
-            return showNoDataViewEvent = createLiveData(showNoDataViewEvent);
-        }
-
-        public SingleLiveEvent<Boolean> getShowNetWorkErrViewEvent() {
-            return showNetWorkErrViewEvent = createLiveData(showNetWorkErrViewEvent);
-        }
-
-        public SingleLiveEvent<ISupportFragment> getStartFragmentEvent() {
-            return startFragmentEvent = createLiveData(startFragmentEvent);
-        }
-
-
-        public SingleLiveEvent<Void> getFinishSelfEvent() {
-            return finishSelfEvent = createLiveData(finishSelfEvent);
-        }
+    /**
+     * 常规loading
+     * @return
+     */
+    public SingleLiveEvent<String> getShowLoadingViewEvent() {
+        return showLoadingViewEvent = createLiveData(showLoadingViewEvent);
     }
+
+    /**
+     * 数据为空
+     * @return
+     */
+    public SingleLiveEvent<Boolean> getShowEmptyViewEvent() {
+        return showEmptyViewEvent = createLiveData(showEmptyViewEvent);
+    }
+
+    /**
+     * 网络异常
+     * @return
+     */
+    public SingleLiveEvent<Boolean> getShowNetErrViewEvent() {
+        return showNetErrViewEvent = createLiveData(showNetErrViewEvent);
+    }
+
+    /**
+     * 结束宿主视图
+     * @return
+     */
+    public SingleLiveEvent<Void> getFinishSelfEvent() {
+        return finishSelfEvent = createLiveData(finishSelfEvent);
+    }
+
     protected SingleLiveEvent createLiveData(SingleLiveEvent liveData) {
         if (liveData == null) {
             liveData = new SingleLiveEvent();
         }
         return liveData;
-    }
-    public static final class ParameterField {
-        public static String CLASS = "CLASS";
-        public static String CANONICAL_NAME = "CANONICAL_NAME";
-        public static String BUNDLE = "BUNDLE";
-    }
-
-    public void postShowLoadingViewEvent(String tip) {
-        if (mUIChangeLiveData != null) {
-            mUIChangeLiveData.showLoadingViewEvent.postValue(tip);
-        }
-    }
-
-    public void postShowNoDataViewEvent(boolean show) {
-        if (mUIChangeLiveData != null) {
-            mUIChangeLiveData.showNoDataViewEvent.postValue(show);
-        }
-    }
-
-    public void postShowInitViewEvent(boolean show) {
-        if (mUIChangeLiveData != null) {
-            mUIChangeLiveData.showInitLoadViewEvent.postValue(show);
-        }
-    }
-
-    public void postShowNetWorkErrViewEvent(boolean show) {
-        if (mUIChangeLiveData != null) {
-            mUIChangeLiveData.showNetWorkErrViewEvent.postValue(show);
-        }
-    }
-/*    public void postStartFragmentEvent(ISupportFragment fragment) {
-
-        mUIChangeLiveData.startFragmentEvent.postValue(fragment);
-    }*/
-
-
-
-
-    public void postFinishSelfEvent() {
-        mUIChangeLiveData.finishSelfEvent.call();
     }
 
     @Override
@@ -144,7 +110,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
 
     @Override
     public void accept(Disposable disposable) throws Exception {
-        if(mModel != null){
+        if (mModel != null) {
             mModel.addSubscribe(disposable);
         }
     }

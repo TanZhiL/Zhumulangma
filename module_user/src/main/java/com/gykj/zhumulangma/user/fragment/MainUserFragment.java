@@ -12,8 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
@@ -27,8 +32,12 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.tencent.bugly.beta.Beta;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.User.F_MAIN)
 public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnBaseItemClick, View.OnClickListener {
@@ -200,6 +209,12 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
     public void onItemClick(int position) {
         if (position == 9) {
             Beta.checkUpgrade();
+        }else if(position==10){
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
+                    .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL/Zhumulangma")
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
         }
     }
 

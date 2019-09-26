@@ -24,6 +24,7 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
@@ -144,6 +145,11 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
         mViewModel.getAnnouncerSingleLiveEvent().observe(this, announcers -> {
             if(null==announcers||(mAnnouncerAdapter.getData().size()==0&&announcers.size()==0)){
                 showNoDataView(true);
+                return;
+            }
+            if(refreshLayout.getState()== RefreshState.Refreshing){
+                mAnnouncerAdapter.setNewData(announcers);
+                refreshLayout.finishRefresh();
                 return;
             }
             if (announcers.size() > 0) {

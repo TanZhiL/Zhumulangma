@@ -55,11 +55,11 @@ public class SearchResultViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getSearchedAlbums(map)
                 .doOnSubscribe(d->{
                     if(curAlbumPage==1){
-                         postShowLoadingViewEvent("");
+                         getShowLoadingViewEvent().postValue("");
                     }
                 })
                 .subscribe(albumList -> {
-                    postShowLoadingViewEvent(null);
+                    getShowLoadingViewEvent().postValue(null);
                     curAlbumPage++;
                     getAlbumSingleLiveEvent().postValue(albumList.getAlbums());
                 }, e->e.printStackTrace());
@@ -72,11 +72,11 @@ public class SearchResultViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getSearchedTracks(map)
                 .doOnSubscribe(d->{
                     if(curTrackPage==1){
-                         postShowLoadingViewEvent("");
+                         getShowLoadingViewEvent().postValue("");
                     }
                 })
                 .subscribe(albumList -> {
-                    postShowLoadingViewEvent(null);
+                    getShowLoadingViewEvent().postValue(null);
                     curTrackPage++;
                     getTrackSingleLiveEvent().postValue(albumList.getTracks());
                 }, e->e.printStackTrace());
@@ -89,11 +89,11 @@ public class SearchResultViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getSearchAnnouncers(map)
                 .doOnSubscribe(d->{
                     if(curAnnouncerPage==1){
-                         postShowLoadingViewEvent("");
+                         getShowLoadingViewEvent().postValue("");
                     }
                 })
                 .subscribe(announcerList -> {
-                    postShowLoadingViewEvent(null);
+                    getShowLoadingViewEvent().postValue(null);
                     curAnnouncerPage++;
                     getAnnouncerSingleLiveEvent().postValue(announcerList.getAnnouncerList());
                 }, e->e.printStackTrace());
@@ -105,11 +105,11 @@ public class SearchResultViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getSearchedRadios(map)
                 .doOnSubscribe(d->{
                     if(curRadioPage==1){
-                         postShowLoadingViewEvent("");
+                         getShowLoadingViewEvent().postValue("");
                     }
                 })
                 .subscribe(radioList -> {
-                    postShowLoadingViewEvent(null);
+                    getShowLoadingViewEvent().postValue(null);
                     curRadioPage++;
                     getRadioSingleLiveEvent().postValue(radioList.getRadios());
                 }, e->e.printStackTrace());

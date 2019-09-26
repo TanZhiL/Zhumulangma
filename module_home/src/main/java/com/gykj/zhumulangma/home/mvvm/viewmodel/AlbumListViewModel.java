@@ -34,9 +34,9 @@ public class AlbumListViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.LIKE_COUNT, "50");
         map.put(DTransferConstants.PAGE, String.valueOf(1));
         mModel.getGuessLikeAlbum(map)
-                .doOnSubscribe(disposable ->  postShowLoadingViewEvent(""))
+                .doOnSubscribe(disposable ->  getShowLoadingViewEvent().postValue(""))
                 .subscribe(gussLikeAlbumList -> {
-                    postShowLoadingViewEvent(null);
+                    getShowLoadingViewEvent().postValue(null);
                     getLikeSingleLiveEvent().postValue(
                             gussLikeAlbumList.getAlbumList());
                 }, e -> e.printStackTrace());
@@ -50,10 +50,10 @@ public class AlbumListViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getAlbumList(map)
                 .doOnSubscribe(disposable -> {
-                        postShowLoadingViewEvent(curPage == 1?"":null);
+                        getShowLoadingViewEvent().postValue(curPage == 1?"":null);
                 })
                 .subscribe(albumList -> {
-                    postShowLoadingViewEvent(null);
+                    getShowLoadingViewEvent().postValue(null);
                     curPage++;
                     getAlbumSingleLiveEvent().postValue(albumList.getAlbums());
                 }, e -> e.printStackTrace());
@@ -65,9 +65,9 @@ public class AlbumListViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getAlbumsByAnnouncer(map)
-                .doOnSubscribe(disposable -> postShowLoadingViewEvent(curPage == 1?"":null))
+                .doOnSubscribe(disposable -> getShowLoadingViewEvent().postValue(curPage == 1?"":null))
                 .subscribe(albumList -> {
-                    postShowLoadingViewEvent(null);
+                    getShowLoadingViewEvent().postValue(null);
                     curPage++;
                     getAlbumSingleLiveEvent().postValue(albumList.getAlbums());
                 }, e -> e.printStackTrace());
@@ -80,10 +80,10 @@ public class AlbumListViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getAllPaidAlbums(map)
                 .doOnSubscribe(disposable -> {
                     if (curPage == 1)
-                         postShowLoadingViewEvent("");
+                         getShowLoadingViewEvent().postValue("");
                 })
                 .subscribe(albumList -> {
-                    postShowLoadingViewEvent(null);
+                    getShowLoadingViewEvent().postValue(null);
                     curPage++;
                     getAlbumSingleLiveEvent().postValue(albumList.getAlbums());
                 }, e -> e.printStackTrace());

@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.webkit.SslErrorHandler;
@@ -29,14 +28,12 @@ import com.download.library.DownloadImpl;
 import com.download.library.DownloadListenerAdapter;
 import com.download.library.Extra;
 import com.download.library.ResourceRequest;
-import com.google.gson.Gson;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.discover.R;
-import com.gykj.zhumulangma.discover.widget.CoolIndicatorLayout;
 import com.just.agentweb.AbsAgentWebSettings;
 import com.just.agentweb.AgentWeb;
 import com.just.agentweb.AgentWebConfig;
@@ -276,12 +273,6 @@ public class WebFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-
-            if (timer.get(url) != null) {
-                long overTime = System.currentTimeMillis();
-                Long startTime = timer.get(url);
-            }
-
         }
 
         @Override
@@ -438,10 +429,9 @@ public class WebFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        if(mAgentWeb!=null)
+    public void onDestroy() {
+        super.onDestroy();
         mAgentWeb.getWebLifeCycle().onDestroy();
-        super.onDestroyView();
     }
 
     @Override
@@ -451,15 +441,19 @@ public class WebFragment extends BaseFragment {
 
     @Override
     protected void onSimpleBackClick() {
-        if (!mAgentWeb.back()) {
+        if (!mAgentWeb.getWebCreator().getWebView().canGoBack()) {
             pop();
+        }else {
+            mAgentWeb.back();
         }
     }
 
     @Override
     public boolean onBackPressedSupport() {
-        if (!mAgentWeb.back()) {
+        if (!mAgentWeb.getWebCreator().getWebView().canGoBack()) {
             pop();
+        }else {
+            mAgentWeb.back();
         }
         return true;
     }

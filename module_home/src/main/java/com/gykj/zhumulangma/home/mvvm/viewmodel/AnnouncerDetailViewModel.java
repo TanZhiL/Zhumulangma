@@ -63,8 +63,8 @@ public class AnnouncerDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                     map12.put(DTransferConstants.PAGE_SIZE, String.valueOf(5));
                     return mModel.getTracksByAnnouncer(map12);
                 })
-                .doOnSubscribe(d->  postShowLoadingViewEvent(""))
-                .doFinally(()-> postShowLoadingViewEvent(null))
+                .doOnSubscribe(d->  getShowLoadingViewEvent().postValue(""))
+                .doFinally(()-> getShowLoadingViewEvent().postValue(null))
                 .subscribe(trackList -> getTrackListSingleLiveEvent().postValue(trackList), e -> e.printStackTrace());
     }
     public void play(long albumId,long trackId) {
@@ -74,8 +74,8 @@ public class AnnouncerDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
-                .doFinally(() -> postShowLoadingViewEvent(null))
+                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
+                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if(trackList.getTracks().get(i).getDataId()==trackId){

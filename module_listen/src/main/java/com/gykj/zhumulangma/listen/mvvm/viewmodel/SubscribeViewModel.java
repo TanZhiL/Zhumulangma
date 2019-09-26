@@ -114,9 +114,9 @@ public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.LIKE_COUNT, "50");
         map.put(DTransferConstants.PAGE, String.valueOf(1));
         mModel.getGuessLikeAlbum(map)
-                .doOnSubscribe(disposable ->  postShowLoadingViewEvent(""))
+                .doOnSubscribe(disposable ->  getShowLoadingViewEvent().postValue(""))
                 .subscribe(gussLikeAlbumList -> {
-                    postShowLoadingViewEvent(null);
+                    getShowLoadingViewEvent().postValue(null);
                     getLikeSingleLiveEvent().postValue(
                             gussLikeAlbumList.getAlbumList());
                 }, e -> e.printStackTrace());

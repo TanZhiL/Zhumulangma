@@ -56,12 +56,16 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
 
 
     public void init(){
+        curDailyPage = 1;
+        curBookPage = 1;
+        curClassRoomPage = 1;
         getBannerListObservable()
                 .flatMap((Function<BannerV2List, ObservableSource<AlbumList>>) bannerV2List -> getDailyListObservable())
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getBookListObservable())
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getClassRoomListObservable())
                 .doFinally(()->getRefreshSingleLiveEvent().call())
-                .subscribe(r->{},e->e.printStackTrace());
+                .subscribe(r->{},e->
+                    e.printStackTrace());
     }
 
     public void getBannerList() {
@@ -157,8 +161,8 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
                             return mModel.getLastPlayTracks(map1);
                         })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
-                .doFinally(() -> postShowLoadingViewEvent(null))
+                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
+                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {

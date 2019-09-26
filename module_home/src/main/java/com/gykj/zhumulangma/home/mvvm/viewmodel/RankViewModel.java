@@ -42,7 +42,7 @@ public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
         map1.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
 
         mModel.getPaidAlbumByTag(map1)
-                .doOnSubscribe(disposable ->  postShowLoadingViewEvent(""))
+                .doOnSubscribe(disposable ->  getShowLoadingViewEvent().postValue(""))
                 .doOnNext(albumList -> {
                     paidPage++;
                     getPaidSingleLiveEvent().postValue(albumList.getAlbums());
@@ -55,7 +55,7 @@ public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
                     map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
                     return mModel.getAlbumList(map);
                 })
-                .doFinally(() -> postShowLoadingViewEvent(null))
+                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
                 .subscribe(albumList -> {
                             freePage++;
                             getFreeSingleLiveEvent().postValue(albumList.getAlbums());

@@ -48,10 +48,12 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
         super(application, model);
     }
     public void init(){
+        curPage = 1;
         getBannerListObservable()
                 .flatMap((Function<BannerV2List, ObservableSource<AnnouncerList>>) bannerV2List -> getAnnouncerListObservable())
                 .doFinally(()->getRefreshSingleLiveEvent().call())
-                .subscribe(r->{},e->e.printStackTrace());
+                .subscribe(r->{},e->
+                    e.printStackTrace());
     }
     public void getBannerList() {
         getBannerListObservable().subscribe(r->{},e->e.printStackTrace());
@@ -107,9 +109,9 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE_SIZE, PAGESIZE);
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getAnnouncerList(map)
-                .doOnSubscribe(d -> postShowLoadingViewEvent(curPage == 1?"":null))
+                .doOnSubscribe(d -> getShowLoadingViewEvent().postValue(curPage == 1?"":null))
                 .subscribe(announcerList -> {
-                    postShowLoadingViewEvent(null);
+                    getShowLoadingViewEvent().postValue(null);
                     curPage++;
                     getAnnouncerSingleLiveEvent().postValue(announcerList.getAnnouncerList());
                 },e->e.printStackTrace());
@@ -129,8 +131,8 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
                             return mModel.getLastPlayTracks(map1);
                         })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
-                .doFinally(() -> postShowLoadingViewEvent(null))
+                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
+                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {

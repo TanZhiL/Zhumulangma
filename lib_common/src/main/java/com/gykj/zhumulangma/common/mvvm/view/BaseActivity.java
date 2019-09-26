@@ -25,7 +25,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.status.EmptyCallback;
 import com.gykj.zhumulangma.common.status.ErrorCallback;
-import com.gykj.zhumulangma.common.status.InitLoadingCallback;
+import com.gykj.zhumulangma.common.status.InitCallback;
 import com.gykj.zhumulangma.common.status.LoadingCallback;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.kingja.loadsir.callback.Callback;
@@ -122,7 +122,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         View contentView = viewStubContent.inflate();
 
         LoadSir loadSir = new LoadSir.Builder()
-                .addCallback(new InitLoadingCallback())
+                .addCallback(new InitCallback())
                 .addCallback(new EmptyCallback())
                 .addCallback(new ErrorCallback())
                 .addCallback(new LoadingCallback())
@@ -385,7 +385,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         if (!show) {
             mLoadService.showSuccess();
         } else {
-            mLoadService.showCallback(InitLoadingCallback.class);
+            mLoadService.showCallback(InitCallback.class);
         }
     }
 
@@ -428,7 +428,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     }
 
     protected void onReload(View v) {
-//        mLoadService.showCallback(InitLoadingCallback.class);
+//        mLoadService.showCallback(InitCallback.class);
         initData();
     }
 

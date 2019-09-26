@@ -17,6 +17,7 @@
         android:id="@+id/rb_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="false"
         android:layout_marginRight="8dp"
         android:layout_gravity="right|center_vertical" />
 </FrameLayout>

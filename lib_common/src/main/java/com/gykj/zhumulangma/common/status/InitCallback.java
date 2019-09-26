@@ -12,7 +12,7 @@ import com.kingja.loadsir.callback.Callback;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class InitLoadingCallback extends Callback {
+public class InitCallback extends Callback {
     @Override
     protected int onCreateView() {
         return R.layout.common_view_init_loading;

@@ -69,6 +69,11 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
 
     public void init() {
+        curStoryPage = 1;
+        curBabyPage = 1;
+        curTopicPage = 1;
+        curMusicPage = 1;
+        curRadioPage = 1;
         getBannerListObervable()
                 .flatMap((Function<BannerV2List, ObservableSource<GussLikeAlbumList>>) bannerV2List ->
                         getGussLikeListObservable())
@@ -79,7 +84,8 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .flatMap((Function<AlbumList, ObservableSource<RadioList>>) albumList -> getRadioListObservable())
                 .flatMap((Function<RadioList, ObservableSource<ColumnList>>) radioList -> getTopicListObservable())
                 .doFinally(() -> getRefreshSingleLiveEvent().call())
-                .subscribe(columnList -> {}, e -> e.printStackTrace());
+                .subscribe(columnList -> {}, e ->
+                    e.printStackTrace());
     }
 
     private Observable<BannerV2List> getBannerListObervable() {
@@ -223,8 +229,8 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
                             return mModel.getLastPlayTracks(map1);
                         })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  postShowLoadingViewEvent(""))
-                .doFinally(() -> postShowLoadingViewEvent(null))
+                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
+                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {
