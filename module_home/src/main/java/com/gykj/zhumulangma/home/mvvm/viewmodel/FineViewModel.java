@@ -10,7 +10,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
@@ -22,6 +22,7 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +34,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import me.yokeyword.fragmentation.ISupportFragment;
 
-public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
+public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> {
 
     private SingleLiveEvent<List<BannerV2>> mBannerV2SingleLiveEvent;
     private SingleLiveEvent<List<Album>> mDailySingleLiveEvent;
@@ -54,6 +55,10 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
         super(application, model);
     }
 
+    @Override
+    public void onViewRefresh() {
+        init();
+    }
 
     public void init(){
         curDailyPage = 1;
@@ -63,9 +68,12 @@ public class FineViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .flatMap((Function<BannerV2List, ObservableSource<AlbumList>>) bannerV2List -> getDailyListObservable())
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getBookListObservable())
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getClassRoomListObservable())
-                .doFinally(()->getRefreshSingleLiveEvent().call())
-                .subscribe(r->{},e->
-                    e.printStackTrace());
+                .doOnSubscribe(d->getShowLoadingViewEvent().postValue(""))
+                .doFinally(()->getFinishRefreshEvent().postValue(new ArrayList<>()))
+                .subscribe(r-> getClearStatusEvent().call(), e->
+                {   getShowErrorViewEvent().postValue(true);
+                    e.printStackTrace();
+                });
     }
 
     public void getBannerList() {

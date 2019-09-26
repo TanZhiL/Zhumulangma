@@ -2,7 +2,6 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,22 +15,22 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumListViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_ALBUM_LIST)
-public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> implements BaseQuickAdapter.OnItemClickListener,
-        OnLoadMoreListener {
+public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewModel, Album> implements BaseQuickAdapter.OnItemClickListener {
     //猜你喜欢
     public static final int LIKE = 0;
     //付费精品
@@ -72,12 +71,17 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
     public void initListener() {
         super.initListener();
         mAdapter.setOnItemClickListener(this);
-        refreshLayout.setOnLoadMoreListener(this);
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshLayout() {
+        return refreshLayout;
     }
 
     @Override
     public void initData() {
         setTitle(new String[]{title});
+        mViewModel.setType(type);
         if (type == LIKE) {
             mViewModel._getGuessLikeAlbum();
             refreshLayout.setNoMoreData(true);
@@ -100,17 +104,13 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        if (type == PAID) {
-            mViewModel._getPaidList();
-        } else if (type == ANNOUNCER) {
-            mViewModel._getAlbumList(announcerId);
-        } else {
-            mViewModel._getAlbumList(String.valueOf(type));
-        }
-    }
 
+
+    @Override
+    protected void onLoadMoreSucc(List<Album> list) {
+        super.onLoadMoreSucc(list);
+        mAdapter.addData(list);
+    }
 
     @Override
     public Class<AlbumListViewModel> onBindViewModel() {
@@ -133,32 +133,6 @@ public class AlbumListFragment extends BaseMvvmFragment<AlbumListViewModel> impl
 
     @Override
     public void initViewObservable() {
-        mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> {
-
-            if (null == albums || (mAdapter.getData().size() == 0 && albums.size() == 0)) {
-                showNoDataView(true);
-                return;
-            }
-            if (albums.size() > 0) {
-                mAdapter.addData(albums);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
-        mViewModel.getLikeSingleLiveEvent().observe(this, albums -> {
-
-            if (null == albums || (mAdapter.getData().size() == 0 && albums.size() == 0)) {
-                showNoDataView(true);
-                return;
-            }
-            if (albums.size() > 0) {
-                mAdapter.addData(albums);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
     }
 
     @Override

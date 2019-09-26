@@ -16,7 +16,7 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -28,7 +28,7 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -41,7 +41,8 @@ import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
-public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBannerListener, View.OnClickListener, OnRefreshLoadMoreListener {
+public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> implements OnBannerListener,
+        View.OnClickListener {
 
     private Banner banner;
     private RecyclerView rvTopic;
@@ -102,7 +103,6 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
     public void initListener() {
         super.initListener();
         flRank.setOnClickListener(this);
-        ((SmartRefreshLayout)fd(R.id.refreshLayout)).setOnRefreshLoadMoreListener(this);
         fd(R.id.like_refresh).setOnClickListener(this);
         fd(R.id.ih_like).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
@@ -183,6 +183,11 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
             RadioUtil.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getItem(position));
             navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         });
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshLayout() {
+        return fd(R.id.refreshLayout);
     }
 
 
@@ -349,15 +354,5 @@ public class HotFragment extends BaseMvvmFragment<HotViewModel> implements OnBan
         } else if (id == R.id.fl_rank) {
             navigateTo(AppConstants.Router.Home.F_RANK);
         }
-    }
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-    }
-
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-       mViewModel.init();
     }
 }

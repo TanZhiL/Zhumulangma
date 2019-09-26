@@ -4,7 +4,6 @@ package com.gykj.zhumulangma.home.fragment;
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +22,7 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.ItemHeader;
@@ -33,16 +32,15 @@ import com.gykj.zhumulangma.home.adapter.RadioHistoryAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 
 import org.greenrobot.eventbus.EventBus;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
 
-public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements View.OnClickListener, OnRefreshLoadMoreListener {
+public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio> implements View.OnClickListener {
 
     private RecyclerView rvHistory;
     private RadioHistoryAdapter mHistoryAdapter;
@@ -87,7 +85,6 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
         fd(R.id.ll_country).setOnClickListener(this);
         fd(R.id.ll_province).setOnClickListener(this);
         fd(R.id.ll_internet).setOnClickListener(this);
-        ((SmartRefreshLayout)fd(R.id.refreshLayout)).setOnRefreshLoadMoreListener(this);
         fd(R.id.ih_top).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.RANK)
@@ -125,21 +122,19 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
     }
 
     @Override
-    public void initData() {
-
-
-        mViewModel.getTopList();
-        mViewModel._getHistory();
-        getLocalData();
+    protected SmartRefreshLayout getRefreshLayout() {
+        return fd(R.id.refreshLayout);
     }
 
-    private void getLocalData() {
+    @Override
+    public void initData() {
+
         String cityCode = SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE,AppConstants.Defualt.CITY_CODE);
         String cityName = SPUtils.getInstance().getString(AppConstants.SP.CITY_NAME, AppConstants.Defualt.CITY_NAME);
 
         ItemHeader itemHeader = fd(R.id.ih_local);
         itemHeader.setTitle(cityName);
-        mViewModel.getLocalList(cityCode);
+        mViewModel.init(cityCode);
         //初始化定位
         AMapLocationClient mLocationClient = new AMapLocationClient(mApplication);
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -159,7 +154,7 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
                 SPUtils.getInstance().put(AppConstants.SP.PROVINCE_NAME,province.substring(0,province.length()-1),true);
 
                 itemHeader.setTitle(SPUtils.getInstance().getString(AppConstants.SP.CITY_NAME));
-                mViewModel.getLocalList(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE));
+                mViewModel.init(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE));
             }
         });
         mLocationClient.setLocationOption(option);
@@ -171,6 +166,11 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
                         ToastUtil.showToast("无法获取本地电台,请允许应用获取位置信息");
                     }
                 });
+    }
+
+    @Override
+    protected void onReload(View v) {
+        mViewModel.onViewRefresh();
     }
 
     private void initHistory() {
@@ -278,15 +278,5 @@ public class RadioFragment extends BaseMvvmFragment<RadioViewModel> implements V
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         }
-    }
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-    }
-
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.refresh();
     }
 }

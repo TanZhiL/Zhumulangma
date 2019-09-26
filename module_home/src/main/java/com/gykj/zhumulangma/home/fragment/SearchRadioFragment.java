@@ -95,7 +95,7 @@ public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel>
     public void initViewObservable() {
         mViewModel.getRadioSingleLiveEvent().observe(this, radioList -> {
             if(null==radioList||(mAdapter.getData().size()==0&&radioList.size()==0)){
-                showNoDataView(true);
+                showEmptyView(true);
                 return;
             }
             if (radioList.size() > 0) {

@@ -11,10 +11,11 @@ import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
@@ -36,7 +37,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import me.yokeyword.fragmentation.ISupportFragment;
 
-public class RadioViewModel extends BaseViewModel<RadioModel> {
+public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
 
     private SingleLiveEvent<List<PlayHistoryBean>> mHistorySingleLiveEvent;
     private SingleLiveEvent<List<Radio>> mLocalSingleLiveEvent;
@@ -51,16 +52,12 @@ public class RadioViewModel extends BaseViewModel<RadioModel> {
     public RadioViewModel(@NonNull Application application, RadioModel model) {
         super(application, model);
     }
-public void refresh(){
-    curLocalPage = 1;
-    mModel.getHistory(1, 5)
-            .doOnNext(historyBeans -> getHistorySingleLiveEvent().postValue(historyBeans))
-            .flatMap((Function<List<PlayHistoryBean>, ObservableSource<RadioList>>) historyBeans -> getLocalListObservable(mCityCode))
-            .flatMap((Function<RadioList, ObservableSource<RadioList>>) radioList -> getTopListObservable())
-            .doFinally(()->getRefreshSingleLiveEvent().call())
-            .subscribe(r->{},e->  e.printStackTrace());
 
-}
+    @Override
+    public void onViewRefresh() {
+        curLocalPage = 1;
+        init(mCityCode);
+    }
 
     public void _getHistory() {
         mModel.getHistory(1, 5)
@@ -68,10 +65,18 @@ public void refresh(){
     }
 
 
-    public void getLocalList(String cityCode) {
-        mCityCode=cityCode;
-        getLocalListObservable(cityCode).subscribe(r -> {
-        }, e -> e.printStackTrace());
+    public void init(String cityCode) {
+        mCityCode = cityCode;
+        mModel.getHistory(1, 5)
+                .doOnNext(historyBeans -> getHistorySingleLiveEvent().postValue(historyBeans))
+                .flatMap((Function<List<PlayHistoryBean>, ObservableSource<RadioList>>) historyBeans -> getLocalListObservable(mCityCode))
+                .flatMap((Function<RadioList, ObservableSource<RadioList>>) radioList -> getTopListObservable())
+                .doOnSubscribe(d->getShowLoadingViewEvent().postValue(""))
+                .doFinally(()->getFinishRefreshEvent().postValue(new ArrayList<>()))
+                .subscribe(r-> getClearStatusEvent().call(), e->
+                {   getShowErrorViewEvent().postValue(true);
+                    e.printStackTrace();
+                });
     }
 
     private Observable<RadioList> getLocalListObservable(String cityCode) {
@@ -149,7 +154,7 @@ public void refresh(){
                 })
                 .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                         RadioUtil.getSchedules(tomorrow))
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
+                .doOnSubscribe(d -> getShowLoadingViewEvent().postValue(""))
                 .doFinally(() -> getShowLoadingViewEvent().postValue(null))
                 .subscribe(schedules -> {
                     Iterator var7 = schedules.iterator();
@@ -185,6 +190,7 @@ public void refresh(){
     public SingleLiveEvent<List<Radio>> getTopSingleLiveEvent() {
         return mTopSingleLiveEvent = createLiveData(mTopSingleLiveEvent);
     }
+
     public SingleLiveEvent<Void> getRefreshSingleLiveEvent() {
         return mRefreshSingleLiveEvent = createLiveData(mRefreshSingleLiveEvent);
     }

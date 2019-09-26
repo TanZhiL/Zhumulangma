@@ -4,13 +4,14 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerList;
@@ -22,6 +23,7 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +35,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import me.yokeyword.fragmentation.ISupportFragment;
 
-public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
+public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Announcer> {
 
     private static final String PAGESIZE = "20";
     private SingleLiveEvent<List<BannerV2>> mBannerV2SingleLiveEvent;
@@ -51,12 +53,22 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
         curPage = 1;
         getBannerListObservable()
                 .flatMap((Function<BannerV2List, ObservableSource<AnnouncerList>>) bannerV2List -> getAnnouncerListObservable())
-                .doFinally(()->getRefreshSingleLiveEvent().call())
-                .subscribe(r->{},e->
-                    e.printStackTrace());
+                .doOnSubscribe(d->getShowLoadingViewEvent().postValue(""))
+                .doFinally(()->getFinishRefreshEvent().postValue(new ArrayList<>()))
+                .subscribe(r-> getClearStatusEvent().call(), e->
+                {   getShowErrorViewEvent().postValue(true);
+                    e.printStackTrace();
+                });
     }
-    public void getBannerList() {
-        getBannerListObservable().subscribe(r->{},e->e.printStackTrace());
+
+    @Override
+    public void onViewRefresh() {
+        init();
+    }
+
+    @Override
+    public void onViewLoadmore() {
+        getAnnouncerList();
     }
 
     private Observable<BannerV2List> getBannerListObservable() {
@@ -98,25 +110,12 @@ public class AnnouncerViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.PAGE_SIZE, PAGESIZE);
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
        return mModel.getAnnouncerList(map).doOnNext(announcerList -> {
-            curPage++;
-            getAnnouncerSingleLiveEvent().postValue(announcerList.getAnnouncerList());
+           if(!CollectionUtils.isEmpty(announcerList.getAnnouncerList())){
+               curPage++;
+           }
+            getFinishLoadmoreEvent().postValue(announcerList.getAnnouncerList());
         });
     }
-    public void getAnnouncerList(long categoryId) {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.VCATEGORY_ID, String.valueOf(categoryId));
-        map.put(DTransferConstants.CALC_DIMENSION, "1");
-        map.put(DTransferConstants.PAGE_SIZE, PAGESIZE);
-        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
-        mModel.getAnnouncerList(map)
-                .doOnSubscribe(d -> getShowLoadingViewEvent().postValue(curPage == 1?"":null))
-                .subscribe(announcerList -> {
-                    getShowLoadingViewEvent().postValue(null);
-                    curPage++;
-                    getAnnouncerSingleLiveEvent().postValue(announcerList.getAnnouncerList());
-                },e->e.printStackTrace());
-    }
-
     public void play(long trackId) {
 
         Map<String, String> map = new HashMap<>();

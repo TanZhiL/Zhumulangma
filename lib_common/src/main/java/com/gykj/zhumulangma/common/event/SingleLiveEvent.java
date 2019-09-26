@@ -68,8 +68,7 @@ public class SingleLiveEvent<T> extends MutableLiveData<T> {
     /**
      * Used for cases where T is Void, to make calls cleaner.
      */
-    @MainThread
     public void call() {
-        setValue(null);
+        postValue(null);
     }
 }

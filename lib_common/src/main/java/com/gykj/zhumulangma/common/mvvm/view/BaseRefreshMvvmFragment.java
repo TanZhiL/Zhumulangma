@@ -26,6 +26,7 @@ public abstract class BaseRefreshMvvmFragment<VM extends BaseRefreshViewModel, T
     public void initListener() {
         super.initListener();
         mRefreshLayout=getRefreshLayout();
+        if(mRefreshLayout!=null)
         mRefreshLayout.setOnRefreshLoadMoreListener(this);
     }
 

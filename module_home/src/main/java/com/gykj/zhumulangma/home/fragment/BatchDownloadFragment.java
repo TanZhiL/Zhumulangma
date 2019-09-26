@@ -22,7 +22,7 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
@@ -33,8 +33,6 @@ import com.gykj.zhumulangma.home.adapter.TrackPagerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.BatchDownloadViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.DownloadState;
@@ -58,7 +56,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 
 @Route(path = AppConstants.Router.Home.F_BATCH_DOWNLOAD)
-public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewModel> implements OnRefreshLoadMoreListener,
+public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownloadViewModel,Track> implements
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
 
 
@@ -108,7 +106,6 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
     @Override
     public void initListener() {
         super.initListener();
-        refreshLayout.setOnRefreshLoadMoreListener(this);
         mDownloadTrackAdapter.setOnItemClickListener(this);
         fd(R.id.cb_all).setOnClickListener(this);
         fd(R.id.ll_select).setOnClickListener(this);
@@ -125,6 +122,11 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
     }
 
     @Override
+    protected SmartRefreshLayout getRefreshLayout() {
+        return refreshLayout;
+    }
+
+    @Override
     public void initData() {
         mViewModel.getTrackList(String.valueOf(mAlbumId));
     }
@@ -136,33 +138,18 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
             setPager(tracks.getTotalCount());
             mDownloadTrackAdapter.setNewData(tracks.getTracks());
         });
+    }
 
-        mViewModel.getTracksUpSingleLiveEvent().observe(this, tracks -> {
-            if (tracks == null || CollectionUtils.isEmpty(tracks.getTracks())) {
-                if (0 == mDownloadTrackAdapter.getData().size()) {
-                    showNoDataView(true);
-                } else {
-                    refreshLayout.finishRefresh();
-                }
-            } else {
-                ((CheckBox) fd(R.id.cb_all)).setChecked(false);
-                mDownloadTrackAdapter.addData(0, tracks.getTracks());
-                refreshLayout.finishRefresh();
-            }
-        });
-        mViewModel.getTracksMoreSingleLiveEvent().observe(this, tracks -> {
-            ((CheckBox) fd(R.id.cb_all)).setChecked(false);
-            if (CollectionUtils.isEmpty(tracks.getTracks())) {
-                if (0 == mDownloadTrackAdapter.getData().size()) {
-                    showNoDataView(true);
-                } else {
-                    refreshLayout.finishLoadMoreWithNoMoreData();
-                }
-            } else {
-                mDownloadTrackAdapter.addData(tracks.getTracks());
-                refreshLayout.finishLoadMore();
-            }
-        });
+    @Override
+    protected void onRefreshSucc(List<Track> list) {
+        super.onRefreshSucc(list);
+        mDownloadTrackAdapter.addData(0,list);
+    }
+
+    @Override
+    protected void onLoadMoreSucc(List<Track> list) {
+        super.onLoadMoreSucc(list);
+        mDownloadTrackAdapter.addData(list);
     }
 
     @Override
@@ -192,17 +179,6 @@ public class BatchDownloadFragment extends BaseMvvmFragment<BatchDownloadViewMod
     protected Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_common_download};
     }
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getTrackList(String.valueOf(mAlbumId), false);
-    }
-
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getTrackList(String.valueOf(mAlbumId), true);
-    }
-
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mDownloadTrackAdapter) {

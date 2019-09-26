@@ -15,16 +15,19 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerListViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -36,7 +39,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 
 @Route(path = AppConstants.Router.Home.F_ANNOUNCER_LIST)
-public class AnnouncerListFragment extends BaseMvvmFragment<AnnouncerViewModel>
+public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerListViewModel, Announcer>
         implements BaseQuickAdapter.OnItemClickListener, OnLoadMoreListener {
 
     @Autowired(name = KeyCode.Home.CATEGORY_ID)
@@ -67,32 +70,30 @@ public class AnnouncerListFragment extends BaseMvvmFragment<AnnouncerViewModel>
     public void initListener() {
         super.initListener();
         mAdapter.setOnItemClickListener(this);
-        refreshLayout.setOnLoadMoreListener(this);
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshLayout() {
+        return refreshLayout;
     }
 
     @Override
     public void initData() {
+        mViewModel.setCategoryId(categoryId);
         mViewModel.getAnnouncerList(categoryId);
     }
 
 
 
     @Override
-    public void initViewObservable() {
-        mViewModel.getAnnouncerSingleLiveEvent().observe(this, tracks -> {
+    public void initViewObservable() {}
 
-            if (null == tracks || (mAdapter.getData().size() == 0 && tracks.size() == 0)) {
-                showNoDataView(true);
-                return;
-            }
-            if (tracks.size() > 0) {
-                mAdapter.addData(tracks);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
+    @Override
+    protected void onLoadMoreSucc(List<Announcer> list) {
+        super.onLoadMoreSucc(list);
+        mAdapter.addData(list);
     }
+
     @Override
     protected boolean lazyEnable() {
         return false;
@@ -115,8 +116,8 @@ public class AnnouncerListFragment extends BaseMvvmFragment<AnnouncerViewModel>
     }
 
     @Override
-    public Class<AnnouncerViewModel> onBindViewModel() {
-        return AnnouncerViewModel.class;
+    public Class<AnnouncerListViewModel> onBindViewModel() {
+        return AnnouncerListViewModel.class;
     }
 
     @Override

@@ -168,17 +168,10 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                 .addCallback(new EmptyCallback())
                 .addCallback(new ErrorCallback())
                 .addCallback(new LoadingCallback())
-                .setDefaultCallback(LoadingCallback.class)
                 .build();
-        mLoadService = loadSir.register(onBindLoadSirView() == null ? contentView : onBindLoadSirView(),
-                (Callback.OnReloadListener) v -> BaseFragment.this.onReload(v));
+        mLoadService = loadSir.register(contentView,(Callback.OnReloadListener) v -> BaseFragment.this.onReload(v));
         mLoadService.showSuccess();
     }
-
-    protected View onBindLoadSirView() {
-        return null;
-    }
-
 
     @Override
     public void onDestroy() {
@@ -447,33 +440,27 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
 
     public void showInitView(boolean show) {
-
-        if (!show) {
-            mLoadService.showSuccess();
-        } else {
+        mLoadingHandler.removeCallbacksAndMessages(null);
+        mLoadService.showSuccess();
+        if (show) {
             mLoadService.showCallback(InitCallback.class);
         }
     }
 
 
-    public void showNetErrView(boolean show) {
-        Fragment parentFragment = getParentFragment();
-        if (parentFragment != null) {
-            ((BaseFragment) parentFragment).showNetErrView(show);
-        } else {
-            if (!show) {
-                mLoadService.showSuccess();
-            } else {
+    public void showErrorView(boolean show) {
+            mLoadingHandler.removeCallbacksAndMessages(null);
+            mLoadService.showSuccess();
+            if (show) {
                 mLoadService.showCallback(ErrorCallback.class);
             }
-        }
     }
 
 
-    public void showNoDataView(boolean show) {
-        if (!show) {
-            mLoadService.showSuccess();
-        } else {
+    public void showEmptyView(boolean show) {
+        mLoadingHandler.removeCallbacksAndMessages(null);
+        mLoadService.showSuccess();
+        if (show) {
             mLoadService.showCallback(EmptyCallback.class);
         }
     }
@@ -483,11 +470,9 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         if (parentFragment != null && ((BaseFragment) parentFragment).enableSimplebar()) {
             ((BaseFragment) parentFragment).showLoadingView(tip);
         } else {
-            if (null == tip) {
-                mLoadingHandler.removeCallbacksAndMessages(null);
-                mLoadService.showSuccess();
-            } else {
-
+            mLoadingHandler.removeCallbacksAndMessages(null);
+            mLoadService.showSuccess();
+            if (null != tip) {
                 mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
                     TextView tvTip = view1.findViewById(R.id.tv_tip);
                     if (tip.length() == 0) {
@@ -502,7 +487,10 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
     }
 
-
+    public void clearStatus(){
+        mLoadingHandler.removeCallbacksAndMessages(null);
+        mLoadService.showSuccess();
+    }
     protected void onReload(View v) {
         mLoadService.showSuccess();
         initData();

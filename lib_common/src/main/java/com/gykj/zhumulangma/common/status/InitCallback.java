@@ -15,7 +15,7 @@ import com.kingja.loadsir.callback.Callback;
 public class InitCallback extends Callback {
     @Override
     protected int onCreateView() {
-        return R.layout.common_view_init_loading;
+        return R.layout.common_layout_init;
     }
 
     @Override

@@ -229,7 +229,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
     public void initViewObservable() {
         mViewModel.getFreeSingleLiveEvent().observe(this, albums -> {
             if (null == albums || (mFreeAdapter.getData().size() == 0 && albums.size() == 0)) {
-                showNoDataView(true);
+                showEmptyView(true);
                 return;
             }
             if (albums.size() > 0) {
@@ -241,7 +241,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
         });
         mViewModel.getPaidSingleLiveEvent().observe(this, albums -> {
             if (null == albums || (mPaidAdapter.getData().size() == 0 && albums.size() == 0)) {
-                showNoDataView(true);
+                showEmptyView(true);
                 return;
             }
             if (albums.size() > 0) {

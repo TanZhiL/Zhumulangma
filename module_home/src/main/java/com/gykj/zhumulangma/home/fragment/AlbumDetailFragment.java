@@ -68,6 +68,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.yokeyword.fragmentation.ISupportFragment;
+
 /**
  * Author: Thomas.
  * Date: 2019/8/14 13:41
@@ -76,7 +77,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 @Route(path = AppConstants.Router.Home.F_ALBUM_DETAIL)
 public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailViewModel, Track> implements
-        BaseQuickAdapter.OnItemClickListener,BaseQuickAdapter.OnItemChildClickListener,
+        BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener,
         IXmDownloadTrackCallBack, IXmPlayerStatusListener, View.OnClickListener {
 
     @Autowired(name = KeyCode.Home.ALBUMID)
@@ -282,18 +283,9 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
         });
 
-
-        mViewModel.getInitTracksSingleLiveEvent().observe(this, tracks -> {
-            if (CollectionUtils.isEmpty(tracks.getTracks())) {
-                showNoDataView(true);
-            } else {
-                mAlbumTrackAdapter.setNewData(tracks.getTracks());
-            }
-        });
-
         mViewModel.getTracksSortSingleLiveEvent().observe(this, tracks -> {
             if (CollectionUtils.isEmpty(tracks.getTracks())) {
-                showNoDataView(true);
+                showEmptyView(true);
             } else {
                 setPager(tracks.getTotalCount());
                 mAlbumTrackAdapter.setNewData(tracks.getTracks());
@@ -330,7 +322,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     private void setPager(int totalcount) {
         int pagesize = 20;
 
-        ((TextView) fd(R.id.tv_pagecount)).setText(getString(R.string.pagecount,totalcount));
+        ((TextView) fd(R.id.tv_pagecount)).setText(getString(R.string.pagecount, totalcount));
         List<String> list = new ArrayList<>();
         if (mSort.equals("time_desc")) {
             for (int i = 0; i < totalcount / pagesize; i++) {

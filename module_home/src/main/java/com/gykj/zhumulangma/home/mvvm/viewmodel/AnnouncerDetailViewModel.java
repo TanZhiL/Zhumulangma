@@ -10,7 +10,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
@@ -34,7 +34,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class AnnouncerDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
+public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Object> {
 
     private SingleLiveEvent<Announcer> mAnnouncerSingleLiveEvent;
     private SingleLiveEvent<AlbumList> mAlbumListSingleLiveEvent;
@@ -64,8 +64,13 @@ public class AnnouncerDetailViewModel extends BaseViewModel<ZhumulangmaModel> {
                     return mModel.getTracksByAnnouncer(map12);
                 })
                 .doOnSubscribe(d->  getShowLoadingViewEvent().postValue(""))
-                .doFinally(()-> getShowLoadingViewEvent().postValue(null))
-                .subscribe(trackList -> getTrackListSingleLiveEvent().postValue(trackList), e -> e.printStackTrace());
+                .subscribe(trackList -> {
+                    getClearStatusEvent().call();
+                    getTrackListSingleLiveEvent().postValue(trackList);
+                }, e -> {
+                    getShowErrorViewEvent().postValue(true);
+                    e.printStackTrace();
+                });
     }
     public void play(long albumId,long trackId) {
 

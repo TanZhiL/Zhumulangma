@@ -85,7 +85,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
     public void initViewObservable() {
         mViewModel.getHistorySingleLiveEvent().observe(this, playHistoryBeans -> {
             if (null == playHistoryBeans || (mHistoryAdapter.getData().size() == 0 && playHistoryBeans.size() == 0)) {
-                showNoDataView(true);
+                showEmptyView(true);
                 return;
             }
             if (playHistoryBeans.size() > 0) {
@@ -131,7 +131,7 @@ public class HistoryFragment extends BaseMvvmFragment<HistoryViewModel> implemen
                 .setPositiveButton("确定", (dialog, which) -> {
                     mViewModel.clear();
                     mHistoryAdapter.getData().clear();
-                    showNoDataView(true);
+                    showEmptyView(true);
                 }).show();
     }
 

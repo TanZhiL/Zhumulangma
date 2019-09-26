@@ -3,7 +3,6 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,14 +14,13 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.FineAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -36,8 +34,8 @@ import java.util.List;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 
-public class FineFragment extends BaseMvvmFragment<FineViewModel> implements
-        View.OnClickListener, OnBannerListener, OnRefreshLoadMoreListener {
+public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> implements
+        View.OnClickListener, OnBannerListener {
 
     Banner banner;
 
@@ -79,10 +77,14 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements
     public void initListener() {
         super.initListener();
         banner.setOnBannerListener(this);
-        ((SmartRefreshLayout)fd(R.id.refreshLayout)).setOnRefreshLoadMoreListener(this);
         fd(R.id.daily_refresh).setOnClickListener(this);
         fd(R.id.book_refresh).setOnClickListener(this);
         fd(R.id.classroom_refresh).setOnClickListener(this);
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshLayout() {
+        return fd(R.id.refreshLayout);
     }
 
     @Override
@@ -149,7 +151,7 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements
         mViewModel.getDailySingleLiveEvent().observe(this, albums -> mDailyAdapter.setNewData(albums));
         mViewModel.getBookSingleLiveEvent().observe(this, albums -> mBookAdapter.setNewData(albums));
         mViewModel.getClassRoomSingleLiveEvent().observe(this, albums -> mClassroomAdapter.setNewData(albums));
-        mViewModel.getRefreshSingleLiveEvent().observe(this, aVoid -> ((SmartRefreshLayout)fd(R.id.refreshLayout)).finishRefresh());
+        mViewModel.getRefreshSingleLiveEvent().observe(this, aVoid -> ((SmartRefreshLayout) fd(R.id.refreshLayout)).finishRefresh());
     }
 
     @Override
@@ -201,15 +203,5 @@ public class FineFragment extends BaseMvvmFragment<FineViewModel> implements
 
                 break;
         }
-    }
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-
-    }
-
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.init();
     }
 }

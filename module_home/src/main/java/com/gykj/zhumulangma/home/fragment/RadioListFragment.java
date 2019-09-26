@@ -249,7 +249,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
         mViewModel.getRadioSingleLiveEvent().observe(this, radios -> {
 
             if (null == radios || (mAdapter.getData().size() == 0 && radios.size() == 0)) {
-                showNoDataView(true);
+                showEmptyView(true);
                 return;
             }
             if (radios.size() > 0) {
@@ -262,7 +262,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
         mViewModel.getHistorySingleLiveEvent().observe(this, historyBeans -> {
 
             if (null == historyBeans || (mHistoryAdapter.getData().size() == 0 && historyBeans.size() == 0)) {
-                showNoDataView(true);
+                showEmptyView(true);
                 return;
             }
             if (historyBeans.size() > 0) {

@@ -390,7 +390,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     }
 
 
-    public void showNetErrView(boolean show) {
+    public void showErrorView(boolean show) {
         if (!show) {
             mLoadService.showSuccess();
         } else {
@@ -399,7 +399,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     }
 
 
-    public void showNoDataView(boolean show) {
+    public void showEmptyView(boolean show) {
         if (!show) {
             mLoadService.showSuccess();
         } else {

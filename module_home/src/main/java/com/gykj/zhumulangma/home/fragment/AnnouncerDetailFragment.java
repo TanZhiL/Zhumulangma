@@ -31,7 +31,7 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.widget.ItemHeader;
 import com.gykj.zhumulangma.home.R;
@@ -55,7 +55,7 @@ import java.util.List;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
-public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailViewModel> implements
+public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDetailViewModel,Object> implements
        View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
     public long mAnnouncerId;
@@ -199,9 +199,13 @@ public class AnnouncerDetailFragment extends BaseMvvmFragment<AnnouncerDetailVie
     }
 
     @Override
+    protected SmartRefreshLayout getRefreshLayout() {
+        return refreshLayout;
+    }
+
+    @Override
     public void initData() {
         mViewModel.getDetail(String.valueOf(mAnnouncerId));
-
     }
 
     @Override

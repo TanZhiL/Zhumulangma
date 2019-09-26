@@ -27,6 +27,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
     private SingleLiveEvent<Boolean> showEmptyViewEvent;
     private SingleLiveEvent<Boolean> showNetErrViewEvent;
     private SingleLiveEvent<Void> finishSelfEvent;
+    private SingleLiveEvent<Void> clearStatusEvent;
 
     public BaseViewModel(@NonNull Application application, M model) {
         super(application);
@@ -42,7 +43,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
     }
 
     /**
-     * 常规loading
+     * 常规loading,null:隐藏,"":不带提示,"提示":带提示文本
      * @return
      */
     public SingleLiveEvent<String> getShowLoadingViewEvent() {
@@ -61,7 +62,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
      * 网络异常
      * @return
      */
-    public SingleLiveEvent<Boolean> getShowNetErrViewEvent() {
+    public SingleLiveEvent<Boolean> getShowErrorViewEvent() {
         return showNetErrViewEvent = createLiveData(showNetErrViewEvent);
     }
 
@@ -71,6 +72,14 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
      */
     public SingleLiveEvent<Void> getFinishSelfEvent() {
         return finishSelfEvent = createLiveData(finishSelfEvent);
+    }
+
+    /**
+     * 清空所有状态
+     * @return
+     */
+    public SingleLiveEvent<Void> getClearStatusEvent() {
+        return clearStatusEvent= createLiveData(clearStatusEvent);
     }
 
     protected SingleLiveEvent createLiveData(SingleLiveEvent liveData) {

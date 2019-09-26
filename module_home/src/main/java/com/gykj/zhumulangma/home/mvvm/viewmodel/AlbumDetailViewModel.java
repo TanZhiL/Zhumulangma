@@ -35,12 +35,10 @@ import io.reactivex.schedulers.Schedulers;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Track> {
+public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Track> {
 
     //专辑详情
     private SingleLiveEvent<Album> mAlbumSingleLiveEvent;
-    //第一页声音
-    private SingleLiveEvent<TrackList> mInitTracksSingleLiveEvent;
     //排序或分页后列表
     private SingleLiveEvent<TrackList> mTracksSortSingleLiveEvent;
     //继续播放
@@ -56,27 +54,30 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
     //下一页
     private int curTrackPage = 1;
     private String mSort = "time_desc";
-    private String  mAlbumId;
+    private String mAlbumId;
 
     public AlbumDetailViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
 
-    public void unsubscribe(Album album){
-        mModel.remove(SubscribeBean.class,album.getId()).subscribe(aBoolean ->
-                getSubscribeSingleLiveEvent().postValue(false), e->e.printStackTrace());
+    public void unsubscribe(Album album) {
+        mModel.remove(SubscribeBean.class, album.getId()).subscribe(aBoolean ->
+                getSubscribeSingleLiveEvent().postValue(false), e -> e.printStackTrace());
 
     }
-    public void subscribe(Album album){
-      mModel.insert(new SubscribeBean(album.getId(),album,System.currentTimeMillis()))
-              .subscribe(subscribeBean -> getSubscribeSingleLiveEvent().postValue(true), e->e.printStackTrace());
+
+    public void subscribe(Album album) {
+        mModel.insert(new SubscribeBean(album.getId(), album, System.currentTimeMillis()))
+                .subscribe(subscribeBean -> getSubscribeSingleLiveEvent().postValue(true), e -> e.printStackTrace());
     }
+
     /**
      * 初始化数据
+     *
      * @param albumId
      */
     public void getAlbumDetail(String albumId) {
-        mAlbumId=albumId;
+        mAlbumId = albumId;
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.ALBUM_IDS, albumId);
         //查询是否订阅
@@ -89,24 +90,33 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                 //获取第一页声音
                 .flatMap((Function<BatchAlbumList, ObservableSource<TrackList>>) batchAlbumList ->
                         getTrackInitObservable(albumId))
-                .doOnSubscribe(disposable ->  getShowLoadingViewEvent().postValue(""))
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doOnSubscribe(disposable -> getShowLoadingViewEvent().postValue(""))
                 .subscribe(trackList -> {
+                    if (CollectionUtils.isEmpty(trackList.getTracks())) {
+                        getShowEmptyViewEvent().postValue(true);
+                        return;
+                    }
+                    getClearStatusEvent().call();
                     setOrder(trackList);
                     curTrackPage++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
-                   getInitTracksSingleLiveEvent().postValue(trackList);
-                }, e -> e.printStackTrace());
+                    getFinishLoadmoreEvent().postValue(trackList.getTracks());
+
+                }, e -> {
+                    getShowErrorViewEvent().postValue(true);
+                    e.printStackTrace();
+                });
     }
 
     /**
      * 继续播放操作
+     *
      * @param albumId
      */
     public void getPlayTrackList(String albumId) {
         getTrackInitObservable(albumId)
-                .doOnSubscribe(disposable ->  getShowLoadingViewEvent().postValue(""))
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doOnSubscribe(disposable -> getShowLoadingViewEvent().postValue(""))
+                .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(trackList -> {
                     setOrder(trackList);
                     curTrackPage++;
@@ -117,50 +127,8 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
     }
 
     /**
-     * 获取默认展示页声音
-     * @param albumId
-     * @return
-     */
-    private Observable<TrackList> getTrackInitObservable(String albumId) {
-        Observable<TrackList> trackListObservable = mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime
-                , PlayHistoryBeanDao.Properties.GroupId.eq(albumId),
-                PlayHistoryBeanDao.Properties.Kind.eq(PlayableModel.KIND_TRACK)).doOnNext(playHistoryBeans -> {
-            if (!CollectionUtils.isEmpty(playHistoryBeans))
-                getLastplaySingleLiveEvent().setValue(playHistoryBeans.get(0).getTrack());
-        }).flatMap((Function<List<PlayHistoryBean>, ObservableSource<TrackList>>) playHistoryBeans -> {
-            if (null == getLastplaySingleLiveEvent().getValue()) {
-
-                Map<String, String> map = new HashMap<>();
-                map.put(DTransferConstants.ALBUM_ID, albumId);
-                map.put(DTransferConstants.SORT, mSort);
-                map.put(DTransferConstants.PAGE, String.valueOf(1));
-                return mModel.getTracks(map).doOnNext(trackList -> {
-                    curTrackPage = 1;
-                    upTrackPage = 0;
-                });
-            } else {
-                Map<String, String> map = new HashMap<>();
-                map.put(DTransferConstants.ALBUM_ID, albumId);
-                map.put(DTransferConstants.SORT, mSort);
-                map.put(DTransferConstants.TRACK_ID, String.valueOf(getLastplaySingleLiveEvent()
-                        .getValue().getDataId()));
-                return mModel.getLastPlayTracks(map)
-                        .doOnNext(lastPlayTrackList -> {
-                            curTrackPage = lastPlayTrackList.getPageid();
-                            upTrackPage = lastPlayTrackList.getPageid() - 1;
-                        })
-                        .map(lastPlayTrackList -> {
-                            TrackList trackList = new TrackList();
-                            trackList.cloneCommonTrackList(lastPlayTrackList);
-                            return trackList;
-                        });
-            }
-        });
-        return trackListObservable;
-    }
-
-    /**
      * 排序
+     *
      * @param albumId
      * @param sort
      */
@@ -174,10 +142,10 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
         map.put(DTransferConstants.SORT, mSort);
         map.put(DTransferConstants.PAGE, String.valueOf(curTrackPage));
         mModel.getTracks(map)
-                .doOnSubscribe(d -> getShowLoadingViewEvent().postValue(curTrackPage == 1?"":null))
+                .doOnSubscribe(d -> getShowLoadingViewEvent().postValue(""))
+                .doFinally(() -> getClearStatusEvent().call())
                 .observeOn(Schedulers.io())
                 .subscribe(trackList -> {
-                    getShowLoadingViewEvent().postValue(null);
                     setOrder(trackList);
                     upTrackPage = 0;
                     curTrackPage++;
@@ -190,6 +158,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     /**
      * 分页查询
+     *
      * @param albumId
      * @param page
      */
@@ -201,9 +170,9 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
         map.put(DTransferConstants.PAGE, String.valueOf(page));
         mModel.getTracks(map)
                 .observeOn(Schedulers.io())
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
+                .doOnSubscribe(d -> getShowLoadingViewEvent().postValue(""))
+                .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(trackList -> {
-                    getShowLoadingViewEvent().postValue(null);
                     upTrackPage = page;
                     curTrackPage = page;
                     setOrder(trackList);
@@ -218,6 +187,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     /**
      * 上拉,下拉更多
+     *
      * @param albumId
      * @param isUp
      */
@@ -259,9 +229,52 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     }
 
+    /**
+     * 获取默认展示页声音
+     *
+     * @param albumId
+     * @return
+     */
+    private Observable<TrackList> getTrackInitObservable(String albumId) {
+        Observable<TrackList> trackListObservable = mModel.listDesc(PlayHistoryBean.class, 1, 1, PlayHistoryBeanDao.Properties.Datatime
+                , PlayHistoryBeanDao.Properties.GroupId.eq(albumId),
+                PlayHistoryBeanDao.Properties.Kind.eq(PlayableModel.KIND_TRACK)).doOnNext(playHistoryBeans -> {
+            if (!CollectionUtils.isEmpty(playHistoryBeans))
+                getLastplaySingleLiveEvent().setValue(playHistoryBeans.get(0).getTrack());
+        }).flatMap((Function<List<PlayHistoryBean>, ObservableSource<TrackList>>) playHistoryBeans -> {
+            if (null == getLastplaySingleLiveEvent().getValue()) {
+                Map<String, String> map = new HashMap<>();
+                map.put(DTransferConstants.ALBUM_ID, albumId);
+                map.put(DTransferConstants.SORT, mSort);
+                map.put(DTransferConstants.PAGE, String.valueOf(1));
+                return mModel.getTracks(map).doOnNext(trackList -> {
+                    curTrackPage = 1;
+                    upTrackPage = 0;
+                });
+            } else {
+                Map<String, String> map = new HashMap<>();
+                map.put(DTransferConstants.ALBUM_ID, albumId);
+                map.put(DTransferConstants.SORT, mSort);
+                map.put(DTransferConstants.TRACK_ID, String.valueOf(getLastplaySingleLiveEvent()
+                        .getValue().getDataId()));
+                return mModel.getLastPlayTracks(map)
+                        .doOnNext(lastPlayTrackList -> {
+                            curTrackPage = lastPlayTrackList.getPageid();
+                            upTrackPage = lastPlayTrackList.getPageid() - 1;
+                        })
+                        .map(lastPlayTrackList -> {
+                            TrackList trackList = new TrackList();
+                            trackList.cloneCommonTrackList(lastPlayTrackList);
+                            return trackList;
+                        });
+            }
+        });
+        return trackListObservable;
+    }
 
     /**
      * 向下插入序号
+     *
      * @param trackList
      */
     private void setOrder(TrackList trackList) {
@@ -277,6 +290,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     /**
      * 向上插入序号
+     *
      * @param trackList
      */
     private void setUpOrder(TrackList trackList) {
@@ -306,11 +320,6 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     public SingleLiveEvent<TrackList> getPlayTracksSingleLiveEvent() {
         return mPlayTracksSingleLiveEvent = createLiveData(mPlayTracksSingleLiveEvent);
-    }
-
-
-    public SingleLiveEvent<TrackList> getInitTracksSingleLiveEvent() {
-        return mInitTracksSingleLiveEvent = createLiveData(mInitTracksSingleLiveEvent);
     }
 
     public SingleLiveEvent<TrackList> getTracksSortSingleLiveEvent() {

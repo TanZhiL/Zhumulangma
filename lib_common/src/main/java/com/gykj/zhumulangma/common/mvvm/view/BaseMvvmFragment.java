@@ -34,9 +34,10 @@ public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFra
     protected void initBaseViewObservable() {
         mViewModel.getShowInitViewEvent().observe(this, (Observer<Boolean>) show -> showInitView(show));
         mViewModel.getShowLoadingViewEvent().observe(this, (Observer<String>) tip -> showLoadingView(tip));
-        mViewModel.getShowEmptyViewEvent().observe(this, (Observer<Boolean>) show -> showNoDataView(show));
-        mViewModel.getShowNetErrViewEvent().observe(this, (Observer<Boolean>) show -> showNetErrView(show));
+        mViewModel.getShowEmptyViewEvent().observe(this, (Observer<Boolean>) show -> showEmptyView(show));
+        mViewModel.getShowErrorViewEvent().observe(this, (Observer<Boolean>) show -> showErrorView(show));
         mViewModel.getFinishSelfEvent().observe(this, (Observer<Void>) v -> pop());
+        mViewModel.getClearStatusEvent().observe(this, (Observer<Void>) v -> clearStatus());
     }
 
 

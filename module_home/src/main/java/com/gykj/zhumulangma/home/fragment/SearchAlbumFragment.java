@@ -112,7 +112,7 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
     public void initViewObservable() {
         mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> {
             if (null == albums || (mAdapter.getData().size() == 0 && albums.size() == 0)) {
-                showNoDataView(true);
+                showEmptyView(true);
                 return;
             }
             if (albums.size() > 0) {

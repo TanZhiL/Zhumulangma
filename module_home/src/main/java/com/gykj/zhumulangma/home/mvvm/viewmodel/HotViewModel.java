@@ -10,7 +10,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
@@ -27,6 +27,7 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import me.yokeyword.fragmentation.ISupportFragment;
 
-public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
+public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> {
     private SingleLiveEvent<List<BannerV2>> mBannerV2SingleLiveEvent;
     private SingleLiveEvent<List<Album>> mLikeSingleLiveEvent;
     private SingleLiveEvent<List<Album>> mStorySingleLiveEvent;
@@ -68,6 +69,11 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
         getBannerListObervable().subscribe(r -> {}, e -> e.printStackTrace());
     }
 
+    @Override
+    public void onViewRefresh() {
+        init();
+    }
+
     public void init() {
         curStoryPage = 1;
         curBabyPage = 1;
@@ -83,9 +89,12 @@ public class HotViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getHotMusicListObservable())
                 .flatMap((Function<AlbumList, ObservableSource<RadioList>>) albumList -> getRadioListObservable())
                 .flatMap((Function<RadioList, ObservableSource<ColumnList>>) radioList -> getTopicListObservable())
-                .doFinally(() -> getRefreshSingleLiveEvent().call())
-                .subscribe(columnList -> {}, e ->
-                    e.printStackTrace());
+                .doOnSubscribe(d->getShowLoadingViewEvent().postValue(""))
+                .doFinally(()->getFinishRefreshEvent().postValue(new ArrayList<>()))
+                .subscribe(r-> getClearStatusEvent().call(), e->
+                {   getShowErrorViewEvent().postValue(true);
+                    e.printStackTrace();
+                });
     }
 
     private Observable<BannerV2List> getBannerListObervable() {

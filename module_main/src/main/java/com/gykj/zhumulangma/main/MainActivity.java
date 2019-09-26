@@ -167,12 +167,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         if (v == globalPlay) {
             if (null == mPlayerManager.getCurrSound(true)) {
                 if(mHistoryBean==null){
-
-                    navigateTo(AppConstants.Router.Home.F_RANK,extraTransaction().setCustomAnimations(
-                            com.gykj.zhumulangma.common.R.anim.push_bottom_in,
-                            com.gykj.zhumulangma.common.R.anim.no_anim,
-                            com.gykj.zhumulangma.common.R.anim.no_anim,
-                            com.gykj.zhumulangma.common.R.anim.push_bottom_out));
+                    navigateTo(AppConstants.Router.Home.F_RANK);
                 }else {
                     mViewModel.play(mHistoryBean);
                 }

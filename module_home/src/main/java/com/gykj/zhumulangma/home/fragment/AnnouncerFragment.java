@@ -2,7 +2,6 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,16 +15,15 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.RefreshState;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -44,8 +42,8 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> implements OnBannerListener,
-        BaseQuickAdapter.OnItemClickListener, OnRefreshLoadMoreListener{
+public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewModel, Announcer> implements OnBannerListener,
+        BaseQuickAdapter.OnItemClickListener{
 
     private static final String TAG = "AnnouncerFragment";
     Banner banner;
@@ -78,13 +76,17 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
     public void initListener() {
         super.initListener();
         banner.setOnBannerListener(this);
-        refreshLayout.setOnRefreshLoadMoreListener(this);
         mAnnouncerAdapter.setOnItemClickListener(this);
         ((NestedScrollView)fd(R.id.tsv_content)).setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (nestedScrollView, i, i1, i2, i3) -> {
             TLog.d(fd(R.id.ll_title).getTop());
             fd(R.id.fl_title_top).setVisibility(i1>fd(R.id.ll_title).getTop()?View.VISIBLE:View.GONE);
         });
+    }
+
+    @Override
+    protected SmartRefreshLayout getRefreshLayout() {
+        return refreshLayout;
     }
 
     @Override
@@ -144,7 +146,7 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
 
         mViewModel.getAnnouncerSingleLiveEvent().observe(this, announcers -> {
             if(null==announcers||(mAnnouncerAdapter.getData().size()==0&&announcers.size()==0)){
-                showNoDataView(true);
+                showEmptyView(true);
                 return;
             }
             if(refreshLayout.getState()== RefreshState.Refreshing){
@@ -163,7 +165,11 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
         mViewModel.getRefreshSingleLiveEvent().observe(this, aVoid -> refreshLayout.finishRefresh());
     }
 
-
+    @Override
+    protected void onLoadMoreSucc(List<Announcer> list) {
+        super.onLoadMoreSucc(list);
+        mAnnouncerAdapter.addData(list);
+    }
 
     @Override
     public void OnBannerClick(int position) {
@@ -200,13 +206,4 @@ public class AnnouncerFragment extends BaseMvvmFragment<AnnouncerViewModel> impl
                 new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
     }
 
-    @Override
-    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.init();
-    }
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getAnnouncerList();
-    }
 }
