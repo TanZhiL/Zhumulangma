@@ -4,6 +4,7 @@
 ### 更新日志：
 ###### 珠穆朗玛FM 1.0 2019-09.25
 * 布局优化,避免过渡绘制
+* 完善状态管理,提升用户体验
 ###### 珠穆朗玛FM 1.0 2019-09.20
 * 声音批量下载
 * 语音搜索
@@ -18,7 +19,7 @@
 ### 功能演示
 ![在这里插入图片描述](https://github.com/TanZhiL/Zhumulangma/blob/master/screenshot/1.png)
 ![在这里插入图片描述](https://github.com/TanZhiL/Zhumulangma/blob/master/screenshot/3.png)
-
+![在这里插入图片描述](https://github.com/TanZhiL/Zhumulangma/blob/master/screenshot/7.png)
 ### 主要功能(包括不仅限于):
 * 专辑展示
 * 声音展示及播放
@@ -42,8 +43,9 @@
 如果二维码图片不可见，[点我下载体验](https://www.pgyer.com/o9hT)
 ### 项目架构
 本项目采用retrofit+rxjava2+rxandroid+arouter+mvvm+fragmentation实现单activity多fragme组件化架构
+
+* app：负责管理各个业务组件，和打包apk，没有具体的业务功能；
 * lib_common：属于功能组件，支撑业务组件的基础，提供多数业务组件需要的功能;
-* module_app：负责管理各个业务组件，和打包apk，没有具体的业务功能；
 * module_main：属于业务组件，指定APP启动页面、主界面；
 * module_home：首页展示,包括热门,分类,精品,主播,电台,展示及播放等；
 * module_listen：我听,包括订阅,喜欢,播放历史,下载等；
@@ -58,7 +60,7 @@
 ### 集成模式和组件模式转换
 Module的属性是在每个组件的 build.gradle 文件中配置的，当我们在组件模式开发时，业务组件应处于application属性，这时的业务组件就是一个 Android App，可以独立开发和调试；而当我们转换到集成模式开发时，业务组件应该处于 library 属性，这样才能被我们的“app壳工程”所依赖，组成一个具有完整功能的APP
 
-先打开FlyTour工程的根目录下找到gradle.properties 文件，然后将 isModule 改为你需要的开发模式（true/false）， 然后点击 "Sync Project" 按钮同步项目
+先打开工程的根目录下找到gradle.properties 文件，然后将 isModule 改为你需要的开发模式（true/false）， 然后点击 "Sync Project" 按钮同步项目
 ```
 isModule=false
 ```
@@ -111,10 +113,10 @@ sourceSets {
 欢迎加星，打call https://github.com/TanZhiL/Zhumulangma
 * email：1071931588@qq.com
 ### 关于作者
-菜鸡Thomas
+谭志龙
 ### License
 ```
-Copyright (C)  menxindiaolong, FlyTour Framework Open Source Project
+Copyright (C)  tanzhilong Zhumualangma Framework Open Source Project
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
