@@ -43,8 +43,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 @Route(path = AppConstants.Router.Home.F_SEARCH_SUGGEST)
 public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> implements BaseQuickAdapter.OnItemClickListener, View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
-    private SmartRefreshLayout mRefreshLayout;
-    private RecyclerView mRecyclerView;
+    private SmartRefreshLayout refreshLayout;
     private SearchSuggestAdapter mSuggestAdapter;
     private onSearchListener mSearchListener;
     private TextView tvHeader;
@@ -53,6 +52,12 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
     protected int onBindLayout() {
         return R.layout.common_layout_refresh_loadmore;
     }
+
+    @Override
+    protected void loadView() {
+        super.loadView();
+        clearStatus();
+    }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -60,14 +65,14 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
     }
     @Override
     protected void initView(View view) {
-        mRefreshLayout = fd(R.id.refreshLayout);
-        mRefreshLayout.setEnableRefresh(false);
-        mRefreshLayout.setEnableLoadMore(false);
-        mRecyclerView=fd(R.id.rv);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        refreshLayout = fd(R.id.refreshLayout);
+        refreshLayout.setEnableRefresh(false);
+        refreshLayout.setEnableLoadMore(false);
+        RecyclerView recyclerView = fd(R.id.rv);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mSuggestAdapter=new SearchSuggestAdapter(null);
-        mSuggestAdapter.bindToRecyclerView(mRecyclerView);
+        mSuggestAdapter.bindToRecyclerView(recyclerView);
         View vHeader = LayoutInflater.from(mContext).inflate(R.layout.home_item_search_suggest_query, null);
         tvHeader=vHeader.findViewById(R.id.tv_label);
         mSuggestAdapter.setHeaderView(vHeader);
@@ -104,7 +109,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
         ForegroundColorSpan colorSpan=new ForegroundColorSpan(mContext.getResources().getColor(R.color.colorPrimary));
         spannableString.setSpan(colorSpan,start+1,end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         tvHeader.setText(spannableString);
-        mViewModel._getSuggestWord(mKeyword);
+        mViewModel.getSuggestWord(mKeyword);
     }
     @Override
     public void initViewObservable() {

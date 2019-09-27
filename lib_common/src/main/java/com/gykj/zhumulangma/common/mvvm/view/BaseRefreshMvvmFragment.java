@@ -14,9 +14,9 @@ import java.util.List;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/14 13:41
+ * Date: 2019/9/10 8:23
  * Email: 1071931588@qq.com
- * Description:
+ * Description:自动处理刷新基类
  */
 public abstract class BaseRefreshMvvmFragment<VM extends BaseRefreshViewModel, T> extends BaseMvvmFragment<VM>
         implements OnRefreshLoadMoreListener {

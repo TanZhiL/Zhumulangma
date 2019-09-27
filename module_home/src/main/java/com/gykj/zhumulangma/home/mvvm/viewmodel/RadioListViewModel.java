@@ -336,6 +336,9 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
     }
 
     public void setProvinceCode(int provinceCode) {
+        if(provinceCode!=mProvinceCode){
+            curPage=1;
+        }
         mProvinceCode = provinceCode;
     }
 

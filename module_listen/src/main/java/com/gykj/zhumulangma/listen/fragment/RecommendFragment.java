@@ -33,13 +33,13 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Author: Thomas.
  * Date: 2019/9/20 14:23
  * Email: 1071931588@qq.com
- * Description:
+ * Description:推荐订阅
  */
-public class RecommendFragment  extends BaseMvvmFragment<SubscribeViewModel> implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
+public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> implements
+        BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
 
-    private SmartRefreshLayout mRefreshLayout;
-    private RecyclerView mRecyclerView;
     private RecommendAdapter mRecommendAdapter;
+
     @Override
     protected int onBindLayout() {
         return R.layout.common_layout_refresh_loadmore;
@@ -51,14 +51,17 @@ public class RecommendFragment  extends BaseMvvmFragment<SubscribeViewModel> imp
         setSwipeBackEnable(false);
     }
     @Override
+    protected void loadView() {
+        super.loadView();
+        clearStatus();
+    }
+    @Override
     protected void initView(View view) {
-        mRecyclerView = fd(R.id.rv);
-        mRefreshLayout = fd(R.id.refreshLayout);
-        mRefreshLayout.setEnableLoadMore(false);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.setHasFixedSize(true);
+        RecyclerView recyclerView = fd(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setHasFixedSize(true);
         mRecommendAdapter = new RecommendAdapter(R.layout.listen_item_recommend);
-        mRecommendAdapter.bindToRecyclerView(mRecyclerView);
+        mRecommendAdapter.bindToRecyclerView(recyclerView);
     }
 
     @Override
@@ -70,22 +73,24 @@ public class RecommendFragment  extends BaseMvvmFragment<SubscribeViewModel> imp
 
     @Override
     public void initData() {
-        mViewModel._getGuessLikeAlbum();
+        mViewModel.getGuessLikeAlbum();
     }
+
     @Override
     public void initViewObservable() {
-        mViewModel.getLikeSingleLiveEvent().observe(this, albums -> {
+        mViewModel.getLikesEvent().observe(this, albums -> {
             if (CollectionUtils.isEmpty(albums)) {
-                    showEmptyView();
+                showEmptyView();
             } else {
                 mRecommendAdapter.setNewData(albums);
+                ((SmartRefreshLayout) fd(R.id.refreshLayout)).setNoMoreData(true);
             }
         });
 
-        mViewModel.getSubscribeSingleLiveEvent().observe(this, album -> {
+        mViewModel.getSubscribeEvent().observe(this, album -> {
             List<Album> data = mRecommendAdapter.getData();
             int index = data.indexOf(album);
-            if(index>-1){
+            if (index > -1) {
                 try {
                     mRecommendAdapter.getViewByPosition(index, R.id.ll_subscribe).setVisibility(View.GONE);
                     mRecommendAdapter.getViewByPosition(index, R.id.ll_unsubscribe).setVisibility(View.VISIBLE);
@@ -94,10 +99,10 @@ public class RecommendFragment  extends BaseMvvmFragment<SubscribeViewModel> imp
                 }
             }
         });
-        mViewModel.getUnSubscribeSingleLiveEvent().observe(this, album -> {
+        mViewModel.getUnSubscribeEvent().observe(this, album -> {
             List<Album> data = mRecommendAdapter.getData();
             int index = data.indexOf(album);
-            if(index>-1){
+            if (index > -1) {
                 try {
                     mRecommendAdapter.getViewByPosition(index, R.id.ll_subscribe).setVisibility(View.VISIBLE);
                     mRecommendAdapter.getViewByPosition(index, R.id.ll_unsubscribe).setVisibility(View.GONE);
@@ -107,6 +112,7 @@ public class RecommendFragment  extends BaseMvvmFragment<SubscribeViewModel> imp
             }
         });
     }
+
     @Override
     public Class<SubscribeViewModel> onBindViewModel() {
         return SubscribeViewModel.class;
@@ -127,9 +133,9 @@ public class RecommendFragment  extends BaseMvvmFragment<SubscribeViewModel> imp
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         int id = view.getId();
-        if(id==R.id.ll_subscribe){
+        if (id == R.id.ll_subscribe) {
             mViewModel.subscribe(mRecommendAdapter.getItem(position));
-        }else {
+        } else {
             mViewModel.unsubscribe(mRecommendAdapter.getItem(position));
         }
     }

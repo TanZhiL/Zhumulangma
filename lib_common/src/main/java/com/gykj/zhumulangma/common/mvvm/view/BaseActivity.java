@@ -44,12 +44,12 @@ import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
+
 /**
- * Description: <BaseActivity><br>
- * Author:      mxdl<br>
- * Date:        2019/06/30<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * Date: 2019/9/10 8:23
+ * Email: 1071931588@qq.com
+ * Description:Activity基类
  */
 public abstract class BaseActivity extends SupportActivity implements IBaseView {
 

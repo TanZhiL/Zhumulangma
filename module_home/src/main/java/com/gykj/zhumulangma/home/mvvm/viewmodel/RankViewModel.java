@@ -3,9 +3,10 @@ package com.gykj.zhumulangma.home.mvvm.viewmodel;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
+import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
@@ -23,68 +24,64 @@ import io.reactivex.functions.Function;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
-    SingleLiveEvent<List<Album>> mFreeSingleLiveEvent;
+public class RankViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> {
+    SingleLiveEvent<List<Album>> mInitFreeEvent;
     SingleLiveEvent<List<Album>> mPaidSingleLiveEvent;
-    private int freePage = 1;
+    private int curFreePage = 1;
     private int paidPage = 1;
     private String mCid;
-    private static final int PAGESIZE = 20;
 
     public RankViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
 
-    public void init(String cid) {
-        mCid=cid;
-        Map<String, String> map1 = new HashMap<String, String>();
-        map1.put(DTransferConstants.PAGE, String.valueOf(paidPage));
-        map1.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
-
-        mModel.getPaidAlbumByTag(map1)
-                .doOnSubscribe(disposable ->   getShowLoadingViewEvent().call())
-                .doOnNext(albumList -> {
-                    paidPage++;
-                    getPaidSingleLiveEvent().setValue(albumList.getAlbums());
-                })
-                .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> {
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put(DTransferConstants.CATEGORY_ID, cid);
-                    map.put(DTransferConstants.PAGE, String.valueOf(freePage));
-                    map.put(DTransferConstants.CALC_DIMENSION, "3");
-                    map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
-                    return mModel.getAlbumList(map);
-                })
-                .doFinally(() ->  getClearStatusEvent().call())
+    public void init() {
+        Map<String, String> map = new HashMap<>();
+        map.put(DTransferConstants.CATEGORY_ID, mCid);
+        map.put(DTransferConstants.PAGE, String.valueOf(curFreePage));
+        map.put(DTransferConstants.CALC_DIMENSION, "3");
+        mModel.getAlbumList(map)
+                .doOnSubscribe(d->getShowInitViewEvent().call())
                 .subscribe(albumList -> {
-                            freePage++;
-                            getFreeSingleLiveEvent().setValue(albumList.getAlbums());
-                        },
-                        e -> e.printStackTrace());
+                    if (CollectionUtils.isEmpty(albumList.getAlbums())) {
+                        getShowEmptyViewEvent().call();
+                        return;
+                    }
+                    curFreePage++;
+                    getClearStatusEvent().call();
+                    getInitFreeEvent().setValue(albumList.getAlbums());
+
+                }, e -> {
+                    getShowErrorViewEvent().call();
+                    e.printStackTrace();
+                });
     }
 
-    public void getFreeRank(String cid) {
-        if (!cid.equals(mCid)) {
-            freePage = 1;
-            mCid = cid;
-        }
+    private void getMoreFreeRanks() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.CATEGORY_ID, cid);
-        map.put(DTransferConstants.PAGE, String.valueOf(freePage));
+        map.put(DTransferConstants.CATEGORY_ID, mCid);
+        map.put(DTransferConstants.PAGE, String.valueOf(curFreePage));
         map.put(DTransferConstants.CALC_DIMENSION, "3");
-        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         mModel.getAlbumList(map)
                 .subscribe(albumList -> {
-                            freePage++;
-                            getFreeSingleLiveEvent().setValue(albumList.getAlbums());
-                        },
-                        e -> e.printStackTrace());
+                    if (!CollectionUtils.isEmpty(albumList.getAlbums())) {
+                        curFreePage++;
+                    }
+                    getFinishLoadmoreEvent().setValue(albumList.getAlbums());
+                }, e -> {
+                    getFinishLoadmoreEvent().call();
+                    e.printStackTrace();
+                });
+    }
+
+    @Override
+    public void onViewLoadmore() {
+        getMoreFreeRanks();
     }
 
     public void getPaidRank() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.PAGE, String.valueOf(paidPage));
-        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
         mModel.getPaidAlbumByTag(map)
                 .subscribe(albumList -> {
                             paidPage++;
@@ -94,11 +91,18 @@ public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
 
 
-    public SingleLiveEvent<List<Album>> getFreeSingleLiveEvent() {
-        return mFreeSingleLiveEvent = createLiveData(mFreeSingleLiveEvent);
+    public SingleLiveEvent<List<Album>> getInitFreeEvent() {
+        return mInitFreeEvent = createLiveData(mInitFreeEvent);
     }
 
     public SingleLiveEvent<List<Album>> getPaidSingleLiveEvent() {
         return mPaidSingleLiveEvent = createLiveData(mPaidSingleLiveEvent);
+    }
+
+    public void setCid(String cid) {
+        if(!cid.equals(mCid)){
+            curFreePage=1;
+        }
+        mCid = cid;
     }
 }

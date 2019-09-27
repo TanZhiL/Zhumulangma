@@ -5,13 +5,14 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.status.InitCallback;
+
 
 /**
- * Description: <BaseMvpFragment><br>
- * Author:      mxdl<br>
- * Date:        2019/06/30<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * Date: 2019/9/10 8:23
+ * Email: 1071931588@qq.com
+ * Description:MvvmFragment基类
  */
 public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFragment {
     protected VM mViewModel;
@@ -20,10 +21,18 @@ public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFra
         initBaseViewObservable();
         initViewObservable();
     }
+
+    @Override
+    protected void loadView() {
+        super.loadView();
+        mLoadService.showCallback(InitCallback.class);
+    }
+
     protected void initViewModel() {
         mViewModel = createViewModel();
         getLifecycle().addObserver(mViewModel);
     }
+
     protected VM createViewModel(){
         return ViewModelProviders.of(this,onBindViewModelFactory()).get(onBindViewModel());
     }
@@ -39,6 +48,4 @@ public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFra
         mViewModel.getFinishSelfEvent().observe(this, (Observer<Void>) v -> pop());
         mViewModel.getClearStatusEvent().observe(this, (Observer<Void>) v -> clearStatus());
     }
-
-
 }

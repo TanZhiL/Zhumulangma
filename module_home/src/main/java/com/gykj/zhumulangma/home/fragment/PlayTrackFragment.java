@@ -94,17 +94,12 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private View clController;
 
     private ImageView whiteLeft;
-    private ImageView whiteRight1;
-    private ImageView whiteRight2;
     private TextView tvSchedule;
     private ImageView transLeft;
-    private ImageView transRight1;
-    private ImageView transRight2;
     private IndicatorSeekBar isbProgress;
     private LottieAnimationView lavPlayPause;
     private LottieAnimationView lavBuffering;
     private ImageView ivBg;
-    private RecyclerView rvRelative;
     private AlbumAdapter mAlbumAdapter;
     private View clAction;
 
@@ -130,7 +125,11 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     public PlayTrackFragment() {
 
     }
-
+    @Override
+    protected void loadView() {
+        super.loadView();
+        clearStatus();
+    }
 
     @Override
     protected int onBindLayout() {
@@ -155,7 +154,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         lavPlayPause = fd(R.id.lav_play_pause);
         clAction = fd(R.id.cl_action);
         lavBuffering = fd(R.id.lav_buffering);
-        rvRelative = fd(R.id.rv_relative);
+        RecyclerView rvRelative = fd(R.id.rv_relative);
         lavPlayNext = fd(R.id.lav_next);
         lavPlayPre = fd(R.id.lav_pre);
         tvActionCur = fd(R.id.tv_action_cur);
@@ -187,8 +186,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private void initBar() {
 
         transLeft = ctbTrans.getLeftCustomView().findViewById(R.id.iv_left);
-        transRight1 = ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
-        transRight2 = ctbTrans.getRightCustomView().findViewById(R.id.iv2_right);
+        ImageView transRight1 = ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
+        ImageView transRight2 = ctbTrans.getRightCustomView().findViewById(R.id.iv2_right);
 
 
         transLeft.setImageResource(R.drawable.ic_common_titlebar_back);
@@ -211,8 +210,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         transRight2.setVisibility(View.VISIBLE);
 
         whiteLeft = ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
-        whiteRight1 = ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
-        whiteRight2 = ctbWhite.getRightCustomView().findViewById(R.id.iv2_right);
+        ImageView whiteRight1 = ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
+        ImageView whiteRight2 = ctbWhite.getRightCustomView().findViewById(R.id.iv2_right);
         TextView tvTitle = ctbWhite.getCenterCustomView().findViewById(R.id.tv_title);
         tvTitle.setVisibility(View.VISIBLE);
         tvTitle.setText("歌曲详情");

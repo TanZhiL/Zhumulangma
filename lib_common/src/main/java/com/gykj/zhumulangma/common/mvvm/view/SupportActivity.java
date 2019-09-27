@@ -22,8 +22,7 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
  * Author: Thomas.
  * Date: 2019/7/23 10:49
  * Email: 1071931588@qq.com
- * Description:
- * fragmentation支持
+ * Description:Fragmentation支持
  */
 public abstract class SupportActivity extends RxAppCompatActivity implements ISupportActivity, ISwipeBackActivity {
     final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);

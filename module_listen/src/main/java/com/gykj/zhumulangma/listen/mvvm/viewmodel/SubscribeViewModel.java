@@ -10,7 +10,7 @@ import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.dao.SubscribeBeanDao;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -30,11 +30,11 @@ import io.reactivex.functions.Function;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
-    private SingleLiveEvent<List<SubscribeBean>> mSubscribesSingleLiveEvent;
-    private SingleLiveEvent<List<Album>> mLikeSingleLiveEvent;
-    private SingleLiveEvent<Album> mSubscribeSingleLiveEvent;
-    private SingleLiveEvent<Album> mUnSubscribeSingleLiveEvent;
+public class SubscribeViewModel extends BaseRefreshViewModel<ZhumulangmaModel,SubscribeBean> {
+    private SingleLiveEvent<List<SubscribeBean>> mInitSubscribesEvent;
+    private SingleLiveEvent<List<Album>> mLikesEvent;
+    private SingleLiveEvent<Album> mSubscribeEvent;
+    private SingleLiveEvent<Album> mUnSubscribeEvent;
     private static final int PAGESIZE = 20;
     private int curPage = 1;
 
@@ -44,28 +44,54 @@ public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public void unsubscribe(Album album){
         mModel.remove(SubscribeBean.class,album.getId()).subscribe(aBoolean ->
-                getUnSubscribeSingleLiveEvent().setValue(album), e->e.printStackTrace());
+                getUnSubscribeEvent().setValue(album), e->e.printStackTrace());
 
     }
     public void subscribe(Album album){
         mModel.insert(new SubscribeBean(album.getId(),album,System.currentTimeMillis()))
-                .subscribe(subscribeBean -> getSubscribeSingleLiveEvent().setValue(album), e->e.printStackTrace());
+                .subscribe(subscribeBean -> getSubscribeEvent().setValue(album), e->e.printStackTrace());
     }
 
     public void getSubscribes() {
         mModel.listDesc(SubscribeBean.class, curPage, PAGESIZE, SubscribeBeanDao.Properties.Datetime)
+                .doFinally(() -> super.onViewRefresh())
                 .subscribe(subscribeBeans ->
                 {
-                    if (subscribeBeans.size() > 0)
-                        curPage++;
-                    getSubscribesSingleLiveEvent().setValue(subscribeBeans);
-                }, e -> e.printStackTrace());
+                    if (CollectionUtils.isEmpty(subscribeBeans)) {
+                        getShowEmptyViewEvent().call();
+                        return;
+                    }
+                    getClearStatusEvent().call();
+                    curPage++;
+                    getInitSubscribesEvent().setValue(subscribeBeans);
+                }, e -> {
+                    getShowErrorViewEvent().call();
+                    e.printStackTrace();
+                });
     }
 
+    private void getMoreSubscribes() {
+        mModel.listDesc(SubscribeBean.class, curPage, PAGESIZE, SubscribeBeanDao.Properties.Datetime)
+                .subscribe(subscribeBeans -> {
+                    if (!CollectionUtils.isEmpty(subscribeBeans)) {
+                        curPage++;
+                    }
+                    getFinishLoadmoreEvent().setValue(subscribeBeans);
+                }, e -> {
+                    getFinishLoadmoreEvent().call();
+                    e.printStackTrace();
+                });
+    }
 
-    public void refresh() {
+    @Override
+    public void onViewRefresh() {
         curPage = 1;
         getSubscribes();
+    }
+
+    @Override
+    public void onViewLoadmore() {
+        getMoreSubscribes();
     }
 
     private long trackId=-1;
@@ -109,7 +135,7 @@ public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
         }, e->e.printStackTrace());
     }
 
-    public void _getGuessLikeAlbum() {
+    public void getGuessLikeAlbum() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.LIKE_COUNT, "50");
         map.put(DTransferConstants.PAGE, String.valueOf(1));
@@ -117,25 +143,27 @@ public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .doOnSubscribe(disposable ->  getShowLoadingViewEvent().call())
                 .subscribe(gussLikeAlbumList -> {
                     getClearStatusEvent().call();
-                    getLikeSingleLiveEvent().setValue(
-                            gussLikeAlbumList.getAlbumList());
-                }, e -> e.printStackTrace());
+                    getLikesEvent().setValue(gussLikeAlbumList.getAlbumList());
+                }, e -> {
+                   getShowErrorViewEvent().call();
+                    e.printStackTrace();
+                });
     }
 
 
 
-    public SingleLiveEvent<List<SubscribeBean>> getSubscribesSingleLiveEvent() {
-        return mSubscribesSingleLiveEvent = createLiveData(mSubscribesSingleLiveEvent);
+    public SingleLiveEvent<List<SubscribeBean>> getInitSubscribesEvent() {
+        return mInitSubscribesEvent = createLiveData(mInitSubscribesEvent);
     }
 
-    public SingleLiveEvent<List<Album>> getLikeSingleLiveEvent() {
-        return mLikeSingleLiveEvent = createLiveData(mLikeSingleLiveEvent);
+    public SingleLiveEvent<List<Album>> getLikesEvent() {
+        return mLikesEvent = createLiveData(mLikesEvent);
     }
 
-    public SingleLiveEvent<Album> getSubscribeSingleLiveEvent() {
-        return mSubscribeSingleLiveEvent = createLiveData(mSubscribeSingleLiveEvent);
+    public SingleLiveEvent<Album> getSubscribeEvent() {
+        return mSubscribeEvent = createLiveData(mSubscribeEvent);
     }
-    public SingleLiveEvent<Album> getUnSubscribeSingleLiveEvent() {
-        return mUnSubscribeSingleLiveEvent = createLiveData(mUnSubscribeSingleLiveEvent);
+    public SingleLiveEvent<Album> getUnSubscribeEvent() {
+        return mUnSubscribeEvent = createLiveData(mUnSubscribeEvent);
     }
 }

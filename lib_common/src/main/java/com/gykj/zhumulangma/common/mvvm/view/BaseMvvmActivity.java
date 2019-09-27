@@ -7,11 +7,10 @@ import android.arch.lifecycle.ViewModelProviders;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 
 /**
- * Description: <BaseMvvmActivity><br>
- * Author:      mxdl<br>
- * Date:        2019/06/30<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * Date: 2019/9/10 8:23
+ * Email: 1071931588@qq.com
+ * Description:MvvmActivity基类
  */
 public abstract class BaseMvvmActivity<VM extends BaseViewModel> extends BaseActivity {
     protected VM mViewModel;

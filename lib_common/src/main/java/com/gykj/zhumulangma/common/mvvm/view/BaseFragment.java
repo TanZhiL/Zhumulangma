@@ -31,6 +31,7 @@ import com.gykj.zhumulangma.common.status.ErrorCallback;
 import com.gykj.zhumulangma.common.status.InitCallback;
 import com.gykj.zhumulangma.common.status.LoadingCallback;
 import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
@@ -48,11 +49,10 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 
 /**
- * Description: <BaseFragment><br>
- * Author:      mxdl<br>
- * Date:        2019/06/30<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * Date: 2019/9/10 8:23
+ * Email: 1071931588@qq.com
+ * Description:Fragment基类
  */
 public abstract class BaseFragment extends SupportFragment implements IBaseView {
     protected static final String TAG = BaseFragment.class.getSimpleName();
@@ -159,7 +159,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     /**
      * 填充布局
      */
-    private void loadView() {
+    protected void loadView() {
 
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
@@ -168,9 +168,9 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                 .addCallback(new EmptyCallback())
                 .addCallback(new ErrorCallback())
                 .addCallback(new LoadingCallback())
+                .setDefaultCallback(SuccessCallback.class)
                 .build();
         mLoadService = loadSir.register(contentView, (Callback.OnReloadListener) v -> BaseFragment.this.onReload(v));
-        mLoadService.showSuccess();
     }
 
     @Override
@@ -444,22 +444,19 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
 
     public void showInitView() {
-        mLoadingHandler.removeCallbacksAndMessages(null);
-        mLoadService.showSuccess();
+        clearStatus();
         mLoadService.showCallback(InitCallback.class);
     }
 
 
     public void showErrorView() {
-        mLoadingHandler.removeCallbacksAndMessages(null);
-        mLoadService.showSuccess();
+      clearStatus();
         mLoadService.showCallback(ErrorCallback.class);
     }
 
 
     public void showEmptyView() {
-        mLoadingHandler.removeCallbacksAndMessages(null);
-        mLoadService.showSuccess();
+        clearStatus();
         mLoadService.showCallback(EmptyCallback.class);
 
     }
@@ -469,8 +466,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         if (parentFragment != null && ((BaseFragment) parentFragment).enableSimplebar()) {
             ((BaseFragment) parentFragment).showLoadingView(tip);
         } else {
-            mLoadingHandler.removeCallbacksAndMessages(null);
-            mLoadService.showSuccess();
+            clearStatus();
             mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
                 TextView tvTip = view1.findViewById(R.id.tv_tip);
                 if (tip==null) {
@@ -487,6 +483,10 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     public void clearStatus() {
+        Fragment parentFragment = getParentFragment();
+        if (parentFragment != null && ((BaseFragment) parentFragment).enableSimplebar()) {
+            ((BaseFragment) parentFragment).clearStatus();
+        }
         mLoadingHandler.removeCallbacksAndMessages(null);
         mLoadService.showSuccess();
     }

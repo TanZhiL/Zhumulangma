@@ -16,29 +16,26 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAnnouncerViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 
 import org.greenrobot.eventbus.EventBus;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
 
-public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewModel> implements OnLoadMoreListener,
-       BaseQuickAdapter.OnItemClickListener {
+public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<SearchAnnouncerViewModel, Announcer>
+        implements BaseQuickAdapter.OnItemClickListener {
 
 
-    RecyclerView rv;
-    SmartRefreshLayout refreshLayout;
-    AnnouncerAdapter mAdapter;
+    private SmartRefreshLayout refreshLayout;
+   private AnnouncerAdapter mAnnouncerAdapter;
 
-    private String keyword;
     public SearchAnnouncerFragment() {
 
     }
@@ -56,14 +53,13 @@ public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewMo
     }
     @Override
     protected void initView(View view) {
-        rv=view.findViewById(R.id.rv);
-        rv.setLayoutManager(new LinearLayoutManager(mContext));
-        rv.setHasFixedSize(true);
-        mAdapter=new AnnouncerAdapter(R.layout.home_item_announcer);
-        mAdapter.bindToRecyclerView(rv);
-        mAdapter.setOnItemClickListener(this);
+        RecyclerView recyclerView = view.findViewById(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setHasFixedSize(true);
+        mAnnouncerAdapter =new AnnouncerAdapter(R.layout.home_item_announcer);
+        mAnnouncerAdapter.bindToRecyclerView(recyclerView);
+        mAnnouncerAdapter.setOnItemClickListener(this);
         refreshLayout=view.findViewById(R.id.refreshLayout);
-        refreshLayout.setOnLoadMoreListener(this);
     }
 
 
@@ -71,14 +67,9 @@ public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewMo
 
     @Override
     public void initData() {
-        keyword=getArguments().getString(KeyCode.Home.KEYWORD);
-       mViewModel.searchAnnouncer(keyword);
-    }
-
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.searchAnnouncer(keyword);
+        String keyword = getArguments().getString(KeyCode.Home.KEYWORD);
+        mViewModel.setKeyword(keyword);
+       mViewModel.init();
     }
 
 
@@ -86,15 +77,15 @@ public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewMo
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
-                .withLong(KeyCode.Home.ANNOUNCER_ID, mAdapter.getItem(position).getAnnouncerId())
-                .withString(KeyCode.Home.ANNOUNCER_NAME, mAdapter.getItem(position).getNickname())
+                .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getItem(position).getAnnouncerId())
+                .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getItem(position).getNickname())
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                 new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
     }
     @Override
-    public Class<SearchResultViewModel> onBindViewModel() {
-        return SearchResultViewModel.class;
+    public Class<SearchAnnouncerViewModel> onBindViewModel() {
+        return SearchAnnouncerViewModel.class;
     }
 
     @Override
@@ -104,22 +95,17 @@ public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewMo
 
     @Override
     public void initViewObservable() {
-        mViewModel.getAnnouncerSingleLiveEvent().observe(this, announcers -> {
-            if(null==announcers||(mAdapter.getData().size()==0&&announcers.size()==0)){
-                showEmptyView();
-                return;
-            }
-            if (announcers.size() > 0) {
-                mAdapter.addData(announcers);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
+        mViewModel.getInitAnnouncersEvent().observe(this, announcers -> mAnnouncerAdapter.setNewData(announcers));
     }
 
     @Override
     protected boolean enableSimplebar() {
         return false;
+    }
+
+    @NonNull
+    @Override
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout, mAnnouncerAdapter);
     }
 }

@@ -24,14 +24,16 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RankCategotyAdapter;
 import com.gykj.zhumulangma.home.adapter.RankFreeAdapter;
 import com.gykj.zhumulangma.home.adapter.RankPaidAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -42,6 +44,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Arrays;
 
 import me.yokeyword.fragmentation.ISupportFragment;
+
 /**
  * Author: Thomas.
  * Date: 2019/8/14 10:21
@@ -49,50 +52,39 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Description:排行榜
  */
 @Route(path = AppConstants.Router.Home.F_RANK)
-public class RankFragment extends BaseMvvmFragment<RankViewModel> implements View.OnClickListener,
+public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> implements View.OnClickListener,
         BaseQuickAdapter.OnItemClickListener {
 
-
-    public RankFragment() {
-    }
-
-
-    private MagicIndicator magicIndicator;
-    private ViewPager viewpager;
-    private RecyclerView rvCategory;
-    private FrameLayout flMask;
-
-    private ViewGroup layoutFree;
-    private ViewGroup layoutPaid;
-    private RefreshLayout rlFree;
-    private RefreshLayout rlPaid;
-    private RecyclerView rvFree;
-    private RecyclerView rvPaid;
     private RankFreeAdapter mFreeAdapter;
     private RankPaidAdapter mPaidAdapter;
-
-    //下拉中间视图
-    private View llbarCenter;
-    private View ivCategoryDown;
-    private TextView tvTitle;
-
-    private String[] tabs = {"免费榜", "付费榜"};
-    private String[] c_labels = {"热门", "音乐", "娱乐", "有声书"
+    private String[] mTabs = {"免费榜"};
+    private String[] mCLabels = {"热门", "音乐", "娱乐", "有声书"
             , "儿童", "3D体验馆", "资讯", "脱口秀"
             , "情感生活", "历史", "人文", "英语"
             , "小语种", "教育培训", "广播剧", "国学书院"
             , "电台", "商业财经", "IT科技", "健康养生"
             , "旅游", "汽车", "动漫游戏", "电影"};
-    private String[] c_ids = {"0", "2", "4", "3"
+    private String[] mCIds = {"0", "2", "4", "3"
             , "6", "29", "1", "28"
             , "10", "9", "39", "38"
             , "32", "13", "15", "40"
             , "17", "8", "18", "7"
             , "22", "21", "24", "23"};
+    private String mCId = mCIds[0];
 
+    private RecyclerView rvCategory;
+    private FrameLayout flMask;
+    private ViewGroup layoutFree;
+    private ViewGroup layoutPaid;
+    private SmartRefreshLayout rlFree;
+    private RefreshLayout rlPaid;
+    //下拉中间视图
+    private View llbarCenter;
+    private View ivCategoryDown;
+    private TextView tvTitle;
 
-    private String cid = c_ids[0];
-
+    public RankFragment() {
+    }
 
     @Override
     protected int onBindLayout() {
@@ -101,21 +93,21 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
 
     @Override
     public void initView(View view) {
-        magicIndicator = fd(R.id.magic_indicator);
-        viewpager = fd(R.id.viewpager);
+        MagicIndicator magicIndicator = fd(R.id.magic_indicator);
+        ViewPager viewpager = fd(R.id.viewpager);
         rvCategory = fd(R.id.rv_category);
         flMask = fd(R.id.fl_mask);
 
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
         ivCategoryDown.setVisibility(View.VISIBLE);
         tvTitle = llbarCenter.findViewById(R.id.tv_title);
-        tvTitle.setText(c_labels[0]);
+        tvTitle.setText(mCLabels[0]);
         layoutFree = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         layoutPaid = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         rlFree = layoutFree.findViewById(R.id.refreshLayout);
         rlPaid = layoutPaid.findViewById(R.id.refreshLayout);
-        rvFree = layoutFree.findViewById(R.id.rv);
-        rvPaid = layoutPaid.findViewById(R.id.rv);
+        RecyclerView rvFree = layoutFree.findViewById(R.id.rv);
+        RecyclerView rvPaid = layoutPaid.findViewById(R.id.rv);
         rvFree.setLayoutManager(new LinearLayoutManager(mContext));
         rvPaid.setLayoutManager(new LinearLayoutManager(mContext));
         mFreeAdapter = new RankFreeAdapter(R.layout.home_item_rank_free);
@@ -128,13 +120,13 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
         viewpager.setAdapter(new RankPagerAdapter());
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
         commonNavigator.setAdjustMode(true);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 125));
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(mTabs), viewpager, 125));
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
 
         rvCategory.setLayoutManager(new GridLayoutManager(mContext, 4));
         RankCategotyAdapter categotyAdapter = new RankCategotyAdapter(R.layout.home_item_rank_category,
-                Arrays.asList(c_labels));
+                Arrays.asList(mCLabels));
         rvCategory.setHasFixedSize(true);
         categotyAdapter.bindToRecyclerView(rvCategory);
         categotyAdapter.setOnItemClickListener(this);
@@ -165,14 +157,19 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
                     (ISupportFragment) navigation)));
         });
-        rlFree.setOnLoadMoreListener(refreshLayout -> mViewModel.getFreeRank(cid));
-        rlPaid.setOnLoadMoreListener(refreshLayout -> mViewModel.getPaidRank());
+
+    }
+
+    @NonNull
+    @Override
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(rlFree,mFreeAdapter);
     }
 
     @Override
     public void initData() {
-
-        mViewModel.init(cid);
+      mViewModel.setCid(mCId);
+        mViewModel.init();
     }
 
     @Override
@@ -189,14 +186,14 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
             flMask.animate().withStartAction(() -> {
                 flMask.setAlpha(1);
                 flMask.setBackgroundColor(Color.TRANSPARENT);
-            }) .translationY(-rvCategory.getHeight()).alpha(0).setDuration(200).withEndAction(() -> {
+            }).translationY(-rvCategory.getHeight()).alpha(0).setDuration(200).withEndAction(() -> {
                 flMask.setVisibility(View.GONE);
             });
 
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
         } else {
-            flMask.setTranslationY(-rvCategory.getHeight()==0?-400:-rvCategory.getHeight());
+            flMask.setTranslationY(-rvCategory.getHeight() == 0 ? -400 : -rvCategory.getHeight());
             flMask.animate().withStartAction(() -> {
                 flMask.setAlpha(0);
                 flMask.setVisibility(View.VISIBLE);
@@ -211,13 +208,14 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         switchCategory();
-        if(cid.equals(c_ids[position])){
+        if (mCId.equals(mCIds[position])) {
             return;
         }
-        tvTitle.setText(c_labels[position]);
-        cid = c_ids[position];
+        tvTitle.setText(mCLabels[position]);
+        mCId = mCIds[position];
+        mViewModel.setCid(mCId);
         mFreeAdapter.setNewData(null);
-        mViewModel.getFreeRank(cid);
+        mViewModel.init();
     }
 
     @Override
@@ -232,18 +230,8 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
 
     @Override
     public void initViewObservable() {
-        mViewModel.getFreeSingleLiveEvent().observe(this, albums -> {
-            if (null == albums || (mFreeAdapter.getData().size() == 0 && albums.size() == 0)) {
-                showEmptyView();
-                return;
-            }
-            if (albums.size() > 0) {
-                mFreeAdapter.addData(albums);
-                rlFree.finishLoadMore();
-            } else {
-                rlFree.finishLoadMoreWithNoMoreData();
-            }
-        });
+        mViewModel.getInitFreeEvent().observe(this, albums ->mFreeAdapter.setNewData(albums));
+
         mViewModel.getPaidSingleLiveEvent().observe(this, albums -> {
             if (null == albums || (mPaidAdapter.getData().size() == 0 && albums.size() == 0)) {
                 showEmptyView();
@@ -261,13 +249,13 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
     class RankPagerAdapter extends PagerAdapter {
         @Override
         public int getCount() {
-            return 2;
+            return 1;
         }
 
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View view = position == 0 ? layoutFree : layoutPaid;
+            View view = layoutFree;
             container.addView(view);
             return view;
         }
@@ -306,9 +294,9 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
 
     @Override
     public boolean onBackPressedSupport() {
-        if(flMask.getVisibility()==View.VISIBLE){
+        if (flMask.getVisibility() == View.VISIBLE) {
             switchCategory();
-        }else {
+        } else {
             pop();
         }
         return true;

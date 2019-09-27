@@ -44,7 +44,7 @@ public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
 
     public void init() {
         //获取banner
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.CATEGORY_ID, "0");
         map.put(DTransferConstants.IMAGE_SCALE, "2");
         map.put(DTransferConstants.CONTAINS_PAID, "false");
@@ -72,6 +72,7 @@ public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                 //刷新时需要恢复刷新状态
                 .doFinally(()->super.onViewRefresh())
                 .subscribe(announcerList -> {
+                    getClearStatusEvent().call();
                     if (!CollectionUtils.isEmpty(announcerList.getAnnouncerList())) {
                         curPage++;
                     }

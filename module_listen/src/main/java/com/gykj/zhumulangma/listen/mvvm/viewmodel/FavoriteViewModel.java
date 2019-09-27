@@ -59,7 +59,7 @@ public class FavoriteViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Fa
         mModel.listDesc(FavoriteBean.class, curPage, PAGESIZE, FavoriteBeanDao.Properties.Datetime)
                 .doFinally(() -> super.onViewRefresh())
                 .subscribe(favoriteBeans ->
-                {
+                {   getClearStatusEvent().call();
                     if (CollectionUtils.isEmpty(favoriteBeans)) {
                         getShowEmptyViewEvent().call();
                         return;

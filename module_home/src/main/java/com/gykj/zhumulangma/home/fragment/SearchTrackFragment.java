@@ -12,22 +12,27 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.SearchTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchTrackViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.track.Track;
+
+/**
+ * Author: Thomas.
+ * Date: 2019/8/13 15:12
+ * Email: 1071931588@qq.com
+ * Description:搜索声音
+ */
+public class SearchTrackFragment extends BaseRefreshMvvmFragment<SearchTrackViewModel, Track> implements
+        BaseQuickAdapter.OnItemClickListener {
 
 
-public class SearchTrackFragment extends BaseMvvmFragment<SearchResultViewModel> implements OnLoadMoreListener,
-       BaseQuickAdapter.OnItemClickListener {
+    private SmartRefreshLayout refreshLayout;
+    private SearchTrackAdapter mSearchTrackAdapter;
 
-    RecyclerView rv;
-    SmartRefreshLayout refreshLayout;
-    SearchTrackAdapter mAdapter;
-    private String keyword;
     public SearchTrackFragment() {
 
     }
@@ -37,52 +42,55 @@ public class SearchTrackFragment extends BaseMvvmFragment<SearchResultViewModel>
     protected int onBindLayout() {
         return R.layout.common_layout_refresh_loadmore;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mView.setBackground(null);
         setSwipeBackEnable(false);
     }
+
     @Override
     protected void initView(View view) {
-        rv=view.findViewById(R.id.rv);
-        rv.setLayoutManager(new LinearLayoutManager(mContext));
-        rv.setHasFixedSize(true);
-        mAdapter=new SearchTrackAdapter(R.layout.home_item_seach_track);
-        mAdapter.bindToRecyclerView(rv);
-        refreshLayout=view.findViewById(R.id.refreshLayout);
+        RecyclerView recyclerView = view.findViewById(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setHasFixedSize(true);
+        mSearchTrackAdapter = new SearchTrackAdapter(R.layout.home_item_seach_track);
+        mSearchTrackAdapter.bindToRecyclerView(recyclerView);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
     }
 
     @Override
     public void initListener() {
         super.initListener();
-        refreshLayout.setOnLoadMoreListener(this);
-        mAdapter.setOnItemClickListener(this);
+        mSearchTrackAdapter.setOnItemClickListener(this);
+    }
+
+    @NonNull
+    @Override
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout,mSearchTrackAdapter);
     }
 
     @Override
     public void initData() {
-        keyword=getArguments().getString(KeyCode.Home.KEYWORD);
-       mViewModel.searchTracks(keyword);
-    }
-
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.searchTracks(keyword);
+        String keyword = getArguments().getString(KeyCode.Home.KEYWORD);
+        mViewModel.setKeyword(keyword);
+        mViewModel.init();
     }
 
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-        mViewModel.play(String.valueOf(mAdapter.getItem(position).getAlbum().getAlbumId()),mAdapter.getItem(position));
+        mViewModel.play(String.valueOf(mSearchTrackAdapter.getItem(position).getAlbum().getAlbumId())
+                , mSearchTrackAdapter.getItem(position));
 
     }
 
     @Override
-    public Class<SearchResultViewModel> onBindViewModel() {
-        return SearchResultViewModel.class;
+    public Class<SearchTrackViewModel> onBindViewModel() {
+        return SearchTrackViewModel.class;
     }
 
     @Override
@@ -92,19 +100,9 @@ public class SearchTrackFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     @Override
     public void initViewObservable() {
-        mViewModel.getTrackSingleLiveEvent().observe(this, albums -> {
-            if(null==albums||(mAdapter.getData().size()==0&&albums.size()==0)){
-                showEmptyView();
-                return;
-            }
-            if (albums.size() > 0) {
-                mAdapter.addData(albums);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
+        mViewModel.getInitTracksEvent().observe(this, tracks -> mSearchTrackAdapter.setNewData(tracks));
     }
+
     @Override
     protected boolean enableSimplebar() {
         return false;

@@ -19,11 +19,13 @@ public class LoadingCallback extends Callback {
     }
     @Override
     protected boolean onReloadEvent(Context context, View view) {
+        //不响应reload事件
         return true;
     }
 
     @Override
     public boolean getSuccessVisible() {
+        //背景可自定义
         return true;
     }
 }

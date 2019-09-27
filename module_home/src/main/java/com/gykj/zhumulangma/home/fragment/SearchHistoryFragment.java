@@ -20,11 +20,8 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 public class SearchHistoryFragment extends BaseMvvmFragment<SearchViewModel> implements View.OnClickListener {
     private static final String TAG = "HistoryFragment";
-   private RecyclerView rvHistory;
-   private TextView tvClear;
-   private RecyclerView rvHot;
 
-   private SearchHistoryAdapter mHistoryAdapter;
+    private SearchHistoryAdapter mHistoryAdapter;
 
    private SearchHotAdapter mHotAdapter;
 
@@ -37,6 +34,8 @@ public class SearchHistoryFragment extends BaseMvvmFragment<SearchViewModel> imp
     protected int onBindLayout() {
         return R.layout.home_fragment_search_history;
     }
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -44,10 +43,10 @@ public class SearchHistoryFragment extends BaseMvvmFragment<SearchViewModel> imp
     }
     @Override
     protected void initView(View view) {
-        rvHistory=view.findViewById(R.id.rv_history);
-        tvClear=view.findViewById(R.id.tv_clear);
+        RecyclerView rvHistory = view.findViewById(R.id.rv_history);
+        TextView tvClear = view.findViewById(R.id.tv_clear);
         tvClear.setOnClickListener(this);
-        rvHot=view.findViewById(R.id.rv_hot);
+        RecyclerView rvHot = view.findViewById(R.id.rv_hot);
 
         rvHistory.setLayoutManager(new com.library.flowlayout.FlowLayoutManager());
         rvHistory.setHasFixedSize(true);
@@ -75,14 +74,12 @@ public class SearchHistoryFragment extends BaseMvvmFragment<SearchViewModel> imp
     public void onRevisible() {
         super.onRevisible();
         mHistoryAdapter.setNewData(null);
-        mViewModel.getHistory();
+        mViewModel.refreshHistory();
     }
 
     @Override
     public void initData() {
-     mViewModel._getHotWords();
      mViewModel.getHistory();
-
     }
 
     @Override
@@ -114,7 +111,7 @@ public class SearchHistoryFragment extends BaseMvvmFragment<SearchViewModel> imp
 
     @Override
     public void initViewObservable() {
-        mViewModel.getHotWordsSingleLiveEvent().observe(this, hotWords -> mHotAdapter.setNewData(hotWords));
+        mViewModel.getHotWordsEvent().observe(this, hotWords -> mHotAdapter.setNewData(hotWords));
         mViewModel.getHistorySingleLiveEvent().observe(this, historyBeanList ->
                 mHistoryAdapter.setNewData(historyBeanList));
     }

@@ -79,15 +79,17 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     protected int onBindLayout() {
         return R.layout.home_fragment_search;
     }
-
+    @Override
+    protected void loadView() {
+        super.loadView();
+        clearStatus();
+    }
     @Override
     protected void initView(View view) {
         if (StatusBarUtils.supportTransparentStatusBar()) {
             fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
         etKeyword = fd(R.id.et_keyword);
-    //    UiUtil.setEditTextInhibitInputSpace(etKeyword);
-     //   UiUtil.setEditTextInhibitInputSpeChat(etKeyword);
         mSuggestFragment = (SearchSuggestFragment) ARouter.getInstance()
                 .build(AppConstants.Router.Home.F_SEARCH_SUGGEST).navigation();
         mSuggestFragment.setSearchListener(this);
@@ -128,7 +130,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         if (hotword != null) {
             etKeyword.setHint(hotword);
         } else {
-            mViewModel._getHotWords();
+            mViewModel.getHotWords();
         }
     }
 
@@ -201,7 +203,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
 
     @Override
     public void initViewObservable() {
-        mViewModel.getHotWordsSingleLiveEvent().observe(this, hotWords ->
+        mViewModel.getHotWordsEvent().observe(this, hotWords ->
                 etKeyword.setHint(hotWords.get(0).getSearchword()));
     }
 

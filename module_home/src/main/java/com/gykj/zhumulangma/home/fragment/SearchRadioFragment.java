@@ -13,25 +13,25 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchRadioViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 
 
-public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel> implements OnLoadMoreListener,
+public class SearchRadioFragment extends BaseRefreshMvvmFragment<SearchRadioViewModel, Radio> implements
        BaseQuickAdapter.OnItemClickListener {
 
 
-   private RecyclerView rv;
-   private SmartRefreshLayout refreshLayout;
-   private RadioAdapter mAdapter;
+    private SmartRefreshLayout refreshLayout;
+   private RadioAdapter mRadioAdapter;
 
-    private String keyword;
     public SearchRadioFragment() {
 
     }
@@ -49,14 +49,13 @@ public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel>
     }
     @Override
     protected void initView(View view) {
-        rv=view.findViewById(R.id.rv);
-        rv.setLayoutManager(new LinearLayoutManager(mContext));
-        rv.setHasFixedSize(true);
-        mAdapter=new RadioAdapter(R.layout.home_item_radio);
-        mAdapter.bindToRecyclerView(rv);
-        mAdapter.setOnItemClickListener(this);
+        RecyclerView recyclerView = view.findViewById(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setHasFixedSize(true);
+        mRadioAdapter =new RadioAdapter(R.layout.home_item_radio);
+        mRadioAdapter.bindToRecyclerView(recyclerView);
+        mRadioAdapter.setOnItemClickListener(this);
         refreshLayout=view.findViewById(R.id.refreshLayout);
-        refreshLayout.setOnLoadMoreListener(this);
     }
 
 
@@ -64,26 +63,21 @@ public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     @Override
     public void initData() {
-        keyword=getArguments().getString(KeyCode.Home.KEYWORD);
-        mViewModel.searchRadios(keyword);
+        String keyword = getArguments().getString(KeyCode.Home.KEYWORD);
+        mViewModel.setKeyword(keyword);
+        mViewModel.init();
     }
 
-
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.searchRadios(keyword);
-    }
 
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        RadioUtil.getInstance(mContext).playLiveRadioForSDK(mAdapter.getItem(position));
+        RadioUtil.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getItem(position));
         navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
     }
     @Override
-    public Class<SearchResultViewModel> onBindViewModel() {
-        return SearchResultViewModel.class;
+    public Class<SearchRadioViewModel> onBindViewModel() {
+        return SearchRadioViewModel.class;
     }
 
     @Override
@@ -93,22 +87,17 @@ public class SearchRadioFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     @Override
     public void initViewObservable() {
-        mViewModel.getRadioSingleLiveEvent().observe(this, radioList -> {
-            if(null==radioList||(mAdapter.getData().size()==0&&radioList.size()==0)){
-                showEmptyView();
-                return;
-            }
-            if (radioList.size() > 0) {
-                mAdapter.addData(radioList);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
+        mViewModel.getInitRadiosEvent().observe(this, radioList -> mRadioAdapter.setNewData(radioList));
     }
 
     @Override
     protected boolean enableSimplebar() {
         return false;
+    }
+
+    @NonNull
+    @Override
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout,mRadioAdapter);
     }
 }

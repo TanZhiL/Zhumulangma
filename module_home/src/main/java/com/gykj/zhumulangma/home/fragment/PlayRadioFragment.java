@@ -64,7 +64,6 @@ import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> implements
         View.OnClickListener, PlaySchedulePopup.onSelectedListener, IXmPlayerStatusListener,
         IXmAdsStatusListener, OnSeekChangeListener, View.OnTouchListener {
-    private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd:HH:mm", Locale.getDefault());
     private PlaySchedulePopup mSchedulePopup;
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mContext);
     private Schedule mSchedule;
@@ -88,7 +87,11 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
     }
-
+    @Override
+    protected void loadView() {
+        super.loadView();
+        clearStatus();
+    }
     @Override
     protected void initView(View view) {
         mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left).setRotation(-90);

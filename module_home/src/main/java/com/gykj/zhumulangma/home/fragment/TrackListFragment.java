@@ -11,33 +11,31 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.TrackListViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 /**
  * Author: Thomas.
  * Date: 2019/9/11 11:40
  * Email: 1071931588@qq.com
- * Description:
+ * Description:声音列表
  */
 
 @Route(path = AppConstants.Router.Home.F_TRACK_LIST)
-public class TrackListFragment extends BaseMvvmFragment<TrackListViewModel> implements BaseQuickAdapter.OnItemClickListener, OnLoadMoreListener {
+public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewModel,Track> implements
+        BaseQuickAdapter.OnItemClickListener {
 
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
-    public long announcerId;
+    public long mAnnouncerId;
     @Autowired(name = KeyCode.Home.TITLE)
-    public String title;
-    private RecyclerView rv;
+    public String mTitle;
     private SmartRefreshLayout refreshLayout;
-    private AnnouncerTrackAdapter mAdapter;
+    private AnnouncerTrackAdapter mAnnouncerTrackAdapter;
 
     @Override
     protected int onBindLayout() {
@@ -46,41 +44,36 @@ public class TrackListFragment extends BaseMvvmFragment<TrackListViewModel> impl
 
     @Override
     protected void initView(View view) {
-        rv=fd(R.id.rv);
-        rv.setLayoutManager(new LinearLayoutManager(mContext));
-        rv.setHasFixedSize(true);
-        mAdapter = new AnnouncerTrackAdapter(R.layout.home_item_announcer_track);
-        mAdapter.bindToRecyclerView(rv);
-        setTitle(new String[]{title});
+        RecyclerView recyclerView = fd(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setHasFixedSize(true);
+        mAnnouncerTrackAdapter = new AnnouncerTrackAdapter(R.layout.home_item_announcer_track);
+        mAnnouncerTrackAdapter.bindToRecyclerView(recyclerView);
+        setTitle(new String[]{mTitle});
         refreshLayout = view.findViewById(R.id.refreshLayout);
     }
 
     @Override
     public void initListener() {
         super.initListener();
-        mAdapter.setOnItemClickListener(this);
+        mAnnouncerTrackAdapter.setOnItemClickListener(this);
         refreshLayout.setOnLoadMoreListener(this);
+    }
+
+    @NonNull
+    @Override
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout,mAnnouncerTrackAdapter);
     }
 
     @Override
     public void initData() {
-        mViewModel.getTrack(announcerId);
+        mViewModel.setAnnouncerId(mAnnouncerId);
+        mViewModel.init();
     }
     @Override
     public void initViewObservable() {
-        mViewModel.getTrackListSingleLiveEvent().observe(this, tracks -> {
-
-            if (null == tracks || (mAdapter.getData().size() == 0 && tracks.size() == 0)) {
-                showEmptyView();
-                return;
-            }
-            if (tracks.size() > 0) {
-                mAdapter.addData(tracks);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
+        mViewModel.getInitTrackListEvent().observe(this, tracks -> mAnnouncerTrackAdapter.setNewData(tracks));
     }
     @Override
     protected boolean lazyEnable() {
@@ -89,13 +82,8 @@ public class TrackListFragment extends BaseMvvmFragment<TrackListViewModel> impl
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Track track = mAdapter.getItem(position);
+        Track track = mAnnouncerTrackAdapter.getItem(position);
         mViewModel.play(track.getAlbum().getAlbumId(),track.getDataId());
-    }
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getTrack(announcerId);
     }
 
     @Override
@@ -107,6 +95,5 @@ public class TrackListFragment extends BaseMvvmFragment<TrackListViewModel> impl
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }
-
 
 }

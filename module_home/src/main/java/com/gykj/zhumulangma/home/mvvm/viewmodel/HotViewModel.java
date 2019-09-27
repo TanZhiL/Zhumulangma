@@ -83,7 +83,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> {
                 //电台
                 .flatMap((Function<AlbumList, ObservableSource<RadioList>>) albumList -> getRadioListObservable())
                 .doFinally(()->super.onViewRefresh())
-                .subscribe(r-> {}, e->
+                .subscribe(r-> getClearStatusEvent().call(), e->
                 {   getShowErrorViewEvent().call();
                     e.printStackTrace();
                 });

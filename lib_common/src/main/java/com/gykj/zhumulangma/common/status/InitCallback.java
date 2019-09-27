@@ -20,11 +20,7 @@ public class InitCallback extends Callback {
 
     @Override
     protected boolean onReloadEvent(Context context, View view) {
-        return true;
-    }
-
-    @Override
-    public boolean getSuccessVisible() {
+        //不响应reload事件
         return true;
     }
 

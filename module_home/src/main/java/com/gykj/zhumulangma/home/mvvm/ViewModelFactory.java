@@ -23,7 +23,10 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioListViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAlbumViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAnnouncerViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchRadioViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchTrackViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.TrackListViewModel;
 
@@ -67,8 +70,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new RadioViewModel(mApplication, new RadioModel(mApplication));
         }else if (modelClass.isAssignableFrom(SearchViewModel.class)) {
             return (T) new SearchViewModel(mApplication, new ZhumulangmaModel(mApplication));
-        }else if (modelClass.isAssignableFrom(SearchResultViewModel.class)) {
-            return (T) new SearchResultViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(SearchRadioViewModel.class)) {
+            return (T) new SearchRadioViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(RankViewModel.class)) {
             return (T) new RankViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(AlbumListViewModel.class)) {
@@ -93,6 +96,12 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new BatchDownloadViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(AnnouncerListViewModel.class)) {
             return (T) new AnnouncerListViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(SearchAlbumViewModel.class)) {
+            return (T) new SearchAlbumViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(SearchTrackViewModel.class)) {
+            return (T) new SearchTrackViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(SearchAnnouncerViewModel.class)) {
+            return (T) new SearchAnnouncerViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

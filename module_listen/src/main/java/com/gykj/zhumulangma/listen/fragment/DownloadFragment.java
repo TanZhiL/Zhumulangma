@@ -57,21 +57,18 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack,
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener, IXmPlayerStatusListener {
     @Autowired(name = KeyCode.Listen.TAB_INDEX)
-    public int tabIndex;
-    private TextView tvMemory;
-    private ViewPager viewpager;
+    public int mTabIndex;
 
-    private MagicIndicator magicIndicator;
-    private String[] tabs = {"专辑", "声音", "下载中"};
-    private ViewGroup layoutDetail1, layoutDetail2, layoutDetail3;
-
-    private RecyclerView rvAlbum;
-    private RecyclerView rvTrack;
-    private RecyclerView rvRecommend;
+    private String[] mTabs = {"专辑", "声音", "下载中"};
     private DownloadAlbumAdapter mAlbumAdapter;
     private DownloadTrackAdapter mTrackAdapter;
     private DownloadingAdapter mDownloadingAdapter;
     private Handler mHandler = new Handler();
+
+    private TextView tvMemory;
+    private MagicIndicator magicIndicator;
+    private ViewGroup layoutDetail1, layoutDetail2, layoutDetail3;
+
 
     public DownloadFragment() {
 
@@ -81,6 +78,12 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     @Override
     protected int onBindLayout() {
         return R.layout.listen_fragment_download;
+    }
+
+    @Override
+    protected void loadView() {
+        super.loadView();
+        clearStatus();
     }
 
     @Override
@@ -99,33 +102,33 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         ((RefreshLayout) layoutDetail3.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
 
 
-        rvAlbum = layoutDetail1.findViewById(R.id.rv);
+        RecyclerView rvAlbum = layoutDetail1.findViewById(R.id.rv);
         rvAlbum.setHasFixedSize(true);
         rvAlbum.setLayoutManager(new LinearLayoutManager(mContext));
         mAlbumAdapter = new DownloadAlbumAdapter(R.layout.listen_item_download_album);
         mAlbumAdapter.bindToRecyclerView(rvAlbum);
 
-        rvTrack = layoutDetail2.findViewById(R.id.rv);
+        RecyclerView rvTrack = layoutDetail2.findViewById(R.id.rv);
         rvTrack.setHasFixedSize(true);
         rvTrack.setLayoutManager(new LinearLayoutManager(mContext));
         mTrackAdapter = new DownloadTrackAdapter(R.layout.listen_item_download_track);
         mTrackAdapter.bindToRecyclerView(rvTrack);
 
-        rvRecommend = layoutDetail3.findViewById(R.id.rv);
+        RecyclerView rvRecommend = layoutDetail3.findViewById(R.id.rv);
         rvRecommend.setHasFixedSize(true);
         rvRecommend.setLayoutManager(new LinearLayoutManager(mContext));
         mDownloadingAdapter = new DownloadingAdapter(R.layout.listen_item_downloading);
         mDownloadingAdapter.bindToRecyclerView(rvRecommend);
 
         tvMemory = fd(R.id.tv_memory);
-        viewpager = fd(R.id.viewpager);
+        ViewPager viewpager = fd(R.id.viewpager);
         viewpager.setAdapter(new DownloadPagerAdapter());
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 50));
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(mTabs), viewpager, 50));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
-        viewpager.setCurrentItem(tabIndex);
+        viewpager.setCurrentItem(mTabIndex);
 
         if (!XmDownloadManager.getInstance().haveDowningTask()) {
             ((TextView) layoutDetail3.findViewById(R.id.tv_all)).setText("全部开始");

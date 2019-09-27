@@ -10,6 +10,7 @@
         android:id="@+id/magic_indicator"
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:visibility="gone"
         android:background="#f0f0f0"
         app:layout_constraintTop_toTopOf="parent"/>
     <FrameLayout

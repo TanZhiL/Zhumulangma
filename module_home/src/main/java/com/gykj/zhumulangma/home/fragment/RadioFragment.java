@@ -24,6 +24,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.status.InitCallback;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.ItemHeader;
@@ -67,6 +68,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
 
     @Override
     protected void initView(View view) {
+        mLoadService.showCallback(InitCallback.class);
         clMore = fd(R.id.cl_more);
         ivMore = fd(R.id.iv_more);
         initHistory();

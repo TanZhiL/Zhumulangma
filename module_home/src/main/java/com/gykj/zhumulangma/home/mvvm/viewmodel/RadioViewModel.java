@@ -66,7 +66,7 @@ public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
                 .flatMap((Function<List<PlayHistoryBean>, ObservableSource<RadioList>>) historyBeans -> getLocalListObservable(mCityCode))
                 .flatMap((Function<RadioList, ObservableSource<RadioList>>) radioList -> getTopListObservable())
                 .doFinally(()->super.onViewRefresh())
-                .subscribe(r-> {}, e->
+                .subscribe(r-> getClearStatusEvent().call(), e->
                 {   getShowErrorViewEvent().call();
                     e.printStackTrace();
                 });

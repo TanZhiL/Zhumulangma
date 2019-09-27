@@ -89,8 +89,7 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album>
                 //小课堂
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getClassRoomListObservable())
                 .doFinally(() -> super.onViewRefresh())
-                .subscribe(r -> {
-                }, e ->
+                .subscribe(r -> getClearStatusEvent().call(), e ->
                 {
                     getShowErrorViewEvent().call();
                     e.printStackTrace();

@@ -16,30 +16,30 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchResultViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAlbumViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import org.greenrobot.eventbus.EventBus;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
-
-public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel> implements OnLoadMoreListener,
+/**
+ * Author: Thomas.
+ * Date: 2019/8/13 15:12
+ * Email: 1071931588@qq.com
+ * Description:搜索专辑
+ */
+public class SearchAlbumFragment extends BaseRefreshMvvmFragment<SearchAlbumViewModel, Album> implements
         BaseQuickAdapter.OnItemClickListener {
 
 
-    private RecyclerView rv;
     private SmartRefreshLayout refreshLayout;
-    private AlbumAdapter mAdapter;
-
-
-    private String keyword;
+    private AlbumAdapter mAlbumAdapter;
 
     public SearchAlbumFragment() {
 
@@ -60,11 +60,11 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     @Override
     protected void initView(View view) {
-        rv = view.findViewById(R.id.rv);
-        rv.setLayoutManager(new LinearLayoutManager(mContext));
-        rv.setHasFixedSize(true);
-        mAdapter = new AlbumAdapter(R.layout.home_item_album);
-        mAdapter.bindToRecyclerView(rv);
+        RecyclerView recyclerView = view.findViewById(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setHasFixedSize(true);
+        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
+        mAlbumAdapter.bindToRecyclerView(recyclerView);
         refreshLayout = view.findViewById(R.id.refreshLayout);
 
     }
@@ -72,35 +72,36 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
     @Override
     public void initListener() {
         super.initListener();
-        mAdapter.setOnItemClickListener(this);
-        refreshLayout.setOnLoadMoreListener(this);
+        mAlbumAdapter.setOnItemClickListener(this);
+    }
+
+    @NonNull
+    @Override
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout,mAlbumAdapter);
     }
 
     @Override
     public void initData() {
-        keyword = getArguments().getString(KeyCode.Home.KEYWORD);
-        mViewModel.searchAlbums(keyword);
+        String keyword = getArguments().getString(KeyCode.Home.KEYWORD);
+        mViewModel.setKeyword(keyword);
+        mViewModel.init();
     }
 
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.searchAlbums(keyword);
-    }
 
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
-                .withLong(KeyCode.Home.ALBUMID, mAdapter.getItem(position).getId())
+                .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
     @Override
-    public Class<SearchResultViewModel> onBindViewModel() {
-        return SearchResultViewModel.class;
+    public Class<SearchAlbumViewModel> onBindViewModel() {
+        return SearchAlbumViewModel.class;
     }
 
     @Override
@@ -110,18 +111,7 @@ public class SearchAlbumFragment extends BaseMvvmFragment<SearchResultViewModel>
 
     @Override
     public void initViewObservable() {
-        mViewModel.getAlbumSingleLiveEvent().observe(this, albums -> {
-            if (null == albums || (mAdapter.getData().size() == 0 && albums.size() == 0)) {
-                showEmptyView();
-                return;
-            }
-            if (albums.size() > 0) {
-                mAdapter.addData(albums);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
+        mViewModel.getInitAlbumsEvent().observe(this, albums -> mAlbumAdapter.setNewData(albums));
     }
 
     @Override
