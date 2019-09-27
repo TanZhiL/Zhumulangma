@@ -44,12 +44,12 @@ public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public void unsubscribe(Album album){
         mModel.remove(SubscribeBean.class,album.getId()).subscribe(aBoolean ->
-                getUnSubscribeSingleLiveEvent().postValue(album), e->e.printStackTrace());
+                getUnSubscribeSingleLiveEvent().setValue(album), e->e.printStackTrace());
 
     }
     public void subscribe(Album album){
         mModel.insert(new SubscribeBean(album.getId(),album,System.currentTimeMillis()))
-                .subscribe(subscribeBean -> getSubscribeSingleLiveEvent().postValue(album), e->e.printStackTrace());
+                .subscribe(subscribeBean -> getSubscribeSingleLiveEvent().setValue(album), e->e.printStackTrace());
     }
 
     public void getSubscribes() {
@@ -58,7 +58,7 @@ public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
                 {
                     if (subscribeBeans.size() > 0)
                         curPage++;
-                    getSubscribesSingleLiveEvent().postValue(subscribeBeans);
+                    getSubscribesSingleLiveEvent().setValue(subscribeBeans);
                 }, e -> e.printStackTrace());
     }
 
@@ -114,10 +114,10 @@ public class SubscribeViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.LIKE_COUNT, "50");
         map.put(DTransferConstants.PAGE, String.valueOf(1));
         mModel.getGuessLikeAlbum(map)
-                .doOnSubscribe(disposable ->  getShowLoadingViewEvent().postValue(""))
+                .doOnSubscribe(disposable ->  getShowLoadingViewEvent().call())
                 .subscribe(gussLikeAlbumList -> {
-                    getShowLoadingViewEvent().postValue(null);
-                    getLikeSingleLiveEvent().postValue(
+                    getClearStatusEvent().call();
+                    getLikeSingleLiveEvent().setValue(
                             gussLikeAlbumList.getAlbumList());
                 }, e -> e.printStackTrace());
     }

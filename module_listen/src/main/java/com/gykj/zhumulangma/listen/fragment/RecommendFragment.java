@@ -76,7 +76,7 @@ public class RecommendFragment  extends BaseMvvmFragment<SubscribeViewModel> imp
     public void initViewObservable() {
         mViewModel.getLikeSingleLiveEvent().observe(this, albums -> {
             if (CollectionUtils.isEmpty(albums)) {
-                    showEmptyView(true);
+                    showEmptyView();
             } else {
                 mRecommendAdapter.setNewData(albums);
             }

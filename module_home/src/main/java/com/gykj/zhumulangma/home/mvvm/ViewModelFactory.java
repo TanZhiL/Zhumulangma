@@ -84,15 +84,15 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
         }else if (modelClass.isAssignableFrom(PlayRadioViewModel.class)) {
             return (T) new PlayRadioViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(RadioListViewModel.class)) {
-            return (T) new RadioListViewModel(mApplication, new RadioModel(mApplication));
+            return (T) new RadioListViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(AnnouncerDetailViewModel.class)) {
-            return (T) new AnnouncerDetailViewModel(mApplication, new RadioModel(mApplication));
+            return (T) new AnnouncerDetailViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(TrackListViewModel.class)) {
-            return (T) new TrackListViewModel(mApplication, new RadioModel(mApplication));
+            return (T) new TrackListViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(BatchDownloadViewModel.class)) {
-            return (T) new BatchDownloadViewModel(mApplication, new RadioModel(mApplication));
+            return (T) new BatchDownloadViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(AnnouncerListViewModel.class)) {
-            return (T) new AnnouncerListViewModel(mApplication, new RadioModel(mApplication));
+            return (T) new AnnouncerListViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

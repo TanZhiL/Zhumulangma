@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ResourceUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,28 +23,31 @@ import com.gykj.zhumulangma.common.bean.ProvinceBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.ProvinceAdapter;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
-import com.gykj.zhumulangma.home.adapter.RadioHistoryAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioListViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Author: Thomas.
+ * Date: 2019/8/14 10:21
+ * Email: 1071931588@qq.com
+ * Description:电台列表
+ */
 @Route(path = AppConstants.Router.Home.F_RADIO_LIST)
-public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> implements BaseQuickAdapter.OnItemClickListener,
-        OnLoadMoreListener, View.OnClickListener {
-    //本地台
-    public static final int LOCAL = 999;
+public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewModel, Radio> implements
+        BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
+    //本省台
+    public static final int LOCAL_PROVINCE = 999;
     //国家台
     public static final int COUNTRY = 998;
     //省市台
@@ -54,28 +56,24 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
     public static final int INTERNET = 996;
     //排行榜
     public static final int RANK = 995;
-    //播放历史
-    public static final int HISTORY = 994;
-    //当地台
+    //当地城市台
     public static final int LOCAL_CITY = 993;
 
     @Autowired(name = KeyCode.Home.TYPE)
-    public int type;
+    public int mType;
     @Autowired(name = KeyCode.Home.TITLE)
-    public String title;
-    private RecyclerView rv;
+    public String mTitle;
     private SmartRefreshLayout refreshLayout;
-    private RadioAdapter mAdapter;
-    private RadioHistoryAdapter mHistoryAdapter;
+    private RadioAdapter mRadioAdapter;
+    private int mProvinceCode;
+    private ProvinceAdapter mProvinceAdapter;
+
     //下拉中间视图
     private View llbarCenter;
     private View ivCategoryDown;
-    private TextView tvTitle;
-
-    private int provinceCode;
-    private RecyclerView rvCategory;
+    private RecyclerView rvProvince;
     private FrameLayout flMask;
-    private ProvinceAdapter mProvinceAdapter;
+    private TextView tvTitle;
 
     public RadioListFragment() {
 
@@ -88,128 +86,69 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
 
     @Override
     protected void initView(View view) {
-        rv = fd(R.id.rv);
-        rv.setLayoutManager(new LinearLayoutManager(mContext));
-        rv.setHasFixedSize(true);
+        RecyclerView recyclerView = fd(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setHasFixedSize(true);
 
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
         tvTitle = llbarCenter.findViewById(R.id.tv_title);
-        if(type==HISTORY){
-            mHistoryAdapter=new RadioHistoryAdapter(R.layout.home_item_radio);
-            mHistoryAdapter.bindToRecyclerView(rv);
-            mHistoryAdapter.setOnItemClickListener(this);
-        }else {
-            mAdapter = new RadioAdapter(R.layout.home_item_radio);
-            mAdapter.bindToRecyclerView(rv);
-            mAdapter.setOnItemClickListener(this);
-        }
-        refreshLayout = view.findViewById(R.id.refreshLayout);
 
-        rvCategory = fd(R.id.rv_category);
+        mRadioAdapter = new RadioAdapter(R.layout.home_item_radio);
+        mRadioAdapter.bindToRecyclerView(recyclerView);
+        mRadioAdapter.setOnItemClickListener(this);
+        refreshLayout = view.findViewById(R.id.refreshLayout);
+        rvProvince = fd(R.id.rv_category);
         flMask = fd(R.id.fl_mask);
-        rvCategory.setLayoutManager(new GridLayoutManager(mContext, 5));
+        rvProvince.setLayoutManager(new GridLayoutManager(mContext, 5));
         String s = ResourceUtils.readAssets2String("province.json");
         List<ProvinceBean> provinceBeans = new Gson().fromJson(s, new TypeToken<ArrayList<ProvinceBean>>() {
         }.getType());
         mProvinceAdapter = new ProvinceAdapter(R.layout.home_item_rank_category, provinceBeans);
-        rvCategory.setHasFixedSize(true);
-        mProvinceAdapter.bindToRecyclerView(rvCategory);
+        rvProvince.setHasFixedSize(true);
+        mProvinceAdapter.bindToRecyclerView(rvProvince);
         mProvinceAdapter.setOnItemClickListener(this);
+        tvTitle.setText(mTitle);
+        if (mType == PROVINCE) {
+            ivCategoryDown.setVisibility(View.VISIBLE);
+            tvTitle.setText(mProvinceAdapter.getItem(0).getProvince_name());
+        }
     }
 
     @Override
     public void initListener() {
         super.initListener();
-        refreshLayout.setOnLoadMoreListener(this);
-
         llbarCenter.setOnClickListener(this);
         flMask.setOnClickListener(this);
     }
 
+    @NonNull
+    @Override
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout, mRadioAdapter);
+    }
+
     @Override
     public void initData() {
-        tvTitle.setText(title);
-        switch (type) {
-            case LOCAL:
-                mViewModel.getRadioList(RadioListViewModel.PROVINCE,
-                        SPUtils.getInstance().getString(AppConstants.SP.PROVINCE_CODE,AppConstants.Defualt.PROVINCE_CODE));
-                break;
-            case HISTORY:
-                mViewModel._getHistory();
-                break;
-            case COUNTRY:
-                mViewModel.getRadioList(RadioListViewModel.COUNTRY, null);
-                break;
-            case PROVINCE:
-                ivCategoryDown.setVisibility(View.VISIBLE);
-                tvTitle.setText(mProvinceAdapter.getItem(0).getProvince_name());
-                provinceCode = mProvinceAdapter.getItem(0).getProvince_code();
-                mViewModel.getRadioList(RadioListViewModel.PROVINCE, String.valueOf(provinceCode));
-                break;
-            case INTERNET:
-                mViewModel.getRadioList(RadioListViewModel.INTERNET, null);
-                break;
-            case RANK:
-                mViewModel._getRankRadios();
-                break;
-            case LOCAL_CITY:
-                mViewModel.getLocalCity(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE,AppConstants.Defualt.CITY_CODE));
-                break;
-            default:
-                mViewModel._getRadiosByCategory(String.valueOf(type));
-                break;
-        }
+        mProvinceCode = mProvinceAdapter.getItem(0).getProvince_code();
+        mViewModel.setProvinceCode(mProvinceCode);
+        mViewModel.setType(mType);
+        mViewModel.init();
     }
 
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        if (adapter == mAdapter) {
-            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mAdapter.getItem(position));
+        if (adapter == mRadioAdapter) {
+            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getItem(position));
             navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         } else if (adapter == mProvinceAdapter) {
-            switchCategory();
-            if (provinceCode != mProvinceAdapter.getItem(position).getProvince_code()) {
-                provinceCode = mProvinceAdapter.getItem(position).getProvince_code();
+            switchProvince();
+            if (mProvinceCode != mProvinceAdapter.getItem(position).getProvince_code()) {
+                mProvinceCode = mProvinceAdapter.getItem(position).getProvince_code();
                 tvTitle.setText(mProvinceAdapter.getItem(position).getProvince_name());
-                mAdapter.setNewData(null);
-                mViewModel.getRadioList(RadioListViewModel.PROVINCE, String.valueOf(provinceCode));
+                mViewModel.setProvinceCode(mProvinceCode);
+                mViewModel.init();
             }
-        }else if(adapter==mHistoryAdapter){
-            mViewModel.play(String.valueOf(mHistoryAdapter.getItem(position).getSchedule().getRadioId()));
-        }
-    }
-
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        switch (type) {
-            case LOCAL:
-                mViewModel.getRadioList(RadioListViewModel.PROVINCE,
-                        SPUtils.getInstance().getString(AppConstants.SP.PROVINCE_CODE,AppConstants.Defualt.PROVINCE_CODE));
-                break;
-            case HISTORY:
-                mViewModel._getHistory();
-                break;
-            case COUNTRY:
-                mViewModel.getRadioList(RadioListViewModel.COUNTRY, null);
-                break;
-            case PROVINCE:
-                ivCategoryDown.setVisibility(View.VISIBLE);
-                tvTitle.setText(mProvinceAdapter.getItem(0).getProvince_name());
-                mViewModel.getRadioList(RadioListViewModel.PROVINCE, String.valueOf(provinceCode));
-                break;
-            case INTERNET:
-                mViewModel.getRadioList(RadioListViewModel.INTERNET, null);
-                break;
-            case RANK:
-               refreshLayout.finishLoadMoreWithNoMoreData();
-                break;
-                case LOCAL_CITY:
-                mViewModel.getLocalCity(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE));
-                break;
-            default:
-                mViewModel._getRadiosByCategory(String.valueOf(type));
-                break;
         }
     }
 
@@ -226,7 +165,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
 
     @Override
     protected Integer[] onBindBarRightIcon() {
-        if(type==HISTORY||type==LOCAL||type==COUNTRY||type==PROVINCE||type==INTERNET||type==RANK||type==LOCAL_CITY){
+        if (mType == LOCAL_PROVINCE || mType == COUNTRY || mType == PROVINCE || mType == INTERNET || mType == RANK || mType == LOCAL_CITY) {
             return null;
         }
         return new Integer[]{R.drawable.ic_common_search};
@@ -246,32 +185,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
 
     @Override
     public void initViewObservable() {
-        mViewModel.getRadioSingleLiveEvent().observe(this, radios -> {
-
-            if (null == radios || (mAdapter.getData().size() == 0 && radios.size() == 0)) {
-                showEmptyView(true);
-                return;
-            }
-            if (radios.size() > 0) {
-                mAdapter.addData(radios);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
-        mViewModel.getHistorySingleLiveEvent().observe(this, historyBeans -> {
-
-            if (null == historyBeans || (mHistoryAdapter.getData().size() == 0 && historyBeans.size() == 0)) {
-                showEmptyView(true);
-                return;
-            }
-            if (historyBeans.size() > 0) {
-                mHistoryAdapter.addData(historyBeans);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
+        mViewModel.getInitRadiosEvent().observe(this, radios -> mRadioAdapter.setNewData(radios));
     }
 
     @Override
@@ -282,26 +196,25 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
     @Override
     public void onClick(View v) {
         int id = v.getId();
-
-        if (type == PROVINCE && (v == llbarCenter || id == R.id.fl_mask)) {
-            switchCategory();
+        if (mType == PROVINCE && (v == llbarCenter || id == R.id.fl_mask)) {
+            switchProvince();
         }
     }
 
-    private void switchCategory() {
+    private void switchProvince() {
         if (flMask.getVisibility() == View.VISIBLE) {
 
             flMask.animate().withStartAction(() -> {
                 flMask.setAlpha(1);
                 flMask.setBackgroundColor(Color.TRANSPARENT);
-            }).translationY(-rvCategory.getHeight()).alpha(0).setDuration(200).withEndAction(() -> {
+            }).translationY(-rvProvince.getHeight()).alpha(0).setDuration(200).withEndAction(() -> {
                 flMask.setVisibility(View.GONE);
             });
 
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
         } else {
-            flMask.setTranslationY(-rvCategory.getHeight() == 0 ? -400 : -rvCategory.getHeight());
+            flMask.setTranslationY(-rvProvince.getHeight() == 0 ? -400 : -rvProvince.getHeight());
             flMask.animate().withStartAction(() -> {
                 flMask.setAlpha(0);
                 flMask.setVisibility(View.VISIBLE);
@@ -315,7 +228,7 @@ public class RadioListFragment extends BaseMvvmFragment<RadioListViewModel> impl
     @Override
     public boolean onBackPressedSupport() {
         if (flMask.getVisibility() == View.VISIBLE) {
-            switchCategory();
+            switchProvince();
         } else {
             pop();
         }

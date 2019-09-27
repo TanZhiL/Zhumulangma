@@ -13,9 +13,9 @@ public interface IBaseView {
     void initView();
     void initListener();
     void initData();
-    void showInitView(boolean show);
-    void showEmptyView(boolean show);
+    void showInitView();
+    void showEmptyView();
     void showLoadingView(String tip);
-    void showErrorView(boolean show);
+    void showErrorView();
     Context getContext();
 }

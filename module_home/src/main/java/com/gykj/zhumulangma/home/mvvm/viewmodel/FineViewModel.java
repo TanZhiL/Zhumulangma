@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -22,7 +23,6 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,13 +34,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import me.yokeyword.fragmentation.ISupportFragment;
 
-public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> {
+public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> {
 
-    private SingleLiveEvent<List<BannerV2>> mBannerV2SingleLiveEvent;
-    private SingleLiveEvent<List<Album>> mDailySingleLiveEvent;
-    private SingleLiveEvent<List<Album>> mBookSingleLiveEvent;
-    private SingleLiveEvent<List<Album>> mClassRoomSingleLiveEvent;
-    private SingleLiveEvent<Void> mRefreshSingleLiveEvent;
+    private SingleLiveEvent<List<BannerV2>> mBannerV2Event;
+    private SingleLiveEvent<List<Album>> mDailysEvent;
+    private SingleLiveEvent<List<Album>> mBooksEvent;
+    private SingleLiveEvent<List<Album>> mClassRoomsEvent;
 
 
     private int totalDailyPage = 1;
@@ -57,37 +56,20 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> 
 
     @Override
     public void onViewRefresh() {
-        init();
-    }
-
-    public void init(){
         curDailyPage = 1;
         curBookPage = 1;
         curClassRoomPage = 1;
-        getBannerListObservable()
-                .flatMap((Function<BannerV2List, ObservableSource<AlbumList>>) bannerV2List -> getDailyListObservable())
-                .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getBookListObservable())
-                .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getClassRoomListObservable())
-                .doOnSubscribe(d->getShowLoadingViewEvent().postValue(""))
-                .doFinally(()->getFinishRefreshEvent().postValue(new ArrayList<>()))
-                .subscribe(r-> getClearStatusEvent().call(), e->
-                {   getShowErrorViewEvent().postValue(true);
-                    e.printStackTrace();
-                });
+        init();
     }
 
-    public void getBannerList() {
-        getBannerListObservable().subscribe(r -> {
-        }, e -> e.printStackTrace());
-    }
-
-    private Observable<BannerV2List> getBannerListObservable() {
+    public void init() {
+        //获取banner
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CATEGORY_ID, "4");
         map.put(DTransferConstants.IMAGE_SCALE, "2");
         //是否需要输出付费内容：true-是；false-否；（默认不输出付费内容）
 //        map.put(DTransferConstants.CONTAINS_PAID,"true");
-        return mModel.getCategoryBannersV2(map)
+        mModel.getCategoryBannersV2(map)
                 .doOnNext(bannerV2List ->
                 {
                     List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
@@ -98,30 +80,50 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> 
                             iterator.remove();
                         }
                     }
-                    getBannerV2SingleLiveEvent().postValue(bannerV2s);
+                    getBannerV2Event().setValue(bannerV2s);
+                })
+                //每日优选
+                .flatMap((Function<BannerV2List, ObservableSource<AlbumList>>) bannerV2List -> getDailyListObservable())
+                //有声书
+                .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getBookListObservable())
+                //小课堂
+                .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getClassRoomListObservable())
+                .doFinally(() -> super.onViewRefresh())
+                .subscribe(r -> {
+                }, e ->
+                {
+                    getShowErrorViewEvent().call();
+                    e.printStackTrace();
                 });
     }
 
     public void getDailyList() {
-        getDailyListObservable().subscribe(r -> {
-        }, e -> e.printStackTrace());
+        getDailyListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
+                .doFinally(() -> getClearStatusEvent().call())
+                .subscribe(r -> {
+                }, e -> e.printStackTrace());
     }
 
     private Observable<AlbumList> getDailyListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.PAGE_SIZE, "5");
         curDailyPage = curDailyPage >= totalDailyPage ? 1 : curDailyPage;
-        map.put(DTransferConstants.PAGE, String.valueOf(curDailyPage++));
+        map.put(DTransferConstants.PAGE, String.valueOf(curDailyPage));
         return mModel.getPaidAlbumByTag(map)
                 .doOnNext(albumList -> {
+                    if (!CollectionUtils.isEmpty(albumList.getAlbums())) {
+                        curDailyPage++;
+                    }
                     totalDailyPage = albumList.getTotalPage();
-                    getDailySingleLiveEvent().postValue(albumList.getAlbums());
+                    getDailysEvent().setValue(albumList.getAlbums());
                 });
     }
 
     public void getBookList() {
-        getBookListObservable().subscribe(r -> {
-        }, e -> e.printStackTrace());
+        getBookListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
+                .doFinally(() -> getClearStatusEvent().call())
+                .subscribe(r -> {
+                }, e -> e.printStackTrace());
     }
 
     private Observable<AlbumList> getBookListObservable() {
@@ -129,17 +131,22 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> 
         map.put(DTransferConstants.TAG_NAME, "有声书");
         map.put(DTransferConstants.PAGE_SIZE, "5");
         curBookPage = curBookPage >= totalBookPage ? 1 : curBookPage;
-        map.put(DTransferConstants.PAGE, String.valueOf(curBookPage++));
+        map.put(DTransferConstants.PAGE, String.valueOf(curBookPage));
         return mModel.getPaidAlbumByTag(map)
                 .doOnNext(albumList -> {
+                    if (!CollectionUtils.isEmpty(albumList.getAlbums())) {
+                        curBookPage++;
+                    }
                     totalBookPage = albumList.getTotalPage();
-                    getBookSingleLiveEvent().postValue(albumList.getAlbums());
+                    getBooksEvent().setValue(albumList.getAlbums());
                 });
     }
 
     public void getClassRoomList() {
-        getClassRoomListObservable().subscribe(r -> {
-        }, e -> e.printStackTrace());
+        getClassRoomListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
+                .doFinally(() -> getClearStatusEvent().call())
+                .subscribe(r -> {
+                }, e -> e.printStackTrace());
     }
 
     private Observable<AlbumList> getClassRoomListObservable() {
@@ -147,11 +154,14 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> 
         map.put(DTransferConstants.TAG_NAME, "精品-小课");
         map.put(DTransferConstants.PAGE_SIZE, "5");
         curClassRoomPage = curClassRoomPage >= totalClassRoomPage ? 1 : curClassRoomPage;
-        map.put(DTransferConstants.PAGE, String.valueOf(curClassRoomPage++));
+        map.put(DTransferConstants.PAGE, String.valueOf(curClassRoomPage));
         return mModel.getPaidAlbumByTag(map)
                 .doOnNext(albumList -> {
+                    if (!CollectionUtils.isEmpty(albumList.getAlbums())) {
+                        curClassRoomPage++;
+                    }
                     totalClassRoomPage = albumList.getTotalPage();
-                    getClassRoomSingleLiveEvent().postValue(albumList.getAlbums());
+                    getClassRoomsEvent().setValue(albumList.getAlbums());
                 });
     }
 
@@ -169,8 +179,8 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> 
                             return mModel.getLastPlayTracks(map1);
                         })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doOnSubscribe(d -> getShowLoadingViewEvent().call())
+                .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {
@@ -188,22 +198,20 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> 
                 }, e -> e.printStackTrace());
     }
 
-    public SingleLiveEvent<List<BannerV2>> getBannerV2SingleLiveEvent() {
-        return mBannerV2SingleLiveEvent = createLiveData(mBannerV2SingleLiveEvent);
+    public SingleLiveEvent<List<BannerV2>> getBannerV2Event() {
+        return mBannerV2Event = createLiveData(mBannerV2Event);
     }
 
-    public SingleLiveEvent<List<Album>> getDailySingleLiveEvent() {
-        return mDailySingleLiveEvent = createLiveData(mDailySingleLiveEvent);
+    public SingleLiveEvent<List<Album>> getDailysEvent() {
+        return mDailysEvent = createLiveData(mDailysEvent);
     }
 
-    public SingleLiveEvent<List<Album>> getBookSingleLiveEvent() {
-        return mBookSingleLiveEvent = createLiveData(mBookSingleLiveEvent);
+    public SingleLiveEvent<List<Album>> getBooksEvent() {
+        return mBooksEvent = createLiveData(mBooksEvent);
     }
 
-    public SingleLiveEvent<List<Album>> getClassRoomSingleLiveEvent() {
-        return mClassRoomSingleLiveEvent = createLiveData(mClassRoomSingleLiveEvent);
+    public SingleLiveEvent<List<Album>> getClassRoomsEvent() {
+        return mClassRoomsEvent = createLiveData(mClassRoomsEvent);
     }
-    public SingleLiveEvent<Void> getRefreshSingleLiveEvent() {
-        return mRefreshSingleLiveEvent = createLiveData(mRefreshSingleLiveEvent);
-    }
+
 }

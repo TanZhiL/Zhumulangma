@@ -22,12 +22,9 @@ import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
 import com.gykj.zhumulangma.home.adapter.HotMusicAdapter;
-import com.gykj.zhumulangma.home.adapter.HotTopicAdapter;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
@@ -44,25 +41,13 @@ import me.yokeyword.fragmentation.ISupportFragment;
 public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> implements OnBannerListener,
         View.OnClickListener {
 
-    private Banner banner;
-    private RecyclerView rvTopic;
-    private HotTopicAdapter mTopicAdapter;
-
-    private RecyclerView rvLike;
     private HotLikeAdapter mLikeAdapter;
-
-    private RecyclerView rvStory;
     private AlbumAdapter mStoryAdapter;
-
-    private RecyclerView rvBaby;
     private AlbumAdapter mBabyAdapter;
-
-    private RecyclerView rvMusic;
     private HotMusicAdapter mMusicAdapter;
-
-    private RecyclerView rvRadio;
     private RadioAdapter mRadioAdapter;
 
+    private Banner banner;
     private View flRank;
 
     public HotFragment() {
@@ -84,20 +69,15 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
 
     @Override
     protected void initView(View view) {
-        initAction();
+        flRank = fd(R.id.fl_rank);
         initBanner();
         initLike();
         initStory();
         initBaby();
         initMusic();
         initRadio();
-        initTopic();
     }
 
-    private void initAction() {
-        flRank = fd(R.id.fl_rank);
-
-    }
 
     @Override
     public void initListener() {
@@ -185,11 +165,11 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
         });
     }
 
+    @NonNull
     @Override
-    protected SmartRefreshLayout getRefreshLayout() {
-        return fd(R.id.refreshLayout);
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh( fd(R.id.refreshLayout),null);
     }
-
 
     @Override
     public void initData() {
@@ -204,7 +184,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     }
 
     private void initLike() {
-        rvLike = fd(R.id.rv_like);
+        RecyclerView rvLike = fd(R.id.rv_like);
         mLikeAdapter = new HotLikeAdapter(R.layout.home_item_hot_like);
         rvLike.setLayoutManager(new GridLayoutManager(mContext, 3));
         rvLike.setHasFixedSize(true);
@@ -213,8 +193,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     }
 
     private void initStory() {
-
-        rvStory = fd(R.id.rv_story);
+        RecyclerView rvStory = fd(R.id.rv_story);
         mStoryAdapter = new AlbumAdapter(R.layout.home_item_album);
         rvStory.setLayoutManager(new LinearLayoutManager(mContext));
         rvStory.setHasFixedSize(true);
@@ -222,7 +201,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     }
 
     private void initBaby() {
-        rvBaby = fd(R.id.rv_baby);
+        RecyclerView rvBaby = fd(R.id.rv_baby);
         mBabyAdapter = new AlbumAdapter(R.layout.home_item_album);
         rvBaby.setLayoutManager(new LinearLayoutManager(mContext));
         rvBaby.setHasFixedSize(true);
@@ -231,7 +210,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     }
 
     private void initMusic() {
-        rvMusic = fd(R.id.rv_music);
+        RecyclerView rvMusic = fd(R.id.rv_music);
         mMusicAdapter = new HotMusicAdapter(R.layout.home_item_hot_music);
         rvMusic.setLayoutManager(new GridLayoutManager(mContext, 3));
         rvMusic.setHasFixedSize(true);
@@ -240,23 +219,11 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     }
 
     private void initRadio() {
-
-        rvRadio = fd(R.id.rv_radio);
+        RecyclerView rvRadio = fd(R.id.rv_radio);
         mRadioAdapter = new RadioAdapter(R.layout.home_item_radio);
         rvRadio.setLayoutManager(new LinearLayoutManager(mContext));
         rvRadio.setHasFixedSize(true);
         mRadioAdapter.bindToRecyclerView(rvRadio);
-
-    }
-
-    private void initTopic() {
-
-
-        rvTopic = fd(R.id.rv_topic);
-        mTopicAdapter = new HotTopicAdapter(R.layout.home_item_hot_topic);
-        rvTopic.setLayoutManager(new LinearLayoutManager(mContext));
-        rvTopic.setHasFixedSize(true);
-        mTopicAdapter.bindToRecyclerView(rvTopic);
 
     }
 
@@ -277,25 +244,23 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
 
     @Override
     public void initViewObservable() {
-        mViewModel.getBannerV2SingleLiveEvent().observe(this, bannerV2s -> {
+        mViewModel.getBannerV2Event().observe(this, bannerV2s -> {
             List<String> images = new ArrayList<>();
             for (BannerV2 bannerV2 : bannerV2s) {
                 images.add(bannerV2.getBannerUrl());
             }
             banner.setImages(images).setImageLoader(new MainHomeFragment.GlideImageLoader()).start();
         });
-        mViewModel.getLikeSingleLiveEvent().observe(this, albums -> mLikeAdapter.setNewData(albums));
-        mViewModel.getStorySingleLiveEvent().observe(this, albums -> mStoryAdapter.setNewData(albums));
-        mViewModel.getBadySingleLiveEvent().observe(this, albums -> mBabyAdapter.setNewData(albums));
-        mViewModel.getMusicSingleLiveEvent().observe(this, albums -> mMusicAdapter.setNewData(albums));
-        mViewModel.getRadioSingleLiveEvent().observe(this, radios -> mRadioAdapter.setNewData(radios));
-        mViewModel.getTopicSingleLiveEvent().observe(this, columns -> mTopicAdapter.setNewData(columns));
-        mViewModel.getRefreshSingleLiveEvent().observe(this, aVoid -> ((SmartRefreshLayout)fd(R.id.refreshLayout)).finishRefresh());
+        mViewModel.getLikesEvent().observe(this, albums -> mLikeAdapter.setNewData(albums));
+        mViewModel.getStorysEvent().observe(this, albums -> mStoryAdapter.setNewData(albums));
+        mViewModel.getBadysEvent().observe(this, albums -> mBabyAdapter.setNewData(albums));
+        mViewModel.getMusicsEvent().observe(this, albums -> mMusicAdapter.setNewData(albums));
+        mViewModel.getRadiosEvent().observe(this, radios -> mRadioAdapter.setNewData(radios));
     }
 
     @Override
     public void OnBannerClick(int position) {
-        BannerV2 bannerV2 = mViewModel.getBannerV2SingleLiveEvent().getValue().get(position);
+        BannerV2 bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
@@ -345,8 +310,6 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
             mViewModel.getHotStoryList();
         } else if (id == R.id.baby_refresh) {
             mViewModel.getHotBabyList();
-        } else if (id == R.id.topic_refresh) {
-            mViewModel.getTopicList();
         } else if (id == R.id.music_refresh) {
             mViewModel.getHotMusicList();
         } else if (id == R.id.radio_refresh) {

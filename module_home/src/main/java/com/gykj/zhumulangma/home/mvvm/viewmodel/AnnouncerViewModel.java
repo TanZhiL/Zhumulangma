@@ -23,101 +23,93 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import me.yokeyword.fragmentation.ISupportFragment;
 
-public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Announcer> {
+public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Announcer> {
 
-    private static final String PAGESIZE = "20";
-    private SingleLiveEvent<List<BannerV2>> mBannerV2SingleLiveEvent;
-    private SingleLiveEvent<List<Announcer>> mAnnouncerSingleLiveEvent;
-    private SingleLiveEvent<List<Announcer>> mTopSingleLiveEvent;
-    private SingleLiveEvent<Void> mRefreshSingleLiveEvent;
-
-
+    private SingleLiveEvent<List<BannerV2>> mBannerV2Event;
+    private SingleLiveEvent<List<Announcer>> mInitAnnouncerEvent;
     private int curPage = 1;
 
     public AnnouncerViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
-    public void init(){
-        curPage = 1;
-        getBannerListObservable()
-                .flatMap((Function<BannerV2List, ObservableSource<AnnouncerList>>) bannerV2List -> getAnnouncerListObservable())
-                .doOnSubscribe(d->getShowLoadingViewEvent().postValue(""))
-                .doFinally(()->getFinishRefreshEvent().postValue(new ArrayList<>()))
-                .subscribe(r-> getClearStatusEvent().call(), e->
-                {   getShowErrorViewEvent().postValue(true);
+
+    public void init() {
+        //获取banner
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.CATEGORY_ID, "0");
+        map.put(DTransferConstants.IMAGE_SCALE, "2");
+        map.put(DTransferConstants.CONTAINS_PAID, "false");
+        mModel.getCategoryBannersV2(map)
+                .doOnNext(bannerV2List ->
+                {
+                    List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
+                    Iterator<BannerV2> iterator = bannerV2s.iterator();
+                    while (iterator.hasNext()) {
+                        BannerV2 next = iterator.next();
+                        if (next.getBannerContentType() == 5 || next.getBannerContentType() == 6) {
+                            iterator.remove();
+                        }
+                    }
+                    getBannerV2Event().setValue(bannerV2s);
+                })
+                //获取主播列表
+                .flatMap((Function<BannerV2List, ObservableSource<AnnouncerList>>) bannerV2List -> {
+                    Map<String, String> map2 = new HashMap<String, String>();
+                    map2.put(DTransferConstants.VCATEGORY_ID, "0");
+                    map2.put(DTransferConstants.CALC_DIMENSION, "1");
+                    map2.put(DTransferConstants.PAGE, String.valueOf(curPage));
+                    return mModel.getAnnouncerList(map2);
+                })
+                //刷新时需要恢复刷新状态
+                .doFinally(()->super.onViewRefresh())
+                .subscribe(announcerList -> {
+                    if (!CollectionUtils.isEmpty(announcerList.getAnnouncerList())) {
+                        curPage++;
+                    }
+                    getInitAnnouncerEvent().setValue(announcerList.getAnnouncerList());
+                }, e -> {
+                    getShowErrorViewEvent().call();
                     e.printStackTrace();
                 });
     }
 
     @Override
     public void onViewRefresh() {
+        curPage = 1;
         init();
     }
 
     @Override
     public void onViewLoadmore() {
-        getAnnouncerList();
+        getMoreAnnouncers();
     }
 
-    private Observable<BannerV2List> getBannerListObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.CATEGORY_ID, "0");
-        map.put(DTransferConstants.IMAGE_SCALE, "2");
-        map.put(DTransferConstants.CONTAINS_PAID, "true");
-       return mModel.getCategoryBannersV2(map)
-                .doOnNext(bannerV2List ->
-                        {
-                            List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
-                            Iterator<BannerV2> iterator = bannerV2s.iterator();
-                            while (iterator.hasNext()) {
-                                BannerV2 next = iterator.next();
-                                if (next.getBannerContentType() == 5 || next.getBannerContentType() == 6) {
-                                    iterator.remove();
-                                }
-                            }
-                            getBannerV2SingleLiveEvent().postValue(bannerV2s);
-                        });
-    }
-
-    public void getTopList() {
+    private void getMoreAnnouncers() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.VCATEGORY_ID, "0");
         map.put(DTransferConstants.CALC_DIMENSION, "1");
-        map.put(DTransferConstants.PAGE_SIZE, "3");
-        mModel.getAnnouncerList(map).subscribe(announcerList ->
-                getTopSingleLiveEvent().postValue(announcerList.getAnnouncerList()), e -> e.printStackTrace());
-    }
-
-    public void getAnnouncerList() {
-        getAnnouncerListObservable().subscribe(r->{},e->e.printStackTrace());
-    }
-    private Observable<AnnouncerList> getAnnouncerListObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.VCATEGORY_ID, "0");
-        map.put(DTransferConstants.CALC_DIMENSION, "1");
-        map.put(DTransferConstants.PAGE_SIZE, PAGESIZE);
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
-       return mModel.getAnnouncerList(map).doOnNext(announcerList -> {
-           if(!CollectionUtils.isEmpty(announcerList.getAnnouncerList())){
-               curPage++;
-           }
-            getFinishLoadmoreEvent().postValue(announcerList.getAnnouncerList());
+        mModel.getAnnouncerList(map).subscribe(announcerList -> {
+            if (!CollectionUtils.isEmpty(announcerList.getAnnouncerList())) {
+                curPage++;
+            }
+            getFinishLoadmoreEvent().setValue(announcerList.getAnnouncerList());
+        },e -> {
+            getFinishLoadmoreEvent().call();
+            e.printStackTrace();
         });
     }
-    public void play(long trackId) {
 
+    public void play(long trackId) {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.ID, String.valueOf(trackId));
         mModel.searchTrackV2(map)
@@ -129,9 +121,8 @@ public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel,An
                             map1.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
                             return mModel.getLastPlayTracks(map1);
                         })
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doOnSubscribe(d -> getShowLoadingViewEvent().call())
+                .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {
@@ -150,19 +141,13 @@ public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel,An
     }
 
 
-    public SingleLiveEvent<List<BannerV2>> getBannerV2SingleLiveEvent() {
-        return mBannerV2SingleLiveEvent = createLiveData(mBannerV2SingleLiveEvent);
+    public SingleLiveEvent<List<BannerV2>> getBannerV2Event() {
+        return mBannerV2Event = createLiveData(mBannerV2Event);
     }
 
-    public SingleLiveEvent<List<Announcer>> getAnnouncerSingleLiveEvent() {
-        return mAnnouncerSingleLiveEvent = createLiveData(mAnnouncerSingleLiveEvent);
+    public SingleLiveEvent<List<Announcer>> getInitAnnouncerEvent() {
+        return mInitAnnouncerEvent = createLiveData(mInitAnnouncerEvent);
     }
 
-    public SingleLiveEvent<List<Announcer>> getTopSingleLiveEvent() {
-        return mTopSingleLiveEvent = createLiveData(mTopSingleLiveEvent);
-    }
 
-    public SingleLiveEvent<Void> getRefreshSingleLiveEvent() {
-        return mRefreshSingleLiveEvent = createLiveData(mRefreshSingleLiveEvent);
-    }
 }

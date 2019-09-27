@@ -52,7 +52,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Author: Thomas.
  * Date: 2019/9/12 8:49
  * Email: 1071931588@qq.com
- * Description:
+ * Description:批量下载
  */
 
 @Route(path = AppConstants.Router.Home.F_BATCH_DOWNLOAD)
@@ -62,20 +62,18 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
 
     @Autowired(name = KeyCode.Home.ALBUMID)
     public long mAlbumId;
-
+    private long mTotalSize;
+    private String mSort = "time_desc";
     private SmartRefreshLayout refreshLayout;
-    private RecyclerView recyclerView;
+    private TrackPagerAdapter mPagerAdapter;
+    private DownloadTrackAdapter mDownloadTrackAdapter;
+    private Handler mHandler = new Handler();
+
     private FrameLayout flMask;
     private RecyclerView rvPager;
-
-    private TrackPagerAdapter mPagerAdapter;
-
-    private DownloadTrackAdapter mDownloadTrackAdapter;
-    private long mTotalSize;
     private TextView tvSize;
-    private View tvDownload;
+    private View vDownload;
 
-    private Handler mHandler = new Handler();
 
     @Override
     protected int onBindLayout() {
@@ -85,12 +83,12 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     @Override
     protected void initView(View view) {
 
-        recyclerView = fd(R.id.rv);
+        RecyclerView recyclerView = fd(R.id.rv);
         refreshLayout = fd(R.id.refreshLayout);
         flMask = fd(R.id.fl_mask);
         rvPager = fd(R.id.rv_pager);
         tvSize = fd(R.id.tv_memory);
-        tvDownload = fd(R.id.tv_batch_download);
+        vDownload = fd(R.id.tv_batch_download);
         flMask = fd(R.id.fl_mask);
         rvPager = fd(R.id.rv_pager);
         rvPager.setLayoutManager(new GridLayoutManager(mContext, 4));
@@ -121,19 +119,22 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
         });
     }
 
+    @NonNull
     @Override
-    protected SmartRefreshLayout getRefreshLayout() {
-        return refreshLayout;
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout,mDownloadTrackAdapter);
     }
 
     @Override
     public void initData() {
-        mViewModel.getTrackList(String.valueOf(mAlbumId));
+        mViewModel.setAlbumId(mAlbumId);
+        mViewModel.setSort(mSort);
+        mViewModel.init();
     }
 
     @Override
     public void initViewObservable() {
-        mViewModel.getTracksInitSingleLiveEvent().observe(this, tracks -> {
+        mViewModel.getInitTracksEvent().observe(this, tracks -> {
             ((CheckBox) fd(R.id.cb_all)).setChecked(false);
             setPager(tracks.getTotalCount());
             mDownloadTrackAdapter.setNewData(tracks.getTracks());
@@ -142,14 +143,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
 
     @Override
     protected void onRefreshSucc(List<Track> list) {
-        super.onRefreshSucc(list);
         mDownloadTrackAdapter.addData(0,list);
-    }
-
-    @Override
-    protected void onLoadMoreSucc(List<Track> list) {
-        super.onLoadMoreSucc(list);
-        mDownloadTrackAdapter.addData(list);
     }
 
     @Override
@@ -202,16 +196,16 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                 tvSize.setText(getString(R.string.selected_num,
                         mDownloadTrackAdapter.getSelectedTracks().size(), ZhumulangmaUtil.byte2FitMemorySize(mTotalSize),
                         SystemUtil.getRomTotalSize(mContext)));
-                tvDownload.setEnabled(true);
-                tvDownload.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                vDownload.setEnabled(true);
+                vDownload.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             } else {
                 tvSize.setVisibility(View.GONE);
-                tvDownload.setEnabled(false);
-                tvDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
+                vDownload.setEnabled(false);
+                vDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
             }
         } else {
-            switchCategory();
-            mViewModel.getTrackList(String.valueOf(mAlbumId), position + 1);
+            switchPager();
+            mViewModel.getTrackList(position + 1);
         }
     }
 
@@ -220,7 +214,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     public void onClick(View v) {
         int id = v.getId();
         if (R.id.ll_select == id || R.id.fl_mask == id) {
-            switchCategory();
+            switchPager();
         } else if (id == R.id.cb_all) {
             boolean isChecked = ((CheckBox) v).isChecked();
             List<Track> tracks = mDownloadTrackAdapter.getData();
@@ -249,12 +243,12 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                 tvSize.setText(getString(R.string.selected_num,
                         mDownloadTrackAdapter.getSelectedTracks().size(), ZhumulangmaUtil.byte2FitMemorySize(mTotalSize),
                         SystemUtil.getRomTotalSize(mContext)));
-                tvDownload.setEnabled(true);
-                tvDownload.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                vDownload.setEnabled(true);
+                vDownload.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             } else {
                 tvSize.setVisibility(View.GONE);
-                tvDownload.setEnabled(false);
-                tvDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
+                vDownload.setEnabled(false);
+                vDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
             }
 
         } else if (R.id.tv_batch_download == id) {
@@ -262,7 +256,6 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
             if (CollectionUtils.isEmpty(selectedTracks)) {
                 return;
             }
-
             Collections.sort(selectedTracks, (o1, o2) ->
                     Integer.compare(o2.getOrderPositionInAlbum(), o1.getOrderPositionInAlbum()));
             List<Long> trackIds = new ArrayList<>();
@@ -276,14 +269,13 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                 public void begin() {
 
                 }
-
                 @Override
                 public void success() {
                     mTotalSize = 0;
                     tvSize.setVisibility(View.GONE);
-                    tvDownload.setEnabled(false);
+                    vDownload.setEnabled(false);
                     ((CheckBox) fd(R.id.cb_all)).setChecked(false);
-                    tvDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
+                    vDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
                     ToastUtil.showToast("已加入下载队列");
                     selectedTracks.clear();
                     mDownloadTrackAdapter.notifyDataSetChanged();
@@ -313,72 +305,10 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     }
 
 
-    private void changePageStatus() {
-        for (int i = 0; i < mPagerAdapter.getData().size(); i++) {
-            Iterator<Track> iterator = mDownloadTrackAdapter.getSelectedTracks().iterator();
-            View ivSelected = mPagerAdapter.getViewByPosition(i, R.id.iv_selected);
-            if (ivSelected != null) {
-                ivSelected.setVisibility(View.GONE);
-                while (iterator.hasNext()) {
-                    Track next = iterator.next();
-                    int page = next.getOrderPositionInAlbum() / BatchDownloadViewModel.PAGESIEZ;
-                    if (page == i) {
-                        ivSelected.setVisibility(View.VISIBLE);
-                        break;
-                    }
-                }
-            }
-            TextView viewByPosition = (TextView) mPagerAdapter.getViewByPosition(i, R.id.tv_page);
-            if (viewByPosition != null) {
-                if (mViewModel.getUpTrackPage() <= i && i <= mViewModel.getCurTrackPage() - 2) {
-                    viewByPosition.setBackgroundResource(R.drawable.shap_common_primary);
-                    viewByPosition.setTextColor(Color.WHITE);
-                } else {
-                    viewByPosition.setBackgroundResource(R.drawable.shap_common_defualt);
-                    viewByPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
-                }
-            }
-        }
-    }
-
-    private void switchCategory() {
-        if (flMask.getVisibility() == View.VISIBLE) {
-            rvPager.animate().translationY(-rvPager.getHeight()).setDuration(200).withEndAction(() -> {
-                flMask.setVisibility(View.GONE);
-                refreshLayout.setVisibility(View.VISIBLE);
-                fd(R.id.cl_action).setVisibility(View.VISIBLE);
-            });
-            fd(R.id.iv_select_page).animate().rotationBy(180).setDuration(200);
-        } else {
-            refreshLayout.setVisibility(View.GONE);
-            fd(R.id.cl_action).setVisibility(View.GONE);
-            flMask.setVisibility(View.VISIBLE);
-            rvPager.setTranslationY(-rvPager.getHeight() == 0 ? -400 : -rvPager.getHeight());
-            rvPager.animate().translationY(0).setDuration(200);
-            fd(R.id.iv_select_page).animate().rotationBy(180).setDuration(200);
-            mHandler.postDelayed(() -> changePageStatus(), 200);
-        }
-    }
-
-    private void setPager(long totalcount) {
-        int pagesize = 50;
-        ((TextView) fd(R.id.tv_pagecount)).setText(getString(R.string.pagecount, totalcount));
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < totalcount / pagesize; i++) {
-            list.add(totalcount - (i * pagesize) + "~" + (totalcount - ((i + 1) * pagesize) + 1));
-        }
-        if (totalcount % pagesize != 0) {
-            list.add(totalcount - totalcount / pagesize * pagesize + "~1");
-        }
-
-
-        mPagerAdapter.setNewData(list);
-    }
-
     @Override
     public boolean onBackPressedSupport() {
         if (flMask.getVisibility() == View.VISIBLE) {
-            switchCategory();
+            switchPager();
         } else {
             pop();
         }
@@ -408,6 +338,78 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
+    }
+
+    /**
+     * 改变分页器选中状态
+     */
+    private void changePageStatus() {
+        for (int i = 0; i < mPagerAdapter.getData().size(); i++) {
+            Iterator<Track> iterator = mDownloadTrackAdapter.getSelectedTracks().iterator();
+            View ivSelected = mPagerAdapter.getViewByPosition(i, R.id.iv_selected);
+            if (ivSelected != null) {
+                ivSelected.setVisibility(View.GONE);
+                while (iterator.hasNext()) {
+                    Track next = iterator.next();
+                    int page = next.getOrderPositionInAlbum() / BatchDownloadViewModel.PAGESIEZ;
+                    if (page == i) {
+                        ivSelected.setVisibility(View.VISIBLE);
+                        break;
+                    }
+                }
+            }
+            TextView viewByPosition = (TextView) mPagerAdapter.getViewByPosition(i, R.id.tv_page);
+            if (viewByPosition != null) {
+                if (mViewModel.getUpTrackPage() <= i && i <= mViewModel.getCurTrackPage() - 2) {
+                    viewByPosition.setBackgroundResource(R.drawable.shap_common_primary);
+                    viewByPosition.setTextColor(Color.WHITE);
+                } else {
+                    viewByPosition.setBackgroundResource(R.drawable.shap_common_defualt);
+                    viewByPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                }
+            }
+        }
+    }
+
+    /**
+     * 切换分页器是否显示
+     */
+    private void switchPager() {
+        if (flMask.getVisibility() == View.VISIBLE) {
+            rvPager.animate().translationY(-rvPager.getHeight()).setDuration(200).withEndAction(() -> {
+                flMask.setVisibility(View.GONE);
+                refreshLayout.setVisibility(View.VISIBLE);
+                fd(R.id.cl_action).setVisibility(View.VISIBLE);
+            });
+            fd(R.id.iv_select_page).animate().rotationBy(180).setDuration(200);
+        } else {
+            refreshLayout.setVisibility(View.GONE);
+            fd(R.id.cl_action).setVisibility(View.GONE);
+            flMask.setVisibility(View.VISIBLE);
+            rvPager.setTranslationY(-rvPager.getHeight() == 0 ? -400 : -rvPager.getHeight());
+            rvPager.animate().translationY(0).setDuration(200);
+            fd(R.id.iv_select_page).animate().rotationBy(180).setDuration(200);
+            mHandler.postDelayed(() -> changePageStatus(), 200);
+        }
+    }
+
+    /**
+     * 设置分页数据
+     * @param totalcount
+     */
+    private void setPager(long totalcount) {
+        int pagesize = 50;
+        ((TextView) fd(R.id.tv_pagecount)).setText(getString(R.string.pagecount, totalcount));
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < totalcount / pagesize; i++) {
+            list.add(totalcount - (i * pagesize) + "~" + (totalcount - ((i + 1) * pagesize) + 1));
+        }
+        if (totalcount % pagesize != 0) {
+            list.add(totalcount - totalcount / pagesize * pagesize + "~1");
+        }
+
+
+        mPagerAdapter.setNewData(list);
     }
 
     @Override

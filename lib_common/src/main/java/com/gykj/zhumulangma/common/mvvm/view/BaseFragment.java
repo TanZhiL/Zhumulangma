@@ -169,7 +169,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                 .addCallback(new ErrorCallback())
                 .addCallback(new LoadingCallback())
                 .build();
-        mLoadService = loadSir.register(contentView,(Callback.OnReloadListener) v -> BaseFragment.this.onReload(v));
+        mLoadService = loadSir.register(contentView, (Callback.OnReloadListener) v -> BaseFragment.this.onReload(v));
         mLoadService.showSuccess();
     }
 
@@ -339,6 +339,10 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         return null;
     }
 
+    /**
+     * 默认懒加载,true
+     * @return
+     */
     protected boolean lazyEnable() {
         return true;
     }
@@ -439,30 +443,25 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
 
-    public void showInitView(boolean show) {
+    public void showInitView() {
         mLoadingHandler.removeCallbacksAndMessages(null);
         mLoadService.showSuccess();
-        if (show) {
-            mLoadService.showCallback(InitCallback.class);
-        }
+        mLoadService.showCallback(InitCallback.class);
     }
 
 
-    public void showErrorView(boolean show) {
-            mLoadingHandler.removeCallbacksAndMessages(null);
-            mLoadService.showSuccess();
-            if (show) {
-                mLoadService.showCallback(ErrorCallback.class);
-            }
+    public void showErrorView() {
+        mLoadingHandler.removeCallbacksAndMessages(null);
+        mLoadService.showSuccess();
+        mLoadService.showCallback(ErrorCallback.class);
     }
 
 
-    public void showEmptyView(boolean show) {
+    public void showEmptyView() {
         mLoadingHandler.removeCallbacksAndMessages(null);
         mLoadService.showSuccess();
-        if (show) {
-            mLoadService.showCallback(EmptyCallback.class);
-        }
+        mLoadService.showCallback(EmptyCallback.class);
+
     }
 
     public void showLoadingView(String tip) {
@@ -472,25 +471,26 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         } else {
             mLoadingHandler.removeCallbacksAndMessages(null);
             mLoadService.showSuccess();
-            if (null != tip) {
-                mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
-                    TextView tvTip = view1.findViewById(R.id.tv_tip);
-                    if (tip.length() == 0) {
-                        tvTip.setVisibility(View.GONE);
-                    } else {
-                        tvTip.setText(tip);
-                    }
-                });
-                //延时100毫秒显示,避免闪屏
-                mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 100);
-            }
+            mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
+                TextView tvTip = view1.findViewById(R.id.tv_tip);
+                if (tip==null) {
+                    tvTip.setVisibility(View.GONE);
+                } else {
+                    tvTip.setVisibility(View.VISIBLE);
+                    tvTip.setText(tip);
+                }
+            });
+            //延时100毫秒显示,避免闪屏
+            mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 100);
+
         }
     }
 
-    public void clearStatus(){
+    public void clearStatus() {
         mLoadingHandler.removeCallbacksAndMessages(null);
         mLoadService.showSuccess();
     }
+
     protected void onReload(View v) {
         mLoadService.showSuccess();
         initData();

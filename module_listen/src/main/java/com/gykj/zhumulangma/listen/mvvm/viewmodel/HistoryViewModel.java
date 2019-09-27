@@ -11,7 +11,7 @@ import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
+import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.util.DateUtil;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.listen.bean.PlayHistoryItem;
@@ -37,7 +37,6 @@ import java.util.Map;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -46,8 +45,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class HistoryViewModel extends BaseViewModel<HistoryModel> {
-    private SingleLiveEvent<List<PlayHistoryItem>> mHistorysSingleLiveEvent;
+public class HistoryViewModel extends BaseRefreshViewModel<HistoryModel,PlayHistoryItem> {
+
+    private SingleLiveEvent<List<PlayHistoryItem>> mInitHistorysEvent;
     private static final int PAGESIZE = 20;
     private int curPage = 1;
 
@@ -55,29 +55,52 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
         super(application, model);
     }
 
-    public void _getHistory() {
+
+    public void init() {
+
         mModel.getHistory(curPage, PAGESIZE)
-                .observeOn(Schedulers.io())
+                .map(playHistoryBeans -> convertSections(playHistoryBeans))
+                .subscribe(historyItems -> {
+                    if (CollectionUtils.isEmpty(historyItems)) {
+                        getShowEmptyViewEvent().call();
+                        return;
+                    }
+                    curPage++;
+                    getClearStatusEvent().call();
+                    getInitHistorysEvent().setValue(historyItems);
+                }, e -> {
+                    getShowErrorViewEvent().call();
+                    e.printStackTrace();
+                });
+    }
+    private void getMoreHistory() {
+        mModel.getHistory(curPage, PAGESIZE)
                 .map(playHistoryBeans -> convertSections(playHistoryBeans))
                 .subscribe(playHistorySections -> {
-                    if(playHistorySections.size()>0)
-                    curPage++;
-                    getHistorySingleLiveEvent().postValue(playHistorySections);
+                    if(!CollectionUtils.isEmpty(playHistorySections)){
+                        curPage++;
+                    }
+                    getFinishLoadmoreEvent().setValue(playHistorySections);
                 }, e -> {
+                    getFinishLoadmoreEvent().call();
                     e.printStackTrace();
-                    getShowEmptyViewEvent().postValue(true);
                 });
     }
 
-    public void play(long albumId,long trackId) {
+    @Override
+    public void onViewLoadmore() {
+        getMoreHistory();
+    }
+
+    public void play(long albumId, long trackId) {
 
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.ALBUM_ID, String.valueOf(albumId));
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doOnSubscribe(d ->  getShowLoadingViewEvent().call())
+                .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if(trackList.getTracks().get(i).getDataId()==trackId){
@@ -102,7 +125,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
         yestoday.put("radio_id", radioId);
         Calendar calendar0 = Calendar.getInstance();
         calendar0.add(Calendar.DAY_OF_MONTH, -1);
-        yestoday.put("weekday", calendar0.get(Calendar.DAY_OF_WEEK) - 1 + "");
+        yestoday.put(DTransferConstants.WEEKDAY, calendar0.get(Calendar.DAY_OF_WEEK) - 1 + "");
 
         Map<String, String> today = new HashMap();
         today.put("radio_id", radioId);
@@ -111,7 +134,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
         tomorrow.put("radio_id", radioId);
         Calendar calendar1 = Calendar.getInstance();
         calendar1.add(Calendar.DAY_OF_MONTH, 1);
-        tomorrow.put("weekday", calendar0.get(Calendar.DAY_OF_WEEK) - 1 + "");
+        tomorrow.put(DTransferConstants.WEEKDAY, calendar0.get(Calendar.DAY_OF_WEEK) - 1 + "");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy:MM:dd");
 
         Map<String, String> map = new HashMap<>();
@@ -142,8 +165,8 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                 })
                 .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                 RadioUtil.getSchedules(tomorrow))
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doOnSubscribe(d ->  getShowLoadingViewEvent().call())
+                .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(schedules -> {
                     Iterator var7 = schedules.iterator();
                     while (var7.hasNext()) {
@@ -163,21 +186,6 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
                                             (ISupportFragment) navigation)));
                         }
                     }
-                /*    else {
-                        Schedule schedule = ModelUtil.radioToSchedule(radio);
-                        if (schedule == null) {
-                            return;
-                        }
-                        schedulesx.add(schedule);
-                        XmPlayerManager.getInstance(getApplication()).playSchedule(schedulesx, -1);
-                        Object navigation = ARouter.getInstance()
-                                .build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
-                        if (null != navigation) {
-                            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
-                                    new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO,
-                                            (ISupportFragment) navigation)));
-                        }
-                    }*/
                 }, e -> e.printStackTrace());
     }
     private List<PlayHistoryItem> convertSections(List<PlayHistoryBean> beans){
@@ -223,8 +231,7 @@ public class HistoryViewModel extends BaseViewModel<HistoryModel> {
         mModel.clearAll(PlayHistoryBean.class).subscribe();
     }
 
-    public SingleLiveEvent<List<PlayHistoryItem>> getHistorySingleLiveEvent() {
-        return mHistorysSingleLiveEvent = createLiveData(mHistorysSingleLiveEvent);
+    public SingleLiveEvent<List<PlayHistoryItem>> getInitHistorysEvent() {
+        return mInitHistorysEvent=createLiveData(mInitHistorysEvent);
     }
-
 }

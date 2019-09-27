@@ -34,7 +34,7 @@ public class HomeViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.TOP, String.valueOf(20));
         mModel.getHotWords(map)
-                .subscribe(hotWordList -> mHotWordsSingleLiveEvent.postValue(
+                .subscribe(hotWordList -> mHotWordsSingleLiveEvent.setValue(
                         hotWordList.getHotWordList()), e->e.printStackTrace());
     }
     public void clearHistory(){
@@ -53,7 +53,7 @@ public class HomeViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
     public void getHistory(){
         mModel.list(SearchHistoryBean.class)
-                .subscribe(searchHistoryBeans -> getHistorySingleLiveEvent().postValue(searchHistoryBeans));
+                .subscribe(searchHistoryBeans -> getHistorySingleLiveEvent().setValue(searchHistoryBeans));
     }
 
     public SingleLiveEvent<List<HotWord>> getHotWordsSingleLiveEvent() {

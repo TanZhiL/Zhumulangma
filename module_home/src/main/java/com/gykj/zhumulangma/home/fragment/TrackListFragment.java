@@ -71,7 +71,7 @@ public class TrackListFragment extends BaseMvvmFragment<TrackListViewModel> impl
         mViewModel.getTrackListSingleLiveEvent().observe(this, tracks -> {
 
             if (null == tracks || (mAdapter.getData().size() == 0 && tracks.size() == 0)) {
-                showEmptyView(true);
+                showEmptyView();
                 return;
             }
             if (tracks.size() > 0) {

@@ -36,51 +36,54 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Object> {
 
-    private SingleLiveEvent<Announcer> mAnnouncerSingleLiveEvent;
-    private SingleLiveEvent<AlbumList> mAlbumListSingleLiveEvent;
-    private SingleLiveEvent<AnnouncerTrackList> mTrackListSingleLiveEvent;
-
+    private SingleLiveEvent<Announcer> mAnnouncerEvent;
+    private SingleLiveEvent<AlbumList> mAlbumListEvent;
+    private SingleLiveEvent<AnnouncerTrackList> mTrackListEvent;
+    private long mAnnouncerId;
     public AnnouncerDetailViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
 
-    public void getDetail(String announcerId) {
+    public void init() {
         Map<String, String> map = new HashMap<>();
-        map.put("ids", announcerId);
+        map.put("ids", String.valueOf(mAnnouncerId));
+        //主播详情
         mModel.getAnnouncersBatch(map)
-                .doOnNext(announcerListByIds -> getAnnouncerSingleLiveEvent().postValue(announcerListByIds.getAnnouncers().get(0)))
+                .doOnNext(announcerListByIds -> getAnnouncerEvent().setValue(announcerListByIds.getAnnouncers().get(0)))
+                //主播专辑列表
                 .flatMap((Function<AnnouncerListByIds, ObservableSource<AlbumList>>) announcerListByIds -> {
                     Map<String, String> map1 = new HashMap<>();
-                    map1.put(DTransferConstants.AID, announcerId);
+                    map1.put(DTransferConstants.AID, String.valueOf(mAnnouncerId));
                     map1.put(DTransferConstants.PAGE, String.valueOf(1));
                     map1.put(DTransferConstants.PAGE_SIZE, String.valueOf(5));
                     return mModel.getAlbumsByAnnouncer(map1);
-                }).doOnNext(albumList -> getAlbumListSingleLiveEvent().postValue(albumList))
+                }).doOnNext(albumList -> getAlbumListEvent().setValue(albumList))
+                //主播声音列表
                 .flatMap((Function<AlbumList, ObservableSource<AnnouncerTrackList>>) albumList -> {
                     Map<String, String> map12 = new HashMap<>();
-                    map12.put(DTransferConstants.AID, announcerId);
+                    map12.put(DTransferConstants.AID, String.valueOf(mAnnouncerId));
                     map12.put(DTransferConstants.PAGE, String.valueOf(1));
                     map12.put(DTransferConstants.PAGE_SIZE, String.valueOf(5));
                     return mModel.getTracksByAnnouncer(map12);
                 })
-                .doOnSubscribe(d->  getShowLoadingViewEvent().postValue(""))
+                .doOnSubscribe(d->   getShowInitViewEvent().call())
                 .subscribe(trackList -> {
                     getClearStatusEvent().call();
-                    getTrackListSingleLiveEvent().postValue(trackList);
+                    getTrackListEvent().setValue(trackList);
                 }, e -> {
-                    getShowErrorViewEvent().postValue(true);
+                    getShowErrorViewEvent().call();
                     e.printStackTrace();
                 });
     }
-    public void play(long albumId,long trackId) {
 
+    public void play(long albumId,long trackId) {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.ALBUM_ID, String.valueOf(albumId));
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doOnSubscribe(d ->   getShowLoadingViewEvent().call())
+                .doFinally(() ->  getClearStatusEvent().call())
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if(trackList.getTracks().get(i).getDataId()==trackId){
@@ -97,15 +100,19 @@ public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaMo
                     }
                 }, e -> e.printStackTrace());
     }
-    public SingleLiveEvent<Announcer> getAnnouncerSingleLiveEvent() {
-        return mAnnouncerSingleLiveEvent = createLiveData(mAnnouncerSingleLiveEvent);
+    public SingleLiveEvent<Announcer> getAnnouncerEvent() {
+        return mAnnouncerEvent = createLiveData(mAnnouncerEvent);
     }
 
-    public SingleLiveEvent<AlbumList> getAlbumListSingleLiveEvent() {
-        return mAlbumListSingleLiveEvent = createLiveData(mAlbumListSingleLiveEvent);
+    public SingleLiveEvent<AlbumList> getAlbumListEvent() {
+        return mAlbumListEvent = createLiveData(mAlbumListEvent);
     }
 
-    public SingleLiveEvent<AnnouncerTrackList> getTrackListSingleLiveEvent() {
-        return mTrackListSingleLiveEvent = createLiveData(mTrackListSingleLiveEvent);
+    public SingleLiveEvent<AnnouncerTrackList> getTrackListEvent() {
+        return mTrackListEvent = createLiveData(mTrackListEvent);
+    }
+
+    public void setAnnouncerId(long announcerId) {
+        mAnnouncerId = announcerId;
     }
 }

@@ -40,11 +40,11 @@ public class TrackListViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.AID, String.valueOf(announcerId));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
-        mModel.getTracksByAnnouncer(map).doOnSubscribe(d-> getShowLoadingViewEvent().postValue(curPage==1?"":null))
+        mModel.getTracksByAnnouncer(map).doOnSubscribe(disposable-> getShowLoadingViewEvent().setValue(curPage==1?"":null))
                 .subscribe(trackList -> {
                     curPage++;
-                    getShowLoadingViewEvent().postValue(null);
-                    getTrackListSingleLiveEvent().postValue(trackList.getTracks());
+                     getClearStatusEvent().call();
+                    getTrackListSingleLiveEvent().setValue(trackList.getTracks());
                 }, e->e.printStackTrace());
     }
     public void play(long albumId,long trackId) {
@@ -54,8 +54,8 @@ public class TrackListViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doOnSubscribe(d ->   getShowLoadingViewEvent().call())
+                .doFinally(() ->  getClearStatusEvent().call())
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if(trackList.getTracks().get(i).getDataId()==trackId){

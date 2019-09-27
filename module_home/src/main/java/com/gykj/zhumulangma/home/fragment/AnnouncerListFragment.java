@@ -21,13 +21,10 @@ import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerListViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -35,7 +32,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Author: Thomas.
  * Date: 2019/9/11 11:40
  * Email: 1071931588@qq.com
- * Description:
+ * Description:主播列表
  */
 
 @Route(path = AppConstants.Router.Home.F_ANNOUNCER_LIST)
@@ -43,12 +40,11 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerList
         implements BaseQuickAdapter.OnItemClickListener, OnLoadMoreListener {
 
     @Autowired(name = KeyCode.Home.CATEGORY_ID)
-    public long categoryId;
+    public long mCategoryId;
     @Autowired(name = KeyCode.Home.TITLE)
-    public String title;
-    private RecyclerView rv;
+    public String mTitle;
     private SmartRefreshLayout refreshLayout;
-    private AnnouncerAdapter mAdapter;
+    private AnnouncerAdapter mAnnouncerAdapter;
 
     @Override
     protected int onBindLayout() {
@@ -57,42 +53,41 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerList
 
     @Override
     protected void initView(View view) {
-        rv=fd(R.id.rv);
-        rv.setLayoutManager(new LinearLayoutManager(mContext));
-        rv.setHasFixedSize(true);
-        mAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
-        mAdapter.bindToRecyclerView(rv);
-        setTitle(new String[]{title});
+        RecyclerView recyclerView = fd(R.id.rv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setHasFixedSize(true);
+        mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
+        mAnnouncerAdapter.bindToRecyclerView(recyclerView);
+        setTitle(new String[]{mTitle});
         refreshLayout = view.findViewById(R.id.refreshLayout);
     }
 
     @Override
     public void initListener() {
         super.initListener();
-        mAdapter.setOnItemClickListener(this);
+        mAnnouncerAdapter.setOnItemClickListener(this);
     }
 
+    @NonNull
     @Override
-    protected SmartRefreshLayout getRefreshLayout() {
-        return refreshLayout;
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout, mAnnouncerAdapter);
     }
+
+
 
     @Override
     public void initData() {
-        mViewModel.setCategoryId(categoryId);
-        mViewModel.getAnnouncerList(categoryId);
+        mViewModel.setCategoryId(mCategoryId);
+        mViewModel.init();
     }
 
 
-
     @Override
-    public void initViewObservable() {}
-
-    @Override
-    protected void onLoadMoreSucc(List<Announcer> list) {
-        super.onLoadMoreSucc(list);
-        mAdapter.addData(list);
+    public void initViewObservable() {
+        mViewModel.getInitAnnouncersEvent().observe(this, announcers -> mAnnouncerAdapter.setNewData(announcers));
     }
+
 
     @Override
     protected boolean lazyEnable() {
@@ -102,18 +97,14 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerList
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
-                .withLong(KeyCode.Home.ANNOUNCER_ID, mAdapter.getItem(position).getAnnouncerId())
-                .withString(KeyCode.Home.ANNOUNCER_NAME, mAdapter.getItem(position).getNickname())
+                .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getItem(position).getAnnouncerId())
+                .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getItem(position).getNickname())
                 .navigation();
         NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation);
         navigateBean.launchMode=STANDARD;
         EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,navigateBean));
     }
 
-    @Override
-    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-        mViewModel.getAnnouncerList(categoryId);
-    }
 
     @Override
     public Class<AnnouncerListViewModel> onBindViewModel() {
@@ -124,6 +115,5 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerList
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }
-
 
 }

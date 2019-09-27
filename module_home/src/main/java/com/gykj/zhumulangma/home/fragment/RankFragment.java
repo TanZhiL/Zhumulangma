@@ -42,7 +42,12 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Arrays;
 
 import me.yokeyword.fragmentation.ISupportFragment;
-
+/**
+ * Author: Thomas.
+ * Date: 2019/8/14 10:21
+ * Email: 1071931588@qq.com
+ * Description:排行榜
+ */
 @Route(path = AppConstants.Router.Home.F_RANK)
 public class RankFragment extends BaseMvvmFragment<RankViewModel> implements View.OnClickListener,
         BaseQuickAdapter.OnItemClickListener {
@@ -229,7 +234,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
     public void initViewObservable() {
         mViewModel.getFreeSingleLiveEvent().observe(this, albums -> {
             if (null == albums || (mFreeAdapter.getData().size() == 0 && albums.size() == 0)) {
-                showEmptyView(true);
+                showEmptyView();
                 return;
             }
             if (albums.size() > 0) {
@@ -241,7 +246,7 @@ public class RankFragment extends BaseMvvmFragment<RankViewModel> implements Vie
         });
         mViewModel.getPaidSingleLiveEvent().observe(this, albums -> {
             if (null == albums || (mPaidAdapter.getData().size() == 0 && albums.size() == 0)) {
-                showEmptyView(true);
+                showEmptyView();
                 return;
             }
             if (albums.size() > 0) {

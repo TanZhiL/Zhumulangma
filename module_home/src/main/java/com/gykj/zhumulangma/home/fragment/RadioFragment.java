@@ -4,6 +4,7 @@ package com.gykj.zhumulangma.home.fragment;
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +32,6 @@ import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.adapter.RadioHistoryAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 
@@ -42,12 +42,10 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio> implements View.OnClickListener {
 
-    private RecyclerView rvHistory;
     private RadioHistoryAdapter mHistoryAdapter;
-    private RecyclerView rvLocal;
     private RadioAdapter mLocalAdapter;
-    private RecyclerView rvTop;
     private RadioAdapter mTopAdapter;
+
     private ViewGroup clMore;
     private ImageView ivMore;
 
@@ -94,12 +92,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
         fd(R.id.ih_history).setOnClickListener(view -> {
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
-                    .withInt(KeyCode.Home.TYPE, RadioListFragment.HISTORY)
-                    .withString(KeyCode.Home.TITLE, "最近收听")
-                    .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
+          navigateTo(AppConstants.Router.Listen.F_HISTORY);
         });
         fd(R.id.ih_local).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
@@ -121,20 +114,23 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
                 mViewModel.play(String.valueOf(mHistoryAdapter.getItem(position).getSchedule().getRadioId())));
     }
 
+    @NonNull
     @Override
-    protected SmartRefreshLayout getRefreshLayout() {
-        return fd(R.id.refreshLayout);
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh( fd(R.id.refreshLayout),null);
     }
+
 
     @Override
     public void initData() {
 
         String cityCode = SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE,AppConstants.Defualt.CITY_CODE);
-        String cityName = SPUtils.getInstance().getString(AppConstants.SP.CITY_NAME, AppConstants.Defualt.CITY_NAME);
 
+        mViewModel.init(cityCode);
+        String cityName = SPUtils.getInstance().getString(AppConstants.SP.CITY_NAME, AppConstants.Defualt.CITY_NAME);
         ItemHeader itemHeader = fd(R.id.ih_local);
         itemHeader.setTitle(cityName);
-        mViewModel.init(cityCode);
+
         //初始化定位
         AMapLocationClient mLocationClient = new AMapLocationClient(mApplication);
         AMapLocationClientOption option = new AMapLocationClientOption();
@@ -174,7 +170,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
     }
 
     private void initHistory() {
-        rvHistory = fd(R.id.rv_history);
+        RecyclerView rvHistory = fd(R.id.rv_history);
         mHistoryAdapter = new RadioHistoryAdapter(R.layout.home_item_radio);
         rvHistory.setLayoutManager(new LinearLayoutManager(mContext));
         rvHistory.setHasFixedSize(true);
@@ -182,7 +178,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
     }
 
     private void initLocal() {
-        rvLocal = fd(R.id.rv_local);
+        RecyclerView rvLocal = fd(R.id.rv_local);
         mLocalAdapter = new RadioAdapter(R.layout.home_item_radio);
         rvLocal.setLayoutManager(new LinearLayoutManager(mContext));
         rvLocal.setHasFixedSize(true);
@@ -190,7 +186,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
     }
 
     private void initTop() {
-        rvTop = fd(R.id.rv_top);
+        RecyclerView rvTop = fd(R.id.rv_top);
         mTopAdapter = new RadioAdapter(R.layout.home_item_radio);
         rvTop.setLayoutManager(new LinearLayoutManager(mContext));
         rvTop.setHasFixedSize(true);
@@ -214,29 +210,26 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
 
     @Override
     public void initViewObservable() {
-        mViewModel.getLocalSingleLiveEvent().observe(this, radios -> {
+        mViewModel.getLocalsEvent().observe(this, radios -> {
             if(!CollectionUtils.isEmpty(radios)){
                 mLocalAdapter.setNewData(radios);
             }
         });
-        mViewModel.getTopSingleLiveEvent().observe(this, radios -> mTopAdapter.setNewData(radios));
-        mViewModel.getHistorySingleLiveEvent().observe(this, historyBeans -> {
+        mViewModel.getTopsEvent().observe(this, radios -> mTopAdapter.setNewData(radios));
+        mViewModel.getHistorysEvent().observe(this, historyBeans -> {
             if (historyBeans.size() == 0) {
-                rvHistory.setVisibility(View.GONE);
-                fd(R.id.ih_history).setVisibility(View.GONE);
+                fd(R.id.gp_history).setVisibility(View.GONE);
             } else {
                 mHistoryAdapter.setNewData(historyBeans);
-                rvHistory.setVisibility(View.VISIBLE);
-                fd(R.id.ih_history).setVisibility(View.VISIBLE);
+                fd(R.id.gp_history).setVisibility(View.VISIBLE);
             }
         });
-        mViewModel.getRefreshSingleLiveEvent().observe(this, aVoid -> ((SmartRefreshLayout)fd(R.id.refreshLayout)).finishRefresh());
     }
 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        mViewModel._getHistory();
+        mViewModel.getHistory();
     }
 
     @Override
@@ -250,7 +243,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
             ivMore.setVisibility(View.VISIBLE);
         } else if (id == R.id.ll_local) {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
-                    .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL)
+                    .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_PROVINCE)
                     .withString(KeyCode.Home.TITLE,SPUtils.getInstance().getString(
                             AppConstants.SP.PROVINCE_NAME,AppConstants.Defualt.PROVINCE_NAME))
                     .navigation();

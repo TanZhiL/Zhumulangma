@@ -206,6 +206,11 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
     }
 
     @Override
+    protected boolean lazyEnable() {
+        return false;
+    }
+
+    @Override
     public void onItemClick(int position) {
         if (position == 9) {
             Beta.checkUpgrade();

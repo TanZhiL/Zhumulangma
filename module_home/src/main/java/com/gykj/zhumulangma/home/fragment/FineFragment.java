@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +20,6 @@ import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.FineAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
@@ -37,16 +37,10 @@ import me.yokeyword.fragmentation.ISupportFragment;
 public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> implements
         View.OnClickListener, OnBannerListener {
 
-    Banner banner;
-
-    RecyclerView rvDaily;
-    FineAdapter mDailyAdapter;
-
-    RecyclerView rvBook;
-    FineAdapter mBookAdapter;
-
-    RecyclerView rvClassroom;
-    FineAdapter mClassroomAdapter;
+    private Banner banner;
+    private FineAdapter mDailyAdapter;
+    private FineAdapter mBookAdapter;
+    private FineAdapter mClassroomAdapter;
 
     public FineFragment() {
 
@@ -82,10 +76,12 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
         fd(R.id.classroom_refresh).setOnClickListener(this);
     }
 
+    @NonNull
     @Override
-    protected SmartRefreshLayout getRefreshLayout() {
-        return fd(R.id.refreshLayout);
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(fd(R.id.refreshLayout), null);
     }
+
 
     @Override
     public void initData() {
@@ -100,7 +96,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
 
     private void initDaily() {
 
-        rvDaily = fd(R.id.rv_daily);
+        RecyclerView rvDaily = fd(R.id.rv_daily);
         mDailyAdapter = new FineAdapter(R.layout.home_item_fine);
         rvDaily.setLayoutManager(new LinearLayoutManager(mContext));
         rvDaily.setHasFixedSize(true);
@@ -108,7 +104,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     }
 
     private void initBook() {
-        rvBook = fd(R.id.rv_book);
+        RecyclerView rvBook = fd(R.id.rv_book);
         mBookAdapter = new FineAdapter(R.layout.home_item_fine);
         rvBook.setLayoutManager(new LinearLayoutManager(mContext));
         rvBook.setHasFixedSize(true);
@@ -117,7 +113,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     }
 
     private void initClassRoom() {
-        rvClassroom = fd(R.id.rv_classroom);
+        RecyclerView rvClassroom = fd(R.id.rv_classroom);
         mClassroomAdapter = new FineAdapter(R.layout.home_item_fine);
         rvClassroom.setLayoutManager(new LinearLayoutManager(mContext));
         rvClassroom.setHasFixedSize(true);
@@ -141,17 +137,16 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
 
     @Override
     public void initViewObservable() {
-        mViewModel.getBannerV2SingleLiveEvent().observe(this, bannerV2s -> {
+        mViewModel.getBannerV2Event().observe(this, bannerV2s -> {
             List<String> images = new ArrayList<>();
             for (BannerV2 bannerV2 : bannerV2s) {
                 images.add(bannerV2.getBannerUrl());
             }
             banner.setImages(images).setImageLoader(new MainHomeFragment.GlideImageLoader()).start();
         });
-        mViewModel.getDailySingleLiveEvent().observe(this, albums -> mDailyAdapter.setNewData(albums));
-        mViewModel.getBookSingleLiveEvent().observe(this, albums -> mBookAdapter.setNewData(albums));
-        mViewModel.getClassRoomSingleLiveEvent().observe(this, albums -> mClassroomAdapter.setNewData(albums));
-        mViewModel.getRefreshSingleLiveEvent().observe(this, aVoid -> ((SmartRefreshLayout) fd(R.id.refreshLayout)).finishRefresh());
+        mViewModel.getDailysEvent().observe(this, albums -> mDailyAdapter.setNewData(albums));
+        mViewModel.getBooksEvent().observe(this, albums -> mBookAdapter.setNewData(albums));
+        mViewModel.getClassRoomsEvent().observe(this, albums -> mClassroomAdapter.setNewData(albums));
     }
 
     @Override
@@ -182,7 +177,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
 
     @Override
     public void OnBannerClick(int position) {
-        BannerV2 bannerV2 = mViewModel.getBannerV2SingleLiveEvent().getValue().get(position);
+        BannerV2 bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)

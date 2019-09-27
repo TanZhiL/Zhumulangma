@@ -22,10 +22,10 @@ import io.reactivex.functions.Consumer;
 public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel, Consumer<Disposable> {
     protected M mModel;
 
-    private SingleLiveEvent<Boolean> showInitLoadViewEvent;
+    private SingleLiveEvent<Void> showInitLoadViewEvent;
     private SingleLiveEvent<String> showLoadingViewEvent;
-    private SingleLiveEvent<Boolean> showEmptyViewEvent;
-    private SingleLiveEvent<Boolean> showNetErrViewEvent;
+    private SingleLiveEvent<Void> showEmptyViewEvent;
+    private SingleLiveEvent<Void> showNetErrViewEvent;
     private SingleLiveEvent<Void> finishSelfEvent;
     private SingleLiveEvent<Void> clearStatusEvent;
 
@@ -38,7 +38,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
      * 初始化时loading视图
      * @return
      */
-    public SingleLiveEvent<Boolean> getShowInitViewEvent() {
+    public SingleLiveEvent<Void> getShowInitViewEvent() {
         return showInitLoadViewEvent = createLiveData(showInitLoadViewEvent);
     }
 
@@ -54,7 +54,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
      * 数据为空
      * @return
      */
-    public SingleLiveEvent<Boolean> getShowEmptyViewEvent() {
+    public SingleLiveEvent<Void> getShowEmptyViewEvent() {
         return showEmptyViewEvent = createLiveData(showEmptyViewEvent);
     }
 
@@ -62,7 +62,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
      * 网络异常
      * @return
      */
-    public SingleLiveEvent<Boolean> getShowErrorViewEvent() {
+    public SingleLiveEvent<Void> getShowErrorViewEvent() {
         return showNetErrViewEvent = createLiveData(showNetErrViewEvent);
     }
 

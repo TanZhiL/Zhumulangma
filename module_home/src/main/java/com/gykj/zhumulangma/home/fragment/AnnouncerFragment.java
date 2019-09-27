@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,13 +17,11 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
@@ -40,36 +39,38 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Author: Thomas.
  * Date: 2019/9/10 8:23
  * Email: 1071931588@qq.com
- * Description:
+ * Description:主播页
  */
 public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewModel, Announcer> implements OnBannerListener,
-        BaseQuickAdapter.OnItemClickListener{
+        BaseQuickAdapter.OnItemClickListener {
 
     private static final String TAG = "AnnouncerFragment";
-    Banner banner;
-    RecyclerView rvAnnouncer;
-    SmartRefreshLayout refreshLayout;
-
+    private Banner banner;
+    private RecyclerView rvAnnouncer;
+    private SmartRefreshLayout refreshLayout;
     private AnnouncerAdapter mAnnouncerAdapter;
-
 
     @Override
     protected int onBindLayout() {
         return R.layout.home_fragment_announcer;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mView.setBackground(null);
         setSwipeBackEnable(false);
     }
+
     protected void initView(View view) {
-
-        rvAnnouncer =fd(R.id.rv_announcer);
-        refreshLayout=fd(R.id.refreshLayout);
-
-        initBanner();
-        initList();
+        rvAnnouncer = fd(R.id.rv_announcer);
+        refreshLayout = fd(R.id.refreshLayout);
+        banner = fd(R.id.banner);
+        banner.setIndicatorGravity(BannerConfig.RIGHT);
+        banner.setDelayTime(3000);
+        mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
+        rvAnnouncer.setLayoutManager(new LinearLayoutManager(mContext));
+        mAnnouncerAdapter.bindToRecyclerView(rvAnnouncer);
     }
 
     @Override
@@ -77,40 +78,28 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
         super.initListener();
         banner.setOnBannerListener(this);
         mAnnouncerAdapter.setOnItemClickListener(this);
-        ((NestedScrollView)fd(R.id.tsv_content)).setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+        ((NestedScrollView) fd(R.id.tsv_content)).setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (nestedScrollView, i, i1, i2, i3) -> {
-            TLog.d(fd(R.id.ll_title).getTop());
-            fd(R.id.fl_title_top).setVisibility(i1>fd(R.id.ll_title).getTop()?View.VISIBLE:View.GONE);
-        });
+                    fd(R.id.fl_title_top).setVisibility(i1 > fd(R.id.ll_title).getTop() ? View.VISIBLE : View.GONE);
+                });
     }
 
+    @NonNull
     @Override
-    protected SmartRefreshLayout getRefreshLayout() {
-        return refreshLayout;
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout, mAnnouncerAdapter);
     }
 
     @Override
     public void initData() {
-     mViewModel.init();
-    }
-
-    private void initBanner() {
-        banner= fd(R.id.banner);
-        banner.setIndicatorGravity(BannerConfig.RIGHT);
-        banner.setDelayTime(3000);
-    }
-
-    private void initList() {
-        mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
-        rvAnnouncer.setLayoutManager(new LinearLayoutManager(mContext));
-        mAnnouncerAdapter.bindToRecyclerView(rvAnnouncer);
+        mViewModel.init();
     }
 
 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if(banner!=null)
+        if (banner != null)
             banner.startAutoPlay();
     }
 
@@ -124,10 +113,12 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
     public Class<AnnouncerViewModel> onBindViewModel() {
         return AnnouncerViewModel.class;
     }
+
     @Override
     protected boolean enableSimplebar() {
         return false;
     }
+
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
@@ -135,46 +126,20 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
 
     @Override
     public void initViewObservable() {
-        mViewModel.getBannerV2SingleLiveEvent().observe(this, bannerV2s -> {
+        mViewModel.getBannerV2Event().observe(this, bannerV2s -> {
             List<String> images = new ArrayList<>();
             for (BannerV2 bannerV2 : bannerV2s) {
                 images.add(bannerV2.getBannerUrl());
             }
             banner.setImages(images).setImageLoader(new MainHomeFragment.GlideImageLoader()).start();
         });
-
-
-        mViewModel.getAnnouncerSingleLiveEvent().observe(this, announcers -> {
-            if(null==announcers||(mAnnouncerAdapter.getData().size()==0&&announcers.size()==0)){
-                showEmptyView(true);
-                return;
-            }
-            if(refreshLayout.getState()== RefreshState.Refreshing){
-                mAnnouncerAdapter.setNewData(announcers);
-                refreshLayout.finishRefresh();
-                return;
-            }
-            if (announcers.size() > 0) {
-                mAnnouncerAdapter.addData(announcers);
-                refreshLayout.finishLoadMore();
-            } else {
-                refreshLayout.finishLoadMoreWithNoMoreData();
-            }
-        });
-
-        mViewModel.getRefreshSingleLiveEvent().observe(this, aVoid -> refreshLayout.finishRefresh());
-    }
-
-    @Override
-    protected void onLoadMoreSucc(List<Announcer> list) {
-        super.onLoadMoreSucc(list);
-        mAnnouncerAdapter.addData(list);
+        mViewModel.getInitAnnouncerEvent().observe(this, announcers -> mAnnouncerAdapter.setNewData(announcers));
     }
 
     @Override
     public void OnBannerClick(int position) {
-        BannerV2 bannerV2 = mViewModel.getBannerV2SingleLiveEvent().getValue().get(position);
-        switch (bannerV2.getBannerContentType()){
+        BannerV2 bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
+        switch (bannerV2.getBannerContentType()) {
             case 2:
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
@@ -187,7 +152,7 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
                 break;
             case 1:
                 Object navigation1 = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
-                        .withLong(KeyCode.Home.ANNOUNCER_ID,bannerV2.getBannerUid())
+                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid())
                         .navigation();
                 EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));

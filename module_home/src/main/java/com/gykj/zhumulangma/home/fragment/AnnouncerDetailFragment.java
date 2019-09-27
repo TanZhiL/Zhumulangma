@@ -53,30 +53,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
-
+/**
+ * Author: Thomas.
+ * Date: 2019/8/14 13:41
+ * Email: 1071931588@qq.com
+ * Description:主播详情页
+ */
 @Route(path = AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
 public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDetailViewModel,Object> implements
        View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
+
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
     public long mAnnouncerId;
     @Autowired(name = KeyCode.Home.ANNOUNCER_NAME)
     public String mAnnouncerName;
-
     private Announcer mAnnouncer;
-    private CommonTitleBar ctbTrans;
-    private CommonTitleBar ctbWhite;
-    private NestedScrollView mScrollView;
-    private ImageView parallax;
-    private View flParallax;
-    private SmartRefreshLayout refreshLayout;
-    private ImageView whiteLeft;
-    private ImageView whiteRight;
-    private ImageView transLeft;
-    private ImageView transRight;
-
-    private RecyclerView rvAlbum, rvTrack;
     private AlbumAdapter mAlbumAdapter;
     private AnnouncerTrackAdapter mTrackAdapter;
+
+    private CommonTitleBar ctbTrans;
+    private CommonTitleBar ctbWhite;
+    private NestedScrollView scrollView;
+    private ImageView ivParallax;
+    private View flParallax;
+    private SmartRefreshLayout refreshLayout;
+    private ImageView ivWhiteLeft;
+    private ImageView ivWhiteRight;
+    private ImageView ivTransLeft;
+    private ImageView ivTransRight;
+
 
     @Override
     protected int onBindLayout() {
@@ -93,62 +98,61 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
     protected void initView(View view) {
         ctbTrans = view.findViewById(R.id.ctb_trans);
         ctbWhite = view.findViewById(R.id.ctb_white);
-        mScrollView = view.findViewById(R.id.msv);
-        parallax = view.findViewById(R.id.parallax);
+        scrollView = view.findViewById(R.id.msv);
+        ivParallax = view.findViewById(R.id.parallax);
         flParallax = view.findViewById(R.id.fl_parallax);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         initBar();
-        rvAlbum = fd(R.id.rv_album);
-        rvTrack = fd(R.id.rv_track);
+        RecyclerView rvAlbum = fd(R.id.rv_album);
+        RecyclerView rvTrack = fd(R.id.rv_track);
         rvAlbum.setHasFixedSize(true);
         rvTrack.setHasFixedSize(true);
         rvAlbum.setLayoutManager(new LinearLayoutManager(mContext));
         rvTrack.setLayoutManager(new LinearLayoutManager(mContext));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
         mTrackAdapter = new AnnouncerTrackAdapter(R.layout.home_item_announcer_track);
-
         mAlbumAdapter.bindToRecyclerView(rvAlbum);
         mTrackAdapter.bindToRecyclerView(rvTrack);
     }
 
+    /**
+     * 初始化标题栏
+     */
     private void initBar() {
+        ivTransLeft = ctbTrans.getLeftCustomView().findViewById(R.id.iv_left);
+        ivTransRight = ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
 
-        transLeft = ctbTrans.getLeftCustomView().findViewById(R.id.iv_left);
-        transRight = ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
-
-
-        transLeft.setImageResource(R.drawable.ic_common_titlebar_back);
+        ivTransLeft.setImageResource(R.drawable.ic_common_titlebar_back);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            transLeft.setImageTintList(ColorStateList.valueOf(Color.WHITE));
+            ivTransLeft.setImageTintList(ColorStateList.valueOf(Color.WHITE));
         }
-        transLeft.setVisibility(View.VISIBLE);
+        ivTransLeft.setVisibility(View.VISIBLE);
 
 
-        transRight.setImageResource(R.drawable.ic_common_more);
+        ivTransRight.setImageResource(R.drawable.ic_common_more);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            transRight.setImageTintList(ColorStateList.valueOf(Color.WHITE));
+            ivTransRight.setImageTintList(ColorStateList.valueOf(Color.WHITE));
         }
-        transRight.setVisibility(View.VISIBLE);
+        ivTransRight.setVisibility(View.VISIBLE);
 
-        whiteLeft = ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
-        whiteRight = ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
+        ivWhiteLeft = ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
+        ivWhiteRight = ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
         TextView tvTitle = ctbWhite.getCenterCustomView().findViewById(R.id.tv_title);
         tvTitle.setVisibility(View.VISIBLE);
         tvTitle.setText(mAnnouncerName);
 
-        whiteLeft.setImageResource(R.drawable.ic_common_titlebar_back);
-        whiteLeft.setVisibility(View.VISIBLE);
+        ivWhiteLeft.setImageResource(R.drawable.ic_common_titlebar_back);
+        ivWhiteLeft.setVisibility(View.VISIBLE);
 
-        whiteRight.setImageResource(R.drawable.ic_common_more);
-        whiteRight.setVisibility(View.VISIBLE);
-
+        ivWhiteRight.setImageResource(R.drawable.ic_common_more);
+        ivWhiteRight.setVisibility(View.VISIBLE);
     }
 
 
     @Override
     public void initListener() {
         super.initListener();
-        mScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+        scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (nestedScrollView, i, scrollY, i2, i3) -> {
             flParallax.setTranslationY(-scrollY);
             ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
@@ -157,24 +161,21 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
         refreshLayout.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                refreshLayout.finishRefresh(2000);
+                mViewModel.onViewRefresh();
             }
-
             @Override
-            public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
+            public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent,
+                                       int offset, int headerHeight, int maxDragHeight) {
                 ctbTrans.setAlpha(1 - (float) offset / ctbTrans.getHeight());
-
-                parallax.setScaleX((float) (1 + percent * 0.2));
-                parallax.setScaleY((float) (1 + percent * 0.2));
-
+                ivParallax.setScaleX((float) (1 + percent * 0.2));
+                ivParallax.setScaleY((float) (1 + percent * 0.2));
                 flParallax.setTranslationY(offset);
             }
         });
-        whiteLeft.setOnClickListener(this);
-        whiteRight.setOnClickListener(this);
-        transLeft.setOnClickListener(this);
-        transRight.setOnClickListener(this);
-
+        ivWhiteLeft.setOnClickListener(this);
+        ivWhiteRight.setOnClickListener(this);
+        ivTransLeft.setOnClickListener(this);
+        ivTransRight.setOnClickListener(this);
         mAlbumAdapter.setOnItemClickListener(this);
         mTrackAdapter.setOnItemClickListener(this);
         fd(R.id.ih_album).setOnClickListener(v -> {
@@ -198,19 +199,21 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
         fd(R.id.tv_more).setOnClickListener(this);
     }
 
+    @NonNull
     @Override
-    protected SmartRefreshLayout getRefreshLayout() {
-        return refreshLayout;
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout,null);
     }
 
     @Override
     public void initData() {
-        mViewModel.getDetail(String.valueOf(mAnnouncerId));
+        mViewModel.setAnnouncerId(mAnnouncerId);
+        mViewModel.init();
     }
 
     @Override
     public void initViewObservable() {
-        mViewModel.getAnnouncerSingleLiveEvent().observe(this, announcer -> {
+        mViewModel.getAnnouncerEvent().observe(this, announcer -> {
             mAnnouncer=announcer;
             Glide.with(mContext).load(announcer.getAvatarUrl()).into((ImageView) fd(R.id.iv_avatar));
             ((TextView) fd(R.id.tv_nick)).setText(announcer.getNickname());
@@ -240,13 +243,13 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
             }
         });
 
-        mViewModel.getAlbumListSingleLiveEvent().observe(this, albumList -> {
+        mViewModel.getAlbumListEvent().observe(this, albumList -> {
             if (!CollectionUtils.isEmpty(albumList.getAlbums())) {
                 fd(R.id.gp_album).setVisibility(View.VISIBLE);
                 mAlbumAdapter.setNewData(albumList.getAlbums());
             }
         });
-        mViewModel.getTrackListSingleLiveEvent().observe(this, trackList -> {
+        mViewModel.getTrackListEvent().observe(this, trackList -> {
             if (!CollectionUtils.isEmpty(trackList.getTracks())) {
                 fd(R.id.gp_track).setVisibility(View.VISIBLE);
                 mTrackAdapter.setNewData(trackList.getTracks());
@@ -265,7 +268,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (v == whiteLeft || v == transLeft) {
+        if (v == ivWhiteLeft || v == ivTransLeft) {
             pop();
         } else if (id == R.id.tv_more) {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_LIST)

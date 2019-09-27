@@ -76,6 +76,10 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
 
     }
 
+    @Override
+    protected boolean lazyEnable() {
+        return false;
+    }
 
     @Override
     protected int onBindBarLeftStyle() {

@@ -89,13 +89,13 @@ public class SubscribeFragment extends BaseMvvmFragment<SubscribeViewModel>
 
             if (mRefreshLayout.getState() == RefreshState.Refreshing) {
                 if (CollectionUtils.isEmpty(subscribeBeans)) {
-                    showEmptyView(true);
+                    showEmptyView();
                 }
                 mSubscribeAdapter.setNewData(subscribeBeans);
                 mRefreshLayout.finishRefresh();
             } else {
                 if (null == subscribeBeans || (mSubscribeAdapter.getData().size() == 0 && subscribeBeans.size() == 0)) {
-                    showEmptyView(true);
+                    showEmptyView();
                     mRefreshLayout.finishLoadMore();
                     return;
                 }

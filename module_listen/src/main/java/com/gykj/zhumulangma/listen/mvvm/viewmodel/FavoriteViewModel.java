@@ -34,9 +34,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Description:
  */
 public class FavoriteViewModel extends BaseRefreshViewModel<ZhumulangmaModel, FavoriteBean> {
-    private SingleLiveEvent<List<FavoriteBean>> mFavoritesSingleLiveEvent;
-    private SingleLiveEvent<Track> mLikeSingleLiveEvent;
-    private SingleLiveEvent<Track> mUnLikeSingleLiveEvent;
+    private SingleLiveEvent<List<FavoriteBean>> mInitFavoritesEvent;
+    private SingleLiveEvent<Track> mLikeEvent;
+    private SingleLiveEvent<Track> mUnLikeEvent;
     private static final int PAGESIZE = 20;
     private int curPage = 1;
 
@@ -46,36 +46,43 @@ public class FavoriteViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Fa
 
     public void unlike(Track track) {
         mModel.remove(FavoriteBean.class, track.getDataId()).subscribe(aBoolean ->
-                getUnLikeSingleLiveEvent().postValue(track), e -> e.printStackTrace());
+                getUnLikeEvent().setValue(track), e -> e.printStackTrace());
 
     }
 
     public void like(Track track) {
         mModel.insert(new FavoriteBean(track.getDataId(), track, System.currentTimeMillis()))
-                .subscribe(subscribeBean -> getLikeSingleLiveEvent().postValue(track), e -> e.printStackTrace());
+                .subscribe(subscribeBean -> getLikeEvent().setValue(track), e -> e.printStackTrace());
     }
 
-    public void getFavorites() {
+    public void init() {
+        mModel.listDesc(FavoriteBean.class, curPage, PAGESIZE, FavoriteBeanDao.Properties.Datetime)
+                .doFinally(() -> super.onViewRefresh())
+                .subscribe(favoriteBeans ->
+                {
+                    if (CollectionUtils.isEmpty(favoriteBeans)) {
+                        getShowEmptyViewEvent().call();
+                        return;
+                    }
+                    curPage++;
+                    getInitFavoritesEvent().setValue(favoriteBeans);
+                }, e -> {
+                    getShowErrorViewEvent().call();
+                    e.printStackTrace();
+                });
+    }
+
+
+    private void getMoreFavorites() {
         mModel.listDesc(FavoriteBean.class, curPage, PAGESIZE, FavoriteBeanDao.Properties.Datetime)
                 .subscribe(favoriteBeans ->
                 {
-                    if (CollectionUtils.isEmpty(favoriteBeans) && curPage == 1) {
-                        getShowEmptyViewEvent().postValue(true);
-                        return;
-                    }
-
-                    if(curPage==1){
-                        getFinishRefreshEvent().postValue(favoriteBeans);
-                    }else {
-                        getFinishLoadmoreEvent().postValue(favoriteBeans);
-                    }
-                    if(!CollectionUtils.isEmpty(favoriteBeans)){
+                    if (!CollectionUtils.isEmpty(favoriteBeans)) {
                         curPage++;
                     }
+                    getFinishLoadmoreEvent().setValue(favoriteBeans);
                 }, e -> {
                     getFinishLoadmoreEvent().call();
-                    getFinishRefreshEvent().call();
-                    getShowErrorViewEvent().postValue(curPage == 1);
                     e.printStackTrace();
                 });
     }
@@ -83,15 +90,14 @@ public class FavoriteViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Fa
     @Override
     public void onViewRefresh() {
         curPage = 1;
-        getFavorites();
+        init();
     }
 
     @Override
     public void onViewLoadmore() {
-        getFavorites();
+        getMoreFavorites();
     }
 
-    long trackId = -1;
 
     public void play(long albumId, long trackId) {
 
@@ -100,8 +106,8 @@ public class FavoriteViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Fa
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d -> getShowLoadingViewEvent().postValue(""))
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doOnSubscribe(d -> getShowLoadingViewEvent().call())
+                .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {
@@ -120,15 +126,15 @@ public class FavoriteViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Fa
     }
 
 
-    public SingleLiveEvent<List<FavoriteBean>> getFavoritesSingleLiveEvent() {
-        return mFavoritesSingleLiveEvent = createLiveData(mFavoritesSingleLiveEvent);
+    public SingleLiveEvent<List<FavoriteBean>> getInitFavoritesEvent() {
+        return mInitFavoritesEvent = createLiveData(mInitFavoritesEvent);
     }
 
-    public SingleLiveEvent<Track> getLikeSingleLiveEvent() {
-        return mLikeSingleLiveEvent = createLiveData(mLikeSingleLiveEvent);
+    public SingleLiveEvent<Track> getLikeEvent() {
+        return mLikeEvent = createLiveData(mLikeEvent);
     }
 
-    public SingleLiveEvent<Track> getUnLikeSingleLiveEvent() {
-        return mUnLikeSingleLiveEvent = createLiveData(mUnLikeSingleLiveEvent);
+    public SingleLiveEvent<Track> getUnLikeEvent() {
+        return mUnLikeEvent = createLiveData(mUnLikeEvent);
     }
 }

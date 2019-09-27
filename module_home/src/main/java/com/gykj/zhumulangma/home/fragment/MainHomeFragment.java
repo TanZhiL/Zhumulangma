@@ -131,6 +131,14 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     }
 
     @Override
+    protected void onRevisible() {
+        super.onRevisible();
+        if(CollectionUtils.isEmpty(mMarqueeView.getMessages())){
+            mViewModel._getHotWords();
+        }
+    }
+
+    @Override
     protected boolean enableSimplebar() {
         return false;
     }

@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.listen.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,20 +18,17 @@ import com.gykj.zhumulangma.listen.mvvm.viewmodel.FavoriteViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
-import java.util.List;
-
 /**
  * Author: Thomas.
  * Date: 2019/8/16 8:45
  * Email: 1071931588@qq.com
- * Description:
+ * Description:我的喜欢
  */
 @Route(path = AppConstants.Router.Listen.F_FAVORITE)
 public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel, FavoriteBean> implements
         BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
 
-    private SmartRefreshLayout mRefreshLayout;
-    private RecyclerView mRecyclerView;
+    private SmartRefreshLayout refreshLayout;
     private FavoriteAdapter mFavoriteAdapter;
 
     @Override
@@ -40,12 +38,12 @@ public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel,
 
     @Override
     protected void initView(View view) {
-        mRecyclerView = fd(R.id.rv);
-        mRefreshLayout = fd(R.id.refreshLayout);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.setHasFixedSize(true);
+        RecyclerView recyclerView = fd(R.id.rv);
+        refreshLayout = fd(R.id.refreshLayout);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setHasFixedSize(true);
         mFavoriteAdapter = new FavoriteAdapter(R.layout.listen_item_favorite);
-        mFavoriteAdapter.bindToRecyclerView(mRecyclerView);
+        mFavoriteAdapter.bindToRecyclerView(recyclerView);
     }
 
     @Override
@@ -55,31 +53,23 @@ public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel,
         mFavoriteAdapter.setOnItemClickListener(this);
     }
 
+    @NonNull
     @Override
-    protected SmartRefreshLayout getRefreshLayout() {
-        return mRefreshLayout;
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout,mFavoriteAdapter);
     }
+
 
     @Override
     public void initData() {
-        mViewModel.getFavorites();
+        mViewModel.init();
     }
 
     @Override
     public void initViewObservable() {
+        mViewModel.getInitFavoritesEvent().observe(this, favoriteBeans -> mFavoriteAdapter.setNewData(favoriteBeans));
     }
 
-    @Override
-    protected void onRefreshSucc(List<FavoriteBean> list) {
-        super.onRefreshSucc(list);
-        mFavoriteAdapter.setNewData(list);
-    }
-
-    @Override
-    protected void onLoadMoreSucc(List<FavoriteBean> list) {
-        super.onLoadMoreSucc(list);
-        mFavoriteAdapter.addData(list);
-    }
 
     @Override
     protected String[] onBindBarTitleText() {
@@ -90,7 +80,7 @@ public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel,
         mViewModel.unlike(mFavoriteAdapter.getItem(position).getTrack());
         mFavoriteAdapter.remove(position);
         if(mFavoriteAdapter.getData().size()==0){
-            showEmptyView(true);
+            showEmptyView();
         }
     }
 

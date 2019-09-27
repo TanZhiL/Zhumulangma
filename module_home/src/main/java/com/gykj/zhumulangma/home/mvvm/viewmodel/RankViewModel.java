@@ -42,10 +42,10 @@ public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
         map1.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
 
         mModel.getPaidAlbumByTag(map1)
-                .doOnSubscribe(disposable ->  getShowLoadingViewEvent().postValue(""))
+                .doOnSubscribe(disposable ->   getShowLoadingViewEvent().call())
                 .doOnNext(albumList -> {
                     paidPage++;
-                    getPaidSingleLiveEvent().postValue(albumList.getAlbums());
+                    getPaidSingleLiveEvent().setValue(albumList.getAlbums());
                 })
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> {
                     Map<String, String> map = new HashMap<String, String>();
@@ -55,10 +55,10 @@ public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
                     map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIZE));
                     return mModel.getAlbumList(map);
                 })
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doFinally(() ->  getClearStatusEvent().call())
                 .subscribe(albumList -> {
                             freePage++;
-                            getFreeSingleLiveEvent().postValue(albumList.getAlbums());
+                            getFreeSingleLiveEvent().setValue(albumList.getAlbums());
                         },
                         e -> e.printStackTrace());
     }
@@ -76,7 +76,7 @@ public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getAlbumList(map)
                 .subscribe(albumList -> {
                             freePage++;
-                            getFreeSingleLiveEvent().postValue(albumList.getAlbums());
+                            getFreeSingleLiveEvent().setValue(albumList.getAlbums());
                         },
                         e -> e.printStackTrace());
     }
@@ -88,7 +88,7 @@ public class RankViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.getPaidAlbumByTag(map)
                 .subscribe(albumList -> {
                             paidPage++;
-                            getPaidSingleLiveEvent().postValue(albumList.getAlbums());
+                            getPaidSingleLiveEvent().setValue(albumList.getAlbums());
                         },
                         e -> e.printStackTrace());
     }

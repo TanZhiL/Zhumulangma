@@ -37,14 +37,14 @@ public class BaseRefreshViewModel<M extends BaseModel, T> extends BaseViewModel<
     }
 
     /**
-     * 当界面下拉刷新时
+     * 当界面下拉刷新时,默认直接结束刷新
      */
     public void onViewRefresh() {
         getFinishRefreshEvent().postValue(new ArrayList<>());
     }
 
     /**
-     * 当界面下拉更多时
+     * 当界面下拉更多时,默认没有更多数据
      */
     public void onViewLoadmore() {
         getFinishLoadmoreEvent().postValue(new ArrayList<>());

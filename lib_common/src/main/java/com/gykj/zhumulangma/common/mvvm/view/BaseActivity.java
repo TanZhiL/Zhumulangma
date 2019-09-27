@@ -381,56 +381,53 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     }
 
 
-    public void showInitView(boolean show) {
-        if (!show) {
-            mLoadService.showSuccess();
-        } else {
-            mLoadService.showCallback(InitCallback.class);
-        }
+    public void showInitView() {
+        mLoadingHandler.removeCallbacksAndMessages(null);
+        mLoadService.showSuccess();
+        mLoadService.showCallback(InitCallback.class);
     }
 
 
-    public void showErrorView(boolean show) {
-        if (!show) {
-            mLoadService.showSuccess();
-        } else {
-            mLoadService.showCallback(ErrorCallback.class);
-        }
+    public void showErrorView() {
+        mLoadingHandler.removeCallbacksAndMessages(null);
+        mLoadService.showSuccess();
+        mLoadService.showCallback(ErrorCallback.class);
     }
 
 
-    public void showEmptyView(boolean show) {
-        if (!show) {
-            mLoadService.showSuccess();
-        } else {
-            mLoadService.showCallback(EmptyCallback.class);
-        }
-    }
+    public void showEmptyView() {
+        mLoadingHandler.removeCallbacksAndMessages(null);
+        mLoadService.showSuccess();
+        mLoadService.showCallback(EmptyCallback.class);
 
+    }
 
     public void showLoadingView(String tip) {
-        if (null == tip) {
             mLoadingHandler.removeCallbacksAndMessages(null);
             mLoadService.showSuccess();
-        } else {
-
             mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
                 TextView tvTip = view1.findViewById(R.id.tv_tip);
-                if(tip.length()==0){
+                if (tip==null) {
                     tvTip.setVisibility(View.GONE);
-                }else {
+                } else {
+                    tvTip.setVisibility(View.VISIBLE);
                     tvTip.setText(tip);
                 }
             });
             //延时100毫秒显示,避免闪屏
             mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 100);
-        }
+    }
+
+    public void clearStatus() {
+        mLoadingHandler.removeCallbacksAndMessages(null);
+        mLoadService.showSuccess();
     }
 
     protected void onReload(View v) {
-//        mLoadService.showCallback(InitCallback.class);
+        mLoadService.showSuccess();
         initData();
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public <T> void onEvent(BaseActivityEvent<T> event) {

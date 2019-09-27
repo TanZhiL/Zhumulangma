@@ -103,6 +103,11 @@ public class MainDiscoverFragment extends BaseFragment implements BaseItemLayout
     }
 
     @Override
+    protected boolean lazyEnable() {
+        return false;
+    }
+
+    @Override
     protected void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
         navigateTo(AppConstants.Router.User.F_MESSAGE);

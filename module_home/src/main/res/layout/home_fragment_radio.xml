@@ -415,7 +415,13 @@
 
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
-
+    <android.support.constraint.Group
+        android:id="@+id/gp_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="line1,ih_history,rv_history"
+        />
     <View
         android:id="@+id/line1"
         android:layout_width="0dp"

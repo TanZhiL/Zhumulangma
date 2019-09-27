@@ -3,6 +3,8 @@ package com.gykj.zhumulangma.common.mvvm.view;
 import android.arch.lifecycle.Observer;
 import android.support.annotation.NonNull;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -19,51 +21,57 @@ import java.util.List;
 public abstract class BaseRefreshMvvmFragment<VM extends BaseRefreshViewModel, T> extends BaseMvvmFragment<VM>
         implements OnRefreshLoadMoreListener {
 
-    private SmartRefreshLayout mRefreshLayout;
-
+    private WrapRefresh mWrapRefresh;
 
     @Override
     public void initListener() {
         super.initListener();
-        mRefreshLayout=getRefreshLayout();
-        if(mRefreshLayout!=null)
-        mRefreshLayout.setOnRefreshLoadMoreListener(this);
+            mWrapRefresh = onBindWrapRefresh();
+            mWrapRefresh.refreshLayout.setOnRefreshLoadMoreListener(this);
     }
-
-    protected abstract SmartRefreshLayout getRefreshLayout();
+    protected abstract @NonNull
+    WrapRefresh onBindWrapRefresh();
 
     @Override
     protected void initBaseViewObservable() {
-      super.initBaseViewObservable();
+        super.initBaseViewObservable();
         mViewModel.getFinishRefreshEvent().observe(this, (Observer<List<T>>) list -> {
             if (list == null) {
-                mRefreshLayout.finishRefresh(false);
+                mWrapRefresh.refreshLayout.finishRefresh(false);
                 return;
             }
             if (list.size() == 0) {
-                mRefreshLayout.finishRefresh(true);
+                mWrapRefresh.refreshLayout.finishRefresh(true);
                 return;
             }
-            mRefreshLayout.finishRefresh(true);
+            mWrapRefresh.refreshLayout.finishRefresh(true);
             onRefreshSucc(list);
         });
         mViewModel.getFinishLoadmoreEvent().observe(this, (Observer<List<T>>) list -> {
             if (list == null) {
-                mRefreshLayout.finishLoadMore(false);
+                mWrapRefresh.refreshLayout.finishLoadMore(false);
                 return;
             }
             if (list.size() == 0) {
-                mRefreshLayout.finishLoadMoreWithNoMoreData();
+                mWrapRefresh.refreshLayout.finishLoadMoreWithNoMoreData();
                 return;
             }
-            mRefreshLayout.finishLoadMore(true);
+            mWrapRefresh.refreshLayout.finishLoadMore(true);
             onLoadMoreSucc(list);
         });
     }
 
-    protected void onLoadMoreSucc(List<T> list) {}
+    protected void onRefreshSucc(List<T> list) {
+        if (mWrapRefresh.quickAdapter != null) {
+            mWrapRefresh.quickAdapter.setNewData(list);
+        }
+    }
 
-    protected void onRefreshSucc(List<T> list) {}
+    protected void onLoadMoreSucc(List<T> list) {
+        if (mWrapRefresh.quickAdapter != null) {
+            mWrapRefresh.quickAdapter.addData(list);
+        }
+    }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
@@ -73,5 +81,15 @@ public abstract class BaseRefreshMvvmFragment<VM extends BaseRefreshViewModel, T
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         mViewModel.onViewRefresh();
+    }
+
+    protected class WrapRefresh {
+        SmartRefreshLayout refreshLayout;
+        BaseQuickAdapter<T, BaseViewHolder> quickAdapter;
+
+        public WrapRefresh(@NonNull SmartRefreshLayout refreshLayout, BaseQuickAdapter<T, BaseViewHolder> quickAdapter) {
+            this.refreshLayout = refreshLayout;
+            this.quickAdapter = quickAdapter;
+        }
     }
 }

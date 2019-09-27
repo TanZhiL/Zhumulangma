@@ -49,7 +49,7 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.TOP, String.valueOf(20));
         mModel.getHotWords(map)
-                .subscribe(hotWordList -> mHotWordsSingleLiveEvent.postValue(
+                .subscribe(hotWordList -> mHotWordsSingleLiveEvent.setValue(
                         hotWordList.getHotWordList()), e -> e.printStackTrace());
     }
 
@@ -72,7 +72,7 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public void getHistory() {
         mModel.listDesc(SearchHistoryBean.class, 0, 0, SearchHistoryBeanDao.Properties.Datatime)
-                .subscribe(searchHistoryBeans -> getHistorySingleLiveEvent().postValue(searchHistoryBeans));
+                .subscribe(searchHistoryBeans -> getHistorySingleLiveEvent().setValue(searchHistoryBeans));
     }
 
     public void _getSuggestWord(String q) {
@@ -89,7 +89,7 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
                     }
                     return suggestItems;
                 })
-                .subscribe(suggestItems -> getWordsSingleLiveEvent().postValue(suggestItems), e -> e.printStackTrace());
+                .subscribe(suggestItems -> getWordsSingleLiveEvent().setValue(suggestItems), e -> e.printStackTrace());
     }
 
     private long trackId=-1;

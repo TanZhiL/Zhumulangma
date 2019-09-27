@@ -41,22 +41,22 @@ public class PlayTrackViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public void unlike(Track track){
         mModel.remove(FavoriteBean.class,track.getDataId()).subscribe(aBoolean ->
-                getFavoriteSingleLiveEvent().postValue(false), e->e.printStackTrace());
+                getFavoriteSingleLiveEvent().setValue(false), e->e.printStackTrace());
 
     }
     public void like(Track track){
         mModel.insert(new FavoriteBean(track.getDataId(),track,System.currentTimeMillis()))
-                .subscribe(subscribeBean -> getFavoriteSingleLiveEvent().postValue(true), e->e.printStackTrace());
+                .subscribe(subscribeBean -> getFavoriteSingleLiveEvent().setValue(true), e->e.printStackTrace());
     }
     public void getFavorite(String trackId){
         mModel.list(FavoriteBean.class, FavoriteBeanDao.Properties.TrackId.eq(trackId))
                 .subscribe(favoriteBeans ->
-                        getFavoriteSingleLiveEvent().postValue(favoriteBeans.size() > 0), e->e.printStackTrace());
+                        getFavoriteSingleLiveEvent().setValue(favoriteBeans.size() > 0), e->e.printStackTrace());
     }
 
     public void unsubscribe(long albumId){
         mModel.remove(SubscribeBean.class,albumId).subscribe(aBoolean ->
-                getSubscribeSingleLiveEvent().postValue(false), e->e.printStackTrace());
+                getSubscribeSingleLiveEvent().setValue(false), e->e.printStackTrace());
 
     }
     public void subscribe(String albumId){
@@ -66,19 +66,19 @@ public class PlayTrackViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .flatMap((Function<BatchAlbumList, ObservableSource<SubscribeBean>>) albumList ->
                         mModel.insert(new SubscribeBean(albumList.getAlbums().get(0).getId(),
                         albumList.getAlbums().get(0),System.currentTimeMillis())))
-                .subscribe(subscribeBean -> getSubscribeSingleLiveEvent().postValue(true), e->e.printStackTrace());
+                .subscribe(subscribeBean -> getSubscribeSingleLiveEvent().setValue(true), e->e.printStackTrace());
     }
 
     public void getSubscribe(String albumId){
         mModel.list(SubscribeBean.class, SubscribeBeanDao.Properties.AlbumId.eq(albumId))
                 .subscribe(subscribeBeans ->
-                        getSubscribeSingleLiveEvent().postValue(subscribeBeans.size() > 0), e->e.printStackTrace());
+                        getSubscribeSingleLiveEvent().setValue(subscribeBeans.size() > 0), e->e.printStackTrace());
     }
     public void getRelativeAlbums(String trackId){
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.TRACKID, trackId);
         mModel.getRelativeAlbumsUseTrackId(map)
-                .subscribe(relativeAlbums -> getAlbumSingleLiveEvent().postValue(
+                .subscribe(relativeAlbums -> getAlbumSingleLiveEvent().setValue(
                         relativeAlbums.getRelativeAlbumList()), e->e.printStackTrace());
     }
 

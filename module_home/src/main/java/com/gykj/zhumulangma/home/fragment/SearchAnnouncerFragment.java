@@ -106,7 +106,7 @@ public class SearchAnnouncerFragment extends BaseMvvmFragment<SearchResultViewMo
     public void initViewObservable() {
         mViewModel.getAnnouncerSingleLiveEvent().observe(this, announcers -> {
             if(null==announcers||(mAdapter.getData().size()==0&&announcers.size()==0)){
-                showEmptyView(true);
+                showEmptyView();
                 return;
             }
             if (announcers.size() > 0) {

@@ -8,6 +8,7 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
@@ -20,6 +21,7 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.ObservableSource;
@@ -29,42 +31,54 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 public class AnnouncerListViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Announcer> {
 
-    private static final String PAGESIZE = "20";
-
+    private SingleLiveEvent<List<Announcer>> mInitAnnouncersEvent;
     private int curPage = 1;
-    private long categoryId;
+    private long mCategoryId;
+
     public AnnouncerListViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
 
-
     @Override
     public void onViewLoadmore() {
-        getAnnouncerList(categoryId);
+        getMoreAnnouncers();
     }
 
-
-    public void getAnnouncerList(long categoryId) {
+    public void init() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.VCATEGORY_ID, String.valueOf(categoryId));
+        map.put(DTransferConstants.VCATEGORY_ID, String.valueOf(mCategoryId));
         map.put(DTransferConstants.CALC_DIMENSION, "1");
-        map.put(DTransferConstants.PAGE_SIZE, PAGESIZE);
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getAnnouncerList(map)
-                .doOnSubscribe(d -> getShowLoadingViewEvent().postValue(curPage == 1?"":null))
+                .doOnSubscribe(d->getShowInitViewEvent().call())
                 .subscribe(announcerList -> {
-                    if(CollectionUtils.isEmpty(announcerList.getAnnouncerList())&&curPage==1){
-                        getShowEmptyViewEvent().postValue(true);
+                    if (CollectionUtils.isEmpty(announcerList.getAnnouncerList())) {
+                        getShowEmptyViewEvent().call();
                         return;
                     }
-                    if(!CollectionUtils.isEmpty(announcerList.getAnnouncerList())){
+                    curPage++;
+                    getClearStatusEvent().call();
+                    getInitAnnouncersEvent().setValue(announcerList.getAnnouncerList());
+
+                }, e -> {
+                    getShowErrorViewEvent().call();
+                    e.printStackTrace();
+                });
+    }
+
+    private void getMoreAnnouncers() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.VCATEGORY_ID, String.valueOf(mCategoryId));
+        map.put(DTransferConstants.CALC_DIMENSION, "1");
+        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
+        mModel.getAnnouncerList(map)
+                .subscribe(announcerList -> {
+                    if (!CollectionUtils.isEmpty(announcerList.getAnnouncerList())) {
                         curPage++;
                     }
-                    getClearStatusEvent().call();
-                    getFinishLoadmoreEvent().postValue(announcerList.getAnnouncerList());
-                    },e-> {
+                    getFinishLoadmoreEvent().setValue(announcerList.getAnnouncerList());
+                }, e -> {
                     getFinishLoadmoreEvent().call();
-                    getShowErrorViewEvent().postValue(curPage==1);
                     e.printStackTrace();
                 });
     }
@@ -83,8 +97,8 @@ public class AnnouncerListViewModel extends BaseRefreshViewModel<ZhumulangmaMode
                             return mModel.getLastPlayTracks(map1);
                         })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().postValue(""))
-                .doFinally(() -> getShowLoadingViewEvent().postValue(null))
+                .doOnSubscribe(d ->   getShowLoadingViewEvent().call())
+                .doFinally(() ->  getClearStatusEvent().call())
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {
@@ -103,6 +117,10 @@ public class AnnouncerListViewModel extends BaseRefreshViewModel<ZhumulangmaMode
     }
 
     public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
+        this.mCategoryId = categoryId;
+    }
+
+    public SingleLiveEvent<List<Announcer>> getInitAnnouncersEvent() {
+        return mInitAnnouncersEvent =createLiveData(mInitAnnouncersEvent);
     }
 }
