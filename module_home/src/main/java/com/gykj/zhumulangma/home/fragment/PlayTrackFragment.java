@@ -892,8 +892,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     }
 
     @Override
-    public void onError(int i, String s, boolean b) throws RemoteException {
-        ToastUtil.showToast(s);
+    public void onError(int i, String s, boolean b) {
+        mHandler.post(()-> ToastUtil.showToast(s));
         if (isUp) {
             mPlayTrackPopup.getRefreshLayout().finishRefresh();
         } else {
