@@ -17,26 +17,26 @@ import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
  */
 public class PlayTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
     public PlayTrackAdapter(int layoutResId) {
-            super(layoutResId);
+        super(layoutResId);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, Track item) {
 
-        helper.setText(R.id.tv_title,item.getTrackTitle());
-        if(null!=XmPlayerManager.getInstance(mContext).getCurrSound()){
-            LottieAnimationView lavPlaying=helper.getView(R.id.lav_playing);
+        helper.setText(R.id.tv_title, item.getTrackTitle());
+        if (null != XmPlayerManager.getInstance(mContext).getCurrSound()) {
+            LottieAnimationView lavPlaying = helper.getView(R.id.lav_playing);
             PlayableModel currSound = XmPlayerManager.getInstance(mContext).getCurrSound();
-            if(currSound.equals(item)){
+            if (currSound.equals(item)) {
                 lavPlaying.setVisibility(View.VISIBLE);
-                helper.setTextColor(R.id.tv_title,mContext.getResources().getColor(R.color.colorPrimary));
-                if(XmPlayerManager.getInstance(mContext).isPlaying()){
+                helper.setTextColor(R.id.tv_title, mContext.getResources().getColor(R.color.colorPrimary));
+                if (XmPlayerManager.getInstance(mContext).isPlaying()) {
                     lavPlaying.playAnimation();
-                }else {
+                } else {
                     lavPlaying.pauseAnimation();
                 }
-            }else {
-                helper.setTextColor(R.id.tv_title,mContext.getResources().getColor(R.color.colorPrimaryDark));
+            } else {
+                helper.setTextColor(R.id.tv_title, mContext.getResources().getColor(R.color.colorPrimaryDark));
                 lavPlaying.cancelAnimation();
                 lavPlaying.setVisibility(View.GONE);
             }
@@ -60,24 +60,17 @@ public class PlayTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
             case STOPPED:
             case NOADD:
             case ERROR:
-                if(item.isCanDownload()){
-                    helper.setGone(R.id.iv_downloadsucc, false);
-                    helper.setGone(R.id.progressBar, false);
-                    helper.setGone(R.id.iv_download, true);
-                    helper.setGone(R.id.iv_paid, false);
-                }else {
-                    helper.setGone(R.id.iv_downloadsucc, false);
-                    helper.setGone(R.id.progressBar, false);
-                    helper.setGone(R.id.iv_download, false);
-                    helper.setGone(R.id.iv_paid, false);
-                }
+                helper.setGone(R.id.iv_downloadsucc, false);
+                helper.setGone(R.id.progressBar, false);
+                helper.setGone(R.id.iv_download, true);
+                helper.setGone(R.id.iv_paid, false);
                 break;
         }
-        if(item.isPaid()){
-            helper.setGone(R.id.iv_downloadsucc,false);
-            helper.setGone(R.id.progressBar,false);
-            helper.setGone(R.id.iv_download,false);
-            helper.setGone(R.id.iv_paid,true);
+        if (item.isPaid()) {
+            helper.setGone(R.id.iv_downloadsucc, false);
+            helper.setGone(R.id.progressBar, false);
+            helper.setGone(R.id.iv_download, false);
+            helper.setGone(R.id.iv_paid, true);
         }
         helper.addOnClickListener(R.id.iv_download);
     }

@@ -75,17 +75,10 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
             case STOPPED:
             case NOADD:
             case ERROR:
-                if (item.isCanDownload()) {
-                    helper.setGone(R.id.iv_downloadsucc, false);
-                    helper.setGone(R.id.progressBar, false);
-                    helper.setGone(R.id.iv_download, true);
-                    helper.setGone(R.id.iv_paid, false);
-                } else {
-                    helper.setGone(R.id.iv_downloadsucc, false);
-                    helper.setGone(R.id.progressBar, false);
-                    helper.setGone(R.id.iv_download, false);
-                    helper.setGone(R.id.iv_paid, false);
-                }
+                helper.setGone(R.id.iv_downloadsucc, false);
+                helper.setGone(R.id.progressBar, false);
+                helper.setGone(R.id.iv_download, true);
+                helper.setGone(R.id.iv_paid, false);
                 break;
         }
         if (item.isPaid()) {

@@ -251,6 +251,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         isbProgress.setOnTouchListener(this);
         mPlayerManager.addPlayerStatusListener(this);
         mPlayerManager.addAdsStatusListener(this);
+
         fd(R.id.tv_more_relative).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
