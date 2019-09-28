@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,7 +61,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
 @Route(path = AppConstants.Router.Home.F_SEARCH)
 public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         View.OnClickListener, SearchHistoryFragment.onSearchListener, View.OnFocusChangeListener,
-        TextView.OnEditorActionListener, TextWatcher, SearchSuggestFragment.onSearchListener{
+        TextView.OnEditorActionListener, TextWatcher, SearchSuggestFragment.onSearchListener {
 
     private EditText etKeyword;
     @Autowired(name = KeyCode.Home.HOTWORD)
@@ -71,6 +72,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     private Handler mHandler = new Handler();
     private SpeechPopup mSpeechPopup;
     private View vDialog;
+
     public SearchFragment() {
 
     }
@@ -79,11 +81,13 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     protected int onBindLayout() {
         return R.layout.home_fragment_search;
     }
+
     @Override
     protected void loadView() {
         super.loadView();
         clearStatus();
     }
+
     @Override
     protected void initView(View view) {
         if (StatusBarUtils.supportTransparentStatusBar()) {
@@ -93,13 +97,6 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         mSuggestFragment = (SearchSuggestFragment) ARouter.getInstance()
                 .build(AppConstants.Router.Home.F_SEARCH_SUGGEST).navigation();
         mSuggestFragment.setSearchListener(this);
-        etKeyword.postDelayed(() -> {
-            SearchHistoryFragment historyFragment = new SearchHistoryFragment();
-            historyFragment.setSearchListener(SearchFragment.this);
-            loadRootFragment(R.id.fl_container, historyFragment);
-
-            KeyboardUtils.showSoftInput(etKeyword);
-        }, 300);
         //不支持x86
         mIat = SpeechRecognizer.createRecognizer(mContext, mInitListener);
         try {
@@ -109,7 +106,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mSpeechPopup=new SpeechPopup(mContext);
+        mSpeechPopup = new SpeechPopup(mContext);
     }
 
     @Override
@@ -127,6 +124,12 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
 
     @Override
     public void initData() {
+
+        SearchHistoryFragment historyFragment = new SearchHistoryFragment();
+        historyFragment.setSearchListener(SearchFragment.this);
+        loadRootFragment(R.id.fl_container, historyFragment);
+        showSoftInput(etKeyword);
+
         if (hotword != null) {
             etKeyword.setHint(hotword);
         } else {
@@ -162,6 +165,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
 
     @Override
     public void onSearch(String keyword) {
+        hideSoftInput();
         etKeyword.removeTextChangedListener(this);
         etKeyword.setText(keyword);
         etKeyword.addTextChangedListener(this);
@@ -174,7 +178,6 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         searchHistoryBean.setDatatime(System.currentTimeMillis());
         mViewModel.insertHistory(searchHistoryBean);
         etKeyword.clearFocus();
-        hideSoftInput();
         if (getTopChildFragment() instanceof SearchSuggestFragment) {
             ((BaseFragment) getTopChildFragment()).pop();
         }
@@ -220,10 +223,10 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             return;
         }
         if (etKeyword.getText().toString().trim().length() != 0) {
-            search(etKeyword.getText().toString());
+            onSearch(etKeyword.getText().toString());
         } else if (etKeyword.getHint().toString().length() != 0) {
             etKeyword.setText(etKeyword.getHint());
-            search(etKeyword.getHint().toString());
+            onSearch(etKeyword.getHint().toString());
         } else {
             ToastUtil.showToast("请输入要搜索的关键词");
         }
@@ -302,7 +305,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
             hideSoftInput();
             new XPopup.Builder(mContext).popupAnimation(PopupAnimation.NoAnimation)
-                    .dismissOnTouchOutside(false).setPopupCallback(new SimpleCallback(){
+                    .dismissOnTouchOutside(false).setPopupCallback(new SimpleCallback() {
                 @Override
                 public void onCreated() {
                     super.onCreated();
@@ -326,12 +329,12 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
 
         @Override
         public void onError(SpeechError error) {
-            Log.d(TAG, "onError: "+error);
+            Log.d(TAG, "onError: " + error);
             // Tips：
             // 错误码：10118(您没有说话)，可能是录音机权限被禁，需要提示用户打开应用的录音权限。
-           if( error.getErrorCode()==10118){
-               ToastUtil.showToast(error.getErrorDescription());
-           }
+            if (error.getErrorCode() == 10118) {
+                ToastUtil.showToast(error.getErrorDescription());
+            }
             mSpeechPopup.dismiss();
         }
 
@@ -373,10 +376,11 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         for (String key : mIatResults.keySet()) {
             resultBuffer.append(mIatResults.get(key));
         }
-        Log.d(TAG, "printResult: "+resultBuffer);
+        Log.d(TAG, "printResult: " + resultBuffer);
         etKeyword.setText(resultBuffer.toString());
         etKeyword.setSelection(etKeyword.length());
     }
+
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.CrashUtils;
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.Utils;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
@@ -49,6 +50,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.security.Key;
 
 import me.yokeyword.fragmentation.Fragmentation;
 import okhttp3.Call;
@@ -207,6 +209,7 @@ public class AppHelper {
 
     public AppHelper initUtils() {
         Utils.init(mApplication);
+        KeyboardUtils.clickBlankArea2HideSoftInput();
         return this;
     }
 
