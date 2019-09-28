@@ -109,6 +109,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 .exists()){
             mViewModel._getBing();
         }
+        //全局白色背景
         setTheme(R.style.NullTheme);
         Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
     }

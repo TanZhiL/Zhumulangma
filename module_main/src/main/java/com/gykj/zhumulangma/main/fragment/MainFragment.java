@@ -43,7 +43,6 @@ public class MainFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mView.setBackground(null);
         setSwipeBackEnable(false);
     }
 

@@ -11,8 +11,7 @@
         android:id="@+id/cl_action"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:visibility="gone"
-        android:background="@color/white">
+        android:visibility="gone">
 
         <View
             android:id="@+id/view"

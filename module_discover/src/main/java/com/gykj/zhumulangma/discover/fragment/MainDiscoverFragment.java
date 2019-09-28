@@ -37,7 +37,6 @@ public class MainDiscoverFragment extends BaseFragment implements BaseItemLayout
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mView.setBackgroundColor(Color.WHITE);
         setSwipeBackEnable(false);
     }
 

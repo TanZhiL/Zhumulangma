@@ -63,7 +63,6 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mView.setBackgroundColor(Color.WHITE);
         setSwipeBackEnable(false);
     }
 
@@ -151,10 +150,12 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
                 .setIconWidth(23)  //设置icon 的大小
                 .setIconHeight(23)
                 .setItemMarginTop(1)
+                .setRightText(10, "1")
                 .setItemMarginTop(2, 8)
                 .setItemMarginTop(3, 8)
                 .setItemMarginTop(7, 8)
                 .setItemMode(Mode.ARROW)
+                .setItemMode(10, Mode.RED_TEXT)
                 .setArrowResId(R.drawable.common_arrow_enter); //设置箭头资源值;
         bilUser.setConfigAttrs(attrs)
                 .create();

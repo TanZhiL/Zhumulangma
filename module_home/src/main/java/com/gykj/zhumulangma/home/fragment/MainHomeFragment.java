@@ -68,7 +68,6 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mView.setBackgroundColor(Color.WHITE);
         setSwipeBackEnable(false);
     }
     @Override

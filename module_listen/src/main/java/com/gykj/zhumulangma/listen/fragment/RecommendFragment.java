@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.listen.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,9 @@ import com.gykj.zhumulangma.listen.adapter.RecommendAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.SubscribeViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,7 +40,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Description:推荐订阅
  */
 public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> implements
-        BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
+        BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener, OnRefreshLoadMoreListener {
 
     private RecommendAdapter mRecommendAdapter;
 
@@ -69,6 +73,7 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
         super.initListener();
         mRecommendAdapter.setOnItemChildClickListener(this);
         mRecommendAdapter.setOnItemClickListener(this);
+        ((SmartRefreshLayout) fd(R.id.refreshLayout)).setOnRefreshLoadMoreListener(this);
     }
 
     @Override
@@ -83,7 +88,6 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
                 showEmptyView();
             } else {
                 mRecommendAdapter.setNewData(albums);
-                ((SmartRefreshLayout) fd(R.id.refreshLayout)).setNoMoreData(true);
             }
         });
 
@@ -147,5 +151,15 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+    }
+
+    @Override
+    public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+        refreshLayout.finishLoadMoreWithNoMoreData();
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        refreshLayout.finishRefresh(true);
     }
 }

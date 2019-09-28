@@ -9,11 +9,11 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/radio_bg">
+        android:layout_weight="1">
 
         <ImageView
             android:id="@+id/iv_bg"
+            android:src="@drawable/radio_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
@@ -101,8 +101,7 @@
         android:id="@+id/c"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:layout_marginTop="-5dp"
-        android:background="@color/white">
+        android:layout_marginTop="-5dp">
 
         <TextView
             android:id="@+id/tv_current"

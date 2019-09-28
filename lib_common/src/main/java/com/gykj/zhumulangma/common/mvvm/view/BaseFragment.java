@@ -120,7 +120,6 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.common_layout_root, container, false);
-        mView.setBackgroundColor(Color.WHITE);
         initCommonView(mView);
         initParam();
         //不采用懒加载
@@ -477,7 +476,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                 }
             });
             //延时100毫秒显示,避免闪屏
-            mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 100);
+            mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 300);
 
         }
     }

@@ -4,6 +4,6 @@
     </style>
 
     <style name="NullTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@null</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 </resources>

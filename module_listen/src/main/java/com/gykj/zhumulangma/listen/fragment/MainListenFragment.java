@@ -41,7 +41,6 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mView.setBackgroundColor(Color.WHITE);
         setSwipeBackEnable(false);
     }
     @Override
