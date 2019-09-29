@@ -160,11 +160,12 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
         mPlayerManager.addPlayerStatusListener(mPlayerStatusListener);
         mAlbumTrackAdapter.setOnItemClickListener(this);
         mAlbumTrackAdapter.setOnItemChildClickListener(this);
+        layoutDetail.findViewById(R.id.cl_announcer).setOnClickListener(this);
         layoutTracks.findViewById(R.id.ll_select).setOnClickListener(this);
         layoutTracks.findViewById(R.id.ll_download).setOnClickListener(this);
         flMask.setOnClickListener(this);
         addDisposable(RxView.clicks(layoutTracks.findViewById(R.id.ll_sort))
-                .throttleFirst(2, TimeUnit.SECONDS)
+                .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     if (flMask.getVisibility() == View.VISIBLE) {
                         return;
@@ -173,7 +174,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                     mViewModel.getTrackList(mSort);
                 }));
         addDisposable(RxView.clicks(fd(R.id.ll_play))
-                .throttleFirst(2, TimeUnit.SECONDS)
+                .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     TextView tvPlay = fd(R.id.tv_play);
                     tvPlay.setText("继续播放");
@@ -363,6 +364,13 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_BATCH_DOWNLOAD, (ISupportFragment) navigation)));
+        } else if (id == R.id.cl_announcer) {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+                    .withLong(KeyCode.Home.ANNOUNCER_ID, mAlbum.getAnnouncer().getAnnouncerId())
+                    .withString(KeyCode.Home.ANNOUNCER_NAME, mAlbum.getAnnouncer().getNickname())
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
         }
     }
 

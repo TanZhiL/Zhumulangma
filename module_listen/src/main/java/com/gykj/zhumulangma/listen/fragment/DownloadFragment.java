@@ -237,13 +237,11 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     @Override
     public void onWaiting(Track track) {
         updateDownloadStatus(track);
-        Log.d(TAG, "onWaiting() called with: track = [" + track + "]");
     }
 
     @Override
     public void onStarted(Track track) {
         updateDownloadStatus(track);
-        Log.d(TAG, "onStarted() called with: track = [" + track + "]");
     }
 
 
@@ -259,20 +257,16 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("("+XmDownloadManager.getInstance().getDownloadTrackCount(false)+")");
         mAlbumAdapter.setNewData(XmDownloadManager.getInstance().getDownloadAlbums(true));
         mTrackAdapter.addData(track);
-        Log.d(TAG, "onSuccess() called with: track = [" + track + "]");
     }
 
     @Override
     public void onError(Track track, Throwable throwable) {
         throwable.printStackTrace();
-        Log.d(TAG, "onError() called with: track = [" + track + "], throwable = [" + throwable + "]");
     }
 
     @Override
     public void onCancelled(Track track, Callback.CancelledException e) {
         updateDownloadStatus(track);
-
-        Log.d(TAG, "onCancelled() called with: track = [" + track + "], e = [" + e + "]");
     }
 
     @Override
@@ -287,13 +281,11 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             }
         }
 
-        Log.d(TAG, "onProgress() called with: track = [" + track + "], l = [" + l + "], l1 = [" + l1 + "]");
     }
 
     @Override
     public void onRemoved() {
         initData();
-        Log.d(TAG, "onRemoved() called");
     }
 
     private void updateDownloadStatus(Track track) {
@@ -382,12 +374,10 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             XmDownloadManager.getInstance().cancelAllDownloads(new IDoSomethingProgress() {
                 @Override
                 public void begin() {
-                    Log.d(TAG, "begin() called");
                 }
 
                 @Override
                 public void success() {
-                    Log.d(TAG, "success() called");
                     mDownloadingAdapter.getData().clear();
                     layoutDetail3.findViewById(R.id.cl_action).setVisibility(View.GONE);
                     ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("("+XmDownloadManager.getInstance().getDownloadTrackCount(false)+")");

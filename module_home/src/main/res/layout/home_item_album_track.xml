@@ -115,7 +115,7 @@
 
     <TextView
         android:id="@+id/tv_duration"
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
         android:text="1:12:50"

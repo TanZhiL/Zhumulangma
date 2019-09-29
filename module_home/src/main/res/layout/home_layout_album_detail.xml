@@ -5,9 +5,7 @@
     android:overScrollMode="never"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:descendantFocusability="blocksDescendants"
@@ -17,8 +15,7 @@
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -36,7 +33,7 @@
             android:paddingTop="16dp"
             android:paddingEnd="11dp"
             android:paddingBottom="16dp"
-            android:text="对于一个声控来说…没有一副好嗓音…真的心塞塞，只能听听伦桑的声音抚慰抚慰耳朵了【躺     "
+            tools:text="对于一个声控来说…没有一副好嗓音…真的心塞塞，只能听听伦桑的声音抚慰抚慰耳朵了【躺     "
             android:textColor="@color/textColorPrimary"
             android:textSize="15sp" />
     </LinearLayout>
@@ -55,8 +52,7 @@
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:orientation="vertical">
         <View
             android:id="@+id/line4"
             android:layout_width="match_parent"
