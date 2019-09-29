@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.view.Gravity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ActivityUtils;
@@ -21,6 +22,7 @@ import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
+import com.hjq.toast.ToastUtils;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
 import com.squareup.leakcanary.LeakCanary;
@@ -67,7 +69,7 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REFRESH_TOKEN_UR
  * Author: Thomas.
  * Date: 2019/9/18 8:36
  * Email: 1071931588@qq.com
- * Description:
+ * Description:App初始化帮助类
  */
 public class AppHelper {
     private static Application mApplication;
@@ -208,6 +210,9 @@ public class AppHelper {
 
     public AppHelper initUtils() {
         Utils.init(mApplication);
+        ToastUtils.init(mApplication);
+        ToastUtils.setView(R.layout.common_layout_toast);
+        ToastUtils.setGravity(Gravity.CENTER,0,0);
         KeyboardUtils.clickBlankArea2HideSoftInput();
         return this;
     }

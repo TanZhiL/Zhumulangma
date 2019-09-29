@@ -535,7 +535,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     protected void onReload(View v) {
-        mLoadService.showSuccess();
+        mLoadService.showCallback(InitCallback.class);
         initData();
     }
 

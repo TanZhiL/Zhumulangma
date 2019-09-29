@@ -1,8 +1,10 @@
 package com.gykj.zhumulangma.common;
 
 /**
- * Created by 10719
- * on 2019/6/6
+ * Author: Thomas.
+ * Date: 2019/9/18 13:58
+ * Email: 1071931588@qq.com
+ * Description:App常量
  */
 public interface  AppConstants {
      interface Router{

@@ -70,7 +70,8 @@ ext {
             "xpopup":"1.8.9",
             "leakcanary":"1.5",
             "agentweb":"4.1.2",
-            "CoolIndicator":"v1.0.0"
+            "CoolIndicator":"v1.0.0",
+            "toast":"8.0"
     ]
     //support配置
     support = [
@@ -162,7 +163,7 @@ ext {
             "MarqueeView"                          :"com.sunfusheng:MarqueeView:${versions["MarqueeView"]}",
             "xpopup"                               :"com.lxj:xpopup:${versions["xpopup"]}",
             "CoolIndicator"                        :"com.github.Justson:CoolIndicator:${versions["CoolIndicator"]}",
-
+            "toast"                                :"com.hjq:toast:${versions["toast"]}",
     ]
 
 }

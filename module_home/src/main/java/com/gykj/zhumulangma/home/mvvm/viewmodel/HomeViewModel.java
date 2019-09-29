@@ -30,7 +30,6 @@ public class HomeViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.TOP, String.valueOf(20));
         mModel.getHotWords(map)
                 .subscribe(hotWordList -> getHotWordsEvent().setValue(hotWordList.getHotWordList()), e -> {
-                    getShowErrorViewEvent().call();
                     e.printStackTrace();
                 });
     }

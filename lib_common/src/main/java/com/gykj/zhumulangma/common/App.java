@@ -21,12 +21,12 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 
 import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
 
+
 /**
- * Description: <初始化应用程序><br>
- * Author:      mxdl<br>
- * Date:        2018/6/6<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * Date: 2019/9/18 13:58
+ * Email: 1071931588@qq.com
+ * Description:App
  */
 public class App extends Application {
     private static App mApplication;

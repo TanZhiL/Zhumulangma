@@ -1,8 +1,5 @@
 package com.gykj.zhumulangma.common.net.http;
 
-import android.widget.Toast;
-
-import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.trello.rxlifecycle2.LifecycleProvider;
@@ -78,7 +75,7 @@ public class RxAdapter {
         @Override
         public Observable<T> apply(Throwable t) {
             ResponseThrowable exception = ExceptionHandler.handleException(t);
-            ToastUtil.showToast(exception.code+" : "+exception.message);
+            ToastUtil.showToast(ToastUtil.LEVEL_E,"网络异常:"+exception.code);
             return Observable.error(exception);
         }
     }

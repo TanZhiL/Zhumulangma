@@ -38,7 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
-
+/**
+ * Author: Thomas.
+ * Date: 2019/8/14 13:41
+ * Email: 1071931588@qq.com
+ * Description:我的
+ */
 @Route(path = AppConstants.Router.User.F_MAIN)
 public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnBaseItemClick, View.OnClickListener {
 
@@ -213,14 +218,20 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
 
     @Override
     public void onItemClick(int position) {
-        if (position == 9) {
-            Beta.checkUpgrade();
-        }else if(position==10){
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
-                    .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL/Zhumulangma")
-                    .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
+        switch (position){
+            case 8:
+                navigateTo(AppConstants.Router.Listen.F_FAVORITE);
+                break;
+            case 9:
+                Beta.checkUpgrade();
+                break;
+            case 10:
+                Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
+                        .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL/Zhumulangma")
+                        .navigation();
+                EventBus.getDefault().post(new BaseActivityEvent<>(
+                        EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
+                break;
         }
     }
 
