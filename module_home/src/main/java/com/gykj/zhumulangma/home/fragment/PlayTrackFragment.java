@@ -257,8 +257,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
                     .withString(KeyCode.Home.TITLE, "更多推荐")
                     .navigation();
+            NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o);
+            navigateBean.launchMode=STANDARD;
             EventBus.getDefault().post(new BaseActivityEvent<>(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, navigateBean));
 
         });
         addDisposable(RxView.clicks(fd(R.id.ll_subscribe))

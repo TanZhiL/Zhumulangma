@@ -534,6 +534,10 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         mLoadService.showSuccess();
     }
 
+    /**
+     * 错误页点击重试执行
+     * @param v
+     */
     protected void onReload(View v) {
         mLoadService.showCallback(InitCallback.class);
         initData();
@@ -570,6 +574,10 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         return new DefaultHorizontalAnimator();
     }
 
+    /**
+     * 页面跳转
+     * @param path
+     */
     protected void navigateTo(String path) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         if (null != navigation) {

@@ -173,6 +173,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
 
     @Override
     protected void onReload(View v) {
+        mLoadService.showCallback(InitCallback.class);
         mViewModel.onViewRefresh();
     }
 

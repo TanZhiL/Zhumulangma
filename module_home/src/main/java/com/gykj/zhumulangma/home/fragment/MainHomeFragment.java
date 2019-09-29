@@ -25,7 +25,6 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
-import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
@@ -151,8 +150,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.iv_download) {
-            ToastUtil.showToast("哈哈哈啊啊啊啊啊");
-           // navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
+           navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
         } else if (id == R.id.iv_history) {
             navigateTo(AppConstants.Router.Listen.F_HISTORY);
         }

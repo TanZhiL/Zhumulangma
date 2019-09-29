@@ -25,4 +25,5 @@ public class NavigateBean {
         this.fragment = fragment;
         this.extraTransaction = extraTransaction;
     }
+
 }
