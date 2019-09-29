@@ -1,7 +1,6 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -62,9 +61,11 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     private ViewStub mViewStubContent;
     protected LoadService mLoadService;
     protected CommonTitleBar mSimpleTitleBar;
-    private Handler mLoadingHandler = new Handler();
     protected App mApplication;
-
+    private Handler mLoadingHandler = new Handler();
+    /**
+     * 是否第一次进入
+     */
     private boolean isFirst = true;
 
     protected interface BarStyle {
@@ -72,10 +73,9 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         int LEFT_BACK = 0;
         int LEFT_BACK_TEXT = 1;
         int LEFT_ICON = 2;
-
+        //中间
         int CENTER_TITLE = 7;
         int CENTER_CUSTOME = 8;
-
         //右边
         int RIGHT_TEXT = 4;
         int RIGHT_ICON = 5;
@@ -92,7 +92,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     /**
-     * 添加订阅
+     * RxView添加订阅
      */
     protected void addDisposable(Disposable mDisposable) {
         if (mCompositeDisposable == null) {
@@ -102,7 +102,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     /**
-     * 取消所有订阅
+     * 取消RxView所有订阅
      */
     private void clearDisposable() {
         if (mCompositeDisposable != null) {
@@ -172,13 +172,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         mLoadService = loadSir.register(contentView, (Callback.OnReloadListener) v -> BaseFragment.this.onReload(v));
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-        clearDisposable();
-        AppHelper.refWatcher.watch(this);
-    }
+
 
     protected void initParam() {
     }
@@ -193,6 +187,9 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
     }
 
+    /**
+     * 初始化标题栏
+     */
     protected void initSimpleBar() {
         /**
          * 中间
@@ -217,7 +214,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             group.addView(onBindBarCenterCustome(), new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
-
+        //左边
         if (onBindBarLeftStyle() == BarStyle.LEFT_BACK) {
 
             View backView = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
@@ -236,7 +233,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             icon.setImageResource(onBindBarLeftIcon());
             icon.setOnClickListener(v -> onLeftIconClick(v));
         }
-
+        //右边
         switch (onBindBarRightStyle()) {
             case BarStyle.RIGHT_TEXT:
                 String[] strings = onBindBarRightText();
@@ -247,23 +244,13 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                     TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1_right);
                     tv1.setVisibility(View.VISIBLE);
                     tv1.setText(strings[0]);
-                    tv1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onRight1Click(v);
-                        }
-                    });
+                    tv1.setOnClickListener(v -> onRight1Click(v));
                 }
                 if (strings.length > 1 && null != strings[1] && strings[1].trim().length() > 0) {
                     TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2_right);
                     tv2.setVisibility(View.VISIBLE);
                     tv2.setText(strings[1]);
-                    tv2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onRight2Click(v);
-                        }
-                    });
+                    tv2.setOnClickListener(v -> onRight2Click(v));
                 }
                 break;
             case BarStyle.RIGHT_ICON:
@@ -296,6 +283,9 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     }
 
+    /**
+     * 点击标题栏返回按钮事件
+     */
     protected void onSimpleBackClick() {
         pop();
     }
@@ -340,12 +330,17 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 默认懒加载,true
+     *
      * @return
      */
     protected boolean lazyEnable() {
         return true;
     }
 
+    /**
+     * 设置标题栏标题文字
+     * @param strings
+     */
     protected void setTitle(String[] strings) {
         if (!enableSimplebar()) {
             throw new IllegalStateException("导航栏中不可用,请设置enableSimplebar为true");
@@ -367,6 +362,10 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
     }
 
+    /**
+     * 设置标题栏文字颜色
+     * @param color
+     */
     protected void setBarTextColor(@ColorInt int color) {
         if (!enableSimplebar()) {
             throw new IllegalStateException("导航栏中不可用,请设置enableSimplebar为true");
@@ -384,6 +383,10 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
     }
 
+    /**
+     * 设置标题栏返回按钮图片
+     * @param res
+     */
     protected void setBarBackIconRes(@DrawableRes int res) {
         if (!enableSimplebar()) {
             throw new IllegalStateException("导航栏中不可用,请设置enableSimplebar为true");
@@ -393,18 +396,34 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
     }
 
+    /**
+     * 设置标题栏颜色
+     * @param color
+     */
     protected void setSimpleBarBg(@ColorInt int color) {
         mSimpleTitleBar.setBackgroundColor(color);
     }
 
+    /**
+     * 标题栏右边靠右点击事件
+     * @param v
+     */
     protected void onRight1Click(View v) {
 
     }
 
+    /**
+     * 标题栏右边靠左点击事件
+     * @param v
+     */
     protected void onRight2Click(View v) {
 
     }
 
+    /**
+     * 标题栏左边点击事件
+     * @param v
+     */
     protected void onLeftIconClick(View v) {
 
     }
@@ -417,49 +436,71 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     public <T> void onEventSticky(BaseFragmentEvent<T> event) {
     }
 
+    /**
+     * 页面布局
+     * @return
+     */
     protected abstract int onBindLayout();
 
+    /**
+     * 初始化视图
+     * @param view
+     */
     protected abstract void initView(View view);
 
     @Override
     public final void initView() {
-
+        //final绝育
     }
 
+    /**
+     * 初始化数据
+     */
     public abstract void initData();
 
-
+    /**
+     * 初始化监听器
+     */
     public void initListener() {
     }
 
-
+    /**
+     * 是否显示默认标题栏
+     * @return
+     */
     protected boolean enableSimplebar() {
         return true;
     }
 
-    protected boolean enableSwipeBack() {
-        return true;
-    }
-
-
+    /**
+     * 显示初始化视图
+     */
     public void showInitView() {
         clearStatus();
         mLoadService.showCallback(InitCallback.class);
     }
 
-
+    /**
+     * 显示错误视图
+     */
     public void showErrorView() {
-      clearStatus();
+        clearStatus();
         mLoadService.showCallback(ErrorCallback.class);
     }
 
-
+    /**
+     * 显示空视图
+     */
     public void showEmptyView() {
         clearStatus();
         mLoadService.showCallback(EmptyCallback.class);
-
     }
 
+    /**
+     * 显示loading
+     *
+     * @param tip 为null时不带提示文本
+     */
     public void showLoadingView(String tip) {
         Fragment parentFragment = getParentFragment();
         if (parentFragment != null && ((BaseFragment) parentFragment).enableSimplebar()) {
@@ -468,7 +509,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             clearStatus();
             mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
                 TextView tvTip = view1.findViewById(R.id.tv_tip);
-                if (tip==null) {
+                if (tip == null) {
                     tvTip.setVisibility(View.GONE);
                 } else {
                     tvTip.setVisibility(View.VISIBLE);
@@ -481,6 +522,9 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
     }
 
+    /**
+     * 清空页面所有状态
+     */
     public void clearStatus() {
         Fragment parentFragment = getParentFragment();
         if (parentFragment != null && ((BaseFragment) parentFragment).enableSimplebar()) {
@@ -563,5 +607,14 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLoadingHandler.removeCallbacksAndMessages(null);
+        EventBus.getDefault().unregister(this);
+        clearDisposable();
+        AppHelper.refWatcher.watch(this);
     }
 }

@@ -1,7 +1,6 @@
 package com.gykj.zhumulangma.listen.fragment;
 
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,14 +21,14 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * Author: Thomas.
+ * Date: 2019/9/10 8:23
+ * Email: 1071931588@qq.com
+ * Description:我听
+ */
 @Route(path = AppConstants.Router.Listen.F_MAIN)
 public class MainListenFragment extends BaseFragment implements View.OnClickListener {
-
-   private ViewPager viewpager;
-   private MagicIndicator magicIndicator;
-   private String[] tabs={"我的订阅","推荐订阅"};
-   private List<Fragment> pages=new ArrayList<>();
 
     public MainListenFragment() {
     }
@@ -45,9 +44,9 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
     }
     @Override
     protected void initView(View view) {
-
-        viewpager=fd(R.id.viewpager);
-
+        String[] tabs={"我的订阅","推荐订阅"};
+        ViewPager viewpager = fd(R.id.viewpager);
+        List<Fragment> pages=new ArrayList<>();
         pages.add(new SubscribeFragment());
         pages.add(new RecommendFragment());
 
@@ -55,9 +54,9 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
                 getChildFragmentManager(),pages);
         viewpager.setOffscreenPageLimit(2);
         viewpager.setAdapter(adapter);
-        magicIndicator=fd(R.id.magic_indicator);
+        MagicIndicator magicIndicator = fd(R.id.magic_indicator);
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs),viewpager,60));
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager,60));
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
     }

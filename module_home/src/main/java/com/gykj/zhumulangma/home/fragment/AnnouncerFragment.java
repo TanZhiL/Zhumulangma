@@ -40,16 +40,16 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Author: Thomas.
  * Date: 2019/9/10 8:23
  * Email: 1071931588@qq.com
- * Description:主播页
+ * Description:主播
  */
 public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewModel, Announcer> implements OnBannerListener,
         BaseQuickAdapter.OnItemClickListener {
 
     private static final String TAG = "AnnouncerFragment";
-    private Banner banner;
-    private RecyclerView rvAnnouncer;
-    private SmartRefreshLayout refreshLayout;
     private AnnouncerAdapter mAnnouncerAdapter;
+
+    private Banner banner;
+    private SmartRefreshLayout refreshLayout;
 
     @Override
     protected int onBindLayout() {
@@ -65,7 +65,7 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
 
     protected void initView(View view) {
         mLoadService.showCallback(InitCallback.class);
-        rvAnnouncer = fd(R.id.rv_announcer);
+        RecyclerView rvAnnouncer = fd(R.id.rv_announcer);
         refreshLayout = fd(R.id.refreshLayout);
         banner = fd(R.id.banner);
         banner.setIndicatorGravity(BannerConfig.RIGHT);

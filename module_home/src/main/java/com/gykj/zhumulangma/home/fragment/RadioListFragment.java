@@ -63,11 +63,11 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
     public int mType;
     @Autowired(name = KeyCode.Home.TITLE)
     public String mTitle;
-    private SmartRefreshLayout refreshLayout;
     private RadioAdapter mRadioAdapter;
     private int mProvinceCode;
     private ProvinceAdapter mProvinceAdapter;
 
+    private SmartRefreshLayout refreshLayout;
     //下拉中间视图
     private View llbarCenter;
     private View ivCategoryDown;
@@ -96,7 +96,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
         mRadioAdapter = new RadioAdapter(R.layout.home_item_radio);
         mRadioAdapter.bindToRecyclerView(recyclerView);
         mRadioAdapter.setOnItemClickListener(this);
-        refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout = fd(R.id.refreshLayout);
         rvProvince = fd(R.id.rv_category);
         flMask = fd(R.id.fl_mask);
         rvProvince.setLayoutManager(new GridLayoutManager(mContext, 5));

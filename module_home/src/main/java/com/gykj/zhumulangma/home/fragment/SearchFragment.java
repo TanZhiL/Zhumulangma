@@ -2,7 +2,6 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.os.Handler;
@@ -58,19 +57,28 @@ import java.util.concurrent.TimeUnit;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
+/**
+ * Author: Thomas.
+ * Date: 2019/9/10 8:23
+ * Email: 1071931588@qq.com
+ * Description:搜索页
+ */
 @Route(path = AppConstants.Router.Home.F_SEARCH)
 public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         View.OnClickListener, SearchHistoryFragment.onSearchListener, View.OnFocusChangeListener,
         TextView.OnEditorActionListener, TextWatcher, SearchSuggestFragment.onSearchListener {
 
-    private EditText etKeyword;
     @Autowired(name = KeyCode.Home.HOTWORD)
-    public String hotword;
+    public String mHotword;
     private SearchSuggestFragment mSuggestFragment;
+    private SearchHistoryFragment mHistoryFragment;
+
     private SpeechRecognizer mIat;
+    private SpeechPopup mSpeechPopup;
     private HashMap<String, String> mIatResults = new LinkedHashMap<>();
     private Handler mHandler = new Handler();
-    private SpeechPopup mSpeechPopup;
+
+    private EditText etKeyword;
     private View vDialog;
 
     public SearchFragment() {
@@ -94,9 +102,6 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
         etKeyword = fd(R.id.et_keyword);
-        mSuggestFragment = (SearchSuggestFragment) ARouter.getInstance()
-                .build(AppConstants.Router.Home.F_SEARCH_SUGGEST).navigation();
-        mSuggestFragment.setSearchListener(this);
         //不支持x86
         mIat = SpeechRecognizer.createRecognizer(mContext, mInitListener);
         try {
@@ -125,13 +130,20 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     @Override
     public void initData() {
 
-        SearchHistoryFragment historyFragment = new SearchHistoryFragment();
-        historyFragment.setSearchListener(SearchFragment.this);
-        loadRootFragment(R.id.fl_container, historyFragment);
-        showSoftInput(etKeyword);
+        if (findFragment(SearchHistoryFragment.class) == null) {
+            mHistoryFragment = new SearchHistoryFragment();
+            mHistoryFragment.setSearchListener(this);
+            mSuggestFragment = new SearchSuggestFragment();
+            mSuggestFragment.setSearchListener(this);
+            loadMultipleRootFragment(R.id.fl_container, 0, mHistoryFragment, mSuggestFragment);
+        } else {
+            mHistoryFragment = findFragment(SearchHistoryFragment.class);
+            mSuggestFragment = findFragment(SearchSuggestFragment.class);
+        }
 
-        if (hotword != null) {
-            etKeyword.setHint(hotword);
+        showSoftInput(etKeyword);
+        if (mHotword != null) {
+            etKeyword.setHint(mHotword);
         } else {
             mViewModel.getHotWords();
         }
@@ -177,10 +189,9 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         searchHistoryBean.setKeyword(keyword);
         searchHistoryBean.setDatatime(System.currentTimeMillis());
         mViewModel.insertHistory(searchHistoryBean);
+        //更新显示历史搜索记录
         etKeyword.clearFocus();
-        if (getTopChildFragment() instanceof SearchSuggestFragment) {
-            ((BaseFragment) getTopChildFragment()).pop();
-        }
+
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH_RESULT)
                 .withString(KeyCode.Home.KEYWORD, keyword).navigation();
         if (null != navigation)
@@ -191,6 +202,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     public void onFocusChange(View v, boolean hasFocus) {
         if (getTopChildFragment() instanceof SearchResultFragment) {
             ((BaseFragment) getTopChildFragment()).pop();
+            showHideFragment(mHistoryFragment, mSuggestFragment);
         }
     }
 
@@ -208,6 +220,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     public void initViewObservable() {
         mViewModel.getHotWordsEvent().observe(this, hotWords ->
                 etKeyword.setHint(hotWords.get(0).getSearchword()));
+        mViewModel.getInsertHistoryEvent().observe(this, bean -> mHistoryFragment.refreshHistory());
     }
 
     @Override
@@ -239,16 +252,6 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         return false;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        try {
-            mIat.destroy();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mHandler.removeCallbacksAndMessages(null);
-    }
 
     @Override
     public void onSupportInvisible() {
@@ -270,17 +273,10 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     @Override
     public void afterTextChanged(Editable s) {
         if (TextUtils.isEmpty(s.toString().trim())) {
-            if (getTopChildFragment() instanceof SearchSuggestFragment) {
-                ((BaseFragment) getTopChildFragment()).pop();
-            }
+            showHideFragment(mHistoryFragment, mSuggestFragment);
         } else {
-            if (!(getTopChildFragment() instanceof SearchSuggestFragment)) {
-                ((BaseFragment) getTopChildFragment()).start(mSuggestFragment);
-                mHandler.postDelayed(() -> mSuggestFragment.loadSuggest(s.toString()), 100);
-
-            } else {
-                mSuggestFragment.loadSuggest(s.toString());
-            }
+            showHideFragment(mSuggestFragment, mHistoryFragment);
+            mHandler.postDelayed(() -> mSuggestFragment.loadSuggest(s.toString()), 100);
         }
     }
 
@@ -372,12 +368,12 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             e.printStackTrace();
         }
         mIatResults.put(sn, text);
-        StringBuffer resultBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         for (String key : mIatResults.keySet()) {
-            resultBuffer.append(mIatResults.get(key));
+            stringBuilder.append(mIatResults.get(key));
         }
-        Log.d(TAG, "printResult: " + resultBuffer);
-        etKeyword.setText(resultBuffer.toString());
+        Log.d(TAG, "printResult: " + stringBuilder);
+        etKeyword.setText(stringBuilder.toString());
         etKeyword.setSelection(etKeyword.length());
     }
 
@@ -385,5 +381,17 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     public void onSupportVisible() {
         super.onSupportVisible();
         EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            mIat.destroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mHandler.removeCallbacksAndMessages(null);
+        Log.d(getClass().getSimpleName(), "onDestroy() called");
     }
 }

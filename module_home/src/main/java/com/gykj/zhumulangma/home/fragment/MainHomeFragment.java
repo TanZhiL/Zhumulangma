@@ -3,7 +3,6 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -47,13 +46,16 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.yokeyword.fragmentation.ISupportFragment;
-
+/**
+ * Author: Thomas.
+ * Date: 2019/9/10 8:23
+ * Email: 1071931588@qq.com
+ * Description:首页
+ */
 @Route(path = AppConstants.Router.Home.F_MAIN)
 public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements View.OnClickListener, MarqueeView.OnItemClickListener {
 
 
-    private String[] mTabs = {"热门", "分类", "精品","主播", "广播"};
-    private List<Fragment> mFragments = new ArrayList<>();
     private MarqueeView<String> mMarqueeView;
 
     public MainHomeFragment() {
@@ -77,25 +79,27 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     }
     @Override
     protected void initView(View view) {
+        String[] tabs = {"热门", "分类", "精品","主播", "广播"};
+
         if (StatusBarUtils.supportTransparentStatusBar()) {
             fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
-
+        List<Fragment> fragments = new ArrayList<>();
         ViewPager viewpager = view.findViewById(R.id.viewpager);
-        mFragments.add(new HotFragment());
-        mFragments.add(new CategoryFragment());
-        mFragments.add(new FineFragment());
-        mFragments.add(new AnnouncerFragment());
-        mFragments.add(new RadioFragment());
+        fragments.add(new HotFragment());
+        fragments.add(new CategoryFragment());
+        fragments.add(new FineFragment());
+        fragments.add(new AnnouncerFragment());
+        fragments.add(new RadioFragment());
 
         TFragmentPagerAdapter adapter = new TFragmentPagerAdapter(
-                getChildFragmentManager(), mFragments);
+                getChildFragmentManager(), fragments);
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(adapter);
 
         MagicIndicator magicIndicator = view.findViewById(R.id.magic_indicator);
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(mTabs), viewpager, 50));
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 50));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);

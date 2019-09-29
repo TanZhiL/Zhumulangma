@@ -51,7 +51,12 @@ import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.util.Arrays;
-
+/**
+ * Author: Thomas.
+ * Date: 2019/9/10 8:23
+ * Email: 1071931588@qq.com
+ * Description:下载页
+ */
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
 public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements
         BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack,
@@ -59,7 +64,6 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     @Autowired(name = KeyCode.Listen.TAB_INDEX)
     public int mTabIndex;
 
-    private String[] mTabs = {"专辑", "声音", "下载中"};
     private DownloadAlbumAdapter mAlbumAdapter;
     private DownloadTrackAdapter mTrackAdapter;
     private DownloadingAdapter mDownloadingAdapter;
@@ -88,7 +92,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
 
     @Override
     protected void initView(View view) {
-
+        String[] tabs = {"专辑", "声音", "下载中"};
         layoutDetail1 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         layoutDetail2 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         layoutDetail3 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.listen_layout_downloading, null);
@@ -124,7 +128,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         ViewPager viewpager = fd(R.id.viewpager);
         viewpager.setAdapter(new DownloadPagerAdapter());
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(mTabs), viewpager, 50));
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 50));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);

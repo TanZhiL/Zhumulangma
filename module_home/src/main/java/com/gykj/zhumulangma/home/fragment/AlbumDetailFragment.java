@@ -32,7 +32,6 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.status.InitCallback;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
@@ -84,7 +83,6 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     public long mAlbumId;
     private Album mAlbum;
     private String mSort = "time_desc";
-    private String[] mTabs = {"简介", "节目"};
     private Track mLastPlay;
     private AlbumTrackAdapter mAlbumTrackAdapter;
     private AlbumTagAdapter mAlbumTagAdapter;
@@ -111,7 +109,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
 
     @Override
     public void initView(View view) {
-
+        String[] tabs = {"简介", "节目"};
         MagicIndicator magicIndicator = fd(R.id.magic_indicator);
         ViewPager viewpager = fd(R.id.viewpager);
         tvPlay = fd(R.id.tv_play);
@@ -143,7 +141,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
         viewpager.setAdapter(new AlbumPagerAdapter());
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
         commonNavigator.setAdjustMode(true);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(mTabs), viewpager, 125));
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 125));
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
         viewpager.setCurrentItem(1);

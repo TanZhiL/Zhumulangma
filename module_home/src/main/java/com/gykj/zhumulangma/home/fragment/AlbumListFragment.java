@@ -31,7 +31,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Author: Thomas.
  * Date: 2019/8/14 10:21
  * Email: 1071931588@qq.com
- * Description:专辑列表页
+ * Description:专辑列表
  */
 @Route(path = AppConstants.Router.Home.F_ALBUM_LIST)
 public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewModel, Album> implements

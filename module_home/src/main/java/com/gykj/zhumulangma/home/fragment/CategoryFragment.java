@@ -8,7 +8,12 @@ import android.view.View;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.home.R;
 
-
+/**
+ * Author: Thomas.
+ * Date: 2019/8/14 13:41
+ * Email: 1071931588@qq.com
+ * Description:分类
+ */
 public class CategoryFragment extends BaseFragment {
 
 

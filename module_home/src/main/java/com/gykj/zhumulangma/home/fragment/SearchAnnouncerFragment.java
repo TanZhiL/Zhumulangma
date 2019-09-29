@@ -28,7 +28,12 @@ import org.greenrobot.eventbus.EventBus;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
-
+/**
+ * Author: Thomas.
+ * Date: 2019/8/13 15:12
+ * Email: 1071931588@qq.com
+ * Description:搜索主播
+ */
 public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<SearchAnnouncerViewModel, Announcer>
         implements BaseQuickAdapter.OnItemClickListener {
 

@@ -38,7 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
-
+/**
+ * Author: Thomas.
+ * Date: 2019/8/14 13:41
+ * Email: 1071931588@qq.com
+ * Description:热门
+ */
 public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> implements OnBannerListener,
         View.OnClickListener {
 

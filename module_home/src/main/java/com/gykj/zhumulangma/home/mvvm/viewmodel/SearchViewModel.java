@@ -20,7 +20,6 @@ import com.ximalaya.ting.android.opensdk.model.word.AlbumResult;
 import com.ximalaya.ting.android.opensdk.model.word.HotWord;
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
 import com.ximalaya.ting.android.opensdk.model.word.QueryResult;
-import com.ximalaya.ting.android.opensdk.model.word.SuggestWords;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import java.util.ArrayList;
@@ -38,6 +37,7 @@ import io.reactivex.functions.Function;
  * Description:
  */
 public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
+    private SingleLiveEvent<SearchHistoryBean> mInsertHistoryEvent;
     private SingleLiveEvent<List<HotWord>> mHotWordsEvent;
     private SingleLiveEvent<List<SearchHistoryBean>> mHistorySingleLiveEvent;
     private SingleLiveEvent<List<SearchSuggestItem>> mWordsSingleLiveEvent;
@@ -69,22 +69,22 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .filter(historyBeanList -> !historyBeanList.contains(entity))
                 .flatMap((Function<List<SearchHistoryBean>, ObservableSource<SearchHistoryBean>>)
                         historyBeanList -> mModel.insert(entity))
-                .subscribe(bean -> {
-                }, e -> e.printStackTrace());
+                .subscribe(bean -> getInsertHistoryEvent().setValue(entity), e -> e.printStackTrace());
     }
 
     public void refreshHistory() {
         mModel.listDesc(SearchHistoryBean.class, 0, 0, SearchHistoryBeanDao.Properties.Datatime)
                 .subscribe(searchHistoryBeans -> getHistorySingleLiveEvent().setValue(searchHistoryBeans));
     }
+
     public void getHistory() {
 
         mModel.listDesc(SearchHistoryBean.class, 0, 0, SearchHistoryBeanDao.Properties.Datatime)
                 .doOnNext(searchHistoryBeans -> getHistorySingleLiveEvent().setValue(searchHistoryBeans))
                 .flatMap((Function<List<SearchHistoryBean>, ObservableSource<HotWordList>>) searchHistoryBeans -> {
-                      Map<String, String> map1 = new HashMap<>();
-                     map1.put(DTransferConstants.TOP, String.valueOf(20));
-                    return  mModel.getHotWords(map1);
+                    Map<String, String> map1 = new HashMap<>();
+                    map1.put(DTransferConstants.TOP, String.valueOf(20));
+                    return mModel.getHotWords(map1);
                 })
                 .subscribe(hotWordList -> {
                     getClearStatusEvent().call();
@@ -170,4 +170,9 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
     public SingleLiveEvent<Track> getLastplaySingleLiveEvent() {
         return mLastplaySingleLiveEvent = createLiveData(mLastplaySingleLiveEvent);
     }
+
+    public SingleLiveEvent<SearchHistoryBean> getInsertHistoryEvent() {
+        return mInsertHistoryEvent = createLiveData(mInsertHistoryEvent);
+    }
+
 }

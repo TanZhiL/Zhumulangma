@@ -40,7 +40,12 @@ import org.greenrobot.eventbus.EventBus;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
-
+/**
+ * Author: Thomas.
+ * Date: 2019/8/14 13:41
+ * Email: 1071931588@qq.com
+ * Description:电台
+ */
 public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio> implements View.OnClickListener {
 
     private RadioHistoryAdapter mHistoryAdapter;

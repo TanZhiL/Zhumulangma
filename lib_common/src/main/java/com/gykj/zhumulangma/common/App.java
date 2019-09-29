@@ -65,7 +65,7 @@ public class App extends Application {
                 AppHelper.getInstance(this)
                         .initLeakCanary()
                    //     .initCrashHandler()
-                        .initFragmentation()
+                        .initFragmentation(false)
                         .initSpeech()
                    //     .initDoraemonKit()
                         .initLog()

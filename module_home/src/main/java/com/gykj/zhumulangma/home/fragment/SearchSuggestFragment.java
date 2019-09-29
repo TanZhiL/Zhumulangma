@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -38,16 +39,16 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * Author: Thomas.
  * Date: 2019/9/18 13:58
  * Email: 1071931588@qq.com
- * Description:
+ * Description:搜索下建议词页
  */
 @Route(path = AppConstants.Router.Home.F_SEARCH_SUGGEST)
-public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> implements BaseQuickAdapter.OnItemClickListener, View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener {
+public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> implements
+        BaseQuickAdapter.OnItemClickListener, View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
-    private SmartRefreshLayout refreshLayout;
+    private String mKeyword;
     private SearchSuggestAdapter mSuggestAdapter;
     private onSearchListener mSearchListener;
     private TextView tvHeader;
-    private String mKeyword;
     @Override
     protected int onBindLayout() {
         return R.layout.common_layout_refresh_loadmore;
@@ -61,11 +62,12 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         setSwipeBackEnable(false);
     }
     @Override
     protected void initView(View view) {
-        refreshLayout = fd(R.id.refreshLayout);
+        SmartRefreshLayout refreshLayout = fd(R.id.refreshLayout);
         refreshLayout.setEnableRefresh(false);
         refreshLayout.setEnableLoadMore(false);
         RecyclerView recyclerView = fd(R.id.rv);
@@ -165,5 +167,11 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
     public interface onSearchListener {
 
         void onSearch(String keyword);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(getClass().getSimpleName(), "onDestroy() called");
     }
 }

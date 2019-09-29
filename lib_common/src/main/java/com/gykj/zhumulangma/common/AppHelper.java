@@ -50,7 +50,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.security.Key;
 
 import me.yokeyword.fragmentation.Fragmentation;
 import okhttp3.Call;
@@ -235,13 +234,13 @@ public class AppHelper {
         return this;
     }
 
-    public AppHelper initFragmentation() {
+    public AppHelper initFragmentation(boolean isDebug) {
 
         // 建议在Application里初始化
         Fragmentation.builder()
                 // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏
                 .stackViewMode(Fragmentation.BUBBLE)
-                .debug(false)
+                .debug(isDebug)
                 .install();
         return this;
     }

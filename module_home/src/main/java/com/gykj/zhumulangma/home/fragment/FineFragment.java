@@ -34,14 +34,20 @@ import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
-
+/**
+ * Author: Thomas.
+ * Date: 2019/8/14 13:41
+ * Email: 1071931588@qq.com
+ * Description:精品
+ */
 public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> implements
         View.OnClickListener, OnBannerListener {
 
-    private Banner banner;
     private FineAdapter mDailyAdapter;
     private FineAdapter mBookAdapter;
     private FineAdapter mClassroomAdapter;
+
+    private Banner banner;
 
     public FineFragment() {
 
