@@ -440,7 +440,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 mPlayerManager.play();
             }
         } else if (R.id.tv_schedule == id || R.id.iv_schedule == id) {
-            new XPopup.Builder(getContext()).asCustom(mSchedulePopup).show();
+            new XPopup.Builder(getContext()).setPopupCallback(new SimpleCallback(){
+                @Override
+                public void beforeShow() {
+                    super.beforeShow();
+                    mSchedulePopup.getScheduleAdapter().notifyDataSetChanged();
+                }
+            }).asCustom(mSchedulePopup).show();
         } else if (R.id.tv_play_list == id || R.id.iv_play_list == id) {
             new XPopup.Builder(getContext()).popupAnimation(TranslateFromBottom).setPopupCallback(
                     new SimpleCallback() {

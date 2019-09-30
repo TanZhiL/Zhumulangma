@@ -133,7 +133,7 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
 
     public  class PlayScheduleAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
-        PlayScheduleAdapter(int layoutResId) {
+        public PlayScheduleAdapter(int layoutResId) {
             super(layoutResId);
         }
 
