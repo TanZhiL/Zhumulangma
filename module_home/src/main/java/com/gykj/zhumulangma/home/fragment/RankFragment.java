@@ -2,22 +2,18 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -26,11 +22,15 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
-import com.gykj.zhumulangma.home.adapter.RankCategotyAdapter;
 import com.gykj.zhumulangma.home.adapter.RankFreeAdapter;
 import com.gykj.zhumulangma.home.adapter.RankPaidAdapter;
+import com.gykj.zhumulangma.home.dialog.CategoryPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
+import com.jakewharton.rxbinding3.view.RxView;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.enums.PopupPosition;
+import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -42,6 +42,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -52,28 +53,15 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Description:排行榜
  */
 @Route(path = AppConstants.Router.Home.F_RANK)
-public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> implements View.OnClickListener,
-        BaseQuickAdapter.OnItemClickListener {
+public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> implements
+        CategoryPopup.onSelectedListener {
 
     private RankFreeAdapter mFreeAdapter;
     private RankPaidAdapter mPaidAdapter;
     private String[] mTabs = {"免费榜"};
-    private String[] mCLabels = {"热门", "音乐", "娱乐", "有声书"
-            , "儿童", "3D体验馆", "资讯", "脱口秀"
-            , "情感生活", "历史", "人文", "英语"
-            , "小语种", "教育培训", "广播剧", "国学书院"
-            , "电台", "商业财经", "IT科技", "健康养生"
-            , "旅游", "汽车", "动漫游戏", "电影"};
-    private String[] mCIds = {"0", "2", "4", "3"
-            , "6", "29", "1", "28"
-            , "10", "9", "39", "38"
-            , "32", "13", "15", "40"
-            , "17", "8", "18", "7"
-            , "22", "21", "24", "23"};
-    private String mCId = mCIds[0];
 
-    private RecyclerView rvCategory;
-    private FrameLayout flMask;
+    private String mCId = "0";
+
     private ViewGroup layoutFree;
     private ViewGroup layoutPaid;
     private SmartRefreshLayout rlFree;
@@ -82,7 +70,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     private View llbarCenter;
     private View ivCategoryDown;
     private TextView tvTitle;
-
+    private CategoryPopup mCategoryPopup;
     public RankFragment() {
     }
 
@@ -95,13 +83,11 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     public void initView(View view) {
         MagicIndicator magicIndicator = fd(R.id.magic_indicator);
         ViewPager viewpager = fd(R.id.viewpager);
-        rvCategory = fd(R.id.rv_category);
-        flMask = fd(R.id.fl_mask);
 
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
         ivCategoryDown.setVisibility(View.VISIBLE);
         tvTitle = llbarCenter.findViewById(R.id.tv_title);
-        tvTitle.setText(mCLabels[0]);
+        tvTitle.setText("热门");
         layoutFree = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         layoutPaid = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         rlFree = layoutFree.findViewById(R.id.refreshLayout);
@@ -124,12 +110,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
 
-        rvCategory.setLayoutManager(new GridLayoutManager(mContext, 4));
-        RankCategotyAdapter categotyAdapter = new RankCategotyAdapter(R.layout.home_item_rank_category,
-                Arrays.asList(mCLabels));
-        rvCategory.setHasFixedSize(true);
-        categotyAdapter.bindToRecyclerView(rvCategory);
-        categotyAdapter.setOnItemClickListener(this);
+        mCategoryPopup=new CategoryPopup(mContext,this);
 
 
     }
@@ -137,10 +118,8 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     @Override
     public void initListener() {
         super.initListener();
-
-        llbarCenter.setOnClickListener(this);
-        flMask.setOnClickListener(this);
-
+        addDisposable(RxView.clicks(llbarCenter)
+                .throttleFirst(1, TimeUnit.SECONDS).subscribe(unit -> switchCategory()));
         mFreeAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mFreeAdapter.getItem(position).getId())
@@ -172,50 +151,22 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
         mViewModel.init();
     }
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (view == llbarCenter || id == R.id.fl_mask) {
-            switchCategory();
-        }
-    }
 
     private void switchCategory() {
-        if (flMask.getVisibility() == View.VISIBLE) {
-
-            flMask.animate().withStartAction(() -> {
-                flMask.setAlpha(1);
-                flMask.setBackgroundColor(Color.TRANSPARENT);
-            }).translationY(-rvCategory.getHeight()).alpha(0).setDuration(200).withEndAction(() -> {
-                flMask.setVisibility(View.GONE);
-            });
-
+        if(mCategoryPopup.isShow()){
+            mCategoryPopup.dismiss();
+        }else {
             ivCategoryDown.animate().rotationBy(180).setDuration(200);
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
-        } else {
-            flMask.setTranslationY(-rvCategory.getHeight() == 0 ? -400 : -rvCategory.getHeight());
-            flMask.animate().withStartAction(() -> {
-                flMask.setAlpha(0);
-                flMask.setVisibility(View.VISIBLE);
-            }).translationY(0).alpha(1).setDuration(200).withEndAction(() -> flMask.setBackgroundColor(0x99000000));
+            new XPopup.Builder(mContext).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom
+            ).setPopupCallback(new SimpleCallback(){
 
-            ivCategoryDown.animate().rotationBy(180).setDuration(200);
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
+                @Override
+                public void onDismiss() {
+                    super.onDismiss();
+                    ivCategoryDown.animate().rotationBy(180).setDuration(200);
+                }
+            }).asCustom(mCategoryPopup).show();
         }
-    }
-
-
-    @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        switchCategory();
-        if (mCId.equals(mCIds[position])) {
-            return;
-        }
-        tvTitle.setText(mCLabels[position]);
-        mCId = mCIds[position];
-        mViewModel.setCid(mCId);
-        mFreeAdapter.setNewData(null);
-        mViewModel.init();
     }
 
     @Override
@@ -244,6 +195,18 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
                 rlPaid.finishLoadMoreWithNoMoreData();
             }
         });
+    }
+
+    @Override
+    public void onSelected(String category_id, String category_name) {
+        if (mCId.equals(category_id)) {
+            return;
+        }
+        tvTitle.setText(category_name);
+        mCId = category_id;
+        mViewModel.setCid(mCId);
+        mFreeAdapter.setNewData(null);
+        mViewModel.init();
     }
 
     class RankPagerAdapter extends PagerAdapter {
@@ -290,16 +253,6 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     protected View onBindBarCenterCustome() {
         llbarCenter = LayoutInflater.from(mContext).inflate(R.layout.home_layout_rank_bar_center, null);
         return llbarCenter;
-    }
-
-    @Override
-    public boolean onBackPressedSupport() {
-        if (flMask.getVisibility() == View.VISIBLE) {
-            switchCategory();
-        } else {
-            pop();
-        }
-        return true;
     }
 
     @Override

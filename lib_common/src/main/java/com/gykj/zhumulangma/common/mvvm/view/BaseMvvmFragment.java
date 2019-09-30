@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
-import com.gykj.zhumulangma.common.status.InitCallback;
 
 
 /**
@@ -25,7 +24,7 @@ public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFra
     @Override
     protected void loadView() {
         super.loadView();
-        mLoadService.showCallback(InitCallback.class);
+       showInitView();
     }
 
     protected void initViewModel() {
@@ -42,7 +41,7 @@ public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFra
 
     protected void initBaseViewObservable() {
         mViewModel.getShowInitViewEvent().observe(this, (Observer<Void>) show -> showInitView());
-        mViewModel.getShowLoadingViewEvent().observe(this, (Observer<String>) tip -> showLoadingView(tip));
+        mViewModel.getShowLoadingViewEvent().observe(this, (Observer<String>) this::showLoadingView);
         mViewModel.getShowEmptyViewEvent().observe(this, (Observer<Void>) show -> showEmptyView());
         mViewModel.getShowErrorViewEvent().observe(this, (Observer<Void>) show -> showErrorView());
         mViewModel.getFinishSelfEvent().observe(this, (Observer<Void>) v -> pop());

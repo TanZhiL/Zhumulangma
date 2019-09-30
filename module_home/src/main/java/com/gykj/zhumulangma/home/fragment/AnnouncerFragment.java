@@ -17,7 +17,6 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.status.InitCallback;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -64,7 +63,6 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
     }
 
     protected void initView(View view) {
-        mLoadService.showCallback(InitCallback.class);
         RecyclerView rvAnnouncer = fd(R.id.rv_announcer);
         refreshLayout = fd(R.id.refreshLayout);
         banner = fd(R.id.banner);

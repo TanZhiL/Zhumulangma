@@ -59,7 +59,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     protected Context mContext;
     protected View mView;
     private ViewStub mViewStubContent;
-    protected LoadService mLoadService;
+    protected LoadService mBaseLoadService;
     protected CommonTitleBar mSimpleTitleBar;
     protected App mApplication;
     private Handler mLoadingHandler = new Handler();
@@ -120,7 +120,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.common_layout_root, container, false);
-        initCommonView(mView);
+        initCommonView();
         initParam();
         //不采用懒加载
         if (!lazyEnable()) {
@@ -135,7 +135,6 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-
         //采用懒加载
         if (lazyEnable()) {
             loadView();
@@ -159,7 +158,6 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
      * 填充布局
      */
     protected void loadView() {
-
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
         LoadSir loadSir = new LoadSir.Builder()
@@ -169,15 +167,14 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                 .addCallback(new LoadingCallback())
                 .setDefaultCallback(SuccessCallback.class)
                 .build();
-        mLoadService = loadSir.register(contentView, (Callback.OnReloadListener) v -> BaseFragment.this.onReload(v));
+        mBaseLoadService = loadSir.register(contentView, (Callback.OnReloadListener) BaseFragment.this::onReload);
     }
-
 
 
     protected void initParam() {
     }
 
-    protected void initCommonView(View view) {
+    protected void initCommonView() {
         mSimpleTitleBar = mView.findViewById(R.id.ctb_simple);
         mViewStubContent = mView.findViewById(R.id.view_stub_content);
         if (enableSimplebar()) {
@@ -191,13 +188,11 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
      * 初始化标题栏
      */
     protected void initSimpleBar() {
-        /**
-         * 中间
-         */
+        // 中间
         if (onBindBarCenterStyle() == BarStyle.CENTER_TITLE) {
             String[] strings = onBindBarTitleText();
             if (strings != null && strings.length > 0) {
-                if (strings.length > 0 && null != strings[0] && strings[0].trim().length() > 0) {
+                if (null != strings[0] && strings[0].trim().length() > 0) {
                     TextView title = mSimpleTitleBar.getCenterCustomView().findViewById(R.id.tv_title);
                     title.setVisibility(View.VISIBLE);
                     title.setText(strings[0]);
@@ -231,7 +226,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             ImageView icon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);
             icon.setVisibility(View.VISIBLE);
             icon.setImageResource(onBindBarLeftIcon());
-            icon.setOnClickListener(v -> onLeftIconClick(v));
+            icon.setOnClickListener(this::onLeftIconClick);
         }
         //右边
         switch (onBindBarRightStyle()) {
@@ -240,17 +235,17 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                 if (strings == null || strings.length == 0) {
                     break;
                 }
-                if (strings.length > 0 && null != strings[0] && strings[0].trim().length() > 0) {
+                if (null != strings[0] && strings[0].trim().length() > 0) {
                     TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1_right);
                     tv1.setVisibility(View.VISIBLE);
                     tv1.setText(strings[0]);
-                    tv1.setOnClickListener(v -> onRight1Click(v));
+                    tv1.setOnClickListener(this::onRight1Click);
                 }
                 if (strings.length > 1 && null != strings[1] && strings[1].trim().length() > 0) {
                     TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2_right);
                     tv2.setVisibility(View.VISIBLE);
                     tv2.setText(strings[1]);
-                    tv2.setOnClickListener(v -> onRight2Click(v));
+                    tv2.setOnClickListener(this::onRight2Click);
                 }
                 break;
             case BarStyle.RIGHT_ICON:
@@ -258,17 +253,17 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                 if (ints == null || ints.length == 0) {
                     break;
                 }
-                if (ints.length > 0 && null != ints[0]) {
+                if (null != ints[0]) {
                     ImageView iv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv1_right);
                     iv1.setVisibility(View.VISIBLE);
                     iv1.setImageResource(ints[0]);
-                    iv1.setOnClickListener(v -> onRight1Click(v));
+                    iv1.setOnClickListener(this::onRight1Click);
                 }
                 if (ints.length > 1 && null != ints[1]) {
                     ImageView iv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv2_right);
                     iv2.setVisibility(View.VISIBLE);
                     iv2.setImageResource(ints[1]);
-                    iv2.setOnClickListener(v -> onRight2Click(v));
+                    iv2.setOnClickListener(this::onRight2Click);
                 }
                 break;
             case BarStyle.RIGHT_CUSTOME:
@@ -339,6 +334,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 设置标题栏标题文字
+     *
      * @param strings
      */
     protected void setTitle(String[] strings) {
@@ -364,6 +360,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 设置标题栏文字颜色
+     *
      * @param color
      */
     protected void setBarTextColor(@ColorInt int color) {
@@ -385,6 +382,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 设置标题栏返回按钮图片
+     *
      * @param res
      */
     protected void setBarBackIconRes(@DrawableRes int res) {
@@ -398,6 +396,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 设置标题栏颜色
+     *
      * @param color
      */
     protected void setSimpleBarBg(@ColorInt int color) {
@@ -406,6 +405,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 标题栏右边靠右点击事件
+     *
      * @param v
      */
     protected void onRight1Click(View v) {
@@ -414,6 +414,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 标题栏右边靠左点击事件
+     *
      * @param v
      */
     protected void onRight2Click(View v) {
@@ -422,6 +423,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 标题栏左边点击事件
+     *
      * @param v
      */
     protected void onLeftIconClick(View v) {
@@ -438,12 +440,14 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 页面布局
+     *
      * @return
      */
     protected abstract int onBindLayout();
 
     /**
      * 初始化视图
+     *
      * @param view
      */
     protected abstract void initView(View view);
@@ -466,6 +470,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 是否显示默认标题栏
+     *
      * @return
      */
     protected boolean enableSimplebar() {
@@ -477,7 +482,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
      */
     public void showInitView() {
         clearStatus();
-        mLoadService.showCallback(InitCallback.class);
+        mBaseLoadService.showCallback(InitCallback.class);
     }
 
     /**
@@ -485,7 +490,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
      */
     public void showErrorView() {
         clearStatus();
-        mLoadService.showCallback(ErrorCallback.class);
+        mBaseLoadService.showCallback(ErrorCallback.class);
     }
 
     /**
@@ -493,7 +498,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
      */
     public void showEmptyView() {
         clearStatus();
-        mLoadService.showCallback(EmptyCallback.class);
+        mBaseLoadService.showCallback(EmptyCallback.class);
     }
 
     /**
@@ -507,7 +512,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             ((BaseFragment) parentFragment).showLoadingView(tip);
         } else {
             clearStatus();
-            mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
+            mBaseLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
                 TextView tvTip = view1.findViewById(R.id.tv_tip);
                 if (tip == null) {
                     tvTip.setVisibility(View.GONE);
@@ -516,8 +521,8 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                     tvTip.setText(tip);
                 }
             });
-            //延时100毫秒显示,避免闪屏
-            mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 300);
+            //延时300毫秒显示,避免闪屏
+            mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(LoadingCallback.class), 300);
 
         }
     }
@@ -531,15 +536,16 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             ((BaseFragment) parentFragment).clearStatus();
         }
         mLoadingHandler.removeCallbacksAndMessages(null);
-        mLoadService.showSuccess();
+        mBaseLoadService.showSuccess();
     }
 
     /**
      * 错误页点击重试执行
+     *
      * @param v
      */
     protected void onReload(View v) {
-        mLoadService.showCallback(InitCallback.class);
+        showInitView();
         initData();
     }
 
@@ -576,6 +582,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
     /**
      * 页面跳转
+     *
      * @param path
      */
     protected void navigateTo(String path) {
@@ -615,6 +622,16 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        //如果正在显示loading,则清除
+        if (mBaseLoadService.getCurrentCallback() == LoadingCallback.class) {
+            clearStatus();
+            return true;
+        }
+        return super.onBackPressedSupport();
     }
 
     @Override

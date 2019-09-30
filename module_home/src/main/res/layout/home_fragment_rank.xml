@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <net.lucode.hackware.magicindicator.MagicIndicator
         android:id="@+id/magic_indicator"
         android:layout_width="match_parent"
@@ -23,21 +22,5 @@
             android:layout_width="match_parent"
             android:overScrollMode="never"
             android:layout_height="match_parent" />
-        <FrameLayout
-            android:id="@+id/fl_mask"
-            android:layout_width="match_parent"
-            android:background="@color/transparent"
-           android:visibility="gone"
-            android:alpha="0"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                android:background="@color/white"
-                />
-        </FrameLayout>
     </FrameLayout>
 </android.support.constraint.ConstraintLayout>

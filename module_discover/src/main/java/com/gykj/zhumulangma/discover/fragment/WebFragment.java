@@ -431,7 +431,9 @@ public class WebFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mAgentWeb.getWebLifeCycle().onDestroy();
+        if(mAgentWeb!=null){
+            mAgentWeb.getWebLifeCycle().onDestroy();
+        }
     }
 
     @Override
@@ -450,12 +452,13 @@ public class WebFragment extends BaseFragment {
 
     @Override
     public boolean onBackPressedSupport() {
-        if (!mAgentWeb.getWebCreator().getWebView().canGoBack()) {
-            pop();
-        }else {
+        if(super.onBackPressedSupport()){
+            return true;
+        }else if (mAgentWeb.getWebCreator().getWebView().canGoBack()) {
             mAgentWeb.back();
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

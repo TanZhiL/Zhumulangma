@@ -412,12 +412,13 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
 
     @Override
     public boolean onBackPressedSupport() {
-        if (flMask.getVisibility() == View.VISIBLE) {
+        if(super.onBackPressedSupport()){
+            return true;
+        }else if (flMask.getVisibility() == View.VISIBLE) {
             switchPager();
-        } else {
-            pop();
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**

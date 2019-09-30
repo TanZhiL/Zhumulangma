@@ -307,12 +307,13 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
 
     @Override
     public boolean onBackPressedSupport() {
-        if (flMask.getVisibility() == View.VISIBLE) {
-            switchPager();
-        } else {
-            pop();
-        }
-        return true;
+       if(super.onBackPressedSupport()){
+           return true;
+       }else if (flMask.getVisibility() == View.VISIBLE){
+           switchPager();
+           return true;
+       }
+        return false;
     }
 
     @Override

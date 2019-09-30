@@ -17,7 +17,6 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.status.InitCallback;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -75,7 +74,6 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
 
     @Override
     protected void initView(View view) {
-        mLoadService.showCallback(InitCallback.class);
         flRank = fd(R.id.fl_rank);
         initBanner();
         initLike();
@@ -91,6 +89,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
         super.initListener();
         flRank.setOnClickListener(this);
         fd(R.id.like_refresh).setOnClickListener(this);
+        fd(R.id.layout_ad).setOnClickListener(this);
         fd(R.id.ih_like).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
@@ -323,6 +322,12 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
             mViewModel.getRadioList();
         } else if (id == R.id.fl_rank) {
             navigateTo(AppConstants.Router.Home.F_RANK);
+        }else if (id == R.id.layout_ad) {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
+                    .withString(KeyCode.Discover.PATH, "https://m.ximalaya.com/")
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
         }
     }
 }

@@ -57,7 +57,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
 
     private CompositeDisposable mCompositeDisposable;
     private Handler mLoadingHandler=new Handler();
-    protected LoadService mLoadService;
+    protected LoadService mBaseLoadService;
     protected CommonTitleBar mSimpleTitleBar;
     protected App mApplication;
 
@@ -128,13 +128,13 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
                 .addCallback(new LoadingCallback())
                 .setDefaultCallback(LoadingCallback.class)
                 .build();
-        mLoadService = loadSir.register(onBindLoadSirView() == null ? contentView : onBindLoadSirView(), new Callback.OnReloadListener() {
+        mBaseLoadService = loadSir.register(onBindLoadSirView() == null ? contentView : onBindLoadSirView(), new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
                 BaseActivity.this.onReload(v);
             }
         });
-        mLoadService.showSuccess();
+        mBaseLoadService.showSuccess();
     }
 
     protected View onBindLoadSirView() {
@@ -383,29 +383,29 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
 
     public void showInitView() {
         mLoadingHandler.removeCallbacksAndMessages(null);
-        mLoadService.showSuccess();
-        mLoadService.showCallback(InitCallback.class);
+        mBaseLoadService.showSuccess();
+        mBaseLoadService.showCallback(InitCallback.class);
     }
 
 
     public void showErrorView() {
         mLoadingHandler.removeCallbacksAndMessages(null);
-        mLoadService.showSuccess();
-        mLoadService.showCallback(ErrorCallback.class);
+        mBaseLoadService.showSuccess();
+        mBaseLoadService.showCallback(ErrorCallback.class);
     }
 
 
     public void showEmptyView() {
         mLoadingHandler.removeCallbacksAndMessages(null);
-        mLoadService.showSuccess();
-        mLoadService.showCallback(EmptyCallback.class);
+        mBaseLoadService.showSuccess();
+        mBaseLoadService.showCallback(EmptyCallback.class);
 
     }
 
     public void showLoadingView(String tip) {
             mLoadingHandler.removeCallbacksAndMessages(null);
-            mLoadService.showSuccess();
-            mLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
+            mBaseLoadService.showSuccess();
+            mBaseLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
                 TextView tvTip = view1.findViewById(R.id.tv_tip);
                 if (tip==null) {
                     tvTip.setVisibility(View.GONE);
@@ -415,19 +415,28 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
                 }
             });
             //延时100毫秒显示,避免闪屏
-            mLoadingHandler.postDelayed(() -> mLoadService.showCallback(LoadingCallback.class), 100);
+            mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(LoadingCallback.class), 100);
     }
 
     public void clearStatus() {
         mLoadingHandler.removeCallbacksAndMessages(null);
-        mLoadService.showSuccess();
+        mBaseLoadService.showSuccess();
     }
 
     protected void onReload(View v) {
-        mLoadService.showSuccess();
+        mBaseLoadService.showSuccess();
         initData();
     }
 
+    @Override
+    public void onBackPressedSupport() {
+        //如果正在显示loading,则清除
+        if (mBaseLoadService.getCurrentCallback() == LoadingCallback.class) {
+            clearStatus();
+            return;
+        }
+        super.onBackPressedSupport();
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public <T> void onEvent(BaseActivityEvent<T> event) {

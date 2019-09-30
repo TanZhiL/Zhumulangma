@@ -269,11 +269,13 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     public boolean onBackPressedSupport() {
-        if (mSchedulePopup != null && mSchedulePopup.getPickerView() != null && mSchedulePopup.getPickerView().isShowing()) {
+        if(super.onBackPressedSupport()){
+            return true;
+        }else if (mSchedulePopup != null && mSchedulePopup.getPickerView() != null && mSchedulePopup.getPickerView().isShowing()) {
             mSchedulePopup.getPickerView().dismiss();
             return true;
         }
-        return super.onBackPressedSupport();
+        return false;
     }
 
     @Override

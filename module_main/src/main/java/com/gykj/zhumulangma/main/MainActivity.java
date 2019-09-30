@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -22,6 +21,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
+import com.gykj.zhumulangma.common.status.LoadingCallback;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.dialog.SplashAdPopup;
@@ -66,13 +66,14 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
 
 @Route(path = AppConstants.Router.Main.A_MAIN)
 public class MainActivity extends BaseMvvmActivity<MainViewModel> implements View.OnClickListener,
-        MainFragment.onRootShowListener, IXmPlayerStatusListener, IXmAdsStatusListener {
+        MainFragment.onRootShowListener {
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(this);
     private XmlyAuthInfo mAuthInfo;
     private XmlySsoHandler mSsoHandler;
     private XmlyAuth2AccessToken mAccessToken;
     private PlayHistoryBean mHistoryBean;
     private GlobalPlay globalPlay;
+
 
     @Override
     protected int onBindLayout() {
@@ -83,8 +84,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //清除全屏显示
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
-        super.onCreate(savedInstanceState);    //布局优化
+        super.onCreate(savedInstanceState);
         long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(AppConstants.SP.AD_TIME, 0);
         //显示广告
         if(adOffset>5*60*1000&&new File(getFilesDir().getAbsolutePath()+AppConstants.Defualt.AD_NAME)
@@ -111,7 +111,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         }
         //全局白色背景
         setTheme(R.style.NullTheme);
-        Log.d(TAG, "onCreate() called "+System.currentTimeMillis());
     }
 
     @Override
@@ -126,17 +125,10 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     }
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if(hasFocus){
-            Log.d(TAG, "onWindowFocusChanged() called "+System.currentTimeMillis());
-        }
-    }
-    @Override
     public void initListener() {
         globalPlay.setOnClickListener(this);
-        mPlayerManager.addPlayerStatusListener(this);
-        mPlayerManager.addAdsStatusListener(this);
+        mPlayerManager.addPlayerStatusListener(playerStatusListener);
+        mPlayerManager.addAdsStatusListener(adsStatusListener);
     }
 
     @Override
@@ -193,60 +185,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     }
 
 
-    @Override
-    public void onPlayStart() {
-        Track currSoundIgnoreKind = mPlayerManager.getCurrSoundIgnoreKind(true);
-        if (null == currSoundIgnoreKind) {
-            return;
-        }
-        globalPlay.play(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlSmall())
-                ?currSoundIgnoreKind.getAlbum().getCoverUrlLarge():currSoundIgnoreKind.getCoverUrlSmall());
-    }
-
-    @Override
-    public void onPlayPause() {
-        globalPlay.pause();
-    }
-
-    @Override
-    public void onPlayStop() {
-        globalPlay.pause();
-    }
-
-    @Override
-    public void onSoundPlayComplete() {
-
-    }
-
-    @Override
-    public void onSoundPrepared() {
-
-    }
-
-    @Override
-    public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
-
-    }
-
-    @Override
-    public void onBufferingStart() {
-
-    }
-
-    @Override
-    public void onBufferingStop() {
-
-    }
-
-    @Override
-    public void onBufferProgress(int i) {
-
-    }
-
-    @Override
-    public void onPlayProgress(int i, int i1) {
-        initProgress(i, i1);
-    }
 
     private void initProgress(int cur, int dur) {
         if (mPlayerManager.getCurrPlayType() == XmPlayListControl.PLAY_SOURCE_RADIO) {
@@ -266,50 +204,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         globalPlay.setProgress((float)cur /(float)dur);
     }
 
-    @Override
-    public boolean onError(XmPlayerException e) {
-        return false;
-    }
-
-    @Override
-    public void onStartGetAdsInfo() {
-
-    }
-
-    @Override
-    public void onGetAdsInfo(AdvertisList advertisList) {
-
-    }
-
-    @Override
-    public void onAdsStartBuffering() {
-        globalPlay.setProgress(0);
-    }
-
-    @Override
-    public void onAdsStopBuffering() {
-
-    }
-
-    @Override
-    public void onStartPlayAds(Advertis advertis, int i) {
-        String imageUrl = advertis.getImageUrl();
-        if (TextUtils.isEmpty(imageUrl)) {
-            globalPlay.play(R.drawable.notification_default);
-        } else {
-            globalPlay.play(imageUrl);
-        }
-    }
-
-    @Override
-    public void onCompletePlayAds() {
-
-    }
-
-    @Override
-    public void onError(int i, int i1) {
-
-    }
 
     @Override
     public Class<MainViewModel> onBindViewModel() {
@@ -342,6 +236,11 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     @Override
     public void onBackPressedSupport() {
+        //如果正在显示loading,则清除
+        if (mBaseLoadService.getCurrentCallback() == LoadingCallback.class) {
+            clearStatus();
+            return;
+        }
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
             pop();
         } else {
@@ -406,8 +305,8 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPlayerManager.removePlayerStatusListener(this);
-        mPlayerManager.removeAdsStatusListener(this);
+        mPlayerManager.removePlayerStatusListener(playerStatusListener);
+        mPlayerManager.removeAdsStatusListener(adsStatusListener);
     }
 
 
@@ -472,5 +371,108 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         });
 
     }
+    private IXmPlayerStatusListener playerStatusListener =new IXmPlayerStatusListener() {
 
+        @Override
+        public void onPlayStart() {
+            Track currSoundIgnoreKind = mPlayerManager.getCurrSoundIgnoreKind(true);
+            if (null == currSoundIgnoreKind) {
+                return;
+            }
+            globalPlay.play(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlSmall())
+                    ?currSoundIgnoreKind.getAlbum().getCoverUrlLarge():currSoundIgnoreKind.getCoverUrlSmall());
+        }
+
+        @Override
+        public void onPlayPause() {
+            globalPlay.pause();
+        }
+
+        @Override
+        public void onPlayStop() {
+            globalPlay.pause();
+        }
+
+        @Override
+        public void onSoundPlayComplete() {
+
+        }
+
+        @Override
+        public void onSoundPrepared() {
+
+        }
+
+        @Override
+        public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
+
+        }
+
+        @Override
+        public void onBufferingStart() {
+
+        }
+
+        @Override
+        public void onBufferingStop() {
+
+        }
+
+        @Override
+        public void onBufferProgress(int i) {
+
+        }
+
+        @Override
+        public void onPlayProgress(int i, int i1) {
+            initProgress(i, i1);
+        }
+
+        @Override
+        public boolean onError(XmPlayerException e) {
+            return false;
+        }
+    };
+    private IXmAdsStatusListener adsStatusListener=new IXmAdsStatusListener() {
+
+        @Override
+        public void onStartGetAdsInfo() {
+
+        }
+
+        @Override
+        public void onGetAdsInfo(AdvertisList advertisList) {
+
+        }
+
+        @Override
+        public void onAdsStartBuffering() {
+            globalPlay.setProgress(0);
+        }
+
+        @Override
+        public void onAdsStopBuffering() {
+
+        }
+
+        @Override
+        public void onStartPlayAds(Advertis advertis, int i) {
+            String imageUrl = advertis.getImageUrl();
+            if (TextUtils.isEmpty(imageUrl)) {
+                globalPlay.play(R.drawable.notification_default);
+            } else {
+                globalPlay.play(imageUrl);
+            }
+        }
+
+        @Override
+        public void onCompletePlayAds() {
+
+        }
+
+        @Override
+        public void onError(int i, int i1) {
+
+        }
+    };
 }
