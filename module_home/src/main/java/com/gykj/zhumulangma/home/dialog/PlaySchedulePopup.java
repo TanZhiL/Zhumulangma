@@ -75,12 +75,6 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
         return (int) (XPopupUtils.getWindowHeight(getContext()) * .85f);
     }
 
-    @Override
-    protected void onShow() {
-        mScheduleAdapter.notifyDataSetChanged();
-        super.onShow();
-    }
-
     public PlayScheduleAdapter getScheduleAdapter() {
         return mScheduleAdapter;
     }
@@ -139,7 +133,7 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
 
     public  class PlayScheduleAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
-        public PlayScheduleAdapter(int layoutResId) {
+        PlayScheduleAdapter(int layoutResId) {
             super(layoutResId);
         }
 

@@ -106,21 +106,21 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         ((RefreshLayout) layoutDetail3.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
 
 
-        RecyclerView rvAlbum = layoutDetail1.findViewById(R.id.rv);
+        RecyclerView rvAlbum = layoutDetail1.findViewById(R.id.recyclerview);
         rvAlbum.setHasFixedSize(true);
         rvAlbum.setLayoutManager(new LinearLayoutManager(mContext));
         mAlbumAdapter = new DownloadAlbumAdapter(R.layout.listen_item_download_album);
         mAlbumAdapter.bindToRecyclerView(rvAlbum);
         mAlbumAdapter.setEmptyView(R.layout.common_layout_empty);
 
-        RecyclerView rvTrack = layoutDetail2.findViewById(R.id.rv);
+        RecyclerView rvTrack = layoutDetail2.findViewById(R.id.recyclerview);
         rvTrack.setHasFixedSize(true);
         rvTrack.setLayoutManager(new LinearLayoutManager(mContext));
         mTrackAdapter = new DownloadTrackAdapter(R.layout.listen_item_download_track);
         mTrackAdapter.bindToRecyclerView(rvTrack);
         mTrackAdapter.setEmptyView(R.layout.common_layout_empty);
 
-        RecyclerView rvRecommend = layoutDetail3.findViewById(R.id.rv);
+        RecyclerView rvRecommend = layoutDetail3.findViewById(R.id.recyclerview);
         rvRecommend.setHasFixedSize(true);
         rvRecommend.setLayoutManager(new LinearLayoutManager(mContext));
         mDownloadingAdapter = new DownloadingAdapter(R.layout.listen_item_downloading);

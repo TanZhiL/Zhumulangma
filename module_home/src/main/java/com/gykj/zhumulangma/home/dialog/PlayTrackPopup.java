@@ -53,7 +53,7 @@ public class PlayTrackPopup extends BottomPopupView implements View.OnClickListe
         super.onCreate();
         findViewById(R.id.tv_close).setOnClickListener(this);
         refreshLayout = findViewById(R.id.refreshLayout);
-        recyclerView = findViewById(R.id.rv);
+        recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mTrackAdapter = new PlayTrackAdapter(R.layout.home_item_play_track);

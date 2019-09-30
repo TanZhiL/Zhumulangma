@@ -13,7 +13,7 @@
         android:layout_height="68dp"
         android:layout_marginStart="11dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/hot_like"
+        tools:src="@drawable/image_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_index"
         app:layout_constraintTop_toTopOf="parent" />

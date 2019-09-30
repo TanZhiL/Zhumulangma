@@ -110,21 +110,6 @@
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 
-    <FrameLayout
-        android:id="@+id/fl_mask"
-        android:layout_width="match_parent"
-        android:background="@color/white"
-        android:visibility="gone"
-        android:layout_weight="1"
-        android:layout_height="0dp">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            />
-    </FrameLayout>
 <include layout="@layout/common_layout_refresh_loadmore"/>
     <!--<com.scwang.smartrefresh.layout.SmartRefreshLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"

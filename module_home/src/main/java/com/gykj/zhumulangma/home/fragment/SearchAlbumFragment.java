@@ -60,7 +60,7 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<SearchAlbumView
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.rv);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);

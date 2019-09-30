@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/common_empty_pic_net"
-            android:gravity="center_horizontal"
-            />
-        <TextView
-            android:id="@+id/btn_net_refresh"
-            android:layout_width="122dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="16dp"
-            android:textSize="12sp"
-            android:textColor="@color/colorPrimary"
-            android:gravity="center"
-            android:text="立即刷新"
-            android:layout_gravity="center_horizontal"
-            />
-    </LinearLayout>
-</FrameLayout>
+        android:src="@drawable/ic_common_error" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorHint"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:paddingTop="8dp"
+        android:textSize="12sp"
+        android:text="网络异常,点击空白处重试" />
+
+</LinearLayout>

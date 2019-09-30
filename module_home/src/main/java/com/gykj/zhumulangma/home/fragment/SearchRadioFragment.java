@@ -51,7 +51,7 @@ public class SearchRadioFragment extends BaseRefreshMvvmFragment<SearchRadioView
     }
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.rv);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);
         mRadioAdapter =new RadioAdapter(R.layout.home_item_radio);

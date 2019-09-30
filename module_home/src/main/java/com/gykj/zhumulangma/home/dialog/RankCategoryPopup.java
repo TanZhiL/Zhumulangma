@@ -17,10 +17,11 @@ import java.util.Arrays;
  * Author: Thomas.
  * Date: 2019/9/30 10:33
  * Email: 1071931588@qq.com
- * Description:
+ * Description:排行榜分类弹窗
  */
-public class CategoryPopup extends PartShadowPopupView implements BaseQuickAdapter.OnItemClickListener {
+public class RankCategoryPopup extends PartShadowPopupView implements BaseQuickAdapter.OnItemClickListener {
     private onSelectedListener mListener;
+
     private String[] mCLabels = {"热门", "音乐", "娱乐", "有声书"
             , "儿童", "3D体验馆", "资讯", "脱口秀"
             , "情感生活", "历史", "人文", "英语"
@@ -33,23 +34,25 @@ public class CategoryPopup extends PartShadowPopupView implements BaseQuickAdapt
             , "32", "13", "15", "40"
             , "17", "8", "18", "7"
             , "22", "21", "24", "23"};
-    public CategoryPopup(@NonNull Context context) {
+
+    public RankCategoryPopup(@NonNull Context context) {
         super(context);
     }
-    public CategoryPopup(@NonNull Context context,onSelectedListener listener) {
+
+    public RankCategoryPopup(@NonNull Context context, onSelectedListener listener) {
         super(context);
-        mListener=listener;
+        mListener = listener;
     }
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.home_dialog_category;
+        return R.layout.home_dialog_recyclerview;
     }
 
     @Override
     protected void onCreate() {
         super.onCreate();
-        RecyclerView rvCategory = findViewById(R.id.rv_category);
+        RecyclerView rvCategory = findViewById(R.id.recyclerview);
         rvCategory.setLayoutManager(new GridLayoutManager(getContext(), 4));
         RankCategotyAdapter categotyAdapter = new RankCategotyAdapter(R.layout.home_item_rank_category,
                 Arrays.asList(mCLabels));
@@ -60,10 +63,31 @@ public class CategoryPopup extends PartShadowPopupView implements BaseQuickAdapt
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        dismissWith(()-> mListener.onSelected(mCIds[position],mCLabels[position]));
+        dismissWith(() -> {
+            if(mListener!=null) {
+                mListener.onSelected(mCIds[position], mCLabels[position]);
+            }
+        });
 
     }
-    public interface onSelectedListener{
-       void onSelected(String category_id,String category_name);
+
+    public interface onSelectedListener {
+        void onSelected(String category_id, String category_name);
+
+    }
+    public interface onPopupDismissingListener {
+
+        void onDismissing();
+    }
+    private onPopupDismissingListener mDismissingListener;
+    public void setDismissingListener(onPopupDismissingListener dismissingListener) {
+        mDismissingListener = dismissingListener;
+    }
+
+    @Override
+    protected void doDismissAnimation() {
+        super.doDismissAnimation();
+        if(mDismissingListener!=null)
+        mDismissingListener.onDismissing();
     }
 }

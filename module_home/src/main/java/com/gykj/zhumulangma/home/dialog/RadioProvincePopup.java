@@ -22,25 +22,23 @@ import java.util.List;
  * Author: Thomas.
  * Date: 2019/9/30 10:33
  * Email: 1071931588@qq.com
- * Description:
+ * Description:省市台省份选择弹窗
  */
-public class ProvincePopup extends PartShadowPopupView implements BaseQuickAdapter.OnItemClickListener {
+public class RadioProvincePopup extends PartShadowPopupView implements BaseQuickAdapter.OnItemClickListener {
     private onSelectedListener mListener;
 
-    private ProvinceAdapter mProvinceAdapter;
-    private RecyclerView rvProvince;
     private List<ProvinceBean> mProvinceBeans;
-    public ProvincePopup(@NonNull Context context) {
+    public RadioProvincePopup(@NonNull Context context) {
         super(context);
     }
-    public ProvincePopup(@NonNull Context context, onSelectedListener listener) {
+    public RadioProvincePopup(@NonNull Context context, onSelectedListener listener) {
         super(context);
         mListener=listener;
     }
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.home_dialog_category;
+        return R.layout.home_dialog_recyclerview;
     }
 
     @Override
@@ -49,21 +47,40 @@ public class ProvincePopup extends PartShadowPopupView implements BaseQuickAdapt
         String s = ResourceUtils.readAssets2String("province.json");
         mProvinceBeans = new Gson().fromJson(s, new TypeToken<ArrayList<ProvinceBean>>() {
         }.getType());
-        rvProvince = findViewById(R.id.rv_category);
+        RecyclerView rvProvince = findViewById(R.id.recyclerview);
         rvProvince.setLayoutManager(new GridLayoutManager(getContext(), 5));
-        mProvinceAdapter = new ProvinceAdapter(R.layout.home_item_rank_category, mProvinceBeans);
+        ProvinceAdapter provinceAdapter = new ProvinceAdapter(R.layout.home_item_rank_category, mProvinceBeans);
         rvProvince.setHasFixedSize(true);
-        mProvinceAdapter.bindToRecyclerView(rvProvince);
-        mProvinceAdapter.setOnItemClickListener(this);
+        provinceAdapter.bindToRecyclerView(rvProvince);
+        provinceAdapter.setOnItemClickListener(this);
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        dismissWith(()-> mListener.onSelected(mProvinceBeans.get(position).getProvince_code(),
-                mProvinceBeans.get(position).getProvince_name()));
+        dismissWith(()-> {
+            if(mListener!=null){
+                mListener.onSelected(mProvinceBeans.get(position).getProvince_code(),
+                        mProvinceBeans.get(position).getProvince_name());
+            }
+        });
 
     }
     public interface onSelectedListener{
        void onSelected(int province_code, String province_name);
+    }
+    public interface onPopupDismissingListener {
+
+        void onDismissing();
+    }
+    private onPopupDismissingListener mDismissingListener;
+    public void setDismissingListener(onPopupDismissingListener dismissingListener) {
+        mDismissingListener = dismissingListener;
+    }
+
+    @Override
+    protected void doDismissAnimation() {
+        super.doDismissAnimation();
+        if(mDismissingListener!=null)
+            mDismissingListener.onDismissing();
     }
 }

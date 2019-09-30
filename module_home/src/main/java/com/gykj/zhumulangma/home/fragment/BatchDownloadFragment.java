@@ -4,12 +4,10 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -26,12 +24,14 @@ import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
-import com.gykj.zhumulangma.common.util.log.TLog;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.DownloadTrackAdapter;
-import com.gykj.zhumulangma.home.adapter.TrackPagerAdapter;
+import com.gykj.zhumulangma.home.dialog.TrackPagerPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.BatchDownloadViewModel;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.enums.PopupPosition;
+import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
@@ -57,20 +57,17 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Home.F_BATCH_DOWNLOAD)
 public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownloadViewModel,Track> implements
-        BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
+        BaseQuickAdapter.OnItemClickListener, View.OnClickListener, TrackPagerPopup.onPopupDismissingListener {
 
 
     @Autowired(name = KeyCode.Home.ALBUMID)
     public long mAlbumId;
     private long mTotalSize;
-    private String mSort = "time_desc";
     private SmartRefreshLayout refreshLayout;
-    private TrackPagerAdapter mPagerAdapter;
     private DownloadTrackAdapter mDownloadTrackAdapter;
+    private TrackPagerPopup mPagerPopup;
     private Handler mHandler = new Handler();
 
-    private FrameLayout flMask;
-    private RecyclerView rvPager;
     private TextView tvSize;
     private View vDownload;
 
@@ -82,23 +79,17 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
 
     @Override
     protected void initView(View view) {
-
-        RecyclerView recyclerView = fd(R.id.rv);
+        RecyclerView recyclerView = fd(R.id.recyclerview);
         refreshLayout = fd(R.id.refreshLayout);
-        flMask = fd(R.id.fl_mask);
-        rvPager = fd(R.id.rv_pager);
         tvSize = fd(R.id.tv_memory);
         vDownload = fd(R.id.tv_batch_download);
-        flMask = fd(R.id.fl_mask);
-        rvPager = fd(R.id.rv_pager);
-        rvPager.setLayoutManager(new GridLayoutManager(mContext, 4));
-        mPagerAdapter = new TrackPagerAdapter(R.layout.home_item_pager);
-        mPagerAdapter.bindToRecyclerView(rvPager);
 
         mDownloadTrackAdapter = new DownloadTrackAdapter(R.layout.home_item_batch_download);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);
         mDownloadTrackAdapter.bindToRecyclerView(recyclerView);
+        mPagerPopup=new TrackPagerPopup(mContext,this);
+        mPagerPopup.setDismissingListener(this);
     }
 
     @Override
@@ -108,15 +99,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
         fd(R.id.cb_all).setOnClickListener(this);
         fd(R.id.ll_select).setOnClickListener(this);
         fd(R.id.tv_batch_download).setOnClickListener(this);
-        flMask.setOnClickListener(this);
-        mPagerAdapter.setOnItemClickListener(this);
-        rvPager.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                changePageStatus();
-            }
-        });
+
     }
 
     @NonNull
@@ -128,7 +111,8 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     @Override
     public void initData() {
         mViewModel.setAlbumId(mAlbumId);
-        mViewModel.setSort(mSort);
+        String sort = "time_desc";
+        mViewModel.setSort(sort);
         mViewModel.init();
     }
 
@@ -204,8 +188,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                 vDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
             }
         } else {
-            switchPager();
-            mViewModel.getTrackList(position + 1);
+            mPagerPopup.dismissWith(()-> mViewModel.getTrackList(position + 1));
         }
     }
 
@@ -221,8 +204,8 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
             List<Track> selectedTracks = mDownloadTrackAdapter.getSelectedTracks();
             if (isChecked) {
                 for (int i = 0; i < tracks.size(); i++) {
-                    if (!selectedTracks.contains(tracks.get(i)) &&
-                            XmDownloadManager.getInstance().getSingleTrackDownloadStatus(tracks.get(i).getDataId()) == DownloadState.NOADD) {
+                    if (!selectedTracks.contains(tracks.get(i)) &&XmDownloadManager.getInstance()
+                            .getSingleTrackDownloadStatus(tracks.get(i).getDataId()) == DownloadState.NOADD) {
                         mTotalSize += tracks.get(i).getDownloadSize();
                         selectedTracks.add(tracks.get(i));
                         mDownloadTrackAdapter.notifyItemChanged(i);
@@ -259,11 +242,9 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
             Collections.sort(selectedTracks, (o1, o2) ->
                     Integer.compare(o2.getOrderPositionInAlbum(), o1.getOrderPositionInAlbum()));
             List<Long> trackIds = new ArrayList<>();
-            Iterator<Track> iterator = selectedTracks.iterator();
-            while (iterator.hasNext()) {
-                trackIds.add(iterator.next().getDataId());
+            for (Track selectedTrack : selectedTracks) {
+                trackIds.add(selectedTrack.getDataId());
             }
-            TLog.d(trackIds);
             XmDownloadManager.getInstance().downloadTracks(trackIds, true, new IDoSomethingProgress<AddDownloadException>() {
                 @Override
                 public void begin() {
@@ -276,7 +257,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                     vDownload.setEnabled(false);
                     ((CheckBox) fd(R.id.cb_all)).setChecked(false);
                     vDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
-                    ToastUtil.showToast("已加入下载队列");
+                    ToastUtil.showToast(ToastUtil.LEVEL_S,"已加入下载队列");
                     selectedTracks.clear();
                     mDownloadTrackAdapter.notifyDataSetChanged();
                 }
@@ -305,16 +286,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     }
 
 
-    @Override
-    public boolean onBackPressedSupport() {
-       if(super.onBackPressedSupport()){
-           return true;
-       }else if (flMask.getVisibility() == View.VISIBLE){
-           switchPager();
-           return true;
-       }
-        return false;
-    }
+
 
     @Override
     public Class<BatchDownloadViewModel> onBindViewModel() {
@@ -345,28 +317,28 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
      * 改变分页器选中状态
      */
     private void changePageStatus() {
-        for (int i = 0; i < mPagerAdapter.getData().size(); i++) {
+        for (int i = 0; i < mPagerPopup.getPagerAdapter().getData().size(); i++) {
             Iterator<Track> iterator = mDownloadTrackAdapter.getSelectedTracks().iterator();
-            View ivSelected = mPagerAdapter.getViewByPosition(i, R.id.iv_selected);
+            View ivSelected = mPagerPopup.getPagerAdapter().getViewByPosition(i, R.id.iv_selected);
             if (ivSelected != null) {
                 ivSelected.setVisibility(View.GONE);
                 while (iterator.hasNext()) {
                     Track next = iterator.next();
-                    int page = next.getOrderPositionInAlbum() / BatchDownloadViewModel.PAGESIEZ;
+                    int page = mPagerPopup.getPagerAdapter().getData().size()-1-next.getOrderPositionInAlbum() / BatchDownloadViewModel.PAGESIEZ;
                     if (page == i) {
                         ivSelected.setVisibility(View.VISIBLE);
                         break;
                     }
                 }
             }
-            TextView viewByPosition = (TextView) mPagerAdapter.getViewByPosition(i, R.id.tv_page);
-            if (viewByPosition != null) {
+            TextView tvPage = (TextView) mPagerPopup.getPagerAdapter().getViewByPosition(i, R.id.tv_page);
+            if (tvPage != null) {
                 if (mViewModel.getUpTrackPage() <= i && i <= mViewModel.getCurTrackPage() - 2) {
-                    viewByPosition.setBackgroundResource(R.drawable.shap_common_primary);
-                    viewByPosition.setTextColor(Color.WHITE);
+                    tvPage.setBackgroundResource(R.drawable.shap_common_primary);
+                    tvPage.setTextColor(Color.WHITE);
                 } else {
-                    viewByPosition.setBackgroundResource(R.drawable.shap_common_defualt);
-                    viewByPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
+                    tvPage.setBackgroundResource(R.drawable.shap_common_defualt);
+                    tvPage.setTextColor(getResources().getColor(R.color.textColorPrimary));
                 }
             }
         }
@@ -376,22 +348,32 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
      * 切换分页器是否显示
      */
     private void switchPager() {
-        if (flMask.getVisibility() == View.VISIBLE) {
-            rvPager.animate().translationY(-rvPager.getHeight()).setDuration(200).withEndAction(() -> {
-                flMask.setVisibility(View.GONE);
-                refreshLayout.setVisibility(View.VISIBLE);
-                fd(R.id.cl_action).setVisibility(View.VISIBLE);
-            });
-            fd(R.id.iv_select_page).animate().rotationBy(180).setDuration(200);
-        } else {
-            refreshLayout.setVisibility(View.GONE);
-            fd(R.id.cl_action).setVisibility(View.GONE);
-            flMask.setVisibility(View.VISIBLE);
-            rvPager.setTranslationY(-rvPager.getHeight() == 0 ? -400 : -rvPager.getHeight());
-            rvPager.animate().translationY(0).setDuration(200);
-            fd(R.id.iv_select_page).animate().rotationBy(180).setDuration(200);
-            mHandler.postDelayed(() -> changePageStatus(), 200);
+        if(mPagerPopup.isShow()){
+            mPagerPopup.dismiss();
+        }else {
+            fd(R.id.iv_select_page).animate().rotation(-90).setDuration(200);
+            new XPopup.Builder(mContext).atView(fd(R.id.cl_actionbar)).setPopupCallback(new SimpleCallback(){
+                @Override
+                public void onCreated() {
+                    super.onCreated();
+                    mPagerPopup.getRvPager().setOnScrollListener(new RecyclerView.OnScrollListener() {
+                        @Override
+                        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                            super.onScrolled(recyclerView, dx, dy);
+                            changePageStatus();
+                        }
+                    });
+                }
+
+                @Override
+                public void beforeShow() {
+                    super.beforeShow();
+                    changePageStatus();
+                }
+            }).popupPosition(PopupPosition.Bottom)
+                    .asCustom(mPagerPopup).show();
         }
+
     }
 
     /**
@@ -410,12 +392,17 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
         }
 
 
-        mPagerAdapter.setNewData(list);
+        mPagerPopup.getPagerAdapter().setNewData(list);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    public void onDismissing() {
+        fd(R.id.iv_select_page).animate().rotation(90).setDuration(200);
     }
 }

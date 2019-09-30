@@ -24,13 +24,12 @@ import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RankFreeAdapter;
 import com.gykj.zhumulangma.home.adapter.RankPaidAdapter;
-import com.gykj.zhumulangma.home.dialog.CategoryPopup;
+import com.gykj.zhumulangma.home.dialog.RankCategoryPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
-import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -54,7 +53,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 @Route(path = AppConstants.Router.Home.F_RANK)
 public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> implements
-        CategoryPopup.onSelectedListener {
+        RankCategoryPopup.onSelectedListener, RankCategoryPopup.onPopupDismissingListener {
 
     private RankFreeAdapter mFreeAdapter;
     private RankPaidAdapter mPaidAdapter;
@@ -70,7 +69,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     private View llbarCenter;
     private View ivCategoryDown;
     private TextView tvTitle;
-    private CategoryPopup mCategoryPopup;
+    private RankCategoryPopup mCategoryPopup;
     public RankFragment() {
     }
 
@@ -92,8 +91,8 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
         layoutPaid = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
         rlFree = layoutFree.findViewById(R.id.refreshLayout);
         rlPaid = layoutPaid.findViewById(R.id.refreshLayout);
-        RecyclerView rvFree = layoutFree.findViewById(R.id.rv);
-        RecyclerView rvPaid = layoutPaid.findViewById(R.id.rv);
+        RecyclerView rvFree = layoutFree.findViewById(R.id.recyclerview);
+        RecyclerView rvPaid = layoutPaid.findViewById(R.id.recyclerview);
         rvFree.setLayoutManager(new LinearLayoutManager(mContext));
         rvPaid.setLayoutManager(new LinearLayoutManager(mContext));
         mFreeAdapter = new RankFreeAdapter(R.layout.home_item_rank_free);
@@ -110,8 +109,8 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
 
-        mCategoryPopup=new CategoryPopup(mContext,this);
-
+        mCategoryPopup=new RankCategoryPopup(mContext,this);
+        mCategoryPopup.setDismissingListener(this);
 
     }
 
@@ -151,21 +150,15 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
         mViewModel.init();
     }
 
-
+    /**
+     * 显示分类弹窗
+     */
     private void switchCategory() {
         if(mCategoryPopup.isShow()){
             mCategoryPopup.dismiss();
         }else {
-            ivCategoryDown.animate().rotationBy(180).setDuration(200);
-            new XPopup.Builder(mContext).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom
-            ).setPopupCallback(new SimpleCallback(){
-
-                @Override
-                public void onDismiss() {
-                    super.onDismiss();
-                    ivCategoryDown.animate().rotationBy(180).setDuration(200);
-                }
-            }).asCustom(mCategoryPopup).show();
+            ivCategoryDown.animate().rotation(180).setDuration(200);
+            new XPopup.Builder(mContext).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mCategoryPopup).show();
         }
     }
 
@@ -207,6 +200,11 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
         mViewModel.setCid(mCId);
         mFreeAdapter.setNewData(null);
         mViewModel.init();
+    }
+
+    @Override
+    public void onDismissing() {
+        ivCategoryDown.animate().rotation(0).setDuration(200);
     }
 
     class RankPagerAdapter extends PagerAdapter {

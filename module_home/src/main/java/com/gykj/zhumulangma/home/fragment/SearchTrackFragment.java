@@ -51,7 +51,7 @@ public class SearchTrackFragment extends BaseRefreshMvvmFragment<SearchTrackView
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.rv);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);
         mSearchTrackAdapter = new SearchTrackAdapter(R.layout.home_item_seach_track);

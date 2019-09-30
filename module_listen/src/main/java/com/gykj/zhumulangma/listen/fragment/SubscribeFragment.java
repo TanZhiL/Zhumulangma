@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -25,9 +24,6 @@ import com.gykj.zhumulangma.listen.adapter.SubscribeAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.SubscribeViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.RefreshState;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -69,7 +65,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = fd(R.id.rv);
+        RecyclerView recyclerView = fd(R.id.recyclerview);
         refreshLayout = fd(R.id.refreshLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);

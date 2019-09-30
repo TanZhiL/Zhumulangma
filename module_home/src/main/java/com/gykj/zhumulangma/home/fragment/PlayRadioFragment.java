@@ -258,7 +258,13 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     @Override
     protected void onRight1Click(View v) {
         super.onRight1Click(v);
-        new XPopup.Builder(getContext()).asCustom(mSchedulePopup).show();
+        new XPopup.Builder(getContext()).setPopupCallback(new SimpleCallback(){
+            @Override
+            public void beforeShow() {
+                super.beforeShow();
+                mSchedulePopup.getScheduleAdapter().notifyDataSetChanged();
+            }
+        }).asCustom(mSchedulePopup).show();
     }
 
     @Override

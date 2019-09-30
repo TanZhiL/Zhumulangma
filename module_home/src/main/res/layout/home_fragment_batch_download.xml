@@ -52,21 +52,8 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#f0f0f0"/>
-    <FrameLayout
-        android:id="@+id/fl_mask"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/white"
-        android:visibility="gone">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never" />
-    </FrameLayout>
-<include android:layout_width="match_parent"
+    <include android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1"
     layout="@layout/common_layout_refresh_loadmore"/>

@@ -23,7 +23,6 @@ import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.SubscribeViewModel;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
@@ -61,7 +60,7 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
     }
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = fd(R.id.rv);
+        RecyclerView recyclerView = fd(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);
         mRecommendAdapter = new RecommendAdapter(R.layout.listen_item_recommend);

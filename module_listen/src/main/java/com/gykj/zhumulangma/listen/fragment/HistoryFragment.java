@@ -42,7 +42,7 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
     @Override
     protected void initView(View view) {
         refreshLayout = fd(R.id.refreshLayout);
-        RecyclerView recyclerView = fd(R.id.rv);
+        RecyclerView recyclerView = fd(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);
         mHistoryAdapter = new HistoryAdapter(null);

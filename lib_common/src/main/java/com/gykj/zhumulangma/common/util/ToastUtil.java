@@ -15,38 +15,49 @@ import com.hjq.toast.ToastUtils;
  */
 public class ToastUtil {
 
-    public  static  final int LEVEL_W=0;
-    public  static  final int LEVEL_E=1;
+    public static final int LEVEL_W = 0;
+    public static final int LEVEL_E = 1;
+    public static final int LEVEL_S = 2;
+
     public static void showToast(String message) {
-       showToast(LEVEL_W,message);
+        showToast(LEVEL_W, message);
     }
+
     public static void showToast(int resid) {
-        showToast(LEVEL_W,resid);
+        showToast(LEVEL_W, resid);
     }
-    public static void showToast(int level,String message) {
-       ImageView ivIcon= ToastUtils.getView().findViewById(R.id.iv_icon);
-       ivIcon.setVisibility(View.VISIBLE);
-        switch (level){
+
+    public static void showToast(int level, String message) {
+        ImageView ivIcon = ToastUtils.getView().findViewById(R.id.iv_icon);
+        ivIcon.setVisibility(View.VISIBLE);
+        switch (level) {
             case LEVEL_W:
                 ivIcon.setImageResource(R.drawable.ic_common_warnning);
                 break;
             case LEVEL_E:
                 ivIcon.setImageResource(R.drawable.ic_common_update_close);
+                break;
+            case LEVEL_S:
+                ivIcon.setImageResource(R.drawable.ic_common_succ);
                 break;
         }
         TextView tvTip = ToastUtils.getView().findViewById(R.id.tv_tip);
         tvTip.setText(message);
         ToastUtils.show(message);
     }
-    public static void showToast(int level,int resid) {
-        ImageView ivIcon= ToastUtils.getView().findViewById(R.id.iv_icon);
+
+    public static void showToast(int level, int resid) {
+        ImageView ivIcon = ToastUtils.getView().findViewById(R.id.iv_icon);
         ivIcon.setVisibility(View.VISIBLE);
-        switch (level){
+        switch (level) {
             case LEVEL_W:
                 ivIcon.setImageResource(R.drawable.ic_common_warnning);
                 break;
             case LEVEL_E:
                 ivIcon.setImageResource(R.drawable.ic_common_update_close);
+                break;
+            case LEVEL_S:
+                ivIcon.setImageResource(R.drawable.ic_common_succ);
                 break;
         }
         TextView tvTip = ToastUtils.getView().findViewById(R.id.tv_tip);

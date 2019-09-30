@@ -53,7 +53,7 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerList
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = fd(R.id.rv);
+        RecyclerView recyclerView = fd(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);
         mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);

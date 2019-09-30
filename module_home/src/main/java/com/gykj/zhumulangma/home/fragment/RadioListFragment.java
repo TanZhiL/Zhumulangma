@@ -22,13 +22,12 @@ import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
-import com.gykj.zhumulangma.home.dialog.ProvincePopup;
+import com.gykj.zhumulangma.home.dialog.RadioProvincePopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioListViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
-import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 
@@ -44,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Route(path = AppConstants.Router.Home.F_RADIO_LIST)
 public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewModel, Radio> implements
-        BaseQuickAdapter.OnItemClickListener,ProvincePopup.onSelectedListener {
+        BaseQuickAdapter.OnItemClickListener, RadioProvincePopup.onSelectedListener, RadioProvincePopup.onPopupDismissingListener {
     //本省台
     public static final int LOCAL_PROVINCE = 999;
     //国家台
@@ -72,7 +71,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
 
     private TextView tvTitle;
     private List<ProvinceBean> mProvinceBeans;
-    private ProvincePopup mProvincePopup;
+    private RadioProvincePopup mProvincePopup;
 
     public RadioListFragment() {
 
@@ -89,7 +88,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
         mProvinceBeans = new Gson().fromJson(s, new TypeToken<ArrayList<ProvinceBean>>() {
         }.getType());
 
-        RecyclerView recyclerView = fd(R.id.rv);
+        RecyclerView recyclerView = fd(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setHasFixedSize(true);
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
@@ -105,7 +104,8 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
             tvTitle.setText(mProvinceBeans.get(0).getProvince_name());
         }
 
-        mProvincePopup=new ProvincePopup(mContext,this);
+        mProvincePopup=new RadioProvincePopup(mContext,this);
+        mProvincePopup.setDismissingListener(this);
     }
 
     @Override
@@ -186,16 +186,8 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
         if(mProvincePopup.isShow()){
             mProvincePopup.dismiss();
         }else {
-            ivCategoryDown.animate().rotationBy(180).setDuration(200);
-            new XPopup.Builder(mContext).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom
-            ).setPopupCallback(new SimpleCallback(){
-
-                @Override
-                public void onDismiss() {
-                    super.onDismiss();
-                    ivCategoryDown.animate().rotationBy(180).setDuration(200);
-                }
-            }).asCustom(mProvincePopup).show();
+            ivCategoryDown.animate().rotation(180).setDuration(200);
+            new XPopup.Builder(mContext).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mProvincePopup).show();
         }
     }
 
@@ -208,5 +200,10 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
             mViewModel.setProvinceCode(mProvinceCode);
             mViewModel.init();
         }
+    }
+
+    @Override
+    public void onDismissing() {
+        ivCategoryDown.animate().rotation(0).setDuration(200);
     }
 }

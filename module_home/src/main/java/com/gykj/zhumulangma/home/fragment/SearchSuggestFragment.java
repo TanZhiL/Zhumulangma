@@ -70,7 +70,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
         SmartRefreshLayout refreshLayout = fd(R.id.refreshLayout);
         refreshLayout.setEnableRefresh(false);
         refreshLayout.setEnableLoadMore(false);
-        RecyclerView recyclerView = fd(R.id.rv);
+        RecyclerView recyclerView = fd(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mSuggestAdapter=new SearchSuggestAdapter(null);

@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/img_no_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
        android:layout_gravity="center"
-        android:src="@drawable/common_empty_pic_data" />
-</FrameLayout>
+        android:tint="@color/colorHint"
+        android:src="@drawable/ic_common_empty" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorHint"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginBottom="50dp"
+        android:text="暂无数据" />
+
+</LinearLayout>
