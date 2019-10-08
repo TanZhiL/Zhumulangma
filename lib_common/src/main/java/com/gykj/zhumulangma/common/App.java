@@ -71,6 +71,7 @@ public class App extends Application {
                         .initLog()
                         .initXmly()
                         .initGreenDao()
+                        .initUM()
                         .initNet()
                         .initRouter()
                         .initXmlyPlayer()

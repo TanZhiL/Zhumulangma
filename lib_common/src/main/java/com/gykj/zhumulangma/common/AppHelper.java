@@ -29,6 +29,8 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
 import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
@@ -114,6 +116,15 @@ public class AppHelper {
         return this;
     }
 
+    public AppHelper initUM() {
+        UMConfigure.init(mApplication, AppConstants.Share.UM_ID
+                ,"umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
+        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setSinaWeibo(AppConstants.Share.SINA_ID,AppConstants.Share.SINA_KEY,"http://sns.whalecloud.com");
+        PlatformConfig.setQQZone(AppConstants.Share.QQ_ID, AppConstants.Share.QQ_KEY);
+        return this;
+    }
+
     public AppHelper initXmlyPlayer() {
         try {
             Method method = XmPlayerConfig.getInstance(mApplication).getClass().getDeclaredMethod("setUseSystemPlayer", Boolean.class);
@@ -183,7 +194,7 @@ public class AppHelper {
 
             Beta.canNotifyUserRestart = true;
             //生产环境
-//            Bugly.init(mApplication, AppConstants.Bugly.ID, false);
+//            Bugly.init(mApplication, AppConstants.Bugly.UM_ID, false);
             //开发设备
             Bugly.setIsDevelopmentDevice(mApplication, true);
             Bugly.init(mApplication, AppConstants.Bugly.ID, true);
@@ -432,4 +443,6 @@ public class AppHelper {
             Logger.log("TingApplication : onFinished " + request);
         }
     };
+
+
 }

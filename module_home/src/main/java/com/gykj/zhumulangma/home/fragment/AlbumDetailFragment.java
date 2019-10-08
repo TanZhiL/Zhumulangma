@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,9 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -389,6 +393,34 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
+    }
+
+    @Override
+    protected void onRight2Click(View v) {
+        super.onRight2Click(v);
+        new ShareAction(_mActivity).withText("hello").setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN)
+                .setCallback(new UMShareListener() {
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+                        Log.d(TAG, "onStart() called with: share_media = [" + share_media + "]");
+                    }
+
+                    @Override
+                    public void onResult(SHARE_MEDIA share_media) {
+                        Log.d(TAG, "onResult() called with: share_media = [" + share_media + "]");
+
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                        Log.d(TAG, "onError() called with: share_media = [" + share_media + "], throwable = [" + throwable + "]");
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media) {
+                        Log.d(TAG, "onCancel() called with: share_media = [" + share_media + "]");
+                    }
+                }).open();
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.gykj.zhumulangma.main;
 
+import android.Manifest;
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ActivityUtils;
+import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.AppHelper;
@@ -22,6 +25,7 @@ import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.status.LoadingCallback;
+import com.gykj.zhumulangma.common.util.PermissionPageUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.dialog.SplashAdPopup;
@@ -30,6 +34,8 @@ import com.gykj.zhumulangma.main.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.SimpleCallback;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.umeng.socialize.UMShareAPI;
 import com.ximalaya.ting.android.opensdk.auth.call.IXmlyAuthListener;
 import com.ximalaya.ting.android.opensdk.auth.exception.XmlyException;
 import com.ximalaya.ting.android.opensdk.auth.handler.XmlySsoHandler;
@@ -111,6 +117,31 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         }
         //全局白色背景
         setTheme(R.style.NullTheme);
+        //申请权限
+        new RxPermissions(this).requestEach(new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.CALL_PHONE,
+                Manifest.permission.READ_LOGS,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.SET_DEBUG_APP,
+                Manifest.permission.SYSTEM_ALERT_WINDOW,
+                Manifest.permission.GET_ACCOUNTS,
+                Manifest.permission.WRITE_APN_SETTINGS})
+                .subscribe(permission -> {
+                    if (!permission.granted) {
+                        new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
+                                .dismissOnBackPressed(false)
+                                .asConfirm("提示", "权限不足,请允许珠穆朗玛听获取权限",
+                                () -> {
+                                    new PermissionPageUtil(this).jumpPermissionPage();
+                                    AppUtils.exitApp();
+                                }, AppUtils::exitApp)
+                                .show();
+                    }
+                });
+
     }
 
     @Override
@@ -300,6 +331,13 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 goLogin();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //分享回调
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

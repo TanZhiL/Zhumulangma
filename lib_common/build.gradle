@@ -119,13 +119,20 @@ dependencies {
     api rootProject.ext.dependencies["CoolIndicator"]
     api rootProject.ext.dependencies["toast"]
     api rootProject.ext.dependencies["bga-qrcode-zxing"]
-    api files('libs/TingPhoneOpenSDK_7.0.8.jar')
-    api files('libs/XmDownload_1.7.jar')
-    api files('libs/XmlyOAuth2SDK_V1.11.jar')
     api 'com.amap.api:location:latest.integration'
-    api files('libs/Msc.jar')
     api 'com.tencent.bugly:crashreport_upgrade:latest.release'
     api 'com.tencent.tinker:tinker-android-lib:1.9.9'
+    api files('libs/TingPhoneOpenSDK_7.0.8.jar')
+    api files('libs/XmlyOAuth2SDK_V1.11.jar')
+    api files('libs/XmDownload_1.7.jar')
+    api files('libs/Msc.jar')
+    api files('libs/umeng-common-2.1.0.jar')
+    api files('libs/umeng-share-core-6.9.6.jar')
+    api files('libs/umeng-shareboard-widget-6.9.6.jar')
+    api files('libs/umeng-sharetool-6.9.6.jar')
+    api files('libs/umeng-share-QQ-simplify-6.9.6.jar')
+    api files('libs/umeng-share-sina-simplify-6.9.6.jar')
+    api files('libs/umeng-share-wechat-simplify-6.9.6.jar')
 }
 greendao {
     //数据库的schema版本，也可以理解为数据库版本号

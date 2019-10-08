@@ -10,6 +10,12 @@ android {
             keyAlias = 'thomas'
             keyPassword '123698745'
         }
+    /*    debug {
+            storeFile file('E:\\Project\\Android\\thomas.jks')
+            storePassword '123698745'
+            keyAlias = 'thomas'
+            keyPassword '123698745'
+        }*/
     }
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
@@ -31,8 +37,14 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    /*    debug {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }*/
     }
     sourceSets {
         main {

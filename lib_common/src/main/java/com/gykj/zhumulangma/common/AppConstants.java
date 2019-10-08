@@ -9,9 +9,6 @@ package com.gykj.zhumulangma.common;
 public interface  AppConstants {
      interface Router{
 
-         interface Common{
-             String A_LOGIN="/common/login";
-         }
          interface Main{
             String F_MAIN="/main/main";
             String A_MAIN="/main/MainActivity";
@@ -36,8 +33,6 @@ public interface  AppConstants {
          interface User{
              String F_MAIN="/user/main";
              String F_MESSAGE="/user/message";
-             String F_ACCEPT="/task/accept";
-             String F_FEEDBACK="/task/feedback";
          }
          interface  Discover{
              String F_MAIN="/discover/main";
@@ -51,19 +46,33 @@ public interface  AppConstants {
          }
 
     }
+    //虹软
     interface ArcSoft{
          String ID="5Z9BcusHbDyyojuZ2VCgYiVNkSP6JWAHHk6QjyLVMn9W";
          String KEY="F76h96nqKitMA7ckcavJixkpVQqq9YGZFXS1fcS5g4nA";
     }
+   //声网
     interface Agora{
          String ID="8b7694dd12fe4c9db395a5660bbb0916";
     }
+    //讯飞语音识别
     interface Speech{
         String ID="5d1ec054";
     }
     interface Bugly{
         String ID="849542e8da";
     }
+    //友盟
+    interface Share {
+         String UM_ID ="5d9c3b0b570df30848000687";
+         String WX_ID="5d9c3b0b570df30848000687";
+         String WX_KEY ="5d9c3b0b570df30848000687";
+        String QQ_ID="101805932";
+        String QQ_KEY="3054adfb0973db068a21bef83d4ed3bc";
+        String SINA_ID="3537697814";
+        String SINA_KEY="da65b94015cacf559208b821f89a0f85";
+    }
+    //喜马拉雅
     interface Ximalaya{
         String SECRET="6a43f2188877ee43a950e8e07b6dcb6e";
         /**
