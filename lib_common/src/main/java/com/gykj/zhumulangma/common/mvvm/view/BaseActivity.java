@@ -27,7 +27,6 @@ import com.gykj.zhumulangma.common.status.EmptyCallback;
 import com.gykj.zhumulangma.common.status.ErrorCallback;
 import com.gykj.zhumulangma.common.status.InitCallback;
 import com.gykj.zhumulangma.common.status.LoadingCallback;
-import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -80,7 +79,6 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        KeyboardUtils.fixSoftInputLeaks(this);
         mApplication= App.getInstance();
         setContentView(R.layout.common_layout_root);
         EventBus.getDefault().register(this);
@@ -355,9 +353,9 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        KeyboardUtils.fixSoftInputLeaks(this);
         EventBus.getDefault().unregister(this);
         clearDisposable();
-        SystemUtil.fixInputMethodManagerLeak(this);
         AppHelper.refWatcher.watch(this);
     }
 

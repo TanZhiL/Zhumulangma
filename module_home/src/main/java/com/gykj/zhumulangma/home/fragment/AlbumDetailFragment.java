@@ -690,6 +690,10 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(mAlbumTrackAdapter!=null){
+            mAlbumTrackAdapter.setOnItemClickListener(null);
+            mAlbumTrackAdapter.setOnItemChildClickListener(null);
+        }
         XmDownloadManager.getInstance().removeDownloadStatueListener(mDownloadStatueListener);
         mPlayerManager.removePlayerStatusListener(mPlayerStatusListener);
     }

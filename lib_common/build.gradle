@@ -118,6 +118,7 @@ dependencies {
     api rootProject.ext.dependencies["downloader"]
     api rootProject.ext.dependencies["CoolIndicator"]
     api rootProject.ext.dependencies["toast"]
+    api rootProject.ext.dependencies["bga-qrcode-zxing"]
     api files('libs/TingPhoneOpenSDK_7.0.8.jar')
     api files('libs/XmDownload_1.7.jar')
     api files('libs/XmlyOAuth2SDK_V1.11.jar')

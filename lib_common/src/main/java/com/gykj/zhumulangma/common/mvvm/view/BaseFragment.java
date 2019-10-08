@@ -174,7 +174,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     protected void initParam() {
     }
 
-    protected void initCommonView() {
+    private void initCommonView() {
         mSimpleTitleBar = mView.findViewById(R.id.ctb_simple);
         mViewStubContent = mView.findViewById(R.id.view_stub_content);
         if (enableSimplebar()) {
@@ -187,7 +187,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     /**
      * 初始化标题栏
      */
-    protected void initSimpleBar() {
+    private void initSimpleBar() {
         // 中间
         if (onBindBarCenterStyle() == BarStyle.CENTER_TITLE) {
             String[] strings = onBindBarTitleText();

@@ -31,6 +31,7 @@ public interface  AppConstants {
              String F_PLAY_RADIIO="/home/play/radio";
              String F_ANNOUNCER_DETAIL="/home/announcer/detail";
              String F_BATCH_DOWNLOAD="/home/batch/download";
+             String F_SCAN="/home/scan";
          }
          interface User{
              String F_MAIN="/user/main";

@@ -19,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_home_scan" />
-                            <entry key="sourceFile" value="C:\Users\10719\Desktop\icon\home_scan.svg" />
+                            <entry key="outputName" value="ic_home_light_on" />
+                            <entry key="sourceFile" value="C:\Users\10719\Desktop\icon\home_light_on.svg" />
                           </map>
                         </option>
                       </PersistentState>

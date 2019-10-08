@@ -5,9 +5,6 @@
         <attr name="ih_right_text" format="string"/>
     </declare-styleable>
 
-    <declare-styleable name="RatioRelativeLayout">
-        <attr name="ratio" format="float"/>
-    </declare-styleable>
     <declare-styleable name="CircleProgressBar">
         <attr name="circleWidth" format="dimension" />
         <attr name="betaAngle" format="integer" />

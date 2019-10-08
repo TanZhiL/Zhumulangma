@@ -1,5 +1,6 @@
 package com.gykj.zhumulangma.user.fragment;
 
+import android.Manifest;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
@@ -20,6 +21,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
+import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
 import com.maiml.library.BaseItemLayout;
@@ -29,6 +31,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.bugly.beta.Beta;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
@@ -38,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
+
 /**
  * Author: Thomas.
  * Date: 2019/8/14 13:41
@@ -218,7 +222,17 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
 
     @Override
     public void onItemClick(int position) {
-        switch (position){
+        switch (position) {
+            case 7:
+                new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
+                        .subscribe(permission -> {
+                            if (permission.granted) {
+                                navigateTo(AppConstants.Router.Home.F_SCAN);
+                            } else {
+                                ToastUtil.showToast("请允许应用使用相机权限");
+                            }
+                        });
+                break;
             case 8:
                 navigateTo(AppConstants.Router.Listen.F_FAVORITE);
                 break;

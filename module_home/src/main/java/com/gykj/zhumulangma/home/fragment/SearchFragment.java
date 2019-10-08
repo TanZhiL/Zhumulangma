@@ -392,6 +392,5 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             e.printStackTrace();
         }
         mHandler.removeCallbacksAndMessages(null);
-        Log.d(getClass().getSimpleName(), "onDestroy() called");
     }
 }

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/black"
+    android:layout_height="match_parent">
+
+    <cn.bingoogolapple.qrcode.zxing.ZXingView
+        android:id="@+id/zxingview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:qrcv_animTime="1000"
+        app:qrcv_borderColor="@android:color/white"
+        app:qrcv_borderSize="1dp"
+        app:qrcv_cornerColor="@color/colorPrimary"
+        app:qrcv_cornerLength="20dp"
+        app:qrcv_cornerSize="3dp"
+        app:qrcv_maskColor="#88000000"
+        app:qrcv_rectWidth="200dp"
+        app:qrcv_scanLineColor="@color/colorPrimary"
+        app:qrcv_scanLineSize="1dp"
+        app:qrcv_isTipTextBelowRect="true"
+        app:qrcv_isOnlyDecodeScanBoxArea="true"
+        app:qrcv_isAutoZoom="true"
+        app:qrcv_tipTextSize="11sp"
+        app:qrcv_qrCodeTipText="将二维码/条码放入框内,即可自动扫描"
+        app:qrcv_topOffset="180dp">
+
+    </cn.bingoogolapple.qrcode.zxing.ZXingView>
+
+    <FrameLayout
+        android:id="@+id/fl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_pop"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginStart="15dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_common_titlebar_back" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="二维码/条码"
+            android:textColor="@color/white"
+            android:textSize="@dimen/simpleBarTitle" />
+
+        <TextView
+            android:id="@+id/tv_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginEnd="10dp"
+            android:text="相册"
+            android:textColor="@color/white"
+            android:textSize="@dimen/simpleBarAction" />
+
+    
+
+    </FrameLayout>
+<android.support.constraint.Group
+    android:id="@+id/gp_on"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:visibility="gone"
+    app:constraint_referenced_ids="tv_on,iv_on"
+    />
+    <android.support.constraint.Group
+        android:id="@+id/gp_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tv_off,iv_off"
+        />
+    <TextView
+        android:id="@+id/tv_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="100dp"
+        android:text="轻触照亮"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/zxingview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/tv_off"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="100dp"
+        android:text="轻触关闭"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/zxingview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_on"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/tv_on"
+        app:layout_constraintEnd_toEndOf="@+id/tv_on"
+        app:layout_constraintStart_toStartOf="@+id/tv_on"
+        app:srcCompat="@drawable/ic_home_light_off" />
+    <ImageView
+        android:id="@+id/iv_off"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/tv_off"
+        app:layout_constraintEnd_toEndOf="@+id/tv_off"
+        app:layout_constraintStart_toStartOf="@+id/tv_off"
+        app:srcCompat="@drawable/ic_home_light_on" />
+</android.support.constraint.ConstraintLayout>

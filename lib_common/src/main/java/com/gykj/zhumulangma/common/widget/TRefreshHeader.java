@@ -2,13 +2,12 @@ package com.gykj.zhumulangma.common.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
@@ -32,6 +31,7 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
  * Description:
  */
 public class TRefreshHeader extends LinearLayout implements RefreshHeader {
+    private static final String TAG = "TRefreshHeader";
     SimpleColorFilter filter;
     private LottieAnimationView mAnimationView;
 
@@ -92,7 +92,7 @@ public class TRefreshHeader extends LinearLayout implements RefreshHeader {
 
     @Override
     public void onMoving(boolean isDragging, float percent, int offset, int height, int maxDragHeight) {
-
+        mAnimationView.setProgress(percent);
     }
 
     @Override

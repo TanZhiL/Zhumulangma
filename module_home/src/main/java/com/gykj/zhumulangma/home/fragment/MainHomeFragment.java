@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
+import android.Manifest;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.os.Bundle;
@@ -25,11 +26,13 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.sunfusheng.marqueeview.MarqueeView;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.ximalaya.ting.android.opensdk.model.word.HotWord;
 import com.youth.banner.loader.ImageLoader;
@@ -46,6 +49,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import me.yokeyword.fragmentation.ISupportFragment;
+
 /**
  * Author: Thomas.
  * Date: 2019/9/10 8:23
@@ -72,14 +76,16 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
     }
+
     @Override
     protected void loadView() {
         super.loadView();
         clearStatus();
     }
+
     @Override
     protected void initView(View view) {
-        String[] tabs = {"热门", "分类", "精品","主播", "广播"};
+        String[] tabs = {"热门", "分类", "精品", "主播", "广播"};
 
         if (StatusBarUtils.supportTransparentStatusBar()) {
             fd(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
@@ -104,7 +110,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
 
-        mMarqueeView=fd(R.id.marqueeView);
+        mMarqueeView = fd(R.id.marqueeView);
     }
 
     @Override
@@ -113,8 +119,8 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         addDisposable(RxView.clicks(fd(R.id.ll_search)).throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     Postcard build = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH);
-                    if(!CollectionUtils.isEmpty(mMarqueeView.getMessages())){
-                        build.withString(KeyCode.Home.HOTWORD,mMarqueeView.getMessages().get(mMarqueeView.getPosition()));
+                    if (!CollectionUtils.isEmpty(mMarqueeView.getMessages())) {
+                        build.withString(KeyCode.Home.HOTWORD, mMarqueeView.getMessages().get(mMarqueeView.getPosition()));
                     }
                     Object navigation = build.navigation();
                     EventBus.getDefault().post(new BaseActivityEvent<>(
@@ -136,7 +142,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     @Override
     protected void onRevisible() {
         super.onRevisible();
-        if(CollectionUtils.isEmpty(mMarqueeView.getMessages())){
+        if (CollectionUtils.isEmpty(mMarqueeView.getMessages())) {
             mViewModel.getHotWords();
         }
     }
@@ -150,7 +156,15 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.iv_download) {
-           navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
+            new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
+                    .subscribe(permission -> {
+                        if (permission.granted) {
+                            navigateTo(AppConstants.Router.Home.F_SCAN);
+                        } else {
+                            ToastUtil.showToast("请允许应用使用相机权限");
+                        }
+                    });
+
         } else if (id == R.id.iv_history) {
             navigateTo(AppConstants.Router.Listen.F_HISTORY);
         }
@@ -170,8 +184,8 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     @Override
     public void initViewObservable() {
         mViewModel.getHotWordsEvent().observe(this, hotWords -> {
-            List<String> words=new ArrayList<>(hotWords.size());
-            for(HotWord word:hotWords){
+            List<String> words = new ArrayList<>(hotWords.size());
+            for (HotWord word : hotWords) {
                 words.add(word.getSearchword());
             }
             mMarqueeView.startWithList(words);
@@ -181,7 +195,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     @Override
     public void onItemClick(int position, TextView textView) {
         Postcard build = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH);
-        Object navigation = build.withString(KeyCode.Home.HOTWORD,mMarqueeView.getMessages().get(position)).navigation();
+        Object navigation = build.withString(KeyCode.Home.HOTWORD, mMarqueeView.getMessages().get(position)).navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
     }
@@ -206,7 +220,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if(mMarqueeView!=null&&!CollectionUtils.isEmpty(mMarqueeView.getMessages())){
+        if (mMarqueeView != null && !CollectionUtils.isEmpty(mMarqueeView.getMessages())) {
             mMarqueeView.startFlipping();
         }
     }
@@ -214,10 +228,11 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        if(mMarqueeView!=null) {
+        if (mMarqueeView != null) {
             mMarqueeView.stopFlipping();
         }
     }
+
     @Override
     protected boolean lazyEnable() {
         return false;
