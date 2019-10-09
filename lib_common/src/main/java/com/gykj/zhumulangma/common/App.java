@@ -69,6 +69,7 @@ public class App extends Application {
                         .initSpeech()
                    //     .initDoraemonKit()
                         .initLog()
+                        .initAgentWebX5()
                         .initXmly()
                         .initGreenDao()
                         .initUM()

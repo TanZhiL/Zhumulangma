@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -29,6 +30,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
+import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants;
@@ -444,5 +446,19 @@ public class AppHelper {
         }
     };
 
+    private static final String TAG = "AppHelper";
+    public AppHelper initAgentWebX5() {
+        QbSdk.initX5Environment(mApplication, new QbSdk.PreInitCallback() {
+            @Override
+            public void onCoreInitFinished() {
+                Log.d(TAG, "onCoreInitFinished() called");
+            }
 
+            @Override
+            public void onViewInitFinished(boolean b) {
+                Log.d(TAG, "onViewInitFinished() called with: b = [" + b + "]");
+            }
+        });
+        return this;
+    }
 }

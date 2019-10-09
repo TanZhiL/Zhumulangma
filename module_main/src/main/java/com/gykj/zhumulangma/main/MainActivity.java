@@ -75,7 +75,6 @@ import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
-import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
 
 @Route(path = AppConstants.Router.Main.A_MAIN)
 public class MainActivity extends BaseMvvmActivity<MainViewModel> implements View.OnClickListener,
@@ -302,12 +301,11 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 switch (navigateBean.path) {
                     case AppConstants.Router.User.F_MESSAGE:
                         //登录拦截
-                   /*     if (!AccessTokenManager.getInstanse().hasLogin()) {
+                        if (!AccessTokenManager.getInstanse().hasLogin()) {
                             goLogin();
                         } else {
                             start(navigateBean.fragment);
-                        }*/
-                        start(navigateBean.fragment);
+                        }
                         break;
                     case AppConstants.Router.Home.F_PLAY_TRACK:
                     case AppConstants.Router.Home.F_PLAY_RADIIO:
@@ -384,7 +382,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     private void goLogin() {
         try {
             mAuthInfo = new XmlyAuthInfo(this, CommonRequest.getInstanse().getAppKey(), CommonRequest.getInstanse()
-                    .getPackId(), REDIRECT_URL, CommonRequest.getInstanse().getAppKey());
+                    .getPackId(),AppConstants.Ximalaya.REDIRECT_URL, CommonRequest.getInstanse().getAppKey());
         } catch (XimalayaException e) {
             e.printStackTrace();
         }

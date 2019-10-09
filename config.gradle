@@ -69,10 +69,10 @@ ext {
             "MarqueeView":"1.4.1",
             "xpopup":"1.8.9",
             "leakcanary":"1.5",
-            "agentweb":"4.1.2",
             "CoolIndicator":"v1.0.0",
             "toast":"8.0",
-            "bga-qrcode-zxing":"1.3.6"
+            "bga-qrcode-zxing":"1.3.6",
+            "agentwebX5":"2.0.0",
     ]
     //support配置
     support = [
@@ -130,9 +130,7 @@ ext {
             "rxbinding"                            :"com.jakewharton.rxbinding3:rxbinding:${versions["rxbinding"]}",
             "leakcanary"                           :"com.squareup.leakcanary:leakcanary-android:${versions["leakcanary"]}",
             "leakcanary-no-op"                     :"com.squareup.leakcanary:leakcanary-android-no-op:${versions["leakcanary"]}",
-            "agentweb"                             :"com.just.agentweb:agentweb:${versions["agentweb"]}",
-            "filechooser"                             :"com.just.agentweb:filechooser:${versions["agentweb"]}",
-            "downloader"                             :"com.download.library:Downloader:${versions["agentweb"]}",
+            "agentwebX5"                             :"com.just.agentwebX5:agentwebX5:${versions["agentwebX5"]}",
 
 
             //***************************************界面类*************************************************
