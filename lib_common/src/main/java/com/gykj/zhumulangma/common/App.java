@@ -4,7 +4,6 @@ import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-import android.util.Log;
 
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;
@@ -61,39 +60,36 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mApplication = this;
-        Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
-                AppHelper.getInstance(this)
-                        .initLeakCanary()
-                   //     .initCrashHandler()
-                        .initFragmentation(false)
-                        .initSpeech()
-                   //     .initDoraemonKit()
-                        .initLog()
-                        .initAgentWebX5()
-                        .initXmly()
-                        .initGreenDao()
-                        .initUM()
-                        .initNet()
-                        .initRouter()
-                        .initXmlyPlayer()
-                        .initUtils()
-                        .initBugly()
-                        .initXmlyDownloader();
-        XmPlayerManager.getInstance(this).addPlayerStatusListener(mPlayerStatusListener);
-        Log.d(TAG, "onCreate() called " + System.currentTimeMillis());
+        AppHelper.getInstance(this)
+                .initLeakCanary()
+                //     .initCrashHandler()
+                .initFragmentation(false)
+                .initSpeech()
+                //     .initDoraemonKit()
+                .initLog()
+                .initAgentWebX5()
+                .initXmly()
+                .initGreenDao()
+                .initUM()
+                .initNet()
+                .initRouter()
+                .initXmlyPlayer()
+                .initUtils()
+                .initBugly()
+                .initXmlyDownloader();
+        XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
     }
 
 
     @Override
     public void onTerminate() {
         super.onTerminate();
-        Log.d(TAG, "onTerminate() called");
-        XmPlayerManager.getInstance(this).removePlayerStatusListener(mPlayerStatusListener);
+        XmPlayerManager.getInstance(this).removePlayerStatusListener(playerStatusListener);
         XmPlayerManager.release();
         CommonRequest.release();
     }
 
-    private IXmPlayerStatusListener mPlayerStatusListener = new IXmPlayerStatusListener() {
+    private IXmPlayerStatusListener playerStatusListener = new IXmPlayerStatusListener() {
 
         @Override
         public void onPlayStart() {

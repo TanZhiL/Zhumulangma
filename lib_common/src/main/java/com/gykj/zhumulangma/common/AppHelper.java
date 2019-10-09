@@ -45,9 +45,6 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayerConfig;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 import com.ximalaya.ting.android.opensdk.util.Logger;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
-import com.ximalaya.ting.android.sdkdownloader.http.RequestParams;
-import com.ximalaya.ting.android.sdkdownloader.http.app.RequestTracker;
-import com.ximalaya.ting.android.sdkdownloader.http.request.UriRequest;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -101,6 +98,22 @@ public class AppHelper {
             return this;
         }
         refWatcher = LeakCanary.install(mApplication);
+        return this;
+    }
+
+    private static final String TAG = "AppHelper";
+    public AppHelper initAgentWebX5() {
+        QbSdk.initX5Environment(mApplication, new QbSdk.PreInitCallback() {
+            @Override
+            public void onCoreInitFinished() {
+                Log.d(TAG, "onCoreInitFinished() called");
+            }
+
+            @Override
+            public void onViewInitFinished(boolean b) {
+                Log.d(TAG, "onViewInitFinished() called with: b = [" + b + "]");
+            }
+        });
         return this;
     }
 
@@ -159,7 +172,6 @@ public class AppHelper {
                     .readTimeOut(15000)                // 下载时读取的超时时间 ,单位毫秒 默认 30000
                     //     .fifo(false)                    // 等待队列的是否优先执行先加入的任务. false表示后添加的先执行(不会改变当前正在下载的音频的状态) 默认为true
                     .maxRetryCount(3)                // 出错时重试的次数 默认2次
-                    .requestTracker(requestTracker)
                     .progressCallBackMaxTimeSpan(10)//  进度条progress 更新的频率 默认是800
                     .savePath(mApplication.getExternalFilesDir("mp3").getAbsolutePath())    // 保存的地址 会检查这个地址是否有效
                     .create();
@@ -387,9 +399,6 @@ public class AppHelper {
                 try {
                     String string = execute.body().string();
                     JSONObject jsonObject = new JSONObject(string);
-
-                    System.out.println("TingApplication.refreshSync  2  " + string);
-
                     AccessTokenManager.getInstanse().setAccessTokenAndUid(jsonObject.optString("access_token"),
                             jsonObject.optString("refresh_token"), jsonObject.optLong("expires_in"), jsonObject
                                     .optString("uid"));
@@ -402,63 +411,5 @@ public class AppHelper {
             e.printStackTrace();
         }
         return false;
-    }
-
-    private RequestTracker requestTracker = new RequestTracker() {
-        @Override
-        public void onWaiting(RequestParams params) {
-            Logger.log("TingApplication : onWaiting " + params);
-        }
-
-        @Override
-        public void onStart(RequestParams params) {
-            Logger.log("TingApplication : onStart " + params);
-        }
-
-        @Override
-        public void onRequestCreated(UriRequest request) {
-            Logger.log("TingApplication : onRequestCreated " + request);
-        }
-
-        @Override
-        public void onSuccess(UriRequest request, Object result) {
-            Logger.log("TingApplication : onSuccess " + request + "   result = " + result);
-        }
-
-        @Override
-        public void onRemoved(UriRequest request) {
-            Logger.log("TingApplication : onRemoved " + request);
-        }
-
-        @Override
-        public void onCancelled(UriRequest request) {
-            Logger.log("TingApplication : onCanclelled " + request);
-        }
-
-        @Override
-        public void onError(UriRequest request, Throwable ex, boolean isCallbackError) {
-            Logger.log("TingApplication : onError " + request + "   ex = " + ex + "   isCallbackError = " + isCallbackError);
-        }
-
-        @Override
-        public void onFinished(UriRequest request) {
-            Logger.log("TingApplication : onFinished " + request);
-        }
-    };
-
-    private static final String TAG = "AppHelper";
-    public AppHelper initAgentWebX5() {
-        QbSdk.initX5Environment(mApplication, new QbSdk.PreInitCallback() {
-            @Override
-            public void onCoreInitFinished() {
-                Log.d(TAG, "onCoreInitFinished() called");
-            }
-
-            @Override
-            public void onViewInitFinished(boolean b) {
-                Log.d(TAG, "onViewInitFinished() called with: b = [" + b + "]");
-            }
-        });
-        return this;
     }
 }

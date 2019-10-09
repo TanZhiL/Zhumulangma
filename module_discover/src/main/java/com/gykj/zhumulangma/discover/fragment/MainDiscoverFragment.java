@@ -13,20 +13,13 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.discover.R;
-import com.maiml.library.BaseItemLayout;
-import com.maiml.library.config.ConfigAttrs;
-import com.maiml.library.config.Mode;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = AppConstants.Router.Discover.F_MAIN)
-public class MainDiscoverFragment extends BaseFragment implements BaseItemLayout.OnBaseItemClick {
-    private BaseItemLayout bilFine;
+public class MainDiscoverFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected int onBindLayout() {
@@ -38,61 +31,22 @@ public class MainDiscoverFragment extends BaseFragment implements BaseItemLayout
         super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
     }
-
     @Override
     protected void initView(View view) {
-
-        bilFine = view.findViewById(R.id.bil_fine);
-        List<String> valueList = new ArrayList<>();
-
-        valueList.add("付费精品");
-        valueList.add("全民朗读");
-        valueList.add("听友圈");
-        valueList.add("大咖主播");
-        valueList.add("问答");
-        valueList.add("商城");
-        valueList.add("游戏");
-        valueList.add("活动");
-
-        List<Integer> resIdList = new ArrayList<>();
-
-        resIdList.add(R.drawable.discover_fine);
-        resIdList.add(R.drawable.discover_read);
-        resIdList.add(R.drawable.discover_frends);
-        resIdList.add(R.drawable.discover_nb);
-        resIdList.add(R.drawable.discover_question);
-        resIdList.add(R.drawable.discover_shop);
-        resIdList.add(R.drawable.discover_game);
-        resIdList.add(R.drawable.discover_activity);
-
-        ConfigAttrs attrs = new ConfigAttrs(); // 把全部参数的配置，委托给ConfigAttrs类处理。
-
-        //参数 使用链式方式配置
-        attrs.setValueList(valueList)  // 文字 list
-                .setResIdList(resIdList) // icon list
-                .setIconWidth(23)  //设置icon 的大小
-                .setIconHeight(23)
-                .setItemMarginTop(1)
-                .setRightText(0, "2")
-                .setRightText(4, "1")
-                .setItemMarginTop(0,0)
-                .setItemMarginTop(1, 8)
-                .setItemMarginTop(3, 8)
-                .setItemMarginTop(5, 8)
-                .setItemMode(Mode.ARROW)
-                .setItemMode(0, Mode.RED_TEXT)
-                .setItemMode(4, Mode.RED_TEXT)
-                .setArrowResId(R.drawable.common_arrow_enter); //设置箭头资源值;
-
-        bilFine.setConfigAttrs(attrs)
-                .create();
 
     }
 
     @Override
     public void initListener() {
         super.initListener();
-        bilFine.setOnBaseItemClick(this);
+      fd(R.id.cl_ffjp).setOnClickListener(this);
+      fd(R.id.cl_qmld).setOnClickListener(this);
+      fd(R.id.cl_tyq).setOnClickListener(this);
+      fd(R.id.cl_dkzb).setOnClickListener(this);
+      fd(R.id.cl_wd).setOnClickListener(this);
+      fd(R.id.cl_sc).setOnClickListener(this);
+      fd(R.id.cl_yx).setOnClickListener(this);
+      fd(R.id.cl_hd).setOnClickListener(this);
     }
 
     @Override
@@ -141,9 +95,9 @@ public class MainDiscoverFragment extends BaseFragment implements BaseItemLayout
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onClick(View v) {
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
-                .withString(KeyCode.Discover.PATH, "https://m.ximalaya.com/")
+                .withString(KeyCode.Discover.PATH, v.getTag().toString())
                 .navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));

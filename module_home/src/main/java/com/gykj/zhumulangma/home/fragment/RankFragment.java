@@ -240,7 +240,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     @Override
     protected void onRight1Click(View v) {
         super.onRight1Click(v);
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE, null));
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE));
     }
 
     @Override

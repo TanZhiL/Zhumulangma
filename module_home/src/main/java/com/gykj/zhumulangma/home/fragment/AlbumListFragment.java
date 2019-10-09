@@ -122,6 +122,11 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
         return new Integer[]{R.drawable.ic_common_search};
     }
 
+    @Override
+    protected void onRight1Click(View v) {
+        super.onRight1Click(v);
+        navigateTo(AppConstants.Router.Home.F_SEARCH);
+    }
 
     @Override
     protected boolean lazyEnable() {

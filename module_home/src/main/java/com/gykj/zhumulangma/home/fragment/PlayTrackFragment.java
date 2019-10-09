@@ -491,7 +491,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
            new XPopup.Builder(mContext).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
                    .dismissOnTouchOutside(false).enableDrag(false).asCustom(mCommentPopup).show();
         }else if(R.id.iv2_right==id){
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE, null));
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE));
         }
     }
 

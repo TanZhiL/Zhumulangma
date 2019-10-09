@@ -62,17 +62,15 @@ ext {
             "banner":"1.4.10",
             "ratingbar":"1.1.2",
             "labelview":"v1.1.2",
-            "BaseItemLayout":"2.2.3",
             "FlowLayout":"v1.8",
             "greendao":"3.2.2",
-            "BasePopup":"2.2.1",
             "MarqueeView":"1.4.1",
             "xpopup":"1.8.9",
             "leakcanary":"1.5",
-            "CoolIndicator":"v1.0.0",
             "toast":"8.0",
             "bga-qrcode-zxing":"1.3.6",
             "agentwebX5":"2.0.0",
+            "roundedimageview":"2.3.0",
     ]
     //support配置
     support = [
@@ -142,7 +140,6 @@ ext {
             "SmartRefreshLayout"                   :"com.scwang.smartrefresh:SmartRefreshLayout:${versions["SmartRefreshLayout"]}",
             "circleimageview"                      :"de.hdodenhof:circleimageview:${versions["circleimageview"]}",
             "SCardView"                            :"io.github.meetsl:SCardView:${versions["SCardView"]}",
-            "NiceImageView"                        :"com.github.SheHuan:NiceImageView:${versions["NiceImageView"]}",
             "indicatorseekbar"                     :"com.github.warkiz.widget:indicatorseekbar:${versions["indicatorseekbar"]}",
             "BaseRecyclerViewAdapterHelper"        :"com.github.CymChad:BaseRecyclerViewAdapterHelper:${versions["BaseRecyclerViewAdapterHelper"]}",
             "switch-button"                        :"com.github.zcweng:switch-button:${versions["switch-button"]}@aar",
@@ -156,14 +153,12 @@ ext {
             "banner"                               :"com.youth.banner:banner:${versions["banner"]}",
             "ratingbar"                            :"com.hedgehog.ratingbar:app:${versions["ratingbar"]}",
             "labelview"                            :"com.github.linger1216:labelview:${versions["labelview"]}",
-            "BaseItemLayout"                       :"com.maiml:baseitemlayoutlibrary:${versions["BaseItemLayout"]}",
             "FlowLayout"                           :"com.github.1002326270xc:LayoutManager-FlowLayout:${versions["FlowLayout"]}",
-            "BasePopup"                            :"com.github.razerdp:BasePopup:${versions["BasePopup"]}",
             "MarqueeView"                          :"com.sunfusheng:MarqueeView:${versions["MarqueeView"]}",
             "xpopup"                               :"com.lxj:xpopup:${versions["xpopup"]}",
-            "CoolIndicator"                        :"com.github.Justson:CoolIndicator:${versions["CoolIndicator"]}",
             "toast"                                :"com.hjq:toast:${versions["toast"]}",
             "bga-qrcode-zxing"                     :"cn.bingoogolapple:bga-qrcode-zxing:${versions["bga-qrcode-zxing"]}",
+            "roundedimageview"                     :"com.makeramen:roundedimageview:${versions["roundedimageview"]}",
     ]
 
 }

@@ -89,7 +89,6 @@ dependencies {
     api rootProject.ext.dependencies["SmartRefreshLayout"]
     api rootProject.ext.dependencies["circleimageview"]
     api rootProject.ext.dependencies["SCardView"]
-    api rootProject.ext.dependencies["NiceImageView"]
     api rootProject.ext.dependencies["indicatorseekbar"]
     api rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
     api rootProject.ext.dependencies["multidex"]
@@ -107,18 +106,15 @@ dependencies {
     api rootProject.ext.dependencies["banner"]
     api rootProject.ext.dependencies["ratingbar"]
     api rootProject.ext.dependencies["labelview"]
-    api rootProject.ext.dependencies["BaseItemLayout"]
     api rootProject.ext.dependencies["FlowLayout"]
     api rootProject.ext.dependencies["greendao"]
-    api rootProject.ext.dependencies["BasePopup"]
     api rootProject.ext.dependencies["MarqueeView"]
     api rootProject.ext.dependencies["xpopup"]
-
-
-    api rootProject.ext.dependencies["CoolIndicator"]
     api rootProject.ext.dependencies["toast"]
     api rootProject.ext.dependencies["bga-qrcode-zxing"]
     api rootProject.ext.dependencies["agentwebX5"]
+    api rootProject.ext.dependencies["roundedimageview"]
+
     api 'com.amap.api:location:latest.integration'
     api 'com.tencent.bugly:crashreport_upgrade:latest.release'
     api 'com.tencent.tinker:tinker-android-lib:1.9.9'

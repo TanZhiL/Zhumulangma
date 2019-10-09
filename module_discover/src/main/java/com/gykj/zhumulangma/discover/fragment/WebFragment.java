@@ -24,6 +24,7 @@ import com.just.agentwebX5.DownLoadResultListener;
 import com.just.agentwebX5.PermissionInterceptor;
 import com.just.agentwebX5.WebDefaultSettingsManager;
 import com.just.agentwebX5.WebSettings;
+import com.tencent.smtt.export.external.interfaces.JsResult;
 import com.tencent.smtt.export.external.interfaces.WebResourceError;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.WebChromeClient;
@@ -153,6 +154,10 @@ public class WebFragment extends BaseFragment {
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
         }
+        @Override
+        public boolean onJsAlert(WebView webView, String s, String s1, JsResult jsResult) {
+            return false;
+        }
     };
     protected ChromeClientCallbackManager.ReceivedTitleCallback mCallback = (view, title) -> setTitle(new String[]{title});
     //AgentWeb 在触发某些敏感的 Action 时候会回调该方法， 比如定位触发 。
@@ -228,6 +233,7 @@ public class WebFragment extends BaseFragment {
         super.onDestroy();
         if (mAgentWeb != null) {
             mAgentWeb.getWebLifeCycle().onDestroy();
+            mAgentWeb.getWebCreator().get().destroy();
         }
     }
 

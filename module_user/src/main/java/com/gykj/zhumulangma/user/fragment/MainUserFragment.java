@@ -24,9 +24,6 @@ import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
-import com.maiml.library.BaseItemLayout;
-import com.maiml.library.config.ConfigAttrs;
-import com.maiml.library.config.Mode;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -37,9 +34,6 @@ import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -49,12 +43,11 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Description:我的
  */
 @Route(path = AppConstants.Router.User.F_MAIN)
-public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnBaseItemClick, View.OnClickListener {
+public class MainUserFragment extends BaseFragment implements View.OnClickListener {
 
 
     private CommonTitleBar ctbTrans;
     private CommonTitleBar ctbWhite;
-    private BaseItemLayout bilUser;
     private NestedScrollView mScrollView;
     private ImageView parallax;
     private View flParallax;
@@ -79,13 +72,11 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
     protected void initView(View view) {
         ctbTrans = view.findViewById(R.id.ctb_trans);
         ctbWhite = view.findViewById(R.id.ctb_white);
-        bilUser = view.findViewById(R.id.bil_user);
         mScrollView = view.findViewById(R.id.msv);
         parallax = view.findViewById(R.id.parallax);
         flParallax = view.findViewById(R.id.fl_parallax);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         initBar();
-        initItemList();
 
     }
 
@@ -122,55 +113,6 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
 
     }
 
-    private void initItemList() {
-        List<String> valueList = new ArrayList<>();
-
-        valueList.add("主播工作台");
-        valueList.add("我的作品");
-        valueList.add("我的巅峰会员");
-        valueList.add("我的已购");
-        valueList.add("我的钱包");
-        valueList.add("我的优惠券");
-        valueList.add("分享赚钱");
-        valueList.add("扫一扫");
-        valueList.add("我喜欢的");
-        valueList.add("检查更新");
-        valueList.add("关于");
-
-        List<Integer> resIdList = new ArrayList<>();
-
-        resIdList.add(R.drawable.user_zhubo);
-        resIdList.add(R.drawable.user_zuoping);
-        resIdList.add(R.drawable.user_vip);
-        resIdList.add(R.drawable.user_cart);
-        resIdList.add(R.drawable.user_qianbao);
-        resIdList.add(R.drawable.user_quan);
-        resIdList.add(R.drawable.user_zhuanqian);
-        resIdList.add(R.drawable.user_sao);
-        resIdList.add(R.drawable.user_like);
-        resIdList.add(R.drawable.user_more);
-        resIdList.add(R.drawable.user_help);
-
-        ConfigAttrs attrs = new ConfigAttrs(); // 把全部参数的配置，委托给ConfigAttrs类处理。
-
-        //参数 使用链式方式配置
-        attrs.setValueList(valueList)  // 文字 list
-                .setResIdList(resIdList) // icon list
-                .setIconWidth(23)  //设置icon 的大小
-                .setIconHeight(23)
-                .setItemMarginTop(1)
-                .setRightText(10, "1")
-                .setItemMarginTop(2, 8)
-                .setItemMarginTop(3, 8)
-                .setItemMarginTop(7, 8)
-                .setItemMode(Mode.ARROW)
-                .setItemMode(10, Mode.RED_TEXT)
-                .setArrowResId(R.drawable.common_arrow_enter); //设置箭头资源值;
-        bilUser.setConfigAttrs(attrs)
-                .create();
-        bilUser.setOnBaseItemClick(this);
-    }
-
     @Override
     public void initListener() {
         super.initListener();
@@ -203,6 +145,12 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
         whiteRight.setOnClickListener(this);
         transLeft.setOnClickListener(this);
         transRight.setOnClickListener(this);
+
+        fd(R.id.cl_fxzq).setOnClickListener(this);
+        fd(R.id.cl_sys).setOnClickListener(this);
+        fd(R.id.cl_wxhd).setOnClickListener(this);
+        fd(R.id.cl_jcgx).setOnClickListener(this);
+        fd(R.id.cl_gy).setOnClickListener(this);
     }
 
     @Override
@@ -220,34 +168,6 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
         return false;
     }
 
-    @Override
-    public void onItemClick(int position) {
-        switch (position) {
-            case 7:
-                new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
-                        .subscribe(permission -> {
-                            if (permission.granted) {
-                                navigateTo(AppConstants.Router.Home.F_SCAN);
-                            } else {
-                                ToastUtil.showToast("请允许应用使用相机权限");
-                            }
-                        });
-                break;
-            case 8:
-                navigateTo(AppConstants.Router.Listen.F_FAVORITE);
-                break;
-            case 9:
-                Beta.checkUpgrade();
-                break;
-            case 10:
-                Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
-                        .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL/Zhumulangma")
-                        .navigation();
-                EventBus.getDefault().post(new BaseActivityEvent<>(
-                        EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
-                break;
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -260,6 +180,27 @@ public class MainUserFragment extends BaseFragment implements BaseItemLayout.OnB
             navigateTo(AppConstants.Router.Listen.F_FAVORITE);
         } else if (v == whiteLeft || v == transLeft) {
             navigateTo(AppConstants.Router.User.F_MESSAGE);
+        }else if (id==R.id.cl_fxzq) {
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE));
+        }else if (id==R.id.cl_sys) {
+            new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
+                    .subscribe(permission -> {
+                        if (permission.granted) {
+                            navigateTo(AppConstants.Router.Home.F_SCAN);
+                        } else {
+                            ToastUtil.showToast("请允许应用使用相机权限");
+                        }
+                    });
+        }else if (id==R.id.cl_wxhd) {
+            navigateTo(AppConstants.Router.Listen.F_FAVORITE);
+        }else if (id==R.id.cl_jcgx) {
+            Beta.checkUpgrade();
+        }else if (id==R.id.cl_gy) {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
+                    .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL/Zhumulangma")
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
         }
     }
 

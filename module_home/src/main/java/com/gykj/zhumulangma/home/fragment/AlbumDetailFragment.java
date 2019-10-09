@@ -394,7 +394,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     @Override
     protected void onRight2Click(View v) {
         super.onRight2Click(v);
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE, null));
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE));
     }
 
     @Override
