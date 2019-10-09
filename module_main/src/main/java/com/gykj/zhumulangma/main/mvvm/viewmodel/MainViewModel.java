@@ -9,6 +9,7 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.bean.BingBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
@@ -16,7 +17,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
-import com.gykj.zhumulangma.common.net.config.API;
+import com.gykj.zhumulangma.common.net.API;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.main.mvvm.model.MainModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -38,14 +39,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import me.yokeyword.fragmentation.ISupportFragment;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okhttp3.internal.http.RealResponseBody;
 
 /**
  * Author: Thomas.
@@ -93,14 +94,14 @@ public class MainViewModel extends BaseViewModel<MainModel> {
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().call())
+                .doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {
                             String coverUrlSmall = trackList.getTracks().get(i).getCoverUrlSmall();
                             getCoverSingleLiveEvent().postValue(TextUtils.isEmpty(coverUrlSmall)
-                                    ?trackList.getTracks().get(i).getAlbum().getCoverUrlLarge():coverUrlSmall);
+                                    ? trackList.getTracks().get(i).getAlbum().getCoverUrlLarge() : coverUrlSmall);
                             XmPlayerManager.getInstance(getApplication()).playList(trackList, i);
                             break;
                         }
@@ -163,7 +164,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                 })
                 .flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
                         RadioUtil.getSchedules(tomorrow))
-                .doOnSubscribe(d ->  getShowLoadingViewEvent().call())
+                .doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(schedules -> {
                     Iterator var7 = schedules.iterator();
@@ -213,27 +214,32 @@ public class MainViewModel extends BaseViewModel<MainModel> {
             }
         }
     }
-    public void _getBing(){
-        mModel.getBing("js","1")
+
+    private BingBean bingBean;
+
+    public void _getBing() {
+
+        mModel.getBing("js", "1")
                 .observeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
-                .subscribe(bingBean -> {
-                    if(bingBean.getImages().get(0).getCopyrightlink().equals(SPUtils.getInstance().getString(AppConstants.SP.AD_URL))){
-                        return;
+                .flatMap((Function<BingBean, ObservableSource<ResponseBody>>) bean -> {
+                    if (bean.getImages().get(0).getCopyrightlink().equals(SPUtils.getInstance().getString(AppConstants.SP.AD_URL))) {
+                        return Observable.just(new RealResponseBody("", 0, null));
                     }
-                    OkHttpClient client = new OkHttpClient.Builder().build();
-                    Request request=new Request.Builder().url(API.OFFLINE_HOST1
-                            +bingBean.getImages().get(0).getUrl()).get().build();
-                    Response execute = client.newCall(request).execute();
-                    if(execute.isSuccessful()){
+                    bingBean = bean;
+                    return mModel.getBingImage(API.OFFLINE_HOST1 + bean.getImages().get(0).getUrl());
+                })
+                .subscribe(body -> {
+                    if (body.contentLength() != 0) {
                         FileIOUtils.writeFileFromIS(getApplication().getFilesDir().getAbsolutePath()
-                                +AppConstants.Defualt.AD_NAME,execute.body().byteStream());
-                        SPUtils.getInstance().put(AppConstants.SP.AD_LABEL,bingBean.getImages().get(0).getCopyright());
-                        SPUtils.getInstance().put(AppConstants.SP.AD_URL,bingBean.getImages().get(0).getCopyrightlink());
+                                + AppConstants.Defualt.AD_NAME, body.byteStream());
+                        SPUtils.getInstance().put(AppConstants.SP.AD_LABEL, bingBean.getImages().get(0).getCopyright());
+                        SPUtils.getInstance().put(AppConstants.SP.AD_URL, bingBean.getImages().get(0).getCopyrightlink());
                     }
-                }, e->e.printStackTrace());
+                }, e -> e.printStackTrace());
     }
+
     public SingleLiveEvent<String> getCoverSingleLiveEvent() {
-        return mCoverSingleLiveEvent=createLiveData(mCoverSingleLiveEvent);
+        return mCoverSingleLiveEvent = createLiveData(mCoverSingleLiveEvent);
     }
 }

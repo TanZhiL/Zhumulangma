@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.net.config;
+package com.gykj.zhumulangma.common.net;
 
 /**
  * Description: <API><br>

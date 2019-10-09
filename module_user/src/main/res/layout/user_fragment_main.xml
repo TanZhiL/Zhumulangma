@@ -65,7 +65,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
-                        android:id="@+id/imageView"
+                        android:id="@+id/iv_user"
                         android:layout_width="28dp"
                         android:layout_height="28dp"
                         android:layout_marginTop="8dp"
@@ -83,7 +83,7 @@
                         android:layout_height="36dp"
                         android:layout_marginStart="8dp"
                         android:gravity="center_vertical"
-                        android:text="逝水流年轻染尘"
+                        android:text="TanZhiL"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@+id/iv_top1"
@@ -95,7 +95,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginBottom="8dp"
-                        android:text="关注  3  |  粉丝  0"
+                        android:text="Star  3  |  Fork  0"
                         android:textColor="@color/white"
                         android:textSize="11sp"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_top1"
@@ -128,7 +128,7 @@
                         android:textColor="@color/white"
                         android:textSize="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/imageView"
+                        app:layout_constraintEnd_toEndOf="@+id/iv_user"
                         app:layout_constraintStart_toStartOf="@+id/textView14"
                         app:layout_constraintTop_toBottomOf="@+id/textView14" />
                 </android.support.constraint.ConstraintLayout>
@@ -292,7 +292,7 @@
                       >
 
                         <ImageView
-                            android:id="@+id/imageView5"
+                            android:id="@+id/iv_user5"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -309,9 +309,9 @@
                             android:text="主播工作台"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-                            app:layout_constraintStart_toEndOf="@+id/imageView5"
-                            app:layout_constraintTop_toTopOf="@+id/imageView5" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user5"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user5"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user5" />
 
                         <ImageView
                             android:layout_width="23dp"
@@ -334,7 +334,7 @@
                       >
 
                         <ImageView
-                            android:id="@+id/imageView1"
+                            android:id="@+id/iv_user1"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -351,9 +351,9 @@
                             android:text="我的作品"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView1"
-                            app:layout_constraintStart_toEndOf="@+id/imageView1"
-                            app:layout_constraintTop_toTopOf="@+id/imageView1" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user1"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user1"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user1" />
 
                         <ImageView
                             android:layout_width="23dp"
@@ -375,7 +375,7 @@
                       >
 
                         <ImageView
-                            android:id="@+id/imageView2"
+                            android:id="@+id/iv_user2"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -392,9 +392,9 @@
                             android:text="我的巅峰会员"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                            app:layout_constraintStart_toEndOf="@+id/imageView2"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user2"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user2"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user2" />
 
                         <ImageView
                             android:layout_width="23dp"
@@ -415,7 +415,7 @@
                       >
 
                         <ImageView
-                            android:id="@+id/imageView3"
+                            android:id="@+id/iv_user3"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -432,9 +432,9 @@
                             android:text="我的已购"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                            app:layout_constraintStart_toEndOf="@+id/imageView3"
-                            app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user3"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user3"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user3" />
 
                         <ImageView
                             android:layout_width="23dp"
@@ -456,7 +456,7 @@
                         >
 
                         <ImageView
-                            android:id="@+id/imageView6"
+                            android:id="@+id/iv_user6"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -473,9 +473,9 @@
                             android:text="我的钱包"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-                            app:layout_constraintStart_toEndOf="@+id/imageView6"
-                            app:layout_constraintTop_toTopOf="@+id/imageView6" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user6"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user6"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user6" />
 
                         <ImageView
                             android:layout_width="23dp"
@@ -496,7 +496,7 @@
                         >
 
                         <ImageView
-                            android:id="@+id/imageView7"
+                            android:id="@+id/iv_user7"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -513,9 +513,9 @@
                             android:text="我的优惠券"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-                            app:layout_constraintStart_toEndOf="@+id/imageView7"
-                            app:layout_constraintTop_toTopOf="@+id/imageView7" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user7"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user7"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user7" />
 
                         <ImageView
                             android:layout_width="23dp"
@@ -538,7 +538,7 @@
                         >
 
                         <ImageView
-                            android:id="@+id/imageView8"
+                            android:id="@+id/iv_user8"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -555,9 +555,9 @@
                             android:text="分享赚钱"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-                            app:layout_constraintStart_toEndOf="@+id/imageView8"
-                            app:layout_constraintTop_toTopOf="@+id/imageView8" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user8"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user8"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user8" />
 
                         <ImageView
                             android:layout_width="23dp"
@@ -579,7 +579,7 @@
                         >
 
                         <ImageView
-                            android:id="@+id/imageView9"
+                            android:id="@+id/iv_user9"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -596,9 +596,9 @@
                             android:text="扫一扫"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
-                            app:layout_constraintStart_toEndOf="@+id/imageView9"
-                            app:layout_constraintTop_toTopOf="@+id/imageView9" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user9"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user9"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user9" />
 
                         <ImageView
                             android:layout_width="23dp"
@@ -621,7 +621,7 @@
                         >
 
                         <ImageView
-                            android:id="@+id/imageView10"
+                            android:id="@+id/iv_user10"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -638,9 +638,9 @@
                             android:text="我喜欢的"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView10"
-                            app:layout_constraintStart_toEndOf="@+id/imageView10"
-                            app:layout_constraintTop_toTopOf="@+id/imageView10" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user10"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user10"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user10" />
 
                         <ImageView
                             android:layout_width="23dp"
@@ -663,7 +663,7 @@
                         >
 
                         <ImageView
-                            android:id="@+id/imageView11"
+                            android:id="@+id/iv_user11"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -680,9 +680,9 @@
                             android:text="检查更新"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView11"
-                            app:layout_constraintStart_toEndOf="@+id/imageView11"
-                            app:layout_constraintTop_toTopOf="@+id/imageView11" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user11"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user11"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user11" />
 
                         <ImageView
                             android:layout_width="23dp"
@@ -705,7 +705,7 @@
                         >
 
                         <ImageView
-                            android:id="@+id/imageView12"
+                            android:id="@+id/iv_user12"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginLeft="16dp"
@@ -716,17 +716,19 @@
                             app:srcCompat="@drawable/ic_user_gy" />
 
                         <TextView
+                            android:id="@+id/textView5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:text="关于"
                             android:textColor="@color/textColorPrimary"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView12"
-                            app:layout_constraintStart_toEndOf="@+id/imageView12"
-                            app:layout_constraintTop_toTopOf="@+id/imageView12" />
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user12"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user12"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user12" />
 
                         <ImageView
+                            android:id="@+id/iv_user13"
                             android:layout_width="23dp"
                             android:layout_height="23dp"
                             android:layout_marginRight="5dp"
@@ -735,6 +737,15 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_common_more_arrow" />
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_marginRight="4dp"
+                            android:background="@drawable/shap_common_circle_red"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_user13"
+                            app:layout_constraintTop_toTopOf="parent" />
                     </android.support.constraint.ConstraintLayout>
                     <View
                         style="@style/SecondHLine"

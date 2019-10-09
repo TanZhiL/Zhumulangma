@@ -498,13 +498,4 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         }
     }
 
-    /**
-     * 解决键盘遮挡EditText
-     */
-/*    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        KeyboardConflictCompat.assistWindow(getWindow());
-    }*/
-
 }

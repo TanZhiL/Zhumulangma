@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+        android:layout_height="54dp">
 
         <ImageView
             android:id="@+id/imageView229"
@@ -61,14 +59,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
-
+<View
+    android:layout_width="match_parent"
+    style="@style/SecondHLine"/>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        android:layout_height="54dp">
 
         <ImageView
             android:id="@+id/imageView129"
@@ -119,14 +116,13 @@
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-
+    <View
+        android:layout_width="match_parent"
+        style="@style/SecondHLine"/>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="54dp">
 
         <ImageView
             android:id="@+id/imageView29"
@@ -176,4 +172,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
-</android.support.constraint.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        style="@style/SecondHLine"/>
+</LinearLayout>

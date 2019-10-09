@@ -1,6 +1,5 @@
 package com.gykj.zhumulangma.common.net;
 
-import com.gykj.zhumulangma.common.net.config.API;
 import com.gykj.zhumulangma.common.net.dto.EventReportDTO;
 import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
 

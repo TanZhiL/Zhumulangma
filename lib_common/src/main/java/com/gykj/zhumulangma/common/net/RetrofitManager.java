@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.net.config.API;
 import com.gykj.zhumulangma.common.util.log.TLog;
 
 import java.io.IOException;
@@ -41,16 +40,13 @@ public class RetrofitManager {
         okHttpBuilder = new OkHttpClient.Builder();
         okHttpBuilder.interceptors().add(
                 new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
-        okHttpBuilder.addInterceptor(new Interceptor() {
-                                         @Override
-                                         public Response intercept(Chain chain) throws IOException {
-                                             Request original = chain.request();
-                                             Request.Builder requestBuilder = original.newBuilder()
-                                                     .header("token", SPUtils.getInstance().getString(AppConstants.SP.TOKEN));
-                                             Request request = requestBuilder.build();
-                                             return chain.proceed(request);
-                                         }
-                                     });
+        okHttpBuilder.addInterceptor(chain -> {
+            Request original = chain.request();
+            Request.Builder requestBuilder = original.newBuilder()
+                    .header("token", SPUtils.getInstance().getString(AppConstants.SP.TOKEN));
+            Request request = requestBuilder.build();
+            return chain.proceed(request);
+        });
         //证书相关
        /* SSLContext sslContext = SSLContextUtil.getDefaultSLLContext();
         if (sslContext != null) {
@@ -97,21 +93,6 @@ public class RetrofitManager {
     }
 
 
-    public EventService getEventService() {
-        return mRetrofit.create(EventService.class);
-    }
-
-
-    public PollutionService getPollutionService() {
-        return mRetrofit.create(PollutionService.class);
-    }
-    public TaskService getTaskService() {
-        return mRetrofit.create(TaskService.class);
-    }
-
-    public VideoService getVideoService() {
-        return mRetrofit.create(VideoService.class);
-    }
 
     public void setHostStatus(int hostStatus) {
         TLog.d("切换环境:hostStatus = "+hostStatus);

@@ -301,11 +301,12 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 switch (navigateBean.path) {
                     case AppConstants.Router.User.F_MESSAGE:
                         //登录拦截
-                        if (!AccessTokenManager.getInstanse().hasLogin()) {
+                   /*     if (!AccessTokenManager.getInstanse().hasLogin()) {
                             goLogin();
                         } else {
                             start(navigateBean.fragment);
-                        }
+                        }*/
+                        start(navigateBean.fragment);
                         break;
                     case AppConstants.Router.Home.F_PLAY_TRACK:
                     case AppConstants.Router.Home.F_PLAY_RADIIO:

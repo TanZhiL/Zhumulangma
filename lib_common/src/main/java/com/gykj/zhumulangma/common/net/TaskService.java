@@ -1,7 +1,6 @@
 package com.gykj.zhumulangma.common.net;
 
 import com.gykj.zhumulangma.common.bean.TaskBean;
-import com.gykj.zhumulangma.common.net.config.API;
 import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
 import com.gykj.zhumulangma.common.net.dto.TaskFeedbackDTO;
 

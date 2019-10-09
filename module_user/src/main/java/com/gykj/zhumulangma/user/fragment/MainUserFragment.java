@@ -145,7 +145,7 @@ public class MainUserFragment extends BaseFragment implements View.OnClickListen
         whiteRight.setOnClickListener(this);
         transLeft.setOnClickListener(this);
         transRight.setOnClickListener(this);
-
+        fd(R.id.iv_user).setOnClickListener(this);
         fd(R.id.cl_fxzq).setOnClickListener(this);
         fd(R.id.cl_sys).setOnClickListener(this);
         fd(R.id.cl_wxhd).setOnClickListener(this);
@@ -180,9 +180,9 @@ public class MainUserFragment extends BaseFragment implements View.OnClickListen
             navigateTo(AppConstants.Router.Listen.F_FAVORITE);
         } else if (v == whiteLeft || v == transLeft) {
             navigateTo(AppConstants.Router.User.F_MESSAGE);
-        }else if (id==R.id.cl_fxzq) {
+        } else if (id == R.id.cl_fxzq) {
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE));
-        }else if (id==R.id.cl_sys) {
+        } else if (id == R.id.cl_sys) {
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
@@ -191,11 +191,11 @@ public class MainUserFragment extends BaseFragment implements View.OnClickListen
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
-        }else if (id==R.id.cl_wxhd) {
+        } else if (id == R.id.cl_wxhd) {
             navigateTo(AppConstants.Router.Listen.F_FAVORITE);
-        }else if (id==R.id.cl_jcgx) {
+        } else if (id == R.id.cl_jcgx) {
             Beta.checkUpgrade();
-        }else if (id==R.id.cl_gy) {
+        } else if (id == R.id.cl_gy||id == R.id.iv_user) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
                     .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL/Zhumulangma")
                     .navigation();
