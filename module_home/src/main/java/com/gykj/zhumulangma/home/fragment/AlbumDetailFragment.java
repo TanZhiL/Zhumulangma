@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,9 +43,6 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareListener;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -398,29 +394,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     @Override
     protected void onRight2Click(View v) {
         super.onRight2Click(v);
-        new ShareAction(_mActivity).withText("hello").setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN)
-                .setCallback(new UMShareListener() {
-                    @Override
-                    public void onStart(SHARE_MEDIA share_media) {
-                        Log.d(TAG, "onStart() called with: share_media = [" + share_media + "]");
-                    }
-
-                    @Override
-                    public void onResult(SHARE_MEDIA share_media) {
-                        Log.d(TAG, "onResult() called with: share_media = [" + share_media + "]");
-
-                    }
-
-                    @Override
-                    public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                        Log.d(TAG, "onError() called with: share_media = [" + share_media + "], throwable = [" + throwable + "]");
-                    }
-
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media) {
-                        Log.d(TAG, "onCancel() called with: share_media = [" + share_media + "]");
-                    }
-                }).open();
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE, null));
     }
 
     @Override
@@ -584,20 +558,6 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             }).popupPosition(PopupPosition.Bottom)
                     .asCustom(mPagerPopup).show();
         }
-    /*    if (flMask.getVisibility() == View.VISIBLE) {
-            rvPager.animate().translationY(-rvPager.getHeight()).setDuration(200).withEndAction(() -> {
-                flMask.setVisibility(View.GONE);
-                refreshLayout.setVisibility(View.VISIBLE);
-            });
-            fd(R.id.iv_select_page).animate().rotationBy(180).setDuration(200);
-        } else {
-            refreshLayout.setVisibility(View.GONE);
-            flMask.setVisibility(View.VISIBLE);
-            rvPager.setTranslationY(-rvPager.getHeight() == 0 ? -400 : -rvPager.getHeight());
-            rvPager.animate().translationY(0).setDuration(200);
-            fd(R.id.iv_select_page).animate().rotationBy(180).setDuration(200);
-            new Handler().postDelayed(() -> changePageStatus(), 200);
-        }*/
     }
 
     /**

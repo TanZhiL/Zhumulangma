@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -35,7 +36,13 @@ import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.ximalaya.ting.android.opensdk.auth.call.IXmlyAuthListener;
 import com.ximalaya.ting.android.opensdk.auth.exception.XmlyException;
 import com.ximalaya.ting.android.opensdk.auth.handler.XmlySsoHandler;
@@ -91,6 +98,33 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         //清除全屏显示
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
+        initAd();
+        //全局白色背景
+        setTheme(R.style.NullTheme);
+        //申请权限
+        new RxPermissions(this).requestEach(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.READ_EXTERNAL_STORAGE})
+                .subscribe(permission -> {
+                    if (!permission.granted) {
+                        new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
+                                .dismissOnBackPressed(false)
+                                .asConfirm("提示", "权限不足,请允许珠穆朗玛听获取权限",
+                                () -> {
+                                    new PermissionPageUtil(this).jumpPermissionPage();
+                                    AppUtils.exitApp();
+                                }, AppUtils::exitApp)
+                                .show();
+                    }
+                });
+
+    }
+
+    /**
+     * 显示广告
+     */
+    private void initAd() {
         long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(AppConstants.SP.AD_TIME, 0);
         //显示广告
         if(adOffset>5*60*1000&&new File(getFilesDir().getAbsolutePath()+AppConstants.Defualt.AD_NAME)
@@ -115,33 +149,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 .exists()){
             mViewModel._getBing();
         }
-        //全局白色背景
-        setTheme(R.style.NullTheme);
-        //申请权限
-        new RxPermissions(this).requestEach(new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.CALL_PHONE,
-                Manifest.permission.READ_LOGS,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.SET_DEBUG_APP,
-                Manifest.permission.SYSTEM_ALERT_WINDOW,
-                Manifest.permission.GET_ACCOUNTS,
-                Manifest.permission.WRITE_APN_SETTINGS})
-                .subscribe(permission -> {
-                    if (!permission.granted) {
-                        new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
-                                .dismissOnBackPressed(false)
-                                .asConfirm("提示", "权限不足,请允许珠穆朗玛听获取权限",
-                                () -> {
-                                    new PermissionPageUtil(this).jumpPermissionPage();
-                                    AppUtils.exitApp();
-                                }, AppUtils::exitApp)
-                                .show();
-                    }
-                });
-
     }
 
     @Override
@@ -262,7 +269,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     }
 
 
-
     private long exitTime = 0;
 
     @Override
@@ -330,6 +336,32 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
             case EventCode.Main.LOGIN:
                 goLogin();
                 break;
+            case EventCode.Main.SHARE:
+
+                ShareBoardConfig config = new ShareBoardConfig();
+                config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_CIRCULAR);
+                config.setCancelButtonVisibility(true);
+                config.setTitleVisibility(false);
+                config.setCancelButtonVisibility(false);
+                config.setIndicatorVisibility(false);
+
+                ShareAction action= (ShareAction) event.getData();
+
+                if(action==null){
+                    UMWeb web = new UMWeb("https://github.com/TanZhiL/Zhumulangma");
+                    web.setTitle("珠穆朗玛听");//标题
+                    web.setThumb(new UMImage(this,R.mipmap.ic_launcher_ting));  //缩略图
+                    web.setDescription("珠穆朗玛听");//描述
+                    action = new ShareAction(this).withMedia(web);
+                }
+                action.setDisplayList(
+                    SHARE_MEDIA.WEIXIN,
+                    SHARE_MEDIA.WEIXIN_CIRCLE,
+                    SHARE_MEDIA.QQ,
+                    SHARE_MEDIA.QZONE,
+                    SHARE_MEDIA.SINA)
+                    .setCallback(uMShareListener).open(config);
+                break;
         }
     }
 
@@ -345,6 +377,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         super.onDestroy();
         mPlayerManager.removePlayerStatusListener(playerStatusListener);
         mPlayerManager.removeAdsStatusListener(adsStatusListener);
+        UMShareAPI.get(this).release();
     }
 
 
@@ -511,6 +544,27 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         @Override
         public void onError(int i, int i1) {
 
+        }
+    };
+    private UMShareListener uMShareListener=new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            ToastUtil.showToast(ToastUtil.LEVEL_S,"分享成功");
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            Log.d(TAG, "onError() called with: share_media = [" + share_media + "], throwable = [" + throwable + "]");
+            ToastUtil.showToast(ToastUtil.LEVEL_W,throwable.getLocalizedMessage());
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+            ToastUtil.showToast(ToastUtil.LEVEL_W,"分享取消");
         }
     };
 }

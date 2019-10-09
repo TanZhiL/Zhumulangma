@@ -92,4 +92,10 @@ public abstract class BaseRefreshMvvmFragment<VM extends BaseRefreshViewModel, T
             this.quickAdapter = quickAdapter;
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mWrapRefresh.refreshLayout.setOnRefreshLoadMoreListener(null);
+    }
 }

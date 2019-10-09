@@ -211,7 +211,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             transRight2.setImageTintList(ColorStateList.valueOf(Color.WHITE));
         }
         transRight2.setVisibility(View.VISIBLE);
-
+        transRight2.setOnClickListener(this);
         whiteLeft = ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
         ImageView whiteRight1 = ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
         ImageView whiteRight2 = ctbWhite.getRightCustomView().findViewById(R.id.iv2_right);
@@ -226,6 +226,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         whiteRight1.setVisibility(View.VISIBLE);
         whiteRight2.setImageResource(R.drawable.ic_common_share);
         whiteRight2.setVisibility(View.VISIBLE);
+        whiteRight2.setOnClickListener(this);
     }
 
     @Override
@@ -489,6 +490,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         }else if (R.id.tv_comment == id) {
            new XPopup.Builder(mContext).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
                    .dismissOnTouchOutside(false).enableDrag(false).asCustom(mCommentPopup).show();
+        }else if(R.id.iv2_right==id){
+            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE, null));
         }
     }
 

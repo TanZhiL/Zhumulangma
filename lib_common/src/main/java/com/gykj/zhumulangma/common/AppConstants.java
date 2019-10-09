@@ -67,8 +67,8 @@ public interface  AppConstants {
          String UM_ID ="5d9c3b0b570df30848000687";
          String WX_ID="5d9c3b0b570df30848000687";
          String WX_KEY ="5d9c3b0b570df30848000687";
-        String QQ_ID="101805932";
-        String QQ_KEY="3054adfb0973db068a21bef83d4ed3bc";
+        String QQ_ID="101806238";
+        String QQ_KEY="748f15b84b0747c24e01037edfcd124c";
         String SINA_ID="3537697814";
         String SINA_KEY="da65b94015cacf559208b821f89a0f85";
     }

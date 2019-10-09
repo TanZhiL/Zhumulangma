@@ -2,14 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#D4E0E5">
 
 
     <RelativeLayout
         android:id="@+id/umeng_socialize_titlebar"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:background="#0086DC">
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
 
         <TextView
             android:id="@+id/umeng_title"
@@ -18,7 +20,7 @@
             android:layout_centerInParent="true"
             android:text=""
             android:textColor="#ffffff"
-            android:textSize="18sp" />
+            android:textSize="@dimen/simpleBarTitle" />
 
         <RelativeLayout
             android:id="@+id/umeng_back"
@@ -30,10 +32,11 @@
 
             <ImageButton
 
-                android:layout_width="12dp"
-                android:layout_height="20dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_centerVertical="true"
-                android:background="@drawable/umeng_socialize_back_icon"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_common_titlebar_back"
                 android:layout_marginLeft="15dp"
                 android:scaleType="center" />
         </RelativeLayout>
@@ -47,6 +50,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/umeng_socialize_btn_bg"
             android:padding="4dp"
+            android:textSize="@dimen/simpleBarAction"
             android:text="分享"
             android:textColor="#ffffff" />
     </RelativeLayout>
@@ -103,19 +107,25 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/umeng_socialize_titlebar"
+        android:gravity="center"
         android:background="#F2F5F6" >
 
-        <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal">
+        <FrameLayout
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:background="@drawable/shap_common_white_coner">
 
-            <ProgressBar
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_margin="10dp" />
-        </LinearLayout>
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:background="@color/transparent"
+                app:lottie_autoPlay="true"
+                app:lottie_colorFilter="@color/colorPrimary"
+                app:lottie_fileName="lottie_refreshing.json"
+                app:lottie_loop="true" />
+        </FrameLayout>
     </RelativeLayout>
 
 </RelativeLayout>

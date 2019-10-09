@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D4E0E5"
+    android:background="@color/white"
     android:id="@+id/root"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/umeng_socialize_share_titlebar"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:background="#0086DC">
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary">
 
         <TextView
             android:id="@+id/umeng_title"
@@ -19,23 +19,22 @@
             android:layout_centerInParent="true"
             android:text=""
             android:textColor="#ffffff"
-            android:textSize="18sp" />
+            android:textSize="@dimen/simpleBarTitle" />
 
         <RelativeLayout
             android:id="@+id/umeng_back"
             android:layout_width="50dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:onClick="onCancel"
             android:visibility="visible">
 
-            <ImageButton
-                android:layout_width="12dp"
-                android:layout_height="20dp"
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:background="@drawable/umeng_socialize_back_icon"
-                android:clickable="false"
-                android:scaleType="center" />
+                android:tint="@color/white"
+                android:src="@drawable/ic_common_titlebar_back"/>
         </RelativeLayout>
 
         <TextView
@@ -49,7 +48,7 @@
             android:paddingRight="15dp"
             android:text="分享"
             android:textColor="#ffffff"
-            android:textSize="15sp" />
+            android:textSize="@dimen/simpleBarAction" />
     </RelativeLayout>
 
     <EditText

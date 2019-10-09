@@ -15,6 +15,7 @@ public interface EventCode {
         int SHOW_GP=1003;
         int LOGIN=1004;
         int LOGINSUCC=1005;
+        int SHARE=1006;
         //1000开始
     }
 

@@ -44,6 +44,9 @@ import com.just.agentweb.IAgentWebSettings;
 import com.just.agentweb.PermissionInterceptor;
 import com.just.agentweb.WebChromeClient;
 import com.just.agentweb.WebListenerManager;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -59,7 +62,7 @@ import java.util.HashMap;
 public class WebFragment extends BaseFragment {
     private AgentWeb mAgentWeb;
     @Autowired(name = KeyCode.Discover.PATH)
-    public String path;
+    public String mPath;
     private ImageView ivClose;
     private AlertDialog mAlertDialog;
 
@@ -104,7 +107,7 @@ public class WebFragment extends BaseFragment {
                 .interceptUnkownUrl() //拦截找不到相关页面的Url AgentWeb 3.0.0 加入。
                 .createAgentWeb()//创建AgentWeb。
                 .ready()
-                .go(path);
+                .go(mPath);
         AgentWebConfig.debug();
         // AgentWeb 没有把WebView的功能全面覆盖 ，所以某些设置 AgentWeb 没有提供 ， 请从WebView方面入手设置。
         mAgentWeb.getWebCreator().getWebView().setOverScrollMode(WebView.OVER_SCROLL_NEVER);
@@ -263,7 +266,7 @@ public class WebFragment extends BaseFragment {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             timer.put(url, System.currentTimeMillis());
-            if (url.equals(path)) {
+            if (url.equals(mPath)) {
                 ivClose.setVisibility(View.GONE);
             } else {
                 ivClose.setVisibility(View.VISIBLE);
@@ -464,5 +467,17 @@ public class WebFragment extends BaseFragment {
     @Override
     protected Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_common_share};
+    }
+
+    @Override
+    protected void onRight1Click(View v) {
+        super.onRight1Click(v);
+        Bitmap favicon = mAgentWeb.getWebCreator().getWebView().getFavicon();
+        String title = mAgentWeb.getWebCreator().getWebView().getTitle();
+        UMWeb web = new UMWeb(mPath);
+        web.setTitle(title);//标题
+        web.setThumb(new UMImage(mContext,favicon));  //缩略图
+        web.setDescription("珠穆朗玛听");//描述
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE, new ShareAction(_mActivity).withMedia(web)));
     }
 }
