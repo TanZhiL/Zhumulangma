@@ -167,7 +167,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         tvTempo = fd(R.id.tv_tempo);
 
         rvRelative.setLayoutManager(new LinearLayoutManager(mActivity));
-        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
+        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_line);
         mAlbumAdapter.bindToRecyclerView(rvRelative);
         initBar();
         new Handler().postDelayed(() -> {

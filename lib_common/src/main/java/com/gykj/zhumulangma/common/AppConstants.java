@@ -41,6 +41,8 @@ public interface  AppConstants {
          interface Listen{
              String F_MAIN="/listen/main";
              String F_DOWNLOAD="/listen/download";
+             String F_DOWNLOAD_DELETE="/listen/download/delete";
+             String F_DOWNLOAD_SORT="/listen/download/sort";
              String F_HISTORY="/listen/history";
              String F_FAVORITE="/listen/favorite";
          }

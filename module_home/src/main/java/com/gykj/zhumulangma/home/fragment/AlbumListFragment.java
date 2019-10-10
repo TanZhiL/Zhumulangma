@@ -68,9 +68,10 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
         RecyclerView recyclerView = fd(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
-        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
+        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_line);
         mAlbumAdapter.bindToRecyclerView(recyclerView);
         refreshLayout = fd(R.id.refreshLayout);
+        setTitle(new String[]{mTitle});
     }
 
     @Override
@@ -87,7 +88,6 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
 
     @Override
     public void initData() {
-        setTitle(new String[]{mTitle});
         mViewModel.setType(mType);
         mViewModel.setAnnouncerId(mAnnouncerId);
         mViewModel.init();

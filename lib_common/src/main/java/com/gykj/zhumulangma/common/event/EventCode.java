@@ -19,7 +19,8 @@ public interface EventCode {
         //1000开始
     }
 
-    interface NewsCode {
+    interface Listen {
+        int DOWNLOAD_SORT=2000;
         //2000开始
     }
 

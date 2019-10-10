@@ -109,7 +109,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
         rvTrack.setHasFixedSize(true);
         rvAlbum.setLayoutManager(new LinearLayoutManager(mActivity));
         rvTrack.setLayoutManager(new LinearLayoutManager(mActivity));
-        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
+        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_line);
         mTrackAdapter = new AnnouncerTrackAdapter(R.layout.home_item_announcer_track);
         mAlbumAdapter.bindToRecyclerView(rvAlbum);
         mTrackAdapter.bindToRecyclerView(rvTrack);

@@ -67,7 +67,6 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
     private int mProvinceCode;
 
     private SmartRefreshLayout refreshLayout;
-    //下拉中间视图
     private View llbarCenter;
     private View ivCategoryDown;
 

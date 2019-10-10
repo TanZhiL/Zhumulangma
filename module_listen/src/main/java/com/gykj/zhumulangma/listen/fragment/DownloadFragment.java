@@ -22,7 +22,9 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.widget.CircleProgressBar;
@@ -32,13 +34,13 @@ import com.gykj.zhumulangma.listen.adapter.DownloadTrackAdapter;
 import com.gykj.zhumulangma.listen.adapter.DownloadingAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.DownloadViewModel;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
+import com.ximalaya.ting.android.sdkdownloader.downloadutil.ComparatorUtil;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.DownloadState;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.IDoSomethingProgress;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.IDownloadManager;
@@ -51,6 +53,9 @@ import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Author: Thomas.
  * Date: 2019/9/10 8:23
@@ -60,7 +65,7 @@ import java.util.Arrays;
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
 public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements
         BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack,
-        BaseQuickAdapter.OnItemClickListener, View.OnClickListener, IXmPlayerStatusListener {
+        BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
     @Autowired(name = KeyCode.Listen.TAB_INDEX)
     public int mTabIndex;
 
@@ -72,7 +77,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     private TextView tvMemory;
     private MagicIndicator magicIndicator;
     private ViewGroup layoutDetail1, layoutDetail2, layoutDetail3;
-
+    private XmDownloadManager mDownloadManager=XmDownloadManager.getInstance();
 
     public DownloadFragment() {
 
@@ -93,17 +98,9 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     @Override
     protected void initView(View view) {
         String[] tabs = {"专辑", "声音", "下载中"};
-        layoutDetail1 = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.common_layout_refresh_loadmore, null);
-        layoutDetail2 = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.common_layout_refresh_loadmore, null);
+        layoutDetail1 = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.listen_layout_download_album, null);
+        layoutDetail2 = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.listen_layout_download_track, null);
         layoutDetail3 = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.listen_layout_downloading, null);
-        ((RefreshLayout) layoutDetail1.findViewById(R.id.refreshLayout)).setEnableRefresh(false);
-        ((RefreshLayout) layoutDetail1.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
-
-        ((RefreshLayout) layoutDetail2.findViewById(R.id.refreshLayout)).setEnableRefresh(false);
-        ((RefreshLayout) layoutDetail2.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
-
-        ((RefreshLayout) layoutDetail3.findViewById(R.id.refreshLayout)).setEnableRefresh(false);
-        ((RefreshLayout) layoutDetail3.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
 
 
         RecyclerView rvAlbum = layoutDetail1.findViewById(R.id.recyclerview);
@@ -137,14 +134,14 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         ViewPagerHelper.bind(magicIndicator, viewpager);
         viewpager.setCurrentItem(mTabIndex);
 
-        if (!XmDownloadManager.getInstance().haveDowningTask()) {
+        if (!mDownloadManager.haveDowningTask()) {
             ((TextView) layoutDetail3.findViewById(R.id.tv_all)).setText("全部开始");
             ((ImageView) layoutDetail3.findViewById(R.id.iv_all)).setImageResource(R.drawable.ic_listen_download);
         } else {
             ((TextView) layoutDetail3.findViewById(R.id.tv_all)).setText("全部暂停");
             ((ImageView) layoutDetail3.findViewById(R.id.iv_all)).setImageResource(R.drawable.ic_listen_pause);
         }
-        ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("("+XmDownloadManager.getInstance().getDownloadTrackCount(false)+")");
+        ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("(" + mDownloadManager.getDownloadTrackCount(false) + ")");
     }
 
     @Override
@@ -156,25 +153,39 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         mTrackAdapter.setOnItemClickListener(this);
         mDownloadingAdapter.setOnItemChildClickListener(this);
         mDownloadingAdapter.setOnItemClickListener(this);
+
+
+        layoutDetail2.findViewById(R.id.tv_sort).setOnClickListener(this);
+        layoutDetail2.findViewById(R.id.iv_sort).setOnClickListener(this);
+        layoutDetail2.findViewById(R.id.tv_delete).setOnClickListener(this);
+        layoutDetail2.findViewById(R.id.iv_delete).setOnClickListener(this);
+
         layoutDetail3.findViewById(R.id.tv_all).setOnClickListener(this);
         layoutDetail3.findViewById(R.id.iv_all).setOnClickListener(this);
-        layoutDetail3.findViewById(R.id.tv_delete).setOnClickListener(this);
-        layoutDetail3.findViewById(R.id.iv_delete).setOnClickListener(this);
+        layoutDetail3.findViewById(R.id.tv_clear).setOnClickListener(this);
+        layoutDetail3.findViewById(R.id.tv_clear).setOnClickListener(this);
 
-        XmDownloadManager.getInstance().addDownloadStatueListener(this);
-        XmPlayerManager.getInstance(mActivity).addPlayerStatusListener(this);
+        mDownloadManager.addDownloadStatueListener(this);
+        XmPlayerManager.getInstance(mActivity).addPlayerStatusListener(playerStatusListener);
     }
 
     @Override
     public void initData() {
         tvMemory.setText(getString(R.string.memory,
-                XmDownloadManager.getInstance().getHumanReadableDownloadOccupation(IDownloadManager.Auto),
+                mDownloadManager.getHumanReadableDownloadOccupation(IDownloadManager.Auto),
                 SystemUtil.getRomTotalSize(mActivity)));
-        mAlbumAdapter.setNewData(XmDownloadManager.getInstance().getDownloadAlbums(true));
-        mTrackAdapter.setNewData(XmDownloadManager.getInstance().getDownloadTracks(true));
-        mDownloadingAdapter.setNewData(XmDownloadManager.getInstance().getDownloadTracks(false));
-        if (XmDownloadManager.getInstance().getDownloadTracks(false).size() > 0) {
+        mAlbumAdapter.setNewData(mDownloadManager.getDownloadAlbums(true));
+
+        List<Track> downloadTracks = mDownloadManager.getDownloadTracks(true);
+        Collections.sort(downloadTracks, ComparatorUtil.comparatorByUserSort(true));
+
+        mTrackAdapter.setNewData(downloadTracks);
+        mDownloadingAdapter.setNewData(mDownloadManager.getDownloadTracks(false));
+        if (mDownloadManager.getDownloadTracks(false).size() > 0) {
             layoutDetail3.findViewById(R.id.cl_action).setVisibility(View.VISIBLE);
+        }
+        if (mDownloadManager.getDownloadTracks(true).size() > 0) {
+            layoutDetail2.findViewById(R.id.cl_action).setVisibility(View.VISIBLE);
         }
     }
 
@@ -190,23 +201,23 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         if (adapter == mAlbumAdapter) {
             if (id == R.id.ll_delete) {
 
-                XmDownloadManager.getInstance().clearDownloadedAlbum(mAlbumAdapter.getItem(position).getAlbumId(), null);
+                mDownloadManager.clearDownloadedAlbum(mAlbumAdapter.getItem(position).getAlbumId(), null);
 
             }
         } else if (adapter == mTrackAdapter) {
             if (id == R.id.ll_delete) {
-                XmDownloadManager.getInstance().clearDownloadedTrack(mTrackAdapter.getItem(position).getDataId());
+                mDownloadManager.clearDownloadedTrack(mTrackAdapter.getItem(position).getDataId());
             }
         } else if (adapter == mDownloadingAdapter) {
             if (id == R.id.ll_delete) {
                 try {
-                    XmDownloadManager.getInstance().cancelDownloadSingleTrack(mDownloadingAdapter.getItem(position).getDataId());
+                    mDownloadManager.cancelDownloadSingleTrack(mDownloadingAdapter.getItem(position).getDataId());
                     mDownloadingAdapter.remove(position);
                     if (mDownloadingAdapter.getData().size() == 0) {
                         layoutDetail3.findViewById(R.id.cl_action).setVisibility(View.GONE);
-                    }else {
+                    } else {
                         mHandler.postDelayed(() -> {
-                            if (!XmDownloadManager.getInstance().haveDowningTask()) {
+                            if (!mDownloadManager.haveDowningTask()) {
                                 ((TextView) layoutDetail3.findViewById(R.id.tv_all)).setText("全部开始");
                                 ((ImageView)
                                         layoutDetail3.findViewById(R.id.iv_all)).setImageResource(R.drawable.ic_listen_download);
@@ -214,7 +225,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                                 ((TextView) layoutDetail3.findViewById(R.id.tv_all)).setText("全部暂停");
                                 ((ImageView) layoutDetail3.findViewById(R.id.iv_all)).setImageResource(R.drawable.ic_listen_pause);
                             }
-                            ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("("+XmDownloadManager.getInstance().getDownloadTrackCount(false)+")");
+                            ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("(" + mDownloadManager.getDownloadTrackCount(false) + ")");
                         }, 200);
                     }
                 } catch (Exception e) {
@@ -254,8 +265,8 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                 layoutDetail3.findViewById(R.id.cl_action).setVisibility(View.GONE);
             }
         }
-        ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("("+XmDownloadManager.getInstance().getDownloadTrackCount(false)+")");
-        mAlbumAdapter.setNewData(XmDownloadManager.getInstance().getDownloadAlbums(true));
+        ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("(" + mDownloadManager.getDownloadTrackCount(false) + ")");
+        mAlbumAdapter.setNewData(mDownloadManager.getDownloadAlbums(true));
         mTrackAdapter.addData(track);
     }
 
@@ -295,10 +306,10 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             TextView tvStatus = (TextView) mDownloadingAdapter.getViewByPosition(index, R.id.tv_status);
             CircleProgressBar progressBar = (CircleProgressBar) mDownloadingAdapter.getViewByPosition(index, R.id.cpb_progress);
             if (ivStatus != null && tvStatus != null && progressBar != null) {
-                DownloadState downloadStatus = XmDownloadManager.getInstance()
+                DownloadState downloadStatus = mDownloadManager
                         .getSingleTrackDownloadStatus(track.getDataId());
                 if (downloadStatus == DownloadState.WAITING) {
-                    if (XmDownloadManager.getInstance().haveDowningTask()) {
+                    if (mDownloadManager.haveDowningTask()) {
                         ivStatus.setImageResource(R.drawable.ic_listen_waiting);
                         tvStatus.setText("待下载");
                         tvStatus.setTextColor(getResources().getColor(R.color.colorGray));
@@ -329,30 +340,30 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         if (adapter == mDownloadingAdapter) {
 
             try {
-                if (XmDownloadManager.getInstance().getSingleTrackDownloadStatus(
+                if (mDownloadManager.getSingleTrackDownloadStatus(
                         mDownloadingAdapter.getItem(position).getDataId()) != DownloadState.STARTED) {
-                    XmDownloadManager.getInstance().resumeDownloadSingleTrack(mDownloadingAdapter.getItem(position).getDataId());
+                    mDownloadManager.resumeDownloadSingleTrack(mDownloadingAdapter.getItem(position).getDataId());
                 } else {
-                    XmDownloadManager.getInstance().pauseDownloadSingleTrack(mDownloadingAdapter.getItem(position).getDataId());
+                    mDownloadManager.pauseDownloadSingleTrack(mDownloadingAdapter.getItem(position).getDataId());
                 }
 
                 mHandler.postDelayed(() -> {
-                    if (!XmDownloadManager.getInstance().haveDowningTask()) {
+                    if (!mDownloadManager.haveDowningTask()) {
                         ((TextView) layoutDetail3.findViewById(R.id.tv_all)).setText("全部开始");
                         ((ImageView) layoutDetail3.findViewById(R.id.iv_all)).setImageResource(R.drawable.ic_listen_download);
                     } else {
                         ((TextView) layoutDetail3.findViewById(R.id.tv_all)).setText("全部暂停");
                         ((ImageView) layoutDetail3.findViewById(R.id.iv_all)).setImageResource(R.drawable.ic_listen_pause);
                     }
-                    ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("("+XmDownloadManager.getInstance().getDownloadTrackCount(false)+")");
+                    ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("(" + mDownloadManager.getDownloadTrackCount(false) + ")");
                 }, 200);
 
             } catch (Exception e) {
                 //当下载完成的瞬间,会被移除,造成越界异常
                 e.printStackTrace();
             }
-        }else if(adapter==mTrackAdapter){
-            XmPlayerManager.getInstance(mActivity).playList(mTrackAdapter.getData(),position);
+        } else if (adapter == mTrackAdapter) {
+            XmPlayerManager.getInstance(mActivity).playList(mTrackAdapter.getData(), position);
             navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
         }
     }
@@ -361,17 +372,17 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.tv_all || id == R.id.iv_all) {
-            if (XmDownloadManager.getInstance().haveDowningTask()) {
-                XmDownloadManager.getInstance().pauseAllDownloads(null);
+            if (mDownloadManager.haveDowningTask()) {
+                mDownloadManager.pauseAllDownloads(null);
                 ((TextView) layoutDetail3.findViewById(R.id.tv_all)).setText("全部开始");
                 ((ImageView) layoutDetail3.findViewById(R.id.iv_all)).setImageResource(R.drawable.ic_listen_download);
             } else {
-                XmDownloadManager.getInstance().resumeAllDownloads(null);
+                mDownloadManager.resumeAllDownloads(null);
                 ((TextView) layoutDetail3.findViewById(R.id.tv_all)).setText("全部暂停");
                 ((ImageView) layoutDetail3.findViewById(R.id.iv_all)).setImageResource(R.drawable.ic_listen_pause);
             }
-        } else if (id == R.id.tv_delete || id == R.id.iv_delete) {
-            XmDownloadManager.getInstance().cancelAllDownloads(new IDoSomethingProgress() {
+        } else if (id == R.id.iv_clear || id == R.id.tv_clear) {
+            mDownloadManager.cancelAllDownloads(new IDoSomethingProgress() {
                 @Override
                 public void begin() {
                 }
@@ -380,7 +391,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                 public void success() {
                     mDownloadingAdapter.getData().clear();
                     layoutDetail3.findViewById(R.id.cl_action).setVisibility(View.GONE);
-                    ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("("+XmDownloadManager.getInstance().getDownloadTrackCount(false)+")");
+                    ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("(" + mDownloadManager.getDownloadTrackCount(false) + ")");
                 }
 
                 @Override
@@ -389,8 +400,13 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                 }
             });
 
+        } else if (id == R.id.tv_sort || id == R.id.iv_sort) {
+            navigateTo(AppConstants.Router.Listen.F_DOWNLOAD_SORT);
+        } else if (id == R.id.tv_delete || id == R.id.iv_delete) {
+            navigateTo(AppConstants.Router.Listen.F_DOWNLOAD_DELETE);
         }
     }
+
     private void updatePlayStatus(int currPos, int duration) {
         Track track = XmPlayerManager.getInstance(mActivity).getCurrSoundIgnoreKind(true);
         if (null == track) {
@@ -406,60 +422,16 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     }
 
     @Override
-    public void onPlayStart() {
-
+    public <T> void onEvent(BaseFragmentEvent<T> event) {
+        super.onEvent(event);
+        switch (event.getCode()) {
+            case EventCode.Listen.DOWNLOAD_SORT:
+                List<Track> downloadTracks = mDownloadManager.getDownloadTracks(true);
+                Collections.sort(downloadTracks, ComparatorUtil.comparatorByUserSort(true));
+                mTrackAdapter.setNewData(downloadTracks);
+                break;
+        }
     }
-
-    @Override
-    public void onPlayPause() {
-
-    }
-
-    @Override
-    public void onPlayStop() {
-
-    }
-
-    @Override
-    public void onSoundPlayComplete() {
-
-    }
-
-    @Override
-    public void onSoundPrepared() {
-
-    }
-
-    @Override
-    public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
-
-    }
-
-    @Override
-    public void onBufferingStart() {
-
-    }
-
-    @Override
-    public void onBufferingStop() {
-
-    }
-
-    @Override
-    public void onBufferProgress(int i) {
-
-    }
-
-    @Override
-    public void onPlayProgress(int i, int i1) {
-        updatePlayStatus(i, i1);
-    }
-
-    @Override
-    public boolean onError(XmPlayerException e) {
-        return false;
-    }
-
 
     class DownloadPagerAdapter extends PagerAdapter {
         @Override
@@ -518,7 +490,65 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     public void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
-        XmDownloadManager.getInstance().removeDownloadStatueListener(this);
-        XmPlayerManager.getInstance(mActivity).removePlayerStatusListener(this);
+        mDownloadManager.removeDownloadStatueListener(this);
+        XmPlayerManager.getInstance(mActivity).removePlayerStatusListener(playerStatusListener);
     }
+
+    private IXmPlayerStatusListener playerStatusListener = new IXmPlayerStatusListener() {
+        @Override
+        public void onPlayStart() {
+
+        }
+
+        @Override
+        public void onPlayPause() {
+
+        }
+
+        @Override
+        public void onPlayStop() {
+
+        }
+
+        @Override
+        public void onSoundPlayComplete() {
+
+        }
+
+        @Override
+        public void onSoundPrepared() {
+
+        }
+
+        @Override
+        public void onSoundSwitch(PlayableModel playableModel, PlayableModel playableModel1) {
+
+        }
+
+        @Override
+        public void onBufferingStart() {
+
+        }
+
+        @Override
+        public void onBufferingStop() {
+
+        }
+
+        @Override
+        public void onBufferProgress(int i) {
+
+        }
+
+        @Override
+        public void onPlayProgress(int i, int i1) {
+            updatePlayStatus(i, i1);
+        }
+
+        @Override
+        public boolean onError(XmPlayerException e) {
+            return false;
+        }
+
+    };
 }

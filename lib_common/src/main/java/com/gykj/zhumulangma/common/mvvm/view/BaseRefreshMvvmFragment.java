@@ -96,7 +96,7 @@ public abstract class BaseRefreshMvvmFragment<VM extends BaseRefreshViewModel, T
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(null != mWrapRefresh.refreshLayout)
+        if(null != mWrapRefresh)
         mWrapRefresh.refreshLayout.setOnRefreshLoadMoreListener(null);
     }
 }

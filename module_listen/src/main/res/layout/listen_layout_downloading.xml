@@ -49,7 +49,7 @@
             app:layout_constraintTop_toTopOf="@+id/view" />
 
         <TextView
-            android:id="@+id/tv_delete"
+            android:id="@+id/tv_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -61,15 +61,15 @@
             app:layout_constraintTop_toTopOf="@+id/view" />
 
         <ImageView
-            android:id="@+id/iv_delete"
+            android:id="@+id/iv_clear"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginEnd="8dp"
             android:src="@drawable/ic_listen_delete"
             android:tint="@color/colorPrimaryDark"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_delete"
-            app:layout_constraintEnd_toStartOf="@+id/tv_delete"
-            app:layout_constraintTop_toTopOf="@+id/tv_delete" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_clear"
+            app:layout_constraintEnd_toStartOf="@+id/tv_clear"
+            app:layout_constraintTop_toTopOf="@+id/tv_clear" />
 
         <View
             android:layout_width="match_parent"
@@ -90,10 +90,12 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <include
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        layout="@layout/common_layout_refresh_loadmore"/>
+        android:overScrollMode="never"
+        android:nestedScrollingEnabled="true"/>
 
 </LinearLayout>

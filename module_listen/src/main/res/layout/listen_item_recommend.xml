@@ -7,6 +7,12 @@
     android:paddingLeft="11dp"
     android:paddingRight="11dp">
 
+    <View
+        style="@style/SecondHLine"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout5" />
     <ImageView
         android:id="@+id/iv_cover"
         android:layout_width="68dp"
@@ -47,6 +53,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="0dp"
         android:layout_height="17dp"
         android:layout_marginEnd="8dp"

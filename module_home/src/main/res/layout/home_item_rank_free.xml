@@ -47,6 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <LinearLayout
+        android:id="@+id/linearLayout7"
         android:layout_width="0dp"
         android:layout_height="17dp"
         android:orientation="horizontal"
@@ -57,8 +58,8 @@
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:tint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_common_play" />
+            android:src="@drawable/ic_common_play"
+            android:tint="@color/colorPrimaryDark" />
 
         <TextView
             android:id="@+id/tv_playcount"
@@ -72,8 +73,8 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginLeft="10dp"
-            android:tint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_common_ji" />
+            android:src="@drawable/ic_common_ji"
+            android:tint="@color/colorPrimaryDark" />
 
         <TextView
             android:id="@+id/tv_track_num"
@@ -94,9 +95,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <View
+        style="@style/SecondHLine"
+        android:layout_width="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="match_parent"
-        android:background="#f0f0f0"
-        android:layout_height="1dp"/>
+        app:layout_constraintStart_toStartOf="@+id/linearLayout7" />
 </android.support.constraint.ConstraintLayout>

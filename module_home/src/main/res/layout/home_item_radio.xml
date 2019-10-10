@@ -7,6 +7,12 @@
     android:paddingLeft="11dp"
     android:paddingRight="11dp">
 
+    <View
+        style="@style/SecondHLine"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout3" />
     <ImageView
         android:id="@+id/iv_item_play"
         android:layout_width="23dp"
@@ -56,6 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_radio_name" />
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="17dp"
         android:orientation="horizontal"
@@ -66,15 +73,15 @@
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:tint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_common_play" />
+            android:src="@drawable/ic_common_play"
+            android:tint="@color/colorPrimaryDark" />
 
         <TextView
             android:id="@+id/tv_playcount"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            tools:text="3596.2万"
             android:textColor="#505050"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="3596.2万" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
