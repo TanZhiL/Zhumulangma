@@ -40,7 +40,7 @@ public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel,
     protected void initView(View view) {
         RecyclerView recyclerView = fd(R.id.recyclerview);
         refreshLayout = fd(R.id.refreshLayout);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
         mFavoriteAdapter = new FavoriteAdapter(R.layout.listen_item_favorite);
         mFavoriteAdapter.bindToRecyclerView(recyclerView);

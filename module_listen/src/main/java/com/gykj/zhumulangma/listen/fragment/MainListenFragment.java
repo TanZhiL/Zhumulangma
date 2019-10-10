@@ -55,7 +55,7 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
         viewpager.setOffscreenPageLimit(2);
         viewpager.setAdapter(adapter);
         MagicIndicator magicIndicator = fd(R.id.magic_indicator);
-        final CommonNavigator commonNavigator = new CommonNavigator(mContext);
+        final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager,60));
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);

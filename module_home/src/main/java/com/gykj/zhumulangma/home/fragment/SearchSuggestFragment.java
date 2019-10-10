@@ -72,10 +72,10 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
         refreshLayout.setEnableLoadMore(false);
         RecyclerView recyclerView = fd(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mSuggestAdapter=new SearchSuggestAdapter(null);
         mSuggestAdapter.bindToRecyclerView(recyclerView);
-        View vHeader = LayoutInflater.from(mContext).inflate(R.layout.home_item_search_suggest_query, null);
+        View vHeader = LayoutInflater.from(mActivity).inflate(R.layout.home_item_search_suggest_query, null);
         tvHeader=vHeader.findViewById(R.id.tv_label);
         mSuggestAdapter.setHeaderView(vHeader);
         vHeader.setOnClickListener(this);
@@ -108,7 +108,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
         SpannableString spannableString=new SpannableString(s);
         int start = s.indexOf("\"");
         int end = s.lastIndexOf("\"");
-        ForegroundColorSpan colorSpan=new ForegroundColorSpan(mContext.getResources().getColor(R.color.colorPrimary));
+        ForegroundColorSpan colorSpan=new ForegroundColorSpan(mActivity.getResources().getColor(R.color.colorPrimary));
         spannableString.setSpan(colorSpan,start+1,end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         tvHeader.setText(spannableString);
         mViewModel.getSuggestWord(mKeyword);

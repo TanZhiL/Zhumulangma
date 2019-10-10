@@ -43,7 +43,7 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
     protected void initView(View view) {
         refreshLayout = fd(R.id.refreshLayout);
         RecyclerView recyclerView = fd(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
         mHistoryAdapter = new HistoryAdapter(null);
         mHistoryAdapter.bindToRecyclerView(recyclerView);
@@ -119,7 +119,7 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
     @Override
     protected void onRight1Click(View v) {
         super.onRight1Click(v);
-        new AlertDialog.Builder(mContext)
+        new AlertDialog.Builder(mActivity)
                 .setMessage("确定要清空播放历史吗?")
                 .setNegativeButton("取消", (dialog, which) -> dialog.dismiss())
                 .setPositiveButton("确定", (dialog, which) -> {
@@ -133,5 +133,4 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
     protected boolean lazyEnable() {
         return false;
     }
-
 }

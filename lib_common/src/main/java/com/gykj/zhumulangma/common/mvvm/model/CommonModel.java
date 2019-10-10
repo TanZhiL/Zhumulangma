@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import okhttp3.ResponseBody;
 
 /**
  * Author: Thomas.
@@ -33,6 +33,12 @@ public class CommonModel extends BaseModel {
         mCommonService = RetrofitManager.getInstance().getCommonService();
     }
 
+
+    public Observable<ResponseBody> getCommonBody(String ur){
+        return mCommonService.getCommonBody(ur)
+                .compose(RxAdapter.exceptionTransformer())
+                .compose(RxAdapter.schedulersTransformer());
+    }
 
     /**
      * 条件查询
@@ -71,18 +77,15 @@ public class CommonModel extends BaseModel {
 
     }
     public <T> Observable<List<T>> listRaw(Class<T> cls,String where,String... selectionArgs){
-        Observable.create(new ObservableOnSubscribe<List<T>>() {
-            @Override
-            public void subscribe(ObservableEmitter<List<T>> emitter) throws Exception {
-                List<T> list = new ArrayList<>();
-                try {
-                    list= AppHelper.getDaoSession().queryRaw(cls, where, selectionArgs);
-                } catch (Exception e) {
-                    emitter.onError(e);
-                }
-                emitter.onNext(list);
-                emitter.onComplete();
+        Observable.create((ObservableOnSubscribe<List<T>>) emitter -> {
+            List<T> list = new ArrayList<>();
+            try {
+                list= AppHelper.getDaoSession().queryRaw(cls, where, selectionArgs);
+            } catch (Exception e) {
+                emitter.onError(e);
             }
+            emitter.onNext(list);
+            emitter.onComplete();
         });
 
 

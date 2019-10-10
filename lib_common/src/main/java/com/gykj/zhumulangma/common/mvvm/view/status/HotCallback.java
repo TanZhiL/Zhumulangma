@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.status;
+package com.gykj.zhumulangma.common.mvvm.view.status;
 
 import android.content.Context;
 import android.view.View;
@@ -8,14 +8,14 @@ import com.kingja.loadsir.callback.Callback;
 
 /**
  * Author: Thomas.
- * Date: 2019/7/22 10:46
+ * Date: 2019/10/10 10:51
  * Email: 1071931588@qq.com
  * Description:
  */
-public class InitCallback extends Callback {
+public class HotCallback extends Callback {
     @Override
     protected int onCreateView() {
-        return R.layout.common_layout_init;
+        return R.layout.common_layout_skeleton_hot;
     }
 
     @Override
@@ -23,5 +23,4 @@ public class InitCallback extends Callback {
         //不响应reload事件
         return true;
     }
-
 }

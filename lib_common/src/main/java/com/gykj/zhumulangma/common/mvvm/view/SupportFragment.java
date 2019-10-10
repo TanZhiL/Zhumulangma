@@ -27,7 +27,7 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackFragmentDelegate;
 public abstract class SupportFragment extends Fragment implements ISupportFragment, ISwipeBackFragment {
     final SwipeBackFragmentDelegate mBackDelegate = new SwipeBackFragmentDelegate(this);
     final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
-    protected SupportActivity _mActivity;
+    protected SupportActivity mActivity;
 
     @Override
     public SupportFragmentDelegate getSupportDelegate() {
@@ -51,7 +51,7 @@ public abstract class SupportFragment extends Fragment implements ISupportFragme
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mDelegate.onAttach(activity);
-        _mActivity = (SupportActivity) mDelegate.getActivity();
+        mActivity = (SupportActivity) mDelegate.getActivity();
     }
 
     @Override

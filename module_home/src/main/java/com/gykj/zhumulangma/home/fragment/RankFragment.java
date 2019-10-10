@@ -21,6 +21,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RankFreeAdapter;
 import com.gykj.zhumulangma.home.adapter.RankPaidAdapter;
@@ -28,6 +29,7 @@ import com.gykj.zhumulangma.home.dialog.RankCategoryPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
+import com.kingja.loadsir.callback.Callback;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -87,14 +89,14 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
         ivCategoryDown.setVisibility(View.VISIBLE);
         tvTitle = llbarCenter.findViewById(R.id.tv_title);
         tvTitle.setText("热门");
-        layoutFree = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
-        layoutPaid = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
+        layoutFree = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.common_layout_refresh_loadmore, null);
+        layoutPaid = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.common_layout_refresh_loadmore, null);
         rlFree = layoutFree.findViewById(R.id.refreshLayout);
         rlPaid = layoutPaid.findViewById(R.id.refreshLayout);
         RecyclerView rvFree = layoutFree.findViewById(R.id.recyclerview);
         RecyclerView rvPaid = layoutPaid.findViewById(R.id.recyclerview);
-        rvFree.setLayoutManager(new LinearLayoutManager(mContext));
-        rvPaid.setLayoutManager(new LinearLayoutManager(mContext));
+        rvFree.setLayoutManager(new LinearLayoutManager(mActivity));
+        rvPaid.setLayoutManager(new LinearLayoutManager(mActivity));
         mFreeAdapter = new RankFreeAdapter(R.layout.home_item_rank_free);
         mPaidAdapter = new RankPaidAdapter(R.layout.home_item_rank_paid);
         rvFree.setHasFixedSize(true);
@@ -103,13 +105,13 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
         mPaidAdapter.bindToRecyclerView(rvPaid);
 
         viewpager.setAdapter(new RankPagerAdapter());
-        final CommonNavigator commonNavigator = new CommonNavigator(mContext);
+        final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(mTabs), viewpager, 125));
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, viewpager);
 
-        mCategoryPopup=new RankCategoryPopup(mContext,this);
+        mCategoryPopup=new RankCategoryPopup(mActivity,this);
         mCategoryPopup.setDismissingListener(this);
 
     }
@@ -158,7 +160,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
             mCategoryPopup.dismiss();
         }else {
             ivCategoryDown.animate().rotation(180).setDuration(200);
-            new XPopup.Builder(mContext).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mCategoryPopup).show();
+            new XPopup.Builder(mActivity).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mCategoryPopup).show();
         }
     }
 
@@ -255,12 +257,17 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
 
     @Override
     protected View onBindBarCenterCustome() {
-        llbarCenter = LayoutInflater.from(mContext).inflate(R.layout.home_layout_rank_bar_center, null);
+        llbarCenter = LayoutInflater.from(mActivity).inflate(R.layout.home_layout_rank_bar_center, null);
         return llbarCenter;
     }
 
     @Override
     protected boolean lazyEnable() {
         return false;
+    }
+
+     @Override
+    protected Callback getInitCallBack() {
+        return new ListCallback();
     }
 }

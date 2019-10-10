@@ -69,7 +69,7 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
         banner.setIndicatorGravity(BannerConfig.RIGHT);
         banner.setDelayTime(3000);
         mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
-        rvAnnouncer.setLayoutManager(new LinearLayoutManager(mContext));
+        rvAnnouncer.setLayoutManager(new LinearLayoutManager(mActivity));
         mAnnouncerAdapter.bindToRecyclerView(rvAnnouncer);
     }
 

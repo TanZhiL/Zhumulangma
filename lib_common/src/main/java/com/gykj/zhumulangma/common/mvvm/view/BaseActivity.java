@@ -23,10 +23,10 @@ import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.status.EmptyCallback;
-import com.gykj.zhumulangma.common.status.ErrorCallback;
-import com.gykj.zhumulangma.common.status.InitCallback;
-import com.gykj.zhumulangma.common.status.LoadingCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.EmptyCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.ErrorCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.BlankCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -120,7 +120,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         View contentView = viewStubContent.inflate();
 
         LoadSir loadSir = new LoadSir.Builder()
-                .addCallback(new InitCallback())
+                .addCallback(new BlankCallback())
                 .addCallback(new EmptyCallback())
                 .addCallback(new ErrorCallback())
                 .addCallback(new LoadingCallback())
@@ -382,7 +382,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     public void showInitView() {
         mLoadingHandler.removeCallbacksAndMessages(null);
         mBaseLoadService.showSuccess();
-        mBaseLoadService.showCallback(InitCallback.class);
+        mBaseLoadService.showCallback(BlankCallback.class);
     }
 
 

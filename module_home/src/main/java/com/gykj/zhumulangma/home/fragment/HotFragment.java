@@ -17,6 +17,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.HotCallback;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -25,6 +26,7 @@ import com.gykj.zhumulangma.home.adapter.HotMusicAdapter;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
+import com.kingja.loadsir.callback.Callback;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
@@ -166,7 +168,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mRadioAdapter.setOnItemClickListener((adapter, view, position) -> {
-            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getItem(position));
+            RadioUtil.getInstance(mActivity).playLiveRadioForSDK(mRadioAdapter.getItem(position));
             navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         });
     }
@@ -192,7 +194,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     private void initLike() {
         RecyclerView rvLike = fd(R.id.rv_like);
         mLikeAdapter = new HotLikeAdapter(R.layout.home_item_hot_like);
-        rvLike.setLayoutManager(new GridLayoutManager(mContext, 3));
+        rvLike.setLayoutManager(new GridLayoutManager(mActivity, 3));
         rvLike.setHasFixedSize(true);
         mLikeAdapter.bindToRecyclerView(rvLike);
 
@@ -201,7 +203,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     private void initStory() {
         RecyclerView rvStory = fd(R.id.rv_story);
         mStoryAdapter = new AlbumAdapter(R.layout.home_item_album);
-        rvStory.setLayoutManager(new LinearLayoutManager(mContext));
+        rvStory.setLayoutManager(new LinearLayoutManager(mActivity));
         rvStory.setHasFixedSize(true);
         mStoryAdapter.bindToRecyclerView(rvStory);
     }
@@ -209,7 +211,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     private void initBaby() {
         RecyclerView rvBaby = fd(R.id.rv_baby);
         mBabyAdapter = new AlbumAdapter(R.layout.home_item_album);
-        rvBaby.setLayoutManager(new LinearLayoutManager(mContext));
+        rvBaby.setLayoutManager(new LinearLayoutManager(mActivity));
         rvBaby.setHasFixedSize(true);
         mBabyAdapter.bindToRecyclerView(rvBaby);
 
@@ -218,7 +220,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     private void initMusic() {
         RecyclerView rvMusic = fd(R.id.rv_music);
         mMusicAdapter = new HotMusicAdapter(R.layout.home_item_hot_music);
-        rvMusic.setLayoutManager(new GridLayoutManager(mContext, 3));
+        rvMusic.setLayoutManager(new GridLayoutManager(mActivity, 3));
         rvMusic.setHasFixedSize(true);
         mMusicAdapter.bindToRecyclerView(rvMusic);
 
@@ -227,7 +229,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     private void initRadio() {
         RecyclerView rvRadio = fd(R.id.rv_radio);
         mRadioAdapter = new RadioAdapter(R.layout.home_item_radio);
-        rvRadio.setLayoutManager(new LinearLayoutManager(mContext));
+        rvRadio.setLayoutManager(new LinearLayoutManager(mActivity));
         rvRadio.setHasFixedSize(true);
         mRadioAdapter.bindToRecyclerView(rvRadio);
 
@@ -307,6 +309,11 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     @Override
     protected boolean lazyEnable() {
         return true;
+    }
+
+    @Override
+    protected Callback getInitCallBack() {
+        return new HotCallback();
     }
 
     @Override

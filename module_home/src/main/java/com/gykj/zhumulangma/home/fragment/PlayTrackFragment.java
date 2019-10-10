@@ -119,7 +119,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private PlayTrackPopup mPlayTrackPopup;
 
     private boolean isUp;
-    private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mContext);
+    private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mActivity);
 
     private CommentPopup mCommentPopup;
 
@@ -166,7 +166,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         tvNext15 = fd(R.id.tv_next15);
         tvTempo = fd(R.id.tv_tempo);
 
-        rvRelative.setLayoutManager(new LinearLayoutManager(mContext));
+        rvRelative.setLayoutManager(new LinearLayoutManager(mActivity));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
         mAlbumAdapter.bindToRecyclerView(rvRelative);
         initBar();
@@ -179,9 +179,9 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 }
             }
         }, 100);
-        mSchedulePopup = new PlaySchedulePopup(mContext, this);
-        mPlayTrackPopup = new PlayTrackPopup(mContext, this);
-        mCommentPopup=new CommentPopup(mContext);
+        mSchedulePopup = new PlaySchedulePopup(mActivity, this);
+        mPlayTrackPopup = new PlayTrackPopup(mActivity, this);
+        mCommentPopup=new CommentPopup(mActivity);
 
     }
 
@@ -346,7 +346,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         mHandler.postDelayed(this::scheduleTime, 0);
         tvActionDur.setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
         tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getPlayCurrPositon() / 1000));
-        tvTempo.setText(TEMPO_LABLES[Arrays.binarySearch(TEMPO_VALUES, XmPlayerManager.getInstance(mContext).getTempo())]);
+        tvTempo.setText(TEMPO_LABLES[Arrays.binarySearch(TEMPO_VALUES, XmPlayerManager.getInstance(mActivity).getTempo())]);
     }
 
     private void scheduleTime() {
@@ -479,7 +479,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         } else if (v == tvNext15) {
             mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon() + 15 * 1000);
         } else if (v == tvTempo) {
-            new XPopup.Builder(getContext()).asCustom(new PlayTempoPopup(mContext, this)).show();
+            new XPopup.Builder(getContext()).asCustom(new PlayTempoPopup(mActivity, this)).show();
         }else if(id==R.id.cl_announcer){
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
                     .withLong(KeyCode.Home.ANNOUNCER_ID, mTrack.getAnnouncer().getAnnouncerId())
@@ -488,7 +488,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
                     new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
         }else if (R.id.tv_comment == id) {
-           new XPopup.Builder(mContext).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
+           new XPopup.Builder(mActivity).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
                    .dismissOnTouchOutside(false).enableDrag(false).asCustom(mCommentPopup).show();
         }else if(R.id.iv2_right==id){
             EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE));
@@ -561,15 +561,15 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             if (null != lavPlaying && tvTitle != null) {
                 if (tracks.get(i).getDataId() == track.getDataId()) {
                     lavPlaying.setVisibility(View.VISIBLE);
-                    tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
-                    if (XmPlayerManager.getInstance(mContext).isPlaying()) {
+                    tvTitle.setTextColor(mActivity.getResources().getColor(R.color.colorPrimary));
+                    if (XmPlayerManager.getInstance(mActivity).isPlaying()) {
                         lavPlaying.playAnimation();
                     } else {
                         lavPlaying.pauseAnimation();
                     }
                 } else {
                     lavPlaying.cancelAnimation();
-                    tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorPrimaryDark));
+                    tvTitle.setTextColor(mActivity.getResources().getColor(R.color.colorPrimaryDark));
                     lavPlaying.setVisibility(View.GONE);
                 }
             }

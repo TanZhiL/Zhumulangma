@@ -104,7 +104,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         viewpager.setAdapter(adapter);
 
         MagicIndicator magicIndicator = view.findViewById(R.id.magic_indicator);
-        final CommonNavigator commonNavigator = new CommonNavigator(mContext);
+        final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 50));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);

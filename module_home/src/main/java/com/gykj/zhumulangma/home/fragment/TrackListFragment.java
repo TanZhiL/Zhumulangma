@@ -12,10 +12,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.TrackListViewModel;
+import com.kingja.loadsir.callback.Callback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
@@ -45,7 +47,7 @@ public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewMode
     @Override
     protected void initView(View view) {
         RecyclerView recyclerView = fd(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
         mAnnouncerTrackAdapter = new AnnouncerTrackAdapter(R.layout.home_item_announcer_track);
         mAnnouncerTrackAdapter.bindToRecyclerView(recyclerView);
@@ -95,5 +97,8 @@ public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewMode
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }
-
+     @Override
+    protected Callback getInitCallBack() {
+        return new ListCallback();
+    }
 }

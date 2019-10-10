@@ -1,6 +1,5 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -25,10 +24,10 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
-import com.gykj.zhumulangma.common.status.EmptyCallback;
-import com.gykj.zhumulangma.common.status.ErrorCallback;
-import com.gykj.zhumulangma.common.status.InitCallback;
-import com.gykj.zhumulangma.common.status.LoadingCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.BlankCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.EmptyCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.ErrorCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadService;
@@ -56,7 +55,6 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 public abstract class BaseFragment extends SupportFragment implements IBaseView {
     protected static final String TAG = BaseFragment.class.getSimpleName();
     private CompositeDisposable mCompositeDisposable;
-    protected Context mContext;
     protected View mView;
     private ViewStub mViewStubContent;
     protected LoadService mBaseLoadService;
@@ -110,11 +108,6 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-    }
 
     @Nullable
     @Override
@@ -161,13 +154,17 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
         LoadSir loadSir = new LoadSir.Builder()
-                .addCallback(new InitCallback())
+                .addCallback(getInitCallBack())
                 .addCallback(new EmptyCallback())
                 .addCallback(new ErrorCallback())
                 .addCallback(new LoadingCallback())
                 .setDefaultCallback(SuccessCallback.class)
                 .build();
         mBaseLoadService = loadSir.register(contentView, (Callback.OnReloadListener) BaseFragment.this::onReload);
+    }
+
+    protected  Callback getInitCallBack(){
+      return new BlankCallback();
     }
 
 
@@ -482,8 +479,9 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
      */
     public void showInitView() {
         clearStatus();
-        mBaseLoadService.showCallback(InitCallback.class);
+        mBaseLoadService.showCallback(getInitCallBack().getClass());
     }
+
 
     /**
      * 显示错误视图

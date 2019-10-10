@@ -102,17 +102,17 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
         fd(R.id.ih_local).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_CITY)
-                    .withString(KeyCode.Home.TITLE, SPUtils.getInstance().getString(AppConstants.SP.CITY_NAME, AppConstants.Defualt.CITY_NAME))
+                    .withString(KeyCode.Home.TITLE, SPUtils.getInstance().getString(AppConstants.SP.CITY_NAME, AppConstants.Default.CITY_NAME))
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
         mLocalAdapter.setOnItemClickListener((adapter, view, position) -> {
-            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mLocalAdapter.getItem(position));
+            RadioUtil.getInstance(mActivity).playLiveRadioForSDK(mLocalAdapter.getItem(position));
             navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         });
         mTopAdapter.setOnItemClickListener((adapter, view, position) -> {
-            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mTopAdapter.getItem(position));
+            RadioUtil.getInstance(mActivity).playLiveRadioForSDK(mTopAdapter.getItem(position));
             navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         });
         mHistoryAdapter.setOnItemClickListener((adapter, view, position) ->
@@ -129,10 +129,10 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
     @Override
     public void initData() {
 
-        String cityCode = SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE, AppConstants.Defualt.CITY_CODE);
+        String cityCode = SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE, AppConstants.Default.CITY_CODE);
 
         mViewModel.init(cityCode);
-        String cityName = SPUtils.getInstance().getString(AppConstants.SP.CITY_NAME, AppConstants.Defualt.CITY_NAME);
+        String cityName = SPUtils.getInstance().getString(AppConstants.SP.CITY_NAME, AppConstants.Default.CITY_NAME);
         ItemHeader itemHeader = fd(R.id.ih_local);
         itemHeader.setTitle(cityName);
 
@@ -178,7 +178,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
     private void initHistory() {
         RecyclerView rvHistory = fd(R.id.rv_history);
         mHistoryAdapter = new RadioHistoryAdapter(R.layout.home_item_radio);
-        rvHistory.setLayoutManager(new LinearLayoutManager(mContext));
+        rvHistory.setLayoutManager(new LinearLayoutManager(mActivity));
         rvHistory.setHasFixedSize(true);
         mHistoryAdapter.bindToRecyclerView(rvHistory);
     }
@@ -186,7 +186,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
     private void initLocal() {
         RecyclerView rvLocal = fd(R.id.rv_local);
         mLocalAdapter = new RadioAdapter(R.layout.home_item_radio);
-        rvLocal.setLayoutManager(new LinearLayoutManager(mContext));
+        rvLocal.setLayoutManager(new LinearLayoutManager(mActivity));
         rvLocal.setHasFixedSize(true);
         mLocalAdapter.bindToRecyclerView(rvLocal);
     }
@@ -194,7 +194,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
     private void initTop() {
         RecyclerView rvTop = fd(R.id.rv_top);
         mTopAdapter = new RadioAdapter(R.layout.home_item_radio);
-        rvTop.setLayoutManager(new LinearLayoutManager(mContext));
+        rvTop.setLayoutManager(new LinearLayoutManager(mActivity));
         rvTop.setHasFixedSize(true);
         mTopAdapter.bindToRecyclerView(rvTop);
     }
@@ -251,7 +251,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_PROVINCE)
                     .withString(KeyCode.Home.TITLE, SPUtils.getInstance().getString(
-                            AppConstants.SP.PROVINCE_NAME, AppConstants.Defualt.PROVINCE_NAME))
+                            AppConstants.SP.PROVINCE_NAME, AppConstants.Default.PROVINCE_NAME))
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));

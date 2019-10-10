@@ -17,10 +17,12 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAnnouncerViewModel;
+import com.kingja.loadsir.callback.Callback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 
@@ -59,7 +61,7 @@ public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<SearchAnnou
     @Override
     protected void initView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
         mAnnouncerAdapter =new AnnouncerAdapter(R.layout.home_item_announcer);
         mAnnouncerAdapter.bindToRecyclerView(recyclerView);
@@ -112,5 +114,9 @@ public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<SearchAnnou
     @Override
     protected WrapRefresh onBindWrapRefresh() {
         return new WrapRefresh(refreshLayout, mAnnouncerAdapter);
+    }
+     @Override
+    protected Callback getInitCallBack() {
+        return new ListCallback();
     }
 }

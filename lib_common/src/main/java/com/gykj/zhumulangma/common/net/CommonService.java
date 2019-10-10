@@ -22,11 +22,9 @@ public interface CommonService {
     Observable<ResponseDTO<UserBean>> login(@Body LoginDTO loginDTO);
 
 
-    @Headers(HOST1)
-    @GET("HPImageArchive.aspx")
+    @GET(API.BING_URL)
     Observable<BingBean> getBing(@Query("format") String type, @Query("n") String status);
 
-    @Headers(HOST1)
     @GET
-    Observable<ResponseBody> getBingImage(@Url String url);
+    Observable<ResponseBody> getCommonBody(@Url String url);
 }

@@ -60,7 +60,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
         switch (mType) {
             case RadioListFragment.LOCAL_PROVINCE:
                 getRadioList(PROVINCE, Integer.parseInt(SPUtils.getInstance().getString(
-                        AppConstants.SP.PROVINCE_CODE, AppConstants.Defualt.PROVINCE_CODE)));
+                        AppConstants.SP.PROVINCE_CODE, AppConstants.Default.PROVINCE_CODE)));
                 break;
             case RadioListFragment.COUNTRY:
                 getRadioList(COUNTRY, -1);
@@ -75,7 +75,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                getRankRadios();
                 break;
             case RadioListFragment.LOCAL_CITY:
-               getLocalCity(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE, AppConstants.Defualt.CITY_CODE));
+               getLocalCity(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE, AppConstants.Default.CITY_CODE));
                 break;
             default:
                getRadiosByCategory();
@@ -234,7 +234,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
         switch (mType) {
             case RadioListFragment.LOCAL_PROVINCE:
                 getMoreRadioList(PROVINCE, Integer.parseInt(SPUtils.getInstance().getString(
-                        AppConstants.SP.PROVINCE_CODE, AppConstants.Defualt.PROVINCE_CODE)));
+                        AppConstants.SP.PROVINCE_CODE, AppConstants.Default.PROVINCE_CODE)));
                 break;
             case RadioListFragment.COUNTRY:
                 getMoreRadioList(RadioListViewModel.COUNTRY, -1);
@@ -246,7 +246,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                 getMoreRadioList(RadioListViewModel.INTERNET, -1);
                 break;
             case RadioListFragment.LOCAL_CITY:
-                getMoreLocalCity(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE, AppConstants.Defualt.CITY_CODE));
+                getMoreLocalCity(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE, AppConstants.Default.CITY_CODE));
                 break;
             default:
                 getMoreRadiosByCategory();

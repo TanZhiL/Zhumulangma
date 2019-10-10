@@ -95,7 +95,7 @@ public class ScanFragment extends BaseFragment implements View.OnClickListener {
                     startWithPop((ISupportFragment) navigation);
                 }
             } else {
-                new AlertDialog.Builder(mContext)
+                new AlertDialog.Builder(mActivity)
                         .setTitle("扫描结果")
                         .setMessage(result)
                         .setPositiveButton("确定", (dialog1, which) -> scanView.startSpot()).show();

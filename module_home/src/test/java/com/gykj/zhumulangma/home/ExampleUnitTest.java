@@ -30,4 +30,16 @@ public class ExampleUnitTest {
         stringBuilder.replace(stringBuilder.indexOf("</em>"),stringBuilder.indexOf("</em>")+5,"");
         System.out.println(stringBuilder);*/
     }
+    @Test
+    public void convertNum(){
+       int num=1110;
+        if(num<1000){
+            System.out.println(num);
+        }else {
+            String dy1000 = String.valueOf(num / 1000);
+            String xy1000 = String.valueOf(num % 1000 / 100);
+
+            System.out.println(dy1000 + "." + xy1000 + "k");
+        }
+    }
 }

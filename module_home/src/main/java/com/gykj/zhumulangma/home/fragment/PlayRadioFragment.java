@@ -65,7 +65,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         View.OnClickListener, PlaySchedulePopup.onSelectedListener, IXmPlayerStatusListener,
         IXmAdsStatusListener, OnSeekChangeListener, View.OnTouchListener {
     private PlaySchedulePopup mSchedulePopup;
-    private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mContext);
+    private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mActivity);
     private Schedule mSchedule;
     private IndicatorSeekBar isbProgress;
     private LottieAnimationView lavPlayPause;
@@ -96,7 +96,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     protected void initView(View view) {
         mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left).setRotation(-90);
         fd(R.id.iv_item_play).setVisibility(View.GONE);
-        mSchedulePopup = new PlaySchedulePopup(mContext, this);
+        mSchedulePopup = new PlaySchedulePopup(mActivity, this);
         isbProgress = fd(R.id.ib_progress);
         lavBuffering = fd(R.id.lav_buffering);
         lavPlayPause = fd(R.id.lav_play_pause);
@@ -112,7 +112,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
             }
         }, 100);
 
-        mPlayRadioPopup=new PlayRadioPopup(mContext);
+        mPlayRadioPopup=new PlayRadioPopup(mActivity);
     }
 
     @Override
@@ -225,15 +225,15 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
             if (null != lavPlaying && tvTitle != null) {
                 if (schedules.get(i).getDataId() == schedule.getDataId()) {
                     lavPlaying.setVisibility(View.VISIBLE);
-                    tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
-                    if (XmPlayerManager.getInstance(mContext).isPlaying()) {
+                    tvTitle.setTextColor(mActivity.getResources().getColor(R.color.colorPrimary));
+                    if (XmPlayerManager.getInstance(mActivity).isPlaying()) {
                         lavPlaying.playAnimation();
                     } else {
                         lavPlaying.pauseAnimation();
                     }
                 } else {
                     lavPlaying.cancelAnimation();
-                    tvTitle.setTextColor(mContext.getResources().getColor(R.color.textColorPrimary));
+                    tvTitle.setTextColor(mActivity.getResources().getColor(R.color.textColorPrimary));
                     lavPlaying.setVisibility(View.GONE);
                 }
             }

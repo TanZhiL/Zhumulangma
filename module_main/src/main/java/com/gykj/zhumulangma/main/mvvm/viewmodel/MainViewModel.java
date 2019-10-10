@@ -220,19 +220,18 @@ public class MainViewModel extends BaseViewModel<MainModel> {
     public void _getBing() {
 
         mModel.getBing("js", "1")
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
                 .flatMap((Function<BingBean, ObservableSource<ResponseBody>>) bean -> {
                     if (bean.getImages().get(0).getCopyrightlink().equals(SPUtils.getInstance().getString(AppConstants.SP.AD_URL))) {
                         return Observable.just(new RealResponseBody("", 0, null));
                     }
                     bingBean = bean;
-                    return mModel.getBingImage(API.OFFLINE_HOST1 + bean.getImages().get(0).getUrl());
+                    return mModel.getCommonBody(API.BING_HOST + bean.getImages().get(0).getUrl());
                 })
+                .observeOn(Schedulers.io())
                 .subscribe(body -> {
                     if (body.contentLength() != 0) {
                         FileIOUtils.writeFileFromIS(getApplication().getFilesDir().getAbsolutePath()
-                                + AppConstants.Defualt.AD_NAME, body.byteStream());
+                                + AppConstants.Default.AD_NAME, body.byteStream());
                         SPUtils.getInstance().put(AppConstants.SP.AD_LABEL, bingBean.getImages().get(0).getCopyright());
                         SPUtils.getInstance().put(AppConstants.SP.AD_URL, bingBean.getImages().get(0).getCopyrightlink());
                     }

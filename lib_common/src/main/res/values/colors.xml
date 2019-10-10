@@ -3,12 +3,12 @@
     <color name="textColorPrimary">#333333</color>
     <color name="colorAccentDark">#DB4D4D</color>
     <color name="colorHint">#ffa6a6a6</color>
-    <color name="colorDefualtBg">#F7F8FC</color>
+    <color name="colorDefaultBg">#F7F8FC</color>
 
     <color name="colorSimplebarText">@color/textColorPrimary</color>
 
     <color name="colorPrimary">#ff7050</color>
-    <color name="colorDefualt">#eeeeee</color>
+    <color name="colorDefault">#eeeeee</color>
     <color name="colorPrimaryDark">#999999</color>
     <color name="colorAccent">#55ccaa</color>
     <color name="colorGray">#505050</color>

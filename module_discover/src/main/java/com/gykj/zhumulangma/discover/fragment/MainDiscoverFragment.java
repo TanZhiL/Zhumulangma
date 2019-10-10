@@ -34,6 +34,7 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
     @Override
     protected void initView(View view) {
 
+
     }
 
     @Override

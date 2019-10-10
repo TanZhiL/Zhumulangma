@@ -104,7 +104,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
 
         RecyclerView rvDaily = fd(R.id.rv_daily);
         mDailyAdapter = new FineAdapter(R.layout.home_item_fine);
-        rvDaily.setLayoutManager(new LinearLayoutManager(mContext));
+        rvDaily.setLayoutManager(new LinearLayoutManager(mActivity));
         rvDaily.setHasFixedSize(true);
         mDailyAdapter.bindToRecyclerView(rvDaily);
     }
@@ -112,7 +112,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     private void initBook() {
         RecyclerView rvBook = fd(R.id.rv_book);
         mBookAdapter = new FineAdapter(R.layout.home_item_fine);
-        rvBook.setLayoutManager(new LinearLayoutManager(mContext));
+        rvBook.setLayoutManager(new LinearLayoutManager(mActivity));
         rvBook.setHasFixedSize(true);
         mBookAdapter.bindToRecyclerView(rvBook);
 
@@ -121,7 +121,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     private void initClassRoom() {
         RecyclerView rvClassroom = fd(R.id.rv_classroom);
         mClassroomAdapter = new FineAdapter(R.layout.home_item_fine);
-        rvClassroom.setLayoutManager(new LinearLayoutManager(mContext));
+        rvClassroom.setLayoutManager(new LinearLayoutManager(mActivity));
         rvClassroom.setHasFixedSize(true);
         mClassroomAdapter.bindToRecyclerView(rvClassroom);
     }

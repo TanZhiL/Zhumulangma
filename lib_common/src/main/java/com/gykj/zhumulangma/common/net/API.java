@@ -8,6 +8,11 @@ package com.gykj.zhumulangma.common.net;
  * Update:     <br>
  */
 public interface API {
+    String BING_HOST="https://cn.bing.com/";
+    String BING_URL="https://cn.bing.com/HPImageArchive.aspx";
+    String GITHUB_STAR="https://api.github.com/repos/TanZhiL/Zhumulangma/stargazers";
+    String GITHUB_FORK="https://api.github.com/repos/TanZhiL/Zhumulangma/forks";
+    String GITHUB_AVATAR="https://avatars0.githubusercontent.com/u/39846811?s=460&v=4";
 
     interface HostStatus {
             int ONLINE=0;

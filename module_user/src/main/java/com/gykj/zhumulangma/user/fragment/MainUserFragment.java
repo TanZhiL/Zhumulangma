@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.user.fragment;
 
 import android.Manifest;
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
@@ -15,15 +16,19 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
+import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.net.API;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
+import com.gykj.zhumulangma.user.fragment.mvvm.MainUserViewModel;
+import com.gykj.zhumulangma.user.fragment.mvvm.ViewModelFactory;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -43,7 +48,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Description:我的
  */
 @Route(path = AppConstants.Router.User.F_MAIN)
-public class MainUserFragment extends BaseFragment implements View.OnClickListener {
+public class MainUserFragment extends BaseMvvmFragment<MainUserViewModel> implements View.OnClickListener{
 
 
     private CommonTitleBar ctbTrans;
@@ -66,6 +71,12 @@ public class MainUserFragment extends BaseFragment implements View.OnClickListen
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
+    }
+
+    @Override
+    protected void loadView() {
+        super.loadView();
+        clearStatus();
     }
 
     @Override
@@ -126,6 +137,7 @@ public class MainUserFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 refreshLayout.finishRefresh(2000);
+                mViewModel.init();
             }
 
             @Override
@@ -155,7 +167,14 @@ public class MainUserFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void initData() {
+        Glide.with(this).load(API.GITHUB_AVATAR).into((ImageView) fd(R.id.iv_avatar));
+        mViewModel.init();
+    }
 
+    @Override
+    protected void initViewObservable() {
+        mViewModel.getStarEvent().observe(this, s -> ((TextView) fd(R.id.tv_star)).setText(s));
+        mViewModel.getForkEvent().observe(this, s -> ((TextView) fd(R.id.tv_fork)).setText(s));
     }
 
     @Override
@@ -195,13 +214,23 @@ public class MainUserFragment extends BaseFragment implements View.OnClickListen
             navigateTo(AppConstants.Router.Listen.F_FAVORITE);
         } else if (id == R.id.cl_jcgx) {
             Beta.checkUpgrade();
-        } else if (id == R.id.cl_gy||id == R.id.iv_user) {
+        } else if (id == R.id.cl_gy || id == R.id.iv_user) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
                     .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL/Zhumulangma")
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
         }
+    }
+
+    @Override
+    protected Class<MainUserViewModel> onBindViewModel() {
+        return MainUserViewModel.class;
+    }
+
+    @Override
+    protected ViewModelProvider.Factory onBindViewModelFactory() {
+        return ViewModelFactory.getInstance(mApplication);
     }
 
 }

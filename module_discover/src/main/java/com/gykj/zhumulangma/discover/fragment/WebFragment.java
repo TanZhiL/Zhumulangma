@@ -182,7 +182,7 @@ public class WebFragment extends BaseFragment {
     private void showDialog() {
 
         if (mAlertDialog == null) {
-            mAlertDialog = new AlertDialog.Builder(mContext)
+            mAlertDialog = new AlertDialog.Builder(mActivity)
                     .setMessage("您确定要关闭该页面吗?")
                     .setNegativeButton("再逛逛", (dialog, which) -> {
                         if (mAlertDialog != null) {
@@ -274,8 +274,8 @@ public class WebFragment extends BaseFragment {
         String title = mAgentWeb.getWebCreator().get().getTitle();
         UMWeb web = new UMWeb(mPath);
         web.setTitle(title);//标题
-        web.setThumb(new UMImage(mContext, favicon));  //缩略图
+        web.setThumb(new UMImage(mActivity, favicon));  //缩略图
         web.setDescription("珠穆朗玛听");//描述
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE, new ShareAction(_mActivity).withMedia(web)));
+        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE, new ShareAction(mActivity).withMedia(web)));
     }
 }

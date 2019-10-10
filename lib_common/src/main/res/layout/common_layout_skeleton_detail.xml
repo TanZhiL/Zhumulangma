@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout android:id="@+id/abl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/transparent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="116dp"
+                android:layout_marginLeft="9dp"
+                android:layout_marginRight="9dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_cover"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@color/colorDefault"/>
+
+                <View
+                    android:id="@+id/tv_album"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="@color/colorDefault"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_cover"
+                    app:layout_constraintTop_toTopOf="@+id/iv_cover"
+                    tools:text="伦桑老大" />
+
+                <View
+                    android:id="@+id/tv_author"
+                    android:layout_width="70dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/colorDefault"
+                    app:layout_constraintStart_toStartOf="@+id/tv_album"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_album" />
+
+                <View
+                    android:id="@+id/tv_playcount"
+                    android:layout_width="70dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/colorDefault"
+                    app:layout_constraintStart_toStartOf="@+id/tv_author"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_author"
+                    tools:text="播放：5625次" />
+
+                <View
+                    android:id="@+id/tv_sbcount"
+                    android:layout_width="70dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/colorDefault"
+                    app:layout_constraintStart_toStartOf="@+id/tv_trackcount"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_trackcount" />
+
+                <View
+                    android:id="@+id/tv_trackcount"
+                    android:layout_width="70dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/colorDefault"
+                    app:layout_constraintStart_toStartOf="@+id/tv_playcount"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_playcount" />
+            </android.support.constraint.ConstraintLayout>
+
+            <View
+                android:id="@+id/ll_subscribe"
+                android:layout_width="162dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="9dp"
+                android:background="@color/colorDefault"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+
+            </View>
+
+
+            <View
+                android:id="@+id/ll_play"
+                android:layout_width="162dp"
+                android:layout_height="34dp"
+                android:background="@color/colorDefault"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginRight="9dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ll_subscribe">
+
+            </View>
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="9dp"
+                android:background="@color/colorDefault"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll_play" />
+
+            <View
+                android:id="@+id/tv_lastplay"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="9dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="9dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:textColor="@color/colorAccent"
+                android:background="@color/colorDefault"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/line2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view"
+                tools:text="上次播放：伦桑part2" />
+
+            <View
+                android:id="@+id/line2"
+                style="@style/PrimaryHLine"
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_lastplay" />
+        </android.support.constraint.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+       style="@style/PrimaryHLine"/>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp">
+
+        <View
+            android:id="@+id/iv_cover1"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shap_common_circle_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:tint="@color/white"
+            android:visibility="gone"
+            android:src="@drawable/ic_common_play"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover1"
+            app:layout_constraintEnd_toEndOf="@+id/iv_cover1"
+            app:layout_constraintStart_toStartOf="@+id/iv_cover1"
+            app:layout_constraintTop_toTopOf="@id/iv_cover1" />
+
+        <View
+            android:id="@+id/textView1"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/colorDefault"
+            app:layout_constraintEnd_toStartOf="@+id/tv_create_time"
+            app:layout_constraintStart_toEndOf="@+id/iv_cover1"
+            app:layout_constraintTop_toTopOf="@+id/iv_cover1">
+
+
+        </View>
+
+        <View
+            android:layout_width="80dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorDefault"
+            android:text="152万"
+            android:textColor="@color/colorGray"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/textView1"
+            app:layout_constraintTop_toBottomOf="@+id/textView1" />
+
+        <View
+            android:id="@+id/tv_create_time"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="12dp"
+            android:text="2016-04"
+            android:textColor="#999999"
+            android:background="@color/colorDefault"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView1" />
+
+    </android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp">
+
+        <View
+            android:id="@+id/iv_cover2"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shap_common_circle_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:tint="@color/white"
+            android:visibility="gone"
+            android:src="@drawable/ic_common_play"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover2"
+            app:layout_constraintEnd_toEndOf="@+id/iv_cover2"
+            app:layout_constraintStart_toStartOf="@+id/iv_cover2"
+            app:layout_constraintTop_toTopOf="@id/iv_cover2" />
+
+        <View
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/colorDefault"
+            app:layout_constraintEnd_toStartOf="@+id/tv_create_time2"
+            app:layout_constraintStart_toEndOf="@+id/iv_cover2"
+            app:layout_constraintTop_toTopOf="@+id/iv_cover2">
+
+
+        </View>
+
+        <View
+            android:layout_width="80dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorDefault"
+            android:text="152万"
+            android:textColor="@color/colorGray"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <View
+            android:id="@+id/tv_create_time2"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="12dp"
+            android:text="2016-04"
+            android:textColor="#999999"
+            android:background="@color/colorDefault"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView2" />
+
+    </android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp">
+
+        <View
+            android:id="@+id/iv_cover3"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shap_common_circle_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:tint="@color/white"
+            android:visibility="gone"
+            android:src="@drawable/ic_common_play"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover3"
+            app:layout_constraintEnd_toEndOf="@+id/iv_cover3"
+            app:layout_constraintStart_toStartOf="@+id/iv_cover3"
+            app:layout_constraintTop_toTopOf="@id/iv_cover3" />
+
+        <View
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/colorDefault"
+            app:layout_constraintEnd_toStartOf="@+id/tv_create_time3"
+            app:layout_constraintStart_toEndOf="@+id/iv_cover3"
+            app:layout_constraintTop_toTopOf="@+id/iv_cover3">
+
+
+        </View>
+
+        <View
+            android:layout_width="80dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorDefault"
+            android:text="152万"
+            android:textColor="@color/colorGray"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <View
+            android:id="@+id/tv_create_time3"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="12dp"
+            android:text="2016-04"
+            android:textColor="#999999"
+            android:background="@color/colorDefault"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp">
+
+        <View
+            android:id="@+id/iv_cover4"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shap_common_circle_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:tint="@color/white"
+            android:visibility="gone"
+            android:src="@drawable/ic_common_play"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover4"
+            app:layout_constraintEnd_toEndOf="@+id/iv_cover4"
+            app:layout_constraintStart_toStartOf="@+id/iv_cover4"
+            app:layout_constraintTop_toTopOf="@id/iv_cover4" />
+
+        <View
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/colorDefault"
+            app:layout_constraintEnd_toStartOf="@+id/tv_create_time4"
+            app:layout_constraintStart_toEndOf="@+id/iv_cover4"
+            app:layout_constraintTop_toTopOf="@+id/iv_cover4">
+
+
+        </View>
+
+        <View
+            android:layout_width="80dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorDefault"
+            android:text="152万"
+            android:textColor="@color/colorGray"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/textView4"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <View
+            android:id="@+id/tv_create_time4"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="12dp"
+            android:text="2016-04"
+            android:textColor="#999999"
+            android:background="@color/colorDefault"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp">
+
+        <View
+            android:id="@+id/iv_cover5"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shap_common_circle_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:tint="@color/white"
+            android:visibility="gone"
+            android:src="@drawable/ic_common_play"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover5"
+            app:layout_constraintEnd_toEndOf="@+id/iv_cover5"
+            app:layout_constraintStart_toStartOf="@+id/iv_cover5"
+            app:layout_constraintTop_toTopOf="@id/iv_cover5" />
+
+        <View
+            android:id="@+id/textView5"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/colorDefault"
+            app:layout_constraintEnd_toStartOf="@+id/tv_create_time5"
+            app:layout_constraintStart_toEndOf="@+id/iv_cover5"
+            app:layout_constraintTop_toTopOf="@+id/iv_cover5">
+
+
+        </View>
+
+        <View
+            android:layout_width="80dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorDefault"
+            android:text="152万"
+            android:textColor="@color/colorGray"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <View
+            android:id="@+id/tv_create_time5"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="12dp"
+            android:text="2016-04"
+            android:textColor="#999999"
+            android:background="@color/colorDefault"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp">
+
+        <View
+            android:id="@+id/iv_cover6"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shap_common_circle_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:tint="@color/white"
+            android:visibility="gone"
+            android:src="@drawable/ic_common_play"
+            app:layout_constraintBottom_toBottomOf="@id/iv_cover6"
+            app:layout_constraintEnd_toEndOf="@+id/iv_cover6"
+            app:layout_constraintStart_toStartOf="@+id/iv_cover6"
+            app:layout_constraintTop_toTopOf="@id/iv_cover6" />
+
+        <View
+            android:id="@+id/textView32"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/colorDefault"
+            app:layout_constraintEnd_toStartOf="@+id/tv_create_time6"
+            app:layout_constraintStart_toEndOf="@+id/iv_cover6"
+            app:layout_constraintTop_toTopOf="@+id/iv_cover6">
+
+
+        </View>
+
+        <View
+            android:layout_width="80dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorDefault"
+            android:text="152万"
+            android:textColor="@color/colorGray"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/textView32"
+            app:layout_constraintTop_toBottomOf="@+id/textView32" />
+
+        <View
+            android:id="@+id/tv_create_time6"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="12dp"
+            android:text="2016-04"
+            android:textColor="#999999"
+            android:background="@color/colorDefault"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView32"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView32" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:lottie_autoPlay="true"
+        app:lottie_colorFilter="@color/colorPrimary"
+        app:lottie_fileName="lottie_refreshing.json"
+        app:lottie_loop="true" />
+</FrameLayout>
+

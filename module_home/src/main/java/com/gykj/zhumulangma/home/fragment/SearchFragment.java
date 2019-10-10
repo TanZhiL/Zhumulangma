@@ -100,7 +100,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         }
         etKeyword = fd(R.id.et_keyword);
         //不支持x86
-        mIat = SpeechRecognizer.createRecognizer(mContext, mInitListener);
+        mIat = SpeechRecognizer.createRecognizer(mActivity, mInitListener);
         try {
             //返回json类型
             mIat.setParameter(SpeechConstant.RESULT_TYPE, "json");
@@ -108,7 +108,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mSpeechPopup = new SpeechPopup(mContext);
+        mSpeechPopup = new SpeechPopup(mActivity);
     }
 
     @Override
@@ -296,7 +296,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         public void onBeginOfSpeech() {
             // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
             hideSoftInput();
-            new XPopup.Builder(mContext).popupAnimation(PopupAnimation.NoAnimation)
+            new XPopup.Builder(mActivity).popupAnimation(PopupAnimation.NoAnimation)
                     .dismissOnTouchOutside(false).setPopupCallback(new SimpleCallback() {
                 @Override
                 public void onCreated() {

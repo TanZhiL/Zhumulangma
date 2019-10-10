@@ -93,9 +93,9 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     @Override
     protected void initView(View view) {
         String[] tabs = {"专辑", "声音", "下载中"};
-        layoutDetail1 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
-        layoutDetail2 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.common_layout_refresh_loadmore, null);
-        layoutDetail3 = (ViewGroup) LayoutInflater.from(mContext).inflate(R.layout.listen_layout_downloading, null);
+        layoutDetail1 = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.common_layout_refresh_loadmore, null);
+        layoutDetail2 = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.common_layout_refresh_loadmore, null);
+        layoutDetail3 = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.listen_layout_downloading, null);
         ((RefreshLayout) layoutDetail1.findViewById(R.id.refreshLayout)).setEnableRefresh(false);
         ((RefreshLayout) layoutDetail1.findViewById(R.id.refreshLayout)).setEnableLoadMore(false);
 
@@ -108,21 +108,21 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
 
         RecyclerView rvAlbum = layoutDetail1.findViewById(R.id.recyclerview);
         rvAlbum.setHasFixedSize(true);
-        rvAlbum.setLayoutManager(new LinearLayoutManager(mContext));
+        rvAlbum.setLayoutManager(new LinearLayoutManager(mActivity));
         mAlbumAdapter = new DownloadAlbumAdapter(R.layout.listen_item_download_album);
         mAlbumAdapter.bindToRecyclerView(rvAlbum);
         mAlbumAdapter.setEmptyView(R.layout.common_layout_empty);
 
         RecyclerView rvTrack = layoutDetail2.findViewById(R.id.recyclerview);
         rvTrack.setHasFixedSize(true);
-        rvTrack.setLayoutManager(new LinearLayoutManager(mContext));
+        rvTrack.setLayoutManager(new LinearLayoutManager(mActivity));
         mTrackAdapter = new DownloadTrackAdapter(R.layout.listen_item_download_track);
         mTrackAdapter.bindToRecyclerView(rvTrack);
         mTrackAdapter.setEmptyView(R.layout.common_layout_empty);
 
         RecyclerView rvRecommend = layoutDetail3.findViewById(R.id.recyclerview);
         rvRecommend.setHasFixedSize(true);
-        rvRecommend.setLayoutManager(new LinearLayoutManager(mContext));
+        rvRecommend.setLayoutManager(new LinearLayoutManager(mActivity));
         mDownloadingAdapter = new DownloadingAdapter(R.layout.listen_item_downloading);
         mDownloadingAdapter.bindToRecyclerView(rvRecommend);
         mDownloadingAdapter.setEmptyView(R.layout.common_layout_empty);
@@ -130,7 +130,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         tvMemory = fd(R.id.tv_memory);
         ViewPager viewpager = fd(R.id.viewpager);
         viewpager.setAdapter(new DownloadPagerAdapter());
-        final CommonNavigator commonNavigator = new CommonNavigator(mContext);
+        final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 50));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
@@ -162,14 +162,14 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         layoutDetail3.findViewById(R.id.iv_delete).setOnClickListener(this);
 
         XmDownloadManager.getInstance().addDownloadStatueListener(this);
-        XmPlayerManager.getInstance(mContext).addPlayerStatusListener(this);
+        XmPlayerManager.getInstance(mActivity).addPlayerStatusListener(this);
     }
 
     @Override
     public void initData() {
         tvMemory.setText(getString(R.string.memory,
                 XmDownloadManager.getInstance().getHumanReadableDownloadOccupation(IDownloadManager.Auto),
-                SystemUtil.getRomTotalSize(mContext)));
+                SystemUtil.getRomTotalSize(mActivity)));
         mAlbumAdapter.setNewData(XmDownloadManager.getInstance().getDownloadAlbums(true));
         mTrackAdapter.setNewData(XmDownloadManager.getInstance().getDownloadTracks(true));
         mDownloadingAdapter.setNewData(XmDownloadManager.getInstance().getDownloadTracks(false));
@@ -276,7 +276,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         if (index != -1) {
             CircleProgressBar progressBar = (CircleProgressBar) mDownloadingAdapter.getViewByPosition(index, R.id.cpb_progress);
             if (progressBar != null) {
-                progressBar.setSecondColor(mContext.getResources().getColor(R.color.colorPrimary));
+                progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorPrimary));
                 progressBar.setProgress((int) (l1 * 100 / l));
             }
         }
@@ -302,23 +302,23 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                         ivStatus.setImageResource(R.drawable.ic_listen_waiting);
                         tvStatus.setText("待下载");
                         tvStatus.setTextColor(getResources().getColor(R.color.colorGray));
-                        progressBar.setSecondColor(mContext.getResources().getColor(R.color.colorGray));
+                        progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorGray));
                     } else {
                         ivStatus.setImageResource(R.drawable.ic_listen_pause);
                         tvStatus.setText("下载中");
                         tvStatus.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        progressBar.setSecondColor(mContext.getResources().getColor(R.color.colorPrimary));
+                        progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorPrimary));
                     }
                 } else if (downloadStatus == DownloadState.STARTED) {
                     ivStatus.setImageResource(R.drawable.ic_listen_pause);
                     tvStatus.setText("下载中");
                     tvStatus.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    progressBar.setSecondColor(mContext.getResources().getColor(R.color.colorPrimary));
+                    progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorPrimary));
                 } else if (downloadStatus == DownloadState.STOPPED) {
                     ivStatus.setImageResource(R.drawable.ic_listen_download);
                     tvStatus.setText("已暂停");
                     tvStatus.setTextColor(getResources().getColor(R.color.colorGray));
-                    progressBar.setSecondColor(mContext.getResources().getColor(R.color.colorGray));
+                    progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorGray));
                 }
             }
         }
@@ -352,7 +352,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                 e.printStackTrace();
             }
         }else if(adapter==mTrackAdapter){
-            XmPlayerManager.getInstance(mContext).playList(mTrackAdapter.getData(),position);
+            XmPlayerManager.getInstance(mActivity).playList(mTrackAdapter.getData(),position);
             navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
         }
     }
@@ -392,7 +392,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         }
     }
     private void updatePlayStatus(int currPos, int duration) {
-        Track track = XmPlayerManager.getInstance(mContext).getCurrSoundIgnoreKind(true);
+        Track track = XmPlayerManager.getInstance(mActivity).getCurrSoundIgnoreKind(true);
         if (null == track) {
             return;
         }
@@ -504,8 +504,8 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
 
     @Override
     protected View onBindBarCenterCustome() {
-        magicIndicator = new MagicIndicator(mContext);
-        FrameLayout frameLayout = new FrameLayout(mContext);
+        magicIndicator = new MagicIndicator(mActivity);
+        FrameLayout frameLayout = new FrameLayout(mActivity);
         frameLayout.addView(magicIndicator);
         ViewGroup.LayoutParams layoutParams = magicIndicator.getLayoutParams();
         layoutParams.width = SizeUtils.dp2px(270);
@@ -519,6 +519,6 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
         XmDownloadManager.getInstance().removeDownloadStatueListener(this);
-        XmPlayerManager.getInstance(mContext).removePlayerStatusListener(this);
+        XmPlayerManager.getInstance(mActivity).removePlayerStatusListener(this);
     }
 }

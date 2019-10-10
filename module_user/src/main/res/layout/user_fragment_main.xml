@@ -53,11 +53,11 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_top1"
+                        android:id="@+id/iv_avatar"
                         android:layout_width="68dp"
                         android:layout_height="68dp"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/common_avatar"
+                        android:src="@drawable/image_placeholder"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="3dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -83,11 +83,11 @@
                         android:layout_height="36dp"
                         android:layout_marginStart="8dp"
                         android:gravity="center_vertical"
-                        android:text="TanZhiL"
+                        android:text="TanZhiL(谭志龙)"
                         android:textColor="@color/white"
                         android:textSize="16sp"
-                        app:layout_constraintStart_toEndOf="@+id/iv_top1"
-                        app:layout_constraintTop_toTopOf="@+id/iv_top1" />
+                        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+                        app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
 
                     <TextView
                         android:id="@+id/textView14"
@@ -95,12 +95,70 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Star  3  |  Fork  0"
+                        android:text="Star"
                         android:textColor="@color/white"
                         android:textSize="11sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/iv_top1"
-                        app:layout_constraintStart_toEndOf="@+id/iv_top1"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+                        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
                         app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+                    <TextView
+                        android:id="@+id/tv_fork"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+                        app:layout_constraintStart_toEndOf="@+id/textView10"
+                        app:layout_constraintTop_toBottomOf="@+id/textView13"
+                        app:layout_constraintVertical_bias="0.444" />
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="Fork"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+                        app:layout_constraintStart_toEndOf="@+id/textView9"
+                        app:layout_constraintTop_toBottomOf="@+id/textView13"
+                        app:layout_constraintVertical_bias="0.444" />
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="|"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+                        app:layout_constraintStart_toEndOf="@+id/tv_star"
+                        app:layout_constraintTop_toBottomOf="@+id/textView13"
+                        app:layout_constraintVertical_bias="0.444" />
+
+                    <TextView
+                        android:id="@+id/tv_star"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/white"
+                        android:textSize="11sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+                        app:layout_constraintStart_toEndOf="@+id/textView14"
+                        app:layout_constraintTop_toBottomOf="@+id/textView13"
+                        app:layout_constraintVertical_bias="0.444" />
 
                     <TextView
                         android:id="@+id/textView15"

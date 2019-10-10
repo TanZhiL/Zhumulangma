@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.status;
+package com.gykj.zhumulangma.common.mvvm.view.status;
 
 import com.gykj.zhumulangma.common.R;
 import com.kingja.loadsir.callback.Callback;
@@ -9,10 +9,10 @@ import com.kingja.loadsir.callback.Callback;
  * Email: 1071931588@qq.com
  * Description:
  */
-public class EmptyCallback extends Callback {
+public class ErrorCallback extends Callback {
     @Override
     protected int onCreateView() {
-        return R.layout.common_layout_empty;
+        return R.layout.common_layout_error;
     }
 
 }

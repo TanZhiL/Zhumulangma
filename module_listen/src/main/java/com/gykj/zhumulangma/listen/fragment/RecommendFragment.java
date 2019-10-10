@@ -17,10 +17,12 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.RecommendAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.SubscribeViewModel;
+import com.kingja.loadsir.callback.Callback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -61,7 +63,7 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
     @Override
     protected void initView(View view) {
         RecyclerView recyclerView = fd(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
         mRecommendAdapter = new RecommendAdapter(R.layout.listen_item_recommend);
         mRecommendAdapter.bindToRecyclerView(recyclerView);
@@ -160,5 +162,10 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         refreshLayout.finishRefresh(true);
+    }
+
+    @Override
+    protected Callback getInitCallBack() {
+        return new ListCallback();
     }
 }

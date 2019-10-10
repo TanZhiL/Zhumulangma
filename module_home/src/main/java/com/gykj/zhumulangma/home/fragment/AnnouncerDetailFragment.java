@@ -107,8 +107,8 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
         RecyclerView rvTrack = fd(R.id.rv_track);
         rvAlbum.setHasFixedSize(true);
         rvTrack.setHasFixedSize(true);
-        rvAlbum.setLayoutManager(new LinearLayoutManager(mContext));
-        rvTrack.setLayoutManager(new LinearLayoutManager(mContext));
+        rvAlbum.setLayoutManager(new LinearLayoutManager(mActivity));
+        rvTrack.setLayoutManager(new LinearLayoutManager(mActivity));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
         mTrackAdapter = new AnnouncerTrackAdapter(R.layout.home_item_announcer_track);
         mAlbumAdapter.bindToRecyclerView(rvAlbum);
@@ -215,7 +215,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
     public void initViewObservable() {
         mViewModel.getAnnouncerEvent().observe(this, announcer -> {
             mAnnouncer=announcer;
-            Glide.with(mContext).load(announcer.getAvatarUrl()).into((ImageView) fd(R.id.iv_avatar));
+            Glide.with(mActivity).load(announcer.getAvatarUrl()).into((ImageView) fd(R.id.iv_avatar));
             ((TextView) fd(R.id.tv_nick)).setText(announcer.getNickname());
             ((TextView) fd(R.id.tv_fans)).setText("关注  " + ZhumulangmaUtil.toWanYi(announcer.getFollowingCount())
                     + "  |  粉丝  " + ZhumulangmaUtil.toWanYi(announcer.getFollowerCount()));

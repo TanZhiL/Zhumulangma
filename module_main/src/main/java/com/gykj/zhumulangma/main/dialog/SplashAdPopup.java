@@ -43,7 +43,7 @@ public class SplashAdPopup extends FullScreenPopupView implements View.OnClickLi
         super.onCreate();
         findViewById(R.id.tv_time).setOnClickListener(v -> dismiss());
         ImageView ivAd = findViewById(R.id.iv_ad);
-        File adFile = new File(mContext.getFilesDir().getAbsolutePath() + AppConstants.Defualt.AD_NAME);
+        File adFile = new File(mContext.getFilesDir().getAbsolutePath() + AppConstants.Default.AD_NAME);
         if (adFile.exists()) {
             ivAd.setImageURI(Uri.fromFile(adFile));
             //缩进处理

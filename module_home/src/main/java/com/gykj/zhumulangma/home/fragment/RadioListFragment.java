@@ -19,6 +19,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.ProvinceBean;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
@@ -26,6 +27,7 @@ import com.gykj.zhumulangma.home.dialog.RadioProvincePopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioListViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
+import com.kingja.loadsir.callback.Callback;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -89,7 +91,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
         }.getType());
 
         RecyclerView recyclerView = fd(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
         tvTitle = llbarCenter.findViewById(R.id.tv_title);
@@ -104,7 +106,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
             tvTitle.setText(mProvinceBeans.get(0).getProvince_name());
         }
 
-        mProvincePopup=new RadioProvincePopup(mContext,this);
+        mProvincePopup=new RadioProvincePopup(mActivity,this);
         mProvincePopup.setDismissingListener(this);
     }
 
@@ -135,7 +137,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mRadioAdapter) {
-            RadioUtil.getInstance(mContext).playLiveRadioForSDK(mRadioAdapter.getItem(position));
+            RadioUtil.getInstance(mActivity).playLiveRadioForSDK(mRadioAdapter.getItem(position));
             navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
         }
     }
@@ -161,7 +163,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
 
     @Override
     protected View onBindBarCenterCustome() {
-        llbarCenter = LayoutInflater.from(mContext).inflate(R.layout.home_layout_rank_bar_center, null);
+        llbarCenter = LayoutInflater.from(mActivity).inflate(R.layout.home_layout_rank_bar_center, null);
         return llbarCenter;
     }
 
@@ -187,7 +189,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
             mProvincePopup.dismiss();
         }else {
             ivCategoryDown.animate().rotation(180).setDuration(200);
-            new XPopup.Builder(mContext).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mProvincePopup).show();
+            new XPopup.Builder(mActivity).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mProvincePopup).show();
         }
     }
 
@@ -205,5 +207,10 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
     @Override
     public void onDismissing() {
         ivCategoryDown.animate().rotation(0).setDuration(200);
+    }
+
+     @Override
+    protected Callback getInitCallBack() {
+        return new ListCallback();
     }
 }

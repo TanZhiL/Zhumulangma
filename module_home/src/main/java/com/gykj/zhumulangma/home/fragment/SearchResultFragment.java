@@ -84,7 +84,7 @@ public class SearchResultFragment extends BaseFragment {
         viewpager.setOffscreenPageLimit(4);
         viewpager.setAdapter(adapter);
 
-        final CommonNavigator commonNavigator = new CommonNavigator(mContext);
+        final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdjustMode(true);
 
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 75));
@@ -114,4 +114,5 @@ public class SearchResultFragment extends BaseFragment {
         super.onDestroy();
         Log.d(getClass().getSimpleName(), "onDestroy() called");
     }
+
 }

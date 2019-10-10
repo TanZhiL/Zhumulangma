@@ -17,10 +17,12 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAlbumViewModel;
+import com.kingja.loadsir.callback.Callback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
@@ -61,7 +63,7 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<SearchAlbumView
     @Override
     protected void initView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
         mAlbumAdapter.bindToRecyclerView(recyclerView);
@@ -117,5 +119,9 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<SearchAlbumView
     @Override
     protected boolean enableSimplebar() {
         return false;
+    }
+     @Override
+    protected Callback getInitCallBack() {
+        return new ListCallback();
     }
 }

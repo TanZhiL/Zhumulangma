@@ -96,7 +96,7 @@ public interface  AppConstants {
          String AD_LABEL="ad_label";
          String AD_URL="ad_url";
     }
-    interface Defualt{
+    interface Default {
         String CITY_CODE="4301";
         String CITY_NAME="长沙";
         String PROVINCE_CODE="430000";

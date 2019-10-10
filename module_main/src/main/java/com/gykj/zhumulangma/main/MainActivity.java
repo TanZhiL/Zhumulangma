@@ -25,7 +25,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
-import com.gykj.zhumulangma.common.status.LoadingCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
 import com.gykj.zhumulangma.common.util.PermissionPageUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
@@ -126,7 +126,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     private void initAd() {
         long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(AppConstants.SP.AD_TIME, 0);
         //显示广告
-        if(adOffset>5*60*1000&&new File(getFilesDir().getAbsolutePath()+AppConstants.Defualt.AD_NAME)
+        if(adOffset>5*60*1000&&new File(getFilesDir().getAbsolutePath()+ AppConstants.Default.AD_NAME)
                 .exists()){
             new XPopup.Builder(this).customAnimator(new SplashAdPopup.AlphaAnimator())
                     .setPopupCallback(new SimpleCallback() {
@@ -144,7 +144,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                         }
                     })
                     .asCustom(new SplashAdPopup(this)).show();
-        }else if(!new File(getFilesDir().getAbsolutePath()+AppConstants.Defualt.AD_NAME)
+        }else if(!new File(getFilesDir().getAbsolutePath()+ AppConstants.Default.AD_NAME)
                 .exists()){
             mViewModel._getBing();
         }

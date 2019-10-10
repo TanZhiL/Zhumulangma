@@ -67,11 +67,11 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
     protected void initView(View view) {
         RecyclerView recyclerView = fd(R.id.recyclerview);
         refreshLayout = fd(R.id.refreshLayout);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
         mSubscribeAdapter = new SubscribeAdapter(R.layout.listen_item_subscribe);
         mSubscribeAdapter.bindToRecyclerView(recyclerView);
-        View inflate = LayoutInflater.from(mContext).inflate(R.layout.listen_layout_subscribe_footer, null);
+        View inflate = LayoutInflater.from(mActivity).inflate(R.layout.listen_layout_subscribe_footer, null);
         vFooter=inflate.findViewById(R.id.cl_content);
         mSubscribeAdapter.addFooterView(inflate);
     }
