@@ -267,7 +267,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     public <T> void onEvent(BaseFragmentEvent<T> event) {
         super.onEvent(event);
         switch (event.getCode()){
-            case EventCode.User.TAB_REFRESH:
+            case EventCode.Main.TAB_REFRESH:
                 if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }
