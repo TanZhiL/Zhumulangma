@@ -18,12 +18,15 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.SystemUtil;
@@ -52,9 +55,13 @@ import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
@@ -64,7 +71,7 @@ import java.util.List;
  */
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
 public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements
-        BaseQuickAdapter.OnItemChildClickListener, IXmDownloadTrackCallBack,
+        BaseQuickAdapter.OnItemChildClickListener,
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
     @Autowired(name = KeyCode.Listen.TAB_INDEX)
     public int mTabIndex;
@@ -78,6 +85,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     private MagicIndicator magicIndicator;
     private ViewGroup layoutDetail1, layoutDetail2, layoutDetail3;
     private XmDownloadManager mDownloadManager=XmDownloadManager.getInstance();
+
 
     public DownloadFragment() {
 
@@ -165,7 +173,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         layoutDetail3.findViewById(R.id.tv_clear).setOnClickListener(this);
         layoutDetail3.findViewById(R.id.tv_clear).setOnClickListener(this);
 
-        mDownloadManager.addDownloadStatueListener(this);
+        mDownloadManager.addDownloadStatueListener(downloadStatueListener);
         XmPlayerManager.getInstance(mActivity).addPlayerStatusListener(playerStatusListener);
     }
 
@@ -200,13 +208,15 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         int id = view.getId();
         if (adapter == mAlbumAdapter) {
             if (id == R.id.ll_delete) {
-
                 mDownloadManager.clearDownloadedAlbum(mAlbumAdapter.getItem(position).getAlbumId(), null);
-
+                mAlbumAdapter.remove(position);
             }
         } else if (adapter == mTrackAdapter) {
             if (id == R.id.ll_delete) {
                 mDownloadManager.clearDownloadedTrack(mTrackAdapter.getItem(position).getDataId());
+                mTrackAdapter.remove(position);
+                mHandler.postDelayed(()-> mAlbumAdapter.setNewData(mDownloadManager.getDownloadAlbums(true)),100);
+
             }
         } else if (adapter == mDownloadingAdapter) {
             if (id == R.id.ll_delete) {
@@ -245,59 +255,6 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         return ViewModelFactory.getInstance(mApplication);
     }
 
-    @Override
-    public void onWaiting(Track track) {
-        updateDownloadStatus(track);
-    }
-
-    @Override
-    public void onStarted(Track track) {
-        updateDownloadStatus(track);
-    }
-
-
-    @Override
-    public void onSuccess(Track track) {
-        int index = mDownloadingAdapter.getData().indexOf(track);
-        if (index != -1) {
-            mDownloadingAdapter.remove(index);
-            if (mDownloadingAdapter.getData().size() == 0) {
-                layoutDetail3.findViewById(R.id.cl_action).setVisibility(View.GONE);
-            }
-        }
-        ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("(" + mDownloadManager.getDownloadTrackCount(false) + ")");
-        mAlbumAdapter.setNewData(mDownloadManager.getDownloadAlbums(true));
-        mTrackAdapter.addData(track);
-    }
-
-    @Override
-    public void onError(Track track, Throwable throwable) {
-        throwable.printStackTrace();
-    }
-
-    @Override
-    public void onCancelled(Track track, Callback.CancelledException e) {
-        updateDownloadStatus(track);
-    }
-
-    @Override
-    public void onProgress(Track track, long l, long l1) {
-        updateDownloadStatus(track);
-        int index = mDownloadingAdapter.getData().indexOf(track);
-        if (index != -1) {
-            CircleProgressBar progressBar = (CircleProgressBar) mDownloadingAdapter.getViewByPosition(index, R.id.cpb_progress);
-            if (progressBar != null) {
-                progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorPrimary));
-                progressBar.setProgress((int) (l1 * 100 / l));
-            }
-        }
-
-    }
-
-    @Override
-    public void onRemoved() {
-        initData();
-    }
 
     private void updateDownloadStatus(Track track) {
         int index = mDownloadingAdapter.getData().indexOf(track);
@@ -331,6 +288,8 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                     tvStatus.setTextColor(getResources().getColor(R.color.colorGray));
                     progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorGray));
                 }
+            }else {
+                mDownloadingAdapter.notifyItemChanged(index);
             }
         }
     }
@@ -365,6 +324,12 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         } else if (adapter == mTrackAdapter) {
             XmPlayerManager.getInstance(mActivity).playList(mTrackAdapter.getData(), position);
             navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+        } else if (adapter == mAlbumAdapter) {
+            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD_ALBUM)
+                    .withLong(KeyCode.Listen.ALBUMID, mAlbumAdapter.getItem(position).getAlbumId())
+                    .navigation();
+            EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD_ALBUM, (ISupportFragment) navigation)));
         }
     }
 
@@ -417,6 +382,8 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             TextView tvHasplay = (TextView) mTrackAdapter.getViewByPosition(index, R.id.tv_hasplay);
             if (null != tvHasplay && mTrackAdapter.getItem(index).getDataId() == track.getDataId()) {
                 tvHasplay.setText(getString(R.string.hasplay, 100 * currPos / duration));
+            }else {
+                mTrackAdapter.notifyItemChanged(index);
             }
         }
     }
@@ -426,9 +393,14 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Listen.DOWNLOAD_SORT:
+            case EventCode.Listen.DOWNLOAD_DELETE:
                 List<Track> downloadTracks = mDownloadManager.getDownloadTracks(true);
                 Collections.sort(downloadTracks, ComparatorUtil.comparatorByUserSort(true));
                 mTrackAdapter.setNewData(downloadTracks);
+                mHandler.postDelayed(()-> mAlbumAdapter.setNewData(mDownloadManager.getDownloadAlbums(true)),100);
+                if (downloadTracks.size() == 0) {
+                    layoutDetail2.findViewById(R.id.cl_action).setVisibility(View.GONE);
+                }
                 break;
         }
     }
@@ -490,7 +462,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     public void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
-        mDownloadManager.removeDownloadStatueListener(this);
+        mDownloadManager.removeDownloadStatueListener(downloadStatueListener);
         XmPlayerManager.getInstance(mActivity).removePlayerStatusListener(playerStatusListener);
     }
 
@@ -551,4 +523,61 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
         }
 
     };
+    private IXmDownloadTrackCallBack downloadStatueListener=new IXmDownloadTrackCallBack() {
+        @Override
+        public void onWaiting(Track track) {
+            updateDownloadStatus(track);
+        }
+
+        @Override
+        public void onStarted(Track track) {
+            updateDownloadStatus(track);
+        }
+
+
+        @Override
+        public void onSuccess(Track track) {
+            int index = mDownloadingAdapter.getData().indexOf(track);
+            if (index != -1) {
+                mDownloadingAdapter.remove(index);
+                if (mDownloadingAdapter.getData().size() == 0) {
+                    layoutDetail3.findViewById(R.id.cl_action).setVisibility(View.GONE);
+                }
+            }
+            ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("(" + mDownloadManager.getDownloadTrackCount(false) + ")");
+            mAlbumAdapter.setNewData(mDownloadManager.getDownloadAlbums(true));
+            mTrackAdapter.addData(track);
+        }
+
+        @Override
+        public void onError(Track track, Throwable throwable) {
+            throwable.printStackTrace();
+        }
+
+        @Override
+        public void onCancelled(Track track, Callback.CancelledException e) {
+            updateDownloadStatus(track);
+        }
+
+        @Override
+        public void onProgress(Track track, long l, long l1) {
+            updateDownloadStatus(track);
+            int index = mDownloadingAdapter.getData().indexOf(track);
+            if (index != -1) {
+                CircleProgressBar progressBar = (CircleProgressBar) mDownloadingAdapter.getViewByPosition(index, R.id.cpb_progress);
+                if (progressBar != null) {
+                    progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorPrimary));
+                    progressBar.setProgress((int) (l1 * 100 / l));
+                }else {
+                    mDownloadingAdapter.notifyItemChanged(index);
+                }
+            }
+
+        }
+
+        @Override
+        public void onRemoved() {
+        }
+    };
+
 }

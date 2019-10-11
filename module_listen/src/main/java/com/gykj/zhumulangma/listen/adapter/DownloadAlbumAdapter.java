@@ -2,15 +2,11 @@ package com.gykj.zhumulangma.listen.adapter;
 
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.ConvertUtils;
-import com.blankj.utilcode.util.FileUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.gykj.zhumulangma.common.util.FileUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.listen.R;
-import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.model.XmDownloadAlbum;

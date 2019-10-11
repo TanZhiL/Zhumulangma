@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -440,7 +441,8 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
      *
      * @return
      */
-    protected abstract int onBindLayout();
+    protected abstract @LayoutRes
+    int onBindLayout();
 
     /**
      * 初始化视图

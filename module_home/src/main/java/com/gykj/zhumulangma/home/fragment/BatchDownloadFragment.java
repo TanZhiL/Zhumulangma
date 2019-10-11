@@ -58,7 +58,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 
 @Route(path = AppConstants.Router.Home.F_BATCH_DOWNLOAD)
-public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownloadViewModel,Track> implements
+public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownloadViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener, TrackPagerPopup.onPopupDismissingListener {
 
 
@@ -69,6 +69,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     private DownloadTrackAdapter mDownloadTrackAdapter;
     private TrackPagerPopup mPagerPopup;
     private Handler mHandler = new Handler();
+    private int mTotalCount;
 
     private TextView tvSize;
     private View vDownload;
@@ -90,7 +91,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
         mDownloadTrackAdapter.bindToRecyclerView(recyclerView);
-        mPagerPopup=new TrackPagerPopup(mActivity,this);
+        mPagerPopup = new TrackPagerPopup(mActivity, this);
         mPagerPopup.setDismissingListener(this);
     }
 
@@ -107,7 +108,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout,mDownloadTrackAdapter);
+        return new WrapRefresh(refreshLayout, mDownloadTrackAdapter);
     }
 
     @Override
@@ -121,15 +122,29 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     @Override
     public void initViewObservable() {
         mViewModel.getInitTracksEvent().observe(this, tracks -> {
-            ((CheckBox) fd(R.id.cb_all)).setChecked(false);
-            setPager(tracks.getTotalCount());
+            mTotalCount = tracks.getTotalCount();
+            setPager(mTotalCount);
             mDownloadTrackAdapter.setNewData(tracks.getTracks());
+            //更新全选按钮
+            ((CheckBox) fd(R.id.cb_all)).setChecked(CollectionUtils.isSubCollection(
+                    mDownloadTrackAdapter.getData(), mDownloadTrackAdapter.getSelectedTracks()));
         });
     }
 
     @Override
     protected void onRefreshSucc(List<Track> list) {
-        mDownloadTrackAdapter.addData(0,list);
+        mDownloadTrackAdapter.addData(0, list);
+        //更新全选按钮
+        ((CheckBox) fd(R.id.cb_all)).setChecked(CollectionUtils.isSubCollection(
+                mDownloadTrackAdapter.getData(), mDownloadTrackAdapter.getSelectedTracks()));
+    }
+
+    @Override
+    protected void onLoadMoreSucc(List<Track> list) {
+        super.onLoadMoreSucc(list);
+        //更新全选按钮
+        ((CheckBox) fd(R.id.cb_all)).setChecked(CollectionUtils.isSubCollection(
+                mDownloadTrackAdapter.getData(), mDownloadTrackAdapter.getSelectedTracks()));
     }
 
     @Override
@@ -159,6 +174,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     protected Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_common_download};
     }
+
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mDownloadTrackAdapter) {
@@ -189,8 +205,11 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                 vDownload.setEnabled(false);
                 vDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
             }
+            //更新全选按钮
+            ((CheckBox) fd(R.id.cb_all)).setChecked(CollectionUtils.isSubCollection(
+                    mDownloadTrackAdapter.getData(), mDownloadTrackAdapter.getSelectedTracks()));
         } else {
-            mPagerPopup.dismissWith(()-> mViewModel.getTrackList(position + 1));
+            mPagerPopup.dismissWith(() -> mViewModel.getTrackList(position + 1));
         }
     }
 
@@ -206,7 +225,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
             List<Track> selectedTracks = mDownloadTrackAdapter.getSelectedTracks();
             if (isChecked) {
                 for (int i = 0; i < tracks.size(); i++) {
-                    if (!selectedTracks.contains(tracks.get(i)) &&XmDownloadManager.getInstance()
+                    if (!selectedTracks.contains(tracks.get(i)) && XmDownloadManager.getInstance()
                             .getSingleTrackDownloadStatus(tracks.get(i).getDataId()) == DownloadState.NOADD) {
                         mTotalSize += tracks.get(i).getDownloadSize();
                         selectedTracks.add(tracks.get(i));
@@ -252,6 +271,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                 public void begin() {
 
                 }
+
                 @Override
                 public void success() {
                     mTotalSize = 0;
@@ -259,35 +279,33 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                     vDownload.setEnabled(false);
                     ((CheckBox) fd(R.id.cb_all)).setChecked(false);
                     vDownload.setBackgroundColor(getResources().getColor(R.color.colorHint));
-                    ToastUtil.showToast(ToastUtil.LEVEL_S,"已加入下载队列");
+                    ToastUtil.showToast(ToastUtil.LEVEL_S, "已加入下载队列");
                     selectedTracks.clear();
                     mDownloadTrackAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void fail(AddDownloadException e) {
-                   if(e.getCode()==AddDownloadException.CODE_NULL){
-                       ToastUtil.showToast("参数不能为null");
-                   }else if(e.getCode()==AddDownloadException.CODE_MAX_OVER){
-                       ToastUtil.showToast("批量下载个数超过最大值");
-                   }else if(e.getCode()==AddDownloadException.CODE_NOT_FIND_TRACK){
-                       ToastUtil.showToast("不能找到相应的声音");
-                   }else if(e.getCode()==AddDownloadException.CODE_MAX_DOWNLOADING_COUNT){
-                       ToastUtil.showToast("同时下载的音频个数不能超过500");
-                   }else if(e.getCode()==AddDownloadException.CODE_DISK_OVER){
-                       ToastUtil.showToast("磁盘已满");
-                   }else if(e.getCode()==AddDownloadException.CODE_MAX_SPACE_OVER){
-                       ToastUtil.showToast("下载的音频超过了设置的最大空间");
-                   }else if(e.getCode()==AddDownloadException.CODE_NO_PAY_SOUND){
-                       ToastUtil.showToast("下载的付费音频中有没有支付");
-                   }
+                    if (e.getCode() == AddDownloadException.CODE_NULL) {
+                        ToastUtil.showToast("参数不能为null");
+                    } else if (e.getCode() == AddDownloadException.CODE_MAX_OVER) {
+                        ToastUtil.showToast("批量下载个数超过最大值");
+                    } else if (e.getCode() == AddDownloadException.CODE_NOT_FIND_TRACK) {
+                        ToastUtil.showToast("不能找到相应的声音");
+                    } else if (e.getCode() == AddDownloadException.CODE_MAX_DOWNLOADING_COUNT) {
+                        ToastUtil.showToast("同时下载的音频个数不能超过500");
+                    } else if (e.getCode() == AddDownloadException.CODE_DISK_OVER) {
+                        ToastUtil.showToast("磁盘已满");
+                    } else if (e.getCode() == AddDownloadException.CODE_MAX_SPACE_OVER) {
+                        ToastUtil.showToast("下载的音频超过了设置的最大空间");
+                    } else if (e.getCode() == AddDownloadException.CODE_NO_PAY_SOUND) {
+                        ToastUtil.showToast("下载的付费音频中有没有支付");
+                    }
                 }
             });
 
         }
     }
-
-
 
 
     @Override
@@ -326,12 +344,15 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                 ivSelected.setVisibility(View.GONE);
                 while (iterator.hasNext()) {
                     Track next = iterator.next();
-                    int page = mPagerPopup.getPagerAdapter().getData().size()-1-next.getOrderPositionInAlbum() / BatchDownloadViewModel.PAGESIEZ;
-                    if (page == i) {
+                    int orderPositionInAlbum = next.getOrderPositionInAlbum() + 1;
+                    if (orderPositionInAlbum <= mTotalCount - i * BatchDownloadViewModel.PAGESIEZ
+                            && orderPositionInAlbum > mTotalCount - (i + 1) * BatchDownloadViewModel.PAGESIEZ) {
                         ivSelected.setVisibility(View.VISIBLE);
                         break;
                     }
                 }
+            } else {
+                mDownloadTrackAdapter.notifyItemChanged(i);
             }
             TextView tvPage = (TextView) mPagerPopup.getPagerAdapter().getViewByPosition(i, R.id.tv_page);
             if (tvPage != null) {
@@ -342,6 +363,8 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
                     tvPage.setBackgroundResource(R.drawable.shap_common_defualt);
                     tvPage.setTextColor(getResources().getColor(R.color.textColorPrimary));
                 }
+            } else {
+                mPagerPopup.getPagerAdapter().notifyItemChanged(i);
             }
         }
     }
@@ -350,11 +373,11 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
      * 切换分页器是否显示
      */
     private void switchPager() {
-        if(mPagerPopup.isShow()){
+        if (mPagerPopup.isShow()) {
             mPagerPopup.dismiss();
-        }else {
+        } else {
             fd(R.id.iv_select_page).animate().rotation(-90).setDuration(200);
-            new XPopup.Builder(mActivity).atView(fd(R.id.cl_actionbar)).setPopupCallback(new SimpleCallback(){
+            new XPopup.Builder(mActivity).atView(fd(R.id.cl_actionbar)).setPopupCallback(new SimpleCallback() {
                 @Override
                 public void onCreated() {
                     super.onCreated();
@@ -380,9 +403,10 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
 
     /**
      * 设置分页数据
+     *
      * @param totalcount
      */
-    private void setPager(long totalcount) {
+    private void setPager(int totalcount) {
         int pagesize = 50;
         ((TextView) fd(R.id.tv_pagecount)).setText(getString(R.string.pagecount, totalcount));
         List<String> list = new ArrayList<>();
@@ -408,7 +432,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
         fd(R.id.iv_select_page).animate().rotation(90).setDuration(200);
     }
 
-     @Override
+    @Override
     protected Callback getInitCallBack() {
         return new ListCallback();
     }

@@ -92,6 +92,14 @@ public class RetrofitManager {
         return mRetrofit.create(CommonService.class);
     }
 
+    /**
+     * 创建一个公共服务
+     *
+     * @return
+     */
+    public UserService getUserService() {
+        return mRetrofit.create(UserService.class);
+    }
 
 
     public void setHostStatus(int hostStatus) {

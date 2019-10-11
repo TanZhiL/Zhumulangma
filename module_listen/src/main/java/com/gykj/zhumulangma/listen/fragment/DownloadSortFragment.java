@@ -6,11 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -38,9 +40,12 @@ import java.util.Map;
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD_SORT)
 public class DownloadSortFragment extends BaseFragment {
 
+    @Autowired(name = KeyCode.Listen.ALBUMID)
+    public long mAlbumId = -1;
+
     private DownloadSortAdapter mSortAdapter;
 
-    private XmDownloadManager mDownloadManager=XmDownloadManager.getInstance();
+    private XmDownloadManager mDownloadManager = XmDownloadManager.getInstance();
 
 
     @Override
@@ -72,9 +77,14 @@ public class DownloadSortFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        List<Track> downloadTracks = mDownloadManager.getDownloadTracks(true);
-        Collections.sort(downloadTracks, ComparatorUtil.comparatorByUserSort(true));
-        mSortAdapter.setNewData(downloadTracks);
+        List<Track> tracks;
+        if (mAlbumId == -1) {
+            tracks = mDownloadManager.getDownloadTracks(true);
+        } else {
+            tracks = XmDownloadManager.getInstance().getDownloadTrackInAlbum(mAlbumId, true);
+        }
+        Collections.sort(tracks, ComparatorUtil.comparatorByUserSort(true));
+        mSortAdapter.setNewData(tracks);
     }
 
     @Override
@@ -108,21 +118,27 @@ public class DownloadSortFragment extends BaseFragment {
         XmDownloadManager.getInstance().swapDownloadedPosition(map, new IDoSomethingProgress() {
             @Override
             public void begin() {
+                showLoadingView(null);
             }
+
             @Override
             public void success() {
+                clearStatus();
                 EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Listen.DOWNLOAD_SORT));
                 pop();
             }
 
             @Override
             public void fail(BaseRuntimeException e) {
+                clearStatus();
+                e.printStackTrace();
                 ToastUtil.showToast(ToastUtil.LEVEL_E, e.getLocalizedMessage());
             }
         });
 
     }
-    private OnItemDragListener onItemDragListener=new OnItemDragListener() {
+
+    private OnItemDragListener onItemDragListener = new OnItemDragListener() {
         @Override
         public void onItemDragStart(RecyclerView.ViewHolder viewHolder, int pos) {
             viewHolder.itemView.setBackgroundColor(Color.WHITE);

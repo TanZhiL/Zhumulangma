@@ -25,6 +25,7 @@ public interface CommonService {
     @GET(API.BING_URL)
     Observable<BingBean> getBing(@Query("format") String type, @Query("n") String status);
 
+
     @GET
     Observable<ResponseBody> getCommonBody(@Url String url);
 }

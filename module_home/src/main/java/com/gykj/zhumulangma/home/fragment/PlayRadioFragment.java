@@ -236,6 +236,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
                     tvTitle.setTextColor(mActivity.getResources().getColor(R.color.textColorPrimary));
                     lavPlaying.setVisibility(View.GONE);
                 }
+            }else {
+                adapter.notifyItemChanged(i);
             }
         }
     }

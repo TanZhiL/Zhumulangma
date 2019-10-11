@@ -517,6 +517,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             View progress = mPlayTrackPopup.getTrackAdapter().getViewByPosition(index, R.id.progressBar);
             View ivDownloadSucc = mPlayTrackPopup.getTrackAdapter().getViewByPosition(index, R.id.iv_downloadsucc);
             if (ivDownload == null || progress == null || ivDownloadSucc == null) {
+                mPlayTrackPopup.getTrackAdapter().notifyItemChanged(index);
                 return;
             }
             switch (downloadStatus) {
@@ -572,6 +573,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     tvTitle.setTextColor(mActivity.getResources().getColor(R.color.colorPrimaryDark));
                     lavPlaying.setVisibility(View.GONE);
                 }
+            }else {
+                mPlayTrackPopup.getTrackAdapter().notifyItemChanged(i);
             }
         }
     }

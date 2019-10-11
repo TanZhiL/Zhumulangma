@@ -15,11 +15,14 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.FineAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
@@ -148,7 +151,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
             for (BannerV2 bannerV2 : bannerV2s) {
                 images.add(bannerV2.getBannerUrl());
             }
-            banner.setImages(images).setImageLoader(new MainHomeFragment.GlideImageLoader()).start();
+            banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
         });
         mViewModel.getDailysEvent().observe(this, albums -> mDailyAdapter.setNewData(albums));
         mViewModel.getBooksEvent().observe(this, albums -> mBookAdapter.setNewData(albums));
@@ -180,7 +183,17 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
         if (banner != null)
             banner.stopAutoPlay();
     }
-
+    @Override
+    public <T> void onEvent(BaseFragmentEvent<T> event) {
+        super.onEvent(event);
+        switch (event.getCode()){
+            case EventCode.Home.TAB_REFRESH:
+                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                    ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
+                }
+                break;
+        }
+    }
     @Override
     public void OnBannerClick(int position) {
         BannerV2 bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);

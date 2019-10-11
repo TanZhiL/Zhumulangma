@@ -25,6 +25,7 @@ public interface KeyCode {
 
     interface Listen {
         String TAB_INDEX="tab_index";
+        String ALBUMID = "albumid";
     }
     interface Discover {
         String PATH="path";

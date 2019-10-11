@@ -16,6 +16,7 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.listen.R;
@@ -167,5 +168,17 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
     @Override
     protected Callback getInitCallBack() {
         return new ListCallback();
+    }
+
+    @Override
+    public <T> void onEvent(BaseFragmentEvent<T> event) {
+        super.onEvent(event);
+        switch (event.getCode()){
+            case EventCode.Listen.TAB_REFRESH:
+                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                    ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
+                }
+                break;
+        }
     }
 }

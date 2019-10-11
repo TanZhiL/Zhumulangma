@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <CheckBox
+        android:layout_marginLeft="8dp"
         android:id="@+id/cb_all"
         android:layout_width="match_parent"
         android:layout_height="50dp"

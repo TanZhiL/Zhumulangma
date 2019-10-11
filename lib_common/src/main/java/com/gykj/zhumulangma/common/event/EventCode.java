@@ -18,23 +18,23 @@ public interface EventCode {
         int SHARE=1006;
         //1000开始
     }
-
-    interface Listen {
-        int DOWNLOAD_SORT=2000;
+    interface Home {
         //2000开始
+        int TAB_REFRESH=2001;
     }
-
-    interface FindCode {
+    interface Listen {
         //3000开始
+        int DOWNLOAD_SORT=3000;
+        int DOWNLOAD_DELETE=3001;
+        int TAB_REFRESH=3002;
+    }
+    interface Discover {
+        //4000开始
+        int TAB_REFRESH=4001;
     }
 
-    interface MeCode {
-        //4000开始
-        int NEWS_TYPE_ADD = 4000;
-        int NEWS_TYPE_DELETE = 4001;
-        int NEWS_TYPE_UPDATE = 4002;
-        int NEWS_TYPE_QUERY = 4003;
-
-        int news_detail_add  = 4004;
+    interface User {
+        //5000开始
+        int TAB_REFRESH=5001;
     }
 }

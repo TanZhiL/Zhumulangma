@@ -16,6 +16,8 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.HotCallback;
 import com.gykj.zhumulangma.common.util.RadioUtil;
@@ -27,6 +29,7 @@ import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.kingja.loadsir.callback.Callback;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.Banner;
@@ -257,7 +260,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
             for (BannerV2 bannerV2 : bannerV2s) {
                 images.add(bannerV2.getBannerUrl());
             }
-            banner.setImages(images).setImageLoader(new MainHomeFragment.GlideImageLoader()).start();
+            banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
         });
         mViewModel.getLikesEvent().observe(this, albums -> mLikeAdapter.setNewData(albums));
         mViewModel.getStorysEvent().observe(this, albums -> mStoryAdapter.setNewData(albums));
@@ -314,6 +317,18 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     @Override
     protected Callback getInitCallBack() {
         return new HotCallback();
+    }
+
+    @Override
+    public <T> void onEvent(BaseFragmentEvent<T> event) {
+        super.onEvent(event);
+        switch (event.getCode()){
+            case EventCode.Home.TAB_REFRESH:
+                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                    ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
+                }
+                break;
+        }
     }
 
     @Override

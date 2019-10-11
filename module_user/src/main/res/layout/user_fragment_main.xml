@@ -175,7 +175,7 @@
                         app:layout_constraintStart_toEndOf="@+id/textView13" />
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/tv_desc"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginTop="4dp"

@@ -43,6 +43,7 @@ public interface  AppConstants {
              String F_DOWNLOAD="/listen/download";
              String F_DOWNLOAD_DELETE="/listen/download/delete";
              String F_DOWNLOAD_SORT="/listen/download/sort";
+             String F_DOWNLOAD_ALBUM="/listen/download/album";
              String F_HISTORY="/listen/history";
              String F_FAVORITE="/listen/favorite";
          }

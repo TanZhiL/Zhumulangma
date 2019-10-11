@@ -103,7 +103,6 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     private TextView tvLastplay;
 
 
-
     public AlbumDetailFragment() {
     }
 
@@ -145,7 +144,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         recyclerView.setHasFixedSize(true);
         mAlbumTrackAdapter.bindToRecyclerView(recyclerView);
-        mPagerPopup=new TrackPagerPopup(mActivity,this);
+        mPagerPopup = new TrackPagerPopup(mActivity, this);
         mPagerPopup.setDismissingListener(this);
     }
 
@@ -153,7 +152,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     public void initListener() {
         super.initListener();
         XmDownloadManager.getInstance().addDownloadStatueListener(mDownloadStatueListener);
-        mPlayerManager.addPlayerStatusListener(mPlayerStatusListener);
+        mPlayerManager.addPlayerStatusListener(playerStatusListener);
         mAlbumTrackAdapter.setOnItemClickListener(this);
         mAlbumTrackAdapter.setOnItemChildClickListener(this);
         layoutDetail.findViewById(R.id.cl_announcer).setOnClickListener(this);
@@ -299,7 +298,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             tvLastplay.setText(getString(R.string.lastplay, mAlbumTrackAdapter.getItem(position).getTrackTitle()));
             navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
         } else {
-           mPagerPopup.dismissWith(()-> mViewModel.getTrackList(position + 1));
+            mPagerPopup.dismissWith(() -> mViewModel.getTrackList(position + 1));
         }
     }
 
@@ -453,6 +452,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             View progress = mAlbumTrackAdapter.getViewByPosition(index, R.id.progressBar);
             View ivDownloadSucc = mAlbumTrackAdapter.getViewByPosition(index, R.id.iv_downloadsucc);
             if (ivDownload == null || progress == null || ivDownloadSucc == null) {
+                mAlbumTrackAdapter.notifyItemChanged(index);
                 return;
             }
             switch (downloadStatus) {
@@ -513,6 +513,8 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                     lavPlaying.cancelAnimation();
                     lavPlaying.setVisibility(View.GONE);
                 }
+            }else {
+                mAlbumTrackAdapter.notifyItemChanged(i);
             }
         }
     }
@@ -530,6 +532,8 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             TextView tvHasplay = (TextView) mAlbumTrackAdapter.getViewByPosition(index, R.id.tv_hasplay);
             if (null != tvHasplay && mAlbumTrackAdapter.getItem(index).getDataId() == track.getDataId()) {
                 tvHasplay.setText(getString(R.string.hasplay, 100 * currPos / duration));
+            }else {
+                mAlbumTrackAdapter.notifyItemChanged(index);
             }
         }
     }
@@ -539,11 +543,11 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
      */
     private void switchPager() {
 
-        if(mPagerPopup.isShow()){
+        if (mPagerPopup.isShow()) {
             mPagerPopup.dismiss();
-        }else {
+        } else {
             fd(R.id.iv_select_page).animate().rotation(-90).setDuration(200);
-            new XPopup.Builder(mActivity).atView(layoutTracks.findViewById(R.id.cl_actionbar)).setPopupCallback(new SimpleCallback(){
+            new XPopup.Builder(mActivity).atView(layoutTracks.findViewById(R.id.cl_actionbar)).setPopupCallback(new SimpleCallback() {
                 @Override
                 public void onCreated() {
                     super.onCreated();
@@ -580,6 +584,8 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                     viewByPosition.setBackgroundResource(R.drawable.shap_common_defualt);
                     viewByPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
                 }
+            }else {
+                mPagerPopup.getPagerAdapter().notifyItemChanged(i);
             }
         }
     }
@@ -624,7 +630,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
         public void onRemoved() {
         }
     };
-    private IXmPlayerStatusListener mPlayerStatusListener = new IXmPlayerStatusListener() {
+    private IXmPlayerStatusListener playerStatusListener = new IXmPlayerStatusListener() {
 
         @Override
         public void onPlayStart() {
@@ -688,12 +694,12 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mAlbumTrackAdapter!=null){
+        if (mAlbumTrackAdapter != null) {
             mAlbumTrackAdapter.setOnItemClickListener(null);
             mAlbumTrackAdapter.setOnItemChildClickListener(null);
         }
         XmDownloadManager.getInstance().removeDownloadStatueListener(mDownloadStatueListener);
-        mPlayerManager.removePlayerStatusListener(mPlayerStatusListener);
+        mPlayerManager.removePlayerStatusListener(playerStatusListener);
     }
 
     @Override

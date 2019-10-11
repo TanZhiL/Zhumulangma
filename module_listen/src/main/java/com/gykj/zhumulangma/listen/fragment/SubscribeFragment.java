@@ -18,6 +18,7 @@ import com.gykj.zhumulangma.common.bean.SubscribeBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.SubscribeAdapter;
@@ -140,6 +141,18 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
     public void onClick(View v) {
         if(v==vFooter){
             navigateTo(AppConstants.Router.Home.F_RANK);
+        }
+    }
+
+    @Override
+    public <T> void onEvent(BaseFragmentEvent<T> event) {
+        super.onEvent(event);
+        switch (event.getCode()){
+            case EventCode.Listen.TAB_REFRESH:
+                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                    ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
+                }
+                break;
         }
     }
 }

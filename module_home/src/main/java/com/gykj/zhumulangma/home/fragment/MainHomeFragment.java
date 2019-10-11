@@ -3,13 +3,11 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProvider;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.Postcard;
@@ -17,7 +15,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CollectionUtils;
-import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
@@ -35,7 +32,6 @@ import com.sunfusheng.marqueeview.MarqueeView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.ximalaya.ting.android.opensdk.model.word.HotWord;
-import com.youth.banner.loader.ImageLoader;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -198,23 +194,6 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         Object navigation = build.withString(KeyCode.Home.HOTWORD, mMarqueeView.getMessages().get(position)).navigation();
         EventBus.getDefault().post(new BaseActivityEvent<>(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
-    }
-
-
-    public static class GlideImageLoader extends ImageLoader {
-        @Override
-        public void displayImage(Context context, Object path, ImageView imageView) {
-            /**
-             注意：
-             1.图片加载器由自己选择，这里不限制，只是提供几种使用方法
-             2.返回的图片路径为Object类型，由于不能确定你到底使用的那种图片加载器，
-             传输的到的是什么格式，那么这种就使用Object接收和返回，你只需要强转成你传输的类型就行，
-             切记不要胡乱强转！
-             */
-            //Glide 加载图片简单用法
-            Glide.with(context).load(path).into(imageView);
-        }
-
     }
 
     @Override

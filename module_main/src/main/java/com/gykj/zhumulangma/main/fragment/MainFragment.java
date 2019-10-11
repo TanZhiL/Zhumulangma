@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.main.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -9,37 +10,40 @@ import android.view.View;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.main.R;
 import com.next.easynavigation.view.EasyNavigationBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Route(path = AppConstants.Router.Main.F_MAIN)
-public class MainFragment extends BaseFragment {
+public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTabClickListener {
 
-    private EasyNavigationBar enb;
     private String[] tabText = {"首页", "我听", "", "发现", "我的"};
-    private List<String> tabTexts;
-    //未选中icon
-    private int[] normalIcon = {R.drawable.ic_main_tab_home_normal, R.drawable.ic_main_tab_litsten_normal
-            , R.drawable.ic_main_tab_play, R.drawable.ic_main_tab_find_normal, R.drawable.ic_main_tab_user_normal};
-    //选中时icon
-    private int[] selectIcon = {R.drawable.ic_main_tab_home_press, R.drawable.ic_main_tab_listen_press
-            , R.drawable.ic_main_tab_play, R.drawable.ic_main_tab_find_press, R.drawable.ic_main_tab_user_press};
 
-    private List<Fragment> fragments = new ArrayList<>();
+    private @DrawableRes
+    int[] normalIcon = {R.drawable.ic_main_tab_home_normal, R.drawable.ic_main_tab_litsten_normal
+            , R.drawable.ic_main_tab_play, R.drawable.ic_main_tab_find_normal, R.drawable.ic_main_tab_user_normal};
+    private @DrawableRes
+    int[] selectIcon = {R.drawable.ic_main_tab_home_press, R.drawable.ic_main_tab_listen_press
+            , R.drawable.ic_main_tab_play, R.drawable.ic_main_tab_find_press, R.drawable.ic_main_tab_user_press};
 
     private onRootShowListener mShowListener;
 
     public MainFragment() {
 
     }
+
     @Override
     protected int onBindLayout() {
         return R.layout.main_fragment_main;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -48,27 +52,23 @@ public class MainFragment extends BaseFragment {
 
     @Override
     public void initView(View view) {
-        tabTexts=new ArrayList<>();
-        enb = view.findViewById(R.id.enb);
+        EasyNavigationBar enb = view.findViewById(R.id.enb);
+        List<Fragment> fragments = new ArrayList<>();
 
         Object home = ARouter.getInstance().build(AppConstants.Router.Home.F_MAIN).navigation();
         if (null != home) {
-            tabTexts.add("首页");
             fragments.add((Fragment) home);
         }
         Object listen = ARouter.getInstance().build(AppConstants.Router.Listen.F_MAIN).navigation();
         if (null != listen) {
-            tabTexts.add("我听");
             fragments.add((Fragment) listen);
         }
         Object discover = ARouter.getInstance().build(AppConstants.Router.Discover.F_MAIN).navigation();
         if (null != listen) {
-            tabTexts.add("发现");
             fragments.add((Fragment) discover);
         }
         Object user = ARouter.getInstance().build(AppConstants.Router.User.F_MAIN).navigation();
         if (null != listen) {
-            tabTexts.add("我的");
             fragments.add((Fragment) user);
         }
         enb.titleItems(tabText)
@@ -84,6 +84,7 @@ public class MainFragment extends BaseFragment {
                 .iconSize(27)
                 .addIconSize(0)//取消中间图标
                 .navigationHeight(50)
+                .onTabClickListener(this)
                 .build();
     }
 
@@ -95,16 +96,17 @@ public class MainFragment extends BaseFragment {
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if(mShowListener!=null)
+        if (mShowListener != null)
             mShowListener.onRootShow(true);
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        if(mShowListener!=null)
+        if (mShowListener != null)
             mShowListener.onRootShow(false);
     }
+
     @Override
     protected boolean enableSimplebar() {
         return false;
@@ -116,6 +118,28 @@ public class MainFragment extends BaseFragment {
 
     @Override
     protected boolean lazyEnable() {
+        return false;
+    }
+
+    @Override
+    public boolean onTabClickEvent(View view, int i) {
+        switch (i){
+            case 0:
+                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Home.TAB_REFRESH));
+                break;
+            case 1:
+                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Listen.TAB_REFRESH));
+                break;
+            case 2:
+                //中间按钮
+                break;
+            case 3:
+                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Discover.TAB_REFRESH));
+                break;
+            case 4:
+                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.User.TAB_REFRESH));
+                break;
+        }
         return false;
     }
 

@@ -197,6 +197,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
         });
 
         fd(R.id.tv_more).setOnClickListener(this);
+        fd(R.id.iv_avatar).setOnClickListener(this);
     }
 
     @NonNull

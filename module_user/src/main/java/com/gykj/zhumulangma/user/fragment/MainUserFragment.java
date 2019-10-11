@@ -22,13 +22,16 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
-import com.gykj.zhumulangma.common.net.API;
+import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.extra.PopupImageLoader;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
-import com.gykj.zhumulangma.user.fragment.mvvm.MainUserViewModel;
-import com.gykj.zhumulangma.user.fragment.mvvm.ViewModelFactory;
+import com.gykj.zhumulangma.user.mvvm.ViewModelFactory;
+import com.gykj.zhumulangma.user.mvvm.viewmodel.MainUserViewModel;
+import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -48,20 +51,20 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Description:我的
  */
 @Route(path = AppConstants.Router.User.F_MAIN)
-public class MainUserFragment extends BaseMvvmFragment<MainUserViewModel> implements View.OnClickListener{
+public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,Object> implements View.OnClickListener{
 
+    private GitHubDTO mGitHubDTO;
 
     private CommonTitleBar ctbTrans;
     private CommonTitleBar ctbWhite;
-    private NestedScrollView mScrollView;
-    private ImageView parallax;
+    private NestedScrollView scrollView;
+    private ImageView ivParallax;
     private View flParallax;
     private SmartRefreshLayout refreshLayout;
     private ImageView whiteLeft;
     private ImageView whiteRight;
     private ImageView transLeft;
     private ImageView transRight;
-
     @Override
     protected int onBindLayout() {
         return R.layout.user_fragment_main;
@@ -83,8 +86,8 @@ public class MainUserFragment extends BaseMvvmFragment<MainUserViewModel> implem
     protected void initView(View view) {
         ctbTrans = view.findViewById(R.id.ctb_trans);
         ctbWhite = view.findViewById(R.id.ctb_white);
-        mScrollView = view.findViewById(R.id.msv);
-        parallax = view.findViewById(R.id.parallax);
+        scrollView = view.findViewById(R.id.msv);
+        ivParallax = view.findViewById(R.id.parallax);
         flParallax = view.findViewById(R.id.fl_parallax);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         initBar();
@@ -123,11 +126,10 @@ public class MainUserFragment extends BaseMvvmFragment<MainUserViewModel> implem
         whiteRight.setVisibility(View.VISIBLE);
 
     }
-
     @Override
     public void initListener() {
         super.initListener();
-        mScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+        scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (nestedScrollView, i, scrollY, i2, i3) -> {
                     flParallax.setTranslationY(-scrollY);
                     ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
@@ -136,16 +138,16 @@ public class MainUserFragment extends BaseMvvmFragment<MainUserViewModel> implem
         refreshLayout.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                refreshLayout.finishRefresh(2000);
-                mViewModel.init();
+
             }
 
             @Override
-            public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent, int offset, int headerHeight, int maxDragHeight) {
+            public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent,
+                                       int offset, int headerHeight, int maxDragHeight) {
                 ctbTrans.setAlpha(1 - (float) offset / ctbTrans.getHeight());
 
-                parallax.setScaleX((float) (1 + percent * 0.2));
-                parallax.setScaleY((float) (1 + percent * 0.2));
+                ivParallax.setScaleX((float) (1 + percent * 0.2));
+                ivParallax.setScaleY((float) (1 + percent * 0.2));
 
                 flParallax.setTranslationY(offset);
             }
@@ -163,18 +165,30 @@ public class MainUserFragment extends BaseMvvmFragment<MainUserViewModel> implem
         fd(R.id.cl_wxhd).setOnClickListener(this);
         fd(R.id.cl_jcgx).setOnClickListener(this);
         fd(R.id.cl_gy).setOnClickListener(this);
+        fd(R.id.iv_avatar).setOnClickListener(this);
+    }
+
+    @NonNull
+    @Override
+    protected WrapRefresh onBindWrapRefresh() {
+        return new WrapRefresh(refreshLayout,null);
     }
 
     @Override
     public void initData() {
-        Glide.with(this).load(API.GITHUB_AVATAR).into((ImageView) fd(R.id.iv_avatar));
         mViewModel.init();
     }
 
     @Override
     protected void initViewObservable() {
-        mViewModel.getStarEvent().observe(this, s -> ((TextView) fd(R.id.tv_star)).setText(s));
-        mViewModel.getForkEvent().observe(this, s -> ((TextView) fd(R.id.tv_fork)).setText(s));
+        mViewModel.getGitHubEvent().observe(this, gitHubDTO -> {
+            mGitHubDTO=gitHubDTO;
+            Glide.with(MainUserFragment.this).load(gitHubDTO.getOwner().getAvatar_url()).into((ImageView) fd(R.id.iv_avatar));
+            ((TextView) fd(R.id.tv_star)).setText(convertNum(gitHubDTO.getStargazers_count()));
+            ((TextView) fd(R.id.tv_fork)).setText(convertNum(gitHubDTO.getForks_count()));
+            ((TextView) fd(R.id.tv_desc)).setText(gitHubDTO.getDescription());
+
+        });
     }
 
     @Override
@@ -220,6 +234,14 @@ public class MainUserFragment extends BaseMvvmFragment<MainUserViewModel> implem
                     .navigation();
             EventBus.getDefault().post(new BaseActivityEvent<>(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
+        }else if(id==R.id.iv_avatar){
+            if(mGitHubDTO==null){
+                return;
+            }
+            // 单张图片场景
+            new XPopup.Builder(getContext())
+                    .asImageViewer(fd(R.id.iv_avatar), mGitHubDTO.getOwner().getAvatar_url(), new PopupImageLoader())
+                    .show();
         }
     }
 
@@ -232,5 +254,24 @@ public class MainUserFragment extends BaseMvvmFragment<MainUserViewModel> implem
     protected ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }
+    private String convertNum(int num){
+        if(num<1000){
+            return String.valueOf(num);
+        }
+        String dy1000= String.valueOf(num/1000);
+        String xy1000= String.valueOf(num%1000/100);
 
+        return dy1000+"."+xy1000+"k";
+    }
+    @Override
+    public <T> void onEvent(BaseFragmentEvent<T> event) {
+        super.onEvent(event);
+        switch (event.getCode()){
+            case EventCode.User.TAB_REFRESH:
+                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                    ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
+                }
+                break;
+        }
+    }
 }

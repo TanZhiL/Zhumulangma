@@ -2,10 +2,8 @@ package com.gykj.zhumulangma.common.adapter;
 
 import android.content.Context;
 import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-
 
 import com.gykj.zhumulangma.common.R;
 
@@ -45,12 +43,7 @@ public class TabNavigatorAdapter extends CommonNavigatorAdapter {
         simplePagerTitleView.setNormalColor(context.getResources().getColor(R.color.colorGray));
         simplePagerTitleView.setSelectedColor(context.getResources().getColor(R.color.colorPrimary));
         simplePagerTitleView.setTextSize(14);
-        simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(index);
-            }
-        });
+        simplePagerTitleView.setOnClickListener(v -> viewPager.setCurrentItem(index));
         return simplePagerTitleView;
     }
 
