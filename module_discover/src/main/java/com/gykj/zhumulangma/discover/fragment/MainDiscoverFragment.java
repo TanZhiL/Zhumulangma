@@ -108,7 +108,7 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
     public <T> void onEvent(BaseFragmentEvent<T> event) {
         super.onEvent(event);
         switch (event.getCode()){
-            case EventCode.Main.TAB_REFRESH:
+            case EventCode.Discover.TAB_REFRESH:
 
                 break;
         }

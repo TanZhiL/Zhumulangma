@@ -123,10 +123,23 @@ public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTa
 
     @Override
     public boolean onTabClickEvent(View view, int i) {
-        if (i != 2) {
-            EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Main.TAB_REFRESH));
+        switch (i){
+            case 0:
+                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Home.TAB_REFRESH));
+                break;
+            case 1:
+                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Listen.TAB_REFRESH));
+                break;
+            case 2:
+                //中间按钮
+                break;
+            case 3:
+                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Discover.TAB_REFRESH));
+                break;
+            case 4:
+                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.User.TAB_REFRESH));
+                break;
         }
-
         return false;
     }
 

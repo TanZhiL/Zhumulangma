@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     app:srlFooterTriggerRate="0"
     app:srlEnableNestedScrolling="true"
+    app:srlHeaderMaxDragRate="2.0"
     android:layout_height="match_parent"
     app:srlEnableLoadMoreWhenContentNotFull="false">
     <com.gykj.zhumulangma.common.widget.TRefreshHeader

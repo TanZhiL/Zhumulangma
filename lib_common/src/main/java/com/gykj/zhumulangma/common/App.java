@@ -3,11 +3,14 @@ package com.gykj.zhumulangma.common;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshInitializer;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.tencent.bugly.beta.Beta;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
@@ -29,13 +32,17 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
  */
 public class App extends Application {
     private static App mApplication;
-    private static final String TAG = "App";
 
     public static App getInstance() {
         return mApplication;
     }
 
     static {
+        //设置全局默认配置（优先级最低，会被其他设置覆盖）
+        SmartRefreshLayout.setDefaultRefreshInitializer((context, layout) -> {
+            //开始设置全局的基本参数（可以被下面的DefaultRefreshHeaderCreator覆盖）
+          layout.setHeaderMaxDragRate(1.5f);
+        });
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> new TRefreshHeader(context));
         //设置全局的Footer构建器

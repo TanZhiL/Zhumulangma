@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -267,11 +268,12 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     public <T> void onEvent(BaseFragmentEvent<T> event) {
         super.onEvent(event);
         switch (event.getCode()){
-            case EventCode.Main.TAB_REFRESH:
+            case EventCode.User.TAB_REFRESH:
                 if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }
                 break;
         }
     }
+
 }
