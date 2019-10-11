@@ -78,13 +78,15 @@
 
 
     </android.support.constraint.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+       style="@style/SecondHLine"/>
     <include android:layout_height="250dp"   android:layout_width="match_parent" layout="@layout/common_layout_refresh_loadmore"/>
 
 
     <View
         android:layout_width="match_parent"
-        android:background="#f0f0f0"
-        android:layout_height="1dp"/>
+        style="@style/SecondHLine"/>
     <TextView
         android:id="@+id/tv_close"
         android:layout_width="match_parent"

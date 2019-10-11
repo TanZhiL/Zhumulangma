@@ -97,6 +97,6 @@
 </LinearLayout>
     <View
         android:layout_width="match_parent"
-        android:background="#f0f0f0"
-        android:layout_height="1dp"/>
+        style="@style/SecondHLine"
+        android:layout_gravity="bottom"/>
 </FrameLayout>
