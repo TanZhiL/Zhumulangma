@@ -17,7 +17,7 @@
             android:layout_height="68dp"
             android:scaleType="centerCrop"
             app:riv_corner_radius="@dimen/itemRadus"
-            android:src="@drawable/common_image_placeholder"
+            tools:src="@drawable/common_image_placeholder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

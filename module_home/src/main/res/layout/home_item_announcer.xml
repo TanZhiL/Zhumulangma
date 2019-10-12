@@ -19,7 +19,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:riv_oval="true"
-        android:src="@drawable/common_image_placeholder"
+        tools:src="@drawable/common_image_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

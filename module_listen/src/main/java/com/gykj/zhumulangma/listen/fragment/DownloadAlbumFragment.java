@@ -45,7 +45,8 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Description:下载专辑详情
  */
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD_ALBUM)
-public class DownloadAlbumFragment extends BaseFragment implements View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
+public class DownloadAlbumFragment extends BaseFragment implements View.OnClickListener,
+        BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
 
     @Autowired(name = KeyCode.Listen.ALBUMID)
     public long mAlbumId;
@@ -62,6 +63,7 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
 
     @Override
     protected void initView(View view) {
+        showInitView();
         RecyclerView recyclerView = fd(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -102,7 +104,7 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
         ((TextView) fd(R.id.tv_track_num)).setText(String.format(mActivity.getResources().getString(R.string.ji),
                 mAlbum.getTrackCount()));
         mTrackAdapter.setNewData(trackInAlbum);
-
+        clearStatus();
     }
 
     @Override
