@@ -30,7 +30,7 @@ import com.gykj.zhumulangma.common.bean.AnnouncerCategoryBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.widget.ItemHeader;
@@ -55,9 +55,9 @@ import java.util.List;
 import me.yokeyword.fragmentation.ISupportFragment;
 /**
  * Author: Thomas.
- * Date: 2019/8/14 13:41
- * Email: 1071931588@qq.com
- * Description:主播详情页
+ * <br/>Date: 2019/8/14 13:41
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:主播详情页
  */
 @Route(path = AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
 public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDetailViewModel,Object> implements
@@ -184,7 +184,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
                     .withLong(KeyCode.Home.ANNOUNCER_ID,mAnnouncerId)
                     .withString(KeyCode.Home.TITLE, mAnnouncerName)
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
         fd(R.id.ih_track).setOnClickListener(v -> {
@@ -192,7 +192,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
                     .withLong(KeyCode.Home.ANNOUNCER_ID,mAnnouncerId)
                     .withString(KeyCode.Home.TITLE, mAnnouncerName)
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_TRACK_LIST, (ISupportFragment) o)));
         });
 
@@ -276,7 +276,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
                     .withLong(KeyCode.Home.CATEGORY_ID,mAnnouncer.getvCategoryId())
                     .withString(KeyCode.Home.TITLE, ((TextView)fd(R.id.tv_category)).getText().toString())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_LIST, (ISupportFragment) o)));
         }
 
@@ -293,7 +293,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
@@ -303,7 +303,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         } else {
             Track track = mTrackAdapter.getItem(position);

@@ -41,7 +41,7 @@ public class MessageFragment extends BaseFragment{
 
     @Override
     protected int onBindBarRightStyle() {
-        return BarStyle.RIGHT_ICON;
+        return SimpleBarStyle.RIGHT_ICON;
     }
 
     @Override

@@ -25,9 +25,9 @@ import io.reactivex.functions.Function;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/5 14:35
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/5 14:35
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
 

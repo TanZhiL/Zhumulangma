@@ -11,9 +11,9 @@ import java.io.File;
 
 /**
  * Author: Thomas.
- * Date: 2019/10/11 8:22
- * Email: 1071931588@qq.com
- * Description:  图片加载器，XPopup不负责加载图片，需要你实现一个图片加载器传给我，这里以Glide为例，
+ * <br/>Date: 2019/10/11 8:22
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:  图片加载器，XPopup不负责加载图片，需要你实现一个图片加载器传给我，这里以Glide为例，
  * 如果图片加载不出来，往往是网络问题，或者图片大小过大，一般跟XPopup无关，请自行检查。
  */
 public class PopupImageLoader implements XPopupImageLoader {

@@ -25,9 +25,9 @@ import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/18 13:58
- * Email: 1071931588@qq.com
- * Description:搜索电台
+ * <br/>Date: 2019/9/18 13:58
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:搜索电台
  */
 public class SearchRadioFragment extends BaseRefreshMvvmFragment<SearchRadioViewModel, Radio> implements
        BaseQuickAdapter.OnItemClickListener {

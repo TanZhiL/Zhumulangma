@@ -15,7 +15,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.home.R;
@@ -32,9 +32,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/13 15:12
- * Email: 1071931588@qq.com
- * Description:搜索专辑
+ * <br/>Date: 2019/8/13 15:12
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:搜索专辑
  */
 public class SearchAlbumFragment extends BaseRefreshMvvmFragment<SearchAlbumViewModel, Album> implements
         BaseQuickAdapter.OnItemClickListener {
@@ -97,7 +97,7 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<SearchAlbumView
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
                 .navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
+        EventBus.getDefault().post(new ActivityEvent(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 

@@ -23,8 +23,8 @@ import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.status.BlankCallback;
 import com.gykj.zhumulangma.common.mvvm.view.status.EmptyCallback;
 import com.gykj.zhumulangma.common.mvvm.view.status.ErrorCallback;
@@ -49,11 +49,11 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/10 8:23
- * Email: 1071931588@qq.com
- * Description:Fragment基类
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:Fragment基类
  */
-public abstract class BaseFragment extends SupportFragment implements IBaseView {
+public abstract class BaseFragment extends SupportFragment  {
     protected static final String TAG = BaseFragment.class.getSimpleName();
     private CompositeDisposable mCompositeDisposable;
     protected View mView;
@@ -67,18 +67,55 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
      */
     private boolean isFirst = true;
 
-    protected interface BarStyle {
-        //左边
+    protected interface SimpleBarStyle {
+        /**
+         * 返回图标(默认)
+         */
         int LEFT_BACK = 0;
+        /**
+         * 返回图标+文字
+         */
         int LEFT_BACK_TEXT = 1;
+        /**
+         * 附加图标
+         */
         int LEFT_ICON = 2;
-        //中间
+        /**
+         * 标题(默认)
+         */
         int CENTER_TITLE = 7;
+        /**
+         * 自定义布局
+         */
         int CENTER_CUSTOME = 8;
-        //右边
+        /**
+         * 文字
+         */
         int RIGHT_TEXT = 4;
+        /**
+         * 图标(默认)
+         */
         int RIGHT_ICON = 5;
+        /**
+         * 自定义布局
+         */
         int RIGHT_CUSTOME = 6;
+    }
+
+    protected abstract @LayoutRes
+    int onBindLayout();
+    protected void initParam() {
+    }
+    protected abstract void initView(View view);
+
+    public void initListener() {
+    }
+
+    public abstract void initData();
+    /**
+     * 再次可见
+     */
+    protected void onRevisible() {
     }
 
     @Override
@@ -87,7 +124,6 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         mApplication = App.getInstance();
         ARouter.getInstance().inject(this);
         EventBus.getDefault().register(this);
-
     }
 
     /**
@@ -117,7 +153,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         initCommonView();
         initParam();
         //不采用懒加载
-        if (!lazyEnable()) {
+        if (!enableLazy()) {
             loadView();
             initView(mView);
             initListener();
@@ -130,7 +166,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
         //采用懒加载
-        if (lazyEnable()) {
+        if (enableLazy()) {
             loadView();
             initView(mView);
             initListener();
@@ -143,13 +179,13 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     public void onEnterAnimationEnd(Bundle savedInstanceState) {
         super.onEnterAnimationEnd(savedInstanceState);
         //不采用懒加载
-        if (!lazyEnable()) {
+        if (!enableLazy()) {
             initData();
         }
     }
 
     /**
-     * 填充布局
+     * 填充布局(布局懒加载)
      */
     protected void loadView() {
         mViewStubContent.setLayoutResource(onBindLayout());
@@ -164,14 +200,18 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         mBaseLoadService = loadSir.register(contentView, (Callback.OnReloadListener) BaseFragment.this::onReload);
     }
 
+    /**
+     * 提供初始化转状态布局
+     * @return
+     */
     protected  Callback getInitCallBack(){
       return new BlankCallback();
     }
 
 
-    protected void initParam() {
-    }
-
+    /**
+     * 初始化基本布局
+     */
     private void initCommonView() {
         mSimpleTitleBar = mView.findViewById(R.id.ctb_simple);
         mViewStubContent = mView.findViewById(R.id.view_stub_content);
@@ -183,11 +223,11 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     /**
-     * 初始化标题栏
+     * 初始化通用标题栏
      */
     private void initSimpleBar() {
         // 中间
-        if (onBindBarCenterStyle() == BarStyle.CENTER_TITLE) {
+        if (onBindBarCenterStyle() == BaseFragment.SimpleBarStyle.CENTER_TITLE) {
             String[] strings = onBindBarTitleText();
             if (strings != null && strings.length > 0) {
                 if (null != strings[0] && strings[0].trim().length() > 0) {
@@ -201,26 +241,29 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                     subtitle.setText(strings[1]);
                 }
             }
-        } else if (onBindBarCenterStyle() == BarStyle.CENTER_CUSTOME && onBindBarCenterCustome() != null) {
+        } else if (onBindBarCenterStyle() == BaseFragment.SimpleBarStyle.CENTER_CUSTOME && onBindBarCenterCustome() != null) {
             ViewGroup group = mSimpleTitleBar.getCenterCustomView().findViewById(R.id.fl_custome);
             group.setVisibility(View.VISIBLE);
             group.addView(onBindBarCenterCustome(), new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
         //左边
-        if (onBindBarLeftStyle() == BarStyle.LEFT_BACK) {
+        if (onBindBarLeftStyle() == BaseFragment.SimpleBarStyle.LEFT_BACK) {
 
-            View backView = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
+            ImageView backView = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
+            if(onBindBarBackIcon()!=null){
+                backView.setImageResource(onBindBarBackIcon());
+            }
             backView.setVisibility(View.VISIBLE);
             backView.setOnClickListener(v -> onSimpleBackClick());
-        } else if (onBindBarLeftStyle() == BarStyle.LEFT_BACK_TEXT) {
+        } else if (onBindBarLeftStyle() == BaseFragment.SimpleBarStyle.LEFT_BACK_TEXT) {
             View backIcon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
             backIcon.setVisibility(View.VISIBLE);
             backIcon.setOnClickListener(v -> onSimpleBackClick());
             View backTv = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.tv_back);
             backTv.setVisibility(View.VISIBLE);
             backTv.setOnClickListener(v -> onSimpleBackClick());
-        } else if (onBindBarLeftStyle() == BarStyle.LEFT_ICON && onBindBarLeftIcon() != null) {
+        } else if (onBindBarLeftStyle() == BaseFragment.SimpleBarStyle.LEFT_ICON && onBindBarLeftIcon() != null) {
             ImageView icon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);
             icon.setVisibility(View.VISIBLE);
             icon.setImageResource(onBindBarLeftIcon());
@@ -228,7 +271,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
         //右边
         switch (onBindBarRightStyle()) {
-            case BarStyle.RIGHT_TEXT:
+            case BaseFragment.SimpleBarStyle.RIGHT_TEXT:
                 String[] strings = onBindBarRightText();
                 if (strings == null || strings.length == 0) {
                     break;
@@ -246,7 +289,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                     tv2.setOnClickListener(this::onRight2Click);
                 }
                 break;
-            case BarStyle.RIGHT_ICON:
+            case BaseFragment.SimpleBarStyle.RIGHT_ICON:
                 Integer[] ints = onBindBarRightIcon();
                 if (ints == null || ints.length == 0) {
                     break;
@@ -264,7 +307,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
                     iv2.setOnClickListener(this::onRight2Click);
                 }
                 break;
-            case BarStyle.RIGHT_CUSTOME:
+            case BaseFragment.SimpleBarStyle.RIGHT_CUSTOME:
                 if (onBindBarRightCustome() != null) {
                     ViewGroup group = mSimpleTitleBar.getRightCustomView().findViewById(R.id.fl_custome);
                     group.setVisibility(View.VISIBLE);
@@ -277,56 +320,155 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     /**
+     * 是否开启通用标题栏,默认true
+     *
+     * @return
+     */
+    protected boolean enableSimplebar() {
+        return true;
+    }
+    /**
+     * 初始化右边标题栏类型
+     *
+     * @return
+     */
+    protected int onBindBarRightStyle() {
+        return BaseActivity.SimpleBarStyle.RIGHT_ICON;
+    }
+
+    /**
+     * 初始化左边标题栏类型
+     *
+     * @return
+     */
+    protected int onBindBarLeftStyle() {
+        return BaseActivity.SimpleBarStyle.LEFT_BACK;
+    }
+
+    /**
+     * 初始化中间标题栏类型
+     *
+     * @return
+     */
+    protected int onBindBarCenterStyle() {
+        return BaseActivity.SimpleBarStyle.CENTER_TITLE;
+    }
+
+    /**
+     * 初始化标题栏右边文本
+     *
+     * @return
+     */
+    protected String[] onBindBarRightText() {
+        return null;
+    }
+
+    /**
+     * 初始化标题文本
+     *
+     * @return
+     */
+    protected String[] onBindBarTitleText() {
+        return null;
+    }
+
+    /**
+     * 初始化标题栏右边图标
+     *
+     * @return
+     */
+    protected @DrawableRes
+    Integer[] onBindBarRightIcon() {
+        return null;
+    }
+
+    /**
+     * 初始化标题栏左边附加图标
+     *
+     * @return
+     */
+    protected @DrawableRes
+    Integer onBindBarLeftIcon() {
+        return null;
+    }
+
+    /**
+     * 初始化标题栏左边返回按钮图标
+     *
+     * @return
+     */
+    protected @DrawableRes
+    Integer onBindBarBackIcon() {
+        return null;
+    }
+
+    /**
      * 点击标题栏返回按钮事件
      */
     protected void onSimpleBackClick() {
         pop();
     }
 
-    protected int onBindBarRightStyle() {
-        return BarStyle.RIGHT_ICON;
-    }
-
-    protected int onBindBarLeftStyle() {
-        return BarStyle.LEFT_BACK;
-    }
-
-    protected int onBindBarCenterStyle() {
-        return BaseActivity.BarStyle.CENTER_TITLE;
-    }
-
-    protected String[] onBindBarRightText() {
-        return null;
-    }
-
-    protected String[] onBindBarTitleText() {
-        return null;
-    }
-
-    protected @DrawableRes
-    Integer[] onBindBarRightIcon() {
-        return null;
-    }
-
-    protected @DrawableRes
-    Integer onBindBarLeftIcon() {
-        return null;
-    }
-
+    /**
+     * 初始化标题栏右侧自定义布局
+     *
+     * @return
+     */
     protected View onBindBarRightCustome() {
         return null;
     }
 
+    /**
+     * 初始化标题栏中间自定义布局
+     *
+     * @return
+     */
     protected View onBindBarCenterCustome() {
         return null;
     }
 
     /**
-     * 默认懒加载,true
+     * 设置标题栏背景颜色
      *
      * @return
      */
-    protected boolean lazyEnable() {
+    protected void setSimpleBarBg(@ColorInt int color) {
+        mSimpleTitleBar.setBackgroundColor(color);
+    }
+
+    /**
+     * 点击标题栏靠右第一个事件
+     *
+     * @return
+     */
+    protected void onRight1Click(View v) {
+
+    }
+
+    /**
+     * 点击标题栏靠右第二个事件
+     *
+     * @return
+     */
+    protected void onRight2Click(View v) {
+
+    }
+
+    /**
+     * 点击标题栏靠左附加事件
+     *
+     * @return
+     */
+    protected void onLeftIconClick(View v) {
+
+    }
+
+    /**
+     * 是否开启懒加载,默认true
+     *
+     * @return
+     */
+    protected boolean enableLazy() {
         return true;
     }
 
@@ -338,8 +480,8 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     protected void setTitle(String[] strings) {
         if (!enableSimplebar()) {
             throw new IllegalStateException("导航栏中不可用,请设置enableSimplebar为true");
-        } else if (onBindBarCenterStyle() != BaseActivity.BarStyle.CENTER_TITLE) {
-            throw new IllegalStateException("导航栏中间布局不为标题类型,请设置onBindBarCenterStyle(BarStyle.CENTER_TITLE)");
+        } else if (onBindBarCenterStyle() != BaseActivity.SimpleBarStyle.CENTER_TITLE) {
+            throw new IllegalStateException("导航栏中间布局不为标题类型,请设置onBindBarCenterStyle(SimpleBarStyle.CENTER_TITLE)");
         } else {
             if (strings != null && strings.length > 0) {
                 if (strings.length > 0 && null != strings[0] && strings[0].trim().length() > 0) {
@@ -392,92 +534,18 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         }
     }
 
-    /**
-     * 设置标题栏颜色
-     *
-     * @param color
-     */
-    protected void setSimpleBarBg(@ColorInt int color) {
-        mSimpleTitleBar.setBackgroundColor(color);
-    }
-
-    /**
-     * 标题栏右边靠右点击事件
-     *
-     * @param v
-     */
-    protected void onRight1Click(View v) {
-
-    }
-
-    /**
-     * 标题栏右边靠左点击事件
-     *
-     * @param v
-     */
-    protected void onRight2Click(View v) {
-
-    }
-
-    /**
-     * 标题栏左边点击事件
-     *
-     * @param v
-     */
-    protected void onLeftIconClick(View v) {
-
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public <T> void onEvent(BaseFragmentEvent<T> event) {
+    public void onEvent(FragmentEvent event) {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public <T> void onEventSticky(BaseFragmentEvent<T> event) {
+    public void onEventSticky(FragmentEvent event) {
     }
 
-    /**
-     * 页面布局
-     *
-     * @return
-     */
-    protected abstract @LayoutRes
-    int onBindLayout();
 
     /**
-     * 初始化视图
-     *
-     * @param view
-     */
-    protected abstract void initView(View view);
-
-    @Override
-    public final void initView() {
-        //final绝育
-    }
-
-    /**
-     * 初始化数据
-     */
-    public abstract void initData();
-
-    /**
-     * 初始化监听器
-     */
-    public void initListener() {
-    }
-
-    /**
-     * 是否显示默认标题栏
-     *
-     * @return
-     */
-    protected boolean enableSimplebar() {
-        return true;
-    }
-
-    /**
-     * 显示初始化视图
+     * 显示初始化状态页
      */
     public void showInitView() {
         clearStatus();
@@ -486,7 +554,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
 
 
     /**
-     * 显示错误视图
+     * 显示出错状态页
      */
     public void showErrorView() {
         clearStatus();
@@ -494,7 +562,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     /**
-     * 显示空视图
+     * 显示空状态页
      */
     public void showEmptyView() {
         clearStatus();
@@ -502,7 +570,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     /**
-     * 显示loading
+     * 显示loading状态页
      *
      * @param tip 为null时不带提示文本
      */
@@ -528,7 +596,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     /**
-     * 清空页面所有状态
+     * 清除所有状态页
      */
     public void clearStatus() {
         Fragment parentFragment = getParentFragment();
@@ -540,9 +608,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     }
 
     /**
-     * 错误页点击重试执行
-     *
-     * @param v
+     * 点击状态页默认执行事件
      */
     protected void onReload(View v) {
         showInitView();
@@ -556,12 +622,6 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
             onRevisible();
         }
         isFirst = false;
-    }
-
-    /**
-     * 再次可见
-     */
-    protected void onRevisible() {
     }
 
     /**
@@ -588,7 +648,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
     protected void navigateTo(String path) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
@@ -598,7 +658,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
         navigateBean.launchMode = launchMode;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
@@ -609,7 +669,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         navigateBean.launchMode = launchMode;
         navigateBean.extraTransaction = extraTransaction;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
@@ -619,7 +679,7 @@ public abstract class BaseFragment extends SupportFragment implements IBaseView 
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
         navigateBean.extraTransaction = extraTransaction;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }

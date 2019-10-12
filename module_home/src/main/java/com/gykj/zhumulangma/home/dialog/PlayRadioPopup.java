@@ -34,9 +34,9 @@ import java.util.Locale;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/4 8:38
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/4 8:38
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class PlayRadioPopup extends BottomPopupView implements View.OnClickListener,
         BaseQuickAdapter.OnItemClickListener{

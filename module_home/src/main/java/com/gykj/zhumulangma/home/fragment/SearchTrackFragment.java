@@ -23,9 +23,9 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/13 15:12
- * Email: 1071931588@qq.com
- * Description:搜索声音
+ * <br/>Date: 2019/8/13 15:12
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:搜索声音
  */
 public class SearchTrackFragment extends BaseRefreshMvvmFragment<SearchTrackViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener {

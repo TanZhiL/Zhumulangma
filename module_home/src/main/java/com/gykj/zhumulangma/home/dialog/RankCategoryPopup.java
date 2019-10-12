@@ -15,9 +15,9 @@ import java.util.Arrays;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/30 10:33
- * Email: 1071931588@qq.com
- * Description:排行榜分类弹窗
+ * <br/>Date: 2019/9/30 10:33
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:排行榜分类弹窗
  */
 public class RankCategoryPopup extends PartShadowPopupView implements BaseQuickAdapter.OnItemClickListener {
     private onSelectedListener mListener;

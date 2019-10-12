@@ -5,13 +5,12 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.blankj.utilcode.util.CollectionUtils;
-import com.gykj.zhumulangma.common.net.http.ResponseThrowable;
+import com.gykj.zhumulangma.common.net.http.RespException;
 import com.gykj.zhumulangma.common.net.http.RxAdapter;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.live.program.Program;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
-import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.ScheduleList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
@@ -30,15 +29,13 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/6 8:34
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/6 8:34
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class RadioUtil {
     private Context mContext;
@@ -169,7 +166,7 @@ public class RadioUtil {
 
                             @Override
                             public void onError(int i, String s) {
-                                emitter.onError(new ResponseThrowable(String.valueOf(i), s));
+                                emitter.onError(new RespException(String.valueOf(i), s));
                             }
                         });
             }

@@ -19,9 +19,9 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackFragmentDelegate;
 
 /**
  * Author: Thomas.
- * Date: 2019/7/23 11:17
- * Email: 1071931588@qq.com
- * Description:Fragmentation支持
+ * <br/>Date: 2019/7/23 11:17
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:Fragmentation支持
  *
  */
 public abstract class SupportFragment extends Fragment implements ISupportFragment, ISwipeBackFragment {

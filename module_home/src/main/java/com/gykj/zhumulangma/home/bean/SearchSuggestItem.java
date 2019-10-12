@@ -6,9 +6,9 @@ import com.ximalaya.ting.android.opensdk.model.word.QueryResult;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/18 14:09
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/18 14:09
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 
 public class SearchSuggestItem implements MultiItemEntity {

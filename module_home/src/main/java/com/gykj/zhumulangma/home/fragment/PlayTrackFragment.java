@@ -34,7 +34,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
@@ -263,7 +263,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     .navigation();
             NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o);
             navigateBean.launchMode=STANDARD;
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, navigateBean));
 
         });
@@ -392,7 +392,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
@@ -410,7 +410,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                         .navigation();
                 NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
                 navigateBean.launchMode = STANDARD;
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE, navigateBean));
+                EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE, navigateBean));
             }
         } else if (R.id.lav_pre == id) {
             lavPlayPre.playAnimation();
@@ -485,13 +485,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     .withLong(KeyCode.Home.ANNOUNCER_ID, mTrack.getAnnouncer().getAnnouncerId())
                     .withString(KeyCode.Home.ANNOUNCER_NAME, mTrack.getAnnouncer().getNickname())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                     new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
         }else if (R.id.tv_comment == id) {
            new XPopup.Builder(mActivity).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
                    .dismissOnTouchOutside(false).enableDrag(false).asCustom(mCommentPopup).show();
         }else if(R.id.iv2_right==id){
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE));
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
         }
     }
 
@@ -609,7 +609,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 .navigation();
         NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
         navigateBean.launchMode = STANDARD;
-        EventBus.getDefault().post(new BaseActivityEvent<>(
+        EventBus.getDefault().post(new ActivityEvent(
                 EventCode.Main.NAVIGATE, navigateBean));
     }
 
@@ -691,13 +691,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.HIDE_GP));
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHOW_GP));
     }
 
     @Override

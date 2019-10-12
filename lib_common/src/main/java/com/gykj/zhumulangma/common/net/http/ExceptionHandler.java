@@ -13,19 +13,18 @@ import java.net.ConnectException;
 import retrofit2.HttpException;
 
 /**
- * Description: <ExceptionHandler><br>
- * Author:      mxdl<br>
- * Date:        2019/3/18<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:网络异常处理
  */
 public class ExceptionHandler {
 
-    public static ResponseThrowable handleException(Throwable e) {
-        ResponseThrowable ex;
+    public static RespException handleException(Throwable e) {
+        RespException ex;
         if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
-            ex = new ResponseThrowable(e, SYSTEM_ERROR.HTTP_ERROR);
+            ex = new RespException(e, SYSTEM_ERROR.HTTP_ERROR);
             switch (String.valueOf(httpException.code())) {
                 case SYSTEM_ERROR.UNAUTHORIZED:
                     ex.message = "操作未授权";
@@ -51,81 +50,80 @@ public class ExceptionHandler {
             }
             return ex;
         } else if (e instanceof JsonParseException || e instanceof JSONException || e instanceof ParseException || e instanceof MalformedJsonException) {
-            ex = new ResponseThrowable(e, SYSTEM_ERROR.PARSE_ERROR);
+            ex = new RespException(e, SYSTEM_ERROR.PARSE_ERROR);
             ex.message = "解析错误";
             return ex;
         } else if (e instanceof ConnectException) {
-            ex = new ResponseThrowable(e, SYSTEM_ERROR.NETWORD_ERROR);
+            ex = new RespException(e, SYSTEM_ERROR.NETWORD_ERROR);
             ex.message = "连接失败";
             return ex;
         } else if (e instanceof javax.net.ssl.SSLException) {
-            ex = new ResponseThrowable(e, SYSTEM_ERROR.SSL_ERROR);
+            ex = new RespException(e, SYSTEM_ERROR.SSL_ERROR);
             ex.message = "证书验证失败";
             return ex;
         } else if (e instanceof ConnectTimeoutException) {
-            ex = new ResponseThrowable(e, SYSTEM_ERROR.TIMEOUT_ERROR);
+            ex = new RespException(e, SYSTEM_ERROR.TIMEOUT_ERROR);
             ex.message = "连接超时";
             return ex;
         } else if (e instanceof java.net.SocketTimeoutException) {
-            ex = new ResponseThrowable(e, SYSTEM_ERROR.TIMEOUT_ERROR);
+            ex = new RespException(e, SYSTEM_ERROR.TIMEOUT_ERROR);
             ex.message = "连接超时";
             return ex;
         } else if (e instanceof java.net.UnknownHostException) {
-            ex = new ResponseThrowable(e, SYSTEM_ERROR.TIMEOUT_ERROR);
+            ex = new RespException(e, SYSTEM_ERROR.TIMEOUT_ERROR);
             ex.message = "主机地址未知";
             return ex;
-        } else if (e instanceof ResponseThrowable) {
-            return (ResponseThrowable) e;
+        } else if (e instanceof RespException) {
+            return (RespException) e;
         } else {
-            ex = new ResponseThrowable(e, SYSTEM_ERROR.UNKNOWN);
+            ex = new RespException(e, SYSTEM_ERROR.UNKNOWN);
             ex.message = "未知错误";
             return ex;
         }
 
     }
 
-    public class SYSTEM_ERROR {
-        public static final String UNAUTHORIZED = "401";
-        public static final String FORBIDDEN = "403";
-        public static final String NOT_FOUND = "404";
-        public static final String REQUEST_TIMEOUT = "408";
-        public static final String INTERNAL_SERVER_ERROR = "500";
-        public static final String SERVICE_UNAVAILABLE = "503";
+    public interface SYSTEM_ERROR {
+        String UNAUTHORIZED = "401";
+        String FORBIDDEN = "403";
+        String NOT_FOUND = "404";
+        String REQUEST_TIMEOUT = "408";
+        String INTERNAL_SERVER_ERROR = "500";
+        String SERVICE_UNAVAILABLE = "503";
 
         /**
          * 未知错误
          */
-        public static final String UNKNOWN = "1000";
+        String UNKNOWN = "1000";
         /**
          * 解析错误
          */
-        public static final String PARSE_ERROR = "1001";
+        String PARSE_ERROR = "1001";
         /**
          * 网络错误
          */
-        public static final String NETWORD_ERROR = "1002";
+        String NETWORD_ERROR = "1002";
         /**
          * 协议出错
          */
-        public static final String HTTP_ERROR = "1003";
+        String HTTP_ERROR = "1003";
 
         /**
          * 证书出错
          */
-        public static final String SSL_ERROR = "1005";
+        String SSL_ERROR = "1005";
 
         /**
          * 连接超时
          */
-        public static final String TIMEOUT_ERROR = "1006";
+        String TIMEOUT_ERROR = "1006";
 
     }
 
     public interface APP_ERROR {
-        int SUCC = 0;//	处理成功，无错误
 
         String SUCCESS = "0000";
         String TOKEN_OUTTIME = "0004";
-        String ACCOUNT_ERROR= "0003";
+        String ACCOUNT_ERROR = "0003";
     }
 }

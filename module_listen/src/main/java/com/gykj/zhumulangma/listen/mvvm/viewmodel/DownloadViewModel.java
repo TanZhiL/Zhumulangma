@@ -12,9 +12,9 @@ import java.util.List;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/21 9:36
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/8/21 9:36
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class DownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
     private SingleLiveEvent<List<Column>> mColumnSingleLiveEvent;

@@ -17,9 +17,9 @@ import java.util.regex.Pattern;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/18 14:10
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/18 14:10
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class SearchSuggestAdapter extends BaseMultiItemQuickAdapter<SearchSuggestItem, BaseViewHolder> {
 

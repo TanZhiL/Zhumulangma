@@ -9,9 +9,9 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/10 8:23
- * Email: 1071931588@qq.com
- * Description:MvvmFragment基类
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:MvvmFragment基类
  */
 public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFragment {
     protected VM mViewModel;

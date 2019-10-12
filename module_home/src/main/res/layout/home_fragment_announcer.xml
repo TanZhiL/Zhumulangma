@@ -160,7 +160,7 @@
     android:layout_height="match_parent"
     app:srlEnablePreviewInEditMode="false">
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/tsv_content"
+        android:id="@+id/nsv"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"

@@ -12,9 +12,9 @@ import com.gykj.zhumulangma.main.mvvm.model.MainModel;
 import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
 
 /**
- * Description: <NewsViewModelFactory><br>
+ * <br/>Description: <NewsViewModelFactory><br>
  * Author:      mxdl<br>
- * Date:        2019/7/2<br>
+ * <br/>Date:        2019/7/2<br>
  * Version:     V1.0.0<br>
  * Update:     <br>
  */

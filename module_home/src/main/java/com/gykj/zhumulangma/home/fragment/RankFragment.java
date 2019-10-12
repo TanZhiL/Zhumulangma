@@ -19,7 +19,7 @@ import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.home.R;
@@ -49,9 +49,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/14 10:21
- * Email: 1071931588@qq.com
- * Description:排行榜
+ * <br/>Date: 2019/8/14 10:21
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:排行榜
  */
 @Route(path = AppConstants.Router.Home.F_RANK)
 public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> implements
@@ -125,7 +125,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mFreeAdapter.getItem(position).getId())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
                     (ISupportFragment) navigation)));
         });
@@ -133,7 +133,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mPaidAdapter.getItem(position).getId())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
                     (ISupportFragment) navigation)));
         });
@@ -242,17 +242,17 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     @Override
     protected void onRight1Click(View v) {
         super.onRight1Click(v);
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
     }
 
     @Override
     protected int onBindBarCenterStyle() {
-        return BarStyle.CENTER_CUSTOME;
+        return SimpleBarStyle.CENTER_CUSTOME;
     }
 
     @Override
     protected int onBindBarRightStyle() {
-        return BarStyle.RIGHT_ICON;
+        return SimpleBarStyle.RIGHT_ICON;
     }
 
     @Override
@@ -262,7 +262,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 

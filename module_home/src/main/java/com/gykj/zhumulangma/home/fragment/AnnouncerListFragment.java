@@ -14,7 +14,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.home.R;
@@ -32,9 +32,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/11 11:40
- * Email: 1071931588@qq.com
- * Description:主播列表
+ * <br/>Date: 2019/9/11 11:40
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:主播列表
  */
 
 @Route(path = AppConstants.Router.Home.F_ANNOUNCER_LIST)
@@ -92,7 +92,7 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerList
 
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
@@ -104,7 +104,7 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerList
                 .navigation();
         NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation);
         navigateBean.launchMode=STANDARD;
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,navigateBean));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,navigateBean));
     }
 
 

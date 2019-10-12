@@ -26,9 +26,9 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/18 13:58
- * Email: 1071931588@qq.com
- * Description:App
+ * <br/>Date: 2019/9/18 13:58
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:App
  */
 public class App extends Application {
     private static App mApplication;

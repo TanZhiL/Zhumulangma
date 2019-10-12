@@ -20,7 +20,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.SearchSuggestAdapter;
@@ -37,9 +37,9 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/18 13:58
- * Email: 1071931588@qq.com
- * Description:搜索下建议词页
+ * <br/>Date: 2019/9/18 13:58
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:搜索下建议词页
  */
 @Route(path = AppConstants.Router.Home.F_SEARCH_SUGGEST)
 public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> implements
@@ -140,7 +140,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID,item.mAlbumResult.getAlbumId())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         }else {
             mSearchListener.onSearch(item.mQueryResult.getKeyword());
@@ -159,7 +159,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID,item.mAlbumResult.getAlbumId())
                 .navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
+        EventBus.getDefault().post(new ActivityEvent(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 

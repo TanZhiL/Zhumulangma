@@ -17,8 +17,8 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.SubscribeBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.SubscribeAdapter;
@@ -32,9 +32,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/10 8:23
- * Email: 1071931588@qq.com
- * Description:订阅
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:订阅
  */
 public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewModel, SubscribeBean>
         implements BaseQuickAdapter.OnItemChildClickListener,
@@ -133,7 +133,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, mSubscribeAdapter.getItem(position).getAlbum().getId())
                 .navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
+        EventBus.getDefault().post(new ActivityEvent(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
@@ -145,11 +145,12 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
     }
 
     @Override
-    public <T> void onEvent(BaseFragmentEvent<T> event) {
+    public  void onEvent(FragmentEvent event) {
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Listen.TAB_REFRESH:
                 if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                    ((RecyclerView)fd(R.id.recyclerview)).scrollToPosition(0);
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }
                 break;

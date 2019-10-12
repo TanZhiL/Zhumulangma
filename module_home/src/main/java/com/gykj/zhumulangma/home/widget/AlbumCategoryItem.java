@@ -15,7 +15,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.home.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -61,7 +61,7 @@ public class AlbumCategoryItem extends FrameLayout {
                     .withInt(KeyCode.Home.TYPE, categoryId)
                     .withString(KeyCode.Home.TITLE,title)
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE,new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
     }

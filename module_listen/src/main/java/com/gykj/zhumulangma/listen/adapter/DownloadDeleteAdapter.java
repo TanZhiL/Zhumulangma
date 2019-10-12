@@ -12,9 +12,9 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 /**
  * Author: Thomas.
- * Date: 2019/10/10 14:51
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/10/10 14:51
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class DownloadDeleteAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
     public DownloadDeleteAdapter(int layoutResId) {

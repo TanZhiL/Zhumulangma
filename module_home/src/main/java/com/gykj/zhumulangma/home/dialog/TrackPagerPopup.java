@@ -12,9 +12,9 @@ import com.lxj.xpopup.impl.PartShadowPopupView;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/30 10:33
- * Email: 1071931588@qq.com
- * Description:专辑声音分页弹窗
+ * <br/>Date: 2019/9/30 10:33
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:专辑声音分页弹窗
  */
 public class TrackPagerPopup extends PartShadowPopupView  {
 

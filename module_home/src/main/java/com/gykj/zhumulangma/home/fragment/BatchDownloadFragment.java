@@ -19,7 +19,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.common.util.SystemUtil;
@@ -52,9 +52,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/12 8:49
- * Email: 1071931588@qq.com
- * Description:批量下载
+ * <br/>Date: 2019/9/12 8:49
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:批量下载
  */
 
 @Route(path = AppConstants.Router.Home.F_BATCH_DOWNLOAD)
@@ -150,7 +150,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.HIDE_GP));
     }
 
     @Override
@@ -162,7 +162,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHOW_GP));
     }
 
     @Override
@@ -319,7 +319,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
@@ -329,7 +329,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD)
                 .withInt(KeyCode.Listen.TAB_INDEX, 2)
                 .navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
+        EventBus.getDefault().post(new ActivityEvent(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
     }
 

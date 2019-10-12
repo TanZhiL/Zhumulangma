@@ -2,9 +2,9 @@ package com.gykj.zhumulangma.common.bean;
 
 /**
  * Author: Thomas.
- * Date: 2019/7/31 16:41
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/7/31 16:41
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class UploadFileBean {
 

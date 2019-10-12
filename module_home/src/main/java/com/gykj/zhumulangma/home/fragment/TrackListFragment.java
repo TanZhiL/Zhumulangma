@@ -23,9 +23,9 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/11 11:40
- * Email: 1071931588@qq.com
- * Description:声音列表
+ * <br/>Date: 2019/9/11 11:40
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:声音列表
  */
 
 @Route(path = AppConstants.Router.Home.F_TRACK_LIST)
@@ -78,7 +78,7 @@ public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewMode
         mViewModel.getInitTrackListEvent().observe(this, tracks -> mAnnouncerTrackAdapter.setNewData(tracks));
     }
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 

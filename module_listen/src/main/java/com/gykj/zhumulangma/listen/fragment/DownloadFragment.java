@@ -26,8 +26,8 @@ import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.widget.CircleProgressBar;
@@ -65,9 +65,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/10 8:23
- * Email: 1071931588@qq.com
- * Description:下载页
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:下载页
  */
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
 public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements
@@ -328,7 +328,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD_ALBUM)
                     .withLong(KeyCode.Listen.ALBUMID, mAlbumAdapter.getItem(position).getAlbumId())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD_ALBUM, (ISupportFragment) navigation)));
         }
     }
@@ -389,7 +389,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     }
 
     @Override
-    public <T> void onEvent(BaseFragmentEvent<T> event) {
+    public  void onEvent(FragmentEvent event) {
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Listen.DOWNLOAD_SORT:
@@ -443,7 +443,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
 
     @Override
     protected int onBindBarCenterStyle() {
-        return BarStyle.CENTER_CUSTOME;
+        return SimpleBarStyle.CENTER_CUSTOME;
     }
 
     @Override

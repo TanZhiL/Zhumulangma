@@ -8,7 +8,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -30,9 +30,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/10 17:37
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/10 17:37
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Object> {
 
@@ -94,7 +94,7 @@ public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaMo
                     Object navigation = ARouter.getInstance()
                             .build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
                     if (null != navigation) {
-                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+                        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                                 new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK,
                                         (ISupportFragment) navigation)));
                     }

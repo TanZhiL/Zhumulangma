@@ -11,7 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.main.R;
 import com.next.easynavigation.view.EasyNavigationBar;
@@ -117,7 +117,7 @@ public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTa
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
@@ -125,19 +125,19 @@ public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTa
     public boolean onTabClickEvent(View view, int i) {
         switch (i){
             case 0:
-                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Home.TAB_REFRESH));
+                EventBus.getDefault().post(new FragmentEvent(EventCode.Home.TAB_REFRESH));
                 break;
             case 1:
-                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Listen.TAB_REFRESH));
+                EventBus.getDefault().post(new FragmentEvent(EventCode.Listen.TAB_REFRESH));
                 break;
             case 2:
                 //中间按钮
                 break;
             case 3:
-                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Discover.TAB_REFRESH));
+                EventBus.getDefault().post(new FragmentEvent(EventCode.Discover.TAB_REFRESH));
                 break;
             case 4:
-                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.User.TAB_REFRESH));
+                EventBus.getDefault().post(new FragmentEvent(EventCode.User.TAB_REFRESH));
                 break;
         }
         return false;

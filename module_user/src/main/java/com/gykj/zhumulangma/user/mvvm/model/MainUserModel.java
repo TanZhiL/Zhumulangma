@@ -11,9 +11,9 @@ import io.reactivex.Observable;
 
 /**
  * Author: Thomas.
- * Date: 2019/10/11 16:39
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/10/11 16:39
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class MainUserModel  extends ZhumulangmaModel {
     RetrofitManager mRetrofitManager=RetrofitManager.getInstance();

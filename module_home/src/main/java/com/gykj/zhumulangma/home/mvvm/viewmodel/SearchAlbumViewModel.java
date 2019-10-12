@@ -17,9 +17,9 @@ import java.util.Map;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/13 15:12
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/8/13 15:12
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class SearchAlbumViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Album> {
     private SingleLiveEvent<List<Album>> mInitAlbumsEvent;

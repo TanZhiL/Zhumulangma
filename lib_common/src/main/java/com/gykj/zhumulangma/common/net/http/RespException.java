@@ -1,29 +1,28 @@
 package com.gykj.zhumulangma.common.net.http;
 
 /**
- * Description: <ResponseThrowable><br>
- * Author:      mxdl<br>
- * Date:        2019/3/18<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:自定义网络异常类
  */
-public class ResponseThrowable extends Exception {
+public class RespException extends Exception {
     public String code;
     public String message;
 
-    public ResponseThrowable(String code, String message) {
+    public RespException(String code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public ResponseThrowable(Throwable throwable, String code) {
+    public RespException(Throwable throwable, String code) {
         super(throwable);
         this.code = code;
     }
 
     @Override
     public String toString() {
-        return "ResponseThrowable{" +
+        return "RespException{" +
                 "code='" + code + '\'' +
                 ", message='" + message + '\'' +
                 '}';

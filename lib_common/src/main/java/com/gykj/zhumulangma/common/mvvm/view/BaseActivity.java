@@ -1,6 +1,5 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -21,11 +20,11 @@ import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.mvvm.view.status.BlankCallback;
 import com.gykj.zhumulangma.common.mvvm.view.status.EmptyCallback;
 import com.gykj.zhumulangma.common.mvvm.view.status.ErrorCallback;
-import com.gykj.zhumulangma.common.mvvm.view.status.BlankCallback;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -46,52 +45,82 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/10 8:23
- * Email: 1071931588@qq.com
- * Description:Activity基类
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:Activity基类
  */
-public abstract class BaseActivity extends SupportActivity implements IBaseView {
+public abstract class BaseActivity extends SupportActivity {
 
     protected static final String TAG = BaseActivity.class.getSimpleName();
 
     private CompositeDisposable mCompositeDisposable;
-    private Handler mLoadingHandler=new Handler();
+    private Handler mLoadingHandler = new Handler();
     protected LoadService mBaseLoadService;
     protected CommonTitleBar mSimpleTitleBar;
     protected App mApplication;
 
-    interface BarStyle {
-        //左边
+    interface SimpleBarStyle {
+        /**
+         * 返回图标(默认)
+         */
         int LEFT_BACK = 0;
+        /**
+         * 返回图标+文字
+         */
         int LEFT_BACK_TEXT = 1;
+        /**
+         * 附加图标
+         */
         int LEFT_ICON = 2;
-
+        /**
+         * 标题(默认)
+         */
         int CENTER_TITLE = 7;
+        /**
+         * 自定义布局
+         */
         int CENTER_CUSTOME = 8;
-
-        //右边
+        /**
+         * 文字
+         */
         int RIGHT_TEXT = 4;
+        /**
+         * 图标(默认)
+         */
         int RIGHT_ICON = 5;
+        /**
+         * 自定义布局
+         */
         int RIGHT_CUSTOME = 6;
     }
 
+    protected abstract int onBindLayout();
+
+    protected void initParam() {
+    }
+    public abstract void initView();
+
+    public void initListener() {
+    }
+
+    public abstract void initData();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApplication= App.getInstance();
+        mApplication = App.getInstance();
         setContentView(R.layout.common_layout_root);
         EventBus.getDefault().register(this);
         ARouter.getInstance().inject(this);
         initCommonView();
+        initParam();
         initView();
         initListener();
-        initParam();
         initData();
     }
 
     /**
-     * 添加订阅
+     * RxView添加订阅
      */
     protected void addDisposable(Disposable mDisposable) {
         if (mCompositeDisposable == null) {
@@ -99,16 +128,20 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         }
         mCompositeDisposable.add(mDisposable);
     }
+
     /**
-     * 取消所有订阅
+     * 取消RxView所有订阅
      */
     private void clearDisposable() {
         if (mCompositeDisposable != null) {
             mCompositeDisposable.clear();
         }
     }
-    protected void initCommonView() {
 
+    /**
+     * 初始化基本布局
+     */
+    private void initCommonView() {
         ViewStub viewStubContent = findViewById(R.id.view_stub_content);
         mSimpleTitleBar = findViewById(R.id.ctb_simple);
         if (enableSimplebar()) {
@@ -120,30 +153,31 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         View contentView = viewStubContent.inflate();
 
         LoadSir loadSir = new LoadSir.Builder()
-                .addCallback(new BlankCallback())
+                .addCallback(getInitCallBack())
                 .addCallback(new EmptyCallback())
                 .addCallback(new ErrorCallback())
                 .addCallback(new LoadingCallback())
                 .setDefaultCallback(LoadingCallback.class)
                 .build();
-        mBaseLoadService = loadSir.register(onBindLoadSirView() == null ? contentView : onBindLoadSirView(), new Callback.OnReloadListener() {
-            @Override
-            public void onReload(View v) {
-                BaseActivity.this.onReload(v);
-            }
-        });
+        mBaseLoadService = loadSir.register(contentView, (Callback.OnReloadListener) v -> BaseActivity.this.onReload(v));
         mBaseLoadService.showSuccess();
     }
 
-    protected View onBindLoadSirView() {
-        return null;
+    /**
+     * 提供初始化状态布局
+     *
+     * @return
+     */
+    protected Callback getInitCallBack() {
+        return new BlankCallback();
     }
 
-    protected void initSimplebar() {
-        /**
-         * 中间
-         */
-        if (onBindBarCenterStyle() == BarStyle.CENTER_TITLE) {
+    /**
+     * 初始化通用标题栏
+     */
+    private void initSimplebar() {
+        //中间
+        if (onBindBarCenterStyle() == SimpleBarStyle.CENTER_TITLE) {
             String[] strings = onBindBarTitleText();
             if (strings != null && strings.length > 0) {
                 if (strings.length > 0 && null != strings[0] && strings[0].trim().length() > 0) {
@@ -157,38 +191,37 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
                     subtitle.setText(strings[1]);
                 }
             }
-        } else if (onBindBarCenterStyle() == BarStyle.CENTER_CUSTOME && onBindBarCenterCustome() != null) {
+        } else if (onBindBarCenterStyle() == SimpleBarStyle.CENTER_CUSTOME && onBindBarCenterCustome() != null) {
             ViewGroup group = mSimpleTitleBar.getCenterCustomView().findViewById(R.id.fl_custome);
             group.setVisibility(View.VISIBLE);
             group.addView(onBindBarCenterCustome(), new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
 
-        /**
-         * 左侧
-         */
-        if (onBindBarLeftStyle() == BarStyle.LEFT_BACK) {
-            View backView = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
+        //左边
+        if (onBindBarLeftStyle() == SimpleBarStyle.LEFT_BACK) {
+            ImageView backView = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
+            if (onBindBarBackIcon() != null) {
+                backView.setImageResource(onBindBarBackIcon());
+            }
             backView.setVisibility(View.VISIBLE);
-            backView.setOnClickListener(v -> finish());
-        } else if (onBindBarLeftStyle() == BarStyle.LEFT_BACK_TEXT) {
+            backView.setOnClickListener(v -> onSimpleBackClick());
+        } else if (onBindBarLeftStyle() == SimpleBarStyle.LEFT_BACK_TEXT) {
             View backIcon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
             backIcon.setVisibility(View.VISIBLE);
-            backIcon.setOnClickListener(v -> finish());
+            backIcon.setOnClickListener(v -> onSimpleBackClick());
             View backTv = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.tv_back);
             backTv.setVisibility(View.VISIBLE);
-            backTv.setOnClickListener(v -> finish());
-        } else if (onBindBarLeftStyle() == BarStyle.LEFT_ICON && onBindBarLeftIcon() != null) {
+            backTv.setOnClickListener(v -> onSimpleBackClick());
+        } else if (onBindBarLeftStyle() == SimpleBarStyle.LEFT_ICON && onBindBarLeftIcon() != null) {
             ImageView icon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);
             icon.setVisibility(View.VISIBLE);
             icon.setImageResource(onBindBarLeftIcon());
             icon.setOnClickListener(v -> onLeftIconClick(v));
         }
-        /**
-         * 右侧
-         */
+        //右边
         switch (onBindBarRightStyle()) {
-            case BarStyle.RIGHT_TEXT:
+            case SimpleBarStyle.RIGHT_TEXT:
                 String[] strings = onBindBarRightText();
                 if (strings == null || strings.length == 0) {
                     break;
@@ -206,7 +239,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
                     tv2.setOnClickListener(v -> onRight2Click(v));
                 }
                 break;
-            case BarStyle.RIGHT_ICON:
+            case SimpleBarStyle.RIGHT_ICON:
                 Integer[] ints = onBindBarRightIcon();
                 if (ints == null || ints.length == 0) {
                     break;
@@ -224,7 +257,7 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
                     iv2.setOnClickListener(v -> onRight2Click(v));
                 }
                 break;
-            case BarStyle.RIGHT_CUSTOME:
+            case SimpleBarStyle.RIGHT_CUSTOME:
                 if (onBindBarRightCustome() != null) {
                     ViewGroup group = mSimpleTitleBar.getRightCustomView().findViewById(R.id.fl_custome);
                     group.setVisibility(View.VISIBLE);
@@ -236,53 +269,160 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
 
     }
 
+    /**
+     * 是否开启通用标题栏,默认true
+     *
+     * @return
+     */
+    protected boolean enableSimplebar() {
+        return true;
+    }
+    /**
+     * 初始化右边标题栏类型
+     *
+     * @return
+     */
     protected int onBindBarRightStyle() {
-        return BarStyle.RIGHT_TEXT;
+        return SimpleBarStyle.RIGHT_ICON;
     }
 
+    /**
+     * 初始化左边标题栏类型
+     *
+     * @return
+     */
     protected int onBindBarLeftStyle() {
-        return BarStyle.LEFT_BACK_TEXT;
+        return SimpleBarStyle.LEFT_BACK;
     }
 
+    /**
+     * 初始化中间标题栏类型
+     *
+     * @return
+     */
     protected int onBindBarCenterStyle() {
-        return BarStyle.CENTER_TITLE;
+        return SimpleBarStyle.CENTER_TITLE;
     }
 
+    /**
+     * 初始化标题栏右边文本
+     *
+     * @return
+     */
     protected String[] onBindBarRightText() {
         return null;
     }
 
+    /**
+     * 初始化标题文本
+     *
+     * @return
+     */
     protected String[] onBindBarTitleText() {
         return null;
     }
 
+    /**
+     * 初始化标题栏右边图标
+     *
+     * @return
+     */
     protected @DrawableRes
     Integer[] onBindBarRightIcon() {
         return null;
     }
 
+    /**
+     * 初始化标题栏左边附加图标
+     *
+     * @return
+     */
     protected @DrawableRes
     Integer onBindBarLeftIcon() {
         return null;
     }
 
+    /**
+     * 初始化标题栏左边返回按钮图标
+     *
+     * @return
+     */
+    protected @DrawableRes
+    Integer onBindBarBackIcon() {
+        return null;
+    }
+
+    /**
+     * 点击标题栏返回按钮事件
+     */
+    protected void onSimpleBackClick() {
+        pop();
+    }
+
+    /**
+     * 初始化标题栏右侧自定义布局
+     *
+     * @return
+     */
     protected View onBindBarRightCustome() {
         return null;
     }
 
+    /**
+     * 初始化标题栏中间自定义布局
+     *
+     * @return
+     */
     protected View onBindBarCenterCustome() {
         return null;
     }
 
+    /**
+     * 设置标题栏背景颜色
+     *
+     * @return
+     */
     protected void setSimpleBarBg(@ColorInt int color) {
         mSimpleTitleBar.setBackgroundColor(color);
     }
 
+    /**
+     * 点击标题栏靠右第一个事件
+     *
+     * @return
+     */
+    protected void onRight1Click(View v) {
+
+    }
+
+    /**
+     * 点击标题栏靠右第二个事件
+     *
+     * @return
+     */
+    protected void onRight2Click(View v) {
+
+    }
+
+    /**
+     * 点击标题栏靠左附加事件
+     *
+     * @return
+     */
+    protected void onLeftIconClick(View v) {
+
+    }
+
+    /**
+     * 设置标题栏标题
+     *
+     * @return
+     */
     protected void setTitle(String[] strings) {
         if (!enableSimplebar()) {
             throw new IllegalStateException("导航栏中不可用,请设置enableSimplebar为true");
-        } else if (onBindBarCenterStyle() != BarStyle.CENTER_TITLE) {
-            throw new IllegalStateException("导航栏中间布局不为标题类型,请设置onBindBarCenterStyle(BarStyle.CENTER_TITLE)");
+        } else if (onBindBarCenterStyle() != SimpleBarStyle.CENTER_TITLE) {
+            throw new IllegalStateException("导航栏中间布局不为标题类型,请设置onBindBarCenterStyle(SimpleBarStyle.CENTER_TITLE)");
         } else {
             if (strings != null && strings.length > 0) {
                 if (strings.length > 0 && null != strings[0] && strings[0].trim().length() > 0) {
@@ -299,6 +439,11 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         }
     }
 
+    /**
+     * 设置标题栏文本颜色
+     *
+     * @return
+     */
     protected void setBarTextColor(@ColorInt int color) {
         if (!enableSimplebar()) {
             throw new IllegalStateException("导航栏中不可用,请设置enableSimplebar为true");
@@ -316,83 +461,42 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
         }
     }
 
-    protected void setBarBackIconRes(@DrawableRes int res) {
-        if (!enableSimplebar()) {
-            throw new IllegalStateException("导航栏中不可用,请设置enableSimplebar为true");
-        } else {
-            ImageView ivBack = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
-            ivBack.setImageResource(res);
-        }
-    }
-
-    protected void onRight1Click(View v) {
-
-    }
-
-    protected void onRight2Click(View v) {
-
-    }
-
-    protected void onLeftIconClick(View v) {
-
-    }
-
     @Override
     protected void onTitleChanged(CharSequence title, int color) {
         super.onTitleChanged(title, color);
         if (!enableSimplebar()) {
             return;
         }
-        if (onBindBarCenterStyle() == BarStyle.CENTER_TITLE && !TextUtils.isEmpty(title)) {
+        if (onBindBarCenterStyle() == SimpleBarStyle.CENTER_TITLE && !TextUtils.isEmpty(title)) {
             TextView tvtitle = mSimpleTitleBar.getCenterCustomView().findViewById(R.id.tv_title);
             tvtitle.setVisibility(View.VISIBLE);
             tvtitle.setText(title);
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        KeyboardUtils.fixSoftInputLeaks(this);
-        EventBus.getDefault().unregister(this);
-        clearDisposable();
-        AppHelper.refWatcher.watch(this);
-    }
 
 
-    protected abstract int onBindLayout();
-
-    public abstract void initView();
-
-    public abstract void initData();
-
-    public void initListener() {
-    }
-
-    protected void initParam() {
-    }
-
-
-
-    protected boolean enableSimplebar() {
-        return true;
-    }
-
-
+    /**
+     * 显示初始化状态页
+     */
     public void showInitView() {
         mLoadingHandler.removeCallbacksAndMessages(null);
         mBaseLoadService.showSuccess();
         mBaseLoadService.showCallback(BlankCallback.class);
     }
 
-
+    /**
+     * 显示出错状态页
+     */
     public void showErrorView() {
         mLoadingHandler.removeCallbacksAndMessages(null);
         mBaseLoadService.showSuccess();
         mBaseLoadService.showCallback(ErrorCallback.class);
     }
 
-
+    /**
+     * 显示空数据状态页
+     */
     public void showEmptyView() {
         mLoadingHandler.removeCallbacksAndMessages(null);
         mBaseLoadService.showSuccess();
@@ -400,51 +504,50 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
 
     }
 
+    /**
+     * 显示loading状态页
+     *
+     * @param tip 为null时不带提示文本
+     */
     public void showLoadingView(String tip) {
-            mLoadingHandler.removeCallbacksAndMessages(null);
-            mBaseLoadService.showSuccess();
-            mBaseLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
-                TextView tvTip = view1.findViewById(R.id.tv_tip);
-                if (tip==null) {
-                    tvTip.setVisibility(View.GONE);
-                } else {
-                    tvTip.setVisibility(View.VISIBLE);
-                    tvTip.setText(tip);
-                }
-            });
-            //延时100毫秒显示,避免闪屏
-            mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(LoadingCallback.class), 100);
+        mLoadingHandler.removeCallbacksAndMessages(null);
+        mBaseLoadService.showSuccess();
+        mBaseLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
+            TextView tvTip = view1.findViewById(R.id.tv_tip);
+            if (tip == null) {
+                tvTip.setVisibility(View.GONE);
+            } else {
+                tvTip.setVisibility(View.VISIBLE);
+                tvTip.setText(tip);
+            }
+        });
+        //延时100毫秒显示,避免闪屏
+        mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(LoadingCallback.class), 100);
     }
 
+    /**
+     * 清除所有状态页
+     */
     public void clearStatus() {
         mLoadingHandler.removeCallbacksAndMessages(null);
         mBaseLoadService.showSuccess();
     }
 
+    /**
+     * 点击状态页默认执行事件
+     */
     protected void onReload(View v) {
-        mBaseLoadService.showSuccess();
+        clearStatus();
         initData();
     }
 
-    @Override
-    public void onBackPressedSupport() {
-        //如果正在显示loading,则清除
-        if (mBaseLoadService.getCurrentCallback() == LoadingCallback.class) {
-            clearStatus();
-            return;
-        }
-        super.onBackPressedSupport();
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public <T> void onEvent(BaseActivityEvent<T> event) {
+    public void onEvent(ActivityEvent event) {
     }
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
-    public <T> void onEventSticky(BaseActivityEvent<T> event) {
-    }
-    @Override
-    public Context getContext() {
-        return this;
+
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onEventSticky(ActivityEvent event) {
     }
 
     /**
@@ -462,40 +565,65 @@ public abstract class BaseActivity extends SupportActivity implements IBaseView 
     public FragmentAnimator onCreateFragmentAnimator() {
         return new DefaultHorizontalAnimator();
     }
-    protected void navigateTo(String path){
+    /**
+     * 页面跳转
+     *
+     * @param path
+     */
+    protected void navigateTo(String path) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
-    protected void navigateTo(String path,int launchMode){
+
+    protected void navigateTo(String path, int launchMode) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
-        navigateBean.launchMode=launchMode;
+        navigateBean.launchMode = launchMode;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
-    protected void navigateTo(String path, ExtraTransaction extraTransaction){
+
+    protected void navigateTo(String path, int launchMode, ExtraTransaction extraTransaction) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
-        navigateBean.extraTransaction=extraTransaction;
+        navigateBean.launchMode = launchMode;
+        navigateBean.extraTransaction = extraTransaction;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
-    protected void navigateTo(String path, int launchMode, ExtraTransaction extraTransaction){
+
+    protected void navigateTo(String path, ExtraTransaction extraTransaction) {
         Object navigation = ARouter.getInstance().build(path).navigation();
         NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
-        navigateBean.launchMode=launchMode;
-        navigateBean.extraTransaction=extraTransaction;
+        navigateBean.extraTransaction = extraTransaction;
         if (null != navigation) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
+    }
+    @Override
+    public void onBackPressedSupport() {
+        //如果正在显示loading,则清除
+        if (mBaseLoadService.getCurrentCallback() == LoadingCallback.class) {
+            clearStatus();
+            return;
+        }
+        super.onBackPressedSupport();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        KeyboardUtils.fixSoftInputLeaks(this);
+        EventBus.getDefault().unregister(this);
+        clearDisposable();
+        AppHelper.refWatcher.watch(this);
     }
 
 }

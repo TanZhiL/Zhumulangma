@@ -1,21 +1,20 @@
 package com.gykj.zhumulangma.common.event;
 
 /**
- * Description: <BaseEvent><br>
- * Author:      mxdl<br>
- * Date:        2018/4/4<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * <br/>Date: 2019/9/18 13:58
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
-public class BaseEvent<T> {
+public class BaseEvent {
     private int code;
-    private T data;
+    private Object data;
 
     public BaseEvent(int code) {
         this.code = code;
     }
 
-    public BaseEvent(int code, T data) {
+    public BaseEvent(int code, Object data) {
         this.code = code;
         this.data = data;
     }
@@ -28,11 +27,11 @@ public class BaseEvent<T> {
         this.code = code;
     }
 
-    public T getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }

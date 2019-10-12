@@ -26,9 +26,9 @@ import io.reactivex.functions.Function;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/20 10:01
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/20 10:01
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class SubscribeViewModel extends BaseRefreshViewModel<ZhumulangmaModel,SubscribeBean> {
     private SingleLiveEvent<List<SubscribeBean>> mInitSubscribesEvent;

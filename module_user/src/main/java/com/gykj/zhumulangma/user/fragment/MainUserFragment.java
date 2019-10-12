@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,8 +21,8 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.extra.PopupImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
@@ -47,9 +46,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/14 13:41
- * Email: 1071931588@qq.com
- * Description:我的
+ * <br/>Date: 2019/8/14 13:41
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:我的
  */
 @Route(path = AppConstants.Router.User.F_MAIN)
 public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,Object> implements View.OnClickListener{
@@ -87,8 +86,8 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     protected void initView(View view) {
         ctbTrans = view.findViewById(R.id.ctb_trans);
         ctbWhite = view.findViewById(R.id.ctb_white);
-        scrollView = view.findViewById(R.id.msv);
-        ivParallax = view.findViewById(R.id.parallax);
+        scrollView = view.findViewById(R.id.nsv);
+        ivParallax = view.findViewById(R.id.iv_parallax);
         flParallax = view.findViewById(R.id.fl_parallax);
         refreshLayout = view.findViewById(R.id.refreshLayout);
         initBar();
@@ -198,7 +197,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
@@ -215,7 +214,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
         } else if (v == whiteLeft || v == transLeft) {
             navigateTo(AppConstants.Router.User.F_MESSAGE);
         } else if (id == R.id.cl_fxzq) {
-            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE));
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
         } else if (id == R.id.cl_sys) {
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
@@ -233,7 +232,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
                     .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL/Zhumulangma")
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
         }else if(id==R.id.iv_avatar){
             if(mGitHubDTO==null){
@@ -265,11 +264,12 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
         return dy1000+"."+xy1000+"k";
     }
     @Override
-    public <T> void onEvent(BaseFragmentEvent<T> event) {
+    public  void onEvent(FragmentEvent event) {
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.User.TAB_REFRESH:
                 if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                    fd(R.id.nsv).scrollTo(0,0);
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }
                 break;

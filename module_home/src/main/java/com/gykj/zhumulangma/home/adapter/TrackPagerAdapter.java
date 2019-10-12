@@ -6,9 +6,9 @@ import com.gykj.zhumulangma.home.R;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/28 15:55
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/8/28 15:55
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class TrackPagerAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 

@@ -12,8 +12,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.listen.R;
@@ -30,9 +30,9 @@ import java.util.List;
 
 /**
  * Author: Thomas.
- * Date: 2019/10/10 14:51
- * Email: 1071931588@qq.com
- * Description:下载批量删除
+ * <br/>Date: 2019/10/10 14:51
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:下载批量删除
  */
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD_DELETE)
 public class DownloadDeleteFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,
@@ -89,20 +89,20 @@ public class DownloadDeleteFragment extends BaseFragment implements BaseQuickAda
 
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.HIDE_GP));
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHOW_GP));
     }
 
     @Override
@@ -139,7 +139,7 @@ public class DownloadDeleteFragment extends BaseFragment implements BaseQuickAda
                         clearStatus();
                         mSelectedIds.clear();
                         updateButton();
-                        EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Listen.DOWNLOAD_DELETE));
+                        EventBus.getDefault().post(new FragmentEvent(EventCode.Listen.DOWNLOAD_DELETE));
                     }
 
                     @Override

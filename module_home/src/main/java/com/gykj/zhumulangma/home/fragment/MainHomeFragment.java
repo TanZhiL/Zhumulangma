@@ -21,7 +21,7 @@ import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
@@ -48,9 +48,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/10 8:23
- * Email: 1071931588@qq.com
- * Description:首页
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:首页
  */
 @Route(path = AppConstants.Router.Home.F_MAIN)
 public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements View.OnClickListener, MarqueeView.OnItemClickListener {
@@ -119,7 +119,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
                         build.withString(KeyCode.Home.HOTWORD, mMarqueeView.getMessages().get(mMarqueeView.getPosition()));
                     }
                     Object navigation = build.navigation();
-                    EventBus.getDefault().post(new BaseActivityEvent<>(
+                    EventBus.getDefault().post(new ActivityEvent(
                             EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
                 }));
 
@@ -192,7 +192,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     public void onItemClick(int position, TextView textView) {
         Postcard build = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH);
         Object navigation = build.withString(KeyCode.Home.HOTWORD, mMarqueeView.getMessages().get(position)).navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
+        EventBus.getDefault().post(new ActivityEvent(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
     }
 
@@ -213,7 +213,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 }

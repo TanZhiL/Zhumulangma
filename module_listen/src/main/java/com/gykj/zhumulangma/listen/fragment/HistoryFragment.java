@@ -23,9 +23,9 @@ import java.util.List;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/16 8:44
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/8/16 8:44
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 @Route(path = AppConstants.Router.Listen.F_HISTORY)
 public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,PlayHistoryItem> implements
@@ -130,7 +130,7 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 }

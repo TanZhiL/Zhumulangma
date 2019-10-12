@@ -15,9 +15,9 @@ import java.util.Map;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/13 11:10
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/8/13 11:10
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class HomeViewModel extends BaseViewModel<ZhumulangmaModel> {
     private SingleLiveEvent<List<HotWord>> mHotWordsEvent;

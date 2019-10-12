@@ -15,7 +15,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
 import com.gykj.zhumulangma.home.R;
@@ -31,9 +31,9 @@ import org.greenrobot.eventbus.EventBus;
 import me.yokeyword.fragmentation.ISupportFragment;
 /**
  * Author: Thomas.
- * Date: 2019/8/14 10:21
- * Email: 1071931588@qq.com
- * Description:专辑列表
+ * <br/>Date: 2019/8/14 10:21
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:专辑列表
  */
 @Route(path = AppConstants.Router.Home.F_ALBUM_LIST)
 public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewModel, Album> implements
@@ -102,7 +102,7 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
                 .navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
+        EventBus.getDefault().post(new ActivityEvent(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
@@ -131,7 +131,7 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 

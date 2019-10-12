@@ -8,9 +8,9 @@ import com.youth.banner.loader.ImageLoader;
 
 /**
  * Author: Thomas.
- * Date: 2019/10/11 8:25
- * Email: 1071931588@qq.com
- * Description:banner图片加载器
+ * <br/>Date: 2019/10/11 8:25
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:banner图片加载器
  */
 public class GlideImageLoader extends ImageLoader {
     @Override

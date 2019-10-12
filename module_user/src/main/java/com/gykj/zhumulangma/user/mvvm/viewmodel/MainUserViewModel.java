@@ -10,9 +10,9 @@ import com.gykj.zhumulangma.user.mvvm.model.MainUserModel;
 
 /**
  * Author: Thomas.
- * Date: 2019/10/10 8:52
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/10/10 8:52
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class MainUserViewModel extends BaseRefreshViewModel<MainUserModel,Object> {
     private SingleLiveEvent<GitHubDTO> mGitHubEvent;

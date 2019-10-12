@@ -14,8 +14,8 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
@@ -38,9 +38,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/14 13:41
- * Email: 1071931588@qq.com
- * Description:精品
+ * <br/>Date: 2019/8/14 13:41
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:精品
  */
 public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> implements
         View.OnClickListener, OnBannerListener {
@@ -184,11 +184,12 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
             banner.stopAutoPlay();
     }
     @Override
-    public <T> void onEvent(BaseFragmentEvent<T> event) {
+    public  void onEvent(FragmentEvent event) {
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Home.TAB_REFRESH:
                 if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                    fd(R.id.nsv).scrollTo(0,0);
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }
                 break;
@@ -202,7 +203,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
                         .navigation();
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+                EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
             case 3:
@@ -212,7 +213,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
                 Object navigation1 = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid())
                         .navigation();
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+                EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
 
                 break;

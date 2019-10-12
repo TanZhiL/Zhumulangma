@@ -10,8 +10,8 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.discover.R;
 
@@ -57,7 +57,7 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
@@ -73,12 +73,12 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
     }
     @Override
     protected int onBindBarLeftStyle() {
-        return BarStyle.LEFT_ICON;
+        return SimpleBarStyle.LEFT_ICON;
     }
 
     @Override
     protected int onBindBarRightStyle() {
-        return BarStyle.RIGHT_ICON;
+        return SimpleBarStyle.RIGHT_ICON;
     }
 
     @Override
@@ -101,11 +101,11 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
                 .withString(KeyCode.Discover.PATH, v.getTag().toString())
                 .navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(
+        EventBus.getDefault().post(new ActivityEvent(
                 EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
     }
     @Override
-    public <T> void onEvent(BaseFragmentEvent<T> event) {
+    public void onEvent(FragmentEvent event) {
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Discover.TAB_REFRESH:

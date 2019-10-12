@@ -13,11 +13,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
- * Description: <BaseViewModel><br>
- * Author:      mxdl<br>
- * Date:        2019/06/30<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * <br/>Date: 2019/8/14 13:41
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:ViewModel基类
  */
 public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel, Consumer<Disposable> {
     protected M mModel;

@@ -23,9 +23,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Description: <RetrofitManager><br>
+ * <br/>Description: <RetrofitManager><br>
  * Author:      mxdl<br>
- * Date:        2019/6/22<br>
+ * <br/>Date:        2019/6/22<br>
  * Version:     V1.0.0<br>
  * Update:     <br>
  */
@@ -93,7 +93,7 @@ public class RetrofitManager {
     }
 
     /**
-     * 创建一个公共服务
+     * 创建一个User服务
      *
      * @return
      */

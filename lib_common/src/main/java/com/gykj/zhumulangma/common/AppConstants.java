@@ -2,9 +2,9 @@ package com.gykj.zhumulangma.common;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/18 13:58
- * Email: 1071931588@qq.com
- * Description:App常量
+ * <br/>Date: 2019/9/18 13:58
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:App常量
  */
 public interface  AppConstants {
      interface Router{

@@ -22,8 +22,8 @@ import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
 import com.gykj.zhumulangma.common.util.PermissionPageUtil;
@@ -84,6 +84,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     private XmlySsoHandler mSsoHandler;
     private XmlyAuth2AccessToken mAccessToken;
     private PlayHistoryBean mHistoryBean;
+    private Handler mHandler=new Handler();
     private GlobalPlay globalPlay;
 
 
@@ -107,7 +108,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 Manifest.permission.READ_EXTERNAL_STORAGE})
                 .subscribe(permission -> {
                     if (!permission.granted) {
-                        new XPopup.Builder(getContext()).dismissOnTouchOutside(false)
+                        new XPopup.Builder(this).dismissOnTouchOutside(false)
                                 .dismissOnBackPressed(false)
                                 .asConfirm("提示", "权限不足,请允许珠穆朗玛听获取权限",
                                 () -> {
@@ -170,7 +171,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     @Override
     public void initData() {
-        new Handler().postDelayed(() -> {
+        mHandler.postDelayed(() -> {
             if (XmPlayerManager.getInstance(MainActivity.this).isPlaying()) {
                 Track currSoundIgnoreKind = XmPlayerManager.getInstance(MainActivity.this).getCurrSoundIgnoreKind(true);
                 if (null == currSoundIgnoreKind) {
@@ -290,7 +291,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     }
 
     @Override
-    public <T> void onEvent(BaseActivityEvent<T> event) {
+    public  void onEvent(ActivityEvent event) {
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Main.NAVIGATE:
@@ -374,6 +375,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
         mPlayerManager.removePlayerStatusListener(playerStatusListener);
         mPlayerManager.removeAdsStatusListener(adsStatusListener);
         UMShareAPI.get(this).release();
@@ -396,7 +398,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         public void onComplete(Bundle bundle) {
             parseAccessToken(bundle);
             AppHelper.registerLoginTokenChangeListener(MainActivity.this.getApplicationContext());
-            EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Main.LOGINSUCC));
+            EventBus.getDefault().post(new FragmentEvent(EventCode.Main.LOGINSUCC));
             ToastUtil.showToast("登录成功");
         }
 

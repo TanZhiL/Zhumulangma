@@ -21,9 +21,9 @@ import okhttp3.ResponseBody;
 
 /**
  * Author: Thomas.
- * Date: 2019/7/31 17:27
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/7/31 17:27
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:通用Model
  */
 public class CommonModel extends BaseModel {
     private CommonService mCommonService;
@@ -33,7 +33,11 @@ public class CommonModel extends BaseModel {
         mCommonService = RetrofitManager.getInstance().getCommonService();
     }
 
-
+    /**
+     * 从网络中获取ResponseBody
+     * @param ur
+     * @return
+     */
     public Observable<ResponseBody> getCommonBody(String ur){
         return mCommonService.getCommonBody(ur)
                 .compose(RxAdapter.exceptionTransformer())

@@ -5,14 +5,14 @@ import android.app.Application;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
+
 /**
- * Description: <BaseModel><br>
- * Author:      mxdl<br>
- * Date:        2019/06/30<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:Model基类
  */
-public abstract class BaseModel implements IBaseModel {
+public abstract class BaseModel {
     protected Application mApplication;
     private CompositeDisposable mCompositeDisposable;
     public BaseModel(Application application) {
@@ -26,7 +26,6 @@ public abstract class BaseModel implements IBaseModel {
         mCompositeDisposable.add(disposable);
     }
 
-    @Override
     public void onCleared() {
         if (mCompositeDisposable != null) {
             mCompositeDisposable.clear();

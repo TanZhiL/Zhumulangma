@@ -5,9 +5,9 @@ import android.os.Parcelable;
 
 /**
  * Author: Thomas.
- * Date: 2019/7/30 17:47
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/7/30 17:47
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class UserBean implements Parcelable {
 

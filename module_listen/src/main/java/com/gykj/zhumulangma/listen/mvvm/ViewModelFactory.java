@@ -16,9 +16,9 @@ import com.gykj.zhumulangma.listen.mvvm.viewmodel.SubscribeViewModel;
 
 /**
  * Author: Thomas.
- * Date: 2019/7/30 9:30
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/7/30 9:30
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @SuppressLint("StaticFieldLeak")

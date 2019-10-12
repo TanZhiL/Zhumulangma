@@ -18,7 +18,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
@@ -56,9 +56,9 @@ import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/5 11:16
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/5 11:16
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 @Route(path = AppConstants.Router.Home.F_PLAY_RADIIO)
 public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> implements
@@ -244,7 +244,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     protected int onBindBarLeftStyle() {
-        return BarStyle.LEFT_ICON;
+        return SimpleBarStyle.LEFT_ICON;
     }
 
     @Override
@@ -289,17 +289,17 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.HIDE_GP));
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHOW_GP));
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 

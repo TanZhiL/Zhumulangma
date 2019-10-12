@@ -15,8 +15,8 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.home.R;
@@ -39,9 +39,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/10 8:23
- * Email: 1071931588@qq.com
- * Description:主播
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:主播
  */
 public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewModel, Announcer> implements OnBannerListener,
         BaseQuickAdapter.OnItemClickListener {
@@ -80,7 +80,7 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
         super.initListener();
         banner.setOnBannerListener(this);
         mAnnouncerAdapter.setOnItemClickListener(this);
-        ((NestedScrollView) fd(R.id.tsv_content)).setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+        ((NestedScrollView) fd(R.id.nsv)).setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (nestedScrollView, i, i1, i2, i3) -> {
                     fd(R.id.fl_title_top).setVisibility(i1 > fd(R.id.ll_title).getTop() ? View.VISIBLE : View.GONE);
                 });
@@ -146,7 +146,7 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
                 Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
                         .navigation();
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+                EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
             case 3:
@@ -156,7 +156,7 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
                 Object navigation1 = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid())
                         .navigation();
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+                EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                         new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
 
                 break;
@@ -169,15 +169,16 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
                 .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getData().get(position).getAnnouncerId())
                 .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getData().get(position).getNickname())
                 .navigation();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                 new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
     }
     @Override
-    public <T> void onEvent(BaseFragmentEvent<T> event) {
+    public  void onEvent(FragmentEvent event) {
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Home.TAB_REFRESH:
                 if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                    fd(R.id.nsv).scrollTo(0,0);
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }
                 break;

@@ -10,9 +10,9 @@ import com.gykj.zhumulangma.home.R;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/14 13:41
- * Email: 1071931588@qq.com
- * Description:分类
+ * <br/>Date: 2019/8/14 13:41
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:分类
  */
 public class CategoryFragment extends BaseFragment {
 
@@ -43,7 +43,7 @@ public class CategoryFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 

@@ -21,9 +21,9 @@ import java.util.Locale;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/6 16:58
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/6 16:58
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class PlayRadioAdapter extends BaseQuickAdapter<Schedule, BaseViewHolder> {
     private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd:HH:mm", Locale.getDefault());

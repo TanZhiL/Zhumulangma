@@ -21,9 +21,9 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/10 8:23
- * Email: 1071931588@qq.com
- * Description:搜索下历史页
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:搜索下历史页
  */
 public class SearchHistoryFragment extends BaseMvvmFragment<SearchViewModel> implements View.OnClickListener {
 

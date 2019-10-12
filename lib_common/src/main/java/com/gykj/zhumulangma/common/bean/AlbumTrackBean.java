@@ -6,9 +6,9 @@ import com.ximalaya.ting.android.sdkdownloader.downloadutil.DownloadState;
 
 /**
  * Author: Thomas.
- * Date: 2019/7/12 11:21
- * Email: 1071931588@qq.com
- * Description:专辑详情列表项
+ * <br/>Date: 2019/7/12 11:21
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:专辑详情列表项
  */
 public class AlbumTrackBean {
 

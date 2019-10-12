@@ -10,9 +10,9 @@ import com.lxj.xpopup.core.BottomPopupView;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/24 10:22
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/24 10:22
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class CommentPopup extends BottomPopupView implements View.OnClickListener {
     public CommentPopup(@NonNull Context context) {

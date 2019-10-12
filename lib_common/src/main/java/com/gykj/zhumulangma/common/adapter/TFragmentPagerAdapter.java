@@ -10,8 +10,10 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
- * Created by 10719
- * on 2019/6/19
+ * Author: Thomas.
+ * <br/>Date: 2019/9/18 13:58
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:通用FragmentPagerAdapter适配器
  */
 public class TFragmentPagerAdapter extends FragmentPagerAdapter {
 

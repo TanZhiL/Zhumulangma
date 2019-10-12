@@ -23,9 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 /**
  * Author: Thomas.
- * Date: 2019/9/10 8:23
- * Email: 1071931588@qq.com
- * Description:我听
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:我听
  */
 @Route(path = AppConstants.Router.Listen.F_MAIN)
 public class MainListenFragment extends BaseFragment implements View.OnClickListener {
@@ -75,18 +75,18 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
     @Override
     protected int onBindBarLeftStyle() {
-        return BarStyle.LEFT_ICON;
+        return SimpleBarStyle.LEFT_ICON;
     }
 
     @Override
     protected int onBindBarRightStyle() {
-        return BarStyle.RIGHT_ICON;
+        return SimpleBarStyle.RIGHT_ICON;
     }
 
     @Override

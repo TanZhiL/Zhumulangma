@@ -1,29 +1,16 @@
 package com.gykj.zhumulangma.common;
 
-import android.support.annotation.Nullable;
-
-import com.gykj.zhumulangma.common.net.http.RetryWithNewToken;
-import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
-import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
-import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
-import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
+import com.gykj.zhumulangma.common.net.http.RetryException;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Single;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 import static org.junit.Assert.assertEquals;
 
@@ -85,7 +72,7 @@ public class ExampleUnitTest {
                     public void run() throws Exception {
                         System.out.println(11);
                     }
-                }).retryWhen(new RetryWithNewToken());
+                }).retryWhen(new RetryException());
 
         stringObservable.subscribe();
     }

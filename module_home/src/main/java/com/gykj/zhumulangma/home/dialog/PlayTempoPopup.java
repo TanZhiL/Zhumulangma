@@ -20,9 +20,9 @@ import java.util.Arrays;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/2 11:48
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/2 11:48
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class PlayTempoPopup extends BottomPopupView implements View.OnClickListener,
         BaseQuickAdapter.OnItemClickListener {

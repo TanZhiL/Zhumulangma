@@ -14,7 +14,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.discover.R;
 import com.just.agentwebX5.AgentWebX5;
@@ -39,9 +39,9 @@ import java.util.HashMap;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/25 15:44
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/25 15:44
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 @Route(path = AppConstants.Router.Discover.F_WEB)
 public class WebFragment extends BaseFragment {
@@ -205,13 +205,13 @@ public class WebFragment extends BaseFragment {
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.HIDE_GP));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.HIDE_GP));
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHOW_GP));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHOW_GP));
     }
 
     @Override
@@ -238,7 +238,7 @@ public class WebFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
@@ -276,6 +276,6 @@ public class WebFragment extends BaseFragment {
         web.setTitle(title);//标题
         web.setThumb(new UMImage(mActivity, favicon));  //缩略图
         web.setDescription("珠穆朗玛听");//描述
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE, new ShareAction(mActivity).withMedia(web)));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE, new ShareAction(mActivity).withMedia(web)));
     }
 }

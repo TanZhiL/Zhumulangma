@@ -18,7 +18,7 @@ import com.didichuxing.doraemonkit.DoraemonKit;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
 import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.net.RetrofitManager;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -68,11 +68,14 @@ import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REFRESH_TOKEN_UR
 
 /**
  * Author: Thomas.
- * Date: 2019/9/18 8:36
- * Email: 1071931588@qq.com
- * Description:App初始化帮助类
+ * <br/>Date: 2019/9/18 8:36
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:App初始化帮助类
  */
 public class AppHelper {
+
+    private static final String TAG = "AppHelper";
+
     private static Application mApplication;
     private static volatile AppHelper instance;
     public static RefWatcher refWatcher;
@@ -101,7 +104,6 @@ public class AppHelper {
         return this;
     }
 
-    private static final String TAG = "AppHelper";
     public AppHelper initAgentWebX5() {
         QbSdk.initX5Environment(mApplication, new QbSdk.PreInitCallback() {
             @Override
@@ -321,7 +323,7 @@ public class AppHelper {
 
             @Override
             public void tokenLosted() {
-                EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.LOGIN));
+                EventBus.getDefault().post(new ActivityEvent(EventCode.Main.LOGIN));
             }
         });
     }

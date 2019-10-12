@@ -10,7 +10,7 @@ import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.util.DateUtil;
 import com.gykj.zhumulangma.common.util.RadioUtil;
@@ -41,9 +41,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/20 13:56
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/8/20 13:56
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class HistoryViewModel extends BaseRefreshViewModel<HistoryModel,PlayHistoryItem> {
 
@@ -111,7 +111,7 @@ public class HistoryViewModel extends BaseRefreshViewModel<HistoryModel,PlayHist
                     Object navigation = ARouter.getInstance()
                             .build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
                     if (null != navigation) {
-                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+                        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                                 new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK,
                                         (ISupportFragment) navigation)));
                     }
@@ -181,7 +181,7 @@ public class HistoryViewModel extends BaseRefreshViewModel<HistoryModel,PlayHist
                         Object navigation = ARouter.getInstance()
                                 .build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
                         if (null != navigation) {
-                            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+                            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                                     new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO,
                                             (ISupportFragment) navigation)));
                         }

@@ -20,9 +20,9 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/16 8:45
- * Email: 1071931588@qq.com
- * Description:我的喜欢
+ * <br/>Date: 2019/8/16 8:45
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:我的喜欢
  */
 @Route(path = AppConstants.Router.Listen.F_FAVORITE)
 public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel, FavoriteBean> implements

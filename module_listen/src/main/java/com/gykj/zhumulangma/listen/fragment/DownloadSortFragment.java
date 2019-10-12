@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.listener.OnItemDragListener;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.listen.R;
@@ -33,9 +33,9 @@ import java.util.Map;
 
 /**
  * Author: Thomas.
- * Date: 2019/10/10 14:51
- * Email: 1071931588@qq.com
- * Description:下载排序
+ * <br/>Date: 2019/10/10 14:51
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:下载排序
  */
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD_SORT)
 public class DownloadSortFragment extends BaseFragment {
@@ -94,7 +94,7 @@ public class DownloadSortFragment extends BaseFragment {
 
     @Override
     protected int onBindBarRightStyle() {
-        return BarStyle.RIGHT_TEXT;
+        return SimpleBarStyle.RIGHT_TEXT;
     }
 
     @Override
@@ -103,7 +103,7 @@ public class DownloadSortFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
@@ -124,7 +124,7 @@ public class DownloadSortFragment extends BaseFragment {
             @Override
             public void success() {
                 clearStatus();
-                EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Listen.DOWNLOAD_SORT));
+                EventBus.getDefault().post(new FragmentEvent(EventCode.Listen.DOWNLOAD_SORT));
                 pop();
             }
 

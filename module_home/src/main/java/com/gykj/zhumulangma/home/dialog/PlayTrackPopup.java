@@ -21,9 +21,9 @@ import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/4 8:38
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/4 8:38
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class PlayTrackPopup extends BottomPopupView implements View.OnClickListener,
         OnRefreshLoadMoreListener, BaseQuickAdapter.OnItemClickListener,

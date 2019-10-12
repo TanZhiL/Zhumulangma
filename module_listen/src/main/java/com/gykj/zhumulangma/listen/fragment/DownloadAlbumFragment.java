@@ -16,8 +16,8 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
-import com.gykj.zhumulangma.common.event.common.BaseFragmentEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.listen.R;
@@ -40,9 +40,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/10/11 10:19
- * Email: 1071931588@qq.com
- * Description:下载专辑详情
+ * <br/>Date: 2019/10/11 10:19
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:下载专辑详情
  */
 @Route(path = AppConstants.Router.Listen.F_DOWNLOAD_ALBUM)
 public class DownloadAlbumFragment extends BaseFragment implements View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
@@ -116,7 +116,7 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 
@@ -127,19 +127,19 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_BATCH_DOWNLOAD)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumId)
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_BATCH_DOWNLOAD, (ISupportFragment) navigation)));
         } else if (id == R.id.ll_sort_all) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD_SORT)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumId)
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD_SORT, (ISupportFragment) navigation)));
         } else if (id == R.id.ll_delete) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD_DELETE)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumId)
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD_DELETE, (ISupportFragment) navigation)));
         } else if (id == R.id.ll_sort) {
             TextView tvSort = fd(R.id.tv_sort);
@@ -152,7 +152,7 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    public <T> void onEvent(BaseFragmentEvent<T> event) {
+    public  void onEvent(FragmentEvent event) {
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Listen.DOWNLOAD_SORT:
@@ -175,7 +175,7 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
     @Override
     protected void onRight1Click(View v) {
         super.onRight1Click(v);
-        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.SHARE));
+        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
     }
 
     @Override
@@ -187,9 +187,7 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
         if (mTrackAdapter.getItemCount()-mTrackAdapter.getEmptyViewCount()==0) {
             fd(R.id.cl_actionbar).setVisibility(View.GONE);
         }
-        mHandler.postDelayed(() -> {
-            EventBus.getDefault().post(new BaseFragmentEvent<>(EventCode.Listen.DOWNLOAD_DELETE));
-        }, 100);
+        mHandler.postDelayed(() -> EventBus.getDefault().post(new FragmentEvent(EventCode.Listen.DOWNLOAD_DELETE)), 100);
     }
 
     @Override

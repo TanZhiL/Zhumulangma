@@ -11,9 +11,9 @@ import java.util.List;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/14 13:41
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/8/14 13:41
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:配合BaseRefreshMvvmFragment使用
  */
 public class BaseRefreshViewModel<M extends BaseModel, T> extends BaseViewModel<M> {
 

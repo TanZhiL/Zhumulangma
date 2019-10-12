@@ -12,7 +12,7 @@
         android:layout_marginTop="-252dp">
 
         <ImageView
-            android:id="@+id/parallax"
+            android:id="@+id/iv_parallax"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -34,7 +34,7 @@
             app:lottie_colorFilter="@color/white" />
 
         <android.support.v4.widget.NestedScrollView
-            android:id="@+id/msv"
+            android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"

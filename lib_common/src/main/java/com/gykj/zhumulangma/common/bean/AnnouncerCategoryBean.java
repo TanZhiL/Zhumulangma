@@ -6,9 +6,9 @@ import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerCategory;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/11 10:43
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/11 10:43
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class AnnouncerCategoryBean extends AnnouncerCategory {
 

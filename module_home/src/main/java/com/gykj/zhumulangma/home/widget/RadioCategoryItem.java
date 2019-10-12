@@ -9,7 +9,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.home.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -18,9 +18,9 @@ import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/9 9:07
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/9 9:07
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class RadioCategoryItem extends android.support.v7.widget.AppCompatTextView {
     private int categoryId;
@@ -36,7 +36,7 @@ public class RadioCategoryItem extends android.support.v7.widget.AppCompatTextVi
                     .withInt(KeyCode.Home.TYPE, categoryId)
                     .withString(KeyCode.Home.TITLE,getText().toString())
                     .navigation();
-            EventBus.getDefault().post(new BaseActivityEvent<>(
+            EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE,new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
     }

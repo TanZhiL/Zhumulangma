@@ -17,9 +17,9 @@ import java.util.Map;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/14 10:21
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/8/14 10:21
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> {
 

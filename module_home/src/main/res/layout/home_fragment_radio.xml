@@ -9,7 +9,8 @@
     app:srlEnableNestedScrolling="true"
     app:srlEnableLoadMore="false"
     app:srlEnablePreviewInEditMode="false">
-<ScrollView
+<android.support.v4.widget.NestedScrollView
+    android:id="@+id/nsv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:overScrollMode="never"
@@ -494,5 +495,5 @@
         app:layout_constraintTop_toBottomOf="@id/rv_top"
         />
 </android.support.constraint.ConstraintLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

@@ -15,7 +15,7 @@ import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
-import com.gykj.zhumulangma.common.event.common.BaseActivityEvent;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.net.API;
 import com.gykj.zhumulangma.common.util.RadioUtil;
@@ -50,9 +50,9 @@ import okhttp3.internal.http.RealResponseBody;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/10 8:23
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/9/10 8:23
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class MainViewModel extends BaseViewModel<MainModel> {
 
@@ -109,7 +109,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                     Object navigation = ARouter.getInstance()
                             .build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
                     if (null != navigation) {
-                        EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+                        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                                 new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK,
                                         (ISupportFragment) navigation)));
                     }
@@ -182,7 +182,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                         Object navigation = ARouter.getInstance()
                                 .build(AppConstants.Router.Home.F_PLAY_RADIIO).navigation();
                         if (null != navigation) {
-                            EventBus.getDefault().post(new BaseActivityEvent<>(EventCode.Main.NAVIGATE,
+                            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
                                     new NavigateBean(AppConstants.Router.Home.F_PLAY_RADIIO,
                                             (ISupportFragment) navigation)));
                         }
@@ -220,6 +220,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
     public void _getBing() {
 
         mModel.getBing("js", "1")
+                .doOnSubscribe(disposable ->accept(disposable))
                 .flatMap((Function<BingBean, ObservableSource<ResponseBody>>) bean -> {
                     if (bean.getImages().get(0).getCopyrightlink().equals(SPUtils.getInstance().getString(AppConstants.SP.AD_URL))) {
                         return Observable.just(new RealResponseBody("", 0, null));

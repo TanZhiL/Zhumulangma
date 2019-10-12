@@ -20,9 +20,9 @@ import java.util.List;
 
 /**
  * Author: Thomas.
- * Date: 2019/9/30 10:33
- * Email: 1071931588@qq.com
- * Description:省市台省份选择弹窗
+ * <br/>Date: 2019/9/30 10:33
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:省市台省份选择弹窗
  */
 public class RadioProvincePopup extends PartShadowPopupView implements BaseQuickAdapter.OnItemClickListener {
     private onSelectedListener mListener;

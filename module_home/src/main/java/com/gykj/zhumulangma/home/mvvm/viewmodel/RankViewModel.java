@@ -20,9 +20,9 @@ import io.reactivex.functions.Function;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/14 9:03
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/8/14 9:03
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class RankViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> {
     SingleLiveEvent<List<Album>> mInitFreeEvent;

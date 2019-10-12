@@ -6,9 +6,9 @@ import java.util.List;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/7 9:51
- * Email: 1071931588@qq.com
- * Description:
+ * <br/>Date: 2019/8/7 9:51
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:
  */
 public class FileUtil {
     public static void deleteFiles(List<String> paths){

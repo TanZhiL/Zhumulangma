@@ -39,9 +39,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Author: Thomas.
- * Date: 2019/8/14 10:21
- * Email: 1071931588@qq.com
- * Description:电台列表
+ * <br/>Date: 2019/8/14 10:21
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:电台列表
  */
 @Route(path = AppConstants.Router.Home.F_RADIO_LIST)
 public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewModel, Radio> implements
@@ -169,7 +169,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
 
     @Override
     protected int onBindBarCenterStyle() {
-        return BarStyle.CENTER_CUSTOME;
+        return SimpleBarStyle.CENTER_CUSTOME;
     }
 
     @Override
@@ -178,7 +178,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
     }
 
     @Override
-    protected boolean lazyEnable() {
+    protected boolean enableLazy() {
         return false;
     }
 

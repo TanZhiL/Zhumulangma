@@ -1,11 +1,10 @@
 package com.gykj.zhumulangma.common.event;
 
 /**
- * Description: <RequestCode><br>
- * Author:      mxdl<br>
- * Date:        2019/5/27<br>
- * Version:     V1.0.0<br>
- * Update:     <br>
+ * Author: Thomas.
+ * <br/>Date: 2019/9/18 13:58
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:页面跳转请求码
  */
 public interface RequestCode {
     interface Common{
