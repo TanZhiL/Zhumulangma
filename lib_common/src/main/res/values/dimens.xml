@@ -6,4 +6,5 @@
     <dimen name="simpleBarAction">14sp</dimen>
     <dimen name="mainLine">8dp</dimen>
     <dimen name="secondLine">1dp</dimen>
+    <dimen name="itemRadus">3dp</dimen>
 </resources>

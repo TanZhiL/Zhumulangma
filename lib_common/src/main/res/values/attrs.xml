@@ -11,4 +11,20 @@
         <attr name="firstColor" format="color" />
         <attr name="secondColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="MarqueeView">
+        <attr name="marqueeview_repet_type" format="enum">
+            <enum name="repet_oncetime" value="0" />
+            <enum name="repet_interval" value="1" />
+            <enum name="repet_continuous" value="2" />
+        </attr>
+        <attr name="marqueeview_text_distance" format="integer" />
+        <attr name="marqueeview_text_startlocationdistance" format="float" />
+        <attr name="marqueeview_text_speed" format="float" />
+        <attr name="marqueeview_text_color" format="color|reference" />
+        <attr name="marqueeview_text_size" format="float|reference" />
+        <attr name="marqueeview_isclickalbe_stop" format="boolean" />
+        <attr name="marqueeview_is_resetLocation" format="boolean" />
+    </declare-styleable>
+
 </resources>

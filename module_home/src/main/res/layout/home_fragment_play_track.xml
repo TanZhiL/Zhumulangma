@@ -317,17 +317,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="72dp">
 
-                <ImageView
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/iv_album_cover"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    app:riv_corner_radius="@dimen/itemRadus"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/image_placeholder" />
+                    tools:src="@drawable/common_image_placeholder" />
 
                 <TextView
                     android:id="@+id/tv_album_name"
@@ -552,13 +553,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="84dp">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/imageView27"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginStart="17dp"
                     android:layout_marginTop="7dp"
-                    android:src="@drawable/common_avatar"
+                    app:riv_oval="true"
+                    android:src="@drawable/common_image_placeholder"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

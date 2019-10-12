@@ -218,7 +218,7 @@ public abstract class SupportActivity extends RxAppCompatActivity implements ISu
     }
 
     /**
-     * Pop the last fragment transition from the manager's fragment
+     * Pop the last fragment transition from the instance's fragment
      * back stack.
      * <p>
      * 出栈到目标fragment

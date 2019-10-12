@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="NotificationText" parent="android:TextAppearance.StatusBar.EventContent" />
     <style name="NotificationTitle" parent="android:TextAppearance.StatusBar.EventContent.Title" />
+
     <style name="PrimaryHLine" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:background">@color/colorLine</item>
         <item name="android:layout_height">@dimen/mainLine</item>

@@ -31,14 +31,15 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:id="@+id/iv_cover"
                     android:layout_width="84dp"
                     android:layout_height="84dp"
+                    app:riv_corner_radius="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/common_avatar" />
+                    tools:srcCompat="@drawable/common_image_placeholder" />
 
                 <TextView
                     android:id="@+id/tv_album"

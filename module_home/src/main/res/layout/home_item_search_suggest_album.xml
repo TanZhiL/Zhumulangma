@@ -6,18 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="60dp">
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_cover"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:scaleType="centerCrop"
+        app:riv_corner_radius="@dimen/itemRadus"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/common_avatar" />
+        tools:src="@drawable/common_image_placeholder" />
 
     <View
         android:layout_width="0dp"

@@ -12,12 +12,13 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.widget.MarqueeView;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.FineAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -50,6 +51,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     private FineAdapter mClassroomAdapter;
 
     private Banner banner;
+    private MarqueeView marqueeView;
 
     public FineFragment() {
 
@@ -70,6 +72,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
 
     @Override
     protected void initView(View view) {
+        marqueeView=fd(R.id.marqueeView);
         initBanner();
         initDaily();
         initBook();
@@ -95,8 +98,23 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     @Override
     public void initData() {
         mViewModel.init();
+        String notice = "本页面为付费内容,目前仅提供浏览功能,暂时不可操作!";
+        marqueeView.setContent(notice);
     }
 
+    @Override
+    public void initViewObservable() {
+        mViewModel.getBannerV2Event().observe(this, bannerV2s -> {
+            List<String> images = new ArrayList<>();
+            for (BannerV2 bannerV2 : bannerV2s) {
+                images.add(bannerV2.getBannerUrl());
+            }
+            banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
+        });
+        mViewModel.getDailysEvent().observe(this, albums -> mDailyAdapter.setNewData(albums));
+        mViewModel.getBooksEvent().observe(this, albums -> mBookAdapter.setNewData(albums));
+        mViewModel.getClassRoomsEvent().observe(this, albums -> mClassroomAdapter.setNewData(albums));
+    }
     private void initBanner() {
         banner = fd(R.id.banner);
         banner.setIndicatorGravity(BannerConfig.RIGHT);
@@ -144,19 +162,6 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
         return ViewModelFactory.getInstance(mApplication);
     }
 
-    @Override
-    public void initViewObservable() {
-        mViewModel.getBannerV2Event().observe(this, bannerV2s -> {
-            List<String> images = new ArrayList<>();
-            for (BannerV2 bannerV2 : bannerV2s) {
-                images.add(bannerV2.getBannerUrl());
-            }
-            banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
-        });
-        mViewModel.getDailysEvent().observe(this, albums -> mDailyAdapter.setNewData(albums));
-        mViewModel.getBooksEvent().observe(this, albums -> mBookAdapter.setNewData(albums));
-        mViewModel.getClassRoomsEvent().observe(this, albums -> mClassroomAdapter.setNewData(albums));
-    }
 
     @Override
     public void onClick(View v) {
@@ -173,28 +178,38 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if (banner != null)
+        if (banner != null){
             banner.startAutoPlay();
+        }
+        if(marqueeView!=null){
+            marqueeView.continueRoll();
+        }
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        if (banner != null)
+        if (banner != null){
             banner.stopAutoPlay();
+        }
+        if(marqueeView!=null){
+            marqueeView.stopRoll();
+        }
     }
+
     @Override
-    public  void onEvent(FragmentEvent event) {
+    public void onEvent(FragmentEvent event) {
         super.onEvent(event);
-        switch (event.getCode()){
+        switch (event.getCode()) {
             case EventCode.Home.TAB_REFRESH:
-                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
-                    fd(R.id.nsv).scrollTo(0,0);
-                    ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
+                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitCallBack().getClass()) {
+                    fd(R.id.nsv).scrollTo(0, 0);
+                    ((SmartRefreshLayout) fd(R.id.refreshLayout)).autoRefresh();
                 }
                 break;
         }
     }
+
     @Override
     public void OnBannerClick(int position) {
         BannerV2 bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);

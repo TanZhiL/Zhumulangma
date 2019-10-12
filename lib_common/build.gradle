@@ -78,7 +78,6 @@ dependencies {
     api(rootProject.ext.dependencies["rxpermissions"]) {
         exclude group: 'com.android.support'
     }
-    api rootProject.ext.dependencies["MultiImageSelector"]
     api rootProject.ext.dependencies["utilcode"]
     api rootProject.ext.dependencies["loadsir"]
     api rootProject.ext.dependencies["titlebar"]
@@ -88,11 +87,9 @@ dependencies {
     api rootProject.ext.dependencies["autosize"]
     api rootProject.ext.dependencies["SmartRefreshLayout"]
     api rootProject.ext.dependencies["circleimageview"]
-    api rootProject.ext.dependencies["SCardView"]
     api rootProject.ext.dependencies["indicatorseekbar"]
     api rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
     api rootProject.ext.dependencies["multidex"]
-    api rootProject.ext.dependencies["switch-button"]
     api rootProject.ext.dependencies["picture_library"]
     api rootProject.ext.dependencies["PickerView"]
     api rootProject.ext.dependencies["rxbinding"]

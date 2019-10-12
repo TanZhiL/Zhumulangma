@@ -3,14 +3,11 @@ package com.gykj.zhumulangma.common;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshInitializer;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.tencent.bugly.beta.Beta;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
@@ -78,7 +75,6 @@ public class App extends Application {
                 .initXmly()
                 .initGreenDao()
                 .initUM()
-                .initNet()
                 .initRouter()
                 .initXmlyPlayer()
                 .initUtils()

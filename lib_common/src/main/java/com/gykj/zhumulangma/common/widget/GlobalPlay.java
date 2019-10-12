@@ -15,17 +15,15 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.R;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 /**
  * Created by 10719
  * on 2019/6/18
  */
 public class GlobalPlay extends FrameLayout {
 
-    private CircleImageView civAvatar;
+    private ImageView civAvatar;
     private ImageView ivPlay;
-    private CircleImageView civMask;
+    private ImageView civMask;
     private Animation mAnimation;
     private CircleProgressBar mCircleProgressBar;
 
@@ -49,7 +47,6 @@ public class GlobalPlay extends FrameLayout {
         mAnimation.setRepeatCount(Animation.INFINITE);
         mAnimation.setRepeatMode(Animation.RESTART);
         mAnimation.setInterpolator(new LinearInterpolator());
-//        civAvatar.startAnimation(mAnimation);
     }
     public void play(String avatarUrl){
         ivPlay.setVisibility(GONE);

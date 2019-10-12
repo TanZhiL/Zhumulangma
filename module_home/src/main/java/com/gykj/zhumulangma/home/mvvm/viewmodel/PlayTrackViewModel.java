@@ -12,6 +12,7 @@ import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
@@ -30,9 +31,10 @@ import io.reactivex.functions.Function;
  */
 public class PlayTrackViewModel extends BaseViewModel<ZhumulangmaModel> {
 
-    private SingleLiveEvent<List<Album>> mAlbumSingleLiveEvent;
-    private SingleLiveEvent<Boolean> mSubscribeSingleLiveEvent;
-    private SingleLiveEvent<Boolean> mFavoriteSingleLiveEvent;
+    private SingleLiveEvent<List<Album>> mAlbumsEvent;
+    private SingleLiveEvent<Boolean> mSubscribeEvent;
+    private SingleLiveEvent<Announcer> mAnnouncerEvent;
+    private SingleLiveEvent<Boolean> mFavoriteEvent;
 
 
     public PlayTrackViewModel(@NonNull Application application, ZhumulangmaModel model) {
@@ -41,22 +43,22 @@ public class PlayTrackViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public void unlike(Track track){
         mModel.remove(FavoriteBean.class,track.getDataId()).subscribe(aBoolean ->
-                getFavoriteSingleLiveEvent().setValue(false), e->e.printStackTrace());
+                getFavoriteEvent().setValue(false), e->e.printStackTrace());
 
     }
     public void like(Track track){
         mModel.insert(new FavoriteBean(track.getDataId(),track,System.currentTimeMillis()))
-                .subscribe(subscribeBean -> getFavoriteSingleLiveEvent().setValue(true), e->e.printStackTrace());
+                .subscribe(subscribeBean -> getFavoriteEvent().setValue(true), e->e.printStackTrace());
     }
     public void getFavorite(String trackId){
         mModel.list(FavoriteBean.class, FavoriteBeanDao.Properties.TrackId.eq(trackId))
                 .subscribe(favoriteBeans ->
-                        getFavoriteSingleLiveEvent().setValue(favoriteBeans.size() > 0), e->e.printStackTrace());
+                        getFavoriteEvent().setValue(favoriteBeans.size() > 0), e->e.printStackTrace());
     }
 
     public void unsubscribe(long albumId){
         mModel.remove(SubscribeBean.class,albumId).subscribe(aBoolean ->
-                getSubscribeSingleLiveEvent().setValue(false), e->e.printStackTrace());
+                getSubscribeEvent().setValue(false), e->e.printStackTrace());
 
     }
     public void subscribe(String albumId){
@@ -66,31 +68,42 @@ public class PlayTrackViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .flatMap((Function<BatchAlbumList, ObservableSource<SubscribeBean>>) albumList ->
                         mModel.insert(new SubscribeBean(albumList.getAlbums().get(0).getId(),
                         albumList.getAlbums().get(0),System.currentTimeMillis())))
-                .subscribe(subscribeBean -> getSubscribeSingleLiveEvent().setValue(true), e->e.printStackTrace());
+                .subscribe(subscribeBean -> getSubscribeEvent().setValue(true), e->e.printStackTrace());
     }
 
     public void getSubscribe(String albumId){
         mModel.list(SubscribeBean.class, SubscribeBeanDao.Properties.AlbumId.eq(albumId))
                 .subscribe(subscribeBeans ->
-                        getSubscribeSingleLiveEvent().setValue(subscribeBeans.size() > 0), e->e.printStackTrace());
+                        getSubscribeEvent().setValue(subscribeBeans.size() > 0), e->e.printStackTrace());
     }
     public void getRelativeAlbums(String trackId){
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.TRACKID, trackId);
         mModel.getRelativeAlbumsUseTrackId(map)
-                .subscribe(relativeAlbums -> getAlbumSingleLiveEvent().setValue(
+                .subscribe(relativeAlbums -> getAlbumsEvent().setValue(
                         relativeAlbums.getRelativeAlbumList()), e->e.printStackTrace());
     }
-
-    public SingleLiveEvent<List<Album>> getAlbumSingleLiveEvent() {
-        return mAlbumSingleLiveEvent=createLiveData(mAlbumSingleLiveEvent);
+    public void getAnnouncer(long announcerId){
+        Map<String, String> map = new HashMap<>();
+        map.put("ids", String.valueOf(announcerId));
+        //主播详情
+        mModel.getAnnouncersBatch(map)
+                .subscribe(announcerListByIds ->
+                        getAnnouncerEvent().setValue(announcerListByIds.getAnnouncers().get(0)), e->e.printStackTrace());
+    }
+    public SingleLiveEvent<List<Album>> getAlbumsEvent() {
+        return mAlbumsEvent =createLiveData(mAlbumsEvent);
     }
 
-    public SingleLiveEvent<Boolean> getSubscribeSingleLiveEvent() {
-        return mSubscribeSingleLiveEvent = createLiveData(mSubscribeSingleLiveEvent);
+    public SingleLiveEvent<Announcer> getAnnouncerEvent() {
+        return mAnnouncerEvent=createLiveData(mAnnouncerEvent);
     }
-    public SingleLiveEvent<Boolean> getFavoriteSingleLiveEvent() {
-        return mFavoriteSingleLiveEvent = createLiveData(mFavoriteSingleLiveEvent);
+
+    public SingleLiveEvent<Boolean> getSubscribeEvent() {
+        return mSubscribeEvent = createLiveData(mSubscribeEvent);
+    }
+    public SingleLiveEvent<Boolean> getFavoriteEvent() {
+        return mFavoriteEvent = createLiveData(mFavoriteEvent);
     }
 
 }

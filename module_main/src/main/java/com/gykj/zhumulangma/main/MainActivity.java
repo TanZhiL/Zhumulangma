@@ -21,8 +21,8 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
@@ -84,7 +84,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     private XmlySsoHandler mSsoHandler;
     private XmlyAuth2AccessToken mAccessToken;
     private PlayHistoryBean mHistoryBean;
-    private Handler mHandler=new Handler();
+    private Handler mHandler = new Handler();
     private GlobalPlay globalPlay;
 
 
@@ -111,10 +111,10 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                         new XPopup.Builder(this).dismissOnTouchOutside(false)
                                 .dismissOnBackPressed(false)
                                 .asConfirm("提示", "权限不足,请允许珠穆朗玛听获取权限",
-                                () -> {
-                                    new PermissionPageUtil(this).jumpPermissionPage();
-                                    AppUtils.exitApp();
-                                }, AppUtils::exitApp)
+                                        () -> {
+                                            new PermissionPageUtil(this).jumpPermissionPage();
+                                            AppUtils.exitApp();
+                                        }, AppUtils::exitApp)
                                 .show();
                     }
                 });
@@ -127,15 +127,15 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     private void initAd() {
         long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(AppConstants.SP.AD_TIME, 0);
         //显示广告
-        if(adOffset>5*60*1000&&new File(getFilesDir().getAbsolutePath()+ AppConstants.Default.AD_NAME)
-                .exists()){
+        if (adOffset > 5 * 60 * 1000 && new File(getFilesDir().getAbsolutePath() + AppConstants.Default.AD_NAME)
+                .exists()) {
             new XPopup.Builder(this).customAnimator(new SplashAdPopup.AlphaAnimator())
                     .setPopupCallback(new SimpleCallback() {
                         @Override
                         public void onDismiss() {
                             super.onDismiss();
-                             SPUtils.getInstance().put(AppConstants.SP.AD_TIME,System.currentTimeMillis());
-                            mViewModel._getBing();
+                            SPUtils.getInstance().put(AppConstants.SP.AD_TIME, System.currentTimeMillis());
+                            mViewModel.getBing();
                         }
 
                         @Override
@@ -145,9 +145,9 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                         }
                     })
                     .asCustom(new SplashAdPopup(this)).show();
-        }else if(!new File(getFilesDir().getAbsolutePath()+ AppConstants.Default.AD_NAME)
-                .exists()){
-            mViewModel._getBing();
+        } else if (!new File(getFilesDir().getAbsolutePath() + AppConstants.Default.AD_NAME)
+                .exists()) {
+            mViewModel.getBing();
         }
     }
 
@@ -162,6 +162,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         globalPlay = fd(R.id.gp);
 
     }
+
     @Override
     public void initListener() {
         globalPlay.setOnClickListener(this);
@@ -178,12 +179,27 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                     return;
                 }
                 globalPlay.play(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlSmall())
-                        ?currSoundIgnoreKind.getAlbum().getCoverUrlLarge():currSoundIgnoreKind.getCoverUrlSmall());
-            }else {
+                        ? currSoundIgnoreKind.getAlbum().getCoverUrlLarge() : currSoundIgnoreKind.getCoverUrlSmall());
+            } else {
                 mViewModel.getLastSound();
             }
         }, 100);
 
+    }
+
+    @Override
+    public void initViewObservable() {
+        mViewModel.getHistorySingleLiveEvent().observe(this, bean -> {
+            mHistoryBean = bean;
+            if (bean.getKind().equals(PlayableModel.KIND_TRACK)) {
+                globalPlay.setImage(TextUtils.isEmpty(bean.getTrack().getCoverUrlSmall())
+                        ? bean.getTrack().getAlbum().getCoverUrlLarge() : bean.getTrack().getCoverUrlSmall());
+                globalPlay.setProgress(1.0f * bean.getPercent() / 100);
+            } else {
+                globalPlay.setImage(bean.getSchedule().getRelatedProgram().getBackPicUrl());
+            }
+        });
+        mViewModel.getCoverSingleLiveEvent().observe(this, s -> globalPlay.play(s));
     }
 
     @Override
@@ -197,9 +213,9 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
         if (v == globalPlay) {
             if (null == mPlayerManager.getCurrSound(true)) {
-                if(mHistoryBean==null){
+                if (mHistoryBean == null) {
                     navigateTo(AppConstants.Router.Home.F_RANK);
-                }else {
+                } else {
                     mViewModel.play(mHistoryBean);
                 }
             } else {
@@ -223,7 +239,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     }
 
 
-
     private void initProgress(int cur, int dur) {
         if (mPlayerManager.getCurrPlayType() == XmPlayListControl.PLAY_SOURCE_RADIO) {
             try {
@@ -239,7 +254,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 e.printStackTrace();
             }
         }
-        globalPlay.setProgress((float)cur /(float)dur);
+        globalPlay.setProgress((float) cur / (float) dur);
     }
 
 
@@ -251,21 +266,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
-    }
-
-    @Override
-    public void initViewObservable() {
-        mViewModel.getHistorySingleLiveEvent().observe(this, bean -> {
-            mHistoryBean=bean;
-            if(bean.getKind().equals(PlayableModel.KIND_TRACK)){
-                globalPlay.setImage(TextUtils.isEmpty(bean.getTrack().getCoverUrlSmall())
-                        ?bean.getTrack().getAlbum().getCoverUrlLarge():bean.getTrack().getCoverUrlSmall());
-                globalPlay.setProgress(bean.getPercent());
-            }else {
-                globalPlay.setImage(bean.getSchedule().getRelatedProgram().getBackPicUrl());
-            }
-        });
-        mViewModel.getCoverSingleLiveEvent().observe(this, s -> globalPlay.play(s));
     }
 
 
@@ -291,7 +291,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     }
 
     @Override
-    public  void onEvent(ActivityEvent event) {
+    public void onEvent(ActivityEvent event) {
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Main.NAVIGATE:
@@ -345,22 +345,22 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 config.setCancelButtonVisibility(false);
                 config.setIndicatorVisibility(false);
 
-                ShareAction action= (ShareAction) event.getData();
+                ShareAction action = (ShareAction) event.getData();
 
-                if(action==null){
+                if (action == null) {
                     UMWeb web = new UMWeb("https://github.com/TanZhiL/Zhumulangma");
                     web.setTitle("珠穆朗玛听");//标题
-                    web.setThumb(new UMImage(this,R.mipmap.ic_launcher_ting));  //缩略图
+                    web.setThumb(new UMImage(this, R.drawable.common_launcher_ting));  //缩略图
                     web.setDescription("珠穆朗玛听");//描述
                     action = new ShareAction(this).withMedia(web);
                 }
                 action.setDisplayList(
-                    SHARE_MEDIA.WEIXIN,
-                    SHARE_MEDIA.WEIXIN_CIRCLE,
-                    SHARE_MEDIA.QQ,
-                    SHARE_MEDIA.QZONE,
-                    SHARE_MEDIA.SINA)
-                    .setCallback(uMShareListener).open(config);
+                        SHARE_MEDIA.WEIXIN,
+                        SHARE_MEDIA.WEIXIN_CIRCLE,
+                        SHARE_MEDIA.QQ,
+                        SHARE_MEDIA.QZONE,
+                        SHARE_MEDIA.SINA)
+                        .setCallback(uMShareListener).open(config);
                 break;
         }
     }
@@ -385,7 +385,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     private void goLogin() {
         try {
             mAuthInfo = new XmlyAuthInfo(this, CommonRequest.getInstanse().getAppKey(), CommonRequest.getInstanse()
-                    .getPackId(),AppConstants.Ximalaya.REDIRECT_URL, CommonRequest.getInstanse().getAppKey());
+                    .getPackId(), AppConstants.Ximalaya.REDIRECT_URL, CommonRequest.getInstanse().getAppKey());
         } catch (XimalayaException e) {
             e.printStackTrace();
         }
@@ -412,6 +412,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         }
 
     }
+
     private void parseAccessToken(Bundle bundle) {
         mAccessToken = XmlyAuth2AccessToken.parseAccessToken(bundle);
         if (mAccessToken.isSessionValid()) {
@@ -443,7 +444,8 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         });
 
     }
-    private IXmPlayerStatusListener playerStatusListener =new IXmPlayerStatusListener() {
+
+    private IXmPlayerStatusListener playerStatusListener = new IXmPlayerStatusListener() {
 
         @Override
         public void onPlayStart() {
@@ -452,7 +454,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 return;
             }
             globalPlay.play(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlSmall())
-                    ?currSoundIgnoreKind.getAlbum().getCoverUrlLarge():currSoundIgnoreKind.getCoverUrlSmall());
+                    ? currSoundIgnoreKind.getAlbum().getCoverUrlLarge() : currSoundIgnoreKind.getCoverUrlSmall());
         }
 
         @Override
@@ -505,7 +507,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
             return false;
         }
     };
-    private IXmAdsStatusListener adsStatusListener=new IXmAdsStatusListener() {
+    private IXmAdsStatusListener adsStatusListener = new IXmAdsStatusListener() {
 
         @Override
         public void onStartGetAdsInfo() {
@@ -547,25 +549,25 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
         }
     };
-    private UMShareListener uMShareListener=new UMShareListener() {
+    private UMShareListener uMShareListener = new UMShareListener() {
         @Override
         public void onStart(SHARE_MEDIA share_media) {
         }
 
         @Override
         public void onResult(SHARE_MEDIA share_media) {
-            ToastUtil.showToast(ToastUtil.LEVEL_S,"分享成功");
+            ToastUtil.showToast(ToastUtil.LEVEL_S, "分享成功");
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
             Log.d(TAG, "onError() called with: share_media = [" + share_media + "], throwable = [" + throwable + "]");
-            ToastUtil.showToast(ToastUtil.LEVEL_W,throwable.getLocalizedMessage());
+            ToastUtil.showToast(ToastUtil.LEVEL_W, throwable.getLocalizedMessage());
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
-            ToastUtil.showToast(ToastUtil.LEVEL_W,"分享取消");
+            ToastUtil.showToast(ToastUtil.LEVEL_W, "分享取消");
         }
     };
 }

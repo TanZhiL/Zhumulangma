@@ -407,10 +407,11 @@
                 android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/line4"
                 >
-                <ImageView
+                <com.makeramen.roundedimageview.RoundedImageView
                     android:layout_width="match_parent"
                     android:layout_height="113dp"
                     android:scaleType="centerCrop"
+                    app:riv_corner_radius="4dp"
                     android:src="@drawable/home_hot_ad"/>
                 <TextView
                     android:layout_width="match_parent"

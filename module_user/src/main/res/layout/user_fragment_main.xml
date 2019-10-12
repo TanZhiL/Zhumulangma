@@ -52,14 +52,15 @@
                     android:layout_marginTop="50dp"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/iv_avatar"
                         android:layout_width="68dp"
                         android:layout_height="68dp"
                         android:layout_marginStart="20dp"
-                        android:src="@drawable/image_placeholder"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="3dp"
+                        android:src="@drawable/common_image_placeholder"
+                        app:riv_border_width="3dp"
+                        app:riv_border_color="@color/white"
+                        app:riv_oval="true"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

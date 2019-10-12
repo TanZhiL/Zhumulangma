@@ -132,7 +132,6 @@ ext {
 
 
             //***************************************界面类*************************************************
-            "MultiImageSelector"                   :"com.github.lovetuzitong:MultiImageSelector:${versions["MultiImageSelector"]}",
             "loadsir"                              :"com.kingja.loadsir:loadsir:${versions["loadsir"]}",
             "titlebar"                             :"com.wuhenzhizao:titlebar:${versions["titlebar"]}",
             "lottie"                               :"com.airbnb.android:lottie:${versions["lottie"]}",

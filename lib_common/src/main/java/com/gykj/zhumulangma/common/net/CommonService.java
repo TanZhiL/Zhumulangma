@@ -15,17 +15,21 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface CommonService {
-    String HOST1=API.BaseUrl.KEY+":"+API.BaseUrl.HOST1;
 
-    @Headers(HOST1)
+    @Headers(Api.HEADER_HOST1)
     @POST("app/tokenlogin")
     Observable<ResponseDTO<UserBean>> login(@Body LoginDTO loginDTO);
 
 
-    @GET(API.BING_URL)
+    @GET(Api.BING_URL)
     Observable<BingBean> getBing(@Query("format") String type, @Query("n") String status);
 
-
+    /**
+     * 从网络中获取ResponseBody
+     *
+     * @param url
+     * @return
+     */
     @GET
     Observable<ResponseBody> getCommonBody(@Url String url);
 }

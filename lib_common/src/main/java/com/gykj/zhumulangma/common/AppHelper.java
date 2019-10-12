@@ -17,9 +17,8 @@ import com.blankj.utilcode.util.Utils;
 import com.didichuxing.doraemonkit.DoraemonKit;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.net.RetrofitManager;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
@@ -204,8 +203,8 @@ public class AppHelper {
 
     public AppHelper initBugly() {
         if (BaseUtil.isMainProcess(mApplication)) {
-            Beta.largeIconId = R.drawable.ic_launcher_ting;
-            Beta.smallIconId = R.drawable.ic_launcher_ting;
+            Beta.largeIconId = R.drawable.common_launcher_ting;
+            Beta.smallIconId = R.drawable.common_launcher_ting;
             Beta.upgradeDialogLayoutId = R.layout.common_dialog_update;
 
             Beta.canNotifyUserRestart = true;
@@ -227,11 +226,6 @@ public class AppHelper {
         }
         ARouter.init(mApplication); // 尽可能早，推荐在Application中初始化
 
-        return this;
-    }
-
-    public AppHelper initNet() {
-        RetrofitManager.init(mApplication);
         return this;
     }
 

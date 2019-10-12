@@ -14,12 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="107dp">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_cover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:riv_corner_radius="4dp"
             android:scaleType="centerCrop"
-            tools:src="@drawable/image_placeholder" />
+            tools:src="@drawable/common_image_placeholder" />
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="17dp"

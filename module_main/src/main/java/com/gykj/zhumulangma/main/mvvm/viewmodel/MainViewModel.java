@@ -13,11 +13,11 @@ import com.gykj.zhumulangma.common.bean.BingBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
-import com.gykj.zhumulangma.common.net.API;
+import com.gykj.zhumulangma.common.net.Api;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.main.mvvm.model.MainModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -217,7 +217,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
 
     private BingBean bingBean;
 
-    public void _getBing() {
+    public void getBing() {
 
         mModel.getBing("js", "1")
                 .doOnSubscribe(disposable ->accept(disposable))
@@ -226,7 +226,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                         return Observable.just(new RealResponseBody("", 0, null));
                     }
                     bingBean = bean;
-                    return mModel.getCommonBody(API.BING_HOST + bean.getImages().get(0).getUrl());
+                    return mModel.getCommonBody(Api.BING_HOST + bean.getImages().get(0).getUrl());
                 })
                 .observeOn(Schedulers.io())
                 .subscribe(body -> {

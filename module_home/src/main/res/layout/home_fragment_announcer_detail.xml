@@ -55,17 +55,18 @@
                     android:layout_marginTop="60dp"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/iv_avatar"
                         android:layout_width="68dp"
                         android:layout_height="68dp"
                         android:layout_marginStart="20dp"
-                        app:civ_border_color="@color/white"
-                        app:civ_border_width="3dp"
+                        app:riv_border_color="@color/white"
+                        app:riv_border_width="3dp"
+                        app:riv_oval="true"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:src="@drawable/common_avatar" />
+                        tools:src="@drawable/common_image_placeholder" />
 
                     <TextView
                         android:id="@+id/tv_nick"

@@ -5,23 +5,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="68dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_cover"
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/common_avatar"
+        android:src="@drawable/common_image_placeholder"
+        app:riv_oval="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/c"
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="8dp"
+        app:riv_oval="true"
+
         android:layout_marginBottom="8dp"
         android:background="@drawable/shap_common_track_cover"
         app:layout_constraintBottom_toBottomOf="parent"

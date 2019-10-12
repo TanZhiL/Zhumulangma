@@ -41,7 +41,7 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
         super(application, model);
     }
 
-    public void _getPrograms(String radioId) {
+    public void getPrograms(String radioId) {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.RADIOID, radioId);
         mModel.getProgram(map).subscribe(programList ->
@@ -50,7 +50,7 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     private Radio radio;
 
-    public void _getSchedules(String radioId) {
+    public void getSchedules(String radioId) {
 
 
         Map<String, String> yestoday = new HashMap();

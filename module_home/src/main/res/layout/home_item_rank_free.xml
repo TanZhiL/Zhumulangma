@@ -7,13 +7,14 @@
     android:paddingLeft="11dp"
     android:paddingRight="11dp">
 
-    <ImageView
+    <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_cover"
         android:layout_width="68dp"
         android:layout_height="68dp"
         android:layout_marginStart="11dp"
         android:scaleType="centerCrop"
-        tools:src="@drawable/image_placeholder"
+        app:riv_corner_radius="@dimen/itemRadus"
+        tools:src="@drawable/common_image_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_index"
         app:layout_constraintTop_toTopOf="parent" />

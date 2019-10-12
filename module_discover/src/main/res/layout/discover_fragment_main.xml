@@ -183,7 +183,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    app:riv_corner_radius="12dp"
+                    app:riv_oval="true"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView11"
                     app:layout_constraintEnd_toStartOf="@+id/imageView11"
@@ -286,12 +286,12 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
-                    app:riv_corner_radius="12dp"
+                    app:riv_oval="true"
                     android:scaleType="centerCrop"
                     app:layout_constraintBottom_toBottomOf="@+id/iv1"
                     app:layout_constraintEnd_toStartOf="@+id/iv1"
                     app:layout_constraintTop_toTopOf="@+id/iv1"
-                    android:src="@drawable/common_avatar" />
+                    android:src="@drawable/discover_avatar1" />
 
                 <View
                     android:layout_width="4dp"

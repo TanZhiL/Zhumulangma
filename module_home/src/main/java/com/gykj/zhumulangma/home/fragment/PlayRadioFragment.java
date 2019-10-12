@@ -140,7 +140,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
                 setTitle(new String[]{mSchedule.getRadioName()});
                 ((TextView) fd(R.id.tv_radio_name)).setText(mSchedule.getRadioName());
                 ((TextView) fd(R.id.tv_playcount)).setText(ZhumulangmaUtil.toWanYi(mSchedule.getRadioPlayCount()) + "人听过");
-                mViewModel._getPrograms(String.valueOf(mSchedule.getRadioId()));
+                mViewModel.getPrograms(String.valueOf(mSchedule.getRadioId()));
 
                 ((TextView) fd(R.id.tv_time)).setText(mSchedule.getStartTime().substring(mSchedule.getStartTime().length() - 5) + "~"
                         + mSchedule.getEndTime().substring(mSchedule.getEndTime().length() - 5));
@@ -317,7 +317,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
                 @Override
                 public void onCreated() {
                     super.onCreated();
-                   mViewModel._getSchedules(String.valueOf(mSchedule.getRadioId()));
+                   mViewModel.getSchedules(String.valueOf(mSchedule.getRadioId()));
                 }
             }).enableDrag(false).asCustom(mPlayRadioPopup).show();
         } else if (R.id.fl_play_pause == id) {
@@ -351,7 +351,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
                 return;
             }
             if (mPlayRadioPopup.getYestodayAdapter() != null) {
-                mViewModel._getSchedules(mSchedule.getRadioName());
+                mViewModel.getSchedules(mSchedule.getRadioName());
             }
         },100);
     }

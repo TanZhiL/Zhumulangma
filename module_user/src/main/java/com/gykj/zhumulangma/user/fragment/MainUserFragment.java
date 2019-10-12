@@ -19,11 +19,10 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
-import com.gykj.zhumulangma.common.extra.PopupImageLoader;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -31,7 +30,6 @@ import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
 import com.gykj.zhumulangma.user.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.user.mvvm.viewmodel.MainUserViewModel;
-import com.lxj.xpopup.XPopup;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -239,9 +237,9 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
                 return;
             }
             // 单张图片场景
-            new XPopup.Builder(getContext())
+         /*   new XPopup.Builder(getContext())
                     .asImageViewer(fd(R.id.iv_avatar), mGitHubDTO.getOwner().getAvatar_url(), new PopupImageLoader())
-                    .show();
+                    .show();*/
         }
     }
 

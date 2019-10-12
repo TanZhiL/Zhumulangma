@@ -376,7 +376,7 @@ public abstract class SupportFragment extends Fragment implements ISupportFragme
     }
 
     /**
-     * Pop the last fragment transition from the manager's fragment
+     * Pop the last fragment transition from the instance's fragment
      * back stack.
      * <p>
      * 出栈到目标fragment

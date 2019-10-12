@@ -21,12 +21,13 @@
         android:layout_height="63dp">
 
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_announcer_cover"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="17dp"
-            android:src="@drawable/common_avatar"
+            app:riv_oval="true"
+            android:src="@drawable/common_image_placeholder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

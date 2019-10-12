@@ -13,7 +13,8 @@
         android:paddingRight="11dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+            app:riv_corner_radius="@dimen/itemRadus"
             android:id="@+id/iv_cover1"
             android:layout_width="68dp"
             android:layout_height="68dp"
@@ -71,7 +72,8 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout1"
         tools:layout_editor_absoluteX="64dp">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+             app:riv_corner_radius="@dimen/itemRadus"
             android:id="@+id/iv_cover2"
             android:layout_width="68dp"
             android:layout_height="68dp"
@@ -128,7 +130,8 @@
         android:paddingRight="11dp"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+             app:riv_corner_radius="@dimen/itemRadus"
             android:id="@+id/iv_cover3"
             android:layout_width="68dp"
             android:layout_height="68dp"
@@ -185,7 +188,8 @@
         android:paddingRight="11dp"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+             app:riv_corner_radius="@dimen/itemRadus"
             android:id="@+id/iv_cover4"
             android:layout_width="68dp"
             android:layout_height="68dp"
@@ -242,7 +246,8 @@
         android:paddingRight="11dp"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+             app:riv_corner_radius="@dimen/itemRadus"
             android:id="@+id/iv_cover5"
             android:layout_width="68dp"
             android:layout_height="68dp"
@@ -298,7 +303,8 @@
         android:paddingRight="11dp"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+             app:riv_corner_radius="@dimen/itemRadus"
             android:id="@+id/iv_cover6"
             android:layout_width="68dp"
             android:layout_height="68dp"
@@ -354,7 +360,8 @@
         android:paddingRight="11dp"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+             app:riv_corner_radius="@dimen/itemRadus"
             android:id="@+id/iv_cover7"
             android:layout_width="68dp"
             android:layout_height="68dp"
@@ -410,7 +417,8 @@
         android:paddingRight="11dp"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+             app:riv_corner_radius="@dimen/itemRadus"
             android:id="@+id/iv_cover8"
             android:layout_width="68dp"
             android:layout_height="68dp"
@@ -466,7 +474,8 @@
         android:paddingRight="11dp"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout8">
 
-        <ImageView
+        <com.makeramen.roundedimageview.RoundedImageView
+             app:riv_corner_radius="@dimen/itemRadus"
             android:id="@+id/iv_cover"
             android:layout_width="68dp"
             android:layout_height="68dp"

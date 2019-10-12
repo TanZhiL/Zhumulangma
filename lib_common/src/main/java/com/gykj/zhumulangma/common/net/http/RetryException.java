@@ -7,7 +7,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.UserBean;
-import com.gykj.zhumulangma.common.net.RetrofitManager;
+import com.gykj.zhumulangma.common.net.NetManager;
 import com.gykj.zhumulangma.common.net.dto.LoginDTO;
 import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
 import com.gykj.zhumulangma.common.util.log.TLog;
@@ -66,7 +66,7 @@ public class RetryException implements Function<Observable<Throwable>, Observabl
             loginDTO.setDescer_phone(userBean.getDescer_phone());
             loginDTO.setGraer_name(userBean.getGraer_name());
             loginDTO.setGraer_phone(userBean.getGraer_phone());
-            return RetrofitManager.getInstance().getCommonService().login(loginDTO)
+            return NetManager.getInstance().getCommonService().login(loginDTO)
                     .flatMap((Function<ResponseDTO<UserBean>, Observable<?>>) userBeanResponseDTO -> {
                         if (!userBeanResponseDTO.code.equals(ExceptionHandler.APP_ERROR.SUCCESS)) {
                             return Observable.error(new RespException(ExceptionHandler.APP_ERROR.ACCOUNT_ERROR,

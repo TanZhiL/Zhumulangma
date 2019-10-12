@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.net.CommonService;
-import com.gykj.zhumulangma.common.net.RetrofitManager;
+import com.gykj.zhumulangma.common.net.NetManager;
 import com.gykj.zhumulangma.common.net.http.RxAdapter;
 
 import org.greenrobot.greendao.AbstractDao;
@@ -30,16 +30,16 @@ public class CommonModel extends BaseModel {
 
     public CommonModel(Application application) {
         super(application);
-        mCommonService = RetrofitManager.getInstance().getCommonService();
+        mCommonService = NetManager.getInstance().getCommonService();
     }
 
     /**
      * 从网络中获取ResponseBody
-     * @param ur
+     * @param url
      * @return
      */
-    public Observable<ResponseBody> getCommonBody(String ur){
-        return mCommonService.getCommonBody(ur)
+    public Observable<ResponseBody> getCommonBody(String url){
+        return mCommonService.getCommonBody(url)
                 .compose(RxAdapter.exceptionTransformer())
                 .compose(RxAdapter.schedulersTransformer());
     }

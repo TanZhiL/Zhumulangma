@@ -61,7 +61,7 @@
     <!--Bugly END-->
 
     <application
-        android:icon="@mipmap/ic_launcher_ting"
+        android:icon="@drawable/common_launcher_ting"
         android:networkSecurityConfig="@xml/network_security_config">
 
         <meta-data
