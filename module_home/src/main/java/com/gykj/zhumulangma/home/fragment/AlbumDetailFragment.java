@@ -25,9 +25,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.DetailCallback;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -239,16 +239,6 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             Glide.with(this).load(album.getAnnouncer().getAvatarUrl()).into((ImageView) fd(R.id.iv_announcer_cover));
             ((TextView) layoutDetail.findViewById(R.id.tv_announcer_name)).setText(album.getAnnouncer().getNickname());
             ((TextView) layoutDetail.findViewById(R.id.tv_intro)).setText(album.getAlbumIntro());
-            ((TextView) layoutDetail.findViewById(R.id.tv_announcer_name)).setText(album.getAnnouncer().getNickname());
-            String vsignature = album.getAnnouncer().getVsignature();
-            if (TextUtils.isEmpty(vsignature)) {
-                layoutDetail.findViewById(R.id.tv_vsignature).setVisibility(View.GONE);
-            } else {
-                ((TextView) layoutDetail.findViewById(R.id.tv_vsignature)).setText(vsignature);
-            }
-            ((TextView) layoutDetail.findViewById(R.id.tv_following_count)).setText(getString(R.string.following_count,
-                    ZhumulangmaUtil.toWanYi(album.getAnnouncer().getFollowingCount())));
-            layoutDetail.findViewById(R.id.tv_vsignature).setVisibility(album.getAnnouncer().isVerified() ? View.VISIBLE : View.GONE);
             if (!TextUtils.isEmpty(album.getAlbumTags())) {
                 mAlbumTagAdapter.addData(Arrays.asList(album.getAlbumTags().split(",")));
             }
@@ -281,6 +271,18 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                 fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
                 tvLastplay.setText(getString(R.string.lastplay, track.getTrackTitle()));
             }
+        });
+        mViewModel.getAnnouncerEvent().observe(this, announcer -> {
+            fd(R.id.tv_vip).setVisibility(announcer.isVerified() ? View.VISIBLE : View.GONE);
+            String vsignature = announcer.getVsignature();
+            if (TextUtils.isEmpty(vsignature)) {
+                layoutDetail.findViewById(R.id.tv_vsignature).setVisibility(View.GONE);
+            } else {
+                layoutDetail.findViewById(R.id.tv_vsignature).setVisibility(View.VISIBLE);
+                ((TextView) layoutDetail.findViewById(R.id.tv_vsignature)).setText(vsignature);
+            }
+            ((TextView) layoutDetail.findViewById(R.id.tv_following_count)).setText(getString(R.string.following_count,
+                    ZhumulangmaUtil.toWanYi(announcer.getFollowerCount())));
         });
     }
 
@@ -513,7 +515,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                     lavPlaying.cancelAnimation();
                     lavPlaying.setVisibility(View.GONE);
                 }
-            }else {
+            } else {
                 mAlbumTrackAdapter.notifyItemChanged(i);
             }
         }
@@ -532,7 +534,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             TextView tvHasplay = (TextView) mAlbumTrackAdapter.getViewByPosition(index, R.id.tv_hasplay);
             if (null != tvHasplay && mAlbumTrackAdapter.getItem(index).getDataId() == track.getDataId()) {
                 tvHasplay.setText(getString(R.string.hasplay, 100 * currPos / duration));
-            }else {
+            } else {
                 mAlbumTrackAdapter.notifyItemChanged(index);
             }
         }
@@ -584,7 +586,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                     viewByPosition.setBackgroundResource(R.drawable.shap_common_defualt);
                     viewByPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
                 }
-            }else {
+            } else {
                 mPagerPopup.getPagerAdapter().notifyItemChanged(i);
             }
         }

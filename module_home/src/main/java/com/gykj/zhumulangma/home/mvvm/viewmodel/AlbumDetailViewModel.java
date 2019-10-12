@@ -14,6 +14,8 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.album.Announcer;
+import com.ximalaya.ting.android.opensdk.model.album.AnnouncerListByIds;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.track.CommonTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -47,6 +49,8 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
     private SingleLiveEvent<Track> mLastplayEvent;
     //是否订阅
     private SingleLiveEvent<Boolean> mSubscribeEvent;
+
+    private SingleLiveEvent<Announcer> mAnnouncerEvent;
     //播放列表
     private CommonTrackList mCommonTrackList = CommonTrackList.newInstance();
     //上一页页码
@@ -64,6 +68,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     /**
      * 取消订阅
+     *
      * @param album
      */
     public void unsubscribe(Album album) {
@@ -74,6 +79,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     /**
      * 订阅
+     *
      * @param album
      */
     public void subscribe(Album album) {
@@ -93,9 +99,14 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                 //获取专辑详情
                 .flatMap((Function<List<SubscribeBean>, ObservableSource<BatchAlbumList>>) subscribeBeans -> mModel.getBatch(map))
                 .doOnNext(batchAlbumList -> getAlbumEvent().setValue(batchAlbumList.getAlbums().get(0)))
+                //获取主播
+                .flatMap((Function<BatchAlbumList, ObservableSource<AnnouncerListByIds>>) albumList ->
+                        getAnnouncer(albumList.getAlbums().get(0).getAnnouncer().getAnnouncerId()))
+                .doOnNext(announcerListByIds ->
+                        getAnnouncerEvent().setValue(announcerListByIds.getAnnouncers().get(0)))
                 //获取第一页声音
-                .flatMap((Function<BatchAlbumList, ObservableSource<TrackList>>) batchAlbumList ->
-                        getTrackInitObservable())
+                .flatMap((Function<Object, ObservableSource<TrackList>>) o ->
+                        AlbumDetailViewModel.this.getTrackInitObservable())
                 .doOnSubscribe(disposable -> getShowInitViewEvent().call())
                 .subscribe(trackList -> {
                     if (CollectionUtils.isEmpty(trackList.getTracks())) {
@@ -131,6 +142,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     /**
      * 排序
+     *
      * @param sort
      */
     public void getTrackList(String sort) {
@@ -157,6 +169,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     /**
      * 分页查询
+     *
      * @param page
      */
     public void getTrackList(int page) {
@@ -181,6 +194,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     /**
      * 上拉,下拉更多
+     *
      * @param isUp
      */
     private void getTrackList(boolean isUp) {
@@ -218,6 +232,14 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                     e.printStackTrace();
                 });
 
+    }
+
+
+    private Observable<AnnouncerListByIds> getAnnouncer(long announcerId) {
+        Map<String, String> map = new HashMap<>();
+        map.put("ids", String.valueOf(announcerId));
+        //主播详情
+        return mModel.getAnnouncersBatch(map);
     }
 
     /**
@@ -338,6 +360,10 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     public SingleLiveEvent<Boolean> getSubscribeEvent() {
         return mSubscribeEvent = createLiveData(mSubscribeEvent);
+    }
+
+    public SingleLiveEvent<Announcer> getAnnouncerEvent() {
+        return mAnnouncerEvent = createLiveData(mAnnouncerEvent);
     }
 
     public CommonTrackList getCommonTrackList() {
