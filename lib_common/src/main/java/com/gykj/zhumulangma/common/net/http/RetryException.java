@@ -21,7 +21,7 @@ import io.reactivex.schedulers.Schedulers;
  * Author: Thomas.
  * <br/>Date: 2019/8/1 8:01
  * <br/>Email: 1071931588@qq.com
- * <br/>Description:拦截指定内部异常,如Token超时等
+ * <br/>Description:所有异常都会经过此处,可拦截需要重试的内部异常,如Token超时等
  */
 public class RetryException implements Function<Observable<Throwable>, Observable<?>> {
 
@@ -33,12 +33,12 @@ public class RetryException implements Function<Observable<Throwable>, Observabl
                 .flatMap((Function<Throwable, Observable<?>>) throwable -> {
                     TLog.d(Log.getStackTraceString(throwable));
                     return Observable.error(throwable);
-                /*
+                  /*
                     //拦截内部异常
-                    if (throwable instanceof RespException) {
-                        RespException ex = (RespException) throwable;
+                    if (throwable instanceof InterceptableException) {
+                        InterceptableException ex = (InterceptableException) throwable;
                         switch (ex.code) {
-                            case ExceptionHandler.APP_ERROR.TOKEN_OUTTIME:
+                            case InterceptableException.TOKEN_OUTTIME:
                                 return reLogin();
                             default:
                                 return Observable.error(throwable);
@@ -46,8 +46,7 @@ public class RetryException implements Function<Observable<Throwable>, Observabl
                     } else {
                         //外部异常直接放过
                         return Observable.error(throwable);
-                    }
-                    */
+                    }*/
                 });
     }
 
@@ -68,19 +67,17 @@ public class RetryException implements Function<Observable<Throwable>, Observabl
             loginDTO.setGraer_phone(userBean.getGraer_phone());
             return NetManager.getInstance().getCommonService().login(loginDTO)
                     .flatMap((Function<ResponseDTO<UserBean>, Observable<?>>) userBeanResponseDTO -> {
-                        if (!userBeanResponseDTO.code.equals(ExceptionHandler.APP_ERROR.SUCCESS)) {
-                            return Observable.error(new RespException(ExceptionHandler.APP_ERROR.ACCOUNT_ERROR,
+                        if (!userBeanResponseDTO.code.equals(ExceptionConverter.APP_ERROR.SUCCESS)) {
+                            return Observable.error(new CustException(userBeanResponseDTO.code,
                                     "账户异常,请先登陆"));
                         } else {
                             SPUtils.getInstance().put(AppConstants.SP.TOKEN, userBeanResponseDTO.result.getToken());
                             SPUtils.getInstance().put(AppConstants.SP.USER, new Gson().toJson(userBeanResponseDTO.result));
                             return Observable.just(0);
                         }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+                    }).compose(RxAdapter.schedulersTransformer());
         } else {
-            return Observable.error(new RespException(ExceptionHandler.APP_ERROR.ACCOUNT_ERROR,
+            return Observable.error(new CustException(ExceptionConverter.APP_ERROR.ACCOUNT_ERROR,
                     "账户异常,请先登陆"));
         }
     }

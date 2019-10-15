@@ -4,7 +4,7 @@ import android.app.Application;
 import android.support.annotation.Nullable;
 
 import com.blankj.utilcode.util.CollectionUtils;
-import com.gykj.zhumulangma.common.net.http.RespException;
+import com.gykj.zhumulangma.common.net.http.CustException;
 import com.gykj.zhumulangma.common.net.http.RxAdapter;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
@@ -66,7 +66,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -88,7 +88,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -110,7 +110,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -132,7 +132,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -154,7 +154,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -176,7 +176,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -198,7 +198,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -220,7 +220,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -242,7 +242,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -264,7 +264,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -286,7 +286,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -308,7 +308,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -330,7 +330,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -352,7 +352,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -374,7 +374,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -396,7 +396,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -418,7 +418,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -440,7 +440,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -462,7 +462,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -484,7 +484,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -506,7 +506,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -527,7 +527,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -548,7 +548,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -574,7 +574,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -599,7 +599,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -621,7 +621,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -643,7 +643,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -665,7 +665,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -686,7 +686,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -708,7 +708,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
@@ -731,7 +731,7 @@ public class ZhumulangmaModel extends CommonModel {
 
                     @Override
                     public void onError(int i, String s) {
-                        emitter.onError(new RespException(String.valueOf(i), s));
+                        emitter.onError(new CustException(String.valueOf(i), s));
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }

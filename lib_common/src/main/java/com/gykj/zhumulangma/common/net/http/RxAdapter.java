@@ -24,10 +24,11 @@ public class RxAdapter {
         return upstream -> upstream.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
     /**
-     * 异常内部拦截
-     * <br/>HandleException(将内部异常选择性抛出)->
-     * <br/>RetryException(拦截指定内部异常,如Token超时等)->
+     * 异常处理方式
+     * <br/>HandleException(将内部异常选择性抛出,可设置需要重试的异常)->
+     * <br/>RetryException(所有异常都会经过此处,可拦截需要重试的内部异常,如Token超时等)->
      * <br/>DoOnException(统一处理未被拦截内部异常和所有外部异常)
      */
     public static ObservableTransformer exceptionTransformer() {
@@ -37,8 +38,9 @@ public class RxAdapter {
                 .retryWhen(new RetryException())//拦截需要处理的异常
                 .onErrorResumeNext(new DoOnException());
     }
+
     /**
-     * 将内部异常选择性抛出
+     * 将内部异常选择性抛出,可设置需要重试的异常
      */
     private static class HandleException implements Function<Object, Observable> {
 
@@ -47,24 +49,31 @@ public class RxAdapter {
             if (o instanceof ResponseDTO) {
                 ResponseDTO respDTO = (ResponseDTO) o;
                 //选择性抛出内部异常
-                if (!respDTO.code.equals(ExceptionHandler.APP_ERROR.SUCCESS)) {
-                    RespException throwable = new RespException(respDTO.code, respDTO.msg);
+                if (!respDTO.code.equals(ExceptionConverter.APP_ERROR.SUCCESS)) {
+                    Exception throwable = new CustException(respDTO.code, respDTO.msg);
+                    //如果是token超时,则尝试重试
+                    if (respDTO.code.equals(ExceptionConverter.APP_ERROR.TOKEN_OUTTIME)) {
+                        throwable = new InterceptableException(InterceptableException.TOKEN_OUTTIME, respDTO.msg);
+                    }
                     return Observable.error(throwable);
                 }
             }
             return Observable.just(o);
         }
     }
+
     /**
      * 统一处理未被拦截内部异常和所有外部异常
-     *
      */
     private static class DoOnException implements Function<Throwable, Observable> {
         @Override
         public Observable apply(Throwable t) {
-            RespException exception = ExceptionHandler.handleException(t);
-            ToastUtil.showToast(ToastUtil.LEVEL_E,"网络异常:"+exception.message);
-            return Observable.error(exception);
+            if (!(t instanceof CustException)) {
+                //转换外部异常
+                t = ExceptionConverter.convert(t);
+            }
+            ToastUtil.showToast(ToastUtil.LEVEL_E, t.getMessage());
+            return Observable.error(t);
         }
     }
 }
