@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toStartOf="@+id/tv_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/common_image_placeholder" />
+        android:src="@color/colorDefault" />
 
     <View
         android:layout_width="0dp"

@@ -71,6 +71,7 @@ ext {
             "bga-qrcode-zxing":"1.3.6",
             "agentwebX5":"2.0.0",
             "roundedimageview":"2.3.0",
+            "aspectjrt":"1.8.+",
     ]
     //support配置
     support = [
@@ -129,7 +130,7 @@ ext {
             "leakcanary"                           :"com.squareup.leakcanary:leakcanary-android:${versions["leakcanary"]}",
             "leakcanary-no-op"                     :"com.squareup.leakcanary:leakcanary-android-no-op:${versions["leakcanary"]}",
             "agentwebX5"                             :"com.just.agentwebX5:agentwebX5:${versions["agentwebX5"]}",
-
+            "aspectjrt"                             :"org.aspectj:aspectjrt:${versions["aspectjrt"]}",
 
             //***************************************界面类*************************************************
             "loadsir"                              :"com.kingja.loadsir:loadsir:${versions["loadsir"]}",

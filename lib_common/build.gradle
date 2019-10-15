@@ -1,5 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao'
+
+import com.android.build.gradle.LibraryPlugin
+import org.aspectj.bridge.IMessage
+import org.aspectj.bridge.MessageHandler
+import org.aspectj.tools.ajc.Main
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
@@ -93,8 +98,7 @@ dependencies {
     api rootProject.ext.dependencies["picture_library"]
     api rootProject.ext.dependencies["PickerView"]
     api rootProject.ext.dependencies["rxbinding"]
-    debugApi rootProject.ext.dependencies["doraemonkit"]
-    releaseApi rootProject.ext.dependencies["doraemonkit-no-op"]
+
     debugApi rootProject.ext.dependencies["leakcanary"]
     releaseApi rootProject.ext.dependencies["leakcanary-no-op"]
     api rootProject.ext.dependencies["AVLoading"]
@@ -111,6 +115,7 @@ dependencies {
     api rootProject.ext.dependencies["bga-qrcode-zxing"]
     api rootProject.ext.dependencies["agentwebX5"]
     api rootProject.ext.dependencies["roundedimageview"]
+    api rootProject.ext.dependencies["aspectjrt"]
 
     api 'com.amap.api:location:latest.integration'
     api 'com.tencent.bugly:crashreport_upgrade:latest.release'
@@ -136,4 +141,41 @@ greendao {
     daoPackage 'com.gykj.zhumulangma.common.dao'
     //设置DaoMaster、DaoSession、Dao目录
     targetGenDir 'src/main/java'
+}
+
+
+android.libraryVariants.all { variant ->
+    LibraryPlugin plugin = project.plugins.getPlugin(LibraryPlugin)
+    JavaCompile javaCompile = variant.javaCompile
+    javaCompile.doLast {
+        String[] args = ["-showWeaveInfo",
+                         "-1.5",
+                         "-inpath", javaCompile.destinationDir.toString(),
+                         "-aspectpath", javaCompile.classpath.asPath,
+                         "-d", javaCompile.destinationDir.toString(),
+                         "-classpath", javaCompile.classpath.asPath,
+                         "-bootclasspath", plugin.project.android.bootClasspath.join(
+                File.pathSeparator)]
+
+        MessageHandler handler = new MessageHandler(true);
+        new Main().run(args, handler)
+
+        def log = project.logger
+        for (IMessage message : handler.getMessages(null, true)) {
+            switch (message.getKind()) {
+                case IMessage.ABORT:
+                case IMessage.ERROR:
+                case IMessage.FAIL:
+                    log.error message.message, message.thrown
+                    break;
+                case IMessage.WARNING:
+                case IMessage.INFO:
+                    log.info message.message, message.thrown
+                    break;
+                case IMessage.DEBUG:
+                    log.debug message.message, message.thrown
+                    break;
+            }
+        }
+    }
 }

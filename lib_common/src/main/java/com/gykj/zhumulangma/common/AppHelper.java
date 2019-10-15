@@ -14,7 +14,6 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.Utils;
-import com.didichuxing.doraemonkit.DoraemonKit;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
@@ -273,16 +272,6 @@ public class AppHelper {
 
     public AppHelper initSpeech() {
         SpeechUtility.createUtility(mApplication, SpeechConstant.APPID + "=" + AppConstants.Speech.ID);
-        return this;
-    }
-
-    public AppHelper initDoraemonKit() {
-            //调试助手
-            DoraemonKit.install(mApplication);
-            // H5任意门功能需要，非必须
-            DoraemonKit.setWebDoorCallback((context, s) -> {
-                // 使用自己的H5容器打开这个链接
-            });
         return this;
     }
 

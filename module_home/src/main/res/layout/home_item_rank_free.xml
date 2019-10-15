@@ -14,7 +14,7 @@
         android:layout_marginStart="11dp"
         android:scaleType="centerCrop"
         app:riv_corner_radius="@dimen/itemRadus"
-        tools:src="@drawable/common_image_placeholder"
+        android:src="@color/colorDefault"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_index"
         app:layout_constraintTop_toTopOf="parent" />

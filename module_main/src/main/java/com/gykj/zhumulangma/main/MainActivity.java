@@ -18,12 +18,11 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.AppHelper;
+import com.gykj.zhumulangma.common.aop.login.LoginHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
 import com.gykj.zhumulangma.common.util.PermissionPageUtil;
@@ -43,16 +42,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
-import com.ximalaya.ting.android.opensdk.auth.call.IXmlyAuthListener;
-import com.ximalaya.ting.android.opensdk.auth.exception.XmlyException;
-import com.ximalaya.ting.android.opensdk.auth.handler.XmlySsoHandler;
-import com.ximalaya.ting.android.opensdk.auth.model.XmlyAuth2AccessToken;
-import com.ximalaya.ting.android.opensdk.auth.model.XmlyAuthInfo;
-import com.ximalaya.ting.android.opensdk.auth.utils.AccessTokenKeeper;
-import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
-import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
-import com.ximalaya.ting.android.opensdk.datatrasfer.ILoginOutCallBack;
-import com.ximalaya.ting.android.opensdk.httputil.XimalayaException;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
 import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
@@ -64,8 +53,6 @@ import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -80,9 +67,6 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 public class MainActivity extends BaseMvvmActivity<MainViewModel> implements View.OnClickListener,
         MainFragment.onRootShowListener {
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(this);
-    private XmlyAuthInfo mAuthInfo;
-    private XmlySsoHandler mSsoHandler;
-    private XmlyAuth2AccessToken mAccessToken;
     private PlayHistoryBean mHistoryBean;
     private Handler mHandler = new Handler();
     private GlobalPlay globalPlay;
@@ -301,12 +285,14 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 }
                 switch (navigateBean.path) {
                     case AppConstants.Router.User.F_MESSAGE:
+                       /*
                         //登录拦截
-                   /*     if (!AccessTokenManager.getInstanse().hasLogin()) {
-                            goLogin();
+                        if (!AccessTokenManager.getInstanse().hasLogin()) {
+                            LoginHelper.getInstance().login(this);
                         } else {
                             start(navigateBean.fragment);
-                        }*/
+                        }
+                        */
                         start(navigateBean.fragment);
                         break;
                     case AppConstants.Router.Home.F_PLAY_TRACK:
@@ -334,7 +320,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 globalPlay.show();
                 break;
             case EventCode.Main.LOGIN:
-                goLogin();
+                LoginHelper.getInstance().logout();
                 break;
             case EventCode.Main.SHARE:
 
@@ -381,68 +367,9 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         UMShareAPI.get(this).release();
     }
 
-
-    private void goLogin() {
-        try {
-            mAuthInfo = new XmlyAuthInfo(this, CommonRequest.getInstanse().getAppKey(), CommonRequest.getInstanse()
-                    .getPackId(), AppConstants.Ximalaya.REDIRECT_URL, CommonRequest.getInstanse().getAppKey());
-        } catch (XimalayaException e) {
-            e.printStackTrace();
-        }
-        mSsoHandler = new XmlySsoHandler(this, mAuthInfo);
-        mSsoHandler.authorize(new CustomAuthListener());
-    }
-
-    class CustomAuthListener implements IXmlyAuthListener {
-        @Override
-        public void onComplete(Bundle bundle) {
-            parseAccessToken(bundle);
-            AppHelper.registerLoginTokenChangeListener(MainActivity.this.getApplicationContext());
-            EventBus.getDefault().post(new FragmentEvent(EventCode.Main.LOGINSUCC));
-            ToastUtil.showToast("登录成功");
-        }
-
-        @Override
-        public void onXmlyException(final XmlyException e) {
-            e.printStackTrace();
-        }
-
-        @Override
-        public void onCancel() {
-        }
-
-    }
-
-    private void parseAccessToken(Bundle bundle) {
-        mAccessToken = XmlyAuth2AccessToken.parseAccessToken(bundle);
-        if (mAccessToken.isSessionValid()) {
-            AccessTokenManager.getInstanse().setAccessTokenAndUid(mAccessToken.getToken(), mAccessToken
-                    .getRefreshToken(), mAccessToken.getExpiresAt(), mAccessToken.getUid());
-        }
-    }
-
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
         return new DefaultNoAnimator();
-    }
-
-    public void logout() {
-        AccessTokenManager.getInstanse().loginOut(new ILoginOutCallBack() {
-            @Override
-            public void onSuccess() {
-                if (mAccessToken != null && mAccessToken.isSessionValid()) {
-                    AccessTokenKeeper.clear(MainActivity.this);
-                    mAccessToken = new XmlyAuth2AccessToken();
-                }
-                CommonRequest.getInstanse().setITokenStateChange(null);
-            }
-
-            @Override
-            public void onFail(int errorCode, String errorMessage) {
-                CommonRequest.getInstanse().setITokenStateChange(null);
-            }
-        });
-
     }
 
     private IXmPlayerStatusListener playerStatusListener = new IXmPlayerStatusListener() {

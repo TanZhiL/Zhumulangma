@@ -170,7 +170,7 @@ public class MarqueeView extends View implements Runnable {
                 this.xLocation -= this.speed;
                 this.postInvalidate();
             } catch (InterruptedException var2) {
-                var2.printStackTrace();
+                //var2.printStackTrace();
             }
         }
 

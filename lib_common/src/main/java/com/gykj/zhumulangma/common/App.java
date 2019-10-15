@@ -38,7 +38,7 @@ public class App extends Application {
         //设置全局默认配置（优先级最低，会被其他设置覆盖）
         SmartRefreshLayout.setDefaultRefreshInitializer((context, layout) -> {
             //开始设置全局的基本参数（可以被下面的DefaultRefreshHeaderCreator覆盖）
-          layout.setHeaderMaxDragRate(1.5f);
+            layout.setHeaderMaxDragRate(1.5f);
         });
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> new TRefreshHeader(context));
@@ -58,7 +58,6 @@ public class App extends Application {
         MultiDex.install(mApplication);
         Beta.installTinker();
     }
-
 
     @Override
     public void onCreate() {

@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             app:riv_corner_radius="4dp"
-            tools:src="@drawable/common_image_placeholder" />
+            android:src="@color/colorDefault" />
 
         <ImageView
             android:id="@+id/iv_back"

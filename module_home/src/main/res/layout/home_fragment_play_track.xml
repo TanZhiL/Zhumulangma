@@ -328,7 +328,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/common_image_placeholder" />
+                    android:src="@color/colorDefault" />
 
                 <TextView
                     android:id="@+id/tv_album_name"
@@ -560,7 +560,7 @@
                     android:layout_marginStart="17dp"
                     android:layout_marginTop="7dp"
                     app:riv_oval="true"
-                    tools:src="@drawable/common_image_placeholder"
+                    android:src="@color/colorDefault"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

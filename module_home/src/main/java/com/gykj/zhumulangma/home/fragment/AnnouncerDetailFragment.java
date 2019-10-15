@@ -11,6 +11,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,11 +27,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.aop.login.NeedLogin;
 import com.gykj.zhumulangma.common.bean.AnnouncerCategoryBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.common.widget.ItemHeader;
@@ -198,6 +200,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
 
         fd(R.id.tv_more).setOnClickListener(this);
         fd(R.id.iv_avatar).setOnClickListener(this);
+        fd(R.id.tv_follwer).setOnClickListener(this);
     }
 
     @NonNull
@@ -278,8 +281,14 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_LIST, (ISupportFragment) o)));
+        }else if(id==R.id.tv_follwer){
+            follwer();
         }
+    }
 
+    @NeedLogin
+    private void follwer() {
+        Log.d(TAG, "follwer() called");
     }
 
     @Override

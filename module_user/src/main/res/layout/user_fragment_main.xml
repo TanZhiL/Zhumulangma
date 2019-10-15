@@ -57,7 +57,7 @@
                         android:layout_width="68dp"
                         android:layout_height="68dp"
                         android:layout_marginStart="20dp"
-                        tools:src="@drawable/common_image_placeholder"
+                        android:src="@color/colorDefault"
                         app:riv_border_width="3dp"
                         app:riv_border_color="@color/white"
                         app:riv_oval="true"
