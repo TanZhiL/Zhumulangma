@@ -18,12 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.status.BlankCallback;
 import com.gykj.zhumulangma.common.mvvm.view.status.EmptyCallback;
@@ -39,6 +40,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.ExtraTransaction;
@@ -53,7 +56,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:Fragment基类
  */
-public abstract class BaseFragment extends SupportFragment  {
+public abstract class BaseFragment extends SupportFragment {
     protected static final String TAG = BaseFragment.class.getSimpleName();
     private CompositeDisposable mCompositeDisposable;
     protected View mView;
@@ -104,14 +107,17 @@ public abstract class BaseFragment extends SupportFragment  {
 
     protected abstract @LayoutRes
     int onBindLayout();
+
     protected void initParam() {
     }
+
     protected abstract void initView(View view);
 
     public void initListener() {
     }
 
     public abstract void initData();
+
     /**
      * 再次可见
      */
@@ -190,24 +196,49 @@ public abstract class BaseFragment extends SupportFragment  {
     protected void loadView() {
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
-        LoadSir loadSir = new LoadSir.Builder()
+        LoadSir.Builder builder = new LoadSir.Builder()
                 .addCallback(getInitCallBack())
-                .addCallback(new EmptyCallback())
-                .addCallback(new ErrorCallback())
-                .addCallback(new LoadingCallback())
-                .setDefaultCallback(SuccessCallback.class)
-                .build();
-        mBaseLoadService = loadSir.register(contentView, (Callback.OnReloadListener) BaseFragment.this::onReload);
+                .addCallback(getEmptyCallback())
+                .addCallback(getErrorCallback())
+                .addCallback(getLoadingCallback())
+                .setDefaultCallback(SuccessCallback.class);
+        if (!CollectionUtils.isEmpty(onBindExtraCallBack())) {
+            for (Callback callback : onBindExtraCallBack()) {
+                builder.addCallback(callback);
+            }
+        }
+        mBaseLoadService = builder.build().register(contentView, (Callback.OnReloadListener) BaseFragment.this::onReload);
     }
 
     /**
-     * 提供初始化转状态布局
+     * 提供状态布局
+     *
      * @return
      */
-    protected  Callback getInitCallBack(){
-      return new BlankCallback();
+    protected Callback getInitCallBack() {
+        return new BlankCallback();
     }
 
+    protected Callback getLoadingCallback() {
+        return new LoadingCallback();
+    }
+
+    protected Callback getErrorCallback() {
+        return new ErrorCallback();
+    }
+
+    protected Callback getEmptyCallback() {
+        return new EmptyCallback();
+    }
+
+    /**
+     * 提供额外状态布局
+     *
+     * @return
+     */
+    protected List<Callback> onBindExtraCallBack() {
+        return null;
+    }
 
     /**
      * 初始化基本布局
@@ -251,7 +282,7 @@ public abstract class BaseFragment extends SupportFragment  {
         if (onBindBarLeftStyle() == BaseFragment.SimpleBarStyle.LEFT_BACK) {
 
             ImageView backView = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
-            if(onBindBarBackIcon()!=null){
+            if (onBindBarBackIcon() != null) {
                 backView.setImageResource(onBindBarBackIcon());
             }
             backView.setVisibility(View.VISIBLE);
@@ -327,6 +358,7 @@ public abstract class BaseFragment extends SupportFragment  {
     protected boolean enableSimplebar() {
         return true;
     }
+
     /**
      * 初始化右边标题栏类型
      *
@@ -558,7 +590,7 @@ public abstract class BaseFragment extends SupportFragment  {
      */
     public void showErrorView() {
         clearStatus();
-        mBaseLoadService.showCallback(ErrorCallback.class);
+        mBaseLoadService.showCallback(getErrorCallback().getClass());
     }
 
     /**
@@ -566,7 +598,7 @@ public abstract class BaseFragment extends SupportFragment  {
      */
     public void showEmptyView() {
         clearStatus();
-        mBaseLoadService.showCallback(EmptyCallback.class);
+        mBaseLoadService.showCallback(getEmptyCallback().getClass());
     }
 
     /**
@@ -580,8 +612,11 @@ public abstract class BaseFragment extends SupportFragment  {
             ((BaseFragment) parentFragment).showLoadingView(tip);
         } else {
             clearStatus();
-            mBaseLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
+            mBaseLoadService.setCallBack(getLoadingCallback().getClass(), (context, view1) -> {
                 TextView tvTip = view1.findViewById(R.id.tv_tip);
+                if(tvTip==null){
+                    throw new IllegalStateException(getLoadingCallback().getClass()+"必须带有显示提示文本的TextView,且id为R.id.tv_tip");
+                }
                 if (tip == null) {
                     tvTip.setVisibility(View.GONE);
                 } else {
@@ -590,7 +625,7 @@ public abstract class BaseFragment extends SupportFragment  {
                 }
             });
             //延时300毫秒显示,避免闪屏
-            mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(LoadingCallback.class), 300);
+            mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(getLoadingCallback().getClass()), 300);
 
         }
     }

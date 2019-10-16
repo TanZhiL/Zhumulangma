@@ -65,10 +65,8 @@ public class App extends Application {
         mApplication = this;
         AppHelper.getInstance(this)
                 .initLeakCanary()
-                //     .initCrashHandler()
                 .initFragmentation(false)
                 .initSpeech()
-                //     .initDoraemonKit()
                 .initLog()
                 .initAgentWebX5()
                 .initXmly()
@@ -78,6 +76,7 @@ public class App extends Application {
                 .initXmlyPlayer()
                 .initUtils()
                 .initBugly()
+                .initCrashView()
                 .initXmlyDownloader();
         XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
     }

@@ -72,6 +72,7 @@ ext {
             "agentwebX5":"2.0.0",
             "roundedimageview":"2.3.0",
             "aspectjrt":"1.8.+",
+            "customactivityoncrash":"2.2.0",
     ]
     //support配置
     support = [
@@ -129,9 +130,9 @@ ext {
             "rxbinding"                            :"com.jakewharton.rxbinding3:rxbinding:${versions["rxbinding"]}",
             "leakcanary"                           :"com.squareup.leakcanary:leakcanary-android:${versions["leakcanary"]}",
             "leakcanary-no-op"                     :"com.squareup.leakcanary:leakcanary-android-no-op:${versions["leakcanary"]}",
-            "agentwebX5"                             :"com.just.agentwebX5:agentwebX5:${versions["agentwebX5"]}",
-            "aspectjrt"                             :"org.aspectj:aspectjrt:${versions["aspectjrt"]}",
-
+            "agentwebX5"                           :"com.just.agentwebX5:agentwebX5:${versions["agentwebX5"]}",
+            "aspectjrt"                            :"org.aspectj:aspectjrt:${versions["aspectjrt"]}",
+            "customactivityoncrash"                 :"cat.ereza:customactivityoncrash:${versions["customactivityoncrash"]}",
             //***************************************界面类*************************************************
             "loadsir"                              :"com.kingja.loadsir:loadsir:${versions["loadsir"]}",
             "titlebar"                             :"com.wuhenzhizao:titlebar:${versions["titlebar"]}",

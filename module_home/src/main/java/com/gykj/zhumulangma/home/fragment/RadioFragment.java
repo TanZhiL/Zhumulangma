@@ -161,9 +161,9 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
             }
         });
         mLocationClient.setLocationOption(option);
-        new RxPermissions(this).requestEach(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION})
-                .subscribe(permission -> {
-                    if (permission.granted) {
+        new RxPermissions(this).request(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION})
+                .subscribe(granted -> {
+                    if (granted) {
                         mLocationClient.startLocation();
                     } else {
                         ToastUtil.showToast("无法获取本地电台,请允许应用获取位置信息");

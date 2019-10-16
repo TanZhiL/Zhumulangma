@@ -1,25 +1,22 @@
 package com.gykj.zhumulangma.common;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.CrashUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.Utils;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.util.SystemUtil;
-import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.hjq.toast.ToastUtils;
 import com.iflytek.cloud.SpeechConstant;
@@ -52,6 +49,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
+import cat.ereza.customactivityoncrash.activity.DefaultErrorActivity;
+import cat.ereza.customactivityoncrash.config.CaocConfig;
 import me.yokeyword.fragmentation.Fragmentation;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -236,28 +236,19 @@ public class AppHelper {
         KeyboardUtils.clickBlankArea2HideSoftInput();
         return this;
     }
-
-    public AppHelper initCrashHandler() {
-        CrashUtils.init((crashInfo, e) -> {
-            e.printStackTrace();
-            //使用Toast来显示异常信息
-            new Thread() {
-                @Override
-                public void run() {
-                    Looper.prepare();
-                    ToastUtil.showToast("程序发生未知异常,正在重启");
-                    Looper.loop();
-                }
-            }.start();
-            try {
-                Thread.sleep(1000);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            SystemUtil.restartApp(mApplication);
-        });
+    @SuppressLint("RestrictedApi")
+    public AppHelper initCrashView() {
+            CaocConfig.Builder.create()
+                    .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT)
+                    .enabled(true)//这阻止了对崩溃的拦截,false表示阻止。用它来禁用customactivityoncrash框架
+                    .minTimeBetweenCrashesMs(2000)      //定义应用程序崩溃之间的最短时间，以确定我们不在崩溃循环中。比如：在规定的时间内再次崩溃，框架将不处理，让系统处理！
+                    .errorActivity(DefaultErrorActivity.class) //程序崩溃后显示的页面
+                    .apply();
+        //如果没有任何配置，程序崩溃显示的是默认的设置
+        CustomActivityOnCrash.install(mApplication);
         return this;
     }
+
 
     public AppHelper initFragmentation(boolean isDebug) {
 
@@ -396,5 +387,22 @@ public class AppHelper {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private class CrashEventListener implements CustomActivityOnCrash.EventListener {
+        @Override
+        public void onLaunchErrorActivity() {
+            Log.d(TAG, "onLaunchErrorActivity() called");
+        }
+
+        @Override
+        public void onRestartAppFromErrorActivity() {
+            Log.d(TAG, "onRestartAppFromErrorActivity() called");
+        }
+
+        @Override
+        public void onCloseAppFromErrorActivity() {
+            Log.d(TAG, "onCloseAppFromErrorActivity() called");
+        }
     }
 }

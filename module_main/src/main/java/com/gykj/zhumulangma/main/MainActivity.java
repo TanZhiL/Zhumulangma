@@ -86,12 +86,12 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         //全局白色背景
         setTheme(R.style.NullTheme);
         //申请权限
-        new RxPermissions(this).requestEach(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        new RxPermissions(this).request(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.READ_EXTERNAL_STORAGE})
-                .subscribe(permission -> {
-                    if (!permission.granted) {
+                .subscribe(granted -> {
+                    if (!granted) {
                         new XPopup.Builder(this).dismissOnTouchOutside(false)
                                 .dismissOnBackPressed(false)
                                 .asConfirm("提示", "权限不足,请允许珠穆朗玛听获取权限",
@@ -194,7 +194,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     @Override
     public void onClick(View v) {
-
         if (v == globalPlay) {
             if (null == mPlayerManager.getCurrSound(true)) {
                 if (mHistoryBean == null) {

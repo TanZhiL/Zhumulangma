@@ -157,9 +157,9 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         if (id == R.id.iv_pop) {
             pop();
         } else if (id == R.id.iv_speech) {
-            new RxPermissions(this).requestEach(new String[]{Manifest.permission.RECORD_AUDIO})
-                    .subscribe(permission -> {
-                        if (permission.granted) {
+            new RxPermissions(this).request(new String[]{Manifest.permission.RECORD_AUDIO})
+                    .subscribe(granted -> {
+                        if (granted) {
                             try {
                                 mIat.startListening(mRecognizerListener);
                             } catch (Exception e) {

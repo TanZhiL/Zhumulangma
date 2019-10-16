@@ -129,6 +129,7 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginTop="4dp"
+                        android:maxLines="2"
                         android:ellipsize="end"
                         android:gravity="bottom"
                         android:text="这个人很懒,什么都没留下..."

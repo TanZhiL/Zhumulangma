@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppHelper;
@@ -34,6 +35,8 @@ import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -98,6 +101,7 @@ public abstract class BaseActivity extends SupportActivity {
 
     protected void initParam() {
     }
+
     public abstract void initView();
 
     public void initListener() {
@@ -152,25 +156,52 @@ public abstract class BaseActivity extends SupportActivity {
         viewStubContent.setLayoutResource(onBindLayout());
         View contentView = viewStubContent.inflate();
 
-        LoadSir loadSir = new LoadSir.Builder()
+        LoadSir.Builder builder = new LoadSir.Builder()
                 .addCallback(getInitCallBack())
-                .addCallback(new EmptyCallback())
-                .addCallback(new ErrorCallback())
-                .addCallback(new LoadingCallback())
-                .setDefaultCallback(LoadingCallback.class)
-                .build();
-        mBaseLoadService = loadSir.register(contentView, (Callback.OnReloadListener) v -> BaseActivity.this.onReload(v));
+                .addCallback(getEmptyCallback())
+                .addCallback(getErrorCallback())
+                .addCallback(getLoadingCallback())
+                .setDefaultCallback(getInitCallBack().getClass());
+        if (!CollectionUtils.isEmpty(onBindExtraCallBack())) {
+            for (Callback callback : onBindExtraCallBack()) {
+                builder.addCallback(callback);
+            }
+        }
+        mBaseLoadService = builder.build().register(contentView, (Callback.OnReloadListener) v -> BaseActivity.this.onReload(v));
         mBaseLoadService.showSuccess();
     }
 
+
     /**
-     * 提供初始化状态布局
+     * 提供状态布局
      *
      * @return
      */
     protected Callback getInitCallBack() {
         return new BlankCallback();
     }
+
+    protected Callback getLoadingCallback() {
+        return new LoadingCallback();
+    }
+
+    protected Callback getErrorCallback() {
+        return new ErrorCallback();
+    }
+
+    protected Callback getEmptyCallback() {
+        return new EmptyCallback();
+    }
+
+    /**
+     * 提供额外状态布局
+     *
+     * @return
+     */
+    protected List<Callback> onBindExtraCallBack() {
+        return null;
+    }
+
 
     /**
      * 初始化通用标题栏
@@ -277,6 +308,7 @@ public abstract class BaseActivity extends SupportActivity {
     protected boolean enableSimplebar() {
         return true;
     }
+
     /**
      * 初始化右边标题栏类型
      *
@@ -475,32 +507,28 @@ public abstract class BaseActivity extends SupportActivity {
     }
 
 
-
     /**
      * 显示初始化状态页
      */
     public void showInitView() {
-        mLoadingHandler.removeCallbacksAndMessages(null);
-        mBaseLoadService.showSuccess();
-        mBaseLoadService.showCallback(BlankCallback.class);
+        clearStatus();
+        mBaseLoadService.showCallback(getInitCallBack().getClass());
     }
 
     /**
      * 显示出错状态页
      */
     public void showErrorView() {
-        mLoadingHandler.removeCallbacksAndMessages(null);
-        mBaseLoadService.showSuccess();
-        mBaseLoadService.showCallback(ErrorCallback.class);
+        clearStatus();
+        mBaseLoadService.showCallback(getErrorCallback().getClass());
     }
 
     /**
      * 显示空数据状态页
      */
     public void showEmptyView() {
-        mLoadingHandler.removeCallbacksAndMessages(null);
-        mBaseLoadService.showSuccess();
-        mBaseLoadService.showCallback(EmptyCallback.class);
+      clearStatus();
+        mBaseLoadService.showCallback(getEmptyCallback().getClass());
 
     }
 
@@ -512,8 +540,11 @@ public abstract class BaseActivity extends SupportActivity {
     public void showLoadingView(String tip) {
         mLoadingHandler.removeCallbacksAndMessages(null);
         mBaseLoadService.showSuccess();
-        mBaseLoadService.setCallBack(LoadingCallback.class, (context, view1) -> {
+        mBaseLoadService.setCallBack(getLoadingCallback().getClass(), (context, view1) -> {
             TextView tvTip = view1.findViewById(R.id.tv_tip);
+            if(tvTip==null){
+                throw new IllegalStateException(getLoadingCallback().getClass()+"必须带有显示提示文本的TextView,且id为R.id.tv_tip");
+            }
             if (tip == null) {
                 tvTip.setVisibility(View.GONE);
             } else {
@@ -522,7 +553,7 @@ public abstract class BaseActivity extends SupportActivity {
             }
         });
         //延时100毫秒显示,避免闪屏
-        mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(LoadingCallback.class), 100);
+        mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(getLoadingCallback().getClass()), 300);
     }
 
     /**
@@ -565,6 +596,7 @@ public abstract class BaseActivity extends SupportActivity {
     public FragmentAnimator onCreateFragmentAnimator() {
         return new DefaultHorizontalAnimator();
     }
+
     /**
      * 页面跳转
      *
@@ -608,6 +640,7 @@ public abstract class BaseActivity extends SupportActivity {
                     new NavigateBean(path, (ISupportFragment) navigation)));
         }
     }
+
     @Override
     public void onBackPressedSupport() {
         //如果正在显示loading,则清除
@@ -617,6 +650,7 @@ public abstract class BaseActivity extends SupportActivity {
         }
         super.onBackPressedSupport();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

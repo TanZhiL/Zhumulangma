@@ -182,6 +182,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="4dp"
                         android:ellipsize="end"
+                        android:maxLines="2"
                         android:gravity="bottom"
                         android:text="这个人很懒,什么都没留下..."
                         android:textColor="@color/white"
