@@ -70,6 +70,7 @@ public class App extends Application {
                 .initLog()
                 .initAgentWebX5()
                 .initXmly()
+                .initAspectj()
                 .initGreenDao()
                 .initUM()
                 .initRouter()

@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.aop.login;
+package com.gykj.zhumulangma.common.aop;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -105,7 +105,6 @@ public class LoginHelper {
                     .getRefreshToken(), mAccessToken.getExpiresAt(), mAccessToken.getUid());
         }
     }
-
 
 
 }

@@ -13,6 +13,9 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.Utils;
+import com.gykj.thomas.aspectj.OkAspectjHelper;
+import com.gykj.thomas.aspectj.PointHandler;
+import com.gykj.zhumulangma.common.aop.PointHelper;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
@@ -41,6 +44,7 @@ import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 import com.ximalaya.ting.android.opensdk.util.Logger;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.query.QueryBuilder;
 import org.json.JSONException;
@@ -387,6 +391,11 @@ public class AppHelper {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public AppHelper initAspectj() {
+        OkAspectjHelper.setmHandler(new PointHelper(mApplication));
+        return this;
     }
 
     private class CrashEventListener implements CustomActivityOnCrash.EventListener {

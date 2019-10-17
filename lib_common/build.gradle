@@ -116,6 +116,8 @@ dependencies {
     api rootProject.ext.dependencies["agentwebX5"]
     api rootProject.ext.dependencies["roundedimageview"]
     api rootProject.ext.dependencies["aspectjrt"]
+    api rootProject.ext.dependencies["okaspectjrt"]
+    annotationProcessor rootProject.ext.dependencies["okaspectjrt-compiler"]
     api rootProject.ext.dependencies["customactivityoncrash"]
 
     api 'com.amap.api:location:latest.integration'

@@ -1,4 +1,6 @@
-package com.gykj.zhumulangma.common.aop.login;
+package com.gykj.zhumulangma.common.aop;
+
+import com.gykj.thomas.aspectj.OkAspectj;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,6 +13,7 @@ import java.lang.annotation.Target;
  * Email: 1071931588@qq.com<br/>
  * Description:
  */
+@OkAspectj
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NeedLogin {

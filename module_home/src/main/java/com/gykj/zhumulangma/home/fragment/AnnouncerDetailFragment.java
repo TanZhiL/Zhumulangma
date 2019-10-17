@@ -27,7 +27,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.aop.login.NeedLogin;
+import com.gykj.zhumulangma.common.aop.NeedLogin;
 import com.gykj.zhumulangma.common.bean.AnnouncerCategoryBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;

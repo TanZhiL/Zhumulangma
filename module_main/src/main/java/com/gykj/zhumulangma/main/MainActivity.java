@@ -18,7 +18,7 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.aop.login.LoginHelper;
+import com.gykj.zhumulangma.common.aop.LoginHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
