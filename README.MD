@@ -115,6 +115,9 @@ sourceSets {
 * email：1071931588@qq.com
 ### 关于作者
 谭志龙
+### 开源项目
+* 快速切面编程开源库 https://github.com/TanZhiL/OkAspectj
+* 高仿喜马拉雅听Android客户端 https://github.com/TanZhiL/Zhumulangma
 ### License
 ```
 Copyright (C)  tanzhilong Zhumualangma Framework Open Source Project
