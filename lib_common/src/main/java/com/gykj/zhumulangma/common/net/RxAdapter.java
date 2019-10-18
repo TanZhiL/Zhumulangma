@@ -1,6 +1,10 @@
-package com.gykj.zhumulangma.common.net.http;
+package com.gykj.zhumulangma.common.net;
 
 import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
+import com.gykj.zhumulangma.common.net.exception.CustException;
+import com.gykj.zhumulangma.common.net.exception.ExceptionConverter;
+import com.gykj.zhumulangma.common.net.exception.InterceptableException;
+import com.gykj.zhumulangma.common.net.exception.RetryException;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 
 import io.reactivex.Observable;
@@ -27,25 +31,29 @@ public class RxAdapter {
 
     /**
      * 异常处理方式
-     * <br/>HandleException(将内部异常选择性抛出,可设置需要重试的异常)->
+     * <br/>StreamHandler(将内部异常选择性抛出,可设置需要重试的异常)->
      * <br/>RetryException(所有异常都会经过此处,可拦截需要重试的内部异常,如Token超时等)->
-     * <br/>DoOnException(统一处理未被拦截内部异常和所有外部异常)
+     * <br/>ExceptionHandler(统一处理未被拦截内部异常和所有外部异常)
      */
     public static ObservableTransformer exceptionTransformer() {
 
         return observable -> observable
-                .flatMap(new HandleException())
+                .flatMap(new StreamHandler())
                 .retryWhen(new RetryException())//拦截需要处理的异常
-                .onErrorResumeNext(new DoOnException());
+                .onErrorResumeNext(new ExceptionHandler());
     }
 
     /**
      * 将内部异常选择性抛出,可设置需要重试的异常
      */
-    private static class HandleException implements Function<Object, Observable> {
+    private static class StreamHandler implements Function<Object, Observable> {
 
         @Override
         public Observable apply(Object o) throws Exception {
+            return handle(o);
+        }
+
+        private Observable handle(Object o) {
             if (o instanceof ResponseDTO) {
                 ResponseDTO respDTO = (ResponseDTO) o;
                 //选择性抛出内部异常
@@ -65,11 +73,15 @@ public class RxAdapter {
     /**
      * 统一处理未被拦截内部异常和所有外部异常
      */
-    private static class DoOnException implements Function<Throwable, Observable> {
+    private static class ExceptionHandler implements Function<Throwable, Observable> {
         @Override
         public Observable apply(Throwable t) {
+            return handle(t);
+        }
+
+        private Observable handle(Throwable t) {
+            //转换外部异常
             if (!(t instanceof CustException)) {
-                //转换外部异常
                 t = ExceptionConverter.convert(t);
             }
             ToastUtil.showToast(ToastUtil.LEVEL_E, t.getMessage());

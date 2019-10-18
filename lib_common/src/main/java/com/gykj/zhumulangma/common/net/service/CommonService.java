@@ -1,27 +1,28 @@
-package com.gykj.zhumulangma.common.net;
+package com.gykj.zhumulangma.common.net.service;
 
 import com.gykj.zhumulangma.common.bean.BingBean;
-import com.gykj.zhumulangma.common.bean.UserBean;
-import com.gykj.zhumulangma.common.net.dto.LoginDTO;
-import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
+import com.gykj.zhumulangma.common.net.Constans;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
-import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
-
+/**
+ * Author: Thomas.<br/>
+ * Date: 2019/10/12 11:16<br/>
+ * Email: 1071931588@qq.com<br/>
+ * Description:公用Api
+ */
 public interface CommonService {
 
-    @Headers(Api.HEADER_HOST1)
-    @POST("app/tokenlogin")
-    Observable<ResponseDTO<UserBean>> login(@Body LoginDTO loginDTO);
-
-
-    @GET(Api.BING_URL)
+    /**
+     * 获取必应数据
+     * @param type
+     * @param status
+     * @return
+     */
+    @GET(Constans.BING_URL)
     Observable<BingBean> getBing(@Query("format") String type, @Query("n") String status);
 
     /**

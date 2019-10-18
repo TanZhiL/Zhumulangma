@@ -4,9 +4,9 @@ package com.gykj.zhumulangma.common.net;
  * Author: Thomas.<br/>
  * Date: 2019/10/12 11:16<br/>
  * Email: 1071931588@qq.com<br/>
- * Description:Api
+ * Description:Constans
  */
-public interface Api {
+public interface Constans {
     /**
      * Token
      */
@@ -15,11 +15,11 @@ public interface Api {
     /**
      * 在线
      */
-    int STATUS_ONLINE = 0;
+    int NET_ONLINE = 0;
     /**
      * 离线
      */
-    int STATUS_OFFLINE = 1;
+    int NET_OFFLINE = 1;
 
     String HOST_KEY = "HOST";
     /**

@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.net.http;
+package com.gykj.zhumulangma.common.net.exception;
 
 /**
  * Author: Thomas.

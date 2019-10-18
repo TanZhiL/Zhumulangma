@@ -25,11 +25,12 @@ public class ExampleUnitTest {
 
     @Test
     public void rxTest() {
-
+        String a=null;
         Observable.create(new ObservableOnSubscribe<String>() {
             @Override
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
-                System.out.println("开始");
+
+                System.out.println(a);
                 System.out.println(Thread.currentThread().getName());
                 emitter.onNext("0");
                 emitter.onComplete();

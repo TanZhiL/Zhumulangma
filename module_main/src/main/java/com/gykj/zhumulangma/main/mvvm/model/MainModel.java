@@ -5,7 +5,7 @@ import android.app.Application;
 import com.gykj.zhumulangma.common.bean.BingBean;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.net.NetManager;
-import com.gykj.zhumulangma.common.net.http.RxAdapter;
+import com.gykj.zhumulangma.common.net.RxAdapter;
 
 import io.reactivex.Observable;
 

@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.net.http;
+package com.gykj.zhumulangma.common.net.exception;
 
 import android.net.ParseException;
 
@@ -18,9 +18,9 @@ import retrofit2.HttpException;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:网络异常转换
  */
-class ExceptionConverter {
+public class ExceptionConverter {
 
-    static Exception convert(Throwable e) {
+   public static Exception convert(Throwable e) {
         String msg;
         if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;

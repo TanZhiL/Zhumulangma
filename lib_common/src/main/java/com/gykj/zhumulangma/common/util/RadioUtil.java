@@ -5,8 +5,8 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.blankj.utilcode.util.CollectionUtils;
-import com.gykj.zhumulangma.common.net.http.CustException;
-import com.gykj.zhumulangma.common.net.http.RxAdapter;
+import com.gykj.zhumulangma.common.net.exception.CustException;
+import com.gykj.zhumulangma.common.net.RxAdapter;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.live.program.Program;

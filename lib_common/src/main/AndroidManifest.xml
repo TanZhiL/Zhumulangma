@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.gykj.zhumulangma.common">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -61,6 +60,10 @@
     <!--Bugly END-->
 
     <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:icon="@drawable/common_launcher_ting"
         android:networkSecurityConfig="@xml/network_security_config">
 

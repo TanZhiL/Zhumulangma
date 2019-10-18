@@ -1,6 +1,6 @@
 package com.gykj.zhumulangma.common;
 
-import com.gykj.zhumulangma.common.net.http.RetryException;
+import com.gykj.zhumulangma.common.net.exception.RetryException;
 
 import org.junit.Test;
 

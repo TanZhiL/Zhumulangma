@@ -1,26 +1,21 @@
 package com.gykj.zhumulangma.listen.mvvm.model;
 
 import android.app.Application;
-import android.app.ListActivity;
 import android.database.Cursor;
 
 import com.google.gson.Gson;
-import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
-import com.gykj.zhumulangma.common.net.http.RxAdapter;
-import com.gykj.zhumulangma.common.util.log.TLog;
+import com.gykj.zhumulangma.common.net.RxAdapter;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 
 public class HistoryModel extends ZhumulangmaModel {

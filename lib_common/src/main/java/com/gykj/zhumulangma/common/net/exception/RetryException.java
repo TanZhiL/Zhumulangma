@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.net.http;
+package com.gykj.zhumulangma.common.net.exception;
 
 
 import android.util.Log;
@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.UserBean;
 import com.gykj.zhumulangma.common.net.NetManager;
+import com.gykj.zhumulangma.common.net.RxAdapter;
 import com.gykj.zhumulangma.common.net.dto.LoginDTO;
 import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
 import com.gykj.zhumulangma.common.util.log.TLog;
@@ -65,11 +66,11 @@ public class RetryException implements Function<Observable<Throwable>, Observabl
             loginDTO.setDescer_phone(userBean.getDescer_phone());
             loginDTO.setGraer_name(userBean.getGraer_name());
             loginDTO.setGraer_phone(userBean.getGraer_phone());
-            return NetManager.getInstance().getCommonService().login(loginDTO)
+            return NetManager.getInstance().getUserService().login(loginDTO)
                     .flatMap((Function<ResponseDTO<UserBean>, Observable<?>>) userBeanResponseDTO -> {
                         if (!userBeanResponseDTO.code.equals(ExceptionConverter.APP_ERROR.SUCCESS)) {
                             return Observable.error(new CustException(userBeanResponseDTO.code,
-                                    "账户异常,请先登陆"));
+                                    "账户异常,请先登陆!"));
                         } else {
                             SPUtils.getInstance().put(AppConstants.SP.TOKEN, userBeanResponseDTO.result.getToken());
                             SPUtils.getInstance().put(AppConstants.SP.USER, new Gson().toJson(userBeanResponseDTO.result));
@@ -78,7 +79,7 @@ public class RetryException implements Function<Observable<Throwable>, Observabl
                     }).compose(RxAdapter.schedulersTransformer());
         } else {
             return Observable.error(new CustException(ExceptionConverter.APP_ERROR.ACCOUNT_ERROR,
-                    "账户异常,请先登陆"));
+                    "账户异常,请先登陆!"));
         }
     }
 }

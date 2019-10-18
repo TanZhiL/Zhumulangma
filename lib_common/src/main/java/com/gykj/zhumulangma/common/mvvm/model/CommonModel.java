@@ -3,9 +3,9 @@ package com.gykj.zhumulangma.common.mvvm.model;
 import android.app.Application;
 
 import com.gykj.zhumulangma.common.AppHelper;
-import com.gykj.zhumulangma.common.net.CommonService;
+import com.gykj.zhumulangma.common.net.service.CommonService;
 import com.gykj.zhumulangma.common.net.NetManager;
-import com.gykj.zhumulangma.common.net.http.RxAdapter;
+import com.gykj.zhumulangma.common.net.RxAdapter;
 
 import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.Property;

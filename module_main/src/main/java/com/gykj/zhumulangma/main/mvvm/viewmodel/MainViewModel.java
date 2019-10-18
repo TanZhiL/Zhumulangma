@@ -17,7 +17,7 @@ import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
-import com.gykj.zhumulangma.common.net.Api;
+import com.gykj.zhumulangma.common.net.Constans;
 import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.main.mvvm.model.MainModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -226,7 +226,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                         return Observable.just(new RealResponseBody("", 0, null));
                     }
                     bingBean = bean;
-                    return mModel.getCommonBody(Api.BING_HOST + bean.getImages().get(0).getUrl());
+                    return mModel.getCommonBody(Constans.BING_HOST + bean.getImages().get(0).getUrl());
                 })
                 .observeOn(Schedulers.io())
                 .subscribe(body -> {

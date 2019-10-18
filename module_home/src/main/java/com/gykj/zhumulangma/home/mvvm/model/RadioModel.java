@@ -4,12 +4,11 @@ import android.app.Application;
 import android.database.Cursor;
 
 import com.google.gson.Gson;
-import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
-import com.gykj.zhumulangma.common.net.http.RxAdapter;
+import com.gykj.zhumulangma.common.net.RxAdapter;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
