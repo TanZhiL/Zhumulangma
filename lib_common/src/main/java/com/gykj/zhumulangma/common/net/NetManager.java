@@ -6,12 +6,14 @@ import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.net.service.CommonService;
 import com.gykj.zhumulangma.common.net.service.UserService;
 
 import java.io.IOException;
 import java.net.Proxy;
 
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -33,6 +35,8 @@ public class NetManager {
     private static volatile NetManager instance;
     private Retrofit mRetrofit;
     private int mNetStatus = Constans.NET_ONLINE;
+    private CommonService mCommonService;
+    private UserService mUserService;
 
     private NetManager() {
 
@@ -75,7 +79,10 @@ public class NetManager {
      * @return
      */
     public CommonService getCommonService() {
-        return mRetrofit.create(CommonService.class);
+        if(mCommonService==null){
+            mCommonService=mRetrofit.create(CommonService.class);
+        }
+        return mCommonService;
     }
 
     /**
@@ -84,7 +91,10 @@ public class NetManager {
      * @return
      */
     public UserService getUserService() {
-        return mRetrofit.create(UserService.class);
+        if(mUserService==null){
+            mUserService=mRetrofit.create(UserService.class);
+        }
+        return mUserService;
     }
 
     /**

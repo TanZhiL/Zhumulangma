@@ -16,7 +16,6 @@ import io.reactivex.Observable;
  * <br/>Description:
  */
 public class MainUserModel  extends ZhumulangmaModel {
-    NetManager mNetManager = NetManager.getInstance();
     public MainUserModel(Application application) {
         super(application);
     }

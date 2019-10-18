@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 /**
  * Author: Thomas.
@@ -56,7 +57,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<BannerV2List> getCategoryBannersV2(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getCategoryBannersV2(specificParams,
+        return Observable.create((ObservableOnSubscribe<BannerV2List>) emitter ->
+                CommonRequest.getCategoryBannersV2(specificParams,
                 new IDataCallBack<BannerV2List>() {
                     @Override
                     public void onSuccess(@Nullable BannerV2List bannerV2List) {
@@ -78,7 +80,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<GussLikeAlbumList> getGuessLikeAlbum(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getGuessLikeAlbum(specificParams,
+        return Observable.create((ObservableOnSubscribe<GussLikeAlbumList>) emitter ->
+                CommonRequest.getGuessLikeAlbum(specificParams,
                 new IDataCallBack<GussLikeAlbumList>() {
                     @Override
                     public void onSuccess(@Nullable GussLikeAlbumList gussLikeAlbumList) {
@@ -100,7 +103,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<AlbumList> getAllPaidAlbums(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getAllPaidAlbums(specificParams,
+        return Observable.create((ObservableOnSubscribe<AlbumList>) emitter ->
+                CommonRequest.getAllPaidAlbums(specificParams,
                 new IDataCallBack<AlbumList>() {
                     @Override
                     public void onSuccess(@Nullable AlbumList albumList) {
@@ -122,7 +126,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<AlbumList> getAlbumList(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getAlbumList(specificParams,
+        return Observable.create((ObservableOnSubscribe<AlbumList>) emitter ->
+                CommonRequest.getAlbumList(specificParams,
                 new IDataCallBack<AlbumList>() {
                     @Override
                     public void onSuccess(@Nullable AlbumList albumList) {
@@ -144,7 +149,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<RadioList> getRadios(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getRadios(specificParams,
+        return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
+                CommonRequest.getRadios(specificParams,
                 new IDataCallBack<RadioList>() {
                     @Override
                     public void onSuccess(@Nullable RadioList radioList) {
@@ -166,7 +172,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<ColumnList> getColumnList(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getColumnList(specificParams,
+        return Observable.create((ObservableOnSubscribe<ColumnList>) emitter ->
+                CommonRequest.getColumnList(specificParams,
                 new IDataCallBack<ColumnList>() {
                     @Override
                     public void onSuccess(@Nullable ColumnList columnList) {
@@ -188,7 +195,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<AlbumList> getPaidAlbumByTag(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getPaidAlbumByTag(specificParams,
+        return Observable.create((ObservableOnSubscribe<AlbumList>) emitter ->
+                CommonRequest.getPaidAlbumByTag(specificParams,
                 new IDataCallBack<AlbumList>() {
                     @Override
                     public void onSuccess(@Nullable AlbumList albumList) {
@@ -210,7 +218,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<RadioList> getRadiosByCity(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getRadiosByCity(specificParams,
+        return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
+                CommonRequest.getRadiosByCity(specificParams,
                 new IDataCallBack<RadioList>() {
                     @Override
                     public void onSuccess(@Nullable RadioList radioList) {
@@ -232,7 +241,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<RadioList> getRankRadios(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getRankRadios(specificParams,
+        return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
+                CommonRequest.getRankRadios(specificParams,
                 new IDataCallBack<RadioList>() {
                     @Override
                     public void onSuccess(@Nullable RadioList radioList) {
@@ -254,7 +264,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<HotWordList> getHotWords(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getHotWords(specificParams,
+        return Observable.create((ObservableOnSubscribe<HotWordList>) emitter ->
+                CommonRequest.getHotWords(specificParams,
                 new IDataCallBack<HotWordList>() {
                     @Override
                     public void onSuccess(@Nullable HotWordList hotWordList) {
@@ -276,7 +287,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<SearchAlbumList> getSearchedAlbums(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getSearchedAlbums(specificParams,
+        return Observable.create((ObservableOnSubscribe<SearchAlbumList>) emitter ->
+                CommonRequest.getSearchedAlbums(specificParams,
                 new IDataCallBack<SearchAlbumList>() {
                     @Override
                     public void onSuccess(@Nullable SearchAlbumList albumList) {
@@ -298,7 +310,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<SearchTrackList> getSearchedTracks(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getSearchedTracks(specificParams,
+        return Observable.create((ObservableOnSubscribe<SearchTrackList>) emitter ->
+                CommonRequest.getSearchedTracks(specificParams,
                 new IDataCallBack<SearchTrackList>() {
                     @Override
                     public void onSuccess(@Nullable SearchTrackList trackList) {
@@ -320,7 +333,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<RadioList> getSearchedRadios(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getSearchedRadios(specificParams,
+        return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
+                CommonRequest.getSearchedRadios(specificParams,
                 new IDataCallBack<RadioList>() {
                     @Override
                     public void onSuccess(@Nullable RadioList radioList) {
@@ -342,7 +356,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<AnnouncerList> getSearchAnnouncers(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getSearchAnnouncers(specificParams,
+        return Observable.create((ObservableOnSubscribe<AnnouncerList>) emitter ->
+                CommonRequest.getSearchAnnouncers(specificParams,
                 new IDataCallBack<AnnouncerList>() {
                     @Override
                     public void onSuccess(@Nullable AnnouncerList announcerList) {
@@ -364,7 +379,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<BatchAlbumList> getBatch(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getBatch(specificParams,
+        return Observable.create((ObservableOnSubscribe<BatchAlbumList>) emitter ->
+                CommonRequest.getBatch(specificParams,
                 new IDataCallBack<BatchAlbumList>() {
                     @Override
                     public void onSuccess(@Nullable BatchAlbumList batchAlbumList) {
@@ -386,7 +402,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<TrackList> getTracks(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getTracks(specificParams,
+        return Observable.create((ObservableOnSubscribe<TrackList>) emitter ->
+                CommonRequest.getTracks(specificParams,
                 new IDataCallBack<TrackList>() {
                     @Override
                     public void onSuccess(@Nullable TrackList trackList) {
@@ -408,7 +425,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<LastPlayTrackList> getLastPlayTracks(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getLastPlayTracks(specificParams,
+        return Observable.create((ObservableOnSubscribe<LastPlayTrackList>) emitter ->
+                CommonRequest.getLastPlayTracks(specificParams,
                 new IDataCallBack<LastPlayTrackList>() {
                     @Override
                     public void onSuccess(@Nullable LastPlayTrackList trackList) {
@@ -430,7 +448,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<AnnouncerList> getAnnouncerList(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getAnnouncerList(specificParams,
+        return Observable.create((ObservableOnSubscribe<AnnouncerList>) emitter ->
+                CommonRequest.getAnnouncerList(specificParams,
                 new IDataCallBack<AnnouncerList>() {
                     @Override
                     public void onSuccess(@Nullable AnnouncerList announcerList) {
@@ -452,7 +471,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<RelativeAlbums> getRelativeAlbumsUseTrackId(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getRelativeAlbumsUseTrackId(specificParams,
+        return Observable.create((ObservableOnSubscribe<RelativeAlbums>) emitter ->
+                CommonRequest.getRelativeAlbumsUseTrackId(specificParams,
                 new IDataCallBack<RelativeAlbums>() {
                     @Override
                     public void onSuccess(@Nullable RelativeAlbums relativeAlbums) {
@@ -474,7 +494,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<RelativeAlbums> getRelativeAlbums(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getRelativeAlbums(specificParams,
+        return Observable.create((ObservableOnSubscribe<RelativeAlbums>) emitter ->
+                CommonRequest.getRelativeAlbums(specificParams,
                 new IDataCallBack<RelativeAlbums>() {
                     @Override
                     public void onSuccess(@Nullable RelativeAlbums relativeAlbums) {
@@ -496,7 +517,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<RecommendDownload> getRecommendDownloadList(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getRecommendDownloadList(specificParams,
+        return Observable.create((ObservableOnSubscribe<RecommendDownload>) emitter ->
+                CommonRequest.getRecommendDownloadList(specificParams,
                 new IDataCallBack<RecommendDownload>() {
                     @Override
                     public void onSuccess(@Nullable RecommendDownload recommendDownload) {
@@ -517,7 +539,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<ProgramList> getProgram(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getProgram(specificParams,
+        return Observable.create((ObservableOnSubscribe<ProgramList>) emitter ->
+                CommonRequest.getProgram(specificParams,
                 new IDataCallBack<ProgramList>() {
                     @Override
                     public void onSuccess(@Nullable ProgramList programList) {
@@ -538,7 +561,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<RadioListById> getRadiosByIds(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getRadiosByIds(specificParams,
+        return Observable.create((ObservableOnSubscribe<RadioListById>) emitter ->
+                CommonRequest.getRadiosByIds(specificParams,
                 new IDataCallBack<RadioListById>() {
                     @Override
                     public void onSuccess(@Nullable RadioListById radioListById) {
@@ -589,7 +613,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<SearchTrackListV2> searchTrackV2(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.searchTrackV2(specificParams,
+        return Observable.create((ObservableOnSubscribe<SearchTrackListV2>) emitter ->
+                CommonRequest.searchTrackV2(specificParams,
                 new IDataCallBack<SearchTrackListV2>() {
                     @Override
                     public void onSuccess(@Nullable SearchTrackListV2 searchTrackListV2) {
@@ -611,7 +636,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<RadioListByCategory> getRadiosByCategory(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getRadiosByCategory(specificParams,
+        return Observable.create((ObservableOnSubscribe<RadioListByCategory>) emitter ->
+                CommonRequest.getRadiosByCategory(specificParams,
                 new IDataCallBack<RadioListByCategory>() {
                     @Override
                     public void onSuccess(@Nullable RadioListByCategory radioListByCategory) {
@@ -633,7 +659,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<AnnouncerListByIds> getAnnouncersBatch(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getAnnouncersBatch(specificParams,
+        return Observable.create((ObservableOnSubscribe<AnnouncerListByIds>) emitter ->
+                CommonRequest.getAnnouncersBatch(specificParams,
                 new IDataCallBack<AnnouncerListByIds>() {
                     @Override
                     public void onSuccess(@Nullable AnnouncerListByIds announcerListByIds) {
@@ -655,7 +682,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<AlbumList> getAlbumsByAnnouncer(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getAlbumsByAnnouncer(specificParams,
+        return Observable.create((ObservableOnSubscribe<AlbumList>) emitter ->
+                CommonRequest.getAlbumsByAnnouncer(specificParams,
                 new IDataCallBack<AlbumList>() {
                     @Override
                     public void onSuccess(@Nullable AlbumList albumList) {
@@ -676,7 +704,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<AnnouncerTrackList> getTracksByAnnouncer(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getTracksByAnnouncer(specificParams,
+        return Observable.create((ObservableOnSubscribe<AnnouncerTrackList>) emitter ->
+                CommonRequest.getTracksByAnnouncer(specificParams,
                 new IDataCallBack<AnnouncerTrackList>() {
                     @Override
                     public void onSuccess(@Nullable AnnouncerTrackList trackList) {
@@ -698,7 +727,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<AnnouncerCategoryList> getAnnouncerCategoryList(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getAnnouncerCategoryList(specificParams,
+        return Observable.create((ObservableOnSubscribe<AnnouncerCategoryList>) emitter ->
+                CommonRequest.getAnnouncerCategoryList(specificParams,
                 new IDataCallBack<AnnouncerCategoryList>() {
                     @Override
                     public void onSuccess(@Nullable AnnouncerCategoryList categoryList) {
@@ -721,7 +751,8 @@ public class ZhumulangmaModel extends CommonModel {
      * @return
      */
     public Observable<SuggestWords> getSuggestWord(Map<String, String> specificParams) {
-        return Observable.create(emitter -> CommonRequest.getSuggestWord(specificParams,
+        return Observable.create((ObservableOnSubscribe<SuggestWords>) emitter ->
+                CommonRequest.getSuggestWord(specificParams,
                 new IDataCallBack<SuggestWords>() {
                     @Override
                     public void onSuccess(@Nullable SuggestWords suggestWords) {

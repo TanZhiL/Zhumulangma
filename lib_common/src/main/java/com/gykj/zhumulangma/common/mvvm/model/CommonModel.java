@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import okhttp3.ResponseBody;
 
@@ -26,11 +27,9 @@ import okhttp3.ResponseBody;
  * <br/>Description:通用Model
  */
 public class CommonModel extends BaseModel {
-    private CommonService mCommonService;
 
     public CommonModel(Application application) {
         super(application);
-        mCommonService = NetManager.getInstance().getCommonService();
     }
 
     /**
@@ -39,7 +38,7 @@ public class CommonModel extends BaseModel {
      * @return
      */
     public Observable<ResponseBody> getCommonBody(String url){
-        return mCommonService.getCommonBody(url)
+        return mNetManager.getCommonService().getCommonBody(url)
                 .compose(RxAdapter.exceptionTransformer())
                 .compose(RxAdapter.schedulersTransformer());
     }
@@ -53,25 +52,25 @@ public class CommonModel extends BaseModel {
     public <T> Observable<List<T>> list(Class<T> cls, int page, int pagesize, Property asc, Property desc,
                                         WhereCondition cond, WhereCondition... condMore){
 
-        return  Observable.create(emitter -> {
+        return  Observable.create((ObservableOnSubscribe<List<T>>) emitter -> {
             List<T> list = new ArrayList<>();
             try {
 
                 QueryBuilder<T> builder = AppHelper.getDaoSession().queryBuilder(cls);
-                if(page!=0&&pagesize!=0){
-                    builder=builder.offset((page-1)*pagesize).limit(pagesize);
+                if (page != 0 && pagesize != 0) {
+                    builder = builder.offset((page - 1) * pagesize).limit(pagesize);
                 }
-                if(cond!=null){
-                    builder=builder.where(cond,condMore);
+                if (cond != null) {
+                    builder = builder.where(cond, condMore);
                 }
-                if(asc!=null){
-                    builder=builder.orderAsc(asc);
+                if (asc != null) {
+                    builder = builder.orderAsc(asc);
                 }
-                if(desc!=null){
-                    builder=builder.orderDesc(desc);
+                if (desc != null) {
+                    builder = builder.orderDesc(desc);
 
                 }
-                list=builder.list();
+                list = builder.list();
             } catch (Exception e) {
                 emitter.onError(e);
             }
@@ -136,7 +135,7 @@ public class CommonModel extends BaseModel {
      * @return
      */
     public <T> Observable<Boolean> clearAll(Class<T> cls){
-        return  Observable.create(emitter -> {
+        return  Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
             try {
                 AppHelper.getDaoSession().deleteAll(cls);
             } catch (Exception e) {
@@ -154,7 +153,7 @@ public class CommonModel extends BaseModel {
      * @return
      */
     public <T,K> Observable<Boolean> remove(Class<T> cls,K key){
-        return  Observable.create(emitter -> {
+        return  Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
             try {
                 AbstractDao<T, K> tkAbstractDao = (AbstractDao<T, K>) AppHelper.getDaoSession().getDao(cls);
                 tkAbstractDao.deleteByKey(key);
@@ -175,7 +174,7 @@ public class CommonModel extends BaseModel {
      */
     public  <T> Observable<T> insert(T entity){
 
-        return  Observable.create(emitter -> {
+        return  Observable.create((ObservableOnSubscribe<T>) emitter -> {
             try {
                 AppHelper.getDaoSession().insertOrReplace(entity);
             } catch (Exception e) {

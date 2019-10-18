@@ -2,6 +2,8 @@ package com.gykj.zhumulangma.common.mvvm.model;
 
 import android.app.Application;
 
+import com.gykj.zhumulangma.common.net.NetManager;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -13,6 +15,7 @@ import io.reactivex.disposables.Disposable;
  * <br/>Description:Model基类
  */
 public abstract class BaseModel {
+    protected NetManager mNetManager = NetManager.getInstance();
     protected Application mApplication;
     private CompositeDisposable mCompositeDisposable;
     public BaseModel(Application application) {
