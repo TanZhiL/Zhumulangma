@@ -96,6 +96,7 @@ sourceSets {
 ### 集成开发模式下的Application
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190530150933283.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9tZW54aW5kaWFvbG9uZy5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70)
 ### 主要用到的开源库
+* 快速切面编程开源库 https://github.com/TanZhiL/OkAspectj
 * 喜马拉雅SDK http://open.ximalaya.com/
 * fragmentation https://github.com/YoKeyword/Fragmentation
 * okhttp https://github.com/square/okhttp 
