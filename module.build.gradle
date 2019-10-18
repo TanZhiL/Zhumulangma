@@ -4,6 +4,14 @@ if (isModule.toBoolean()) {
     apply plugin: 'com.android.library'
 }
 android {
+    signingConfigs {
+    debug {
+        storeFile file('E:\\Project\\Android\\thomas.jks')
+        storePassword '123698745'
+        keyAlias = 'thomas'
+        keyPassword '123698745'
+    }
+}
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
@@ -11,6 +19,7 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
+        flavorDimensions versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //阿里路由框架配置
         javaCompileOptions {
@@ -23,6 +32,7 @@ android {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
             abiFilters "armeabi","armeabi-v7a","x86" //,"x86_64" , "arm64-v8a",
         }
+        signingConfig signingConfigs.debug
     }
     sourceSets {
         main {
@@ -35,16 +45,6 @@ android {
                     exclude 'debug/**'
                 }
             }
-        }
-    }
-    buildTypes {
-        debug {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     dataBinding {
@@ -60,5 +60,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+dependencies {
+    implementation project(':lib_common')
+    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
+    annotationProcessor rootProject.ext.dependencies["okaspectjrt-compiler"]
+    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
+    annotationProcessor rootProject.ext.dependencies["lifecycle-compiler"]
+}
+
 
 

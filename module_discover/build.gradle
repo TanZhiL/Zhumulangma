@@ -11,13 +11,6 @@ android {
         }
     }
 }
-dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':lib_common')
-
-    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
-
-}
 //组件模式
 android.libraryVariants.all { variant ->
     LibraryPlugin plugin = project.plugins.getPlugin(LibraryPlugin)

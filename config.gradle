@@ -71,9 +71,12 @@ ext {
             "bga-qrcode-zxing":"1.3.6",
             "agentwebX5":"2.0.0",
             "roundedimageview":"2.3.0",
-            "aspectjrt":"1.8.+",
+            "aspectjrt":"1.8.14",
             "customactivityoncrash":"2.2.0",
-            "okaspectjrt":"1.0.2",
+            "okaspectjrt":"1.0.4",
+            "location":"4.7.0",
+            "crashreport_upgrade":"1.4.1",
+            "tinker-android-lib":"1.9.9",
     ]
     //support配置
     support = [
@@ -136,7 +139,9 @@ ext {
             "customactivityoncrash"                :"cat.ereza:customactivityoncrash:${versions["customactivityoncrash"]}",
             "okaspectjrt-compiler"                 :"com.github.TanZhiL:OkAspectjCompiler:${versions["okaspectjrt"]}",
             "okaspectjrt"                          :"com.github.TanZhiL:OkAspectjAnnotation:${versions["okaspectjrt"]}",
-
+            "location"                             :"com.amap.api:location:${versions["location"]}",
+            "crashreport_upgrade"                  :"com.tencent.bugly:crashreport_upgrade:${versions["crashreport_upgrade"]}",
+            "tinker-android-lib"                   :"com.tencent.tinker:tinker-android-lib:${versions["tinker-android-lib"]}",
 
             //***************************************界面类*************************************************
             "loadsir"                              :"com.kingja.loadsir:loadsir:${versions["loadsir"]}",

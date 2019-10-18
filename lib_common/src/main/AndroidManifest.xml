@@ -119,7 +119,11 @@
         <!--高德定位-->
         <service android:name="com.amap.api.location.APSService" />
         <!--高德定位END-->
-        <!--友盟分享-->
+
+        <!--友盟-->
+        <meta-data android:value="5d9c3b0b570df30848000687" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="${CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
+
         <activity
             android:name="com.umeng.socialize.media.WBShareCallBackActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -167,7 +171,12 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--友盟分享END-->
+        <!--友盟END-->
+        <!--Bugly渠道-->
+        <meta-data
+            android:name="BUGLY_APP_CHANNEL"
+            android:value="${CHANNEL_VALUE}" />
+        <!--Bugly渠道END-->
     </application>
 
 </manifest>

@@ -14,7 +14,6 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.Utils;
 import com.gykj.thomas.aspectj.OkAspectjHelper;
-import com.gykj.thomas.aspectj.PointHandler;
 import com.gykj.zhumulangma.common.aop.PointHelper;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
@@ -44,7 +43,6 @@ import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 import com.ximalaya.ting.android.opensdk.util.Logger;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.query.QueryBuilder;
 import org.json.JSONException;
@@ -136,8 +134,8 @@ public class AppHelper {
     }
 
     public AppHelper initUM() {
-        UMConfigure.init(mApplication, AppConstants.Share.UM_ID
-                ,"umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
+        UMConfigure.setLogEnabled(true);
+        UMConfigure.init(mApplication,UMConfigure.DEVICE_TYPE_PHONE,"");
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
         PlatformConfig.setSinaWeibo(AppConstants.Share.SINA_ID,AppConstants.Share.SINA_KEY,"http://sns.whalecloud.com");
         PlatformConfig.setQQZone(AppConstants.Share.QQ_ID, AppConstants.Share.QQ_KEY);
@@ -212,7 +210,7 @@ public class AppHelper {
 
             Beta.canNotifyUserRestart = true;
             //生产环境
-//            Bugly.init(mApplication, AppConstants.Bugly.UM_ID, false);
+//            Bugly.init(mApplication, AppConstants.Bugly.ID,, false);
             //开发设备
             Bugly.setIsDevelopmentDevice(mApplication, true);
             Bugly.init(mApplication, AppConstants.Bugly.ID, true);

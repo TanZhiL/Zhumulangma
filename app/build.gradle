@@ -30,6 +30,7 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
+        flavorDimensions versionName
         buildToolsVersion rootProject.ext.android.buildToolsVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -74,7 +75,15 @@ android {
     dataBinding {
         enabled true
     }
-
+    /*配置渠道*/
+    productFlavors {
+        common {
+            manifestPlaceholders = [CHANNEL_VALUE: "common"]
+        }
+        xiaomi {
+            manifestPlaceholders = [CHANNEL_VALUE: "xiaomi"]
+        }
+    }
 }
 
 dependencies {

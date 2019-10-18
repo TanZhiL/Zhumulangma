@@ -35,7 +35,7 @@ tinkerSupport {
 
 
     // 构建多渠道补丁时使用
-    // buildAllFlavorsDir = "${bakPath}/${baseApkDir}"
+    buildAllFlavorsDir = "${bakPath}/${baseApkDir}"
 
     // 是否启用加固模式，默认为false.(tinker-spport 1.0.7起支持）
     // isProtectedApp = true
