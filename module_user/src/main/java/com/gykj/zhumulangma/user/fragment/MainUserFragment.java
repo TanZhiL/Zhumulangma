@@ -228,7 +228,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
             Beta.checkUpgrade();
         } else if (id == R.id.cl_gy || id == R.id.iv_user) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
-                    .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL/Zhumulangma")
+                    .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL")
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));

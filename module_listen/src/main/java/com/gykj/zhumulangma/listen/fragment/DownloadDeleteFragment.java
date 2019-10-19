@@ -39,7 +39,7 @@ public class DownloadDeleteFragment extends BaseFragment implements BaseQuickAda
         View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     @Autowired(name = KeyCode.Listen.ALBUMID)
-    public long mAlbumId = -1;
+    public long mAlbumId;
 
     private DownloadDeleteAdapter mDeleteAdapter;
     private XmDownloadManager mDownloadManager = XmDownloadManager.getInstance();
@@ -71,10 +71,10 @@ public class DownloadDeleteFragment extends BaseFragment implements BaseQuickAda
     @Override
     public void initData() {
         List<Track> tracks;
-        if (mAlbumId == -1) {
+        if (mAlbumId == 0) {
             tracks = mDownloadManager.getDownloadTracks(true);
         } else {
-            tracks = XmDownloadManager.getInstance().getDownloadTrackInAlbum(mAlbumId, true);
+            tracks = mDownloadManager.getDownloadTrackInAlbum(mAlbumId, true);
         }
         for (Track downloadTrack : tracks) {
             downloadTrack.setPaid(false);

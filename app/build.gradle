@@ -80,9 +80,9 @@ android {
         common {
             manifestPlaceholders = [CHANNEL_VALUE: "common"]
         }
-        xiaomi {
+      /*  xiaomi {
             manifestPlaceholders = [CHANNEL_VALUE: "xiaomi"]
-        }
+        }*/
     }
 }
 

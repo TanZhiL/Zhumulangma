@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -41,7 +42,7 @@ import java.util.Map;
 public class DownloadSortFragment extends BaseFragment {
 
     @Autowired(name = KeyCode.Listen.ALBUMID)
-    public long mAlbumId = -1;
+    public long mAlbumId;
 
     private DownloadSortAdapter mSortAdapter;
 
@@ -78,12 +79,13 @@ public class DownloadSortFragment extends BaseFragment {
     @Override
     public void initData() {
         List<Track> tracks;
-        if (mAlbumId == -1) {
+        if (mAlbumId == 0) {
             tracks = mDownloadManager.getDownloadTracks(true);
         } else {
-            tracks = XmDownloadManager.getInstance().getDownloadTrackInAlbum(mAlbumId, true);
+            tracks = mDownloadManager.getDownloadTrackInAlbum(mAlbumId, true);
         }
         Collections.sort(tracks, ComparatorUtil.comparatorByUserSort(true));
+        Log.d(TAG, "initData() called"+tracks);
         mSortAdapter.setNewData(tracks);
     }
 

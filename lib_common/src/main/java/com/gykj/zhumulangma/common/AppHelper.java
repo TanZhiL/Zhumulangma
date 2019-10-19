@@ -124,35 +124,30 @@ public class AppHelper {
         CommonRequest.getInstanse().init(mApplication, AppConstants.Ximalaya.SECRET);
         CommonRequest.getInstanse().setDefaultPagesize(20);
 
-        if (BaseUtil.isMainProcess(mApplication)) {
-            AccessTokenManager.getInstanse().init(mApplication);
-            if (AccessTokenManager.getInstanse().hasLogin()) {
-                registerLoginTokenChangeListener(mApplication);
-            }
+        AccessTokenManager.getInstanse().init(mApplication);
+        if (AccessTokenManager.getInstanse().hasLogin()) {
+            registerLoginTokenChangeListener(mApplication);
         }
         return this;
     }
 
     public AppHelper initUM() {
         UMConfigure.setLogEnabled(true);
-        UMConfigure.init(mApplication,UMConfigure.DEVICE_TYPE_PHONE,"");
+        UMConfigure.init(mApplication, UMConfigure.DEVICE_TYPE_PHONE, "");
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
-        PlatformConfig.setSinaWeibo(AppConstants.Share.SINA_ID,AppConstants.Share.SINA_KEY,"http://sns.whalecloud.com");
+        PlatformConfig.setSinaWeibo(AppConstants.Share.SINA_ID, AppConstants.Share.SINA_KEY, "http://sns.whalecloud.com");
         PlatformConfig.setQQZone(AppConstants.Share.QQ_ID, AppConstants.Share.QQ_KEY);
         return this;
     }
 
-    public AppHelper initXmlyPlayer() {
+    public  AppHelper  initXmlyPlayer() {
         try {
-            Method method = XmPlayerConfig.getInstance(mApplication).getClass().getDeclaredMethod("setUseSystemPlayer", Boolean.class);
+            Method method = XmPlayerConfig.getInstance(mApplication).getClass().getDeclaredMethod("setUseSystemPlayer", boolean.class);
             method.setAccessible(true);
             method.invoke(XmPlayerConfig.getInstance(mApplication), true);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // 此代码表示播放时会去监测下是否已经下载(setDownloadPlayPathCallback 方法已经废弃 请使用如下方法)
-        XmPlayerManager.getInstance(mApplication).setCommonBusinessHandle(XmDownloadManager.getInstance());
-
 
         NotificationColorUtils.isTargerSDKVersion24More = true;
         try {
@@ -162,6 +157,8 @@ public class AppHelper {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        // 此代码表示播放时会去监测下是否已经下载(setDownloadPlayPathCallback 方法已经废弃 请使用如下方法)
+        XmPlayerManager.getInstance(mApplication).setCommonBusinessHandle(XmDownloadManager.getInstance());
         return this;
     }
 
@@ -234,18 +231,19 @@ public class AppHelper {
         Utils.init(mApplication);
         ToastUtils.init(mApplication);
         ToastUtils.setView(R.layout.common_layout_toast);
-        ToastUtils.setGravity(Gravity.CENTER,0,0);
+        ToastUtils.setGravity(Gravity.CENTER, 0, 0);
         KeyboardUtils.clickBlankArea2HideSoftInput();
         return this;
     }
+
     @SuppressLint("RestrictedApi")
     public AppHelper initCrashView() {
-            CaocConfig.Builder.create()
-                    .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT)
-                    .enabled(true)//这阻止了对崩溃的拦截,false表示阻止。用它来禁用customactivityoncrash框架
-                    .minTimeBetweenCrashesMs(2000)      //定义应用程序崩溃之间的最短时间，以确定我们不在崩溃循环中。比如：在规定的时间内再次崩溃，框架将不处理，让系统处理！
-                    .errorActivity(DefaultErrorActivity.class) //程序崩溃后显示的页面
-                    .apply();
+        CaocConfig.Builder.create()
+                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT)
+                .enabled(true)//这阻止了对崩溃的拦截,false表示阻止。用它来禁用customactivityoncrash框架
+                .minTimeBetweenCrashesMs(2000)      //定义应用程序崩溃之间的最短时间，以确定我们不在崩溃循环中。比如：在规定的时间内再次崩溃，框架将不处理，让系统处理！
+                .errorActivity(DefaultErrorActivity.class) //程序崩溃后显示的页面
+                .apply();
         //如果没有任何配置，程序崩溃显示的是默认的设置
         CustomActivityOnCrash.install(mApplication);
         return this;

@@ -17,6 +17,7 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
+import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 
 import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
 
@@ -63,23 +64,25 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mApplication = this;
-        AppHelper.getInstance(this)
-                .initLeakCanary()
-                .initFragmentation(false)
-                .initSpeech()
-                .initLog()
-                .initAgentWebX5()
-                .initXmly()
-                .initAspectj()
-                .initGreenDao()
-                .initUM()
-                .initRouter()
-                .initXmlyPlayer()
-                .initUtils()
-                .initBugly()
-                .initCrashView()
-                .initXmlyDownloader();
-        XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
+        if(BaseUtil.isMainProcess(this)){
+            AppHelper.getInstance(this)
+                    .initLeakCanary()
+                    .initFragmentation(false)
+                    .initSpeech()
+                    .initLog()
+                    .initAgentWebX5()
+                    .initXmly()
+                    .initAspectj()
+                    .initGreenDao()
+                    .initUM()
+                    .initRouter()
+                    .initUtils()
+                    .initBugly()
+                    .initCrashView()
+                    .initXmlyPlayer()
+                    .initXmlyDownloader();
+            XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
+        }
     }
 
 

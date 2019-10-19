@@ -547,6 +547,12 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             ((TextView) layoutDetail3.findViewById(R.id.tv_count)).setText("(" + mDownloadManager.getDownloadTrackCount(false) + ")");
             mAlbumAdapter.setNewData(mDownloadManager.getDownloadAlbums(true));
             mTrackAdapter.addData(track);
+            if (mDownloadManager.getDownloadTracks(false).size() > 0) {
+                layoutDetail3.findViewById(R.id.cl_action).setVisibility(View.VISIBLE);
+            }
+            if (mDownloadManager.getDownloadTracks(true).size() > 0) {
+                layoutDetail2.findViewById(R.id.cl_action).setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
