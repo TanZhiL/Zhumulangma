@@ -38,7 +38,9 @@
         android:ellipsize="end"
         android:gravity="left"
         android:singleLine="true"
-        android:textAppearance="@style/NotificationTitle"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="bold"
         android:text="随时随地 听我想听"
         android:textSize="15sp" />
 
@@ -52,7 +54,7 @@
         android:gravity="left"
         android:text="珠穆朗玛"
         android:singleLine="true"
-        android:textAppearance="@style/NotificationText"
+        android:textColor="#999999"
         android:textSize="12sp" />
 
     <RelativeLayout

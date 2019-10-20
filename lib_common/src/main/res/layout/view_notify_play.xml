@@ -50,7 +50,10 @@
             android:gravity="left"
             android:singleLine="true"
             android:text="随时随地 听我想听"
-            android:textAppearance="@style/NotificationTitle"
+
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif-light"
+            android:textStyle="bold"
             android:textSize="14sp" />
 
         <TextView
@@ -61,7 +64,7 @@
             android:gravity="left"
             android:singleLine="true"
             android:text="珠穆朗玛"
-            android:textAppearance="@style/NotificationText"
+          android:textColor="#999999"
             android:textSize="13sp" />
     </LinearLayout>
 

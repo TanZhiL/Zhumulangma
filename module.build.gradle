@@ -5,13 +5,13 @@ if (isModule.toBoolean()) {
 }
 android {
     signingConfigs {
-    debug {
-        storeFile file('E:\\Project\\Android\\thomas.jks')
-        storePassword '123698745'
-        keyAlias = 'thomas'
-        keyPassword '123698745'
+        debug {
+            storeFile file('E:\\Project\\Android\\thomas.jks')
+            storePassword '123698745'
+            keyAlias = 'thomas'
+            keyPassword '123698745'
+        }
     }
-}
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
@@ -29,10 +29,16 @@ android {
         }
         multiDexEnabled true
         ndk {
-            //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
-            abiFilters "armeabi","armeabi-v7a","x86" //,"x86_64" , "arm64-v8a",
+            abiFilters "armeabi", "x86"
         }
         signingConfig signingConfigs.debug
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
     sourceSets {
         main {
@@ -50,7 +56,6 @@ android {
     dataBinding {
         enabled true
     }
-
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }

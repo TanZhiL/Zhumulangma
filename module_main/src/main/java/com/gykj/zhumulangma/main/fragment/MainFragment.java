@@ -27,11 +27,11 @@ public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTa
     private String[] tabText = {"首页", "我听", "", "发现", "我的"};
 
     private @DrawableRes
-    int[] normalIcon = {R.drawable.ic_main_tab_home_normal, R.drawable.ic_main_tab_litsten_normal
-            , R.drawable.ic_main_tab_play, R.drawable.ic_main_tab_find_normal, R.drawable.ic_main_tab_user_normal};
+    int[] normalIcon = {R.drawable.main_tab_home_normal, R.drawable.main_tab_litsten_normal
+            , R.drawable.main_tab_play, R.drawable.main_tab_find_normal, R.drawable.main_tab_user_normal};
     private @DrawableRes
-    int[] selectIcon = {R.drawable.ic_main_tab_home_press, R.drawable.ic_main_tab_listen_press
-            , R.drawable.ic_main_tab_play, R.drawable.ic_main_tab_find_press, R.drawable.ic_main_tab_user_press};
+    int[] selectIcon = {R.drawable.main_tab_home_press, R.drawable.main_tab_listen_press
+            , R.drawable.main_tab_play, R.drawable.main_tab_find_press, R.drawable.main_tab_user_press};
 
     private onRootShowListener mShowListener;
 

@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Common</string>
     <string name="ji">%d集</string>
     <string name="ci">播放:%s次</string>
     <string name="zhuanji">%s张专辑</string>
