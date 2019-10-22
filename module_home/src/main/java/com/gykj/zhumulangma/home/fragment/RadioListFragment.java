@@ -94,7 +94,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
         recyclerView.setHasFixedSize(true);
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
         tvTitle = llbarCenter.findViewById(R.id.tv_title);
-        mRadioAdapter = new RadioAdapter(R.layout.home_item_radio);
+        mRadioAdapter = new RadioAdapter(R.layout.home_item_radio_line);
         mRadioAdapter.bindToRecyclerView(recyclerView);
         mRadioAdapter.setOnItemClickListener(this);
         refreshLayout = fd(R.id.refreshLayout);

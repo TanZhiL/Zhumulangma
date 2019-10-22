@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.common.aop;
 
 import android.content.Context;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.gykj.thomas.aspectj.PointHandler;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
@@ -21,9 +22,9 @@ public class PointHelper implements PointHandler {
         if(clazz==NeedLogin.class){
             if (AccessTokenManager.getInstanse().hasLogin()) {
                     joinPoint.proceed();
-
             } else {
                 ToastUtil.showToast("请先登陆");
+                LoginHelper.getInstance().login(ActivityUtils.getTopActivity());
             }
         }
 

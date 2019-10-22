@@ -64,14 +64,13 @@ android {
         common {
             manifestPlaceholders = [CHANNEL_VALUE: "common"]
         }
-      /*  xiaomi {
-            manifestPlaceholders = [CHANNEL_VALUE: "xiaomi"]
-        }*/
+        /*  xiaomi {
+              manifestPlaceholders = [CHANNEL_VALUE: "xiaomi"]
+          }*/
     }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':lib_common')
     if (!isModule.toBoolean()) {
         implementation project(':module_main')

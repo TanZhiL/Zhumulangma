@@ -4,8 +4,8 @@ import android.app.Application;
 import android.support.annotation.Nullable;
 
 import com.blankj.utilcode.util.CollectionUtils;
-import com.gykj.zhumulangma.common.net.exception.CustException;
 import com.gykj.zhumulangma.common.net.RxAdapter;
+import com.gykj.zhumulangma.common.net.exception.CustException;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
@@ -30,6 +30,7 @@ import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
 import com.ximalaya.ting.android.opensdk.model.track.TrackList;
+import com.ximalaya.ting.android.opensdk.model.user.XmBaseUserInfo;
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
 import com.ximalaya.ting.android.opensdk.model.word.SuggestWords;
 
@@ -37,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 /**
  * Author: Thomas.
@@ -766,5 +766,26 @@ public class ZhumulangmaModel extends CommonModel {
                     }
                 })).compose(RxAdapter.exceptionTransformer());
     }
+    /**
+     *   根据用户ID获取用户基本信息
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<XmBaseUserInfo> getBaseUserInfo(Map<String, String> specificParams) {
+        return Observable.create((ObservableOnSubscribe<XmBaseUserInfo>) emitter ->
+                CommonRequest.getBaseUserInfo(specificParams,
+                        new IDataCallBack<XmBaseUserInfo>() {
+                            @Override
+                            public void onSuccess(@Nullable XmBaseUserInfo xmBaseUserInfo) {
+                                emitter.onNext(xmBaseUserInfo);
+                                emitter.onComplete();
+                            }
 
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
+    }
 }

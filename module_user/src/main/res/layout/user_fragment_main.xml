@@ -25,12 +25,13 @@
         android:layout_height="match_parent"
         app:srlEnableLoadMore="false"
         app:srlEnableNestedScrolling="true"
+        app:srlHeaderMaxDragRate="2.0"
         app:srlEnablePreviewInEditMode="false">
 
         <com.gykj.zhumulangma.common.widget.TRefreshHeader
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             app:lottie_colorFilter="@color/white" />
 
         <android.support.v4.widget.NestedScrollView
@@ -57,13 +58,13 @@
                         android:layout_width="68dp"
                         android:layout_height="68dp"
                         android:layout_marginStart="20dp"
-                        android:src="@color/colorDefault"
-                        app:riv_border_width="3dp"
-                        app:riv_border_color="@color/white"
-                        app:riv_oval="true"
+                        android:src="@drawable/ic_user_avatar"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:riv_border_color="@color/white"
+                        app:riv_border_width="3dp"
+                        app:riv_oval="true" />
 
                     <ImageView
                         android:id="@+id/iv_user"
@@ -79,12 +80,12 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView13"
+                        android:id="@+id/tv_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_marginStart="8dp"
                         android:gravity="center_vertical"
-                        android:text="TanZhiL(谭志龙)"
+                        android:text="未登陆"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         app:layout_constraintStart_toEndOf="@+id/iv_avatar"
@@ -96,12 +97,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Star"
+                        android:text="粉丝"
                         android:textColor="@color/white"
                         android:textSize="11sp"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                         app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-                        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_nickname" />
 
                     <TextView
                         android:id="@+id/tv_fork"
@@ -115,7 +116,7 @@
                         android:textSize="11sp"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                         app:layout_constraintStart_toEndOf="@+id/textView10"
-                        app:layout_constraintTop_toBottomOf="@+id/textView13"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
                         app:layout_constraintVertical_bias="0.444" />
 
                     <TextView
@@ -124,12 +125,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Fork"
+                        android:text="关注"
                         android:textColor="@color/white"
                         android:textSize="11sp"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                         app:layout_constraintStart_toEndOf="@+id/textView9"
-                        app:layout_constraintTop_toBottomOf="@+id/textView13"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
                         app:layout_constraintVertical_bias="0.444" />
 
                     <TextView
@@ -143,7 +144,7 @@
                         android:textSize="11sp"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                         app:layout_constraintStart_toEndOf="@+id/tv_star"
-                        app:layout_constraintTop_toBottomOf="@+id/textView13"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
                         app:layout_constraintVertical_bias="0.444" />
 
                     <TextView
@@ -158,22 +159,23 @@
                         android:textSize="11sp"
                         app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
                         app:layout_constraintStart_toEndOf="@+id/textView14"
-                        app:layout_constraintTop_toBottomOf="@+id/textView13"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_nickname"
                         app:layout_constraintVertical_bias="0.444" />
 
                     <TextView
-                        android:id="@+id/textView15"
+                        android:id="@+id/tv_vip"
                         android:layout_width="64dp"
                         android:layout_height="18dp"
                         android:layout_marginStart="4dp"
                         android:layout_marginBottom="8dp"
+                        android:visibility="gone"
                         android:background="@drawable/shap_user_vip"
                         android:gravity="center"
                         android:text="巅峰会员"
                         android:textColor="@color/white"
                         android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/textView13"
-                        app:layout_constraintStart_toEndOf="@+id/textView13" />
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_nickname"
+                        app:layout_constraintStart_toEndOf="@+id/tv_nickname" />
 
                     <TextView
                         android:id="@+id/tv_desc"
@@ -182,8 +184,8 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="4dp"
                         android:ellipsize="end"
-                        android:maxLines="2"
                         android:gravity="bottom"
+                        android:maxLines="2"
                         android:text="这个人很懒,什么都没留下..."
                         android:textColor="@color/white"
                         android:textSize="11sp"
@@ -348,8 +350,7 @@
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_sc"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                      >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user5"
@@ -387,11 +388,11 @@
                     <View
                         style="@style/SecondHLine"
                         android:layout_width="match_parent" />
+
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_wdzp"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                      >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user1"
@@ -429,10 +430,10 @@
                     <View
                         style="@style/PrimaryHLine"
                         android:layout_width="match_parent" />
+
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                      >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user2"
@@ -466,13 +467,14 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_common_more_arrow" />
                     </android.support.constraint.ConstraintLayout>
+
                     <View
                         style="@style/PrimaryHLine"
                         android:layout_width="match_parent" />
+
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                      >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user3"
@@ -506,14 +508,14 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_common_more_arrow" />
                     </android.support.constraint.ConstraintLayout>
+
                     <View
                         style="@style/SecondHLine"
                         android:layout_width="match_parent" />
 
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user6"
@@ -546,14 +548,15 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_common_more_arrow" />
-                    </android.support.constraint.ConstraintLayout> <View
-                    style="@style/SecondHLine"
-                    android:layout_width="match_parent" />
+                    </android.support.constraint.ConstraintLayout>
+
+                    <View
+                        style="@style/SecondHLine"
+                        android:layout_width="match_parent" />
 
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user7"
@@ -587,6 +590,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_common_more_arrow" />
                     </android.support.constraint.ConstraintLayout>
+
                     <View
                         style="@style/SecondHLine"
                         android:layout_width="match_parent" />
@@ -594,8 +598,7 @@
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_fxzq"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user8"
@@ -629,14 +632,15 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_common_more_arrow" />
                     </android.support.constraint.ConstraintLayout>
+
                     <View
                         style="@style/PrimaryHLine"
                         android:layout_width="match_parent" />
+
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_sys"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user9"
@@ -670,6 +674,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_common_more_arrow" />
                     </android.support.constraint.ConstraintLayout>
+
                     <View
                         style="@style/SecondHLine"
                         android:layout_width="match_parent" />
@@ -677,8 +682,7 @@
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_wxhd"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user10"
@@ -712,15 +716,15 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_common_more_arrow" />
                     </android.support.constraint.ConstraintLayout>
+
                     <View
-                    style="@style/SecondHLine"
-                    android:layout_width="match_parent" />
+                        style="@style/SecondHLine"
+                        android:layout_width="match_parent" />
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_jcgx"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user11"
@@ -754,6 +758,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_common_more_arrow" />
                     </android.support.constraint.ConstraintLayout>
+
                     <View
                         style="@style/SecondHLine"
                         android:layout_width="match_parent" />
@@ -761,8 +766,7 @@
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_gy"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        >
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/iv_user12"
@@ -806,6 +810,47 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/iv_user13"
                             app:layout_constraintTop_toTopOf="parent" />
+                    </android.support.constraint.ConstraintLayout>
+
+                    <View
+                        style="@style/SecondHLine"
+                        android:layout_width="match_parent" />
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/cl_zx"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp">
+
+                        <ImageView
+                            android:id="@+id/iv_user14"
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"
+                            android:layout_marginLeft="16dp"
+                            android:tint="#cccccc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_user_zx" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:text="注销登录"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_user14"
+                            app:layout_constraintStart_toEndOf="@+id/iv_user14"
+                            app:layout_constraintTop_toTopOf="@+id/iv_user14" />
+
+                        <ImageView
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"
+                            android:layout_marginRight="5dp"
+                            android:tint="@color/colorPrimaryDark"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_common_more_arrow" />
                     </android.support.constraint.ConstraintLayout>
                     <View
                         style="@style/SecondHLine"

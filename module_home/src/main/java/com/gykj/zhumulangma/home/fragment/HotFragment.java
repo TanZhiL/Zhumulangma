@@ -324,6 +324,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Home.TAB_REFRESH:
+            case EventCode.Main.LOGINSUCC:
                 if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
                     fd(R.id.nsv).scrollTo(0,0);
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();

@@ -15,10 +15,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.SubscribeBean;
-import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.SubscribeAdapter;
@@ -115,6 +115,8 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
         int id = view.getId();
         if (id == R.id.iv_play) {
             mViewModel.play(String.valueOf(mSubscribeAdapter.getItem(position).getAlbumId()));
+        }else if(id==R.id.iv_more){
+            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE,null));
         }
     }
 

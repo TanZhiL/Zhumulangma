@@ -19,8 +19,6 @@ import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 
-import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
-
 
 /**
  * Author: Thomas.
@@ -117,7 +115,7 @@ public class App extends Application {
         public void onPlayPause() {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (null != notificationManager) {
-                notificationManager.cancel(NOTIFICATION_ID);
+                notificationManager.cancel(AppConstants.Third.XIMALAYA_NOTIFICATION);
             }
         }
 

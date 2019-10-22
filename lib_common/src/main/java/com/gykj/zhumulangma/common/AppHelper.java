@@ -3,9 +3,7 @@ package com.gykj.zhumulangma.common;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.Notification;
-import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 
@@ -14,11 +12,10 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.Utils;
 import com.gykj.thomas.aspectj.OkAspectjHelper;
+import com.gykj.zhumulangma.common.aop.LoginHelper;
 import com.gykj.zhumulangma.common.aop.PointHelper;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.hjq.toast.ToastUtils;
 import com.iflytek.cloud.SpeechConstant;
@@ -30,41 +27,26 @@ import com.tencent.bugly.beta.Beta;
 import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
-import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
-import com.ximalaya.ting.android.opensdk.httputil.XimalayaException;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 import com.ximalaya.ting.android.opensdk.player.appnotification.NotificationColorUtils;
 import com.ximalaya.ting.android.opensdk.player.appnotification.XmNotificationCreater;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerConfig;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
-import com.ximalaya.ting.android.opensdk.util.Logger;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.query.QueryBuilder;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cat.ereza.customactivityoncrash.activity.DefaultErrorActivity;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+import cn.bmob.v3.Bmob;
 import me.yokeyword.fragmentation.Fragmentation;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
-import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.NOTIFICATION_ID;
-import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REDIRECT_URL;
-import static com.gykj.zhumulangma.common.AppConstants.Ximalaya.REFRESH_TOKEN_URL;
 
 /**
  * Author: Thomas.
@@ -121,12 +103,12 @@ public class AppHelper {
 
     public AppHelper initXmly() {
         ConstantsOpenSdk.isDebug = true;
-        CommonRequest.getInstanse().init(mApplication, AppConstants.Ximalaya.SECRET);
+        CommonRequest.getInstanse().init(mApplication, AppConstants.Third.XIMALAYA_SECRET);
         CommonRequest.getInstanse().setDefaultPagesize(20);
 
         AccessTokenManager.getInstanse().init(mApplication);
         if (AccessTokenManager.getInstanse().hasLogin()) {
-            registerLoginTokenChangeListener(mApplication);
+           LoginHelper.registerLoginTokenChangeListener(mApplication);
         }
         return this;
     }
@@ -135,8 +117,8 @@ public class AppHelper {
         UMConfigure.setLogEnabled(true);
         UMConfigure.init(mApplication, UMConfigure.DEVICE_TYPE_PHONE, "");
         PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
-        PlatformConfig.setSinaWeibo(AppConstants.Share.SINA_ID, AppConstants.Share.SINA_KEY, "http://sns.whalecloud.com");
-        PlatformConfig.setQQZone(AppConstants.Share.QQ_ID, AppConstants.Share.QQ_KEY);
+        PlatformConfig.setSinaWeibo(AppConstants.Third.SINA_ID, AppConstants.Third.SINA_KEY, "http://sns.whalecloud.com");
+        PlatformConfig.setQQZone(AppConstants.Third.QQ_ID, AppConstants.Third.QQ_KEY);
         return this;
     }
 
@@ -153,7 +135,7 @@ public class AppHelper {
         try {
             Notification mNotification = XmNotificationCreater.getInstanse(mApplication)
                     .initNotification(mApplication, Class.forName(ActivityUtils.getLauncherActivity()));
-            XmPlayerManager.getInstance(mApplication).init(NOTIFICATION_ID, mNotification);
+            XmPlayerManager.getInstance(mApplication).init(AppConstants.Third.XIMALAYA_NOTIFICATION, mNotification);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -207,10 +189,10 @@ public class AppHelper {
 
             Beta.canNotifyUserRestart = true;
             //生产环境
-//            Bugly.init(mApplication, AppConstants.Bugly.ID,, false);
+//            Bugly.init(mApplication, AppConstants.Bugly.SPEECH_ID,, false);
             //开发设备
             Bugly.setIsDevelopmentDevice(mApplication, true);
-            Bugly.init(mApplication, AppConstants.Bugly.ID, true);
+            Bugly.init(mApplication, AppConstants.Third.BUGLY_ID, true);
         }
         return this;
     }
@@ -260,154 +242,18 @@ public class AppHelper {
                 .install();
         return this;
     }
-
-    public AppHelper initSpeech() {
-        SpeechUtility.createUtility(mApplication, SpeechConstant.APPID + "=" + AppConstants.Speech.ID);
-        return this;
-    }
-
-    public static void registerLoginTokenChangeListener(final Context context) {
-        // 使用此回调了就表示贵方接了需要用户登录才能访问的接口,如果没有此类接口可以不用设置此接口,之前的逻辑没有发生改变
-        CommonRequest.getInstanse().setITokenStateChange(new CommonRequest.ITokenStateChange() {
-            // 此接口表示token已经失效 ,
-            @Override
-            public boolean getTokenByRefreshSync() {
-                if (!TextUtils.isEmpty(AccessTokenManager.getInstanse().getRefreshToken())) {
-                    try {
-                        return refreshSync();
-                    } catch (XimalayaException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return false;
-            }
-
-            @Override
-            public boolean getTokenByRefreshAsync() {
-                if (!TextUtils.isEmpty(AccessTokenManager.getInstanse().getRefreshToken())) {
-                    try {
-                        refresh();
-                        return true;
-                    } catch (XimalayaException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return false;
-            }
-
-            @Override
-            public void tokenLosted() {
-                EventBus.getDefault().post(new ActivityEvent(EventCode.Main.LOGIN));
-            }
-        });
-    }
-
-    private static void refresh() throws XimalayaException {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .followRedirects(false)
-                .build();
-        FormBody.Builder builder = new FormBody.Builder();
-        builder.add(XmlyConstants.AUTH_PARAMS_GRANT_TYPE, "refresh_token");
-        builder.add(XmlyConstants.AUTH_PARAMS_REFRESH_TOKEN, AccessTokenManager.getInstanse().getTokenModel().getRefreshToken());
-        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_ID, CommonRequest.getInstanse().getAppKey());
-        builder.add(XmlyConstants.AUTH_PARAMS_DEVICE_ID, CommonRequest.getInstanse().getDeviceId());
-        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_OS_TYPE, XmlyConstants.ClientOSType.ANDROID);
-        builder.add(XmlyConstants.AUTH_PARAMS_PACKAGE_ID, CommonRequest.getInstanse().getPackId());
-        builder.add(XmlyConstants.AUTH_PARAMS_UID, AccessTokenManager.getInstanse().getUid());
-        builder.add(XmlyConstants.AUTH_PARAMS_REDIRECT_URL, REDIRECT_URL);
-        FormBody body = builder.build();
-
-        Request request = new Request.Builder()
-                .url("https://api.ximalaya.com/oauth2/refresh_token?")
-                .post(body)
-                .build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Logger.d("refresh", "refreshToken, request failed, error message = " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                int statusCode = response.code();
-                String body = response.body().string();
-
-                System.out.println("TingApplication.refreshSync  1  " + body);
-
-                JSONObject jsonObject = null;
-                try {
-                    jsonObject = new JSONObject(body);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if (jsonObject != null) {
-                    AccessTokenManager.getInstanse().setAccessTokenAndUid(jsonObject.optString("access_token"),
-                            jsonObject.optString("refresh_token"), jsonObject.optLong("expires_in"), jsonObject
-                                    .optString("uid"));
-                }
-            }
-        });
-    }
-
-    private static boolean refreshSync() throws XimalayaException {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .followRedirects(false)
-                .build();
-        FormBody.Builder builder = new FormBody.Builder();
-        builder.add(XmlyConstants.AUTH_PARAMS_GRANT_TYPE, "refresh_token");
-        builder.add(XmlyConstants.AUTH_PARAMS_REFRESH_TOKEN, AccessTokenManager.getInstanse().getTokenModel().getRefreshToken());
-        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_ID, CommonRequest.getInstanse().getAppKey());
-        builder.add(XmlyConstants.AUTH_PARAMS_DEVICE_ID, CommonRequest.getInstanse().getDeviceId());
-        builder.add(XmlyConstants.AUTH_PARAMS_CLIENT_OS_TYPE, XmlyConstants.ClientOSType.ANDROID);
-        builder.add(XmlyConstants.AUTH_PARAMS_PACKAGE_ID, CommonRequest.getInstanse().getPackId());
-        builder.add(XmlyConstants.AUTH_PARAMS_UID, AccessTokenManager.getInstanse().getUid());
-        builder.add(XmlyConstants.AUTH_PARAMS_REDIRECT_URL, REDIRECT_URL);
-        FormBody body = builder.build();
-
-        Request request = new Request.Builder()
-                .url(REFRESH_TOKEN_URL)
-                .post(body)
-                .build();
-        try {
-            Response execute = client.newCall(request).execute();
-            if (execute.isSuccessful()) {
-                try {
-                    String string = execute.body().string();
-                    JSONObject jsonObject = new JSONObject(string);
-                    AccessTokenManager.getInstanse().setAccessTokenAndUid(jsonObject.optString("access_token"),
-                            jsonObject.optString("refresh_token"), jsonObject.optLong("expires_in"), jsonObject
-                                    .optString("uid"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     public AppHelper initAspectj() {
         OkAspectjHelper.setmHandler(new PointHelper(mApplication));
         return this;
     }
 
-    private class CrashEventListener implements CustomActivityOnCrash.EventListener {
-        @Override
-        public void onLaunchErrorActivity() {
-            Log.d(TAG, "onLaunchErrorActivity() called");
-        }
-
-        @Override
-        public void onRestartAppFromErrorActivity() {
-            Log.d(TAG, "onRestartAppFromErrorActivity() called");
-        }
-
-        @Override
-        public void onCloseAppFromErrorActivity() {
-            Log.d(TAG, "onCloseAppFromErrorActivity() called");
-        }
+    public AppHelper initBmob() {
+        Bmob.initialize(mApplication,AppConstants.Third.BMOB_ID);
+        return this;
     }
+    public AppHelper initSpeech() {
+        SpeechUtility.createUtility(mApplication, SpeechConstant.APPID + "=" + AppConstants.Third.SPEECH_ID);
+        return this;
+    }
+
 }

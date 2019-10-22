@@ -136,9 +136,17 @@ public abstract class BaseActivity extends SupportActivity {
     /**
      * 取消RxView所有订阅
      */
-    private void clearDisposable() {
+    protected void clearDisposable() {
         if (mCompositeDisposable != null) {
             mCompositeDisposable.clear();
+        }
+    }
+    /**
+     * 取消RxView某个订阅
+     */
+    protected void removeDisposable(Disposable disposable) {
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.remove(disposable);
         }
     }
 

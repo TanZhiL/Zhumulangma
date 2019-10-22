@@ -182,6 +182,13 @@
             android:name="BUGLY_APP_CHANNEL"
             android:value="${CHANNEL_VALUE}" />
         <!--Bugly渠道END-->
+        <!--Bmob-->
+        <provider
+            android:name="cn.bmob.v3.util.BmobContentProvider"
+            android:authorities="${applicationId}.BmobContentProvider"
+            android:exported="false">
+        </provider>
+        <!--Bmob END-->
     </application>
 
 </manifest>

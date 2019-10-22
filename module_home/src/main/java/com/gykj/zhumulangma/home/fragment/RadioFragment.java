@@ -179,7 +179,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
 
     private void initHistory() {
         RecyclerView rvHistory = fd(R.id.rv_history);
-        mHistoryAdapter = new RadioHistoryAdapter(R.layout.home_item_radio);
+        mHistoryAdapter = new RadioHistoryAdapter(R.layout.home_item_radio_line);
         rvHistory.setLayoutManager(new LinearLayoutManager(mActivity));
         rvHistory.setHasFixedSize(true);
         mHistoryAdapter.bindToRecyclerView(rvHistory);
@@ -187,7 +187,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
 
     private void initLocal() {
         RecyclerView rvLocal = fd(R.id.rv_local);
-        mLocalAdapter = new RadioAdapter(R.layout.home_item_radio);
+        mLocalAdapter = new RadioAdapter(R.layout.home_item_radio_line);
         rvLocal.setLayoutManager(new LinearLayoutManager(mActivity));
         rvLocal.setHasFixedSize(true);
         mLocalAdapter.bindToRecyclerView(rvLocal);
@@ -195,7 +195,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
 
     private void initTop() {
         RecyclerView rvTop = fd(R.id.rv_top);
-        mTopAdapter = new RadioAdapter(R.layout.home_item_radio);
+        mTopAdapter = new RadioAdapter(R.layout.home_item_radio_line);
         rvTop.setLayoutManager(new LinearLayoutManager(mActivity));
         rvTop.setHasFixedSize(true);
         mTopAdapter.bindToRecyclerView(rvTop);

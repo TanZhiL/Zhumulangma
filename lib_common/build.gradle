@@ -29,110 +29,17 @@ android {
             buildConfigField "boolean", 'IS_DEBUG', 'false'
         }
     }
-    sourceSets {
-        main {
-            assets.srcDirs = ['src/main/assets', 'src/main/assets/']
-            jniLibs.srcDirs = ['libs']
-        }
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
+    api project(':lib_third')
     annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     annotationProcessor rootProject.ext.dependencies["okaspectjrt-compiler"]
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
     annotationProcessor rootProject.ext.dependencies["lifecycle-compiler"]
-
-    api rootProject.ext.support["design"]
-    api rootProject.ext.support["support-v4"]
-    api rootProject.ext.support["constraint-layout"]
-    api rootProject.ext.support["appcompat-v7"]
-    api rootProject.ext.support["constraint-layout"]
-    api rootProject.ext.support["recyclerview-v7"]
-    api rootProject.ext.support["junit"]
-    api rootProject.ext.support["runner"]
-    api rootProject.ext.support["espresso-core"]
-
-    api rootProject.ext.dependencies["arouter-api"]
-    api rootProject.ext.dependencies["rxjava"]
-    api rootProject.ext.dependencies["rxandroid"]
-    api rootProject.ext.dependencies["eventbus"]
-    api rootProject.ext.dependencies["glide"]
-    api rootProject.ext.dependencies["lifecycle-extensions"]
-
-    //network
-    api rootProject.ext.dependencies["okhttp"]
-    api rootProject.ext.dependencies["retrofit"]
-    api rootProject.ext.dependencies["converter-gson"]
-    api rootProject.ext.dependencies["adapter-rxjava"]
-    api rootProject.ext.dependencies["logging-interceptor"]
-    api rootProject.ext.dependencies["gson"]
-
-    //rx管理View的生命周期
-    api rootProject.ext.dependencies["rxlifecycle"]
-    api rootProject.ext.dependencies["rxlifecycle-components"]
-    api rootProject.ext.dependencies["rxjava"]
-    api rootProject.ext.dependencies["rxandroid"]
-    //rx权限请求
-    api rootProject.ext.dependencies["rxpermissions"]
-    api rootProject.ext.dependencies["utilcode"]
-    api rootProject.ext.dependencies["loadsir"]
-    api rootProject.ext.dependencies["titlebar"]
-    api rootProject.ext.dependencies["fragmentation"]
-    api rootProject.ext.dependencies["fragmentation-swipeback"]
-    api rootProject.ext.dependencies["lottie"]
-    api rootProject.ext.dependencies["autosize"]
-    api rootProject.ext.dependencies["SmartRefreshLayout"]
-    api rootProject.ext.dependencies["circleimageview"]
-    api rootProject.ext.dependencies["indicatorseekbar"]
-    api rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
-    api rootProject.ext.dependencies["multidex"]
-    api rootProject.ext.dependencies["picture_library"]
-    api rootProject.ext.dependencies["PickerView"]
-    api rootProject.ext.dependencies["rxbinding"]
-
-    debugApi rootProject.ext.dependencies["leakcanary"]
-    releaseApi rootProject.ext.dependencies["leakcanary-no-op"]
-    api rootProject.ext.dependencies["AVLoading"]
-    api rootProject.ext.dependencies["EasyNavigation"]
-    api rootProject.ext.dependencies["MagicIndicator"]
-    api rootProject.ext.dependencies["banner"]
-    api rootProject.ext.dependencies["ratingbar"]
-    api rootProject.ext.dependencies["labelview"]
-    api rootProject.ext.dependencies["FlowLayout"]
-    api rootProject.ext.dependencies["greendao"]
-    api rootProject.ext.dependencies["MarqueeView"]
-    api rootProject.ext.dependencies["xpopup"]
-    api rootProject.ext.dependencies["toast"]
-    api rootProject.ext.dependencies["bga-qrcode-zxing"]
-    api rootProject.ext.dependencies["agentwebX5"]
-    api rootProject.ext.dependencies["roundedimageview"]
-    api rootProject.ext.dependencies["aspectjrt"]
-    api rootProject.ext.dependencies["okaspectjrt"]
-    api rootProject.ext.dependencies["location"]
-    api rootProject.ext.dependencies["customactivityoncrash"]
-    api rootProject.ext.dependencies["crashreport_upgrade"]
-    api rootProject.ext.dependencies["tinker-android-lib"]
-
-
-    api files('libs/TingPhoneOpenSDK_7.0.8.jar')
-    api files('libs/XmlyOAuth2SDK_V1.11.jar')
-    api files('libs/XmDownload_1.7.jar')
-    api files('libs/Msc.jar')
-    api files('libs/umeng-common-2.1.0.jar')
-    api files('libs/umeng-analytics-8.1.3.jar')
-    api files('libs/umeng-share-core-6.9.6.jar')
-    api files('libs/umeng-shareboard-widget-6.9.6.jar')
-    api files('libs/umeng-sharetool-6.9.6.jar')
-    api files('libs/umeng-share-QQ-simplify-6.9.6.jar')
-    api files('libs/umeng-share-sina-simplify-6.9.6.jar')
-    api files('libs/umeng-share-wechat-simplify-6.9.6.jar')
-    api files('libs/tbs_sdk_thirdapp_v4.3.0.1148_43697_sharewithdownloadwithfile_withoutGame_obfs_20190805_175505.jar')
-    api files('libs/alipaySdk-20180601.jar')
 }
 greendao {
     //数据库的schema版本，也可以理解为数据库版本号

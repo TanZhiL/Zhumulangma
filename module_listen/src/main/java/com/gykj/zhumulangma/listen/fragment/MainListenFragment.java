@@ -11,7 +11,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
-import com.gykj.zhumulangma.common.aop.NeedLogin;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.listen.R;
 
@@ -68,13 +67,7 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
         fd(R.id.ll_download).setOnClickListener(this);
         fd(R.id.ll_history).setOnClickListener(this);
         fd(R.id.ll_favorite).setOnClickListener(this);
-        fd(R.id.tv_purchased).setOnClickListener(new View.OnClickListener() {
-            @NeedLogin
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        fd(R.id.tv_purchased).setOnClickListener(this);
     }
 
     @Override

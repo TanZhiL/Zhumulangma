@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +18,9 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.aop.LoginHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -37,6 +40,7 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.bugly.beta.Beta;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
+import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -49,7 +53,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Description:我的
  */
 @Route(path = AppConstants.Router.User.F_MAIN)
-public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,Object> implements View.OnClickListener{
+public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel, Object> implements View.OnClickListener {
 
     private GitHubDTO mGitHubDTO;
 
@@ -63,6 +67,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     private ImageView whiteRight;
     private ImageView transLeft;
     private ImageView transRight;
+
     @Override
     protected int onBindLayout() {
         return R.layout.user_fragment_main;
@@ -124,6 +129,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
         whiteRight.setVisibility(View.VISIBLE);
 
     }
+
     @Override
     public void initListener() {
         super.initListener();
@@ -164,12 +170,14 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
         fd(R.id.cl_jcgx).setOnClickListener(this);
         fd(R.id.cl_gy).setOnClickListener(this);
         fd(R.id.iv_avatar).setOnClickListener(this);
+        fd(R.id.cl_zx).setOnClickListener(this);
+        fd(R.id.tv_nickname).setOnClickListener(this);
     }
 
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout,null);
+        return new WrapRefresh(refreshLayout, null);
     }
 
     @Override
@@ -180,12 +188,20 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     @Override
     protected void initViewObservable() {
         mViewModel.getGitHubEvent().observe(this, gitHubDTO -> {
-            mGitHubDTO=gitHubDTO;
-            Glide.with(MainUserFragment.this).load(gitHubDTO.getOwner().getAvatar_url()).into((ImageView) fd(R.id.iv_avatar));
+            mGitHubDTO = gitHubDTO;
             ((TextView) fd(R.id.tv_star)).setText(convertNum(gitHubDTO.getStargazers_count()));
             ((TextView) fd(R.id.tv_fork)).setText(convertNum(gitHubDTO.getForks_count()));
-            ((TextView) fd(R.id.tv_desc)).setText(gitHubDTO.getDescription());
-
+      //      ((TextView) fd(R.id.tv_desc)).setText(gitHubDTO.getDescription());
+        });
+        RequestOptions options=new RequestOptions();
+        options.placeholder(R.drawable.ic_user_avatar)
+                .error(R.drawable.ic_user_avatar);
+        mViewModel.getBaseUserInfoEvent().observe(this, xmBaseUserInfo -> {
+            Glide.with(MainUserFragment.this).load(xmBaseUserInfo.getAvatarUrl())
+                    .apply(options)
+                    .into((ImageView) fd(R.id.iv_avatar));
+            ((TextView) fd(R.id.tv_nickname)).setText(xmBaseUserInfo.getNickName());
+            fd(R.id.tv_vip).setVisibility(xmBaseUserInfo.isVip() ? View.VISIBLE : View.GONE);
         });
     }
 
@@ -232,14 +248,15 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
-        }else if(id==R.id.iv_avatar){
-            if(mGitHubDTO==null){
-                return;
+        } else if (id == R.id.cl_zx) {
+            new AlertDialog.Builder(mActivity)
+                    .setMessage("您确定要注销登录吗?")
+                    .setNegativeButton("取消", (dialog, which) -> dialog.dismiss())
+                    .setPositiveButton("确定", (dialog, which) -> LoginHelper.getInstance().logout()).show();
+        } else if (id == R.id.tv_nickname||id==R.id.iv_avatar) {
+            if (!AccessTokenManager.getInstanse().hasLogin()) {
+                LoginHelper.getInstance().login(mActivity);
             }
-            // 单张图片场景
-         /*   new XPopup.Builder(getContext())
-                    .asImageViewer(fd(R.id.iv_avatar), mGitHubDTO.getOwner().getAvatar_url(), new PopupImageLoader())
-                    .show();*/
         }
     }
 
@@ -252,24 +269,32 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     protected ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }
-    private String convertNum(int num){
-        if(num<1000){
+
+    private String convertNum(int num) {
+        if (num < 1000) {
             return String.valueOf(num);
         }
-        String dy1000= String.valueOf(num/1000);
-        String xy1000= String.valueOf(num%1000/100);
+        String dy1000 = String.valueOf(num / 1000);
+        String xy1000 = String.valueOf(num % 1000 / 100);
 
-        return dy1000+"."+xy1000+"k";
+        return dy1000 + "." + xy1000 + "k";
     }
+
     @Override
-    public  void onEvent(FragmentEvent event) {
+    public void onEvent(FragmentEvent event) {
         super.onEvent(event);
-        switch (event.getCode()){
+        switch (event.getCode()) {
             case EventCode.User.TAB_REFRESH:
-                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
-                    fd(R.id.nsv).scrollTo(0,0);
-                    ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
+            case EventCode.Main.LOGINSUCC:
+                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitCallBack().getClass()) {
+                    fd(R.id.nsv).scrollTo(0, 0);
+                    ((SmartRefreshLayout) fd(R.id.refreshLayout)).autoRefresh();
                 }
+                break;
+            case EventCode.Main.LOGOUTSUCC:
+                Glide.with(MainUserFragment.this).load(R.drawable.ic_user_avatar).into((ImageView) fd(R.id.iv_avatar));
+                ((TextView) fd(R.id.tv_nickname)).setText("未登陆");
+                fd(R.id.tv_vip).setVisibility(View.GONE);
                 break;
         }
     }

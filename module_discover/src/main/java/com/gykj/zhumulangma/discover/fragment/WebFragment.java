@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -12,9 +11,9 @@ import android.widget.ImageView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.discover.R;
 import com.just.agentwebX5.AgentWebX5;
@@ -139,11 +138,9 @@ public class WebFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Log.i(TAG, "onPageFinished  url:" + url + "  time:" + timer.get(url)+"   index:"+(index++));
             if (timer.get(url) != null) {
                 long overTime = System.currentTimeMillis();
                 Long startTime = timer.get(url);
-                Log.i(TAG, "  page url:" + url + "  used time:" + (overTime - startTime));
             }
 
         }
@@ -164,18 +161,15 @@ public class WebFragment extends BaseFragment {
 //例如 https//:www.baidu.com 该 Url 需要定位权限， 返回false ，如果版本大于等于23 ， agentWeb 会动态申请权限 ，true 该Url对应页面请求定位失败。
 //该方法是每次都会优先触发的 ， 开发者可以做一些敏感权限拦截 。
     protected PermissionInterceptor mPermissionInterceptor = (url, permissions, action) -> {
-        Log.i(TAG, "url:" + url + "  permission:" + permissions + " action:" + action);
         return false;
     };
     protected DownLoadResultListener mDownLoadResultListener = new DownLoadResultListener() {
         @Override
         public void success(String path) {
-            Log.i("Info", "path:" + path);
         }
 
         @Override
         public void error(String path, String resUrl, String cause, Throwable e) {
-            Log.i("Info", "path:" + path + "  url:" + resUrl + "  couse:" + cause + "  Throwable:" + e);
         }
     };
 

@@ -42,6 +42,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
+import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
 import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
@@ -284,15 +285,12 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 }
                 switch (navigateBean.path) {
                     case AppConstants.Router.User.F_MESSAGE:
-                       /*
                         //登录拦截
                         if (!AccessTokenManager.getInstanse().hasLogin()) {
                             LoginHelper.getInstance().login(this);
                         } else {
                             start(navigateBean.fragment);
                         }
-                        */
-                        start(navigateBean.fragment);
                         break;
                     case AppConstants.Router.Home.F_PLAY_TRACK:
                     case AppConstants.Router.Home.F_PLAY_RADIIO:
@@ -355,6 +353,9 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         super.onActivityResult(requestCode, resultCode, data);
         //分享回调
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        if (LoginHelper.getInstance().getSsoHandler() != null) {
+            LoginHelper.getInstance().getSsoHandler().authorizeCallBack(requestCode, resultCode, data);
+        }
     }
 
     @Override

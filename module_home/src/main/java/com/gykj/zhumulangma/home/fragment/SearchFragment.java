@@ -5,9 +5,7 @@ import android.Manifest;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -39,6 +37,7 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 import com.jakewharton.rxbinding3.view.RxView;
+import com.jakewharton.rxbinding3.widget.RxTextView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupAnimation;
 import com.lxj.xpopup.interfaces.SimpleCallback;
@@ -52,6 +51,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
@@ -63,13 +64,15 @@ import me.yokeyword.fragmentation.ISupportFragment;
 @Route(path = AppConstants.Router.Home.F_SEARCH)
 public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         View.OnClickListener, SearchHistoryFragment.onSearchListener, View.OnFocusChangeListener,
-        TextView.OnEditorActionListener, TextWatcher, SearchSuggestFragment.onSearchListener {
+        TextView.OnEditorActionListener, SearchSuggestFragment.onSearchListener {
 
     @Autowired(name = KeyCode.Home.HOTWORD)
     public String mHotword;
     private SearchSuggestFragment mSuggestFragment;
     private SearchHistoryFragment mHistoryFragment;
 
+    private Observable<CharSequence> suggestObservable;
+    private Disposable suggestDisposable;
     private SpeechRecognizer mIat;
     private SpeechPopup mSpeechPopup;
     private HashMap<String, String> mIatResults = new LinkedHashMap<>();
@@ -114,11 +117,26 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     @Override
     public void initListener() {
         super.initListener();
+        suggestObservable = RxTextView.textChanges(etKeyword)
+                .debounce(300, TimeUnit.MILLISECONDS)
+                .skip(1)
+                .doOnSubscribe(d-> {
+                    suggestDisposable = d;
+                    addDisposable(d);
+                })
+                .doOnNext(charSequence -> {
+                    if (TextUtils.isEmpty(charSequence.toString().trim())) {
+                        showHideFragment(mHistoryFragment, mSuggestFragment);
+                    } else {
+                        showHideFragment(mSuggestFragment, mHistoryFragment);
+                        mHandler.postDelayed(() -> mSuggestFragment.loadSuggest(charSequence.toString()), 100);
+                    }
+                });
         fd(R.id.iv_pop).setOnClickListener(this);
         fd(R.id.iv_speech).setOnClickListener(this);
         etKeyword.setOnFocusChangeListener(this);
+        suggestObservable.subscribe();
         etKeyword.setOnEditorActionListener(this);
-        etKeyword.addTextChangedListener(this);
         addDisposable(RxView.clicks(fd(R.id.tv_search))
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> preSearch()));
@@ -175,9 +193,9 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     @Override
     public void onSearch(String keyword) {
         hideSoftInput();
-        etKeyword.removeTextChangedListener(this);
+        removeDisposable(suggestDisposable);
         etKeyword.setText(keyword);
-        etKeyword.addTextChangedListener(this);
+        suggestObservable.subscribe();
         search(keyword);
     }
 
@@ -256,25 +274,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         KeyboardUtils.hideSoftInput(etKeyword);
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        if (TextUtils.isEmpty(s.toString().trim())) {
-            showHideFragment(mHistoryFragment, mSuggestFragment);
-        } else {
-            showHideFragment(mSuggestFragment, mHistoryFragment);
-            mHandler.postDelayed(() -> mSuggestFragment.loadSuggest(s.toString()), 100);
-        }
-    }
 
     /**
      * 初始化监听器。
@@ -371,8 +371,8 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         Log.d(TAG, "printResult: " + stringBuilder);
         etKeyword.setText(stringBuilder.toString());
         etKeyword.setSelection(etKeyword.length());
-    }
 
+    }
 
     @Override
     public void onDestroy() {

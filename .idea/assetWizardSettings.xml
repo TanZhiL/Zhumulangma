@@ -19,8 +19,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_common_notice" />
-                            <entry key="sourceFile" value="C:\Users\10719\Desktop\icon\common_notice.svg" />
+                            <entry key="height" value="128" />
+                            <entry key="outputName" value="ic_user_avatar" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="C:\Users\10719\Desktop\icon\user_avatar.svg" />
+                            <entry key="width" value="128" />
                           </map>
                         </option>
                       </PersistentState>

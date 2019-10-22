@@ -77,6 +77,7 @@ ext {
             "location":"4.7.0",
             "crashreport_upgrade":"1.4.1",
             "tinker-android-lib":"1.9.9",
+            "bmob":"3.7.3-rc1",
     ]
     //support配置
     support = [
@@ -142,6 +143,7 @@ ext {
             "location"                             :"com.amap.api:location:${versions["location"]}",
             "crashreport_upgrade"                  :"com.tencent.bugly:crashreport_upgrade:${versions["crashreport_upgrade"]}",
             "tinker-android-lib"                   :"com.tencent.tinker:tinker-android-lib:${versions["tinker-android-lib"]}",
+            "bmob"                                 :"cn.bmob.android:bmob-sdk:${versions["bmob"]}",
 
             //***************************************界面类*************************************************
             "loadsir"                              :"com.kingja.loadsir:loadsir:${versions["loadsir"]}",
