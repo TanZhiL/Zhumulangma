@@ -12,6 +12,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.listen.R;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -109,22 +110,22 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
     public void onClick(View v) {
         int id = v.getId();
         if(R.id.ll_download==id){
-            navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
         }else  if(R.id.ll_history==id){
-            navigateTo(AppConstants.Router.Listen.F_HISTORY);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_HISTORY);
         }else  if(R.id.ll_favorite==id){
-            navigateTo(AppConstants.Router.Listen.F_FAVORITE);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_FAVORITE);
         }
     }
     @Override
     public void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
-        navigateTo(AppConstants.Router.User.F_MESSAGE);
+        RouteUtil.navigateTo(AppConstants.Router.User.F_MESSAGE);
     }
 
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        navigateTo(AppConstants.Router.Home.F_SEARCH);
+        RouteUtil.navigateTo(AppConstants.Router.Home.F_SEARCH);
     }
 }

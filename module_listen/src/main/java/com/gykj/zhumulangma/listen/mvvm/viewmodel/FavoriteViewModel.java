@@ -10,6 +10,7 @@ import com.gykj.zhumulangma.common.dao.FavoriteBeanDao;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
@@ -109,7 +110,7 @@ public class FavoriteViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Fa
                             break;
                         }
                     }
-                    navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 

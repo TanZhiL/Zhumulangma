@@ -7,6 +7,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -99,7 +100,7 @@ public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
                 .subscribe(schedules ->
                 {
                     XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
-                    navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
+                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
                 }, Throwable::printStackTrace);
     }
 

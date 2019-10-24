@@ -30,6 +30,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.DetailCallback;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
@@ -180,7 +181,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                             tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                             XmPlayerManager.getInstance(mActivity).playList(mViewModel.getCommonTrackList(),
                                     index);
-                            navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                            RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
                         } else {
                             mViewModel.getPlayTrackList();
                         }
@@ -189,7 +190,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                         fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
                         tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                         XmPlayerManager.getInstance(mActivity).playList(mViewModel.getCommonTrackList(), 0);
-                        navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                        RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
                     }
                 }));
 
@@ -253,7 +254,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             mAlbumTrackAdapter.setNewData(tracks.getTracks());
             XmPlayerManager.getInstance(mActivity).playList(mViewModel.getCommonTrackList(),
                     mAlbumTrackAdapter.getData().indexOf(mLastPlay));
-            navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+            RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
         });
 
         mViewModel.getTracksSortEvent().observe(this, tracks -> {
@@ -298,7 +299,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             mLastPlay = mAlbumTrackAdapter.getItem(position);
             fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
             tvLastplay.setText(getString(R.string.lastplay, mAlbumTrackAdapter.getItem(position).getTrackTitle()));
-            navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+            RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
         } else {
             mPagerPopup.dismissWith(() -> mViewModel.getTrackList(position + 1));
         }

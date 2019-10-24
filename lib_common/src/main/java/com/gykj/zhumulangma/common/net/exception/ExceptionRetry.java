@@ -24,7 +24,7 @@ import io.reactivex.schedulers.Schedulers;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:所有异常都会经过此处,可拦截需要重试的内部异常,如Token超时等
  */
-public class RetryException implements Function<Observable<Throwable>, Observable<?>> {
+public class ExceptionRetry implements Function<Observable<Throwable>, Observable<?>> {
 
     @Override
     public Observable<?> apply(Observable<Throwable> observable) throws Exception {

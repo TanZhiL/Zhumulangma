@@ -9,16 +9,16 @@ package com.gykj.zhumulangma.common.extra;
  * Email: 1071931588@qq.com<br/>
  * Description:用来存放局部变量,实现匿名内部类直接修改局部变量的情况
  */
-public class RxField<E> {
+public class RxField<F> {
 
-    private E element;
+    private F field;
 
 
-    public E get() {
-        return element;
+    public F get() {
+        return field;
     }
 
-    public void set(E element) {
-        this.element = element;
+    public void set(F field) {
+        this.field = field;
     }
 }

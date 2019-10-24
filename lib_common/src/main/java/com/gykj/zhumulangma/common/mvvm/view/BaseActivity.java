@@ -20,7 +20,6 @@ import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.mvvm.Routeable;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -43,7 +42,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:Activity基类
  */
-public abstract class BaseActivity extends SupportActivity implements BaseView, Routeable {
+public abstract class BaseActivity extends SupportActivity implements BaseView {
 
     protected static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -116,7 +115,7 @@ public abstract class BaseActivity extends SupportActivity implements BaseView, 
         if (enableSimplebar()) {
             mSimpleTitleBar.setBackgroundResource(R.drawable.shap_common_simplebar);
             mSimpleTitleBar.setVisibility(View.VISIBLE);
-            initSimplebar();
+            initSimpleBar(mSimpleTitleBar);
         }
         viewStubContent.setLayoutResource(onBindLayout());
         View contentView = viewStubContent.inflate();
@@ -134,103 +133,6 @@ public abstract class BaseActivity extends SupportActivity implements BaseView, 
         }
         mBaseLoadService = builder.build().register(contentView, (Callback.OnReloadListener) v -> BaseActivity.this.onReload(v));
         mBaseLoadService.showSuccess();
-    }
-
-    /**
-     * 初始化通用标题栏
-     */
-    private void initSimplebar() {
-        //中间
-        if (onBindBarCenterStyle() == SimpleBarStyle.CENTER_TITLE) {
-            String[] strings = onBindBarTitleText();
-            if (strings != null && strings.length > 0) {
-                if (strings.length > 0 && null != strings[0] && strings[0].trim().length() > 0) {
-                    TextView title = mSimpleTitleBar.getCenterCustomView().findViewById(R.id.tv_title);
-                    title.setVisibility(View.VISIBLE);
-                    title.setText(strings[0]);
-                }
-                if (strings.length > 1 && null != strings[1] && strings[1].trim().length() > 0) {
-                    TextView subtitle = mSimpleTitleBar.getCenterCustomView().findViewById(R.id.tv_subtitle);
-                    subtitle.setVisibility(View.VISIBLE);
-                    subtitle.setText(strings[1]);
-                }
-            }
-        } else if (onBindBarCenterStyle() == SimpleBarStyle.CENTER_CUSTOME && onBindBarCenterCustome() != null) {
-            ViewGroup group = mSimpleTitleBar.getCenterCustomView().findViewById(R.id.fl_custome);
-            group.setVisibility(View.VISIBLE);
-            group.addView(onBindBarCenterCustome(), new FrameLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        }
-
-        //左边
-        if (onBindBarLeftStyle() == SimpleBarStyle.LEFT_BACK) {
-            ImageView backView = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
-            if (onBindBarBackIcon() != null) {
-                backView.setImageResource(onBindBarBackIcon());
-            }
-            backView.setVisibility(View.VISIBLE);
-            backView.setOnClickListener(v -> onSimpleBackClick());
-        } else if (onBindBarLeftStyle() == SimpleBarStyle.LEFT_BACK_TEXT) {
-            View backIcon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
-            backIcon.setVisibility(View.VISIBLE);
-            backIcon.setOnClickListener(v -> onSimpleBackClick());
-            View backTv = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.tv_back);
-            backTv.setVisibility(View.VISIBLE);
-            backTv.setOnClickListener(v -> onSimpleBackClick());
-        } else if (onBindBarLeftStyle() == SimpleBarStyle.LEFT_ICON && onBindBarLeftIcon() != null) {
-            ImageView icon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);
-            icon.setVisibility(View.VISIBLE);
-            icon.setImageResource(onBindBarLeftIcon());
-            icon.setOnClickListener(v -> onLeftIconClick(v));
-        }
-        //右边
-        switch (onBindBarRightStyle()) {
-            case SimpleBarStyle.RIGHT_TEXT:
-                String[] strings = onBindBarRightText();
-                if (strings == null || strings.length == 0) {
-                    break;
-                }
-                if (strings.length > 0 && null != strings[0] && strings[0].trim().length() > 0) {
-                    TextView tv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv1_right);
-                    tv1.setVisibility(View.VISIBLE);
-                    tv1.setText(strings[0]);
-                    tv1.setOnClickListener(v -> onRight1Click(v));
-                }
-                if (strings.length > 1 && null != strings[1] && strings[1].trim().length() > 0) {
-                    TextView tv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.tv2_right);
-                    tv2.setVisibility(View.VISIBLE);
-                    tv2.setText(strings[1]);
-                    tv2.setOnClickListener(v -> onRight2Click(v));
-                }
-                break;
-            case SimpleBarStyle.RIGHT_ICON:
-                Integer[] ints = onBindBarRightIcon();
-                if (ints == null || ints.length == 0) {
-                    break;
-                }
-                if (ints.length > 0 && null != ints[0]) {
-                    ImageView iv1 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv_left);
-                    iv1.setVisibility(View.VISIBLE);
-                    iv1.setImageResource(ints[0]);
-                    iv1.setOnClickListener(v -> onRight1Click(v));
-                }
-                if (ints.length > 1 & null != ints[1]) {
-                    ImageView iv2 = mSimpleTitleBar.getRightCustomView().findViewById(R.id.iv2_right);
-                    iv2.setVisibility(View.VISIBLE);
-                    iv2.setImageResource(ints[1]);
-                    iv2.setOnClickListener(v -> onRight2Click(v));
-                }
-                break;
-            case SimpleBarStyle.RIGHT_CUSTOME:
-                if (onBindBarRightCustome() != null) {
-                    ViewGroup group = mSimpleTitleBar.getRightCustomView().findViewById(R.id.fl_custome);
-                    group.setVisibility(View.VISIBLE);
-                    group.addView(onBindBarRightCustome(), new FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                }
-                break;
-        }
-
     }
 
     /**

@@ -19,6 +19,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.DownloadTrackAdapter;
@@ -195,7 +196,7 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         XmPlayerManager.getInstance(mActivity).playList(mTrackAdapter.getData(), position);
-        navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+        RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
     }
 
     @Override

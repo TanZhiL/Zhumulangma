@@ -4,9 +4,8 @@ import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
 import com.gykj.zhumulangma.common.net.exception.CustException;
 import com.gykj.zhumulangma.common.net.exception.ExceptionConverter;
 import com.gykj.zhumulangma.common.net.exception.InterceptableException;
-import com.gykj.zhumulangma.common.net.exception.RetryException;
+import com.gykj.zhumulangma.common.net.exception.ExceptionRetry;
 import com.gykj.zhumulangma.common.util.ToastUtil;
-import com.umeng.commonsdk.debug.D;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -34,14 +33,14 @@ public class RxAdapter {
     /**
      * 异常处理方式
      * <br/>StreamHandler(将内部异常选择性抛出,可设置需要重试的异常)->
-     * <br/>RetryException(所有异常都会经过此处,可拦截需要重试的内部异常,如Token超时等)->
+     * <br/>ExceptionRetry(所有异常都会经过此处,可拦截需要重试的内部异常,如Token超时等)->
      * <br/>ExceptionHandler(统一处理未被拦截内部异常和所有外部异常)
      */
     public static<T> ObservableTransformer<T,T> exceptionTransformer() {
 
         return observable -> observable
                 .flatMap(new StreamHandler<>())
-                .retryWhen(new RetryException())//拦截需要处理的异常
+                .retryWhen(new ExceptionRetry())//拦截需要处理的异常
                 .onErrorResumeNext(new ExceptionHandler<>());
     }
 

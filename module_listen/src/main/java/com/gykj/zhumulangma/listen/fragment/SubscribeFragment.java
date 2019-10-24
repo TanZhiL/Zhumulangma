@@ -20,6 +20,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.SubscribeAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
@@ -142,7 +143,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
     @Override
     public void onClick(View v) {
         if(v==vFooter){
-            navigateTo(AppConstants.Router.Home.F_RANK);
+            RouteUtil.navigateTo(AppConstants.Router.Home.F_RANK);
         }
     }
 

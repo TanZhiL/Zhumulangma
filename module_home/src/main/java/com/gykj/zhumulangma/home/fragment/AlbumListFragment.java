@@ -18,6 +18,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -127,7 +128,7 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        navigateTo(AppConstants.Router.Home.F_SEARCH);
+        RouteUtil.navigateTo(AppConstants.Router.Home.F_SEARCH);
     }
 
     @Override

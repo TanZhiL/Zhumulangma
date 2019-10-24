@@ -9,6 +9,7 @@ import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.util.DateUtil;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.listen.bean.PlayHistoryItem;
 import com.gykj.zhumulangma.listen.mvvm.model.HistoryModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -94,7 +95,7 @@ public class HistoryViewModel extends BaseRefreshViewModel<HistoryModel, PlayHis
                             break;
                         }
                     }
-                    navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 
@@ -105,7 +106,7 @@ public class HistoryViewModel extends BaseRefreshViewModel<HistoryModel, PlayHis
                 .subscribe(schedules ->
                 {
                     XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
-                    navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
+                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
                 }, Throwable::printStackTrace);
 
     }

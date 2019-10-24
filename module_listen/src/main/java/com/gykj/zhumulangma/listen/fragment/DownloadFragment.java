@@ -29,6 +29,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.widget.CircleProgressBar;
 import com.gykj.zhumulangma.listen.R;
@@ -323,7 +324,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             }
         } else if (adapter == mTrackAdapter) {
             XmPlayerManager.getInstance(mActivity).playList(mTrackAdapter.getData(), position);
-            navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+            RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
         } else if (adapter == mAlbumAdapter) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD_ALBUM)
                     .withLong(KeyCode.Listen.ALBUMID, mAlbumAdapter.getItem(position).getAlbumId())
@@ -366,9 +367,9 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             });
 
         } else if (id == R.id.tv_sort || id == R.id.iv_sort) {
-            navigateTo(AppConstants.Router.Listen.F_DOWNLOAD_SORT);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_DOWNLOAD_SORT);
         } else if (id == R.id.tv_delete || id == R.id.iv_delete) {
-            navigateTo(AppConstants.Router.Listen.F_DOWNLOAD_DELETE);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_DOWNLOAD_DELETE);
         }
     }
 

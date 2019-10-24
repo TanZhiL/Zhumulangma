@@ -13,6 +13,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.discover.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -64,12 +65,12 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
-        navigateTo(AppConstants.Router.User.F_MESSAGE);
+        RouteUtil.navigateTo(AppConstants.Router.User.F_MESSAGE);
     }
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        navigateTo(AppConstants.Router.Home.F_SEARCH);
+        RouteUtil.navigateTo(AppConstants.Router.Home.F_SEARCH);
     }
     @Override
     public int onBindBarLeftStyle() {

@@ -20,6 +20,7 @@ import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.HotCallback;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
@@ -322,11 +323,14 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Home.TAB_REFRESH:
-            case EventCode.Main.LOGINSUCC:
                 if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
                     fd(R.id.nsv).scrollTo(0,0);
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }
+                break;
+            case EventCode.Main.LOGINSUCC:
+                fd(R.id.nsv).scrollTo(0,0);
+                ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 break;
         }
     }
@@ -343,7 +347,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
         } else if (id == R.id.radio_refresh) {
             mViewModel.getRadioList();
         } else if (id == R.id.fl_rank) {
-            navigateTo(AppConstants.Router.Home.F_RANK);
+            RouteUtil.navigateTo(AppConstants.Router.Home.F_RANK);
         }else if (id == R.id.layout_ad) {
             Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
                     .withString(KeyCode.Discover.PATH, "https://m.ximalaya.com/")

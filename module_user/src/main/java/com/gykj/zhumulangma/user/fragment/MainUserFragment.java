@@ -28,6 +28,7 @@ import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
@@ -220,26 +221,26 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     public void onClick(View v) {
         int id = v.getId();
         if (R.id.ll_download == id) {
-            navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
         } else if (R.id.ll_history == id) {
-            navigateTo(AppConstants.Router.Listen.F_HISTORY);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_HISTORY);
         } else if (R.id.ll_favorit == id) {
-            navigateTo(AppConstants.Router.Listen.F_FAVORITE);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_FAVORITE);
         } else if (v == whiteLeft || v == transLeft) {
-            navigateTo(AppConstants.Router.User.F_MESSAGE);
+            RouteUtil.navigateTo(AppConstants.Router.User.F_MESSAGE);
         } else if (id == R.id.cl_fxzq) {
             EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
         } else if (id == R.id.cl_sys) {
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            navigateTo(AppConstants.Router.Home.F_SCAN);
+                            RouteUtil.navigateTo(AppConstants.Router.Home.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
         } else if (id == R.id.cl_wxhd) {
-            navigateTo(AppConstants.Router.Listen.F_FAVORITE);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_FAVORITE);
         } else if (id == R.id.cl_jcgx) {
             Beta.checkUpgrade();
         } else if (id == R.id.cl_gy || id == R.id.iv_user) {
@@ -285,11 +286,15 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.User.TAB_REFRESH:
-            case EventCode.Main.LOGINSUCC:
+
                 if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitCallBack().getClass()) {
                     fd(R.id.nsv).scrollTo(0, 0);
                     ((SmartRefreshLayout) fd(R.id.refreshLayout)).autoRefresh();
                 }
+                break;
+            case EventCode.Main.LOGINSUCC:
+                fd(R.id.nsv).scrollTo(0, 0);
+                ((SmartRefreshLayout) fd(R.id.refreshLayout)).autoRefresh();
                 break;
             case EventCode.Main.LOGOUTSUCC:
                 Glide.with(MainUserFragment.this).load(R.drawable.ic_user_avatar).into((ImageView) fd(R.id.iv_avatar));

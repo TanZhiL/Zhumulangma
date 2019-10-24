@@ -25,6 +25,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.ItemHeader;
 import com.gykj.zhumulangma.home.R;
@@ -97,7 +98,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
             EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
-        fd(R.id.ih_history).setOnClickListener(view -> navigateTo(AppConstants.Router.Listen.F_HISTORY));
+        fd(R.id.ih_history).setOnClickListener(view -> RouteUtil.navigateTo(AppConstants.Router.Listen.F_HISTORY));
         fd(R.id.ih_local).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_CITY)

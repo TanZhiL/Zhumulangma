@@ -1,6 +1,6 @@
 package com.gykj.zhumulangma.common;
 
-import com.gykj.zhumulangma.common.net.exception.RetryException;
+import com.gykj.zhumulangma.common.net.exception.ExceptionRetry;
 
 import org.junit.Test;
 
@@ -72,7 +72,7 @@ public class ExampleUnitTest {
                     public void run() throws Exception {
                         System.out.println(11);
                     }
-                }).retryWhen(new RetryException());
+                }).retryWhen(new ExceptionRetry());
 
         stringObservable.subscribe();
     }

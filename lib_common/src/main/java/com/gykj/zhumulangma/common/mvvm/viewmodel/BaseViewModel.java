@@ -7,7 +7,6 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.NonNull;
 
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
-import com.gykj.zhumulangma.common.mvvm.Routeable;
 import com.gykj.zhumulangma.common.mvvm.model.BaseModel;
 
 import io.reactivex.disposables.Disposable;
@@ -19,7 +18,7 @@ import io.reactivex.functions.Consumer;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:ViewModel基类
  */
-public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel, Consumer<Disposable> , Routeable {
+public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel, Consumer<Disposable> {
     protected M mModel;
 
     private SingleLiveEvent<Void> showInitLoadViewEvent;

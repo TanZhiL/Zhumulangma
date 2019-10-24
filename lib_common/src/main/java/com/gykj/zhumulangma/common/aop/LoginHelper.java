@@ -175,8 +175,6 @@ public class LoginHelper {
     public static boolean refreshSync() {
         RxField<Boolean> isSucc=new RxField<>();
         NetManager.getInstance().getCommonService().refreshToken(getFormBody())
-                .doOnSubscribe(d -> isSucc.set(false))
-                .subscribeOn(AndroidSchedulers.mainThread())
                 .compose(RxAdapter.exceptionTransformer())
                 .subscribe(xmTokenDTO -> {
                             AccessTokenManager.getInstanse().setAccessTokenAndUid(xmTokenDTO.getAccess_token(),

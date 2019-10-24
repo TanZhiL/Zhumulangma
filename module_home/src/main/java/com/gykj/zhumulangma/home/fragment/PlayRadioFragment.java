@@ -20,6 +20,7 @@ import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
@@ -308,7 +309,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         int id = v.getId();
         if (id == R.id.iv_history || id == R.id.tv_history) {
             pop();
-            navigateTo(AppConstants.Router.Listen.F_HISTORY);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_HISTORY);
         } else if (id == R.id.iv_play_list || id == R.id.tv_play_list) {
             if(mSchedule==null){
                 return;

@@ -23,6 +23,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -126,7 +127,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         fd(R.id.iv_download).setOnClickListener(this);
         fd(R.id.iv_history).setOnClickListener(this);
         addDisposable(RxView.clicks(fd(R.id.iv_message)).throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(unit -> navigateTo(AppConstants.Router.User.F_MESSAGE)));
+                .subscribe(unit -> RouteUtil.navigateTo(AppConstants.Router.User.F_MESSAGE)));
         mMarqueeView.setOnItemClickListener(this);
     }
 
@@ -155,14 +156,14 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            navigateTo(AppConstants.Router.Home.F_SCAN);
+                            RouteUtil.navigateTo(AppConstants.Router.Home.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
 
         } else if (id == R.id.iv_history) {
-            navigateTo(AppConstants.Router.Listen.F_HISTORY);
+            RouteUtil.navigateTo(AppConstants.Router.Listen.F_HISTORY);
         }
 
     }
