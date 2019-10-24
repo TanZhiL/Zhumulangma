@@ -10,11 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
-import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -76,8 +74,7 @@ public class SearchRadioFragment extends BaseRefreshMvvmFragment<SearchRadioView
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        RadioUtil.getInstance(mActivity).playLiveRadioForSDK(mRadioAdapter.getItem(position));
-        navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
+        mViewModel.playRadio(mRadioAdapter.getItem(position));
     }
     @Override
     public Class<SearchRadioViewModel> onBindViewModel() {
@@ -95,7 +92,7 @@ public class SearchRadioFragment extends BaseRefreshMvvmFragment<SearchRadioView
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 
@@ -106,7 +103,7 @@ public class SearchRadioFragment extends BaseRefreshMvvmFragment<SearchRadioView
     }
 
      @Override
-    protected Callback getInitCallBack() {
+     public Callback getInitCallBack() {
         return new ListCallback();
     }
 }

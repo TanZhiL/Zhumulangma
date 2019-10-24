@@ -81,27 +81,27 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    protected int onBindBarLeftStyle() {
+    public int onBindBarLeftStyle() {
         return SimpleBarStyle.LEFT_ICON;
     }
 
     @Override
-    protected int onBindBarRightStyle() {
+    public int onBindBarRightStyle() {
         return SimpleBarStyle.RIGHT_ICON;
     }
 
     @Override
-    protected Integer onBindBarLeftIcon() {
+    public Integer onBindBarLeftIcon() {
         return R.drawable.ic_common_message;
     }
 
     @Override
-    protected Integer[] onBindBarRightIcon() {
+    public Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_common_search};
     }
 
     @Override
-    protected String[] onBindBarTitleText() {
+    public String[] onBindBarTitleText() {
         return  new String[]{"我听"};
     }
 
@@ -117,13 +117,13 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
         }
     }
     @Override
-    protected void onLeftIconClick(View v) {
+    public void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
         navigateTo(AppConstants.Router.User.F_MESSAGE);
     }
 
     @Override
-    protected void onRight1Click(View v) {
+    public void onRight1Click(View v) {
         super.onRight1Click(v);
         navigateTo(AppConstants.Router.Home.F_SEARCH);
     }

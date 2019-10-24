@@ -85,7 +85,7 @@ public class BatchDownloadViewModel extends BaseRefreshViewModel<ZhumulangmaMode
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getInitTracksEvent().setValue(
                             trackList);
-                }, e -> e.printStackTrace());
+                }, Throwable::printStackTrace);
 
     }
 

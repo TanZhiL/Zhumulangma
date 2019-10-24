@@ -243,22 +243,22 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     }
 
     @Override
-    protected int onBindBarLeftStyle() {
+    public int onBindBarLeftStyle() {
         return SimpleBarStyle.LEFT_ICON;
     }
 
     @Override
-    protected Integer onBindBarLeftIcon() {
+    public Integer onBindBarLeftIcon() {
         return R.drawable.ic_common_titlebar_back;
     }
 
     @Override
-    protected Integer[] onBindBarRightIcon() {
+    public Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_home_dingshi};
     }
 
     @Override
-    protected void onRight1Click(View v) {
+    public void onRight1Click(View v) {
         super.onRight1Click(v);
         new XPopup.Builder(getContext()).setPopupCallback(new SimpleCallback(){
             @Override
@@ -270,7 +270,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     }
 
     @Override
-    protected void onLeftIconClick(View v) {
+    public void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
         pop();
     }

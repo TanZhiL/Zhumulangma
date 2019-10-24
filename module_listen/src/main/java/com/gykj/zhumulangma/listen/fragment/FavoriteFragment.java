@@ -72,7 +72,7 @@ public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel,
 
 
     @Override
-    protected String[] onBindBarTitleText() {
+    public String[] onBindBarTitleText() {
         return new String[]{"我喜欢的声音"};
     }
     @Override

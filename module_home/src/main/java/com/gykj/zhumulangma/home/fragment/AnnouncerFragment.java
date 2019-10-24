@@ -117,7 +117,7 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 

@@ -46,7 +46,8 @@ public interface Constans {
     String BING_HOST="https://cn.bing.com/";
     String BING_URL="https://cn.bing.com/HPImageArchive.aspx";
     String GITHUB_URL="https://api.github.com/repos/TanZhiL/Zhumulangma";
-
+    String REDIRECT_URL = "http://api.ximalaya.com/openapi-collector-app/get_access_token";
+    String REFRESH_TOKEN_URL = "https://api.ximalaya.com/oauth2/refresh_token?";
     /**
      * 测试环境
      */

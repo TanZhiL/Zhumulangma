@@ -188,7 +188,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 
@@ -315,9 +315,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 break;
             case EventCode.Main.SHOW_GP:
                 globalPlay.show();
-                break;
-            case EventCode.Main.LOGIN:
-                LoginHelper.getInstance().logout();
                 break;
             case EventCode.Main.SHARE:
 

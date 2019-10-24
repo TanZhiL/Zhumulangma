@@ -391,7 +391,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 

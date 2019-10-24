@@ -108,12 +108,12 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    protected String[] onBindBarTitleText() {
+    public String[] onBindBarTitleText() {
         return new String[]{"下载详情"};
     }
 
     @Override
-    protected Integer[] onBindBarRightIcon() {
+    public Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_common_share};
     }
 
@@ -175,7 +175,7 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
     }
 
     @Override
-    protected void onRight1Click(View v) {
+    public void onRight1Click(View v) {
         super.onRight1Click(v);
         EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
     }

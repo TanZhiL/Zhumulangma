@@ -148,7 +148,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 

@@ -131,7 +131,7 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
 
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 
@@ -166,7 +166,7 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
     }
 
     @Override
-    protected Callback getInitCallBack() {
+    public Callback getInitCallBack() {
         return new ListCallback();
     }
 

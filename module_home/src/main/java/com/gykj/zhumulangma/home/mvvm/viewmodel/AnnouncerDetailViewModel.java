@@ -3,12 +3,8 @@ package com.gykj.zhumulangma.home.mvvm.viewmodel;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -18,15 +14,11 @@ import com.ximalaya.ting.android.opensdk.model.album.AnnouncerListByIds;
 import com.ximalaya.ting.android.opensdk.model.track.AnnouncerTrackList;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
@@ -34,12 +26,13 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:
  */
-public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Object> {
+public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Object> {
 
     private SingleLiveEvent<Announcer> mAnnouncerEvent;
     private SingleLiveEvent<AlbumList> mAlbumListEvent;
     private SingleLiveEvent<AnnouncerTrackList> mTrackListEvent;
     private long mAnnouncerId;
+
     public AnnouncerDetailViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
@@ -66,7 +59,7 @@ public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaMo
                     map12.put(DTransferConstants.PAGE_SIZE, String.valueOf(5));
                     return mModel.getTracksByAnnouncer(map12);
                 })
-                .doOnSubscribe(d->   getShowInitViewEvent().call())
+                .doOnSubscribe(d -> getShowInitViewEvent().call())
                 .subscribe(trackList -> {
                     getClearStatusEvent().call();
                     getTrackListEvent().setValue(trackList);
@@ -76,30 +69,24 @@ public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaMo
                 });
     }
 
-    public void play(long albumId,long trackId) {
+    public void playTrack(long albumId, long trackId) {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.ALBUM_ID, String.valueOf(albumId));
         map.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
         mModel.getLastPlayTracks(map)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d ->   getShowLoadingViewEvent().call())
-                .doFinally(() ->  getClearStatusEvent().call())
+                .doOnSubscribe(d -> getShowLoadingViewEvent().call())
+                .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(trackList -> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
-                        if(trackList.getTracks().get(i).getDataId()==trackId){
-                            XmPlayerManager.getInstance(getApplication()).playList(trackList,i);
+                        if (trackList.getTracks().get(i).getDataId() == trackId) {
+                            XmPlayerManager.getInstance(getApplication()).playList(trackList, i);
                             break;
                         }
                     }
-                    Object navigation = ARouter.getInstance()
-                            .build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
-                    if (null != navigation) {
-                        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                                new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK,
-                                        (ISupportFragment) navigation)));
-                    }
-                }, e -> e.printStackTrace());
+                    navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                }, Throwable::printStackTrace);
     }
+
     public SingleLiveEvent<Announcer> getAnnouncerEvent() {
         return mAnnouncerEvent = createLiveData(mAnnouncerEvent);
     }

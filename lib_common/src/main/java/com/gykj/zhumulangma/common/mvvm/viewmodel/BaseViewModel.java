@@ -7,6 +7,7 @@ import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.NonNull;
 
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
+import com.gykj.zhumulangma.common.mvvm.Routeable;
 import com.gykj.zhumulangma.common.mvvm.model.BaseModel;
 
 import io.reactivex.disposables.Disposable;
@@ -18,7 +19,7 @@ import io.reactivex.functions.Consumer;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:ViewModel基类
  */
-public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel, Consumer<Disposable> {
+public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel, Consumer<Disposable> , Routeable {
     protected M mModel;
 
     private SingleLiveEvent<Void> showInitLoadViewEvent;
@@ -38,7 +39,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
      * @return
      */
     public SingleLiveEvent<Void> getShowInitViewEvent() {
-        return showInitLoadViewEvent = createLiveData(showInitLoadViewEvent);
+        return showInitLoadViewEvent=createLiveData(showInitLoadViewEvent);
     }
 
     /**
@@ -81,9 +82,9 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
         return clearStatusEvent= createLiveData(clearStatusEvent);
     }
 
-    protected SingleLiveEvent createLiveData(SingleLiveEvent liveData) {
+    protected <T> SingleLiveEvent<T> createLiveData(SingleLiveEvent<T> liveData) {
         if (liveData == null) {
-            liveData = new SingleLiveEvent();
+            liveData = new SingleLiveEvent<>();
         }
         return liveData;
     }
@@ -130,4 +131,6 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
             mModel.onCleared();
         }
     }
+
+
 }

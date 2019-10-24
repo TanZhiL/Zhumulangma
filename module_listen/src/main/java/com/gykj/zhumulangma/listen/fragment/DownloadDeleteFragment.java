@@ -83,7 +83,7 @@ public class DownloadDeleteFragment extends BaseFragment implements BaseQuickAda
     }
 
     @Override
-    protected String[] onBindBarTitleText() {
+    public String[] onBindBarTitleText() {
         return new String[]{"批量删除"};
     }
 

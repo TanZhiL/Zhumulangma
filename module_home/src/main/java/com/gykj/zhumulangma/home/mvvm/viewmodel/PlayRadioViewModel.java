@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
+import com.gykj.zhumulangma.common.extra.RxField;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.util.RadioUtil;
@@ -45,15 +46,14 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.RADIOID, radioId);
         mModel.getProgram(map).subscribe(programList ->
-                getProgramsSingleLiveEvent().setValue(programList), e -> e.printStackTrace());
+                getProgramsSingleLiveEvent().setValue(programList), Throwable::printStackTrace);
     }
 
-    private Radio radio;
+
 
     public void getSchedules(String radioId) {
-
-
-        Map<String, String> yestoday = new HashMap();
+        RxField<Radio> radio=new RxField<>();
+        Map<String, String> yestoday = new HashMap<>();
         yestoday.put("radio_id", radioId);
         Calendar calendar0 = Calendar.getInstance();
         calendar0.add(Calendar.DAY_OF_MONTH, -1);
@@ -72,7 +72,7 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.RADIO_IDS, radioId);
         mModel.getRadiosByIds(map)
-                .doOnNext(radioListById -> radio = radioListById.getRadios().get(0))
+                .doOnNext(radioListById -> radio.set(radioListById.getRadios().get(0)))
                 .flatMap((Function<RadioListById, ObservableSource<List<Schedule>>>) radioListById ->
                         mModel.getSchedules(yestoday))
                 .doOnNext(schedules -> {
@@ -82,10 +82,10 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
                         schedulex.setStartTime(simpleDateFormat.format(calendar0.getTime()) + ":" + schedulex.getStartTime());
                         schedulex.setEndTime(simpleDateFormat.format(calendar0.getTime()) + ":" + schedulex.getEndTime());
                     }
-                    RadioUtil.fillData(schedules,radio);
+                    RadioUtil.fillData(schedules,radio.get());
                     getYestodaySingleLiveEvent().setValue(schedules);
                 }).flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
-                RadioUtil.getSchedules(today))
+                mModel.getSchedules(today))
                 .doOnNext(schedules -> {
                     Iterator var7 = schedules.iterator();
                     while (var7.hasNext()) {
@@ -93,10 +93,10 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
                         schedulex.setStartTime(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":" + schedulex.getStartTime());
                         schedulex.setEndTime(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":" + schedulex.getEndTime());
                     }
-                    RadioUtil.fillData(schedules,radio);
+                    RadioUtil.fillData(schedules,radio.get());
                     getTodaySingleLiveEvent().setValue(schedules);
                 }).flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
-                RadioUtil.getSchedules(tomorrow))
+                mModel.getSchedules(tomorrow))
                 .doOnSubscribe(d ->   getShowLoadingViewEvent().call())
                 .doFinally(() ->  getClearStatusEvent().call())
                 .subscribe(schedules -> {
@@ -106,11 +106,10 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
                         schedulex.setStartTime(simpleDateFormat.format(calendar1.getTime()) + ":" + schedulex.getStartTime());
                         schedulex.setEndTime(simpleDateFormat.format(calendar1.getTime()) + ":" + schedulex.getEndTime());
                     }
-                    RadioUtil.fillData(schedules,radio);
+                    RadioUtil.fillData(schedules,radio.get());
                     getTomorrowSingleLiveEvent().setValue(schedules);
-                }, e -> e.printStackTrace());
+                }, Throwable::printStackTrace);
     }
-
 
     public SingleLiveEvent<ProgramList> getProgramsSingleLiveEvent() {
         return mProgramsSingleLiveEvent = createLiveData(mProgramsSingleLiveEvent);

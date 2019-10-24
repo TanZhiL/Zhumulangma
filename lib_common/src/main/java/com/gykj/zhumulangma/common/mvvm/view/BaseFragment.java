@@ -22,13 +22,8 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.R;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
-import com.gykj.zhumulangma.common.mvvm.view.status.BlankCallback;
-import com.gykj.zhumulangma.common.mvvm.view.status.EmptyCallback;
-import com.gykj.zhumulangma.common.mvvm.view.status.ErrorCallback;
+import com.gykj.zhumulangma.common.mvvm.Routeable;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.callback.SuccessCallback;
@@ -40,12 +35,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.List;
-
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import me.yokeyword.fragmentation.ExtraTransaction;
-import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
@@ -56,7 +47,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:Fragment基类
  */
-public abstract class BaseFragment extends SupportFragment {
+public abstract class BaseFragment extends SupportFragment implements BaseView, Routeable {
     protected static final String TAG = BaseFragment.class.getSimpleName();
     private CompositeDisposable mCompositeDisposable;
     protected View mView;
@@ -69,41 +60,6 @@ public abstract class BaseFragment extends SupportFragment {
      * 是否第一次进入
      */
     private boolean isFirst = true;
-
-    protected interface SimpleBarStyle {
-        /**
-         * 返回图标(默认)
-         */
-        int LEFT_BACK = 0;
-        /**
-         * 返回图标+文字
-         */
-        int LEFT_BACK_TEXT = 1;
-        /**
-         * 附加图标
-         */
-        int LEFT_ICON = 2;
-        /**
-         * 标题(默认)
-         */
-        int CENTER_TITLE = 7;
-        /**
-         * 自定义布局
-         */
-        int CENTER_CUSTOME = 8;
-        /**
-         * 文字
-         */
-        int RIGHT_TEXT = 4;
-        /**
-         * 图标(默认)
-         */
-        int RIGHT_ICON = 5;
-        /**
-         * 自定义布局
-         */
-        int RIGHT_CUSTOME = 6;
-    }
 
     protected abstract @LayoutRes
     int onBindLayout();
@@ -217,35 +173,6 @@ public abstract class BaseFragment extends SupportFragment {
         mBaseLoadService = builder.build().register(contentView, (Callback.OnReloadListener) BaseFragment.this::onReload);
     }
 
-    /**
-     * 提供状态布局
-     *
-     * @return
-     */
-    protected Callback getInitCallBack() {
-        return new BlankCallback();
-    }
-
-    protected Callback getLoadingCallback() {
-        return new LoadingCallback();
-    }
-
-    protected Callback getErrorCallback() {
-        return new ErrorCallback();
-    }
-
-    protected Callback getEmptyCallback() {
-        return new EmptyCallback();
-    }
-
-    /**
-     * 提供额外状态布局
-     *
-     * @return
-     */
-    protected List<Callback> onBindExtraCallBack() {
-        return null;
-    }
 
     /**
      * 初始化基本布局
@@ -358,112 +285,10 @@ public abstract class BaseFragment extends SupportFragment {
     }
 
     /**
-     * 是否开启通用标题栏,默认true
-     *
-     * @return
-     */
-    protected boolean enableSimplebar() {
-        return true;
-    }
-
-    /**
-     * 初始化右边标题栏类型
-     *
-     * @return
-     */
-    protected int onBindBarRightStyle() {
-        return BaseActivity.SimpleBarStyle.RIGHT_ICON;
-    }
-
-    /**
-     * 初始化左边标题栏类型
-     *
-     * @return
-     */
-    protected int onBindBarLeftStyle() {
-        return BaseActivity.SimpleBarStyle.LEFT_BACK;
-    }
-
-    /**
-     * 初始化中间标题栏类型
-     *
-     * @return
-     */
-    protected int onBindBarCenterStyle() {
-        return BaseActivity.SimpleBarStyle.CENTER_TITLE;
-    }
-
-    /**
-     * 初始化标题栏右边文本
-     *
-     * @return
-     */
-    protected String[] onBindBarRightText() {
-        return null;
-    }
-
-    /**
-     * 初始化标题文本
-     *
-     * @return
-     */
-    protected String[] onBindBarTitleText() {
-        return null;
-    }
-
-    /**
-     * 初始化标题栏右边图标
-     *
-     * @return
-     */
-    protected @DrawableRes
-    Integer[] onBindBarRightIcon() {
-        return null;
-    }
-
-    /**
-     * 初始化标题栏左边附加图标
-     *
-     * @return
-     */
-    protected @DrawableRes
-    Integer onBindBarLeftIcon() {
-        return null;
-    }
-
-    /**
-     * 初始化标题栏左边返回按钮图标
-     *
-     * @return
-     */
-    protected @DrawableRes
-    Integer onBindBarBackIcon() {
-        return null;
-    }
-
-    /**
      * 点击标题栏返回按钮事件
      */
-    protected void onSimpleBackClick() {
+    public void onSimpleBackClick() {
         pop();
-    }
-
-    /**
-     * 初始化标题栏右侧自定义布局
-     *
-     * @return
-     */
-    protected View onBindBarRightCustome() {
-        return null;
-    }
-
-    /**
-     * 初始化标题栏中间自定义布局
-     *
-     * @return
-     */
-    protected View onBindBarCenterCustome() {
-        return null;
     }
 
     /**
@@ -473,33 +298,6 @@ public abstract class BaseFragment extends SupportFragment {
      */
     protected void setSimpleBarBg(@ColorInt int color) {
         mSimpleTitleBar.setBackgroundColor(color);
-    }
-
-    /**
-     * 点击标题栏靠右第一个事件
-     *
-     * @return
-     */
-    protected void onRight1Click(View v) {
-
-    }
-
-    /**
-     * 点击标题栏靠右第二个事件
-     *
-     * @return
-     */
-    protected void onRight2Click(View v) {
-
-    }
-
-    /**
-     * 点击标题栏靠左附加事件
-     *
-     * @return
-     */
-    protected void onLeftIconClick(View v) {
-
     }
 
     /**
@@ -680,50 +478,6 @@ public abstract class BaseFragment extends SupportFragment {
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
         return new DefaultHorizontalAnimator();
-    }
-
-    /**
-     * 页面跳转
-     *
-     * @param path
-     */
-    protected void navigateTo(String path) {
-        Object navigation = ARouter.getInstance().build(path).navigation();
-        if (null != navigation) {
-            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                    new NavigateBean(path, (ISupportFragment) navigation)));
-        }
-    }
-
-    protected void navigateTo(String path, int launchMode) {
-        Object navigation = ARouter.getInstance().build(path).navigation();
-        NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
-        navigateBean.launchMode = launchMode;
-        if (null != navigation) {
-            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                    new NavigateBean(path, (ISupportFragment) navigation)));
-        }
-    }
-
-    protected void navigateTo(String path, int launchMode, ExtraTransaction extraTransaction) {
-        Object navigation = ARouter.getInstance().build(path).navigation();
-        NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
-        navigateBean.launchMode = launchMode;
-        navigateBean.extraTransaction = extraTransaction;
-        if (null != navigation) {
-            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                    new NavigateBean(path, (ISupportFragment) navigation)));
-        }
-    }
-
-    protected void navigateTo(String path, ExtraTransaction extraTransaction) {
-        Object navigation = ARouter.getInstance().build(path).navigation();
-        NavigateBean navigateBean = new NavigateBean(path, (ISupportFragment) navigation);
-        navigateBean.extraTransaction = extraTransaction;
-        if (null != navigation) {
-            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                    new NavigateBean(path, (ISupportFragment) navigation)));
-        }
     }
 
     @Override

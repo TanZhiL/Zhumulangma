@@ -12,7 +12,6 @@ public interface EventCode {
         int NAVIGATE=1001;
         int HIDE_GP=1002;
         int SHOW_GP=1003;
-        int LOGIN=1004;
         int LOGINSUCC=1005;
         int LOGOUTSUCC=1006;
         int SHARE=1007;

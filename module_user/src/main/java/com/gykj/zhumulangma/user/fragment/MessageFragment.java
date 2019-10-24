@@ -35,17 +35,17 @@ public class MessageFragment extends BaseFragment{
     }
 
     @Override
-    protected String[] onBindBarTitleText() {
+    public String[] onBindBarTitleText() {
         return new String[]{"消息中心"};
     }
 
     @Override
-    protected int onBindBarRightStyle() {
+    public int onBindBarRightStyle() {
         return SimpleBarStyle.RIGHT_ICON;
     }
 
     @Override
-    protected Integer[] onBindBarRightIcon() {
+    public Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_common_settings,R.drawable.ic_common_edit};
     }
 }

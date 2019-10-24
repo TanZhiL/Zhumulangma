@@ -6,14 +6,12 @@ import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.net.service.CommonService;
 import com.gykj.zhumulangma.common.net.service.UserService;
 
 import java.io.IOException;
 import java.net.Proxy;
 
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -37,6 +35,18 @@ public class NetManager {
     private int mNetStatus = Constans.NET_ONLINE;
     private CommonService mCommonService;
     private UserService mUserService;
+
+
+    public static NetManager getInstance() {
+        if (instance == null) {
+            synchronized (NetManager.class) {
+                if (instance == null) {
+                    instance = new NetManager();
+                }
+            }
+        }
+        return instance;
+    }
 
     private NetManager() {
 
@@ -62,22 +72,6 @@ public class NetManager {
                 .build();
     }
 
-    public static NetManager getInstance() {
-        if (instance == null) {
-            synchronized (NetManager.class) {
-                if (instance == null) {
-                    instance = new NetManager();
-                }
-            }
-        }
-        return instance;
-    }
-
-    /**
-     * 获取一个公共服务
-     *
-     * @return
-     */
     public CommonService getCommonService() {
         if(mCommonService==null){
             mCommonService=mRetrofit.create(CommonService.class);
@@ -85,11 +79,6 @@ public class NetManager {
         return mCommonService;
     }
 
-    /**
-     * 获取一个User服务
-     *
-     * @return
-     */
     public UserService getUserService() {
         if(mUserService==null){
             mUserService=mRetrofit.create(UserService.class);
@@ -105,24 +94,6 @@ public class NetManager {
     public void setNetStatus(int netStatus) {
         Log.d(TAG, "setNetStatus() called with: netStatus = [" + netStatus + "]");
         this.mNetStatus = netStatus;
-    }
-
-    /**
-     * 根据header和netStatus组合baseUrl
-     * @param hostValue
-     * @return
-     */
-    private HttpUrl getBaseUrl(String hostValue) {
-        if (Constans.HOST1_VALUE.equals(hostValue) && mNetStatus == Constans.NET_OFFLINE) {
-            return HttpUrl.parse(Constans.OFFLINE_HOST1);
-        } else if (Constans.HOST1_VALUE.equals(hostValue) && mNetStatus == Constans.NET_ONLINE) {
-            return HttpUrl.parse(Constans.ONLINE_HOST1);
-        } else if (Constans.HOST2_VALUE.equals(hostValue) && mNetStatus == Constans.NET_OFFLINE) {
-            return HttpUrl.parse(Constans.OFFLINE_HOST2);
-        } else if (Constans.HOST2_VALUE.equals(hostValue) && mNetStatus == Constans.NET_ONLINE) {
-            return HttpUrl.parse(Constans.ONLINE_HOST2);
-        }
-        return null;
     }
 
     /**
@@ -157,5 +128,22 @@ public class NetManager {
             Log.d(TAG, "Url重定向:" + newUrl.toString());
             return chain.proceed(builder.url(newUrl).build());
         }
+    }
+    /**
+     * 根据header和netStatus组合baseUrl
+     * @param hostValue
+     * @return
+     */
+    private HttpUrl getBaseUrl(String hostValue) {
+        if (Constans.HOST1_VALUE.equals(hostValue) && mNetStatus == Constans.NET_OFFLINE) {
+            return HttpUrl.parse(Constans.OFFLINE_HOST1);
+        } else if (Constans.HOST1_VALUE.equals(hostValue) && mNetStatus == Constans.NET_ONLINE) {
+            return HttpUrl.parse(Constans.ONLINE_HOST1);
+        } else if (Constans.HOST2_VALUE.equals(hostValue) && mNetStatus == Constans.NET_OFFLINE) {
+            return HttpUrl.parse(Constans.OFFLINE_HOST2);
+        } else if (Constans.HOST2_VALUE.equals(hostValue) && mNetStatus == Constans.NET_ONLINE) {
+            return HttpUrl.parse(Constans.ONLINE_HOST2);
+        }
+        return null;
     }
 }

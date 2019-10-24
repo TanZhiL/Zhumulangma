@@ -165,7 +165,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 

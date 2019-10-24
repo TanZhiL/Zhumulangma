@@ -206,7 +206,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 

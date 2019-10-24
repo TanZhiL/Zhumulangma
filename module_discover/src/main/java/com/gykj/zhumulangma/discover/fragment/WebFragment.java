@@ -237,7 +237,7 @@ public class WebFragment extends BaseFragment {
     }
 
     @Override
-    protected void onSimpleBackClick() {
+    public void onSimpleBackClick() {
         if (!mAgentWeb.getWebCreator().get().canGoBack()) {
             pop();
         } else {
@@ -257,12 +257,12 @@ public class WebFragment extends BaseFragment {
     }
 
     @Override
-    protected Integer[] onBindBarRightIcon() {
+    public Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_common_share};
     }
 
     @Override
-    protected void onRight1Click(View v) {
+    public void onRight1Click(View v) {
         super.onRight1Click(v);
         Bitmap favicon = mAgentWeb.getWebCreator().get().getFavicon();
         String title = mAgentWeb.getWebCreator().get().getTitle();

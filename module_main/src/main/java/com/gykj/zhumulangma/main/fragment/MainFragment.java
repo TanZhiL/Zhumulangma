@@ -108,7 +108,7 @@ public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTa
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 

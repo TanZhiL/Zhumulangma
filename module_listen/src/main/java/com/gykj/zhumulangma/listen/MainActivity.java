@@ -23,7 +23,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 }

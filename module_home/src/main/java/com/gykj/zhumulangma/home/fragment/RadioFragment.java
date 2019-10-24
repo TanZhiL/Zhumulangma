@@ -20,12 +20,11 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.ItemHeader;
 import com.gykj.zhumulangma.home.R;
@@ -98,9 +97,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
             EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
-        fd(R.id.ih_history).setOnClickListener(view -> {
-            navigateTo(AppConstants.Router.Listen.F_HISTORY);
-        });
+        fd(R.id.ih_history).setOnClickListener(view -> navigateTo(AppConstants.Router.Listen.F_HISTORY));
         fd(R.id.ih_local).setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_CITY)
@@ -109,16 +106,10 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
             EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
-        mLocalAdapter.setOnItemClickListener((adapter, view, position) -> {
-            RadioUtil.getInstance(mActivity).playLiveRadioForSDK(mLocalAdapter.getItem(position));
-            navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
-        });
-        mTopAdapter.setOnItemClickListener((adapter, view, position) -> {
-            RadioUtil.getInstance(mActivity).playLiveRadioForSDK(mTopAdapter.getItem(position));
-            navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
-        });
+        mLocalAdapter.setOnItemClickListener((adapter, view, position) -> mViewModel.playRadio(mLocalAdapter.getItem(position)));
+        mTopAdapter.setOnItemClickListener((adapter, view, position) -> mViewModel.playRadio(mTopAdapter.getItem(position)));
         mHistoryAdapter.setOnItemClickListener((adapter, view, position) ->
-                mViewModel.play(String.valueOf(mHistoryAdapter.getItem(position).getSchedule().getRadioId())));
+                mViewModel.playRadio(String.valueOf(mHistoryAdapter.getItem(position).getSchedule().getRadioId())));
     }
 
     @NonNull
@@ -202,7 +193,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<RadioViewModel, Radio
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 

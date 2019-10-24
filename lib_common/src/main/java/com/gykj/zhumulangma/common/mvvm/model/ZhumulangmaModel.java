@@ -4,8 +4,11 @@ import android.app.Application;
 import android.support.annotation.Nullable;
 
 import com.blankj.utilcode.util.CollectionUtils;
+import com.gykj.zhumulangma.common.extra.RxField;
 import com.gykj.zhumulangma.common.net.RxAdapter;
 import com.gykj.zhumulangma.common.net.exception.CustException;
+import com.gykj.zhumulangma.common.util.RadioUtil;
+import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
@@ -20,6 +23,7 @@ import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.column.ColumnList;
 import com.ximalaya.ting.android.opensdk.model.download.RecommendDownload;
 import com.ximalaya.ting.android.opensdk.model.live.program.ProgramList;
+import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListByCategory;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
@@ -34,11 +38,19 @@ import com.ximalaya.ting.android.opensdk.model.user.XmBaseUserInfo;
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
 import com.ximalaya.ting.android.opensdk.model.word.SuggestWords;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/7/31 17:27
@@ -788,4 +800,67 @@ public class ZhumulangmaModel extends CommonModel {
                             }
                         })).compose(RxAdapter.exceptionTransformer());
     }
+
+    public Observable<List<Schedule>> getSchedulesSource(String radioId) {
+        RxField<Radio> radio = new RxField<>();
+
+        Map<String, String> map = new HashMap<>();
+        map.put(DTransferConstants.RADIO_IDS, radioId);
+
+        return  getRadiosByIds(map).doOnNext(radioListById -> radio.set(radioListById.getRadios().get(0)))
+                .flatMap((Function<RadioListById, ObservableSource<List<Schedule>>>) radioListById -> getSchedulesSource(radio.get()));
+    }
+
+    public Observable<List<Schedule>> getSchedulesSource(final Radio radio) {
+        List<Schedule> schedulesx = new ArrayList<>();
+        Map<String, String> yestoday = new HashMap<>();
+        yestoday.put("radio_id", radio.getDataId() + "");
+        Calendar calendar0 = Calendar.getInstance();
+        calendar0.add(Calendar.DAY_OF_MONTH, -1);
+        yestoday.put("weekday", calendar0.get(Calendar.DAY_OF_WEEK) - 1 + "");
+
+        Map<String, String> today = new HashMap<>();
+        today.put("radio_id", radio.getDataId() + "");
+
+        Map<String, String> tomorrow = new HashMap<>();
+        tomorrow.put("radio_id", radio.getDataId() + "");
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.add(Calendar.DAY_OF_MONTH, 1);
+        tomorrow.put("weekday", calendar0.get(Calendar.DAY_OF_WEEK) - 1 + "");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy:MM:dd");
+
+        return getSchedules(yestoday).doOnNext(schedules -> {
+            Iterator var7 = schedules.iterator();
+            while (var7.hasNext()) {
+                Schedule schedulex = (Schedule) var7.next();
+                schedulex.setStartTime(simpleDateFormat.format(calendar0.getTime()) + ":" + schedulex.getStartTime());
+                schedulex.setEndTime(simpleDateFormat.format(calendar0.getTime()) + ":" + schedulex.getEndTime());
+            }
+            schedulesx.addAll(schedules);
+        }).flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
+                getSchedules(today)).doOnNext(schedules -> {
+            Iterator var7 = schedules.iterator();
+            while (var7.hasNext()) {
+                Schedule schedulex = (Schedule) var7.next();
+                schedulex.setStartTime(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":" + schedulex.getStartTime());
+                schedulex.setEndTime(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":" + schedulex.getEndTime());
+            }
+            schedulesx.addAll(schedules);
+        }).flatMap((Function<List<Schedule>, ObservableSource<List<Schedule>>>) schedules ->
+                getSchedules(tomorrow))
+                .doOnNext(schedules -> {
+                    Iterator var7 = schedules.iterator();
+                    while (var7.hasNext()) {
+                        Schedule schedulex = (Schedule) var7.next();
+                        schedulex.setStartTime(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":" + schedulex.getStartTime());
+                        schedulex.setEndTime(simpleDateFormat.format(Calendar.getInstance().getTime()) + ":" + schedulex.getEndTime());
+                    }
+                    schedulesx.addAll(schedules);
+                })
+                .map(schedules -> {
+                    RadioUtil.fillData(schedulesx, radio);
+                    return schedulesx;
+                });
+    }
+
 }

@@ -166,12 +166,12 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     }
 
     @Override
-    protected String[] onBindBarTitleText() {
+    public String[] onBindBarTitleText() {
         return new String[]{"批量下载"};
     }
 
     @Override
-    protected Integer[] onBindBarRightIcon() {
+    public Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_common_download};
     }
 
@@ -324,7 +324,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     }
 
     @Override
-    protected void onRight1Click(View v) {
+    public void onRight1Click(View v) {
         super.onRight1Click(v);
         Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD)
                 .withInt(KeyCode.Listen.TAB_INDEX, 2)
@@ -433,7 +433,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     }
 
     @Override
-    protected Callback getInitCallBack() {
+    public Callback getInitCallBack() {
         return new ListCallback();
     }
 }

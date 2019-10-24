@@ -442,12 +442,12 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     }
 
     @Override
-    protected int onBindBarCenterStyle() {
+    public int onBindBarCenterStyle() {
         return SimpleBarStyle.CENTER_CUSTOME;
     }
 
     @Override
-    protected View onBindBarCenterCustome() {
+    public View onBindBarCenterCustome() {
         magicIndicator = new MagicIndicator(mActivity);
         FrameLayout frameLayout = new FrameLayout(mActivity);
         frameLayout.addView(magicIndicator);

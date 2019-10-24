@@ -87,7 +87,7 @@ public class RankViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album>
                             paidPage++;
                             getPaidSingleLiveEvent().setValue(albumList.getAlbums());
                         },
-                        e -> e.printStackTrace());
+                        Throwable::printStackTrace);
     }
 
 

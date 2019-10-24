@@ -73,7 +73,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
      */
     public void unsubscribe(Album album) {
         mModel.remove(SubscribeBean.class, album.getId()).subscribe(aBoolean ->
-                getSubscribeEvent().setValue(false), e -> e.printStackTrace());
+                getSubscribeEvent().setValue(false), Throwable::printStackTrace);
 
     }
 
@@ -84,7 +84,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
      */
     public void subscribe(Album album) {
         mModel.insert(new SubscribeBean(album.getId(), album, System.currentTimeMillis()))
-                .subscribe(subscribeBean -> getSubscribeEvent().setValue(true), e -> e.printStackTrace());
+                .subscribe(subscribeBean -> getSubscribeEvent().setValue(true), Throwable::printStackTrace);
     }
 
     /**
@@ -137,7 +137,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                     curTrackPage++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getPlayTracksEvent().setValue(trackList);
-                }, e -> e.printStackTrace());
+                }, Throwable::printStackTrace);
     }
 
     /**
@@ -163,7 +163,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                     curTrackPage++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getTracksSortEvent().setValue(trackList);
-                }, e -> e.printStackTrace());
+                }, Throwable::printStackTrace);
 
     }
 
@@ -188,7 +188,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                     curTrackPage++;
                     mCommonTrackList.cloneCommonTrackList(trackList);
                     getTracksSortEvent().setValue(trackList);
-                }, e -> e.printStackTrace());
+                }, Throwable::printStackTrace);
 
     }
 

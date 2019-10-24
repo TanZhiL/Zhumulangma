@@ -144,7 +144,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 

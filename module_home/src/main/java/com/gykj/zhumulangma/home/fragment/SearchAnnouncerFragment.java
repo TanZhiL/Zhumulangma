@@ -106,7 +106,7 @@ public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<SearchAnnou
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 
@@ -116,7 +116,7 @@ public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<SearchAnnou
         return new WrapRefresh(refreshLayout, mAnnouncerAdapter);
     }
      @Override
-    protected Callback getInitCallBack() {
+     public Callback getInitCallBack() {
         return new ListCallback();
     }
 }

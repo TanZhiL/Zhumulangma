@@ -120,7 +120,7 @@ public class ScanFragment extends BaseFragment implements View.OnClickListener {
     };
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 

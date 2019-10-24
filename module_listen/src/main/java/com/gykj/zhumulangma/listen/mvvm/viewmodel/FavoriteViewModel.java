@@ -3,29 +3,22 @@ package com.gykj.zhumulangma.listen.mvvm.viewmodel;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.AppConstants;
 import com.gykj.zhumulangma.common.bean.FavoriteBean;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.dao.FavoriteBeanDao;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
@@ -46,20 +39,21 @@ public class FavoriteViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Fa
 
     public void unlike(Track track) {
         mModel.remove(FavoriteBean.class, track.getDataId()).subscribe(aBoolean ->
-                getUnLikeEvent().setValue(track), e -> e.printStackTrace());
+                getUnLikeEvent().setValue(track), Throwable::printStackTrace);
 
     }
 
     public void like(Track track) {
         mModel.insert(new FavoriteBean(track.getDataId(), track, System.currentTimeMillis()))
-                .subscribe(subscribeBean -> getLikeEvent().setValue(track), e -> e.printStackTrace());
+                .subscribe(subscribeBean -> getLikeEvent().setValue(track), Throwable::printStackTrace);
     }
 
     public void init() {
         mModel.listDesc(FavoriteBean.class, curPage, PAGESIZE, FavoriteBeanDao.Properties.Datetime)
                 .doFinally(() -> super.onViewRefresh())
                 .subscribe(favoriteBeans ->
-                {   getClearStatusEvent().call();
+                {
+                    getClearStatusEvent().call();
                     if (CollectionUtils.isEmpty(favoriteBeans)) {
                         getShowEmptyViewEvent().call();
                         return;
@@ -115,14 +109,8 @@ public class FavoriteViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Fa
                             break;
                         }
                     }
-                    Object navigation = ARouter.getInstance()
-                            .build(AppConstants.Router.Home.F_PLAY_TRACK).navigation();
-                    if (null != navigation) {
-                        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                                new NavigateBean(AppConstants.Router.Home.F_PLAY_TRACK,
-                                        (ISupportFragment) navigation)));
-                    }
-                }, e -> e.printStackTrace());
+                    navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                }, Throwable::printStackTrace);
     }
 
 

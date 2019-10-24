@@ -74,8 +74,6 @@ public interface AppConstants {
         String SINA_KEY = "da65b94015cacf559208b821f89a0f85";
         //喜马拉雅
         String XIMALAYA_SECRET = "6a43f2188877ee43a950e8e07b6dcb6e";
-        String REDIRECT_URL = "http://api.ximalaya.com/openapi-collector-app/get_access_token";
-        String REFRESH_TOKEN_URL = "https://api.ximalaya.com/oauth2/refresh_token?";
         int XIMALAYA_NOTIFICATION = 10001;
         //Bmob
        String BMOB_ID="337f9a96329e163f3cb94c7ffee8cefb";

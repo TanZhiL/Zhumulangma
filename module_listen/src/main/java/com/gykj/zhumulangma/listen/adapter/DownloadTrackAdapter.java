@@ -43,7 +43,7 @@ public class DownloadTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder
                         return;
                     }
                     helper.setText(R.id.tv_hasplay, mContext.getString(R.string.hasplay, playHistoryBeans.get(0).getPercent()));
-                }, e -> e.printStackTrace());
+                }, Throwable::printStackTrace);
         helper.addOnClickListener(R.id.ll_delete);
     }
 }

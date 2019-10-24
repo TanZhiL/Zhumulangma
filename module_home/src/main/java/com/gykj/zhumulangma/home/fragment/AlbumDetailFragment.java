@@ -374,12 +374,12 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     }
 
     @Override
-    protected String[] onBindBarTitleText() {
+    public String[] onBindBarTitleText() {
         return new String[]{"专辑详情"};
     }
 
     @Override
-    protected Integer[] onBindBarRightIcon() {
+    public Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_common_more, R.drawable.ic_common_share};
     }
 
@@ -394,7 +394,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     }
 
     @Override
-    protected void onRight2Click(View v) {
+    public void onRight2Click(View v) {
         super.onRight2Click(v);
         EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
     }
@@ -405,7 +405,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     }
 
     @Override
-    protected com.kingja.loadsir.callback.Callback getInitCallBack() {
+    public com.kingja.loadsir.callback.Callback getInitCallBack() {
         return new DetailCallback();
     }
 

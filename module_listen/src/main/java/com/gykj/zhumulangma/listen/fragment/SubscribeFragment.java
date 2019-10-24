@@ -106,7 +106,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 

@@ -108,7 +108,7 @@ public class AppHelper {
 
         AccessTokenManager.getInstanse().init(mApplication);
         if (AccessTokenManager.getInstanse().hasLogin()) {
-           LoginHelper.registerLoginTokenChangeListener(mApplication);
+           LoginHelper.registerLoginTokenChangeListener();
         }
         return this;
     }

@@ -235,28 +235,28 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     }
 
     @Override
-    protected Integer[] onBindBarRightIcon() {
+    public Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_common_share};
     }
 
     @Override
-    protected void onRight1Click(View v) {
+    public void onRight1Click(View v) {
         super.onRight1Click(v);
         EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
     }
 
     @Override
-    protected int onBindBarCenterStyle() {
+    public int onBindBarCenterStyle() {
         return SimpleBarStyle.CENTER_CUSTOME;
     }
 
     @Override
-    protected int onBindBarRightStyle() {
+    public int onBindBarRightStyle() {
         return SimpleBarStyle.RIGHT_ICON;
     }
 
     @Override
-    protected View onBindBarCenterCustome() {
+    public View onBindBarCenterCustome() {
         llbarCenter = LayoutInflater.from(mActivity).inflate(R.layout.home_layout_rank_bar_center, null);
         return llbarCenter;
     }
@@ -267,7 +267,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     }
 
      @Override
-    protected Callback getInitCallBack() {
+     public Callback getInitCallBack() {
         return new ListCallback();
     }
 }

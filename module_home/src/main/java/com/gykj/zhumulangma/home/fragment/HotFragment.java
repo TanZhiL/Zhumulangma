@@ -20,7 +20,6 @@ import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.HotCallback;
-import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
@@ -171,8 +170,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mRadioAdapter.setOnItemClickListener((adapter, view, position) -> {
-            RadioUtil.getInstance(mActivity).playLiveRadioForSDK(mRadioAdapter.getItem(position));
-            navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
+            mViewModel.playRadio(mRadioAdapter.getItem(position));
         });
     }
 
@@ -239,7 +237,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 
@@ -281,7 +279,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
                         EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
             case 3:
-                mViewModel.play(bannerV2.getTrackId());
+                mViewModel.playTrack(bannerV2.getTrackId());
 
                 break;
             case 1:
@@ -315,7 +313,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     }
 
     @Override
-    protected Callback getInitCallBack() {
+    public Callback getInitCallBack() {
         return new HotCallback();
     }
 

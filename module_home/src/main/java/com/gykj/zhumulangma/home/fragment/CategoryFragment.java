@@ -48,7 +48,7 @@ public class CategoryFragment extends BaseFragment {
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 }

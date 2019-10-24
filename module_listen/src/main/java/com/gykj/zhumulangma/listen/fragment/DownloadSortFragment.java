@@ -90,17 +90,17 @@ public class DownloadSortFragment extends BaseFragment {
     }
 
     @Override
-    protected String[] onBindBarTitleText() {
+    public String[] onBindBarTitleText() {
         return new String[]{"手动排序"};
     }
 
     @Override
-    protected int onBindBarRightStyle() {
+    public int onBindBarRightStyle() {
         return SimpleBarStyle.RIGHT_TEXT;
     }
 
     @Override
-    protected String[] onBindBarRightText() {
+    public String[] onBindBarRightText() {
         return new String[]{"完成"};
     }
 
@@ -110,7 +110,7 @@ public class DownloadSortFragment extends BaseFragment {
     }
 
     @Override
-    protected void onRight1Click(View v) {
+    public void onRight1Click(View v) {
         super.onRight1Click(v);
         List<Track> data = mSortAdapter.getData();
         Map<Long, Integer> map = new HashMap<>();

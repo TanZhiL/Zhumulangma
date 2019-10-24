@@ -98,7 +98,7 @@ public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewMode
         return ViewModelFactory.getInstance(mApplication);
     }
      @Override
-    protected Callback getInitCallBack() {
+     public Callback getInitCallBack() {
         return new ListCallback();
     }
 }

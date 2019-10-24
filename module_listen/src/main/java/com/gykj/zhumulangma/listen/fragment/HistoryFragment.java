@@ -67,13 +67,13 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
     }
 
     @Override
-    protected String[] onBindBarTitleText() {
+    public String[] onBindBarTitleText() {
         return new String[]{"播放历史"};
     }
 
 
     @Override
-    protected Integer[] onBindBarRightIcon() {
+    public Integer[] onBindBarRightIcon() {
         return new Integer[]{R.drawable.ic_listen_history_delete};
     }
 
@@ -108,16 +108,16 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
         PlayHistoryItem playHistoryItem = mHistoryAdapter.getItem(position);
         if(playHistoryItem.itemType!= PlayHistoryItem.HEADER){
             if(playHistoryItem.itemType== PlayHistoryItem.TRACK){
-                mViewModel.play(playHistoryItem.data.getGroupId(),
+                mViewModel.playRadio(playHistoryItem.data.getGroupId(),
                         playHistoryItem.data.getTrack().getDataId());
             }else {
-                mViewModel.play(String.valueOf(playHistoryItem.data.getGroupId()));
+                mViewModel.playRadio(String.valueOf(playHistoryItem.data.getGroupId()));
             }
         }
     }
 
     @Override
-    protected void onRight1Click(View v) {
+    public void onRight1Click(View v) {
         super.onRight1Click(v);
         new AlertDialog.Builder(mActivity)
                 .setMessage("确定要清空播放历史吗?")

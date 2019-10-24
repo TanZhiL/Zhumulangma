@@ -262,7 +262,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
 
@@ -316,7 +316,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
                     EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         } else {
             Track track = mTrackAdapter.getItem(position);
-            mViewModel.play(track.getAlbum().getAlbumId(), track.getDataId());
+            mViewModel.playTrack(track.getAlbum().getAlbumId(), track.getDataId());
         }
     }
 }

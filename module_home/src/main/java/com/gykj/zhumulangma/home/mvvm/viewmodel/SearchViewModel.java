@@ -53,7 +53,7 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
         map.put(DTransferConstants.TOP, String.valueOf(20));
         mModel.getHotWords(map)
                 .subscribe(hotWordList -> getHotWordsEvent().setValue(
-                        hotWordList.getHotWordList()), e -> e.printStackTrace());
+                        hotWordList.getHotWordList()), Throwable::printStackTrace);
     }
 
     public void clearHistory() {
@@ -61,7 +61,7 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
         mModel.clearAll(SearchHistoryBean.class)
                 .subscribe(aBoolean -> {
 
-                }, e -> e.printStackTrace());
+                }, Throwable::printStackTrace);
     }
 
     public void insertHistory(SearchHistoryBean entity) {
@@ -69,7 +69,7 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
                 .filter(historyBeanList -> !historyBeanList.contains(entity))
                 .flatMap((Function<List<SearchHistoryBean>, ObservableSource<SearchHistoryBean>>)
                         historyBeanList -> mModel.insert(entity))
-                .subscribe(bean -> getInsertHistoryEvent().setValue(entity), e -> e.printStackTrace());
+                .subscribe(bean -> getInsertHistoryEvent().setValue(entity), Throwable::printStackTrace);
     }
 
     public void refreshHistory() {
@@ -109,7 +109,7 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
                     }
                     return suggestItems;
                 })
-                .subscribe(suggestItems -> getWordsSingleLiveEvent().setValue(suggestItems), e -> e.printStackTrace());
+                .subscribe(suggestItems -> getWordsSingleLiveEvent().setValue(suggestItems), Throwable::printStackTrace);
     }
 
     private long trackId = -1;
@@ -151,7 +151,7 @@ public class SearchViewModel extends BaseViewModel<ZhumulangmaModel> {
                 }
             }
             XmPlayerManager.getInstance(getApplication()).playList(trackList, playIndex);
-        }, e -> e.printStackTrace());
+        }, Throwable::printStackTrace);
     }
 
 

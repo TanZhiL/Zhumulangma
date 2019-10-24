@@ -117,7 +117,7 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
     }
 
     @Override
-    protected Integer[] onBindBarRightIcon() {
+    public Integer[] onBindBarRightIcon() {
         if (mType == ANNOUNCER|| mType == LIKE) {
             return null;
         }
@@ -125,7 +125,7 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
     }
 
     @Override
-    protected void onRight1Click(View v) {
+    public void onRight1Click(View v) {
         super.onRight1Click(v);
         navigateTo(AppConstants.Router.Home.F_SEARCH);
     }
@@ -137,7 +137,7 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
 
 
     @Override
-    protected Callback getInitCallBack() {
+    public Callback getInitCallBack() {
         return new ListCallback();
     }
 }

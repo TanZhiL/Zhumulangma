@@ -105,11 +105,11 @@ public class SearchTrackFragment extends BaseRefreshMvvmFragment<SearchTrackView
     }
 
     @Override
-    protected boolean enableSimplebar() {
+    public boolean enableSimplebar() {
         return false;
     }
      @Override
-    protected Callback getInitCallBack() {
+     public Callback getInitCallBack() {
         return new ListCallback();
     }
 }
