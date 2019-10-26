@@ -13,17 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
+import com.gykj.zhumulangma.third.ThirdHelper;
 import com.gykj.zhumulangma.common.App;
-import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
-import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadService;
@@ -48,16 +47,23 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  */
 public abstract class BaseFragment extends SupportFragment implements BaseView {
     protected static final String TAG = BaseFragment.class.getSimpleName();
-    private CompositeDisposable mCompositeDisposable;
-    protected View mView;
-    private ViewStub mViewStubContent;
-    protected LoadService mBaseLoadService;
-    protected CommonTitleBar mSimpleTitleBar;
+
     protected App mApplication;
+    //Rxview解绑
+    private CompositeDisposable mCompositeDisposable;
+    //根部局
+    protected View mView;
+    //真实占位布局
+    private ViewStub mViewStubContent;
+    //状态页管理
+    protected LoadService mBaseLoadService;
+    //默认标题栏
+    protected CommonTitleBar mSimpleTitleBar;
+    //用于延时显示loading状态
     private Handler mLoadingHandler = new Handler();
-    /**
-     * 是否第一次进入
-     */
+    //公用Handler
+    protected Handler mHandler = new Handler();
+    //记录是否第一次进入
     private boolean isFirst = true;
 
     protected abstract @LayoutRes
@@ -159,13 +165,13 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
         LoadSir.Builder builder = new LoadSir.Builder()
-                .addCallback(getInitCallBack())
-                .addCallback(getEmptyCallback())
-                .addCallback(getErrorCallback())
-                .addCallback(getLoadingCallback())
+                .addCallback(getInitStatus())
+                .addCallback(getEmptyStatus())
+                .addCallback(getErrorStatus())
+                .addCallback(getLoadingStatus())
                 .setDefaultCallback(SuccessCallback.class);
-        if (!CollectionUtils.isEmpty(onBindExtraCallBack())) {
-            for (Callback callback : onBindExtraCallBack()) {
+        if (!CollectionUtils.isEmpty(getExtraStatus())) {
+            for (Callback callback : getExtraStatus()) {
                 builder.addCallback(callback);
             }
         }
@@ -290,7 +296,7 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
      */
     public void showInitView() {
         clearStatus();
-        mBaseLoadService.showCallback(getInitCallBack().getClass());
+        mBaseLoadService.showCallback(getInitStatus().getClass());
     }
 
 
@@ -299,7 +305,7 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
      */
     public void showErrorView() {
         clearStatus();
-        mBaseLoadService.showCallback(getErrorCallback().getClass());
+        mBaseLoadService.showCallback(getErrorStatus().getClass());
     }
 
     /**
@@ -307,7 +313,7 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
      */
     public void showEmptyView() {
         clearStatus();
-        mBaseLoadService.showCallback(getEmptyCallback().getClass());
+        mBaseLoadService.showCallback(getEmptyStatus().getClass());
     }
 
     /**
@@ -321,10 +327,10 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
             ((BaseFragment) parentFragment).showLoadingView(tip);
         } else {
             clearStatus();
-            mBaseLoadService.setCallBack(getLoadingCallback().getClass(), (context, view1) -> {
+            mBaseLoadService.setCallBack(getLoadingStatus().getClass(), (context, view1) -> {
                 TextView tvTip = view1.findViewById(R.id.tv_tip);
                 if(tvTip==null){
-                    throw new IllegalStateException(getLoadingCallback().getClass()+"必须带有显示提示文本的TextView,且id为R.id.tv_tip");
+                    throw new IllegalStateException(getLoadingStatus().getClass()+"必须带有显示提示文本的TextView,且id为R.id.tv_tip");
                 }
                 if (tip == null) {
                     tvTip.setVisibility(View.GONE);
@@ -334,7 +340,7 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
                 }
             });
             //延时300毫秒显示,避免闪屏
-            mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(getLoadingCallback().getClass()), 300);
+            mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(getLoadingStatus().getClass()), 300);
 
         }
     }
@@ -387,7 +393,7 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
     @Override
     public boolean onBackPressedSupport() {
         //如果正在显示loading,则清除
-        if (mBaseLoadService.getCurrentCallback() == LoadingCallback.class) {
+        if (mBaseLoadService.getCurrentCallback() == LoadingStatus.class) {
             clearStatus();
             return true;
         }
@@ -397,9 +403,10 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
         mLoadingHandler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
         clearDisposable();
-        AppHelper.refWatcher.watch(this);
+        ThirdHelper.refWatcher.watch(this);
     }
 }

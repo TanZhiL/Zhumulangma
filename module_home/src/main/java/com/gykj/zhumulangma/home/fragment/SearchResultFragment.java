@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -34,7 +34,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索下结果页
  */
-@Route(path = AppConstants.Router.Home.F_SEARCH_RESULT)
+@Route(path = Constants.Router.Home.F_SEARCH_RESULT)
 public class SearchResultFragment extends BaseFragment {
 
     @Autowired(name = KeyCode.Home.KEYWORD)

@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 
 import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerCategory;
 
+import java.util.Objects;
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/9/11 10:43
@@ -12,10 +14,16 @@ import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerCategory;
  */
 public class AnnouncerCategoryBean extends AnnouncerCategory {
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AnnouncerCategoryBean that = (AnnouncerCategoryBean) o;
+        return getId() == that.getId();
+    }
 
     @Override
-    public boolean equals(@Nullable Object obj) {
-        return getId()==((AnnouncerCategoryBean)obj).getId();
-
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

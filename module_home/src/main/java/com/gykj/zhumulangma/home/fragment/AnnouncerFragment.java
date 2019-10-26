@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -143,21 +143,21 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
         BannerV2 bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:
-                Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
                         .navigation();
                 EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                        new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                        new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
             case 3:
                 mViewModel.play(bannerV2.getTrackId());
                 break;
             case 1:
-                Object navigation1 = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+                Object navigation1 = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid())
                         .navigation();
                 EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                        new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
+                        new NavigateBean(Constants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
 
                 break;
         }
@@ -165,19 +165,19 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<AnnouncerViewMode
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                 .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getData().get(position).getAnnouncerId())
                 .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getData().get(position).getNickname())
                 .navigation();
         EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
+                new NavigateBean(Constants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
     }
     @Override
     public  void onEvent(FragmentEvent event) {
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Home.TAB_REFRESH:
-                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!= getInitStatus().getClass()){
                     fd(R.id.nsv).scrollTo(0,0);
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }

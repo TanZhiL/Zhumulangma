@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -42,7 +42,7 @@ import java.util.HashMap;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:
  */
-@Route(path = AppConstants.Router.Discover.F_WEB)
+@Route(path = Constants.Router.Discover.F_WEB)
 public class WebFragment extends BaseFragment {
     private AgentWebX5 mAgentWeb;
     @Autowired(name = KeyCode.Discover.PATH)

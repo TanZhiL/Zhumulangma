@@ -2,8 +2,10 @@ package com.gykj.zhumulangma.common.aop;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -171,9 +173,13 @@ public class LoginHelper {
                         Throwable::printStackTrace);
     }
 
-
     public static boolean refreshSync() {
         RxField<Boolean> isSucc=new RxField<>();
+
+        StrictMode.ThreadPolicy threadPolicy = StrictMode.getThreadPolicy();
+        //在主线程同步访问网络时防止NetworkOnMainThreadException异常
+        StrictMode.ThreadPolicy policy=new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         NetManager.getInstance().getCommonService().refreshToken(getFormBody())
                 .compose(RxAdapter.exceptionTransformer())
                 .subscribe(xmTokenDTO -> {
@@ -182,6 +188,8 @@ public class LoginHelper {
                             isSucc.set(true);
                         },
                         Throwable::printStackTrace);
+        //恢复
+        StrictMode.setThreadPolicy(threadPolicy);
         return isSucc.get();
     }
 

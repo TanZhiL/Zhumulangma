@@ -26,7 +26,7 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.NeedLogin;
 import com.gykj.zhumulangma.common.bean.AnnouncerCategoryBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -61,7 +61,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:主播详情页
  */
-@Route(path = AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+@Route(path = Constants.Router.Home.F_ANNOUNCER_DETAIL)
 public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDetailViewModel,Object> implements
        View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
 
@@ -181,21 +181,21 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
         mAlbumAdapter.setOnItemClickListener(this);
         mTrackAdapter.setOnItemClickListener(this);
         fd(R.id.ih_album).setOnClickListener(v -> {
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, AlbumListFragment.ANNOUNCER)
                     .withLong(KeyCode.Home.ANNOUNCER_ID,mAnnouncerId)
                     .withString(KeyCode.Home.TITLE, mAnnouncerName)
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
         fd(R.id.ih_track).setOnClickListener(v -> {
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_TRACK_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_TRACK_LIST)
                     .withLong(KeyCode.Home.ANNOUNCER_ID,mAnnouncerId)
                     .withString(KeyCode.Home.TITLE, mAnnouncerName)
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_TRACK_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_TRACK_LIST, (ISupportFragment) o)));
         });
 
         fd(R.id.tv_more).setOnClickListener(this);
@@ -275,12 +275,12 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
         if (v == ivWhiteLeft || v == ivTransLeft) {
             pop();
         } else if (id == R.id.tv_more) {
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_LIST)
                     .withLong(KeyCode.Home.CATEGORY_ID,mAnnouncer.getvCategoryId())
                     .withString(KeyCode.Home.TITLE, ((TextView)fd(R.id.tv_category)).getText().toString())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ANNOUNCER_LIST, (ISupportFragment) o)));
         }else if(id==R.id.tv_follwer){
             follwer();
         }
@@ -309,11 +309,11 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<AnnouncerDe
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mAlbumAdapter) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         } else {
             Track track = mTrackAdapter.getItem(position);
             mViewModel.playTrack(track.getAlbum().getAlbumId(), track.getDataId());

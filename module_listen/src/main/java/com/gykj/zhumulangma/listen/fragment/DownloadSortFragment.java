@@ -11,7 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemDragListener;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
@@ -38,7 +38,7 @@ import java.util.Map;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:下载排序
  */
-@Route(path = AppConstants.Router.Listen.F_DOWNLOAD_SORT)
+@Route(path = Constants.Router.Listen.F_DOWNLOAD_SORT)
 public class DownloadSortFragment extends BaseFragment {
 
     @Autowired(name = KeyCode.Listen.ALBUMID)
@@ -95,7 +95,7 @@ public class DownloadSortFragment extends BaseFragment {
     }
 
     @Override
-    public int onBindBarRightStyle() {
+    public SimpleBarStyle onBindBarRightStyle() {
         return SimpleBarStyle.RIGHT_TEXT;
     }
 

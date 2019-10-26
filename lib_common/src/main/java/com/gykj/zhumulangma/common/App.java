@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.gykj.zhumulangma.third.ThirdHelper;
+import com.gykj.zhumulangma.common.aop.PointHelper;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -63,22 +65,23 @@ public class App extends Application {
         super.onCreate();
         mApplication = this;
         if(BaseUtil.isMainProcess(this)){
-            AppHelper.getInstance(this)
+            ThirdHelper.getInstance(this)
                     .initLeakCanary()
                     .initFragmentation(false)
                     .initSpeech()
-                    .initLog()
                     .initAgentWebX5()
-                    .initXmly()
-                    .initAspectj()
-                    .initGreenDao()
+                    .initAspectj(new PointHelper(this))
                     .initUM()
                     .initRouter()
                     .initUtils()
                     .initBugly()
-                    .initCrashView()
+                    .initCrashView();
+            AppHelper.getInstance(this)
+                    .initLog()
+                    .initXmly()
                     .initXmlyPlayer()
-                    .initXmlyDownloader();
+                    .initXmlyDownloader()
+                    .initGreenDao();
             XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
         }
     }
@@ -115,7 +118,7 @@ public class App extends Application {
         public void onPlayPause() {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             if (null != notificationManager) {
-                notificationManager.cancel(AppConstants.Third.XIMALAYA_NOTIFICATION);
+                notificationManager.cancel(Constants.Third.XIMALAYA_NOTIFICATION);
             }
         }
 

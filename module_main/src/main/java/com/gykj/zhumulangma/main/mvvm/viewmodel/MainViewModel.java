@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileIOUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.BingBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
@@ -88,7 +88,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                             break;
                         }
                     }
-                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 
@@ -99,7 +99,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                 .subscribe(schedules ->
                 {
                     XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
-                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
+                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }, Throwable::printStackTrace);
 
     }
@@ -109,7 +109,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
         mModel.getBing("js", "1")
                 .doOnSubscribe(disposable ->accept(disposable))
                 .flatMap((Function<BingBean, ObservableSource<ResponseBody>>) bean -> {
-                    if (bean.getImages().get(0).getCopyrightlink().equals(SPUtils.getInstance().getString(AppConstants.SP.AD_URL))) {
+                    if (bean.getImages().get(0).getCopyrightlink().equals(SPUtils.getInstance().getString(Constants.SP.AD_URL))) {
                         return Observable.just(new RealResponseBody("", 0, null));
                     }
                     bingBean.set(bean);
@@ -119,9 +119,9 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                 .subscribe(body -> {
                     if (body.contentLength() != 0) {
                         FileIOUtils.writeFileFromIS(getApplication().getFilesDir().getAbsolutePath()
-                                + AppConstants.Default.AD_NAME, body.byteStream());
-                        SPUtils.getInstance().put(AppConstants.SP.AD_LABEL, bingBean.get().getImages().get(0).getCopyright());
-                        SPUtils.getInstance().put(AppConstants.SP.AD_URL, bingBean.get().getImages().get(0).getCopyrightlink());
+                                + Constants.Default.AD_NAME, body.byteStream());
+                        SPUtils.getInstance().put(Constants.SP.AD_LABEL, bingBean.get().getImages().get(0).getCopyright());
+                        SPUtils.getInstance().put(Constants.SP.AD_URL, bingBean.get().getImages().get(0).getCopyrightlink());
                     }
                 }, Throwable::printStackTrace);
     }

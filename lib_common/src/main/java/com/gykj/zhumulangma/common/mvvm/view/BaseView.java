@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -8,10 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gykj.zhumulangma.common.R;
-import com.gykj.zhumulangma.common.mvvm.view.status.BlankCallback;
-import com.gykj.zhumulangma.common.mvvm.view.status.EmptyCallback;
-import com.gykj.zhumulangma.common.mvvm.view.status.ErrorCallback;
-import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.BlankStatus;
+import com.gykj.zhumulangma.common.mvvm.view.status.EmptyStatus;
+import com.gykj.zhumulangma.common.mvvm.view.status.ErrorStatus;
+import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
 import com.kingja.loadsir.callback.Callback;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
@@ -23,70 +24,78 @@ import java.util.List;
  * GitHub: https://github.com/TanZhiL<br/>
  * CSDN: https://blog.csdn.net/weixin_42703445<br/>
  * Email: 1071931588@qq.com<br/>
- * Description:
+ * Description: Activity和Fragment公用方法
  */
 public interface BaseView {
 
-    interface SimpleBarStyle {
+    enum  SimpleBarStyle {
         /**
          * 返回图标(默认)
          */
-        int LEFT_BACK = 0;
+         LEFT_BACK ,
         /**
          * 返回图标+文字
          */
-        int LEFT_BACK_TEXT = 1;
+        LEFT_BACK_TEXT ,
         /**
          * 附加图标
          */
-        int LEFT_ICON = 2;
+        LEFT_ICON ,
         /**
          * 标题(默认)
          */
-        int CENTER_TITLE = 7;
+         CENTER_TITLE ,
         /**
          * 自定义布局
          */
-        int CENTER_CUSTOME = 8;
+         CENTER_CUSTOME ,
         /**
          * 文字
          */
-        int RIGHT_TEXT = 4;
+         RIGHT_TEXT ,
         /**
          * 图标(默认)
          */
-        int RIGHT_ICON = 5;
+         RIGHT_ICON ,
         /**
          * 自定义布局
          */
-        int RIGHT_CUSTOME = 6;
+         RIGHT_CUSTOME ,
     }
     /**
      * 提供状态布局
      *
      * @return
      */
-    default Callback getInitCallBack() {
-        return new BlankCallback();
+    default Callback getInitStatus() {
+        return new BlankStatus();
     }
 
-    default Callback getLoadingCallback() {
-        return new LoadingCallback();
+    default Callback getLoadingStatus() {
+        return new LoadingStatus();
     }
 
-    default Callback getErrorCallback() {
-        return new ErrorCallback();
+    default Callback getErrorStatus() {
+        return new ErrorStatus();
     }
 
-    default Callback getEmptyCallback() {
-        return new EmptyCallback();
+    default Callback getEmptyStatus() { return new EmptyStatus();
+    }
+    /**
+     * 提供额外状态布局
+     *
+     * @return
+     */
+    default @Nullable
+    List<Callback> getExtraStatus() {
+        return null;
     }
     /**
      * 初始化通用标题栏
      */
     default void initSimpleBar(CommonTitleBar mSimpleTitleBar) {
         // 中间
-        if (onBindBarCenterStyle() == BaseFragment.SimpleBarStyle.CENTER_TITLE) {
+        if (onBindBarCenterStyle() == SimpleBarStyle.CENTER_TITLE) {
             String[] strings = onBindBarTitleText();
             if (strings != null && strings.length > 0) {
                 if (null != strings[0] && strings[0].trim().length() > 0) {
@@ -130,7 +139,7 @@ public interface BaseView {
         }
         //右边
         switch (onBindBarRightStyle()) {
-            case BaseFragment.SimpleBarStyle.RIGHT_TEXT:
+            case RIGHT_TEXT:
                 String[] strings = onBindBarRightText();
                 if (strings == null || strings.length == 0) {
                     break;
@@ -148,7 +157,7 @@ public interface BaseView {
                     tv2.setOnClickListener(this::onRight2Click);
                 }
                 break;
-            case BaseFragment.SimpleBarStyle.RIGHT_ICON:
+            case RIGHT_ICON:
                 Integer[] ints = onBindBarRightIcon();
                 if (ints == null || ints.length == 0) {
                     break;
@@ -166,7 +175,7 @@ public interface BaseView {
                     iv2.setOnClickListener(this::onRight2Click);
                 }
                 break;
-            case BaseFragment.SimpleBarStyle.RIGHT_CUSTOME:
+            case RIGHT_CUSTOME:
                 if (onBindBarRightCustome() != null) {
                     ViewGroup group = mSimpleTitleBar.getRightCustomView().findViewById(R.id.fl_custome);
                     group.setVisibility(View.VISIBLE);
@@ -177,14 +186,7 @@ public interface BaseView {
         }
 
     }
-    /**
-     * 提供额外状态布局
-     *
-     * @return
-     */
-    default List<Callback> onBindExtraCallBack() {
-        return null;
-    }
+
 
 
     /**
@@ -201,8 +203,8 @@ public interface BaseView {
      *
      * @return
      */
-    default int onBindBarRightStyle() {
-        return BaseActivity.SimpleBarStyle.RIGHT_ICON;
+    default SimpleBarStyle onBindBarRightStyle() {
+        return SimpleBarStyle.RIGHT_ICON;
     }
 
     /**
@@ -210,8 +212,8 @@ public interface BaseView {
      *
      * @return
      */
-    default int onBindBarLeftStyle() {
-        return BaseActivity.SimpleBarStyle.LEFT_BACK;
+    default SimpleBarStyle onBindBarLeftStyle() {
+        return SimpleBarStyle.LEFT_BACK;
     }
 
     /**
@@ -219,8 +221,8 @@ public interface BaseView {
      *
      * @return
      */
-    default int onBindBarCenterStyle() {
-        return BaseActivity.SimpleBarStyle.CENTER_TITLE;
+    default SimpleBarStyle onBindBarCenterStyle() {
+        return SimpleBarStyle.CENTER_TITLE;
     }
 
     /**

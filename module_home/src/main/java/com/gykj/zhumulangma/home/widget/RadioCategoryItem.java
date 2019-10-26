@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -32,12 +32,12 @@ public class RadioCategoryItem extends android.support.v7.widget.AppCompatTextVi
 
         this.setOnClickListener(view -> {
 
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, categoryId)
                     .withString(KeyCode.Home.TITLE,getText().toString())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE,new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE,new NavigateBean(Constants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
     }
 

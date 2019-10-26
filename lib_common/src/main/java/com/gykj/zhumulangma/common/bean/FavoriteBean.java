@@ -18,10 +18,12 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class FavoriteBean {
     @Id
+    private
     long trackId;
     @Convert(converter = TrackConverter.class,columnType = String.class)
+    private
     Track track;
-    long datetime;
+    private long datetime;
 
 
 

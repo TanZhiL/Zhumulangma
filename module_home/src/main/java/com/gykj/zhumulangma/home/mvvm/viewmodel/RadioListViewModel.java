@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
@@ -44,7 +44,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
         switch (mType) {
             case RadioListFragment.LOCAL_PROVINCE:
                 getRadioList(PROVINCE, Integer.parseInt(SPUtils.getInstance().getString(
-                        AppConstants.SP.PROVINCE_CODE, AppConstants.Default.PROVINCE_CODE)));
+                        Constants.SP.PROVINCE_CODE, Constants.Default.PROVINCE_CODE)));
                 break;
             case RadioListFragment.COUNTRY:
                 getRadioList(COUNTRY, -1);
@@ -59,7 +59,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                getRankRadios();
                 break;
             case RadioListFragment.LOCAL_CITY:
-               getLocalCity(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE, AppConstants.Default.CITY_CODE));
+               getLocalCity(SPUtils.getInstance().getString(Constants.SP.CITY_CODE, Constants.Default.CITY_CODE));
                 break;
             default:
                getRadiosByCategory();
@@ -218,7 +218,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
         switch (mType) {
             case RadioListFragment.LOCAL_PROVINCE:
                 getMoreRadioList(PROVINCE, Integer.parseInt(SPUtils.getInstance().getString(
-                        AppConstants.SP.PROVINCE_CODE, AppConstants.Default.PROVINCE_CODE)));
+                        Constants.SP.PROVINCE_CODE, Constants.Default.PROVINCE_CODE)));
                 break;
             case RadioListFragment.COUNTRY:
                 getMoreRadioList(RadioListViewModel.COUNTRY, -1);
@@ -230,7 +230,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                 getMoreRadioList(RadioListViewModel.INTERNET, -1);
                 break;
             case RadioListFragment.LOCAL_CITY:
-                getMoreLocalCity(SPUtils.getInstance().getString(AppConstants.SP.CITY_CODE, AppConstants.Default.CITY_CODE));
+                getMoreLocalCity(SPUtils.getInstance().getString(Constants.SP.CITY_CODE, Constants.Default.CITY_CODE));
                 break;
             default:
                 getMoreRadiosByCategory();
@@ -246,7 +246,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                 .subscribe(schedules ->
                 {
                     XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
-                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
+                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }, Throwable::printStackTrace);
     }
     public SingleLiveEvent<List<Radio>> getInitRadiosEvent() {

@@ -13,9 +13,10 @@ import java.util.Objects;
 @Entity
 public class SearchHistoryBean {
     @Id(autoincrement = true)
+    private
     Long id;
-    String keyword;
-    long datatime;
+    private String keyword;
+    private long datatime;
     @Generated(hash = 1604123910)
     public SearchHistoryBean(Long id, String keyword, long datatime) {
         this.id = id;

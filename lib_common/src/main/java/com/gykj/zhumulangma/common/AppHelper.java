@@ -1,32 +1,15 @@
 package com.gykj.zhumulangma.common;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.Notification;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-import android.view.Gravity;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.Utils;
-import com.gykj.thomas.aspectj.OkAspectjHelper;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
-import com.gykj.zhumulangma.common.aop.PointHelper;
 import com.gykj.zhumulangma.common.dao.DaoMaster;
 import com.gykj.zhumulangma.common.dao.DaoSession;
 import com.gykj.zhumulangma.common.util.log.TLog;
-import com.hjq.toast.ToastUtils;
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechUtility;
-import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
-import com.tencent.bugly.Bugly;
-import com.tencent.bugly.beta.Beta;
-import com.tencent.smtt.sdk.QbSdk;
-import com.umeng.commonsdk.UMConfigure;
-import com.umeng.socialize.PlatformConfig;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
@@ -41,12 +24,6 @@ import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.lang.reflect.Method;
 
-import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
-import cat.ereza.customactivityoncrash.activity.DefaultErrorActivity;
-import cat.ereza.customactivityoncrash.config.CaocConfig;
-import cn.bmob.v3.Bmob;
-import me.yokeyword.fragmentation.Fragmentation;
-
 
 /**
  * Author: Thomas.
@@ -60,7 +37,6 @@ public class AppHelper {
 
     private static Application mApplication;
     private static volatile AppHelper instance;
-    public static RefWatcher refWatcher;
 
 
     private AppHelper() {
@@ -78,32 +54,9 @@ public class AppHelper {
         return instance;
     }
 
-    public AppHelper initLeakCanary() {
-        if (LeakCanary.isInAnalyzerProcess(mApplication)) {
-            return this;
-        }
-        refWatcher = LeakCanary.install(mApplication);
-        return this;
-    }
-
-    public AppHelper initAgentWebX5() {
-        QbSdk.initX5Environment(mApplication, new QbSdk.PreInitCallback() {
-            @Override
-            public void onCoreInitFinished() {
-                Log.d(TAG, "onCoreInitFinished() called");
-            }
-
-            @Override
-            public void onViewInitFinished(boolean b) {
-                Log.d(TAG, "onViewInitFinished() called with: b = [" + b + "]");
-            }
-        });
-        return this;
-    }
-
     public AppHelper initXmly() {
         ConstantsOpenSdk.isDebug = true;
-        CommonRequest.getInstanse().init(mApplication, AppConstants.Third.XIMALAYA_SECRET);
+        CommonRequest.getInstanse().init(mApplication, Constants.Third.XIMALAYA_SECRET);
         CommonRequest.getInstanse().setDefaultPagesize(20);
 
         AccessTokenManager.getInstanse().init(mApplication);
@@ -113,14 +66,6 @@ public class AppHelper {
         return this;
     }
 
-    public AppHelper initUM() {
-        UMConfigure.setLogEnabled(true);
-        UMConfigure.init(mApplication, UMConfigure.DEVICE_TYPE_PHONE, "");
-        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
-        PlatformConfig.setSinaWeibo(AppConstants.Third.SINA_ID, AppConstants.Third.SINA_KEY, "http://sns.whalecloud.com");
-        PlatformConfig.setQQZone(AppConstants.Third.QQ_ID, AppConstants.Third.QQ_KEY);
-        return this;
-    }
 
     public  AppHelper  initXmlyPlayer() {
         try {
@@ -135,7 +80,7 @@ public class AppHelper {
         try {
             Notification mNotification = XmNotificationCreater.getInstanse(mApplication)
                     .initNotification(mApplication, Class.forName(ActivityUtils.getLauncherActivity()));
-            XmPlayerManager.getInstance(mApplication).init(AppConstants.Third.XIMALAYA_NOTIFICATION, mNotification);
+            XmPlayerManager.getInstance(mApplication).init(Constants.Third.XIMALAYA_NOTIFICATION, mNotification);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -177,82 +122,7 @@ public class AppHelper {
     }
 
     public AppHelper initLog() {
-        TLog.init(true);
-        return this;
-    }
-
-    public AppHelper initBugly() {
-        if (BaseUtil.isMainProcess(mApplication)) {
-            Beta.largeIconId = R.drawable.common_launcher_ting;
-            Beta.smallIconId = R.drawable.common_launcher_ting;
-            Beta.upgradeDialogLayoutId = R.layout.common_dialog_update;
-
-            Beta.canNotifyUserRestart = true;
-            //生产环境
-//            Bugly.init(mApplication, AppConstants.Bugly.SPEECH_ID,, false);
-            //开发设备
-            Bugly.setIsDevelopmentDevice(mApplication, true);
-            Bugly.init(mApplication, AppConstants.Third.BUGLY_ID, true);
-        }
-        return this;
-    }
-
-    public AppHelper initRouter() {
-
-        if (BuildConfig.IS_DEBUG) {
-            // 这两行必须写在init之前，否则这些配置在init过程中将无效
-            ARouter.openLog();     // 打印日志
-            ARouter.openDebug();   // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
-        }
-        ARouter.init(mApplication); // 尽可能早，推荐在Application中初始化
-
-        return this;
-    }
-
-    public AppHelper initUtils() {
-        Utils.init(mApplication);
-        ToastUtils.init(mApplication);
-        ToastUtils.setView(R.layout.common_layout_toast);
-        ToastUtils.setGravity(Gravity.CENTER, 0, 0);
-        KeyboardUtils.clickBlankArea2HideSoftInput();
-        return this;
-    }
-
-    @SuppressLint("RestrictedApi")
-    public AppHelper initCrashView() {
-        CaocConfig.Builder.create()
-                .backgroundMode(CaocConfig.BACKGROUND_MODE_SILENT)
-                .enabled(true)//这阻止了对崩溃的拦截,false表示阻止。用它来禁用customactivityoncrash框架
-                .minTimeBetweenCrashesMs(2000)      //定义应用程序崩溃之间的最短时间，以确定我们不在崩溃循环中。比如：在规定的时间内再次崩溃，框架将不处理，让系统处理！
-                .errorActivity(DefaultErrorActivity.class) //程序崩溃后显示的页面
-                .apply();
-        //如果没有任何配置，程序崩溃显示的是默认的设置
-        CustomActivityOnCrash.install(mApplication);
-        return this;
-    }
-
-
-    public AppHelper initFragmentation(boolean isDebug) {
-
-        // 建议在Application里初始化
-        Fragmentation.builder()
-                // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏
-                .stackViewMode(Fragmentation.BUBBLE)
-                .debug(isDebug)
-                .install();
-        return this;
-    }
-    public AppHelper initAspectj() {
-        OkAspectjHelper.setmHandler(new PointHelper(mApplication));
-        return this;
-    }
-
-    public AppHelper initBmob() {
-        Bmob.initialize(mApplication,AppConstants.Third.BMOB_ID);
-        return this;
-    }
-    public AppHelper initSpeech() {
-        SpeechUtility.createUtility(mApplication, SpeechConstant.APPID + "=" + AppConstants.Third.SPEECH_ID);
+        TLog.init(BuildConfig.DEBUG);
         return this;
     }
 

@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.SubscribeBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
@@ -133,17 +133,17 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, mSubscribeAdapter.getItem(position).getAlbum().getId())
                 .navigation();
         EventBus.getDefault().post(new ActivityEvent(
-                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
     @Override
     public void onClick(View v) {
         if(v==vFooter){
-            RouteUtil.navigateTo(AppConstants.Router.Home.F_RANK);
+            RouteUtil.navigateTo(Constants.Router.Home.F_RANK);
         }
     }
 
@@ -152,7 +152,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Listen.TAB_REFRESH:
-                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!= getInitStatus().getClass()){
                     ((RecyclerView)fd(R.id.recyclerview)).scrollToPosition(0);
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }

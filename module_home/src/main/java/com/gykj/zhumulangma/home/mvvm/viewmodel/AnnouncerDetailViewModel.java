@@ -3,7 +3,7 @@ package com.gykj.zhumulangma.home.mvvm.viewmodel;
 import android.app.Application;
 import android.support.annotation.NonNull;
 
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
@@ -84,7 +84,7 @@ public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaMo
                             break;
                         }
                     }
-                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 

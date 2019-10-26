@@ -4,7 +4,6 @@ package com.gykj.zhumulangma.home.fragment;
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -18,7 +17,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.SearchHistoryBean;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
@@ -61,7 +60,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索页
  */
-@Route(path = AppConstants.Router.Home.F_SEARCH)
+@Route(path = Constants.Router.Home.F_SEARCH)
 public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         View.OnClickListener, SearchHistoryFragment.onSearchListener, View.OnFocusChangeListener,
         TextView.OnEditorActionListener, SearchSuggestFragment.onSearchListener {
@@ -76,7 +75,6 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     private SpeechRecognizer mIat;
     private SpeechPopup mSpeechPopup;
     private HashMap<String, String> mIatResults = new LinkedHashMap<>();
-    private Handler mHandler = new Handler();
 
     private EditText etKeyword;
     private View vDialog;
@@ -207,7 +205,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         //更新显示历史搜索记录
         etKeyword.clearFocus();
 
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH_RESULT)
+        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_SEARCH_RESULT)
                 .withString(KeyCode.Home.KEYWORD, keyword).navigation();
         if (null != navigation)
             ((BaseFragment) getTopChildFragment()).start((ISupportFragment) navigation);
@@ -382,6 +380,5 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mHandler.removeCallbacksAndMessages(null);
     }
 }

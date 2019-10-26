@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.UserBean;
 import com.gykj.zhumulangma.common.net.NetManager;
 import com.gykj.zhumulangma.common.net.RxAdapter;
@@ -58,7 +58,7 @@ public class ExceptionRetry implements Function<Observable<Throwable>, Observabl
      */
     private Observable reLogin() {
         final UserBean userBean = new Gson().fromJson(SPUtils.getInstance()
-                .getString(AppConstants.SP.USER), UserBean.class);
+                .getString(Constants.SP.USER), UserBean.class);
         if (null != userBean) {
             LoginDTO loginDTO = new LoginDTO();
             loginDTO.setCode(userBean.getCode());
@@ -72,8 +72,8 @@ public class ExceptionRetry implements Function<Observable<Throwable>, Observabl
                             return Observable.error(new CustException(userBeanResponseDTO.code,
                                     "账户异常,请先登陆!"));
                         } else {
-                            SPUtils.getInstance().put(AppConstants.SP.TOKEN, userBeanResponseDTO.result.getToken());
-                            SPUtils.getInstance().put(AppConstants.SP.USER, new Gson().toJson(userBeanResponseDTO.result));
+                            SPUtils.getInstance().put(Constants.SP.TOKEN, userBeanResponseDTO.result.getToken());
+                            SPUtils.getInstance().put(Constants.SP.USER, new Gson().toJson(userBeanResponseDTO.result));
                             return Observable.just(0);
                         }
                     }).compose(RxAdapter.schedulersTransformer());

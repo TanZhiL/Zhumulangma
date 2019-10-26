@@ -24,41 +24,6 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- 喜马拉雅配置END -->
-    <!--高德定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <!--高德定位END-->
-
-   <!--讯飞语音-->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!--讯飞语音END-->
-    <!--Bugly-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <!--Bugly END-->
 
     <application
         android:name=".App"
@@ -68,13 +33,6 @@
         android:icon="@drawable/common_launcher_ting"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="n">
-
-        <meta-data
-            android:name="design_width_in_dp"
-            android:value="360" />
-        <meta-data
-            android:name="design_height_in_dp"
-            android:value="640" />
         <!-- 喜马拉雅配置 -->
         <meta-data
             android:name="app_key"
@@ -82,15 +40,6 @@
         <meta-data
             android:name="pack_id"
             android:value="${applicationId}" />
-        <!-- 喜马拉雅配置END -->
-
-        <!--高德定位-->
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="cc8521395d0b822f3f686ad32cec8fcc">
-        </meta-data>
-        <!--高德定位END-->
-        <!-- 喜马拉雅听 -->
         <activity
             android:name="com.ximalaya.ting.android.opensdk.auth.component.XmlyBrowserComponent"
             android:configChanges="keyboardHidden|orientation"
@@ -118,77 +67,7 @@
             android:name="com.ximalaya.ting.android.opensdk.player.receive.WireControlReceiver"
             android:exported="true"
             android:process=":player" />
-
-
         <!-- 喜马拉雅听END -->
-        <!--高德定位-->
-        <service android:name="com.amap.api.location.APSService" />
-        <!--高德定位END-->
-
-        <!--友盟-->
-        <meta-data android:value="5d9c3b0b570df30848000687" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="${CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
-
-        <activity
-            android:name="com.umeng.socialize.media.WBShareCallBackActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:exported="false"
-            >
-        </activity>
-        <activity android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            >
-
-        </activity>
-        <activity
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:launchMode="singleTask"
-            android:name="com.sina.weibo.sdk.share.WbShareTransActivity">
-            <intent-filter>
-                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-        <activity
-            android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="tencent100424468" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-
-        <activity
-            android:name=".share.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--友盟END-->
-        <!--Bugly渠道-->
-        <meta-data
-            android:name="BUGLY_APP_CHANNEL"
-            android:value="${CHANNEL_VALUE}" />
-        <!--Bugly渠道END-->
-        <!--Bmob-->
-        <provider
-            android:name="cn.bmob.v3.util.BmobContentProvider"
-            android:authorities="${applicationId}.BmobContentProvider"
-            android:exported="false">
-        </provider>
-        <!--Bmob END-->
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
@@ -21,7 +21,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route(path = AppConstants.Router.Main.F_MAIN)
+@Route(path = Constants.Router.Main.F_MAIN)
 public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTabClickListener {
 
     private String[] tabText = {"首页", "我听", "", "发现", "我的"};
@@ -55,19 +55,19 @@ public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTa
         EasyNavigationBar enb = view.findViewById(R.id.enb);
         List<Fragment> fragments = new ArrayList<>();
 
-        Object home = ARouter.getInstance().build(AppConstants.Router.Home.F_MAIN).navigation();
+        Object home = ARouter.getInstance().build(Constants.Router.Home.F_MAIN).navigation();
         if (null != home) {
             fragments.add((Fragment) home);
         }
-        Object listen = ARouter.getInstance().build(AppConstants.Router.Listen.F_MAIN).navigation();
+        Object listen = ARouter.getInstance().build(Constants.Router.Listen.F_MAIN).navigation();
         if (null != listen) {
             fragments.add((Fragment) listen);
         }
-        Object discover = ARouter.getInstance().build(AppConstants.Router.Discover.F_MAIN).navigation();
+        Object discover = ARouter.getInstance().build(Constants.Router.Discover.F_MAIN).navigation();
         if (null != listen) {
             fragments.add((Fragment) discover);
         }
-        Object user = ARouter.getInstance().build(AppConstants.Router.User.F_MAIN).navigation();
+        Object user = ARouter.getInstance().build(Constants.Router.User.F_MAIN).navigation();
         if (null != listen) {
             fragments.add((Fragment) user);
         }

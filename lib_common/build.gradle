@@ -21,17 +21,15 @@ android {
         }
     }
 
-    buildTypes {
-        debug {
-            buildConfigField "boolean", 'IS_DEBUG', 'true'
-        }
-        release {
-            buildConfigField "boolean", 'IS_DEBUG', 'false'
-        }
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+            jniLibs.srcDirs = ['libs']
+        }
     }
 }
 dependencies {
@@ -40,6 +38,10 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["okaspectjrt-compiler"]
     annotationProcessor rootProject.ext.dependencies["glide-compiler"]
     annotationProcessor rootProject.ext.dependencies["lifecycle-compiler"]
+
+    api files('libs/TingPhoneOpenSDK_7.0.8.jar')
+    api files('libs/XmlyOAuth2SDK_V1.11.jar')
+    api files('libs/XmDownload_1.7.jar')
 }
 greendao {
     //数据库的schema版本，也可以理解为数据库版本号

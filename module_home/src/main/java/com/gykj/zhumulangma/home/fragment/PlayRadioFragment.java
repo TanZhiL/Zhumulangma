@@ -16,7 +16,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
@@ -61,7 +61,7 @@ import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:
  */
-@Route(path = AppConstants.Router.Home.F_PLAY_RADIIO)
+@Route(path = Constants.Router.Home.F_PLAY_RADIIO)
 public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> implements
         View.OnClickListener, PlaySchedulePopup.onSelectedListener, IXmPlayerStatusListener,
         IXmAdsStatusListener, OnSeekChangeListener, View.OnTouchListener {
@@ -76,7 +76,6 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     private boolean isPlaying;
 
     private PlayRadioPopup mPlayRadioPopup;
-    private Handler mHandler;
 
     @Override
     protected int onBindLayout() {
@@ -134,7 +133,6 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
 
     @Override
     public void initData() {
-        mHandler = new Handler();
         mHandler.postDelayed(() -> {
             try {
                 mSchedule = (Schedule) mPlayerManager.getCurrSound();
@@ -244,7 +242,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     }
 
     @Override
-    public int onBindBarLeftStyle() {
+    public SimpleBarStyle onBindBarLeftStyle() {
         return SimpleBarStyle.LEFT_ICON;
     }
 
@@ -309,7 +307,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
         int id = v.getId();
         if (id == R.id.iv_history || id == R.id.tv_history) {
             pop();
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_HISTORY);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
         } else if (id == R.id.iv_play_list || id == R.id.tv_play_list) {
             if(mSchedule==null){
                 return;
@@ -423,8 +421,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     public void onSoundPlayComplete() {
 
         updatePlayStatus();
-        if (SPUtils.getInstance().getInt(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0) == 1) {
-            SPUtils.getInstance().put(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0);
+        if (SPUtils.getInstance().getInt(Constants.SP.PLAY_SCHEDULE_TYPE, 0) == 1) {
+            SPUtils.getInstance().put(Constants.SP.PLAY_SCHEDULE_TYPE, 0);
 
         } else if (!mPlayerManager.hasNextSound()) {
             pauseAnim();
@@ -551,7 +549,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
+
         mPlayerManager.removePlayerStatusListener(this);
         mPlayerManager.removeAdsStatusListener(this);
     }

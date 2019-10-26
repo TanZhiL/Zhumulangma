@@ -15,7 +15,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CollectionUtils;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -53,7 +53,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:首页
  */
-@Route(path = AppConstants.Router.Home.F_MAIN)
+@Route(path = Constants.Router.Home.F_MAIN)
 public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements View.OnClickListener, MarqueeView.OnItemClickListener {
 
 
@@ -115,19 +115,19 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
         super.initListener();
         addDisposable(RxView.clicks(fd(R.id.ll_search)).throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
-                    Postcard build = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH);
+                    Postcard build = ARouter.getInstance().build(Constants.Router.Home.F_SEARCH);
                     if (!CollectionUtils.isEmpty(mMarqueeView.getMessages())) {
                         build.withString(KeyCode.Home.HOTWORD, mMarqueeView.getMessages().get(mMarqueeView.getPosition()));
                     }
                     Object navigation = build.navigation();
                     EventBus.getDefault().post(new ActivityEvent(
-                            EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
+                            EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
                 }));
 
         fd(R.id.iv_download).setOnClickListener(this);
         fd(R.id.iv_history).setOnClickListener(this);
         addDisposable(RxView.clicks(fd(R.id.iv_message)).throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(unit -> RouteUtil.navigateTo(AppConstants.Router.User.F_MESSAGE)));
+                .subscribe(unit -> RouteUtil.navigateTo(Constants.Router.User.F_MESSAGE)));
         mMarqueeView.setOnItemClickListener(this);
     }
 
@@ -156,14 +156,14 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            RouteUtil.navigateTo(AppConstants.Router.Home.F_SCAN);
+                            RouteUtil.navigateTo(Constants.Router.Home.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
 
         } else if (id == R.id.iv_history) {
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_HISTORY);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
         }
 
     }
@@ -191,10 +191,10 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
 
     @Override
     public void onItemClick(int position, TextView textView) {
-        Postcard build = ARouter.getInstance().build(AppConstants.Router.Home.F_SEARCH);
+        Postcard build = ARouter.getInstance().build(Constants.Router.Home.F_SEARCH);
         Object navigation = build.withString(KeyCode.Home.HOTWORD, mMarqueeView.getMessages().get(position)).navigation();
         EventBus.getDefault().post(new ActivityEvent(
-                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
+                EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
     }
 
     @Override

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -57,12 +57,12 @@ public class AlbumCategoryItem extends FrameLayout {
 
         this.setOnClickListener(view -> {
 
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, categoryId)
                     .withString(KeyCode.Home.TITLE,title)
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE,new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE,new NavigateBean(Constants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
     }
 

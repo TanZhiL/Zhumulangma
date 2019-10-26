@@ -9,7 +9,7 @@ import android.widget.CompoundButton;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
@@ -34,7 +34,7 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:下载批量删除
  */
-@Route(path = AppConstants.Router.Listen.F_DOWNLOAD_DELETE)
+@Route(path = Constants.Router.Listen.F_DOWNLOAD_DELETE)
 public class DownloadDeleteFragment extends BaseFragment implements BaseQuickAdapter.OnItemClickListener,
         View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 

@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.FavoriteBean;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.listen.R;
@@ -24,7 +24,7 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:我的喜欢
  */
-@Route(path = AppConstants.Router.Listen.F_FAVORITE)
+@Route(path = Constants.Router.Listen.F_FAVORITE)
 public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel, FavoriteBean> implements
         BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
 

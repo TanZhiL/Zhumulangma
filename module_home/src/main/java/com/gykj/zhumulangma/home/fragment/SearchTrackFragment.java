@@ -12,7 +12,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.SearchTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -109,7 +109,7 @@ public class SearchTrackFragment extends BaseRefreshMvvmFragment<SearchTrackView
         return false;
     }
      @Override
-     public Callback getInitCallBack() {
-        return new ListCallback();
+     public Callback getInitStatus() {
+        return new ListSkeleton();
     }
 }

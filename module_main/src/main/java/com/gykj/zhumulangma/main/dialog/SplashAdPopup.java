@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.main.R;
 import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.impl.FullScreenPopupView;
@@ -43,11 +43,11 @@ public class SplashAdPopup extends FullScreenPopupView implements View.OnClickLi
         super.onCreate();
         findViewById(R.id.tv_time).setOnClickListener(v -> dismiss());
         ImageView ivAd = findViewById(R.id.iv_ad);
-        File adFile = new File(mContext.getFilesDir().getAbsolutePath() + AppConstants.Default.AD_NAME);
+        File adFile = new File(mContext.getFilesDir().getAbsolutePath() + Constants.Default.AD_NAME);
         if (adFile.exists()) {
             ivAd.setImageURI(Uri.fromFile(adFile));
             //缩进处理
-            SpannableString string = new SpannableString("缩进" + SPUtils.getInstance().getString(AppConstants.SP.AD_LABEL));
+            SpannableString string = new SpannableString("缩进" + SPUtils.getInstance().getString(Constants.SP.AD_LABEL));
             string.setSpan(new ForegroundColorSpan(Color.TRANSPARENT), 0, 2,
                     Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             ((TextView) findViewById(R.id.tv_label)).setText(string);
@@ -64,7 +64,7 @@ public class SplashAdPopup extends FullScreenPopupView implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        String path = SPUtils.getInstance().getString(AppConstants.SP.AD_URL);
+        String path = SPUtils.getInstance().getString(Constants.SP.AD_URL);
         Uri uri = Uri.parse(path);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         mContext.startActivity(intent);

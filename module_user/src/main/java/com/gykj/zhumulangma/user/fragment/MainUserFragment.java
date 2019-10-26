@@ -19,7 +19,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
@@ -53,7 +53,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:我的
  */
-@Route(path = AppConstants.Router.User.F_MAIN)
+@Route(path = Constants.Router.User.F_MAIN)
 public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel, Object> implements View.OnClickListener {
 
     private GitHubDTO mGitHubDTO;
@@ -221,34 +221,34 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     public void onClick(View v) {
         int id = v.getId();
         if (R.id.ll_download == id) {
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_DOWNLOAD);
         } else if (R.id.ll_history == id) {
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_HISTORY);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
         } else if (R.id.ll_favorit == id) {
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_FAVORITE);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
         } else if (v == whiteLeft || v == transLeft) {
-            RouteUtil.navigateTo(AppConstants.Router.User.F_MESSAGE);
+            RouteUtil.navigateTo(Constants.Router.User.F_MESSAGE);
         } else if (id == R.id.cl_fxzq) {
             EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
         } else if (id == R.id.cl_sys) {
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            RouteUtil.navigateTo(AppConstants.Router.Home.F_SCAN);
+                            RouteUtil.navigateTo(Constants.Router.Home.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
         } else if (id == R.id.cl_wxhd) {
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_FAVORITE);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
         } else if (id == R.id.cl_jcgx) {
             Beta.checkUpgrade();
         } else if (id == R.id.cl_gy || id == R.id.iv_user) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Discover.F_WEB)
                     .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL")
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
         } else if (id == R.id.cl_zx) {
             new AlertDialog.Builder(mActivity)
                     .setMessage("您确定要注销登录吗?")
@@ -287,7 +287,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
         switch (event.getCode()) {
             case EventCode.User.TAB_REFRESH:
 
-                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitCallBack().getClass()) {
+                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     fd(R.id.nsv).scrollTo(0, 0);
                     ((SmartRefreshLayout) fd(R.id.refreshLayout)).autoRefresh();
                 }

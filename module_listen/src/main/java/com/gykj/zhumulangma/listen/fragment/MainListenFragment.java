@@ -8,7 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
@@ -28,7 +28,7 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:我听
  */
-@Route(path = AppConstants.Router.Listen.F_MAIN)
+@Route(path = Constants.Router.Listen.F_MAIN)
 public class MainListenFragment extends BaseFragment implements View.OnClickListener {
 
     public MainListenFragment() {
@@ -82,12 +82,12 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
     }
 
     @Override
-    public int onBindBarLeftStyle() {
+    public SimpleBarStyle onBindBarLeftStyle() {
         return SimpleBarStyle.LEFT_ICON;
     }
 
     @Override
-    public int onBindBarRightStyle() {
+    public SimpleBarStyle onBindBarRightStyle() {
         return SimpleBarStyle.RIGHT_ICON;
     }
 
@@ -110,22 +110,22 @@ public class MainListenFragment extends BaseFragment implements View.OnClickList
     public void onClick(View v) {
         int id = v.getId();
         if(R.id.ll_download==id){
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_DOWNLOAD);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_DOWNLOAD);
         }else  if(R.id.ll_history==id){
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_HISTORY);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
         }else  if(R.id.ll_favorite==id){
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_FAVORITE);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
         }
     }
     @Override
     public void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
-        RouteUtil.navigateTo(AppConstants.Router.User.F_MESSAGE);
+        RouteUtil.navigateTo(Constants.Router.User.F_MESSAGE);
     }
 
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        RouteUtil.navigateTo(AppConstants.Router.Home.F_SEARCH);
+        RouteUtil.navigateTo(Constants.Router.Home.F_SEARCH);
     }
 }

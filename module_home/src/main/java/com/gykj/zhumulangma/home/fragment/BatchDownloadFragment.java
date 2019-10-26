@@ -2,7 +2,6 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,13 +14,13 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
@@ -57,7 +56,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Description:批量下载
  */
 
-@Route(path = AppConstants.Router.Home.F_BATCH_DOWNLOAD)
+@Route(path = Constants.Router.Home.F_BATCH_DOWNLOAD)
 public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownloadViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener, TrackPagerPopup.onPopupDismissingListener {
 
@@ -68,7 +67,6 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     private SmartRefreshLayout refreshLayout;
     private DownloadTrackAdapter mDownloadTrackAdapter;
     private TrackPagerPopup mPagerPopup;
-    private Handler mHandler = new Handler();
     private int mTotalCount;
 
     private TextView tvSize;
@@ -326,11 +324,11 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD)
+        Object navigation = ARouter.getInstance().build(Constants.Router.Listen.F_DOWNLOAD)
                 .withInt(KeyCode.Listen.TAB_INDEX, 2)
                 .navigation();
         EventBus.getDefault().post(new ActivityEvent(
-                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
+                EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Listen.F_DOWNLOAD, (ISupportFragment) navigation)));
     }
 
     /**
@@ -421,11 +419,6 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
         mPagerPopup.getPagerAdapter().setNewData(list);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
-    }
 
     @Override
     public void onDismissing() {
@@ -433,7 +426,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
     }
 
     @Override
-    public Callback getInitCallBack() {
-        return new ListCallback();
+    public Callback getInitStatus() {
+        return new ListSkeleton();
     }
 }

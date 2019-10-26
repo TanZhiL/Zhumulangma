@@ -2,7 +2,6 @@ package com.gykj.zhumulangma.listen.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,7 +20,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -70,7 +69,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:下载页
  */
-@Route(path = AppConstants.Router.Listen.F_DOWNLOAD)
+@Route(path = Constants.Router.Listen.F_DOWNLOAD)
 public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implements
         BaseQuickAdapter.OnItemChildClickListener,
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
@@ -80,7 +79,6 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     private DownloadAlbumAdapter mAlbumAdapter;
     private DownloadTrackAdapter mTrackAdapter;
     private DownloadingAdapter mDownloadingAdapter;
-    private Handler mHandler = new Handler();
 
     private TextView tvMemory;
     private MagicIndicator magicIndicator;
@@ -324,13 +322,13 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             }
         } else if (adapter == mTrackAdapter) {
             XmPlayerManager.getInstance(mActivity).playList(mTrackAdapter.getData(), position);
-            RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+            RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
         } else if (adapter == mAlbumAdapter) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD_ALBUM)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Listen.F_DOWNLOAD_ALBUM)
                     .withLong(KeyCode.Listen.ALBUMID, mAlbumAdapter.getItem(position).getAlbumId())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD_ALBUM, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Listen.F_DOWNLOAD_ALBUM, (ISupportFragment) navigation)));
         }
     }
 
@@ -367,9 +365,9 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
             });
 
         } else if (id == R.id.tv_sort || id == R.id.iv_sort) {
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_DOWNLOAD_SORT);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_DOWNLOAD_SORT);
         } else if (id == R.id.tv_delete || id == R.id.iv_delete) {
-            RouteUtil.navigateTo(AppConstants.Router.Listen.F_DOWNLOAD_DELETE);
+            RouteUtil.navigateTo(Constants.Router.Listen.F_DOWNLOAD_DELETE);
         }
     }
 
@@ -443,7 +441,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     }
 
     @Override
-    public int onBindBarCenterStyle() {
+    public SimpleBarStyle onBindBarCenterStyle() {
         return SimpleBarStyle.CENTER_CUSTOME;
     }
 
@@ -462,7 +460,6 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
         mDownloadManager.removeDownloadStatueListener(downloadStatueListener);
         XmPlayerManager.getInstance(mActivity).removePlayerStatusListener(playerStatusListener);
     }

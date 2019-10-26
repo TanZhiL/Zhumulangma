@@ -2,6 +2,10 @@ package com.gykj.zhumulangma.main;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
 import static org.junit.Assert.*;
 
 /**
@@ -13,5 +17,8 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+        Map<Object, Object> objectObjectHashMap = new HashMap<>();
+
+objectObjectHashMap.put("","");
     }
 }

@@ -4,7 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
@@ -239,7 +239,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
                             break;
                         }
                     }
-                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 
@@ -250,7 +250,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
                 .subscribe(schedules ->
                 {
                     XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
-                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
+                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }, Throwable::printStackTrace);
     }
 

@@ -18,10 +18,12 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class SubscribeBean {
     @Id
+    private
     long albumId;
     @Convert(converter = AlbumConverter.class,columnType = String.class)
+    private
     Album album;
-    long datetime;
+    private long datetime;
 
 
     @Generated(hash = 400642637)

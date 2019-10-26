@@ -14,14 +14,14 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RankFreeAdapter;
 import com.gykj.zhumulangma.home.adapter.RankPaidAdapter;
@@ -53,7 +53,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:排行榜
  */
-@Route(path = AppConstants.Router.Home.F_RANK)
+@Route(path = Constants.Router.Home.F_RANK)
 public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> implements
         RankCategoryPopup.onSelectedListener, RankCategoryPopup.onPopupDismissingListener {
 
@@ -122,19 +122,19 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
         addDisposable(RxView.clicks(llbarCenter)
                 .throttleFirst(1, TimeUnit.SECONDS).subscribe(unit -> switchCategory()));
         mFreeAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mFreeAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL,
                     (ISupportFragment) navigation)));
         });
         mPaidAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mPaidAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL,
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL,
                     (ISupportFragment) navigation)));
         });
 
@@ -246,12 +246,12 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     }
 
     @Override
-    public int onBindBarCenterStyle() {
+    public SimpleBarStyle onBindBarCenterStyle() {
         return SimpleBarStyle.CENTER_CUSTOME;
     }
 
     @Override
-    public int onBindBarRightStyle() {
+    public SimpleBarStyle onBindBarRightStyle() {
         return SimpleBarStyle.RIGHT_ICON;
     }
 
@@ -267,7 +267,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     }
 
      @Override
-     public Callback getInitCallBack() {
-        return new ListCallback();
+     public Callback getInitStatus() {
+        return new ListSkeleton();
     }
 }

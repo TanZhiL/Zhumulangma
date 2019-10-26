@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -41,7 +41,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索下建议词页
  */
-@Route(path = AppConstants.Router.Home.F_SEARCH_SUGGEST)
+@Route(path = Constants.Router.Home.F_SEARCH_SUGGEST)
 public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> implements
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
@@ -137,11 +137,11 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
         SearchSuggestItem item = mSuggestAdapter.getItem(position);
 
         if (item.itemType== SearchSuggestItem.ALBUM){
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID,item.mAlbumResult.getAlbumId())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         }else {
             mSearchListener.onSearch(item.mQueryResult.getKeyword());
         }
@@ -156,11 +156,11 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         SearchSuggestItem item = mSuggestAdapter.getItem(position);
         mViewModel.play(String.valueOf(item.mAlbumResult.getAlbumId()));
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID,item.mAlbumResult.getAlbumId())
                 .navigation();
         EventBus.getDefault().post(new ActivityEvent(
-                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
 

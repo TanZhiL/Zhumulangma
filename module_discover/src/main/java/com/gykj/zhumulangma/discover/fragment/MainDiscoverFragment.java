@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -20,7 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
-@Route(path = AppConstants.Router.Discover.F_MAIN)
+@Route(path = Constants.Router.Discover.F_MAIN)
 public class MainDiscoverFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
@@ -65,20 +65,20 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
     @Override
     public void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
-        RouteUtil.navigateTo(AppConstants.Router.User.F_MESSAGE);
+        RouteUtil.navigateTo(Constants.Router.User.F_MESSAGE);
     }
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        RouteUtil.navigateTo(AppConstants.Router.Home.F_SEARCH);
+        RouteUtil.navigateTo(Constants.Router.Home.F_SEARCH);
     }
     @Override
-    public int onBindBarLeftStyle() {
+    public SimpleBarStyle onBindBarLeftStyle() {
         return SimpleBarStyle.LEFT_ICON;
     }
 
     @Override
-    public int onBindBarRightStyle() {
+    public SimpleBarStyle onBindBarRightStyle() {
         return SimpleBarStyle.RIGHT_ICON;
     }
 
@@ -99,11 +99,11 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
+        Object navigation = ARouter.getInstance().build(Constants.Router.Discover.F_WEB)
                 .withString(KeyCode.Discover.PATH, v.getTag().toString())
                 .navigation();
         EventBus.getDefault().post(new ActivityEvent(
-                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
+                EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
     }
     @Override
     public void onEvent(FragmentEvent event) {

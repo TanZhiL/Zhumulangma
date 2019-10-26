@@ -15,11 +15,11 @@ import com.blankj.utilcode.util.ResourceUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.ProvinceBean;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.dialog.RadioProvincePopup;
@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:电台列表
  */
-@Route(path = AppConstants.Router.Home.F_RADIO_LIST)
+@Route(path = Constants.Router.Home.F_RADIO_LIST)
 public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewModel, Radio> implements
         BaseQuickAdapter.OnItemClickListener, RadioProvincePopup.onSelectedListener, RadioProvincePopup.onPopupDismissingListener {
     //本省台
@@ -166,7 +166,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
 
 
     @Override
-    public int onBindBarCenterStyle() {
+    public SimpleBarStyle onBindBarCenterStyle() {
         return SimpleBarStyle.CENTER_CUSTOME;
     }
 
@@ -207,7 +207,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
     }
 
      @Override
-     public Callback getInitCallBack() {
-        return new ListCallback();
+     public Callback getInitStatus() {
+        return new ListSkeleton();
     }
 }

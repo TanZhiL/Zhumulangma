@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -19,7 +19,7 @@ import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.mvvm.view.status.HotCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.HotSkeleton;
 import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -96,79 +96,79 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
         fd(R.id.like_refresh).setOnClickListener(this);
         fd(R.id.layout_ad).setOnClickListener(this);
         fd(R.id.ih_like).setOnClickListener(view -> {
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
                     .withString(KeyCode.Home.TITLE, "猜你喜欢")
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
 
         });
         fd(R.id.story_refresh).setOnClickListener(this);
         fd(R.id.ih_story).setOnClickListener(view -> {
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, 3)
                     .withString(KeyCode.Home.TITLE, "有声小说")
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
         fd(R.id.baby_refresh).setOnClickListener(this);
         fd(R.id.ih_baby).setOnClickListener(view -> {
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, 6)
                     .withString(KeyCode.Home.TITLE, "宝贝最爱")
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
         fd(R.id.music_refresh).setOnClickListener(this);
         fd(R.id.ih_music).setOnClickListener(view -> {
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, 2)
                     .withString(KeyCode.Home.TITLE, "音乐好时光")
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
         });
         fd(R.id.ih_radio).setOnClickListener(view -> {
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_RADIO_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.INTERNET)
                     .withString(KeyCode.Home.TITLE, "网络台")
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
 
         fd(R.id.radio_refresh).setOnClickListener(this);
         fd(R.id.topic_refresh).setOnClickListener(this);
         mLikeAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mLikeAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mStoryAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mStoryAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mBabyAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mBabyAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mMusicAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mMusicAdapter.getItem(position).getId())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
         });
         mRadioAdapter.setOnItemClickListener((adapter, view, position) -> {
             mViewModel.playRadio(mRadioAdapter.getItem(position));
@@ -273,22 +273,22 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
         BannerV2 bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:
-                Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
                         .navigation();
                 EventBus.getDefault().post(new ActivityEvent(
-                        EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                        EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
                 break;
             case 3:
                 mViewModel.playTrack(bannerV2.getTrackId());
 
                 break;
             case 1:
-                Object navigation1 = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+                Object navigation1 = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid())
                         .navigation();
                 EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                        new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
+                        new NavigateBean(Constants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
 
                 break;
         }
@@ -314,8 +314,8 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     }
 
     @Override
-    public Callback getInitCallBack() {
-        return new HotCallback();
+    public Callback getInitStatus() {
+        return new HotSkeleton();
     }
 
     @Override
@@ -323,7 +323,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Home.TAB_REFRESH:
-                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!= getInitStatus().getClass()){
                     fd(R.id.nsv).scrollTo(0,0);
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }
@@ -347,13 +347,13 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
         } else if (id == R.id.radio_refresh) {
             mViewModel.getRadioList();
         } else if (id == R.id.fl_rank) {
-            RouteUtil.navigateTo(AppConstants.Router.Home.F_RANK);
+            RouteUtil.navigateTo(Constants.Router.Home.F_RANK);
         }else if (id == R.id.layout_ad) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Discover.F_WEB)
                     .withString(KeyCode.Discover.PATH, "https://m.ximalaya.com/")
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
         }
     }
 }

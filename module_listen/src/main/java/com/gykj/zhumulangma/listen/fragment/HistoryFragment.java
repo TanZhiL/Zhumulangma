@@ -10,7 +10,7 @@ import android.view.View;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.HistoryAdapter;
@@ -27,7 +27,7 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:
  */
-@Route(path = AppConstants.Router.Listen.F_HISTORY)
+@Route(path = Constants.Router.Listen.F_HISTORY)
 public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,PlayHistoryItem> implements
         BaseQuickAdapter.OnItemClickListener{
 

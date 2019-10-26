@@ -11,13 +11,13 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -83,12 +83,12 @@ public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<SearchAnnou
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                 .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getItem(position).getAnnouncerId())
                 .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getItem(position).getNickname())
                 .navigation();
         EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
+                new NavigateBean(Constants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
     }
     @Override
     public Class<SearchAnnouncerViewModel> onBindViewModel() {
@@ -116,7 +116,7 @@ public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<SearchAnnou
         return new WrapRefresh(refreshLayout, mAnnouncerAdapter);
     }
      @Override
-     public Callback getInitCallBack() {
-        return new ListCallback();
+     public Callback getInitStatus() {
+        return new ListSkeleton();
     }
 }

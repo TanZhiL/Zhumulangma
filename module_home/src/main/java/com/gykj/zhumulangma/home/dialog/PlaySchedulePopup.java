@@ -14,7 +14,7 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.home.R;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.lxj.xpopup.util.XPopupUtils;
@@ -89,12 +89,12 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
         RadioButton radioButton = (RadioButton) adapter.getViewByPosition(position, R.id.rb_indicator);
         radioButton.setChecked(true);
         if (position != 7) {
-            SPUtils.getInstance().put(AppConstants.SP.PLAY_SCHEDULE_TYPE, position);
-            SPUtils.getInstance().put(AppConstants.SP.PLAY_SCHEDULE_TIME, System.currentTimeMillis() + mTimes[position] * 60 * 1000);
+            SPUtils.getInstance().put(Constants.SP.PLAY_SCHEDULE_TYPE, position);
+            SPUtils.getInstance().put(Constants.SP.PLAY_SCHEDULE_TIME, System.currentTimeMillis() + mTimes[position] * 60 * 1000);
         }
         if (position != 0 && position != 1 && position != 7) {
-            mListener.onSelected(position,SPUtils.getInstance().getLong(AppConstants.SP.PLAY_SCHEDULE_TIME, 0));
-            XmPlayerManager.getInstance(mContext).pausePlayInMillis(SPUtils.getInstance().getLong(AppConstants.SP.PLAY_SCHEDULE_TIME, 0));
+            mListener.onSelected(position,SPUtils.getInstance().getLong(Constants.SP.PLAY_SCHEDULE_TIME, 0));
+            XmPlayerManager.getInstance(mContext).pausePlayInMillis(SPUtils.getInstance().getLong(Constants.SP.PLAY_SCHEDULE_TIME, 0));
         } else if (position == 0) {
             mListener.onSelected(position,-1);
             XmPlayerManager.getInstance(mContext).pausePlayInMillis(0);
@@ -120,11 +120,11 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
 
     @Override
     public void onOptionsSelect(int options1, int options2, int options3, View v) {
-        SPUtils.getInstance().put(AppConstants.SP.PLAY_SCHEDULE_TYPE, 7);
-        SPUtils.getInstance().put(AppConstants.SP.PLAY_SCHEDULE_TIME, System.currentTimeMillis()
+        SPUtils.getInstance().put(Constants.SP.PLAY_SCHEDULE_TYPE, 7);
+        SPUtils.getInstance().put(Constants.SP.PLAY_SCHEDULE_TIME, System.currentTimeMillis()
         +options1*1000*60*60+options2*1000*5*60);
-        mListener.onSelected(7,SPUtils.getInstance().getLong(AppConstants.SP.PLAY_SCHEDULE_TIME, 0));
-        XmPlayerManager.getInstance(mContext).pausePlayInMillis(SPUtils.getInstance().getLong(AppConstants.SP.PLAY_SCHEDULE_TIME, 0));
+        mListener.onSelected(7,SPUtils.getInstance().getLong(Constants.SP.PLAY_SCHEDULE_TIME, 0));
+        XmPlayerManager.getInstance(mContext).pausePlayInMillis(SPUtils.getInstance().getLong(Constants.SP.PLAY_SCHEDULE_TIME, 0));
     }
 
     public OptionsPickerView<String> getPickerView() {
@@ -140,8 +140,8 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
         @Override
         protected void convert(BaseViewHolder helper, String item) {
             helper.setText(R.id.tv_label, item);
-            int type = SPUtils.getInstance().getInt(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0);
-            long time = SPUtils.getInstance().getLong(AppConstants.SP.PLAY_SCHEDULE_TIME, 0);
+            int type = SPUtils.getInstance().getInt(Constants.SP.PLAY_SCHEDULE_TYPE, 0);
+            long time = SPUtils.getInstance().getLong(Constants.SP.PLAY_SCHEDULE_TIME, 0);
             if(helper.getLayoutPosition()==0){
                 if(type==0){
                     helper.setChecked(R.id.rb_indicator, true);

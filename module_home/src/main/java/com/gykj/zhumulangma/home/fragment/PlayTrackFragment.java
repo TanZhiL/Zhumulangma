@@ -30,7 +30,7 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -81,7 +81,7 @@ import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_LABLES;
 import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_VALUES;
 import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 
-@Route(path = AppConstants.Router.Home.F_PLAY_TRACK)
+@Route(path = Constants.Router.Home.F_PLAY_TRACK)
 public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> implements
         NestedScrollView.OnScrollChangeListener, View.OnClickListener,
         BaseQuickAdapter.OnItemClickListener, OnSeekChangeListener,
@@ -112,7 +112,6 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private Track mTrack;
     private boolean isPlaying;
 
-    private Handler mHandler = new Handler();
     private LottieAnimationView lavPlayNext;
     private LottieAnimationView lavPlayPre;
     private PlaySchedulePopup mSchedulePopup;
@@ -257,11 +256,11 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         mPlayerManager.addAdsStatusListener(adsStatusListener);
 
         fd(R.id.tv_more_relative).setOnClickListener(view -> {
-            Object o = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_LIST)
+            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
                     .withString(KeyCode.Home.TITLE, "更多推荐")
                     .navigation();
-            NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o);
+            NavigateBean navigateBean = new NavigateBean(Constants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o);
             navigateBean.launchMode = STANDARD;
             EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE, navigateBean));
@@ -343,8 +342,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     }
 
     private void scheduleTime() {
-        int type = SPUtils.getInstance().getInt(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0);
-        long time = SPUtils.getInstance().getLong(AppConstants.SP.PLAY_SCHEDULE_TIME, 0);
+        int type = SPUtils.getInstance().getInt(Constants.SP.PLAY_SCHEDULE_TYPE, 0);
+        long time = SPUtils.getInstance().getLong(Constants.SP.PLAY_SCHEDULE_TIME, 0);
 
         if (type == 0) {
             tvSchedule.setText("定时");
@@ -408,10 +407,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             pop();
         } else if (R.id.cl_album == id) {
             if (null != mTrack) {
-                Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+                Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, mTrack.getAlbum().getAlbumId())
                         .navigation();
-                NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
+                NavigateBean navigateBean = new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
                 navigateBean.launchMode = STANDARD;
                 EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE, navigateBean));
             }
@@ -484,12 +483,12 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         } else if (v == tvTempo) {
             new XPopup.Builder(getContext()).asCustom(new PlayTempoPopup(mActivity, this)).show();
         } else if (id == R.id.cl_announcer) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                     .withLong(KeyCode.Home.ANNOUNCER_ID, mTrack.getAnnouncer().getAnnouncerId())
                     .withString(KeyCode.Home.ANNOUNCER_NAME, mTrack.getAnnouncer().getNickname())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                    new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
+                    new NavigateBean(Constants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
         } else if (R.id.tv_comment == id) {
             new XPopup.Builder(mActivity).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
                     .dismissOnTouchOutside(false).enableDrag(false).asCustom(mCommentPopup).show();
@@ -586,8 +585,6 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mHandler != null)
-            mHandler.removeCallbacksAndMessages(null);
         mPlayerManager.removePlayerStatusListener(playerStatusListener);
         mPlayerManager.removeAdsStatusListener(adsStatusListener);
         XmDownloadManager.getInstance().removeDownloadStatueListener(downloadStatueListener);
@@ -606,10 +603,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
                 .navigation();
-        NavigateBean navigateBean = new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
+        NavigateBean navigateBean = new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
         navigateBean.launchMode = STANDARD;
         EventBus.getDefault().post(new ActivityEvent(
                 EventCode.Main.NAVIGATE, navigateBean));
@@ -836,8 +833,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         public void onSoundPlayComplete() {
             updatePlayStatus();
 
-            if (SPUtils.getInstance().getInt(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0) == 1) {
-                SPUtils.getInstance().put(AppConstants.SP.PLAY_SCHEDULE_TYPE, 0);
+            if (SPUtils.getInstance().getInt(Constants.SP.PLAY_SCHEDULE_TYPE, 0) == 1) {
+                SPUtils.getInstance().put(Constants.SP.PLAY_SCHEDULE_TYPE, 0);
             } else if (!mPlayerManager.hasNextSound()) {
                 pauseAnim();
             }

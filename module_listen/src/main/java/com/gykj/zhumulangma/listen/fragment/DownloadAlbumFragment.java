@@ -1,6 +1,5 @@
 package com.gykj.zhumulangma.listen.fragment;
 
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,7 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -45,7 +44,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:下载专辑详情
  */
-@Route(path = AppConstants.Router.Listen.F_DOWNLOAD_ALBUM)
+@Route(path = Constants.Router.Listen.F_DOWNLOAD_ALBUM)
 public class DownloadAlbumFragment extends BaseFragment implements View.OnClickListener,
         BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
 
@@ -55,7 +54,6 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
     private XmDownloadManager mDownloadManager = XmDownloadManager.getInstance();
     private XmPlayerManager mPlayerManager=XmPlayerManager.getInstance(mActivity);
     private DownloadTrackAdapter mTrackAdapter;
-    private Handler mHandler = new Handler();
 
     @Override
     protected int onBindLayout() {
@@ -127,23 +125,23 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.tv_more) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_BATCH_DOWNLOAD)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_BATCH_DOWNLOAD)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumId)
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_BATCH_DOWNLOAD, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_BATCH_DOWNLOAD, (ISupportFragment) navigation)));
         } else if (id == R.id.ll_sort_all) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD_SORT)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Listen.F_DOWNLOAD_SORT)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumId)
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD_SORT, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Listen.F_DOWNLOAD_SORT, (ISupportFragment) navigation)));
         } else if (id == R.id.ll_delete) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Listen.F_DOWNLOAD_DELETE)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Listen.F_DOWNLOAD_DELETE)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumId)
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Listen.F_DOWNLOAD_DELETE, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Listen.F_DOWNLOAD_DELETE, (ISupportFragment) navigation)));
         } else if (id == R.id.ll_sort) {
             TextView tvSort = fd(R.id.tv_sort);
             List<Track> trackInAlbum = XmDownloadManager.getInstance().getDownloadTrackInAlbum(mAlbumId, true);
@@ -196,13 +194,12 @@ public class DownloadAlbumFragment extends BaseFragment implements View.OnClickL
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         XmPlayerManager.getInstance(mActivity).playList(mTrackAdapter.getData(), position);
-        RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+        RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
         mPlayerManager.removePlayerStatusListener(playerStatusListener);
     }
 

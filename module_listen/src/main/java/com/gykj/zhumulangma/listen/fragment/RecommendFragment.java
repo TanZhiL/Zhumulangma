@@ -11,14 +11,14 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.RecommendAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
@@ -148,11 +148,11 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ALBUM_DETAIL)
+        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, mRecommendAdapter.getItem(position).getId())
                 .navigation();
         EventBus.getDefault().post(new ActivityEvent(
-                EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
     }
 
     @Override
@@ -166,8 +166,8 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
     }
 
     @Override
-    public Callback getInitCallBack() {
-        return new ListCallback();
+    public Callback getInitStatus() {
+        return new ListSkeleton();
     }
 
     @Override
@@ -175,7 +175,7 @@ public class RecommendFragment extends BaseMvvmFragment<SubscribeViewModel> impl
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Listen.TAB_REFRESH:
-                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!=getInitCallBack().getClass()){
+                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!= getInitStatus().getClass()){
                     ((RecyclerView)fd(R.id.recyclerview)).scrollToPosition(0);
                     ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
                 }

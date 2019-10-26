@@ -22,14 +22,14 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.mvvm.view.status.DetailCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.DetailSkeleton;
 import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
@@ -77,7 +77,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:专辑详情页
  */
-@Route(path = AppConstants.Router.Home.F_ALBUM_DETAIL)
+@Route(path = Constants.Router.Home.F_ALBUM_DETAIL)
 public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener, View.OnClickListener, TrackPagerPopup.onPopupDismissingListener {
 
@@ -181,7 +181,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                             tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                             XmPlayerManager.getInstance(mActivity).playList(mViewModel.getCommonTrackList(),
                                     index);
-                            RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                            RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                         } else {
                             mViewModel.getPlayTrackList();
                         }
@@ -190,7 +190,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                         fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
                         tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                         XmPlayerManager.getInstance(mActivity).playList(mViewModel.getCommonTrackList(), 0);
-                        RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                        RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                     }
                 }));
 
@@ -254,7 +254,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             mAlbumTrackAdapter.setNewData(tracks.getTracks());
             XmPlayerManager.getInstance(mActivity).playList(mViewModel.getCommonTrackList(),
                     mAlbumTrackAdapter.getData().indexOf(mLastPlay));
-            RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+            RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
         });
 
         mViewModel.getTracksSortEvent().observe(this, tracks -> {
@@ -299,7 +299,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             mLastPlay = mAlbumTrackAdapter.getItem(position);
             fd(R.id.gp_lastplay).setVisibility(View.VISIBLE);
             tvLastplay.setText(getString(R.string.lastplay, mAlbumTrackAdapter.getItem(position).getTrackTitle()));
-            RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+            RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
         } else {
             mPagerPopup.dismissWith(() -> mViewModel.getTrackList(position + 1));
         }
@@ -348,18 +348,18 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
         if (R.id.ll_select == id || R.id.fl_mask == id) {
             switchPager();
         } else if (id == R.id.ll_download) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_BATCH_DOWNLOAD)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_BATCH_DOWNLOAD)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumId)
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_BATCH_DOWNLOAD, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_BATCH_DOWNLOAD, (ISupportFragment) navigation)));
         } else if (id == R.id.cl_announcer) {
-            Object navigation = ARouter.getInstance().build(AppConstants.Router.Home.F_ANNOUNCER_DETAIL)
+            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                     .withLong(KeyCode.Home.ANNOUNCER_ID, mAlbum.getAnnouncer().getAnnouncerId())
                     .withString(KeyCode.Home.ANNOUNCER_NAME, mAlbum.getAnnouncer().getNickname())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(AppConstants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
+                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
         }
     }
 
@@ -406,8 +406,8 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
     }
 
     @Override
-    public com.kingja.loadsir.callback.Callback getInitCallBack() {
-        return new DetailCallback();
+    public com.kingja.loadsir.callback.Callback getInitStatus() {
+        return new DetailSkeleton();
     }
 
     /**

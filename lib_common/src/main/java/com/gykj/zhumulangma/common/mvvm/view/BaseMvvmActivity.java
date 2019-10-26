@@ -39,7 +39,7 @@ public abstract class BaseMvvmActivity<VM extends BaseViewModel> extends BaseAct
 
     protected void initBaseViewObservable() {
         mViewModel.getShowInitViewEvent().observe(this, (Observer<Void>) show -> showInitView());
-        mViewModel.getShowLoadingViewEvent().observe(this, (Observer<String>) tip -> showLoadingView(tip));
+        mViewModel.getShowLoadingViewEvent().observe(this, (Observer<String>) this::showLoadingView);
         mViewModel.getShowEmptyViewEvent().observe(this, (Observer<Void>) show -> showEmptyView());
         mViewModel.getShowErrorViewEvent().observe(this, (Observer<Void>) show -> showErrorView());
         mViewModel.getFinishSelfEvent().observe(this, (Observer<Void>) v -> pop());

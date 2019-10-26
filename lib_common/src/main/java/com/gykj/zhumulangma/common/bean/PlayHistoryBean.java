@@ -19,14 +19,17 @@ import org.greenrobot.greendao.converter.PropertyConverter;
 @Entity
 public class PlayHistoryBean {
     @Id
+    private
     long soundId;
-    long groupId;
-    String kind;
-    int percent;
-    long datatime;
+    private long groupId;
+    private String kind;
+    private int percent;
+    private long datatime;
     @Convert(converter =TrackConverter.class,columnType = String.class)
+    private
     Track track;
     @Convert(converter =ScheduleConverter.class,columnType = String.class)
+    private
     Schedule schedule;
     
     @Generated(hash = 926881078)

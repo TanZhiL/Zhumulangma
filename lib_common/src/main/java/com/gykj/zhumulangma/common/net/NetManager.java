@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.blankj.utilcode.util.SPUtils;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.net.service.CommonService;
 import com.gykj.zhumulangma.common.net.service.UserService;
 
@@ -54,7 +54,7 @@ public class NetManager {
                 //添加头部信息
                 .addInterceptor(chain -> {
                     Request.Builder requestBuilder = chain.request().newBuilder()
-                            .header(Constans.TOKEN_KEY, SPUtils.getInstance().getString(AppConstants.SP.TOKEN));
+                            .header(Constans.TOKEN_KEY, SPUtils.getInstance().getString(Constants.SP.TOKEN));
                     return chain.proceed(requestBuilder.build());
                 })
                 //动态改变baseUrl拦截器

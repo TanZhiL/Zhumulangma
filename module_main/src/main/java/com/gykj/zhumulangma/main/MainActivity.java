@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,14 +16,14 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
-import com.gykj.zhumulangma.common.mvvm.view.status.LoadingCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
 import com.gykj.zhumulangma.common.util.PermissionPageUtil;
 import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -65,12 +64,11 @@ import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 
-@Route(path = AppConstants.Router.Main.A_MAIN)
+@Route(path = Constants.Router.Main.A_MAIN)
 public class MainActivity extends BaseMvvmActivity<MainViewModel> implements View.OnClickListener,
         MainFragment.onRootShowListener {
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(this);
     private PlayHistoryBean mHistoryBean;
-    private Handler mHandler = new Handler();
     private GlobalPlay globalPlay;
 
 
@@ -111,16 +109,16 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
      * 显示广告
      */
     private void initAd() {
-        long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(AppConstants.SP.AD_TIME, 0);
+        long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(Constants.SP.AD_TIME, 0);
         //显示广告
-        if (adOffset > 5 * 60 * 1000 && new File(getFilesDir().getAbsolutePath() + AppConstants.Default.AD_NAME)
+        if (adOffset > 5 * 60 * 1000 && new File(getFilesDir().getAbsolutePath() + Constants.Default.AD_NAME)
                 .exists()) {
             new XPopup.Builder(this).customAnimator(new SplashAdPopup.AlphaAnimator())
                     .setPopupCallback(new SimpleCallback() {
                         @Override
                         public void onDismiss() {
                             super.onDismiss();
-                            SPUtils.getInstance().put(AppConstants.SP.AD_TIME, System.currentTimeMillis());
+                            SPUtils.getInstance().put(Constants.SP.AD_TIME, System.currentTimeMillis());
                             mViewModel.getBing();
                         }
 
@@ -131,7 +129,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                         }
                     })
                     .asCustom(new SplashAdPopup(this)).show();
-        } else if (!new File(getFilesDir().getAbsolutePath() + AppConstants.Default.AD_NAME)
+        } else if (!new File(getFilesDir().getAbsolutePath() + Constants.Default.AD_NAME)
                 .exists()) {
             mViewModel.getBing();
         }
@@ -199,17 +197,17 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         if (v == globalPlay) {
             if (null == mPlayerManager.getCurrSound(true)) {
                 if (mHistoryBean == null) {
-                    RouteUtil.navigateTo(AppConstants.Router.Home.F_RANK);
+                    RouteUtil.navigateTo(Constants.Router.Home.F_RANK);
                 } else {
                     mViewModel.play(mHistoryBean);
                 }
             } else {
                 mPlayerManager.play();
                 if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_TRACK)) {
-                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_TRACK);
+                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
 
                 } else if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_SCHEDULE)) {
-                    RouteUtil.navigateTo(AppConstants.Router.Home.F_PLAY_RADIIO);
+                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }
             }
         }
@@ -250,7 +248,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
 
@@ -259,7 +257,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     @Override
     public void onBackPressedSupport() {
         //如果正在显示loading,则清除
-        if (mBaseLoadService.getCurrentCallback() == LoadingCallback.class) {
+        if (mBaseLoadService.getCurrentCallback() == LoadingStatus.class) {
             clearStatus();
             return;
         }
@@ -285,7 +283,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                     return;
                 }
                 switch (navigateBean.path) {
-                    case AppConstants.Router.User.F_MESSAGE:
+                    case Constants.Router.User.F_MESSAGE:
                         //登录拦截
                         if (!AccessTokenManager.getInstanse().hasLogin()) {
                             LoginHelper.getInstance().login(this);
@@ -293,8 +291,8 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                             start(navigateBean.fragment);
                         }
                         break;
-                    case AppConstants.Router.Home.F_PLAY_TRACK:
-                    case AppConstants.Router.Home.F_PLAY_RADIIO:
+                    case Constants.Router.Home.F_PLAY_TRACK:
+                    case Constants.Router.Home.F_PLAY_RADIIO:
                         extraTransaction().setCustomAnimations(
                                 com.gykj.zhumulangma.common.R.anim.push_bottom_in,
                                 com.gykj.zhumulangma.common.R.anim.no_anim,
@@ -331,7 +329,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 if (action == null) {
                     UMWeb web = new UMWeb("https://github.com/TanZhiL/Zhumulangma");
                     web.setTitle("珠穆朗玛听");//标题
-                    web.setThumb(new UMImage(this, R.drawable.common_launcher_ting));  //缩略图
+                    web.setThumb(new UMImage(this, R.drawable.third_launcher_ting));  //缩略图
                     web.setDescription("珠穆朗玛听");//描述
                     action = new ShareAction(this).withMedia(web);
                 }
@@ -359,7 +357,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mHandler.removeCallbacksAndMessages(null);
+
         mPlayerManager.removePlayerStatusListener(playerStatusListener);
         mPlayerManager.removeAdsStatusListener(adsStatusListener);
         UMShareAPI.get(this).release();

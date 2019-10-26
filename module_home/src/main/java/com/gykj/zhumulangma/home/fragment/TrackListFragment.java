@@ -9,10 +9,10 @@ import android.view.View;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListCallback;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -28,7 +28,7 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  * <br/>Description:声音列表
  */
 
-@Route(path = AppConstants.Router.Home.F_TRACK_LIST)
+@Route(path = Constants.Router.Home.F_TRACK_LIST)
 public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewModel,Track> implements
         BaseQuickAdapter.OnItemClickListener {
 
@@ -98,7 +98,7 @@ public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewMode
         return ViewModelFactory.getInstance(mApplication);
     }
      @Override
-     public Callback getInitCallBack() {
-        return new ListCallback();
+     public Callback getInitStatus() {
+        return new ListSkeleton();
     }
 }

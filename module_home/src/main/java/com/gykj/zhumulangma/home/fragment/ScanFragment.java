@@ -10,7 +10,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.RegexUtils;
-import com.gykj.zhumulangma.common.AppConstants;
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.RequestCode;
@@ -37,7 +37,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:扫一扫
  */
-@Route(path = AppConstants.Router.Home.F_SCAN)
+@Route(path = Constants.Router.Home.F_SCAN)
 public class ScanFragment extends BaseFragment implements View.OnClickListener {
 
     private ZXingView scanView;
@@ -88,7 +88,7 @@ public class ScanFragment extends BaseFragment implements View.OnClickListener {
                 return;
             }
             if (RegexUtils.isURL(result)) {
-                Object navigation = ARouter.getInstance().build(AppConstants.Router.Discover.F_WEB)
+                Object navigation = ARouter.getInstance().build(Constants.Router.Discover.F_WEB)
                         .withString(KeyCode.Discover.PATH, result)
                         .navigation();
                 if(navigation!=null){

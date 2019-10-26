@@ -35,7 +35,7 @@ public class ToastUtil {
                 ivIcon.setImageResource(R.drawable.ic_common_warnning);
                 break;
             case LEVEL_E:
-                ivIcon.setImageResource(R.drawable.ic_common_update_close);
+                ivIcon.setImageResource(R.drawable.ic_third_update_close);
                 break;
             case LEVEL_S:
                 ivIcon.setImageResource(R.drawable.ic_common_succ);
@@ -54,7 +54,7 @@ public class ToastUtil {
                 ivIcon.setImageResource(R.drawable.ic_common_warnning);
                 break;
             case LEVEL_E:
-                ivIcon.setImageResource(R.drawable.ic_common_update_close);
+                ivIcon.setImageResource(R.drawable.ic_third_update_close);
                 break;
             case LEVEL_S:
                 ivIcon.setImageResource(R.drawable.ic_common_succ);
