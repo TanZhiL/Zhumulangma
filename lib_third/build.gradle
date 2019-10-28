@@ -98,6 +98,7 @@ dependencies {
     api rootProject.ext.dependencies["crashreport_upgrade"]
     api rootProject.ext.dependencies["tinker-android-lib"]
     api rootProject.ext.dependencies["bmob"]
+    api rootProject.ext.dependencies["SkeletonBlock"]
 
 
     api files('libs/Msc.jar')

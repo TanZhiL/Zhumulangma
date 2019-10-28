@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.yokeyword.fragmentation.ISupportFragment;
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/8/14 13:41
@@ -178,7 +179,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh( fd(R.id.refreshLayout),null);
+        return new WrapRefresh(fd(R.id.refreshLayout), null);
     }
 
     @Override
@@ -321,16 +322,15 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
     @Override
     public void onEvent(FragmentEvent event) {
         super.onEvent(event);
-        switch (event.getCode()){
+        switch (event.getCode()) {
             case EventCode.Home.TAB_REFRESH:
-                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!= getInitStatus().getClass()){
-                    fd(R.id.nsv).scrollTo(0,0);
-                    ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
+                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+                    fd(R.id.nsv).scrollTo(0, 0);
+                    ((SmartRefreshLayout) fd(R.id.refreshLayout)).autoRefresh();
                 }
                 break;
             case EventCode.Main.LOGINSUCC:
-                fd(R.id.nsv).scrollTo(0,0);
-                ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
+                mViewModel.init();
                 break;
         }
     }
@@ -348,7 +348,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HotViewModel, Album> im
             mViewModel.getRadioList();
         } else if (id == R.id.fl_rank) {
             RouteUtil.navigateTo(Constants.Router.Home.F_RANK);
-        }else if (id == R.id.layout_ad) {
+        } else if (id == R.id.layout_ad) {
             Object navigation = ARouter.getInstance().build(Constants.Router.Discover.F_WEB)
                     .withString(KeyCode.Discover.PATH, "https://m.ximalaya.com/")
                     .navigation();

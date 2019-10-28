@@ -39,7 +39,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:src="@color/colorDefault"/>
 
-                <View
+                <com.gykj.thomas.widget.SkeletonBlock
                     android:id="@+id/tv_album"
                     android:layout_width="0dp"
                     android:layout_height="20dp"
@@ -56,7 +56,7 @@
                     app:layout_constraintTop_toTopOf="@+id/iv_cover"
                     tools:text="伦桑老大" />
 
-                <View
+                <com.gykj.thomas.widget.SkeletonBlock
                     android:id="@+id/tv_author"
                     android:layout_width="70dp"
                     android:layout_height="10dp"
@@ -65,7 +65,7 @@
                     app:layout_constraintStart_toStartOf="@+id/tv_album"
                     app:layout_constraintTop_toBottomOf="@+id/tv_album" />
 
-                <View
+                <com.gykj.thomas.widget.SkeletonBlock
                     android:id="@+id/tv_playcount"
                     android:layout_width="70dp"
                     android:layout_height="10dp"
@@ -75,7 +75,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_author"
                     tools:text="播放：5625次" />
 
-                <View
+                <com.gykj.thomas.widget.SkeletonBlock
                     android:id="@+id/tv_sbcount"
                     android:layout_width="70dp"
                     android:layout_height="10dp"
@@ -84,7 +84,7 @@
                     app:layout_constraintStart_toStartOf="@+id/tv_trackcount"
                     app:layout_constraintTop_toBottomOf="@+id/tv_trackcount" />
 
-                <View
+                <com.gykj.thomas.widget.SkeletonBlock
                     android:id="@+id/tv_trackcount"
                     android:layout_width="70dp"
                     android:layout_height="10dp"
@@ -132,7 +132,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_play" />
 
-            <View
+            <com.gykj.thomas.widget.SkeletonBlock
                 android:id="@+id/tv_lastplay"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
@@ -189,7 +189,7 @@
             app:layout_constraintStart_toStartOf="@+id/iv_cover1"
             app:layout_constraintTop_toTopOf="@id/iv_cover1" />
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/textView1"
             android:layout_width="0dp"
             android:layout_height="24dp"
@@ -203,9 +203,9 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover1">
 
 
-        </View>
+        </com.gykj.thomas.widget.SkeletonBlock>
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="80dp"
             android:layout_height="10dp"
             android:layout_marginTop="8dp"
@@ -257,7 +257,7 @@
             app:layout_constraintStart_toStartOf="@+id/iv_cover2"
             app:layout_constraintTop_toTopOf="@id/iv_cover2" />
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="24dp"
@@ -271,9 +271,9 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover2">
 
 
-        </View>
+        </com.gykj.thomas.widget.SkeletonBlock>
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="80dp"
             android:layout_height="10dp"
             android:layout_marginTop="8dp"
@@ -324,7 +324,7 @@
             app:layout_constraintStart_toStartOf="@+id/iv_cover3"
             app:layout_constraintTop_toTopOf="@id/iv_cover3" />
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/textView3"
             android:layout_width="0dp"
             android:layout_height="24dp"
@@ -338,9 +338,9 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover3">
 
 
-        </View>
+        </com.gykj.thomas.widget.SkeletonBlock>
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="80dp"
             android:layout_height="10dp"
             android:layout_marginTop="8dp"
@@ -392,7 +392,7 @@
             app:layout_constraintStart_toStartOf="@+id/iv_cover4"
             app:layout_constraintTop_toTopOf="@id/iv_cover4" />
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/textView4"
             android:layout_width="0dp"
             android:layout_height="24dp"
@@ -406,9 +406,9 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover4">
 
 
-        </View>
+        </com.gykj.thomas.widget.SkeletonBlock>
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="80dp"
             android:layout_height="10dp"
             android:layout_marginTop="8dp"
@@ -460,7 +460,7 @@
             app:layout_constraintStart_toStartOf="@+id/iv_cover5"
             app:layout_constraintTop_toTopOf="@id/iv_cover5" />
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/textView5"
             android:layout_width="0dp"
             android:layout_height="24dp"
@@ -474,9 +474,9 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover5">
 
 
-        </View>
+        </com.gykj.thomas.widget.SkeletonBlock>
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="80dp"
             android:layout_height="10dp"
             android:layout_marginTop="8dp"
@@ -528,7 +528,7 @@
             app:layout_constraintStart_toStartOf="@+id/iv_cover6"
             app:layout_constraintTop_toTopOf="@id/iv_cover6" />
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/textView32"
             android:layout_width="0dp"
             android:layout_height="24dp"
@@ -542,9 +542,9 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover6">
 
 
-        </View>
+        </com.gykj.thomas.widget.SkeletonBlock>
 
-        <View
+        <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="80dp"
             android:layout_height="10dp"
             android:layout_marginTop="8dp"

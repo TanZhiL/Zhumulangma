@@ -78,6 +78,7 @@ ext {
             "crashreport_upgrade":"1.4.1",
             "tinker-android-lib":"1.9.9",
             "bmob":"3.7.3-rc1",
+            "SkeletonBlock":"1.0.4",
     ]
     //support配置
     support = [
@@ -172,6 +173,7 @@ ext {
             "toast"                                :"com.hjq:toast:${versions["toast"]}",
             "bga-qrcode-zxing"                     :"cn.bingoogolapple:bga-qrcode-zxing:${versions["bga-qrcode-zxing"]}",
             "roundedimageview"                     :"com.makeramen:roundedimageview:${versions["roundedimageview"]}",
+            "SkeletonBlock"                        :"com.github.TanZhiL:SkeletonBlock:${versions["SkeletonBlock"]}",
     ]
 
 }

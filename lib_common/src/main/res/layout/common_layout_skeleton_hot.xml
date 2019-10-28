@@ -128,15 +128,14 @@
         android:layout_height="50dp"
         app:layout_constraintTop_toBottomOf="@id/line1">
 
-        <TextView
+        <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="25dp"
             android:layout_marginStart="9dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="@color/colorDefault"
-            android:text="猜你喜欢"
             android:textColor="@color/colorDefault"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -222,7 +221,7 @@
         app:layout_constraintStart_toEndOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/view" />
 
-    <View
+    <com.gykj.thomas.widget.SkeletonBlock
         android:id="@+id/view4"
         android:layout_width="0dp"
         android:layout_height="10dp"
@@ -233,7 +232,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-    <View
+    <com.gykj.thomas.widget.SkeletonBlock
         android:id="@+id/view7"
         android:layout_width="0dp"
         android:layout_height="10dp"
@@ -244,7 +243,7 @@
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/view" />
 
-    <View
+    <com.gykj.thomas.widget.SkeletonBlock
         android:id="@+id/view6"
         android:layout_width="0dp"
         android:layout_height="10dp"
@@ -255,7 +254,7 @@
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/view7" />
 
-    <View
+    <com.gykj.thomas.widget.SkeletonBlock
         android:id="@+id/view8"
         android:layout_width="0dp"
         android:layout_height="10dp"
@@ -266,7 +265,7 @@
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
-    <View
+    <com.gykj.thomas.widget.SkeletonBlock
         android:id="@+id/view9"
         android:layout_width="0dp"
         android:layout_height="10dp"
@@ -277,7 +276,7 @@
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toBottomOf="@+id/view8" />
 
-    <View
+    <com.gykj.thomas.widget.SkeletonBlock
         android:id="@+id/view5"
         android:layout_width="0dp"
         android:layout_height="10dp"

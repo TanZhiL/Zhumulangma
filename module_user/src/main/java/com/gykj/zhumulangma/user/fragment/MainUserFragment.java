@@ -192,9 +192,9 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
             mGitHubDTO = gitHubDTO;
             ((TextView) fd(R.id.tv_star)).setText(convertNum(gitHubDTO.getStargazers_count()));
             ((TextView) fd(R.id.tv_fork)).setText(convertNum(gitHubDTO.getForks_count()));
-      //      ((TextView) fd(R.id.tv_desc)).setText(gitHubDTO.getDescription());
+            //      ((TextView) fd(R.id.tv_desc)).setText(gitHubDTO.getDescription());
         });
-        RequestOptions options=new RequestOptions();
+        RequestOptions options = new RequestOptions();
         options.placeholder(R.drawable.ic_user_avatar)
                 .error(R.drawable.ic_user_avatar);
         mViewModel.getBaseUserInfoEvent().observe(this, xmBaseUserInfo -> {
@@ -254,7 +254,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
                     .setMessage("您确定要注销登录吗?")
                     .setNegativeButton("取消", (dialog, which) -> dialog.dismiss())
                     .setPositiveButton("确定", (dialog, which) -> LoginHelper.getInstance().logout()).show();
-        } else if (id == R.id.tv_nickname||id==R.id.iv_avatar) {
+        } else if (id == R.id.tv_nickname || id == R.id.iv_avatar) {
             if (!AccessTokenManager.getInstanse().hasLogin()) {
                 LoginHelper.getInstance().login(mActivity);
             }
@@ -293,8 +293,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
                 }
                 break;
             case EventCode.Main.LOGINSUCC:
-                fd(R.id.nsv).scrollTo(0, 0);
-                ((SmartRefreshLayout) fd(R.id.refreshLayout)).autoRefresh();
+                mViewModel.init();
                 break;
             case EventCode.Main.LOGOUTSUCC:
                 Glide.with(MainUserFragment.this).load(R.drawable.ic_user_avatar).into((ImageView) fd(R.id.iv_avatar));

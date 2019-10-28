@@ -24,7 +24,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_title1"
             android:layout_width="0dp"
             android:layout_height="20dp"
@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover1" />
 
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_desc1"
             android:layout_width="0dp"
             android:layout_height="18dp"
@@ -50,7 +50,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title1"
             app:layout_constraintTop_toBottomOf="@+id/tv_title1" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="0dp"
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
@@ -58,9 +58,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title1"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc1">
-
-        </View>
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc1"/>
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -83,7 +81,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_title2"
             android:layout_width="0dp"
             android:layout_height="20dp"
@@ -94,7 +92,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover2" />
 
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_desc2"
             android:layout_width="0dp"
             android:layout_height="18dp"
@@ -109,7 +107,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title2"
             app:layout_constraintTop_toBottomOf="@+id/tv_title2" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="0dp"
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
@@ -117,9 +115,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title2"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc2">
-
-        </View>
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc2"/>
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -141,7 +137,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_title3"
             android:layout_width="0dp"
             android:layout_height="20dp"
@@ -152,7 +148,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover3" />
 
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_desc3"
             android:layout_width="0dp"
             android:layout_height="18dp"
@@ -167,7 +163,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title3"
             app:layout_constraintTop_toBottomOf="@+id/tv_title3" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="0dp"
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
@@ -175,9 +171,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title3"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc3">
-
-        </View>
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc3"/>
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -199,7 +193,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_title4"
             android:layout_width="0dp"
             android:layout_height="20dp"
@@ -210,7 +204,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover4" />
 
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_desc4"
             android:layout_width="0dp"
             android:layout_height="18dp"
@@ -225,7 +219,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title4"
             app:layout_constraintTop_toBottomOf="@+id/tv_title4" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="0dp"
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
@@ -233,9 +227,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title4"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc4">
-
-        </View>
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc4"/>
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -257,7 +249,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_title5"
             android:layout_width="0dp"
             android:layout_height="20dp"
@@ -268,7 +260,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover5" />
 
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_desc5"
             android:layout_width="0dp"
             android:layout_height="18dp"
@@ -283,7 +275,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title5"
             app:layout_constraintTop_toBottomOf="@+id/tv_title5" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="0dp"
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
@@ -291,9 +283,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title5"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc5">
-
-        </View>
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc5"/>
     </android.support.constraint.ConstraintLayout>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout6"
@@ -314,7 +304,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_title6"
             android:layout_width="0dp"
             android:layout_height="20dp"
@@ -325,7 +315,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover6" />
 
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_desc6"
             android:layout_width="0dp"
             android:layout_height="18dp"
@@ -340,7 +330,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title6"
             app:layout_constraintTop_toBottomOf="@+id/tv_title6" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="0dp"
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
@@ -348,9 +338,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title6"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc6">
-
-        </View>
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc6"/>
     </android.support.constraint.ConstraintLayout>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout7"
@@ -371,7 +359,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_title7"
             android:layout_width="0dp"
             android:layout_height="20dp"
@@ -382,7 +370,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover7" />
 
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_desc7"
             android:layout_width="0dp"
             android:layout_height="18dp"
@@ -397,7 +385,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title7"
             app:layout_constraintTop_toBottomOf="@+id/tv_title7" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="0dp"
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
@@ -405,9 +393,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title7"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc7">
-
-        </View>
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc7"/>
     </android.support.constraint.ConstraintLayout>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout8"
@@ -428,7 +414,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_title8"
             android:layout_width="0dp"
             android:layout_height="20dp"
@@ -439,7 +425,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover8" />
 
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_desc8"
             android:layout_width="0dp"
             android:layout_height="18dp"
@@ -454,7 +440,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title8"
             app:layout_constraintTop_toBottomOf="@+id/tv_title8" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="0dp"
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
@@ -462,9 +448,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title8"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc8">
-
-        </View>
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc8"/>
     </android.support.constraint.ConstraintLayout>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout9"
@@ -485,7 +469,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="20dp"
@@ -496,7 +480,7 @@
             app:layout_constraintTop_toTopOf="@+id/iv_cover" />
 
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:id="@+id/tv_desc"
             android:layout_width="0dp"
             android:layout_height="18dp"
@@ -511,7 +495,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-        <View
+       <com.gykj.thomas.widget.SkeletonBlock
             android:layout_width="0dp"
             android:layout_height="12dp"
             android:layout_marginTop="8dp"
@@ -519,9 +503,7 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
-            app:layout_constraintTop_toBottomOf="@+id/tv_desc">
-
-        </View>
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc"/>
     </android.support.constraint.ConstraintLayout>
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
