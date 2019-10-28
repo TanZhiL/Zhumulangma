@@ -15,6 +15,7 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
  */
 public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFragment {
     protected VM mViewModel;
+
     protected void initParam() {
         initViewModel();
         initBaseViewObservable();
@@ -24,7 +25,8 @@ public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFra
     @Override
     protected void loadView() {
         super.loadView();
-       showInitView();
+        //默认显示初始化视图
+        showInitView();
     }
 
     protected void initViewModel() {
@@ -32,11 +34,14 @@ public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFra
         getLifecycle().addObserver(mViewModel);
     }
 
-    protected VM createViewModel(){
-        return ViewModelProviders.of(this,onBindViewModelFactory()).get(onBindViewModel());
+    protected VM createViewModel() {
+        return ViewModelProviders.of(this, onBindViewModelFactory()).get(onBindViewModel());
     }
+
     protected abstract Class<VM> onBindViewModel();
+
     protected abstract ViewModelProvider.Factory onBindViewModelFactory();
+
     protected abstract void initViewObservable();
 
     protected void initBaseViewObservable() {

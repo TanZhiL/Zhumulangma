@@ -126,18 +126,13 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
         mView = inflater.inflate(R.layout.common_layout_root, container, false);
         initCommonView();
         initParam();
-        return attachToSwipeBack(mView);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         //不采用懒加载
         if (!enableLazy()) {
             loadView();
             initView(mView);
             initListener();
         }
+        return attachToSwipeBack(mView);
     }
 
     @Override

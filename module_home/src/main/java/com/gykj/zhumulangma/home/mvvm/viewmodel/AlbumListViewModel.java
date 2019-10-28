@@ -40,7 +40,6 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                 map.put(DTransferConstants.LIKE_COUNT, "50");
                 map.put(DTransferConstants.PAGE, String.valueOf(1));
                 mModel.getGuessLikeAlbum(map)
-                        .doOnSubscribe(d -> getShowInitViewEvent().call())
                         .subscribe(gussLikeAlbumList -> {
                             if (CollectionUtils.isEmpty(gussLikeAlbumList.getAlbumList())) {
                                 getShowEmptyViewEvent().call();
@@ -59,7 +58,6 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                 //付费精品
                 map.put(DTransferConstants.PAGE, String.valueOf(curPage));
                 mModel.getAllPaidAlbums(map)
-                        .doOnSubscribe(d -> getShowInitViewEvent().call())
                         .subscribe(albumList -> {
                             if (CollectionUtils.isEmpty(albumList.getAlbums())) {
                                 getShowEmptyViewEvent().call();
@@ -79,7 +77,6 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                 map.put(DTransferConstants.AID, String.valueOf(mAnnouncerId));
                 map.put(DTransferConstants.PAGE, String.valueOf(curPage));
                 mModel.getAlbumsByAnnouncer(map)
-                        .doOnSubscribe(d -> getShowInitViewEvent().call())
                         .subscribe(albumList -> {
                             if (CollectionUtils.isEmpty(albumList.getAlbums())) {
                                 getShowEmptyViewEvent().call();
@@ -99,7 +96,6 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                 map.put(DTransferConstants.CALC_DIMENSION, "3");
                 map.put(DTransferConstants.PAGE, String.valueOf(curPage));
                 mModel.getAlbumList(map)
-                        .doOnSubscribe(d -> getShowInitViewEvent().call())
                         .subscribe(albumList -> {
                             if (CollectionUtils.isEmpty(albumList.getAlbums())) {
                                 getShowEmptyViewEvent().call();

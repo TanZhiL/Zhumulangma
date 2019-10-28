@@ -38,7 +38,6 @@ public class TrackListViewModel extends BaseRefreshViewModel<ZhumulangmaModel,Tr
         map.put(DTransferConstants.AID, String.valueOf(mAnnouncerId));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getTracksByAnnouncer(map)
-                .doOnSubscribe(d->getShowInitViewEvent().call())
                 .subscribe(trackList -> {
                     if (CollectionUtils.isEmpty(trackList.getTracks())) {
                         getShowEmptyViewEvent().call();

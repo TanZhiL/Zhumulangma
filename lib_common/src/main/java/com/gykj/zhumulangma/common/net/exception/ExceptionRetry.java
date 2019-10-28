@@ -70,7 +70,7 @@ public class ExceptionRetry implements Function<Observable<Throwable>, Observabl
                     .flatMap((Function<ResponseDTO<UserBean>, Observable<?>>) userBeanResponseDTO -> {
                         if (!userBeanResponseDTO.code.equals(ExceptionConverter.APP_ERROR.SUCCESS)) {
                             return Observable.error(new CustException(userBeanResponseDTO.code,
-                                    "账户异常,请先登陆!"));
+                                    "账户异常,请重新登录!"));
                         } else {
                             SPUtils.getInstance().put(Constants.SP.TOKEN, userBeanResponseDTO.result.getToken());
                             SPUtils.getInstance().put(Constants.SP.USER, new Gson().toJson(userBeanResponseDTO.result));
@@ -79,7 +79,7 @@ public class ExceptionRetry implements Function<Observable<Throwable>, Observabl
                     }).compose(RxAdapter.schedulersTransformer());
         } else {
             return Observable.error(new CustException(ExceptionConverter.APP_ERROR.ACCOUNT_ERROR,
-                    "账户异常,请先登陆!"));
+                    "账户异常,请重新登录!"));
         }
     }
 }

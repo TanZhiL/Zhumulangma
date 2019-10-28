@@ -43,7 +43,6 @@ public class AnnouncerListViewModel extends BaseRefreshViewModel<ZhumulangmaMode
         map.put(DTransferConstants.CALC_DIMENSION, "1");
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getAnnouncerList(map)
-                .doOnSubscribe(d -> getShowInitViewEvent().call())
                 .subscribe(announcerList -> {
                     if (CollectionUtils.isEmpty(announcerList.getAnnouncerList())) {
                         getShowEmptyViewEvent().call();

@@ -107,7 +107,6 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                 //获取第一页声音
                 .flatMap((Function<Object, ObservableSource<TrackList>>) o ->
                         AlbumDetailViewModel.this.getTrackInitObservable())
-                .doOnSubscribe(disposable -> getShowInitViewEvent().call())
                 .subscribe(trackList -> {
                     if (CollectionUtils.isEmpty(trackList.getTracks())) {
                         getShowEmptyViewEvent().call();

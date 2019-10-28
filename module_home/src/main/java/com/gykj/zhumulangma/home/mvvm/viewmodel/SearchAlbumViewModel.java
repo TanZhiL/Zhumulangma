@@ -36,7 +36,6 @@ public class SearchAlbumViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
         map.put(DTransferConstants.SEARCH_KEY, mKeyword);
         map.put(DTransferConstants.PAGE,String.valueOf(curPage));
         mModel.getSearchedAlbums(map)
-                .doOnSubscribe(d->getShowInitViewEvent().call())
                 .subscribe(albumList -> {
                     if (CollectionUtils.isEmpty(albumList.getAlbums())) {
                         getShowEmptyViewEvent().call();

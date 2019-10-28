@@ -12,11 +12,13 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.HistoryAdapter;
 import com.gykj.zhumulangma.listen.bean.PlayHistoryItem;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.HistoryViewModel;
+import com.kingja.loadsir.callback.Callback;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.List;
@@ -28,8 +30,8 @@ import java.util.List;
  * <br/>Description:
  */
 @Route(path = Constants.Router.Listen.F_HISTORY)
-public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,PlayHistoryItem> implements
-        BaseQuickAdapter.OnItemClickListener{
+public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel, PlayHistoryItem> implements
+        BaseQuickAdapter.OnItemClickListener {
 
     private SmartRefreshLayout refreshLayout;
     private HistoryAdapter mHistoryAdapter;
@@ -58,7 +60,7 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout,mHistoryAdapter);
+        return new WrapRefresh(refreshLayout, mHistoryAdapter);
     }
 
     @Override
@@ -95,9 +97,9 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
     @Override
     protected void onLoadMoreSucc(List<PlayHistoryItem> list) {
         //两页衔接处处理
-        if(!CollectionUtils.isEmpty(mHistoryAdapter.getData())&&mViewModel.dateCovert(
-                mHistoryAdapter.getItem(mHistoryAdapter.getData().size()-1).data.getDatatime())
-                .equals(list.get(0).header)){
+        if (!CollectionUtils.isEmpty(mHistoryAdapter.getData()) && mViewModel.dateCovert(
+                mHistoryAdapter.getItem(mHistoryAdapter.getData().size() - 1).data.getDatatime())
+                .equals(list.get(0).header)) {
             list.remove(0);
         }
         mHistoryAdapter.addData(list);
@@ -106,11 +108,11 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         PlayHistoryItem playHistoryItem = mHistoryAdapter.getItem(position);
-        if(playHistoryItem.itemType!= PlayHistoryItem.HEADER){
-            if(playHistoryItem.itemType== PlayHistoryItem.TRACK){
+        if (playHistoryItem.itemType != PlayHistoryItem.HEADER) {
+            if (playHistoryItem.itemType == PlayHistoryItem.TRACK) {
                 mViewModel.playRadio(playHistoryItem.data.getGroupId(),
                         playHistoryItem.data.getTrack().getDataId());
-            }else {
+            } else {
                 mViewModel.playRadio(String.valueOf(playHistoryItem.data.getGroupId()));
             }
         }
@@ -132,5 +134,10 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel,Pl
     @Override
     protected boolean enableLazy() {
         return false;
+    }
+
+    @Override
+    public Callback getInitStatus() {
+        return new ListSkeleton();
     }
 }

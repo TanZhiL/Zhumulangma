@@ -402,7 +402,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
 
     @Override
     protected boolean enableLazy() {
-        return true;
+        return false;
     }
 
     @Override

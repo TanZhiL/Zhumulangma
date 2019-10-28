@@ -60,7 +60,6 @@ public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaMo
                     map12.put(DTransferConstants.PAGE_SIZE, String.valueOf(5));
                     return mModel.getTracksByAnnouncer(map12);
                 })
-                .doOnSubscribe(d -> getShowInitViewEvent().call())
                 .subscribe(trackList -> {
                     getClearStatusEvent().call();
                     getTrackListEvent().setValue(trackList);

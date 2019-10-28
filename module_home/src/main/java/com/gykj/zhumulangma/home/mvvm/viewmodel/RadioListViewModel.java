@@ -68,11 +68,10 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
     }
 
     public void getLocalCity(String cityCode) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.CITY_CODE, cityCode);
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getRadiosByCity(map)
-                .doOnSubscribe(d->getShowInitViewEvent().call())
                 .subscribe(radioList -> {
                     if (CollectionUtils.isEmpty(radioList.getRadios())) {
                         getShowEmptyViewEvent().call();
@@ -115,7 +114,6 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
         }
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getRadios(map)
-                .doOnSubscribe(d->getShowInitViewEvent().call())
                 .subscribe(radioList -> {
                     if (CollectionUtils.isEmpty(radioList.getRadios())) {
                         getShowEmptyViewEvent().call();
@@ -158,11 +156,10 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
 
 
     public void getRadiosByCategory() {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.RADIO_CATEGORY_ID, String.valueOf(mType));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getRadiosByCategory(map)
-                .doOnSubscribe(d->getShowInitViewEvent().call())
                 .subscribe(radioList -> {
                     if (CollectionUtils.isEmpty(radioList.getRadios())) {
                         getShowEmptyViewEvent().call();
@@ -194,11 +191,10 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
     }
 
     public void getRankRadios() {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         //获取前100名
         map.put(DTransferConstants.RADIO_COUNT, "100");
         mModel.getRankRadios(map)
-                .doOnSubscribe(d->getShowInitViewEvent().call())
                 .subscribe(radioList -> {
                     if (CollectionUtils.isEmpty(radioList.getRadios())) {
                         getShowEmptyViewEvent().call();

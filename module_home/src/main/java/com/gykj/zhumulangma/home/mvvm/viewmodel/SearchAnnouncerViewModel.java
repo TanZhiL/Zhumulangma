@@ -35,7 +35,6 @@ public class SearchAnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaMo
         map.put(DTransferConstants.SEARCH_KEY, mKeyword);
         map.put(DTransferConstants.PAGE,String.valueOf(curPage));
         mModel.getSearchAnnouncers(map)
-                .doOnSubscribe(d->getShowInitViewEvent().call())
                 .subscribe(announcerList -> {
                     if (CollectionUtils.isEmpty(announcerList.getAnnouncerList())) {
                         getShowEmptyViewEvent().call();

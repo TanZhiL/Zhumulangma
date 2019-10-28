@@ -45,7 +45,6 @@ public class BatchDownloadViewModel extends BaseRefreshViewModel<ZhumulangmaMode
         map.put(DTransferConstants.PAGE, String.valueOf(curTrackPage));
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(PAGESIEZ));
         mModel.getTracks(map)
-                .doOnSubscribe(disposable -> getShowInitViewEvent().call())
                 .subscribe(trackList -> {
                     if (CollectionUtils.isEmpty(trackList.getTracks())) {
                         getShowEmptyViewEvent().call();

@@ -41,7 +41,6 @@ public class SearchRadioViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
         map.put(DTransferConstants.SEARCH_KEY, mKeyword);
         map.put(DTransferConstants.PAGE,String.valueOf(curPage));
         mModel.getSearchedRadios(map)
-                .doOnSubscribe(d->getShowInitViewEvent().call())
                 .subscribe(radioList -> {
                     if (CollectionUtils.isEmpty(radioList.getRadios())) {
                         getShowEmptyViewEvent().call();

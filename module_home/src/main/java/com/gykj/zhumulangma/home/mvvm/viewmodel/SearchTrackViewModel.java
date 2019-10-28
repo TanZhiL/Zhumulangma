@@ -39,7 +39,6 @@ public class SearchTrackViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
         map.put(DTransferConstants.SEARCH_KEY, mKeyword);
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getSearchedTracks(map)
-                .doOnSubscribe(d -> getShowInitViewEvent().call())
                 .subscribe(trackList -> {
                     if (CollectionUtils.isEmpty(trackList.getTracks())) {
                         getShowEmptyViewEvent().call();

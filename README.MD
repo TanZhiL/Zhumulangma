@@ -119,6 +119,7 @@ sourceSets {
 ### 开源项目
 * 快速切面编程开源库 https://github.com/TanZhiL/OkAspectj
 * 高仿喜马拉雅听Android客户端 https://github.com/TanZhiL/Zhumulangma
+* 骨架屏弹性块 https://github.com/TanZhiL/SkeletonBlock
 ### License
 ```
 Copyright (C)  tanzhilong Zhumualangma Framework Open Source Project
