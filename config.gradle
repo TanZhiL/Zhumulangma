@@ -79,6 +79,8 @@ ext {
             "tinker-android-lib":"1.9.9",
             "bmob":"3.7.3-rc1",
             "SkeletonBlock":"1.0.4",
+            "RxCache":"1.8.3-2.x",
+            "Jolyglot-gson":"0.0.4",
     ]
     //support配置
     support = [
@@ -145,6 +147,8 @@ ext {
             "crashreport_upgrade"                  :"com.tencent.bugly:crashreport_upgrade:${versions["crashreport_upgrade"]}",
             "tinker-android-lib"                   :"com.tencent.tinker:tinker-android-lib:${versions["tinker-android-lib"]}",
             "bmob"                                 :"cn.bmob.android:bmob-sdk:${versions["bmob"]}",
+            "RxCache"                              :"com.github.VictorAlbertos.RxCache:runtime:${versions["RxCache"]}",
+            "Jolyglot-gson"                        :"com.github.VictorAlbertos.Jolyglot:gson:${versions["Jolyglot-gson"]}",
 
             //***************************************界面类*************************************************
             "loadsir"                              :"com.kingja.loadsir:loadsir:${versions["loadsir"]}",

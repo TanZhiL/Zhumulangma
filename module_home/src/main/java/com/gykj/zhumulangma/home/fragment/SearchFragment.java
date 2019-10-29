@@ -107,7 +107,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             mIat.setParameter(SpeechConstant.RESULT_TYPE, "json");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.w(TAG,"由于讯飞语音没有提供x86 so文件所以直接捕获此异常");
         }
         mSpeechPopup = new SpeechPopup(mActivity);
     }
@@ -179,7 +179,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
                             try {
                                 mIat.startListening(mRecognizerListener);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                               ToastUtil.showToast(ToastUtil.LEVEL_E,"语音功能暂时不支持在PC端使用");
                             }
                         } else {
                             ToastUtil.showToast("请允许应用使用麦克风权限");
@@ -366,7 +366,6 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         for (String key : mIatResults.keySet()) {
             stringBuilder.append(mIatResults.get(key));
         }
-        Log.d(TAG, "printResult: " + stringBuilder);
         etKeyword.setText(stringBuilder.toString());
         etKeyword.setSelection(etKeyword.length());
 
@@ -378,7 +377,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         try {
             mIat.destroy();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.w(TAG,"由于讯飞语音没有提供x86 so文件所以直接捕获此异常");
         }
     }
 }

@@ -9,9 +9,12 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.net.service.CommonService;
 import com.gykj.zhumulangma.common.net.service.UserService;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Proxy;
 
+import io.rx_cache2.internal.RxCache;
+import io.victoralbertos.jolyglot.GsonSpeaker;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -30,12 +33,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class NetManager {
     private static final String TAG = "NetManager";
+    private static File mCacheFile;
     private static volatile NetManager instance;
+    private final CacheProvider mCacheProvider;
     private Retrofit mRetrofit;
     private int mNetStatus = Constans.NET_ONLINE;
     private CommonService mCommonService;
     private UserService mUserService;
 
+    public static void init(File cacheFile) {
+        if (!cacheFile.exists())
+            cacheFile.mkdirs();
+        mCacheFile = cacheFile;
+    }
 
     public static NetManager getInstance() {
         if (instance == null) {
@@ -70,18 +80,31 @@ public class NetManager {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+        mCacheProvider = new RxCache.Builder()
+                .persistence(mCacheFile, new GsonSpeaker())
+                .using(CacheProvider.class);
+    }
+
+    /**
+     * 获取缓存对象
+     *
+     * @return
+     */
+    public CacheProvider getCacheProvider() {
+        return mCacheProvider;
     }
 
     public CommonService getCommonService() {
-        if(mCommonService==null){
-            mCommonService=mRetrofit.create(CommonService.class);
+        if (mCommonService == null) {
+            mCommonService = mRetrofit.create(CommonService.class);
         }
         return mCommonService;
     }
 
     public UserService getUserService() {
-        if(mUserService==null){
-            mUserService=mRetrofit.create(UserService.class);
+        if (mUserService == null) {
+            mUserService = mRetrofit.create(UserService.class);
         }
         return mUserService;
     }
@@ -99,7 +122,7 @@ public class NetManager {
     /**
      * 动态更换主机
      */
-    public class UrlInterceptor implements Interceptor {
+    class UrlInterceptor implements Interceptor {
         @Override
         public Response intercept(@NonNull Chain chain) throws IOException {
             //获取request
@@ -129,8 +152,10 @@ public class NetManager {
             return chain.proceed(builder.url(newUrl).build());
         }
     }
+
     /**
      * 根据header和netStatus组合baseUrl
+     *
      * @param hostValue
      * @return
      */

@@ -59,7 +59,6 @@ public class ExceptionRetry implements Function<Observable<Throwable>, Observabl
     private Observable reLogin() {
         final UserBean userBean = new Gson().fromJson(SPUtils.getInstance()
                 .getString(Constants.SP.USER), UserBean.class);
-        if (null != userBean) {
             LoginDTO loginDTO = new LoginDTO();
             loginDTO.setCode(userBean.getCode());
             loginDTO.setDescer_name(userBean.getDescer_name());
@@ -70,16 +69,12 @@ public class ExceptionRetry implements Function<Observable<Throwable>, Observabl
                     .flatMap((Function<ResponseDTO<UserBean>, Observable<?>>) userBeanResponseDTO -> {
                         if (!userBeanResponseDTO.code.equals(ExceptionConverter.APP_ERROR.SUCCESS)) {
                             return Observable.error(new CustException(userBeanResponseDTO.code,
-                                    "账户异常,请重新登录!"));
+                                    userBeanResponseDTO.msg));
                         } else {
                             SPUtils.getInstance().put(Constants.SP.TOKEN, userBeanResponseDTO.result.getToken());
                             SPUtils.getInstance().put(Constants.SP.USER, new Gson().toJson(userBeanResponseDTO.result));
                             return Observable.just(0);
                         }
                     }).compose(RxAdapter.schedulersTransformer());
-        } else {
-            return Observable.error(new CustException(ExceptionConverter.APP_ERROR.ACCOUNT_ERROR,
-                    "账户异常,请重新登录!"));
-        }
     }
 }

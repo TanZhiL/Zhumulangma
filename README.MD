@@ -46,6 +46,7 @@
 本项目采用retrofit+rxjava2+rxandroid+arouter+mvvm+fragmentation实现单activity多fragme组件化架构
 
 * app：负责管理各个业务组件，和打包apk，没有具体的业务功能；
+* lib_third：负责第三方库的集成和初始化;
 * lib_common：属于功能组件，支撑业务组件的基础，提供多数业务组件需要的功能;
 * module_main：属于业务组件，指定APP启动页面、主界面；
 * module_home：首页展示,包括热门,分类,精品,主播,电台,展示及播放等；

@@ -56,15 +56,17 @@ public class App extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(mApplication);
-        Beta.installTinker();
+        if (BaseUtil.isMainProcess(this)) {
+            MultiDex.install(mApplication);
+            Beta.installTinker();
+        }
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         mApplication = this;
-        if(BaseUtil.isMainProcess(this)){
+        if (BaseUtil.isMainProcess(this)) {
             ThirdHelper.getInstance(this)
                     .initLeakCanary()
                     .initFragmentation(false)
@@ -79,9 +81,10 @@ public class App extends Application {
             AppHelper.getInstance(this)
                     .initLog()
                     .initXmly()
+                    .Net()
                     .initXmlyPlayer()
                     .initXmlyDownloader()
-                    .initGreenDao();
+                    .initGreenDao(false);
             XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
         }
     }
