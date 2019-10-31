@@ -67,7 +67,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/shap_common_input"
+            app:bl_solid_color="#f0f0f0"
+            app:bl_corners_radius="20dp"
             android:gravity="center_vertical"
             android:paddingLeft="8dp"
 

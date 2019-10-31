@@ -11,7 +11,8 @@
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_gravity="center"
-        android:background="@drawable/shap_common_white_coner">
+        app:bl_solid_color="@color/white"
+        app:bl_corners_radius="4dp">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animation_view"

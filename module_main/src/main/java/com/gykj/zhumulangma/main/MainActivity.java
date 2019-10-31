@@ -218,7 +218,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         if (isVisible)
             globalPlay.setBackgroundColor(Color.TRANSPARENT);
         else
-            globalPlay.setBackground(getResources().getDrawable(R.drawable.shap_common_widget_play));
+            globalPlay.setBackground(getResources().getDrawable(R.drawable.shap_main_globalplay));
     }
 
 

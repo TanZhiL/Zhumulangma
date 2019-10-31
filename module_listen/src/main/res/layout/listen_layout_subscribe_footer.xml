@@ -12,7 +12,10 @@
         android:layout_width="110dp"
         android:layout_height="38dp"
         android:layout_gravity="center"
-        android:background="@drawable/shap_common_tag_normal">
+        app:bl_solid_color="@color/white"
+        app:bl_corners_radius="18dp"
+        app:bl_stroke_width="1dp"
+        app:bl_stroke_color="#f0f0f0">
 
         <ImageView
             android:id="@+id/imageView"

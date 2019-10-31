@@ -173,7 +173,8 @@
             android:layout_marginStart="17dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/shap_common_circle_default"
+            app:bl_solid_color="@color/colorDefault"
+            app:bl_corners_radius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -241,7 +242,8 @@
             android:layout_marginStart="17dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/shap_common_circle_default"
+            app:bl_solid_color="@color/colorDefault"
+            app:bl_corners_radius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -309,7 +311,8 @@
             android:layout_marginStart="17dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/shap_common_circle_default"
+            app:bl_solid_color="@color/colorDefault"
+            app:bl_corners_radius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -377,7 +380,8 @@
             android:layout_marginStart="17dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/shap_common_circle_default"
+            app:bl_solid_color="@color/colorDefault"
+            app:bl_corners_radius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -445,7 +449,8 @@
             android:layout_marginStart="17dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/shap_common_circle_default"
+            app:bl_solid_color="@color/colorDefault"
+            app:bl_corners_radius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -513,7 +518,8 @@
             android:layout_marginStart="17dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/shap_common_circle_default"
+            app:bl_solid_color="@color/colorDefault"
+            app:bl_corners_radius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

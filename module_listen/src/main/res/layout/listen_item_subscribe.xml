@@ -93,7 +93,10 @@
         android:layout_height="23dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
-        android:background="@drawable/shap_litsten_subscribe_cover"
+        app:bl_solid_color="#77000000"
+        app:bl_corners_radius="20dp"
+        app:bl_stroke_width="1dp"
+        app:bl_stroke_color="#88808080"
         app:layout_constraintBottom_toBottomOf="@+id/iv_cover"
         app:layout_constraintEnd_toEndOf="@+id/iv_cover" />
 

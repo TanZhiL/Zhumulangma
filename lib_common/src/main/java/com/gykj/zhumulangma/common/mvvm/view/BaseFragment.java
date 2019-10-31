@@ -185,7 +185,6 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
         mSimpleTitleBar = mView.findViewById(R.id.ctb_simple);
         mViewStubContent = mView.findViewById(R.id.view_stub_content);
         if (enableSimplebar()) {
-            mSimpleTitleBar.setBackgroundResource(R.drawable.shap_common_simplebar);
             mSimpleTitleBar.setVisibility(View.VISIBLE);
             initSimpleBar(mSimpleTitleBar);
         }

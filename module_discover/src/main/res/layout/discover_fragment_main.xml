@@ -129,7 +129,8 @@
                     android:textColor="@color/white"
                     android:textSize="10sp"
                     android:gravity="center"
-                    android:background="@drawable/shap_common_primary_coner"
+                    app:bl_solid_color="@color/colorPrimary"
+                    app:bl_corners_radius="2dp"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView9"
                     app:layout_constraintEnd_toStartOf="@+id/imageView9"
                     app:layout_constraintTop_toTopOf="@+id/imageView9" />
@@ -193,7 +194,8 @@
                 <View
                     android:layout_width="4dp"
                     android:layout_height="4dp"
-                    android:background="@drawable/shap_common_circle_red"
+                    app:bl_solid_color="#ff0000"
+                    app:bl_corners_radius="20dp"
                     app:layout_constraintBottom_toTopOf="@+id/imageView10"
                     app:layout_constraintEnd_toEndOf="@+id/imageView10" />
             </android.support.constraint.ConstraintLayout>
@@ -296,7 +298,8 @@
                 <View
                     android:layout_width="4dp"
                     android:layout_height="4dp"
-                    android:background="@drawable/shap_common_circle_red"
+                    app:bl_solid_color="#ff0000"
+                    app:bl_corners_radius="20dp"
                     app:layout_constraintBottom_toTopOf="@+id/imageView12"
                     app:layout_constraintEnd_toEndOf="@+id/imageView12" />
 

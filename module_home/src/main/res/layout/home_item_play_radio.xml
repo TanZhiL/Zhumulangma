@@ -91,7 +91,8 @@
         android:layout_height="16dp"
         android:gravity="center"
         android:textSize="10sp"
-        android:background="@drawable/shap_common_primary_coner"
+        app:bl_solid_color="@color/colorPrimary"
+        app:bl_corners_radius="2dp"
         android:textColor="@color/white"
         android:text="直播" />
 

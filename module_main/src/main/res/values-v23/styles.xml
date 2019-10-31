@@ -1,7 +1,7 @@
 <resources>
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@drawable/shap_splash</item>
+        <item name="android:windowBackground">@drawable/shap_main_splash</item>
     </style>
     <style name="NullTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/white</item>

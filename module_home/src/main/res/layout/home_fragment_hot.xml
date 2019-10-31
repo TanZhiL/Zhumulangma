@@ -24,7 +24,7 @@
             android:id="@+id/banner"
             android:layout_width="match_parent"
             android:layout_height="158dp"
-            app:indicator_drawable_unselected="@drawable/shap_common_circle_white"
+            app:indicator_drawable_unselected="@drawable/shap_home_banner_dot"
             app:indicator_height="7dp"
             app:indicator_margin="3dp"
             app:indicator_width="7dp" />
@@ -55,7 +55,8 @@
                             android:id="@+id/fl_rank"
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/shap_common_circle_pink">
+                            app:bl_corners_radius="20dp"
+                            app:bl_solid_color="#d5a6bd">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -83,7 +84,8 @@
                         <FrameLayout
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/shap_common_circle_powderblue">
+                            app:bl_solid_color="#a2c4c9"
+                            app:bl_corners_radius="20dp">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -111,7 +113,8 @@
                         <FrameLayout
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/shap_common_circle_orange">
+                            app:bl_solid_color="#f9cb9c"
+                            app:bl_corners_radius="20dp">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -139,7 +142,8 @@
                         <FrameLayout
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/shap_common_circle_green">
+                            app:bl_solid_color="#b6d7a8"
+                            app:bl_corners_radius="20dp">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -167,7 +171,8 @@
                         <FrameLayout
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/shap_common_circle_blue">
+                            app:bl_solid_color="#a4c2f4"
+                            app:bl_corners_radius="20dp">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -195,7 +200,8 @@
                         <FrameLayout
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/shap_common_circle_yellow">
+                            app:bl_solid_color="#ffe599"
+                            app:bl_corners_radius="20dp">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -223,7 +229,8 @@
                         <FrameLayout
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/shap_common_circle_blue">
+                            app:bl_solid_color="#a4c2f4"
+                            app:bl_corners_radius="20dp">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -251,7 +258,8 @@
                         <FrameLayout
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/shap_common_circle_green">
+                            app:bl_solid_color="#b6d7a8"
+                            app:bl_corners_radius="20dp">
 
                             <ImageView
                                 android:layout_width="24dp"
@@ -279,7 +287,8 @@
                         <FrameLayout
                             android:layout_width="36dp"
                             android:layout_height="36dp"
-                            android:background="@drawable/shap_common_circle_red">
+                            app:bl_solid_color="#ff0000"
+                            app:bl_corners_radius="20dp">
 
                             <ImageView
                                 android:layout_width="24dp"

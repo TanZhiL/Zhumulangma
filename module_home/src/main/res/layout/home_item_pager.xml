@@ -13,7 +13,9 @@
         android:layout_height="28dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@drawable/shap_common_defualt"
+        app:bl_stroke_width="1dp"
+        app:bl_stroke_color="@color/colorLine"
+        app:bl_corners_radius="4dp"
         android:textColor="@color/textColorPrimary"
         android:text="1~20" />
 
@@ -24,5 +26,6 @@
         android:layout_margin="2dp"
         android:visibility="gone"
         android:layout_gravity="right|top"
-       android:background="@drawable/shap_common_circle_primary" />
+        app:bl_solid_color="@color/colorPrimary"
+        app:bl_corners_radius="20dp"/>
 </FrameLayout>

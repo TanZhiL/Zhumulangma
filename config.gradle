@@ -81,6 +81,7 @@ ext {
             "SkeletonBlock":"1.0.4",
             "RxCache":"1.8.3-2.x",
             "Jolyglot-gson":"0.0.4",
+            "backgroundlib":"1.6.0",
     ]
     //support配置
     support = [
@@ -178,6 +179,7 @@ ext {
             "bga-qrcode-zxing"                     :"cn.bingoogolapple:bga-qrcode-zxing:${versions["bga-qrcode-zxing"]}",
             "roundedimageview"                     :"com.makeramen:roundedimageview:${versions["roundedimageview"]}",
             "SkeletonBlock"                        :"com.github.TanZhiL:SkeletonBlock:${versions["SkeletonBlock"]}",
+            "backgroundlib"                        :"com.noober.background:core:${versions["backgroundlib"]}",
     ]
 
 }

@@ -101,6 +101,7 @@ dependencies {
     api rootProject.ext.dependencies["SkeletonBlock"]
     api rootProject.ext.dependencies["RxCache"]
     api rootProject.ext.dependencies["Jolyglot-gson"]
+    api rootProject.ext.dependencies["backgroundlib"]
 
 
     api files('libs/Msc.jar')

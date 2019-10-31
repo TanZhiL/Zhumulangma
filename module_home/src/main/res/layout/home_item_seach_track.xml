@@ -35,7 +35,8 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone"
         app:riv_oval="true"
-        android:background="@drawable/shap_common_track_cover"
+        app:bl_solid_color="#77000000"
+        app:bl_corners_radius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

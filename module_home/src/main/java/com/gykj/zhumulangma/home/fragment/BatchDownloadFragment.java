@@ -355,10 +355,10 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<BatchDownload
             TextView tvPage = (TextView) mPagerPopup.getPagerAdapter().getViewByPosition(i, R.id.tv_page);
             if (tvPage != null) {
                 if (mViewModel.getUpTrackPage() <= i && i <= mViewModel.getCurTrackPage() - 2) {
-                    tvPage.setBackgroundResource(R.drawable.shap_common_primary);
+                    tvPage.setBackgroundResource(R.drawable.shap_home_pager_selected);
                     tvPage.setTextColor(Color.WHITE);
                 } else {
-                    tvPage.setBackgroundResource(R.drawable.shap_common_defualt);
+                    tvPage.setBackgroundResource(R.drawable.shap_home_pager_defualt);
                     tvPage.setTextColor(getResources().getColor(R.color.textColorPrimary));
                 }
             } else {

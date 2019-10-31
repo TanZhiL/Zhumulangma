@@ -15,7 +15,7 @@
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="158dp"
-                app:indicator_drawable_unselected="@drawable/shap_common_circle_white"
+                app:indicator_drawable_unselected="@drawable/shap_home_banner_dot"
                 app:indicator_height="7dp"
                 app:elevation="0dp"
                 app:indicator_margin="3dp"
@@ -178,7 +178,7 @@
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="158dp"
-                app:indicator_drawable_unselected="@drawable/shap_common_circle_white"
+                app:indicator_drawable_unselected="@drawable/shap_home_banner_dot"
                 app:indicator_height="7dp"
                 app:indicator_margin="3dp"
                 app:indicator_width="7dp" >

@@ -111,7 +111,6 @@ public abstract class BaseActivity extends SupportActivity implements BaseView {
         ViewStub viewStubContent = findViewById(R.id.view_stub_content);
         mSimpleTitleBar = findViewById(R.id.ctb_simple);
         if (enableSimplebar()) {
-            mSimpleTitleBar.setBackgroundResource(R.drawable.shap_common_simplebar);
             mSimpleTitleBar.setVisibility(View.VISIBLE);
             initSimpleBar(mSimpleTitleBar);
         }
@@ -129,7 +128,7 @@ public abstract class BaseActivity extends SupportActivity implements BaseView {
                 builder.addCallback(callback);
             }
         }
-        mBaseLoadService = builder.build().register(contentView, (Callback.OnReloadListener) v -> BaseActivity.this.onReload(v));
+        mBaseLoadService = builder.build().register(contentView, (Callback.OnReloadListener) BaseActivity.this::onReload);
         mBaseLoadService.showSuccess();
     }
 

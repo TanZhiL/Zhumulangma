@@ -2,6 +2,8 @@
 ### 本项目仅提供学习参考,不可作为商用.
 
 ### 更新日志：
+###### 珠穆朗玛FM 1.0 2019-10.31
+* 使用BackgroundLibrary库代替所有shape资源,请无视xml文件中app:bl_xxxx_xxxx="xxxx"错误
 ###### 珠穆朗玛FM 1.0 2019-10.22
 * 用户登陆
 ###### 珠穆朗玛FM 1.0 2019-10.09
@@ -108,6 +110,7 @@ sourceSets {
 * lottie动画 https://github.com/airbnb/lottie-android
 * SmartRefreshLayout https://github.com/scwang90/SmartRefreshLayout
 * MagicIndicator https://github.com/hackware1993/MagicIndicator
+* shape神器BackgroundLibrary https://github.com/JavaNoober/BackgroundLibrary
 ### 致谢
 * 感谢所有开源库的大佬
 * mvvm借鉴 https://github.com/geduo83/FlyTour 

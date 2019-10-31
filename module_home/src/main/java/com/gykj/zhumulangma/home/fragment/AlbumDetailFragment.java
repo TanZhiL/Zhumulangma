@@ -581,10 +581,10 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
             TextView viewByPosition = (TextView) mPagerPopup.getPagerAdapter().getViewByPosition(i, R.id.tv_page);
             if (viewByPosition != null) {
                 if (mViewModel.getUpTrackPage() <= i && i <= mViewModel.getCurTrackPage() - 2) {
-                    viewByPosition.setBackgroundResource(R.drawable.shap_common_primary);
+                    viewByPosition.setBackgroundResource(R.drawable.shap_home_pager_selected);
                     viewByPosition.setTextColor(Color.WHITE);
                 } else {
-                    viewByPosition.setBackgroundResource(R.drawable.shap_common_defualt);
+                    viewByPosition.setBackgroundResource(R.drawable.shap_home_pager_defualt);
                     viewByPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
                 }
             } else {
