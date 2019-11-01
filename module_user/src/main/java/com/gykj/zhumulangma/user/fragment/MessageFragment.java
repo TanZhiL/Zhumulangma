@@ -7,10 +7,11 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.user.R;
+import com.gykj.zhumulangma.user.databinding.UserFragmentMessageBinding;
 
 
 @Route(path = Constants.Router.User.F_MESSAGE)
-public class MessageFragment extends BaseFragment{
+public class MessageFragment extends BaseFragment<UserFragmentMessageBinding>{
 
 
 

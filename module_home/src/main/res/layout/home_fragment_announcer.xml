@@ -148,54 +148,112 @@
 </android.support.design.widget.CoordinatorLayout>-->
 
 
-<FrameLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-<com.scwang.smartrefresh.layout.SmartRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/refreshLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:srlEnablePreviewInEditMode="false">
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nsv"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:overScrollMode="never">
-        <LinearLayout
+        android:layout_height="match_parent">
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/refreshLayout"
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:descendantFocusability="blocksDescendants"
-            android:layout_height="wrap_content">
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
+            android:layout_height="match_parent"
+            app:srlEnablePreviewInEditMode="false">
+
+            <android.support.v4.widget.NestedScrollView android:id="@+id/nsv"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="158dp"
-                app:indicator_drawable_unselected="@drawable/shap_home_banner_dot"
-                app:indicator_height="7dp"
-                app:indicator_margin="3dp"
-                app:indicator_width="7dp" >
-            </com.youth.banner.Banner>
+                android:layout_height="match_parent"
+                android:scrollbars="none"
+                android:overScrollMode="never">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    android:descendantFocusability="blocksDescendants"
+                    android:layout_height="wrap_content">
+
+                    <com.youth.banner.Banner
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="158dp"
+                        app:indicator_drawable_unselected="@drawable/shap_home_banner_dot"
+                        app:indicator_height="7dp"
+                        app:indicator_margin="3dp"
+                        app:indicator_width="7dp"></com.youth.banner.Banner>
+
+                    <LinearLayout
+                        android:id="@+id/ll_title"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="45dp">
+
+                        <View
+                            android:layout_width="3dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="6dp"
+                            android:background="@color/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:gravity="center_vertical"
+                            android:paddingStart="11dp"
+                            android:text="热门主播"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#f0f0f0" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_announcer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp" />
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_title_top"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:background="@color/white"
+            android:layout_height="wrap_content">
+
             <LinearLayout
-                android:id="@+id/ll_title"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_height="45dp">
+                android:paddingBottom="1dp"
+                android:layout_height="46dp">
+
                 <View
                     android:layout_width="3dp"
                     android:layout_height="match_parent"
                     android:layout_marginTop="6dp"
                     android:layout_marginBottom="6dp"
-                    android:background="@color/colorPrimary"/>
+                    android:background="@color/colorPrimary" />
+
                 <TextView
-                    android:id="@+id/textView17"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:gravity="center_vertical"
@@ -205,54 +263,13 @@
                     android:textSize="16sp" />
 
             </LinearLayout>
-            <View android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#f0f0f0"
-                />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_announcer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"/>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-    <FrameLayout
-        android:id="@+id/fl_title_top"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:background="@color/white"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:paddingBottom="1dp"
-            android:layout_height="46dp">
             <View
-                android:layout_width="3dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
-                android:background="@color/colorPrimary"/>
-            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:gravity="center_vertical"
-                android:paddingStart="11dp"
-                android:text="热门主播"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="16sp" />
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:background="#f0f0f0" />
+        </FrameLayout>
 
-        </LinearLayout>
-        <View android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="bottom"
-            android:background="#f0f0f0"
-            />
     </FrameLayout>
-
-</FrameLayout>
+</layout>

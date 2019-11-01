@@ -14,6 +14,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.main.R;
+import com.gykj.zhumulangma.main.databinding.MainFragmentMainBinding;
 import com.next.easynavigation.view.EasyNavigationBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Route(path = Constants.Router.Main.F_MAIN)
-public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTabClickListener {
+public class MainFragment extends BaseFragment<MainFragmentMainBinding> implements EasyNavigationBar.OnTabClickListener {
 
     private String[] tabText = {"首页", "我听", "", "发现", "我的"};
 
@@ -52,7 +53,6 @@ public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTa
 
     @Override
     public void initView(View view) {
-        EasyNavigationBar enb = view.findViewById(R.id.enb);
         List<Fragment> fragments = new ArrayList<>();
 
         Object home = ARouter.getInstance().build(Constants.Router.Home.F_MAIN).navigation();
@@ -71,7 +71,7 @@ public class MainFragment extends BaseFragment implements EasyNavigationBar.OnTa
         if (null != listen) {
             fragments.add((Fragment) user);
         }
-        enb.titleItems(tabText)
+        mBinding.enb.titleItems(tabText)
                 .normalIconItems(normalIcon)
                 .selectIconItems(selectIcon)
                 .fragmentList(fragments)

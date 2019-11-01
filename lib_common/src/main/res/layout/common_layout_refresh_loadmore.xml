@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refreshLayout"
-    android:layout_width="match_parent"
-    app:srlFooterTriggerRate="0"
-    app:srlEnableNestedScrolling="true"
-    app:srlHeaderMaxDragRate="2.0"
-    android:layout_height="match_parent"
-    app:srlEnableLoadMoreWhenContentNotFull="false">
-    <com.gykj.zhumulangma.common.widget.TRefreshHeader
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:nestedScrollingEnabled="true"/>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <data>
+
+    </data>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        app:srlFooterTriggerRate="0"
+        app:srlEnableNestedScrolling="true"
+        app:srlHeaderMaxDragRate="2.0"
+        android:layout_height="match_parent"
+        app:srlEnableLoadMoreWhenContentNotFull="false">
+
+        <com.gykj.zhumulangma.common.widget.TRefreshHeader
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:nestedScrollingEnabled="true" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</layout>

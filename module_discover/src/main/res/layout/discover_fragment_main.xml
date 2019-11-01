@@ -1,448 +1,469 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/refreshLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:srlEnableLoadMore="false"
-    app:srlEnableNestedScrolling="true"
-    app:srlEnablePreviewInEditMode="false"
-    app:srlEnableRefresh="false">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <data>
+
+    </data>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:scrollbars="none">
+        app:srlEnableLoadMore="false"
+        app:srlEnableNestedScrolling="true"
+        app:srlEnablePreviewInEditMode="false"
+        app:srlEnableRefresh="false">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
-            <View
-                style="@style/PrimaryHLine"
-                android:layout_width="match_parent" />
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_ffjp"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:tag="https://m.ximalaya.com/"
-                android:layout_height="45dp">
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    app:srcCompat="@drawable/ic_discover_ffjp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="16dp"
-                    android:tint="#b6d7a8"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textSize="14sp"
-                    android:text="付费精品"
-                    android:textColor="@color/textColorPrimary"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
-                    app:layout_constraintTop_toTopOf="@+id/imageView" />
-
-                <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_marginRight="5dp"
-                    android:tint="@color/colorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_common_more_arrow" />
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="让好好说话，成为你的习惯"
-                    android:textSize="11sp"
-                    android:textColor="@color/colorGray"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView8"
-                    app:layout_constraintTop_toTopOf="@+id/imageView8" />
-            </android.support.constraint.ConstraintLayout>
-
-            <View
-                style="@style/PrimaryHLine"
-                android:layout_width="match_parent" />
-
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_qmld"
-                android:tag="https://m.ximalaya.com/"
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
-
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    app:srcCompat="@drawable/ic_discover_qmld"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="16dp"
-                    android:tint="#ea9999"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textSize="14sp"
-                    android:text="全民朗读"
-                    android:textColor="@color/textColorPrimary"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView1"
-                    app:layout_constraintStart_toEndOf="@+id/imageView1"
-                    app:layout_constraintTop_toTopOf="@+id/imageView1" />
-
-                <ImageView
-                    android:id="@+id/imageView9"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_marginRight="5dp"
-                    android:tint="@color/colorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_common_more_arrow" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="28dp"
-                    android:layout_height="17dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="NEW"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"
-                    android:gravity="center"
-                    app:bl_solid_color="@color/colorPrimary"
-                    app:bl_corners_radius="2dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView9"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView9"
-                    app:layout_constraintTop_toTopOf="@+id/imageView9" />
-            </android.support.constraint.ConstraintLayout>
-            <View
-                style="@style/SecondHLine"
-                android:layout_width="match_parent" />
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_tyq"
-                android:tag="https://m.ximalaya.com/"
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    app:srcCompat="@drawable/ic_discover_tyq"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="16dp"
-                    android:tint="#f9cb9c"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textSize="14sp"
-                    android:text="听友圈"
-                    android:textColor="@color/textColorPrimary"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2"
-                    app:layout_constraintTop_toTopOf="@+id/imageView2" />
-
-                <ImageView
-                    android:id="@+id/imageView11"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_marginRight="5dp"
-                    android:tint="@color/colorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_common_more_arrow" />
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/imageView10"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:riv_oval="true"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView11"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView11"
-                    app:layout_constraintTop_toTopOf="@+id/imageView11"
-                    android:src="@drawable/discover_avatar" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <View
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    app:bl_solid_color="#ff0000"
-                    app:bl_corners_radius="20dp"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView10"
-                    app:layout_constraintEnd_toEndOf="@+id/imageView10" />
-            </android.support.constraint.ConstraintLayout>
-            <View
-                style="@style/PrimaryHLine"
-                android:layout_width="match_parent" />
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_dkzb"
-                android:layout_width="match_parent"
-                android:tag="https://m.ximalaya.com/"
-                android:layout_height="45dp">
+                    style="@style/PrimaryHLine"
+                    android:layout_width="match_parent" />
 
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    app:srcCompat="@drawable/ic_discover_dkzb"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="16dp"
-                    android:tint="#a4c2f4"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_ffjp"
+                    android:layout_width="match_parent"
+                    android:tag="https://m.ximalaya.com/"
+                    android:layout_height="45dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textSize="14sp"
-                    android:text="大咖主播"
-                    android:textColor="@color/textColorPrimary"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                    app:layout_constraintStart_toEndOf="@+id/imageView3"
-                    app:layout_constraintTop_toTopOf="@+id/imageView3" />
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        app:srcCompat="@drawable/ic_discover_ffjp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginLeft="16dp"
+                        android:tint="#b6d7a8"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
 
-                <ImageView
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_marginRight="5dp"
-                    android:tint="@color/colorPrimaryDark"
-                    app:srcCompat="@drawable/ic_common_more_arrow"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-            </android.support.constraint.ConstraintLayout>
-            <View
-                style="@style/SecondHLine"
-                android:layout_width="match_parent" />
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_wd"
-                android:layout_width="match_parent"
-                android:tag="https://m.ximalaya.com/"
-                android:layout_height="45dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textSize="14sp"
+                        android:text="付费精品"
+                        android:textColor="@color/textColorPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                        app:layout_constraintStart_toEndOf="@+id/imageView"
+                        app:layout_constraintTop_toTopOf="@+id/imageView" />
 
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    app:srcCompat="@drawable/ic_discover_wd"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="16dp"
-                    android:tint="#4a86e8"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginRight="5dp"
+                        android:tint="@color/colorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_common_more_arrow" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textSize="14sp"
-                    android:text="问答"
-                    android:textColor="@color/textColorPrimary"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                    app:layout_constraintStart_toEndOf="@+id/imageView4"
-                    app:layout_constraintTop_toTopOf="@+id/imageView4" />
-
-                <ImageView
-                    android:id="@+id/iv1"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_marginRight="5dp"
-                    android:tint="@color/colorPrimaryDark"
-                    app:srcCompat="@drawable/ic_common_more_arrow"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/imageView12"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:riv_oval="true"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv1"
-                    app:layout_constraintEnd_toStartOf="@+id/iv1"
-                    app:layout_constraintTop_toTopOf="@+id/iv1"
-                    android:src="@drawable/discover_avatar1" />
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="让好好说话，成为你的习惯"
+                        android:textSize="11sp"
+                        android:textColor="@color/colorGray"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView8"
+                        app:layout_constraintTop_toTopOf="@+id/imageView8" />
+                </android.support.constraint.ConstraintLayout>
 
                 <View
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    app:bl_solid_color="#ff0000"
-                    app:bl_corners_radius="20dp"
-                    app:layout_constraintBottom_toTopOf="@+id/imageView12"
-                    app:layout_constraintEnd_toEndOf="@+id/imageView12" />
+                    style="@style/PrimaryHLine"
+                    android:layout_width="match_parent" />
 
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:textSize="11sp"
-                    android:textColor="@color/colorGray"
-                    android:text="财富自由，凭啥你就不行？"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView12"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView12"
-                    app:layout_constraintTop_toTopOf="@+id/imageView12" />
-            </android.support.constraint.ConstraintLayout>
-            <View
-                style="@style/PrimaryHLine"
-                android:layout_width="match_parent" />
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_sc"
-                android:layout_width="match_parent"
-                android:tag="https://m.ximalaya.com/"
-                android:layout_height="45dp">
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_qmld"
+                    android:tag="https://m.ximalaya.com/"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
 
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    app:srcCompat="@drawable/ic_discover_sc"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="16dp"
-                    android:tint="#339b33"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        app:srcCompat="@drawable/ic_discover_qmld"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginLeft="16dp"
+                        android:tint="#ea9999"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="商城"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-                    app:layout_constraintStart_toEndOf="@+id/imageView5"
-                    app:layout_constraintTop_toTopOf="@+id/imageView5" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textSize="14sp"
+                        android:text="全民朗读"
+                        android:textColor="@color/textColorPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView1"
+                        app:layout_constraintStart_toEndOf="@+id/imageView1"
+                        app:layout_constraintTop_toTopOf="@+id/imageView1" />
 
-                <ImageView
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_marginRight="5dp"
-                    android:tint="@color/colorPrimaryDark"
-                    app:srcCompat="@drawable/ic_common_more_arrow"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-            </android.support.constraint.ConstraintLayout>
-            <View
-                style="@style/SecondHLine"
-                android:layout_width="match_parent" />
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_yx"
-                android:layout_width="match_parent"
-                android:tag="https://m.ximalaya.com/"
-                android:layout_height="45dp">
+                    <ImageView
+                        android:id="@+id/imageView9"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginRight="5dp"
+                        android:tint="@color/colorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_common_more_arrow" />
 
-                <ImageView
-                    android:id="@+id/imageView6"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    app:srcCompat="@drawable/ic_discover_yx"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="16dp"
-                    android:tint="#b4a7d6"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="28dp"
+                        android:layout_height="17dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="NEW"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        android:gravity="center"
+                        app:bl_solid_color="@color/colorPrimary"
+                        app:bl_corners_radius="2dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView9"
+                        app:layout_constraintTop_toTopOf="@+id/imageView9" />
+                </android.support.constraint.ConstraintLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="游戏"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-                    app:layout_constraintStart_toEndOf="@+id/imageView6"
-                    app:layout_constraintTop_toTopOf="@+id/imageView6" />
+                <View
+                    style="@style/SecondHLine"
+                    android:layout_width="match_parent" />
 
-                <ImageView
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_marginRight="5dp"
-                    android:tint="@color/colorPrimaryDark"
-                    app:srcCompat="@drawable/ic_common_more_arrow"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
-            </android.support.constraint.ConstraintLayout>
-            <View
-                style="@style/SecondHLine"
-                android:layout_width="match_parent" />
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/cl_hd"
-                android:layout_width="match_parent"
-                android:tag="https://m.ximalaya.com/"
-                android:layout_height="45dp">
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_tyq"
+                    android:tag="https://m.ximalaya.com/"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
 
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    app:srcCompat="@drawable/ic_discover_hd"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginLeft="16dp"
-                    android:tint="#dd7e6b"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"/>
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        app:srcCompat="@drawable/ic_discover_tyq"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginLeft="16dp"
+                        android:tint="#f9cb9c"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="活动"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView7"
-                    app:layout_constraintStart_toEndOf="@+id/imageView7"
-                    app:layout_constraintTop_toTopOf="@+id/imageView7" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textSize="14sp"
+                        android:text="听友圈"
+                        android:textColor="@color/textColorPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                        app:layout_constraintStart_toEndOf="@+id/imageView2"
+                        app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
-                <ImageView
-                    android:layout_width="23dp"
-                    android:layout_height="23dp"
-                    android:layout_marginRight="5dp"
-                    android:tint="@color/colorPrimaryDark"
-                    app:srcCompat="@drawable/ic_common_more_arrow"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    <ImageView
+                        android:id="@+id/imageView11"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginRight="5dp"
+                        android:tint="@color/colorPrimaryDark"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_common_more_arrow" />
 
-            </android.support.constraint.ConstraintLayout>
-            <View
-                style="@style/SecondHLine"
-                android:layout_width="match_parent" />
-        </LinearLayout>
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/imageView10"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:riv_oval="true"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView11"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView11"
+                        app:layout_constraintTop_toTopOf="@+id/imageView11"
+                        android:src="@drawable/discover_avatar" />
 
-    </ScrollView>
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        app:bl_solid_color="#ff0000"
+                        app:bl_corners_radius="20dp"
+                        app:layout_constraintBottom_toTopOf="@+id/imageView10"
+                        app:layout_constraintEnd_toEndOf="@+id/imageView10" />
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    style="@style/PrimaryHLine"
+                    android:layout_width="match_parent" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_dkzb"
+                    android:layout_width="match_parent"
+                    android:tag="https://m.ximalaya.com/"
+                    android:layout_height="45dp">
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        app:srcCompat="@drawable/ic_discover_dkzb"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginLeft="16dp"
+                        android:tint="#a4c2f4"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textSize="14sp"
+                        android:text="大咖主播"
+                        android:textColor="@color/textColorPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                        app:layout_constraintStart_toEndOf="@+id/imageView3"
+                        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+
+                    <ImageView
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginRight="5dp"
+                        android:tint="@color/colorPrimaryDark"
+                        app:srcCompat="@drawable/ic_common_more_arrow"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    style="@style/SecondHLine"
+                    android:layout_width="match_parent" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_wd"
+                    android:layout_width="match_parent"
+                    android:tag="https://m.ximalaya.com/"
+                    android:layout_height="45dp">
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        app:srcCompat="@drawable/ic_discover_wd"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginLeft="16dp"
+                        android:tint="#4a86e8"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textSize="14sp"
+                        android:text="问答"
+                        android:textColor="@color/textColorPrimary"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                        app:layout_constraintStart_toEndOf="@+id/imageView4"
+                        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+                    <ImageView
+                        android:id="@+id/iv1"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginRight="5dp"
+                        android:tint="@color/colorPrimaryDark"
+                        app:srcCompat="@drawable/ic_common_more_arrow"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/imageView12"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:riv_oval="true"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv1"
+                        app:layout_constraintEnd_toStartOf="@+id/iv1"
+                        app:layout_constraintTop_toTopOf="@+id/iv1"
+                        android:src="@drawable/discover_avatar1" />
+
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="4dp"
+                        app:bl_solid_color="#ff0000"
+                        app:bl_corners_radius="20dp"
+                        app:layout_constraintBottom_toTopOf="@+id/imageView12"
+                        app:layout_constraintEnd_toEndOf="@+id/imageView12" />
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:textSize="11sp"
+                        android:textColor="@color/colorGray"
+                        android:text="财富自由，凭啥你就不行？"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView12"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView12"
+                        app:layout_constraintTop_toTopOf="@+id/imageView12" />
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    style="@style/PrimaryHLine"
+                    android:layout_width="match_parent" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_sc"
+                    android:layout_width="match_parent"
+                    android:tag="https://m.ximalaya.com/"
+                    android:layout_height="45dp">
+
+                    <ImageView
+                        android:id="@+id/imageView5"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        app:srcCompat="@drawable/ic_discover_sc"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginLeft="16dp"
+                        android:tint="#339b33"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="商城"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                        app:layout_constraintStart_toEndOf="@+id/imageView5"
+                        app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
+                    <ImageView
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginRight="5dp"
+                        android:tint="@color/colorPrimaryDark"
+                        app:srcCompat="@drawable/ic_common_more_arrow"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    style="@style/SecondHLine"
+                    android:layout_width="match_parent" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_yx"
+                    android:layout_width="match_parent"
+                    android:tag="https://m.ximalaya.com/"
+                    android:layout_height="45dp">
+
+                    <ImageView
+                        android:id="@+id/imageView6"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        app:srcCompat="@drawable/ic_discover_yx"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginLeft="16dp"
+                        android:tint="#b4a7d6"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="游戏"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                        app:layout_constraintStart_toEndOf="@+id/imageView6"
+                        app:layout_constraintTop_toTopOf="@+id/imageView6" />
+
+                    <ImageView
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginRight="5dp"
+                        android:tint="@color/colorPrimaryDark"
+                        app:srcCompat="@drawable/ic_common_more_arrow"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    style="@style/SecondHLine"
+                    android:layout_width="match_parent" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_hd"
+                    android:layout_width="match_parent"
+                    android:tag="https://m.ximalaya.com/"
+                    android:layout_height="45dp">
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        app:srcCompat="@drawable/ic_discover_hd"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginLeft="16dp"
+                        android:tint="#dd7e6b"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="活动"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+                        app:layout_constraintStart_toEndOf="@+id/imageView7"
+                        app:layout_constraintTop_toTopOf="@+id/imageView7" />
+
+                    <ImageView
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
+                        android:layout_marginRight="5dp"
+                        android:tint="@color/colorPrimaryDark"
+                        app:srcCompat="@drawable/ic_common_more_arrow"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    style="@style/SecondHLine"
+                    android:layout_width="match_parent" />
+            </LinearLayout>
+
+        </ScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</layout>

@@ -1,92 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/cl_titlebar"
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_pop"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/ic_common_titlebar_back"
-            android:tint="@color/colorGray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            app:bl_solid_color="#f0f0f0"
-            app:bl_corners_radius="20dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_search"
-            app:layout_constraintStart_toEndOf="@+id/iv_pop"
-            app:layout_constraintTop_toTopOf="parent">
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_titlebar"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:src="@drawable/ic_common_search"
-                android:tint="#cccccc" />
-<requestFocus/>
+                android:id="@+id/iv_pop"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_common_titlebar_back"
+                android:tint="@color/colorGray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/et_keyword"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                app:bl_solid_color="#f0f0f0"
+                app:bl_corners_radius="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tv_search"
+                app:layout_constraintStart_toEndOf="@+id/iv_pop"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/ic_common_search"
+                    android:tint="#cccccc" />
+
+                <requestFocus />
+
+                <EditText
+                    android:id="@+id/et_keyword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
+                    android:textColorHint="#cccccc"
+                    android:textCursorDrawable="@drawable/shap_common_input_cursor"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/iv_speech"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/ic_common_voice"
+                    android:tint="@color/colorPrimary" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_search"
+                android:layout_width="62dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:background="@null"
-                android:ellipsize="end"
-                android:imeOptions="actionSearch"
-                android:singleLine="true"
-                android:textColorHint="#cccccc"
-                android:textCursorDrawable="@drawable/shap_common_input_cursor"
-                android:textSize="12sp" />
+                android:gravity="center"
+                android:text="搜索"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
-            <ImageView
-                android:id="@+id/iv_speech"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:src="@drawable/ic_common_voice"
-                android:tint="@color/colorPrimary" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_search"
-            android:layout_width="62dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="搜索"
-            android:textColor="@color/colorPrimary"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-    <FrameLayout
-        android:id="@+id/fl_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-</LinearLayout>
+        <FrameLayout
+            android:id="@+id/fl_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+</layout>

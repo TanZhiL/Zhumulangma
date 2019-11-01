@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.SubscribeBean;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
@@ -37,14 +38,13 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:订阅
  */
-public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewModel, SubscribeBean>
+public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,SubscribeViewModel, SubscribeBean>
         implements BaseQuickAdapter.OnItemChildClickListener,
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
 
     private SubscribeAdapter mSubscribeAdapter;
 
     private View vFooter;
-    private SmartRefreshLayout refreshLayout;
     public SubscribeFragment() {
     }
 
@@ -67,12 +67,10 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = fd(R.id.recyclerview);
-        refreshLayout = fd(R.id.refreshLayout);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setHasFixedSize(true);
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.recyclerview.setHasFixedSize(true);
         mSubscribeAdapter = new SubscribeAdapter(R.layout.listen_item_subscribe);
-        mSubscribeAdapter.bindToRecyclerView(recyclerView);
+        mSubscribeAdapter.bindToRecyclerView(mBinding.recyclerview);
         View inflate = LayoutInflater.from(mActivity).inflate(R.layout.listen_layout_subscribe_footer, null);
         vFooter=inflate.findViewById(R.id.cl_content);
         mSubscribeAdapter.addFooterView(inflate);
@@ -81,7 +79,6 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
     @Override
     public void initListener() {
         super.initListener();
-        refreshLayout.setOnRefreshLoadMoreListener(this);
         mSubscribeAdapter.setOnItemChildClickListener(this);
         mSubscribeAdapter.setOnItemClickListener(this);
         vFooter.setOnClickListener(this);
@@ -90,7 +87,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout,mSubscribeAdapter);
+        return new WrapRefresh(mBinding.refreshLayout,mSubscribeAdapter);
     }
 
     @Override
@@ -153,8 +150,8 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<SubscribeViewMode
         switch (event.getCode()){
             case EventCode.Listen.TAB_REFRESH:
                 if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!= getInitStatus().getClass()){
-                    ((RecyclerView)fd(R.id.recyclerview)).scrollToPosition(0);
-                    ((SmartRefreshLayout)fd(R.id.refreshLayout)).autoRefresh();
+                    ((RecyclerView)mView.findViewById(R.id.recyclerview)).scrollToPosition(0);
+                    ((SmartRefreshLayout)mView.findViewById(R.id.refreshLayout)).autoRefresh();
                 }
                 break;
         }

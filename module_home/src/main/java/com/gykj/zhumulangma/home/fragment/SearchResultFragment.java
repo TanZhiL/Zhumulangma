@@ -4,8 +4,6 @@ package com.gykj.zhumulangma.home.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -16,8 +14,8 @@ import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.home.databinding.HomeFragmentSearchResultBinding;
 
-import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
@@ -35,7 +33,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Description:搜索下结果页
  */
 @Route(path = Constants.Router.Home.F_SEARCH_RESULT)
-public class SearchResultFragment extends BaseFragment {
+public class SearchResultFragment extends BaseFragment<HomeFragmentSearchResultBinding> {
 
     @Autowired(name = KeyCode.Home.KEYWORD)
     public String mKeyword;
@@ -60,8 +58,6 @@ public class SearchResultFragment extends BaseFragment {
     protected void initView(View view) {
         String[] tabs = {"专辑", "声音", "主播", "广播"};
 
-        MagicIndicator magicIndicator = view.findViewById(R.id.magic_indicator);
-        ViewPager viewpager = view.findViewById(R.id.viewpager);
 
         Fragment albumFragment = new SearchAlbumFragment();
         Fragment trackFragment = new SearchTrackFragment();
@@ -81,15 +77,15 @@ public class SearchResultFragment extends BaseFragment {
 
         TFragmentPagerAdapter adapter = new TFragmentPagerAdapter(
                 getChildFragmentManager(), fragments);
-        viewpager.setOffscreenPageLimit(4);
-        viewpager.setAdapter(adapter);
+        mBinding.viewpager.setOffscreenPageLimit(4);
+        mBinding.viewpager.setAdapter(adapter);
 
         final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdjustMode(true);
 
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 75));
-        magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(magicIndicator, viewpager);
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), mBinding.viewpager, 75));
+        mBinding.magicIndicator.setNavigator(commonNavigator);
+        ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
     }
 
     @Override
@@ -112,7 +108,6 @@ public class SearchResultFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(getClass().getSimpleName(), "onDestroy() called");
     }
 
 }

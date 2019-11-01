@@ -1,499 +1,515 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/refreshLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:srlEnableNestedScrolling="true"
-    app:srlEnableLoadMore="false"
-    app:srlEnablePreviewInEditMode="false">
-<android.support.v4.widget.NestedScrollView
-    android:id="@+id/nsv"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:overScrollMode="never"
-    android:scrollbars="none">
-<android.support.constraint.ConstraintLayout
-    android:layout_width="match_parent"
-    android:descendantFocusability="blocksDescendants"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/c1"
+    <data>
+
+    </data>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="11dp"
-        android:paddingTop="8dp"
-        android:paddingRight="11dp"
-        android:paddingBottom="8dp"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        app:srlEnableNestedScrolling="true"
+        app:srlEnableLoadMore="false"
+        app:srlEnablePreviewInEditMode="false">
 
-        <LinearLayout
-            android:id="@+id/ll_country"
-            android:layout_width="84dp"
-            android:layout_height="81dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/ll_province"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/ll_local"
-            app:layout_constraintTop_toTopOf="@+id/ll_local">
-
-            <ImageView
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:tint="@color/colorPrimary"
-                android:src="@drawable/ic_home_radio_gjt" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="国家台"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_province"
-            android:layout_width="84dp"
-            android:layout_height="81dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/ll_internet"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/ll_country"
-            app:layout_constraintTop_toTopOf="@+id/ll_country">
-
-            <ImageView
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:tint="@color/colorPrimary"
-                android:src="@drawable/ic_home_radio_sst"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="省市台"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_local"
-            android:layout_width="84dp"
-            android:layout_height="81dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@+id/ll_country"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:tint="@color/colorPrimary"
-                android:src="@drawable/ic_home_radio_bdt"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="本地台"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_internet"
-            android:layout_width="84dp"
-            android:layout_height="81dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/ll_province"
-            app:layout_constraintTop_toTopOf="@+id/ll_province">
-
-            <ImageView
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:tint="@color/colorPrimary"
-                android:src="@drawable/ic_home_radio_wlt"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_marginTop="2dp"
-                android:gravity="center"
-                android:text="网络台"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-            android:id="@+id/textView7"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:background="#f0f0f0"
-            android:gravity="center"
-            android:text="新闻台"
-            app:rci_id="5"
-            android:textColor="@color/colorGray"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView8"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ll_local" />
-
-        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-            android:id="@+id/textView12"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="1dp"
-            android:background="#f0f0f0"
-            android:gravity="center"
-            android:text="体育台"
-            app:rci_id="2"
-            android:textColor="@color/colorGray"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView18"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-            android:id="@+id/textView8"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginEnd="1dp"
-            android:background="#f0f0f0"
-            android:gravity="center"
-            android:text="音乐台"
-            app:rci_id="14"
-            android:textColor="@color/colorGray"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView10"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toTopOf="@+id/textView7" />
-
-        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-            android:id="@+id/textView10"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_marginEnd="1dp"
-            android:background="#f0f0f0"
-            android:gravity="center"
-            app:rci_id="1"
-            android:text="交通台"
-            android:textColor="@color/colorGray"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/tv_search"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toTopOf="@+id/textView8" />
-
-        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-            android:id="@+id/tv_search"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:background="#f0f0f0"
-            android:gravity="center"
-            app:rci_id="11"
-            android:text="经济台"
-            android:textColor="@color/colorGray"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toTopOf="@+id/textView8" />
-
-        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-            android:id="@+id/textView17"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_marginEnd="1dp"
-            android:background="#f0f0f0"
-            android:gravity="center"
-            android:text="曲艺台"
-            app:rci_id="8"
-            android:textColor="@color/colorGray"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView19"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView18"
-            app:layout_constraintTop_toTopOf="@+id/textView12" />
-
-        <FrameLayout
-            android:id="@+id/textView19"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:background="#f0f0f0"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView17"
-            app:layout_constraintTop_toTopOf="@+id/textView12">
-            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginEnd="1dp"
-                android:gravity="center"
-                android:textColor="@color/colorGray"
-                android:text="综合台"
-                app:rci_id="12"
-                android:textSize="14sp"/>
-            <ImageView
-                android:id="@+id/iv_more"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="#f0f0f0"
-                android:tint="@color/colorPrimary"
-                android:src="@drawable/ic_home_radio_down" />
-
-        </FrameLayout>
-
-        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-            android:id="@+id/textView18"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginEnd="1dp"
-            android:background="#f0f0f0"
-            android:gravity="center"
-            android:text="文艺台"
-            app:rci_id="4"
-            android:textColor="@color/colorGray"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView17"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView12"
-            app:layout_constraintTop_toTopOf="@+id/textView12" />
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/cl_more"
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nsv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/textView12">
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:descendantFocusability="blocksDescendants"
+                android:layout_height="wrap_content">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/c1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="11dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="11dp"
+                    android:paddingBottom="8dp"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/ll_country"
+                        android:layout_width="84dp"
+                        android:layout_height="81dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toStartOf="@+id/ll_province"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/ll_local"
+                        app:layout_constraintTop_toTopOf="@+id/ll_local">
+
+                        <ImageView
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:tint="@color/colorPrimary"
+                            android:src="@drawable/ic_home_radio_gjt" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center"
+                            android:text="国家台"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_province"
+                        android:layout_width="84dp"
+                        android:layout_height="81dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toStartOf="@+id/ll_internet"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/ll_country"
+                        app:layout_constraintTop_toTopOf="@+id/ll_country">
+
+                        <ImageView
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:tint="@color/colorPrimary"
+                            android:src="@drawable/ic_home_radio_sst" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center"
+                            android:text="省市台"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_local"
+                        android:layout_width="84dp"
+                        android:layout_height="81dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toStartOf="@+id/ll_country"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:tint="@color/colorPrimary"
+                            android:src="@drawable/ic_home_radio_bdt" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center"
+                            android:text="本地台"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_internet"
+                        android:layout_width="84dp"
+                        android:layout_height="81dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/ll_province"
+                        app:layout_constraintTop_toTopOf="@+id/ll_province">
+
+                        <ImageView
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:tint="@color/colorPrimary"
+                            android:src="@drawable/ic_home_radio_wlt" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="2dp"
+                            android:gravity="center"
+                            android:text="网络台"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                        android:id="@+id/textView7"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:background="#f0f0f0"
+                        android:gravity="center"
+                        android:text="新闻台"
+                        app:rci_id="5"
+                        android:textColor="@color/colorGray"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@+id/textView8"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_local" />
+
+                    <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                        android:id="@+id/textView12"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="1dp"
+                        android:background="#f0f0f0"
+                        android:gravity="center"
+                        android:text="体育台"
+                        app:rci_id="2"
+                        android:textColor="@color/colorGray"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@+id/textView18"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+                    <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                        android:id="@+id/textView8"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:background="#f0f0f0"
+                        android:gravity="center"
+                        android:text="音乐台"
+                        app:rci_id="14"
+                        android:textColor="@color/colorGray"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@+id/textView10"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView7"
+                        app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+                    <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                        android:id="@+id/textView10"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="1dp"
+                        android:background="#f0f0f0"
+                        android:gravity="center"
+                        app:rci_id="1"
+                        android:text="交通台"
+                        android:textColor="@color/colorGray"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_search"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView8"
+                        app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+                    <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                        android:id="@+id/tv_search"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:background="#f0f0f0"
+                        android:gravity="center"
+                        app:rci_id="11"
+                        android:text="经济台"
+                        android:textColor="@color/colorGray"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView10"
+                        app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+                    <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                        android:id="@+id/textView17"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginEnd="1dp"
+                        android:background="#f0f0f0"
+                        android:gravity="center"
+                        android:text="曲艺台"
+                        app:rci_id="8"
+                        android:textColor="@color/colorGray"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@+id/textView19"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView18"
+                        app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+                    <FrameLayout
+                        android:id="@+id/textView19"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:background="#f0f0f0"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView17"
+                        app:layout_constraintTop_toTopOf="@+id/textView12">
+
+                        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginEnd="1dp"
+                            android:gravity="center"
+                            android:textColor="@color/colorGray"
+                            android:text="综合台"
+                            app:rci_id="12"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/iv_more"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:background="#f0f0f0"
+                            android:tint="@color/colorPrimary"
+                            android:src="@drawable/ic_home_radio_down" />
+
+                    </FrameLayout>
+
+                    <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                        android:id="@+id/textView18"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginEnd="1dp"
+                        android:background="#f0f0f0"
+                        android:gravity="center"
+                        android:text="文艺台"
+                        app:rci_id="4"
+                        android:textColor="@color/colorGray"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@+id/textView17"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/textView12"
+                        app:layout_constraintTop_toTopOf="@+id/textView12" />
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/cl_more"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@+id/textView12">
 
 
-            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-                android:id="@+id/textView25"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="1dp"
-                android:background="#f0f0f0"
-                android:gravity="center"
-                android:text="都市台"
-                app:rci_id="13"
-                android:textColor="@color/colorGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView30"
-                app:layout_constraintTop_toTopOf="parent" />
+                        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                            android:id="@+id/textView25"
+                            android:layout_width="0dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="1dp"
+                            android:background="#f0f0f0"
+                            android:gravity="center"
+                            android:text="都市台"
+                            app:rci_id="13"
+                            android:textColor="@color/colorGray"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/textView30"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-                android:id="@+id/textView30"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="1dp"
-                android:background="#f0f0f0"
-                android:gravity="center"
-                app:rci_id="10"
-                android:text="生活台"
-                android:textColor="@color/colorGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView25"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView29"
-                app:layout_constraintTop_toTopOf="parent" />
+                        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                            android:id="@+id/textView30"
+                            android:layout_width="0dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="1dp"
+                            android:background="#f0f0f0"
+                            android:gravity="center"
+                            app:rci_id="10"
+                            android:text="生活台"
+                            android:textColor="@color/colorGray"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toStartOf="@+id/textView25"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/textView29"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-                android:id="@+id/textView29"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="1dp"
-                android:background="#f0f0f0"
-                android:gravity="center"
-                android:text="外语台"
-                app:rci_id="3"
-                android:textColor="@color/colorGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView30"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView27"
-                app:layout_constraintTop_toTopOf="parent" />
+                        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                            android:id="@+id/textView29"
+                            android:layout_width="0dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="1dp"
+                            android:background="#f0f0f0"
+                            android:gravity="center"
+                            android:text="外语台"
+                            app:rci_id="3"
+                            android:textColor="@color/colorGray"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toStartOf="@+id/textView30"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/textView27"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-                android:id="@+id/textView27"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:background="#f0f0f0"
-                android:gravity="center"
-                app:rci_id="6"
-                android:text="方言台"
-                android:textColor="@color/colorGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView29"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                            android:id="@+id/textView27"
+                            android:layout_width="0dp"
+                            android:layout_height="45dp"
+                            android:background="#f0f0f0"
+                            android:gravity="center"
+                            app:rci_id="6"
+                            android:text="方言台"
+                            android:textColor="@color/colorGray"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toStartOf="@+id/textView29"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView33"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="1dp"
-                android:background="#f0f0f0"
-                android:gravity="center"
-                android:textColor="@color/colorGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/iv_less"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView34"
-                app:layout_constraintTop_toTopOf="@+id/textView34" />
+                        <TextView
+                            android:id="@+id/textView33"
+                            android:layout_width="0dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="1dp"
+                            android:background="#f0f0f0"
+                            android:gravity="center"
+                            android:textColor="@color/colorGray"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_less"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/textView34"
+                            app:layout_constraintTop_toTopOf="@+id/textView34" />
 
-            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-                android:id="@+id/textView36"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="1dp"
-                android:background="#f0f0f0"
-                android:gravity="center"
-                android:text="旅游台"
-                app:rci_id="7"
-                android:textColor="@color/colorGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView34"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView27" />
+                        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                            android:id="@+id/textView36"
+                            android:layout_width="0dp"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="1dp"
+                            android:background="#f0f0f0"
+                            android:gravity="center"
+                            android:text="旅游台"
+                            app:rci_id="7"
+                            android:textColor="@color/colorGray"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toStartOf="@+id/textView34"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView27" />
 
-            <com.gykj.zhumulangma.home.widget.RadioCategoryItem
-                android:id="@+id/textView34"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="1dp"
-                android:background="#f0f0f0"
-                android:gravity="center"
-                app:rci_id="15"
-                android:text="其他台"
-                android:textColor="@color/colorGray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/textView33"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView36"
-                app:layout_constraintTop_toTopOf="@+id/textView36" />
+                        <com.gykj.zhumulangma.home.widget.RadioCategoryItem
+                            android:id="@+id/textView34"
+                            android:layout_width="0dp"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="1dp"
+                            android:background="#f0f0f0"
+                            android:gravity="center"
+                            app:rci_id="15"
+                            android:text="其他台"
+                            android:textColor="@color/colorGray"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toStartOf="@+id/textView33"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/textView36"
+                            app:layout_constraintTop_toTopOf="@+id/textView36" />
 
 
-                <ImageView
-                    android:id="@+id/iv_less"
-                    android:layout_gravity="center"
-                    android:tint="@color/colorPrimary"
-                    android:rotation="180"
-                    android:src="@drawable/ic_home_radio_down"
+                        <ImageView
+                            android:id="@+id/iv_less"
+                            android:layout_gravity="center"
+                            android:tint="@color/colorPrimary"
+                            android:rotation="180"
+                            android:src="@drawable/ic_home_radio_down"
+                            android:layout_width="0dp"
+                            android:layout_height="45dp"
+                            android:background="#f0f0f0"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="1dp"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/textView33"
+                            app:layout_constraintTop_toTopOf="@+id/textView33" />
+
+                    </android.support.constraint.ConstraintLayout>
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.Group
+                    android:id="@+id/gp_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="line1,ih_history,rv_history" />
+
+                <View
+                    android:id="@+id/line1"
                     android:layout_width="0dp"
-                    android:layout_height="45dp"
-                    android:background="#f0f0f0"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginStart="1dp"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textView33"
-                    app:layout_constraintTop_toTopOf="@+id/textView33"/>
+                    style="@style/PrimaryHLine"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/c1" />
 
-        </android.support.constraint.ConstraintLayout>
-    </android.support.constraint.ConstraintLayout>
-    <android.support.constraint.Group
-        android:id="@+id/gp_history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="line1,ih_history,rv_history"
-        />
-    <View
-        android:id="@+id/line1"
-        android:layout_width="0dp"
-        style="@style/PrimaryHLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/c1"
-        />
-    <com.gykj.zhumulangma.common.widget.ItemHeader
-        android:id="@+id/ih_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:ih_right_text="更多"
-        app:ih_title="最近收听"
-        app:layout_constraintTop_toBottomOf="@id/line1" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        app:layout_constraintTop_toBottomOf="@id/ih_history" />
-    <View
-        android:id="@+id/line2"
-        android:layout_width="0dp"
-        style="@style/PrimaryHLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_history"
-        />
-    <com.gykj.zhumulangma.common.widget.ItemHeader
-        android:id="@+id/ih_local"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:ih_right_text="更多"
-        app:ih_title="长沙"
-        app:layout_constraintTop_toBottomOf="@id/line2" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_local"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        app:layout_constraintTop_toBottomOf="@id/ih_local" />
-    <View
-        android:id="@+id/line3"
-        android:layout_width="0dp"
-        style="@style/PrimaryHLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_local"
-        />
-    <com.gykj.zhumulangma.common.widget.ItemHeader
-        android:id="@+id/ih_top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:ih_right_text="更多"
-        app:ih_title="排行榜"
-        app:layout_constraintTop_toBottomOf="@id/line3" />
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        app:layout_constraintTop_toBottomOf="@id/ih_top" />
-    <View
-        android:id="@+id/line4"
-        android:layout_width="0dp"
-        style="@style/PrimaryHLine"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_top"
-        />
-</android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.NestedScrollView>
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+                <com.gykj.zhumulangma.common.widget.ItemHeader
+                    android:id="@+id/ih_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ih_right_text="更多"
+                    app:ih_title="最近收听"
+                    app:layout_constraintTop_toBottomOf="@id/line1" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@id/ih_history" />
+
+                <View
+                    android:id="@+id/line2"
+                    android:layout_width="0dp"
+                    style="@style/PrimaryHLine"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_history" />
+
+                <com.gykj.zhumulangma.common.widget.ItemHeader
+                    android:id="@+id/ih_local"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ih_right_text="更多"
+                    app:ih_title="长沙"
+                    app:layout_constraintTop_toBottomOf="@id/line2" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_local"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@id/ih_local" />
+
+                <View
+                    android:id="@+id/line3"
+                    android:layout_width="0dp"
+                    style="@style/PrimaryHLine"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_local" />
+
+                <com.gykj.zhumulangma.common.widget.ItemHeader
+                    android:id="@+id/ih_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ih_right_text="更多"
+                    app:ih_title="排行榜"
+                    app:layout_constraintTop_toBottomOf="@id/line3" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_top"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@id/ih_top" />
+
+                <View
+                    android:id="@+id/line4"
+                    android:layout_width="0dp"
+                    style="@style/PrimaryHLine"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/rv_top" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</layout>

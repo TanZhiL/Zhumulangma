@@ -3,7 +3,6 @@ package com.gykj.zhumulangma.home.fragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -12,9 +11,10 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
@@ -22,7 +22,6 @@ import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerListViewModel;
 import com.kingja.loadsir.callback.Callback;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 
@@ -38,14 +37,13 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 
 @Route(path = Constants.Router.Home.F_ANNOUNCER_LIST)
-public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerListViewModel, Announcer>
+public class AnnouncerListFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,AnnouncerListViewModel, Announcer>
         implements BaseQuickAdapter.OnItemClickListener, OnLoadMoreListener {
 
     @Autowired(name = KeyCode.Home.CATEGORY_ID)
     public long mCategoryId;
     @Autowired(name = KeyCode.Home.TITLE)
     public String mTitle;
-    private SmartRefreshLayout refreshLayout;
     private AnnouncerAdapter mAnnouncerAdapter;
 
     @Override
@@ -55,13 +53,11 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerList
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = fd(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setHasFixedSize(true);
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.recyclerview.setHasFixedSize(true);
         mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
-        mAnnouncerAdapter.bindToRecyclerView(recyclerView);
+        mAnnouncerAdapter.bindToRecyclerView(mBinding.recyclerview);
         setTitle(new String[]{mTitle});
-        refreshLayout = view.findViewById(R.id.refreshLayout);
     }
 
     @Override
@@ -73,7 +69,7 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<AnnouncerList
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout, mAnnouncerAdapter);
+        return new WrapRefresh(mBinding.refreshLayout, mAnnouncerAdapter);
     }
 
 

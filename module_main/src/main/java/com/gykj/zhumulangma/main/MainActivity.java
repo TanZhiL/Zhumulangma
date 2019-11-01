@@ -27,7 +27,7 @@ import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
 import com.gykj.zhumulangma.common.util.PermissionPageUtil;
 import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
-import com.gykj.zhumulangma.common.widget.GlobalPlay;
+import com.gykj.zhumulangma.main.databinding.MainActivityMainBinding;
 import com.gykj.zhumulangma.main.dialog.SplashAdPopup;
 import com.gykj.zhumulangma.main.fragment.MainFragment;
 import com.gykj.zhumulangma.main.mvvm.ViewModelFactory;
@@ -65,11 +65,10 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 
 @Route(path = Constants.Router.Main.A_MAIN)
-public class MainActivity extends BaseMvvmActivity<MainViewModel> implements View.OnClickListener,
+public class MainActivity extends BaseMvvmActivity<MainActivityMainBinding, MainViewModel> implements View.OnClickListener,
         MainFragment.onRootShowListener {
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(this);
     private PlayHistoryBean mHistoryBean;
-    private GlobalPlay globalPlay;
 
 
     @Override
@@ -143,13 +142,12 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
             mainFragment.setShowListener(this);
             loadRootFragment(R.id.fl_container, mainFragment);
         }
-        globalPlay = fd(R.id.gp);
 
     }
 
     @Override
     public void initListener() {
-        globalPlay.setOnClickListener(this);
+        mBinding.globalplay.setOnClickListener(this);
         mPlayerManager.addPlayerStatusListener(playerStatusListener);
         mPlayerManager.addAdsStatusListener(adsStatusListener);
     }
@@ -162,7 +160,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 if (null == currSoundIgnoreKind) {
                     return;
                 }
-                globalPlay.play(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlSmall())
+                mBinding.globalplay.play(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlSmall())
                         ? currSoundIgnoreKind.getAlbum().getCoverUrlLarge() : currSoundIgnoreKind.getCoverUrlSmall());
             } else {
                 mViewModel.getLastSound();
@@ -176,14 +174,14 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         mViewModel.getHistorySingleLiveEvent().observe(this, bean -> {
             mHistoryBean = bean;
             if (bean.getKind().equals(PlayableModel.KIND_TRACK)) {
-                globalPlay.setImage(TextUtils.isEmpty(bean.getTrack().getCoverUrlSmall())
+                mBinding.globalplay.setImage(TextUtils.isEmpty(bean.getTrack().getCoverUrlSmall())
                         ? bean.getTrack().getAlbum().getCoverUrlLarge() : bean.getTrack().getCoverUrlSmall());
-                globalPlay.setProgress(1.0f * bean.getPercent() / 100);
+                mBinding.globalplay.setProgress(1.0f * bean.getPercent() / 100);
             } else {
-                globalPlay.setImage(bean.getSchedule().getRelatedProgram().getBackPicUrl());
+                mBinding.globalplay.setImage(bean.getSchedule().getRelatedProgram().getBackPicUrl());
             }
         });
-        mViewModel.getCoverSingleLiveEvent().observe(this, s -> globalPlay.play(s));
+        mViewModel.getCoverSingleLiveEvent().observe(this, s -> mBinding.globalplay.play(s));
     }
 
     @Override
@@ -194,7 +192,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     @Override
     public void onClick(View v) {
-        if (v == globalPlay) {
+        if (v == mBinding.globalplay) {
             if (null == mPlayerManager.getCurrSound(true)) {
                 if (mHistoryBean == null) {
                     RouteUtil.navigateTo(Constants.Router.Home.F_RANK);
@@ -216,9 +214,9 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     @Override
     public void onRootShow(boolean isVisible) {
         if (isVisible)
-            globalPlay.setBackgroundColor(Color.TRANSPARENT);
+            mBinding.globalplay.setBackgroundColor(Color.TRANSPARENT);
         else
-            globalPlay.setBackground(getResources().getDrawable(R.drawable.shap_main_globalplay));
+            mBinding.globalplay.setBackground(getResources().getDrawable(R.drawable.shap_main_globalplay));
     }
 
 
@@ -237,7 +235,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 e.printStackTrace();
             }
         }
-        globalPlay.setProgress((float) cur / (float) dur);
+        mBinding.globalplay.setProgress((float) cur / (float) dur);
     }
 
 
@@ -310,10 +308,10 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 }
                 break;
             case EventCode.Main.HIDE_GP:
-                globalPlay.hide();
+                mBinding.globalplay.hide();
                 break;
             case EventCode.Main.SHOW_GP:
-                globalPlay.show();
+                mBinding.globalplay.show();
                 break;
             case EventCode.Main.SHARE:
 
@@ -376,18 +374,18 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
             if (null == currSoundIgnoreKind) {
                 return;
             }
-            globalPlay.play(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlSmall())
+            mBinding.globalplay.play(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlSmall())
                     ? currSoundIgnoreKind.getAlbum().getCoverUrlLarge() : currSoundIgnoreKind.getCoverUrlSmall());
         }
 
         @Override
         public void onPlayPause() {
-            globalPlay.pause();
+            mBinding.globalplay.pause();
         }
 
         @Override
         public void onPlayStop() {
-            globalPlay.pause();
+            mBinding.globalplay.pause();
         }
 
         @Override
@@ -444,7 +442,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
         @Override
         public void onAdsStartBuffering() {
-            globalPlay.setProgress(0);
+            mBinding.globalplay.setProgress(0);
         }
 
         @Override
@@ -456,9 +454,9 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         public void onStartPlayAds(Advertis advertis, int i) {
             String imageUrl = advertis.getImageUrl();
             if (TextUtils.isEmpty(imageUrl)) {
-                globalPlay.play(R.drawable.notification_default);
+                mBinding.globalplay.play(R.drawable.notification_default);
             } else {
-                globalPlay.play(imageUrl);
+                mBinding.globalplay.play(imageUrl);
             }
         }
 

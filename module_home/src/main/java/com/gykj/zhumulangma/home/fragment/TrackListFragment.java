@@ -3,13 +3,13 @@ package com.gykj.zhumulangma.home.fragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
@@ -18,7 +18,6 @@ import com.gykj.zhumulangma.home.adapter.AnnouncerTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.TrackListViewModel;
 import com.kingja.loadsir.callback.Callback;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 /**
@@ -29,14 +28,13 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  */
 
 @Route(path = Constants.Router.Home.F_TRACK_LIST)
-public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewModel,Track> implements
+public class TrackListFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding, TrackListViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener {
 
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
     public long mAnnouncerId;
     @Autowired(name = KeyCode.Home.TITLE)
     public String mTitle;
-    private SmartRefreshLayout refreshLayout;
     private AnnouncerTrackAdapter mAnnouncerTrackAdapter;
 
     @Override
@@ -46,26 +44,24 @@ public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewMode
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = fd(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setHasFixedSize(true);
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.recyclerview.setHasFixedSize(true);
         mAnnouncerTrackAdapter = new AnnouncerTrackAdapter(R.layout.home_item_announcer_track);
-        mAnnouncerTrackAdapter.bindToRecyclerView(recyclerView);
+        mAnnouncerTrackAdapter.bindToRecyclerView(mBinding.recyclerview);
         setTitle(new String[]{mTitle});
-        refreshLayout = view.findViewById(R.id.refreshLayout);
     }
 
     @Override
     public void initListener() {
         super.initListener();
         mAnnouncerTrackAdapter.setOnItemClickListener(this);
-        refreshLayout.setOnLoadMoreListener(this);
+        mBinding.refreshLayout.setOnLoadMoreListener(this);
     }
 
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout,mAnnouncerTrackAdapter);
+        return new WrapRefresh(mBinding.refreshLayout, mAnnouncerTrackAdapter);
     }
 
     @Override
@@ -73,10 +69,12 @@ public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewMode
         mViewModel.setAnnouncerId(mAnnouncerId);
         mViewModel.init();
     }
+
     @Override
     public void initViewObservable() {
         mViewModel.getInitTrackListEvent().observe(this, tracks -> mAnnouncerTrackAdapter.setNewData(tracks));
     }
+
     @Override
     protected boolean enableLazy() {
         return false;
@@ -85,7 +83,7 @@ public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewMode
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Track track = mAnnouncerTrackAdapter.getItem(position);
-        mViewModel.play(track.getAlbum().getAlbumId(),track.getDataId());
+        mViewModel.play(track.getAlbum().getAlbumId(), track.getDataId());
     }
 
     @Override
@@ -97,8 +95,9 @@ public class TrackListFragment extends BaseRefreshMvvmFragment<TrackListViewMode
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }
-     @Override
-     public Callback getInitStatus() {
+
+    @Override
+    public Callback getInitStatus() {
         return new ListSkeleton();
     }
 }

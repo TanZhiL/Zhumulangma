@@ -4,7 +4,6 @@ package com.gykj.zhumulangma.home.fragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -13,9 +12,10 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.RouteUtil;
@@ -24,7 +24,6 @@ import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumListViewModel;
 import com.kingja.loadsir.callback.Callback;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,7 +36,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Description:专辑列表
  */
 @Route(path = Constants.Router.Home.F_ALBUM_LIST)
-public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewModel, Album> implements
+public class AlbumListFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,AlbumListViewModel, Album> implements
         BaseQuickAdapter.OnItemClickListener {
     //猜你喜欢
     public static final int LIKE = 0;
@@ -53,7 +52,6 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
     public String mTitle;
     private AlbumAdapter mAlbumAdapter;
 
-    private SmartRefreshLayout refreshLayout;
 
     public AlbumListFragment() {
 
@@ -66,12 +64,10 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = fd(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setHasFixedSize(true);
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.recyclerview.setHasFixedSize(true);
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_line);
-        mAlbumAdapter.bindToRecyclerView(recyclerView);
-        refreshLayout = fd(R.id.refreshLayout);
+        mAlbumAdapter.bindToRecyclerView(mBinding.recyclerview);
         setTitle(new String[]{mTitle});
     }
 
@@ -84,7 +80,7 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<AlbumListViewMode
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout,mAlbumAdapter);
+        return new WrapRefresh(mBinding.refreshLayout,mAlbumAdapter);
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -18,16 +17,16 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.SearchSuggestAdapter;
 import com.gykj.zhumulangma.home.bean.SearchSuggestItem;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchViewModel;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,7 +41,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Description:搜索下建议词页
  */
 @Route(path = Constants.Router.Home.F_SEARCH_SUGGEST)
-public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> implements
+public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutRefreshLoadmoreBinding,SearchViewModel> implements
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
     private String mKeyword;
@@ -67,14 +66,12 @@ public class SearchSuggestFragment extends BaseMvvmFragment<SearchViewModel> imp
     }
     @Override
     protected void initView(View view) {
-        SmartRefreshLayout refreshLayout = fd(R.id.refreshLayout);
-        refreshLayout.setEnableRefresh(false);
-        refreshLayout.setEnableLoadMore(false);
-        RecyclerView recyclerView = fd(R.id.recyclerview);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.refreshLayout.setEnableRefresh(false);
+        mBinding.refreshLayout.setEnableLoadMore(false);
+        mBinding.recyclerview.setHasFixedSize(true);
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mSuggestAdapter=new SearchSuggestAdapter(null);
-        mSuggestAdapter.bindToRecyclerView(recyclerView);
+        mSuggestAdapter.bindToRecyclerView(mBinding.recyclerview);
         View vHeader = LayoutInflater.from(mActivity).inflate(R.layout.home_item_search_suggest_query, null);
         tvHeader=vHeader.findViewById(R.id.tv_label);
         mSuggestAdapter.setHeaderView(vHeader);

@@ -4,13 +4,13 @@ import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.listen.R;
@@ -19,7 +19,6 @@ import com.gykj.zhumulangma.listen.bean.PlayHistoryItem;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.HistoryViewModel;
 import com.kingja.loadsir.callback.Callback;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.List;
 
@@ -30,10 +29,9 @@ import java.util.List;
  * <br/>Description:
  */
 @Route(path = Constants.Router.Listen.F_HISTORY)
-public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel, PlayHistoryItem> implements
+public class HistoryFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,HistoryViewModel, PlayHistoryItem> implements
         BaseQuickAdapter.OnItemClickListener {
 
-    private SmartRefreshLayout refreshLayout;
     private HistoryAdapter mHistoryAdapter;
 
     @Override
@@ -43,12 +41,10 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel, P
 
     @Override
     protected void initView(View view) {
-        refreshLayout = fd(R.id.refreshLayout);
-        RecyclerView recyclerView = fd(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setHasFixedSize(true);
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.recyclerview.setHasFixedSize(true);
         mHistoryAdapter = new HistoryAdapter(null);
-        mHistoryAdapter.bindToRecyclerView(recyclerView);
+        mHistoryAdapter.bindToRecyclerView(mBinding.recyclerview);
     }
 
     @Override
@@ -60,7 +56,7 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<HistoryViewModel, P
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout, mHistoryAdapter);
+        return new WrapRefresh(mBinding.refreshLayout, mHistoryAdapter);
     }
 
     @Override

@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
@@ -18,7 +18,6 @@ import com.gykj.zhumulangma.home.adapter.SearchTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchTrackViewModel;
 import com.kingja.loadsir.callback.Callback;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 /**
@@ -27,11 +26,10 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索声音
  */
-public class SearchTrackFragment extends BaseRefreshMvvmFragment<SearchTrackViewModel, Track> implements
+public class SearchTrackFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,SearchTrackViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener {
 
 
-    private SmartRefreshLayout refreshLayout;
     private SearchTrackAdapter mSearchTrackAdapter;
 
     public SearchTrackFragment() {
@@ -53,12 +51,10 @@ public class SearchTrackFragment extends BaseRefreshMvvmFragment<SearchTrackView
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setHasFixedSize(true);
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.recyclerview.setHasFixedSize(true);
         mSearchTrackAdapter = new SearchTrackAdapter(R.layout.home_item_seach_track);
-        mSearchTrackAdapter.bindToRecyclerView(recyclerView);
-        refreshLayout = view.findViewById(R.id.refreshLayout);
+        mSearchTrackAdapter.bindToRecyclerView(mBinding.recyclerview);
     }
 
     @Override
@@ -70,7 +66,7 @@ public class SearchTrackFragment extends BaseRefreshMvvmFragment<SearchTrackView
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout,mSearchTrackAdapter);
+        return new WrapRefresh(mBinding.refreshLayout,mSearchTrackAdapter);
     }
 
     @Override

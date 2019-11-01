@@ -1,51 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <CheckBox
-        android:layout_marginLeft="8dp"
-        android:id="@+id/cb_all"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="全选" />
-    <View
-        android:layout_width="match_parent"
-        style="@style/SecondHLine"/>
+    <data>
 
+    </data>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:overScrollMode="never"
-        android:nestedScrollingEnabled="true"/>
     <LinearLayout
-        android:id="@+id/ll_delete"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="@color/colorHint"
-        android:layout_height="50dp">
+        android:orientation="vertical"
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:tint="@color/white"
-            app:srcCompat="@drawable/ic_listen_delete" />
+        <CheckBox
+            android:layout_marginLeft="8dp"
+            android:id="@+id/cb_all"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="全选" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_marginStart="8dp"
-            android:textSize="16sp"
-            android:text="删除" />
+        <View
+            android:layout_width="match_parent"
+            style="@style/SecondHLine" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:nestedScrollingEnabled="true" />
+
+        <LinearLayout
+            android:id="@+id/ll_delete"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@color/colorHint"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:tint="@color/white"
+                app:srcCompat="@drawable/ic_listen_delete" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginStart="8dp"
+                android:textSize="16sp"
+                android:text="删除" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</layout>

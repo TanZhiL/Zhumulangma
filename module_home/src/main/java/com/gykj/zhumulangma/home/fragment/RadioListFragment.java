@@ -4,7 +4,6 @@ package com.gykj.zhumulangma.home.fragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -17,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.ProvinceBean;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:电台列表
  */
 @Route(path = Constants.Router.Home.F_RADIO_LIST)
-public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewModel, Radio> implements
+public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,RadioListViewModel, Radio> implements
         BaseQuickAdapter.OnItemClickListener, RadioProvincePopup.onSelectedListener, RadioProvincePopup.onPopupDismissingListener {
     //本省台
     public static final int LOCAL_PROVINCE = 999;
@@ -88,15 +88,14 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
         mProvinceBeans = new Gson().fromJson(s, new TypeToken<ArrayList<ProvinceBean>>() {
         }.getType());
 
-        RecyclerView recyclerView = fd(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setHasFixedSize(true);
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.recyclerview.setHasFixedSize(true);
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
         tvTitle = llbarCenter.findViewById(R.id.tv_title);
         mRadioAdapter = new RadioAdapter(R.layout.home_item_radio_line);
-        mRadioAdapter.bindToRecyclerView(recyclerView);
+        mRadioAdapter.bindToRecyclerView( mBinding.recyclerview);
         mRadioAdapter.setOnItemClickListener(this);
-        refreshLayout = fd(R.id.refreshLayout);
+        refreshLayout = mView.findViewById(R.id.refreshLayout);
 
         tvTitle.setText(mTitle);
         if (mType == PROVINCE) {
@@ -187,7 +186,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
             mProvincePopup.dismiss();
         }else {
             ivCategoryDown.animate().rotation(180).setDuration(200);
-            new XPopup.Builder(mActivity).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mProvincePopup).show();
+            new XPopup.Builder(mActivity).atView(mView.findViewById(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mProvincePopup).show();
         }
     }
 

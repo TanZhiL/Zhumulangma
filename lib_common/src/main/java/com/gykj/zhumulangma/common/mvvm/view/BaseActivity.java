@@ -1,9 +1,10 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
@@ -13,10 +14,10 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
+import com.gykj.thomas.third.ThirdHelper;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
-import com.gykj.thomas.third.ThirdHelper;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -39,7 +40,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:Activity基类
  */
-public abstract class BaseActivity extends SupportActivity implements BaseView , Consumer<Disposable> {
+public abstract class BaseActivity<DB extends ViewDataBinding> extends SupportActivity implements BaseView , Consumer<Disposable> {
     protected static final String TAG = BaseActivity.class.getSimpleName();
     //Disposable容器
     protected CompositeDisposable mCompositeDisposable=new CompositeDisposable();
@@ -51,6 +52,8 @@ public abstract class BaseActivity extends SupportActivity implements BaseView ,
     protected CommonTitleBar mSimpleTitleBar;
     //公用Handler
     protected Handler mHandler=new Handler();
+    //databinding
+    protected DB mBinding;
 
 
     protected abstract int onBindLayout();
@@ -89,14 +92,16 @@ public abstract class BaseActivity extends SupportActivity implements BaseView ,
      */
     private void initCommonView() {
         ViewStub viewStubContent = findViewById(R.id.view_stub_content);
-        mSimpleTitleBar = findViewById(R.id.ctb_simple);
+        ViewStub viewStubBar = findViewById(R.id.view_stub_bar);
+
         if (enableSimplebar()) {
-            mSimpleTitleBar.setVisibility(View.VISIBLE);
+            viewStubBar.setLayoutResource(R.layout.common_layout_simplebar);
+            mSimpleTitleBar = viewStubBar.inflate().findViewById(R.id.ctb_simple);
             initSimpleBar(mSimpleTitleBar);
         }
         viewStubContent.setLayoutResource(onBindLayout());
         View contentView = viewStubContent.inflate();
-
+        mBinding = DataBindingUtil.bind(contentView);
         LoadSir.Builder builder = new LoadSir.Builder()
                 .addCallback(getInitStatus())
                 .addCallback(getEmptyStatus())
@@ -263,17 +268,6 @@ public abstract class BaseActivity extends SupportActivity implements BaseView ,
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEventSticky(ActivityEvent event) {
-    }
-
-    /**
-     * findViewById
-     *
-     * @param id
-     * @param <T>
-     * @return
-     */
-    protected <T extends View> T fd(@IdRes int id) {
-        return findViewById(id);
     }
 
     @Override

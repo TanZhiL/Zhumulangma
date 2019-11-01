@@ -1,117 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/cl_titlebar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_message"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/ic_common_message"
-            android:tint="@color/colorGray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/iv_download"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_home_scan"
-            android:tint="@color/colorGray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-      <!--  <ImageView
-            android:id="@+id/iv_download"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="17dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_common_download"
-            android:tint="@color/colorGray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />-->
-        <ImageView
-            android:id="@+id/iv_history"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_common_history"
-            android:tint="@color/colorGray"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/iv_download"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/ll_search"
-            android:layout_width="220dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:bl_solid_color="#f0f0f0"
-            app:bl_corners_radius="20dp"
-            android:gravity="center_vertical"
-            android:paddingLeft="8dp"
-
-            android:paddingRight="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/iv_history"
-            app:layout_constraintStart_toEndOf="@+id/iv_message"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_titlebar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:src="@drawable/ic_common_search"
-                android:tint="#cccccc" />
+                android:id="@+id/iv_message"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_common_message"
+                android:tint="@color/colorGray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <com.sunfusheng.marqueeview.MarqueeView
-                android:id="@+id/marqueeView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:mvAnimDuration="1000"
-                app:mvDirection="bottom_to_top"
-                app:mvInterval="3000"
-                app:mvSingleLine="true"
-                app:mvTextColor="#cccccc"
-                app:mvTextSize="12sp" />
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_download"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_home_scan"
+                android:tint="@color/colorGray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!--  <ImageView
+                  android:id="@+id/iv_download"
+                  android:layout_width="28dp"
+                  android:layout_height="28dp"
+                  android:layout_marginTop="8dp"
+                  android:layout_marginEnd="17dp"
+                  android:layout_marginBottom="8dp"
+                  android:src="@drawable/ic_common_download"
+                  android:tint="@color/colorGray"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintTop_toTopOf="parent" />-->
+            <ImageView
+                android:id="@+id/iv_history"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_common_history"
+                android:tint="@color/colorGray"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iv_download"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ll_search"
+                android:layout_width="220dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:bl_solid_color="#f0f0f0"
+                app:bl_corners_radius="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="8dp"
+
+                android:paddingRight="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/iv_history"
+                app:layout_constraintStart_toEndOf="@+id/iv_message"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/ic_common_search"
+                    android:tint="#cccccc" />
+
+                <com.sunfusheng.marqueeview.MarqueeView
+                    android:id="@+id/marqueeView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:mvAnimDuration="1000"
+                    app:mvDirection="bottom_to_top"
+                    app:mvInterval="3000"
+                    app:mvSingleLine="true"
+                    app:mvTextColor="#cccccc"
+                    app:mvTextSize="12sp" />
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+
+
+        <net.lucode.hackware.magicindicator.MagicIndicator
+            android:id="@+id/magic_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:background="#f0f0f0"
+            app:layout_constraintTop_toBottomOf="@+id/cl_titlebar" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/magic_indicator" />
     </android.support.constraint.ConstraintLayout>
-
-
-    <net.lucode.hackware.magicindicator.MagicIndicator
-        android:id="@+id/magic_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:background="#f0f0f0"
-        app:layout_constraintTop_toBottomOf="@+id/cl_titlebar" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:overScrollMode="never"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/magic_indicator" />
-</android.support.constraint.ConstraintLayout>
+</layout>

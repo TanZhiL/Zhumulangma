@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -18,15 +17,13 @@ import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.widget.MarqueeView;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.FineAdapter;
+import com.gykj.zhumulangma.home.databinding.HomeFragmentFineBinding;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
-import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 
@@ -43,15 +40,13 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:精品
  */
-public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> implements
+public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBinding,FineViewModel, Album> implements
         View.OnClickListener, OnBannerListener {
 
     private FineAdapter mDailyAdapter;
     private FineAdapter mBookAdapter;
     private FineAdapter mClassroomAdapter;
 
-    private Banner banner;
-    private MarqueeView marqueeView;
 
     public FineFragment() {
 
@@ -72,7 +67,6 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
 
     @Override
     protected void initView(View view) {
-        marqueeView=fd(R.id.marqueeView);
         initBanner();
         initDaily();
         initBook();
@@ -82,16 +76,16 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     @Override
     public void initListener() {
         super.initListener();
-        banner.setOnBannerListener(this);
-        fd(R.id.daily_refresh).setOnClickListener(this);
-        fd(R.id.book_refresh).setOnClickListener(this);
-        fd(R.id.classroom_refresh).setOnClickListener(this);
+        mBinding.banner.setOnBannerListener(this);
+        mBinding.dailyRefresh.setOnClickListener(this);
+        mBinding.bookRefresh.setOnClickListener(this);
+        mBinding.classroomRefresh.setOnClickListener(this);
     }
 
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(fd(R.id.refreshLayout), null);
+        return new WrapRefresh(mBinding.refreshLayout, null);
     }
 
 
@@ -99,7 +93,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     public void initData() {
         mViewModel.init();
         String notice = "本页面为付费内容,目前仅提供浏览功能,暂时不可操作!";
-        marqueeView.setContent(notice);
+        mBinding.marqueeView.setContent(notice);
     }
 
     @Override
@@ -109,42 +103,38 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
             for (BannerV2 bannerV2 : bannerV2s) {
                 images.add(bannerV2.getBannerUrl());
             }
-            banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
+            mBinding.banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
         });
         mViewModel.getDailysEvent().observe(this, albums -> mDailyAdapter.setNewData(albums));
         mViewModel.getBooksEvent().observe(this, albums -> mBookAdapter.setNewData(albums));
         mViewModel.getClassRoomsEvent().observe(this, albums -> mClassroomAdapter.setNewData(albums));
     }
     private void initBanner() {
-        banner = fd(R.id.banner);
-        banner.setIndicatorGravity(BannerConfig.RIGHT);
-        banner.setDelayTime(3000);
+        mBinding.banner.setIndicatorGravity(BannerConfig.RIGHT);
+        mBinding.banner.setDelayTime(3000);
     }
 
     private void initDaily() {
 
-        RecyclerView rvDaily = fd(R.id.rv_daily);
         mDailyAdapter = new FineAdapter(R.layout.home_item_fine);
-        rvDaily.setLayoutManager(new LinearLayoutManager(mActivity));
-        rvDaily.setHasFixedSize(true);
-        mDailyAdapter.bindToRecyclerView(rvDaily);
+        mBinding.rvDaily.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.rvDaily.setHasFixedSize(true);
+        mDailyAdapter.bindToRecyclerView(mBinding.rvDaily);
     }
 
     private void initBook() {
-        RecyclerView rvBook = fd(R.id.rv_book);
         mBookAdapter = new FineAdapter(R.layout.home_item_fine);
-        rvBook.setLayoutManager(new LinearLayoutManager(mActivity));
-        rvBook.setHasFixedSize(true);
-        mBookAdapter.bindToRecyclerView(rvBook);
+        mBinding.rvBook.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding. rvBook.setHasFixedSize(true);
+        mBookAdapter.bindToRecyclerView(mBinding.rvBook);
 
     }
 
     private void initClassRoom() {
-        RecyclerView rvClassroom = fd(R.id.rv_classroom);
         mClassroomAdapter = new FineAdapter(R.layout.home_item_fine);
-        rvClassroom.setLayoutManager(new LinearLayoutManager(mActivity));
-        rvClassroom.setHasFixedSize(true);
-        mClassroomAdapter.bindToRecyclerView(rvClassroom);
+        mBinding.rvClassroom.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.rvClassroom.setHasFixedSize(true);
+        mClassroomAdapter.bindToRecyclerView(mBinding.rvClassroom);
     }
 
     @Override
@@ -178,22 +168,22 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if (banner != null){
-            banner.startAutoPlay();
+        if (null != mBinding && null!= mBinding.banner){
+            mBinding.banner.startAutoPlay();
         }
-        if(marqueeView!=null){
-            marqueeView.continueRoll();
+        if (null != mBinding && null!= mBinding.banner){
+            mBinding.marqueeView.continueRoll();
         }
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        if (banner != null){
-            banner.stopAutoPlay();
+        if (null != mBinding && null!= mBinding.banner){
+            mBinding.banner.stopAutoPlay();
         }
-        if(marqueeView!=null){
-            marqueeView.stopRoll();
+        if (null != mBinding && null!= mBinding.banner){
+            mBinding.marqueeView.stopRoll();
         }
     }
 
@@ -203,8 +193,8 @@ public class FineFragment extends BaseRefreshMvvmFragment<FineViewModel, Album> 
         switch (event.getCode()) {
             case EventCode.Home.TAB_REFRESH:
                 if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
-                    fd(R.id.nsv).scrollTo(0, 0);
-                    ((SmartRefreshLayout) fd(R.id.refreshLayout)).autoRefresh();
+                    mBinding.nsv.scrollTo(0, 0);
+                    mBinding.refreshLayout.autoRefresh();
                 }
                 break;
         }

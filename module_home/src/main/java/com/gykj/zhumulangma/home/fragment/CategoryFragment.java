@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.home.databinding.HomeFragmentCategoryBinding;
 
 /**
  * Author: Thomas.
@@ -14,7 +15,7 @@ import com.gykj.zhumulangma.home.R;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:分类
  */
-public class CategoryFragment extends BaseFragment {
+public class CategoryFragment extends BaseFragment<HomeFragmentCategoryBinding> {
 
 
     public CategoryFragment() {

@@ -11,6 +11,7 @@ android {
             applicationId rootProject.ext.android.applicationId
         }
     }
+
 }
 //组件模式
 android.libraryVariants.all { variant ->

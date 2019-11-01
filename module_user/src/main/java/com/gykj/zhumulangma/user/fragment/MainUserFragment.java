@@ -32,15 +32,14 @@ import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
+import com.gykj.zhumulangma.user.databinding.UserFragmentMainBinding;
 import com.gykj.zhumulangma.user.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.user.mvvm.viewmodel.MainUserViewModel;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.bugly.beta.Beta;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,16 +53,10 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Description:我的
  */
 @Route(path = Constants.Router.User.F_MAIN)
-public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel, Object> implements View.OnClickListener {
+public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBinding, MainUserViewModel, Object> implements View.OnClickListener {
 
     private GitHubDTO mGitHubDTO;
 
-    private CommonTitleBar ctbTrans;
-    private CommonTitleBar ctbWhite;
-    private NestedScrollView scrollView;
-    private ImageView ivParallax;
-    private View flParallax;
-    private SmartRefreshLayout refreshLayout;
     private ImageView whiteLeft;
     private ImageView whiteRight;
     private ImageView transLeft;
@@ -88,20 +81,14 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
 
     @Override
     protected void initView(View view) {
-        ctbTrans = view.findViewById(R.id.ctb_trans);
-        ctbWhite = view.findViewById(R.id.ctb_white);
-        scrollView = view.findViewById(R.id.nsv);
-        ivParallax = view.findViewById(R.id.iv_parallax);
-        flParallax = view.findViewById(R.id.fl_parallax);
-        refreshLayout = view.findViewById(R.id.refreshLayout);
         initBar();
 
     }
 
     private void initBar() {
 
-        transLeft = ctbTrans.getLeftCustomView().findViewById(R.id.iv_left);
-        transRight = ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
+        transLeft = mBinding.ctbTrans.getLeftCustomView().findViewById(R.id.iv_left);
+        transRight = mBinding.ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
 
 
         transLeft.setImageResource(R.drawable.ic_common_message);
@@ -117,9 +104,9 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
         }
         transRight.setVisibility(View.VISIBLE);
 
-        whiteLeft = ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
-        whiteRight = ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
-        TextView tvTitle = ctbWhite.getCenterCustomView().findViewById(R.id.tv_title);
+        whiteLeft = mBinding.ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
+        whiteRight = mBinding.ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
+        TextView tvTitle = mBinding.ctbWhite.getCenterCustomView().findViewById(R.id.tv_title);
         tvTitle.setVisibility(View.VISIBLE);
         tvTitle.setText("我的");
 
@@ -134,13 +121,13 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     @Override
     public void initListener() {
         super.initListener();
-        scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+        mBinding.nsv.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (nestedScrollView, i, scrollY, i2, i3) -> {
-                    flParallax.setTranslationY(-scrollY);
-                    ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
-                    ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
+                    mBinding.flParallax.setTranslationY(-scrollY);
+                    mBinding.ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
+                    mBinding.ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(SizeUtils.px2dp(scrollY), 0, 100));
                 });
-        refreshLayout.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
+        mBinding.refreshLayout.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
 
@@ -149,36 +136,36 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
             @Override
             public void onHeaderMoving(RefreshHeader header, boolean isDragging, float percent,
                                        int offset, int headerHeight, int maxDragHeight) {
-                ctbTrans.setAlpha(1 - (float) offset / ctbTrans.getHeight());
+                mBinding.ctbTrans.setAlpha(1 - (float) offset / mBinding.ctbTrans.getHeight());
 
-                ivParallax.setScaleX((float) (1 + percent * 0.2));
-                ivParallax.setScaleY((float) (1 + percent * 0.2));
+                mBinding.ivParallax.setScaleX((float) (1 + percent * 0.2));
+                mBinding.ivParallax.setScaleY((float) (1 + percent * 0.2));
 
-                flParallax.setTranslationY(offset);
+                mBinding.flParallax.setTranslationY(offset);
             }
         });
-        fd(R.id.ll_download).setOnClickListener(this);
-        fd(R.id.ll_history).setOnClickListener(this);
-        fd(R.id.ll_favorit).setOnClickListener(this);
+        mBinding.llDownload.setOnClickListener(this);
+        mBinding.llHistory.setOnClickListener(this);
+        mBinding.llFavorit.setOnClickListener(this);
         whiteLeft.setOnClickListener(this);
         whiteRight.setOnClickListener(this);
         transLeft.setOnClickListener(this);
         transRight.setOnClickListener(this);
-        fd(R.id.iv_user).setOnClickListener(this);
-        fd(R.id.cl_fxzq).setOnClickListener(this);
-        fd(R.id.cl_sys).setOnClickListener(this);
-        fd(R.id.cl_wxhd).setOnClickListener(this);
-        fd(R.id.cl_jcgx).setOnClickListener(this);
-        fd(R.id.cl_gy).setOnClickListener(this);
-        fd(R.id.iv_avatar).setOnClickListener(this);
-        fd(R.id.cl_zx).setOnClickListener(this);
-        fd(R.id.tv_nickname).setOnClickListener(this);
+        mBinding.ivUser.setOnClickListener(this);
+        mBinding.clFxzq.setOnClickListener(this);
+        mBinding.clSys.setOnClickListener(this);
+        mBinding.clWxhd.setOnClickListener(this);
+        mBinding.clJcgx.setOnClickListener(this);
+        mBinding.clGy.setOnClickListener(this);
+        mBinding.ivAvatar.setOnClickListener(this);
+        mBinding.clZx.setOnClickListener(this);
+        mBinding.tvNickname.setOnClickListener(this);
     }
 
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout, null);
+        return new WrapRefresh(mBinding.refreshLayout, null);
     }
 
     @Override
@@ -190,9 +177,9 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
     protected void initViewObservable() {
         mViewModel.getGitHubEvent().observe(this, gitHubDTO -> {
             mGitHubDTO = gitHubDTO;
-            ((TextView) fd(R.id.tv_star)).setText(convertNum(gitHubDTO.getStargazers_count()));
-            ((TextView) fd(R.id.tv_fork)).setText(convertNum(gitHubDTO.getForks_count()));
-            //      ((TextView) fd(R.id.tv_desc)).setText(gitHubDTO.getDescription());
+            mBinding.tvStar.setText(convertNum(gitHubDTO.getStargazers_count()));
+            mBinding.tvFork.setText(convertNum(gitHubDTO.getForks_count()));
+            //      ((TextView) mView.findViewById(R.id.tv_desc)).setText(gitHubDTO.getDescription());
         });
         RequestOptions options = new RequestOptions();
         options.placeholder(R.drawable.ic_user_avatar)
@@ -200,9 +187,9 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
         mViewModel.getBaseUserInfoEvent().observe(this, xmBaseUserInfo -> {
             Glide.with(MainUserFragment.this).load(xmBaseUserInfo.getAvatarUrl())
                     .apply(options)
-                    .into((ImageView) fd(R.id.iv_avatar));
-            ((TextView) fd(R.id.tv_nickname)).setText(xmBaseUserInfo.getNickName());
-            fd(R.id.tv_vip).setVisibility(xmBaseUserInfo.isVip() ? View.VISIBLE : View.GONE);
+                    .into((ImageView) mView.findViewById(R.id.iv_avatar));
+            mBinding.tvNickname.setText(xmBaseUserInfo.getNickName());
+            mBinding.tvVip.setVisibility(xmBaseUserInfo.isVip() ? View.VISIBLE : View.GONE);
         });
     }
 
@@ -288,17 +275,17 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<MainUserViewModel,
             case EventCode.User.TAB_REFRESH:
 
                 if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
-                    fd(R.id.nsv).scrollTo(0, 0);
-                    ((SmartRefreshLayout) fd(R.id.refreshLayout)).autoRefresh();
+                    mBinding.nsv.scrollTo(0, 0);
+                    mBinding.refreshLayout.autoRefresh();
                 }
                 break;
             case EventCode.Main.LOGINSUCC:
                 mViewModel.init();
                 break;
             case EventCode.Main.LOGOUTSUCC:
-                Glide.with(MainUserFragment.this).load(R.drawable.ic_user_avatar).into((ImageView) fd(R.id.iv_avatar));
-                ((TextView) fd(R.id.tv_nickname)).setText("未登陆");
-                fd(R.id.tv_vip).setVisibility(View.GONE);
+                Glide.with(MainUserFragment.this).load(R.drawable.ic_user_avatar).into(mBinding.ivAvatar);
+                mBinding.tvNickname.setText("未登陆");
+                mBinding.tvVip.setVisibility(View.GONE);
                 break;
         }
     }

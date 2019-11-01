@@ -1,537 +1,560 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.scwang.smartrefresh.layout.SmartRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/refreshLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:srlEnableNestedScrolling="true"
-    app:srlEnableLoadMore="false"
-    app:srlEnablePreviewInEditMode="false">
-<android.support.v4.widget.NestedScrollView
-    android:id="@+id/nsv"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none"
-    android:overScrollMode="never">
-    <LinearLayout
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:descendantFocusability="blocksDescendants"
-        android:layout_height="match_parent">
-        <com.youth.banner.Banner
-            android:id="@+id/banner"
+        android:layout_height="match_parent"
+        app:srlEnableNestedScrolling="true"
+        app:srlEnableLoadMore="false"
+        app:srlEnablePreviewInEditMode="false">
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nsv"
             android:layout_width="match_parent"
-            android:layout_height="158dp"
-            app:indicator_drawable_unselected="@drawable/shap_home_banner_dot"
-            app:indicator_height="7dp"
-            app:indicator_margin="3dp"
-            app:indicator_width="7dp" />
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:overScrollMode="never">
 
-            <HorizontalScrollView
-                android:id="@+id/horizontalScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="84dp"
-                android:scrollbars="none"
-                android:overScrollMode="never"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="68dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:id="@+id/fl_rank"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:bl_corners_radius="20dp"
-                            app:bl_solid_color="#d5a6bd">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:tint="@color/white"
-                                android:src="@drawable/ic_home_hot_phb" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="18dp"
-                            android:gravity="center"
-                            android:text="排行榜"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="68dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:bl_solid_color="#a2c4c9"
-                            app:bl_corners_radius="20dp">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:tint="@color/white"
-                                android:src="@drawable/ic_home_hot_jp" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="18dp"
-                            android:gravity="center"
-                            android:text="精品"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="68dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:bl_solid_color="#f9cb9c"
-                            app:bl_corners_radius="20dp">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:tint="@color/white"
-                                android:src="@drawable/ic_home_hot_dfhy" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="18dp"
-                            android:gravity="center"
-                            android:text="巅峰会员"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="68dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:bl_solid_color="#b6d7a8"
-                            app:bl_corners_radius="20dp">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:tint="@color/white"
-                                android:src="@drawable/ic_home_hot_tqy" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="18dp"
-                            android:gravity="center"
-                            android:text="听清远"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="68dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:bl_solid_color="#a4c2f4"
-                            app:bl_corners_radius="20dp">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:tint="@color/white"
-                                android:src="@drawable/ic_home_hot_xyyx"/>
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="18dp"
-                            android:gravity="center"
-                            android:text="小雅音响"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="68dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:bl_solid_color="#ffe599"
-                            app:bl_corners_radius="20dp">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:tint="@color/white"
-                                android:src="@drawable/ic_home_hot_td" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="18dp"
-                            android:gravity="center"
-                            android:text="听单"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="68dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:bl_solid_color="#a4c2f4"
-                            app:bl_corners_radius="20dp">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:tint="@color/white"
-                                android:src="@drawable/ic_home_hot_jrbt"/>
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="18dp"
-                            android:gravity="center"
-                            android:text="今日必听"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="68dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:bl_solid_color="#b6d7a8"
-                            app:bl_corners_radius="20dp">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:tint="@color/white"
-                                android:src="@drawable/ic_home_hot_btbd"/>
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="18dp"
-                            android:gravity="center"
-                            android:text="边听边读"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="68dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <FrameLayout
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            app:bl_solid_color="#ff0000"
-                            app:bl_corners_radius="20dp">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:tint="@color/white"
-                                android:src="@drawable/ic_home_hot_rmfx"/>
-                        </FrameLayout>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="18dp"
-                            android:gravity="center"
-                            android:text="热门分享"
-                            android:textColor="@color/textColorPrimary"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </HorizontalScrollView>
-<View
-    android:id="@+id/line1"
-    android:layout_width="0dp"
-    style="@style/PrimaryHLine"
-    app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    />
-            <com.gykj.zhumulangma.common.widget.ItemHeader
-                android:id="@+id/ih_like"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ih_right_text="更多"
-                app:ih_title="猜你喜欢"
-                app:layout_constraintTop_toBottomOf="@id/line1" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_like"
-                android:layout_width="match_parent"
-
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                app:layout_constraintTop_toBottomOf="@id/ih_like"
-                android:nestedScrollingEnabled="false"
-                android:layout_height="wrap_content"/>
-
-            <include
-                android:id="@+id/like_refresh"
-                layout="@layout/common_layout_item_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/rv_like" />
-            <View
-                android:id="@+id/line2"
-                android:layout_width="0dp"
-                style="@style/PrimaryHLine"
-                app:layout_constraintTop_toBottomOf="@id/like_refresh"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                />
-            <com.gykj.zhumulangma.common.widget.ItemHeader
-                android:id="@+id/ih_story"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ih_right_text="更多"
-                app:ih_title="最热有声小说"
-                app:layout_constraintTop_toBottomOf="@id/line2" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_story"
-                android:layout_width="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/ih_story"
-                android:nestedScrollingEnabled="false"
-                android:layout_height="wrap_content"/>
-            <include
-                android:id="@+id/story_refresh"
-                layout="@layout/common_layout_item_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                app:layout_constraintTop_toBottomOf="@id/rv_story" />
-            <View
-                android:id="@+id/line3"
-                android:layout_width="0dp"
-                style="@style/PrimaryHLine"
-                app:layout_constraintTop_toBottomOf="@id/story_refresh"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                />
-            <com.gykj.zhumulangma.common.widget.ItemHeader
-                android:id="@+id/ih_baby"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                app:ih_right_text="更多"
-                app:ih_title="宝贝最爱听"
-                app:layout_constraintTop_toBottomOf="@id/line3" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_baby"
-                android:layout_width="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/ih_baby"
-                android:nestedScrollingEnabled="false"
-                android:layout_height="wrap_content"/>
-            <include
-                android:id="@+id/baby_refresh"
-                layout="@layout/common_layout_item_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                app:layout_constraintTop_toBottomOf="@id/rv_baby" />
-
-            <View
-                android:id="@+id/line4"
-                android:layout_width="0dp"
-                style="@style/PrimaryHLine"
-                app:layout_constraintTop_toBottomOf="@id/baby_refresh"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                />
             <LinearLayout
-                android:id="@+id/layout_ad"
                 android:layout_width="match_parent"
-                android:layout_height="169dp"
-
-                android:paddingLeft="11dp"
-                android:paddingRight="11dp"
-                android:paddingTop="8dp"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@id/line4"
-                >
-                <com.makeramen.roundedimageview.RoundedImageView
+                android:descendantFocusability="blocksDescendants"
+                android:layout_height="match_parent">
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
                     android:layout_width="match_parent"
-                    android:layout_height="113dp"
-                    android:scaleType="centerCrop"
-                    app:riv_corner_radius="4dp"
-                    android:src="@drawable/home_hot_ad"/>
-                <TextView
+                    android:layout_height="158dp"
+                    app:indicator_drawable_unselected="@drawable/shap_home_banner_dot"
+                    app:indicator_height="7dp"
+                    app:indicator_margin="3dp"
+                    app:indicator_width="7dp" />
+
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="23dp"
-                    android:textSize="14sp"
-                    android:textColor="@color/textColorPrimary"
-                    android:gravity="center_vertical"
-                    android:text="小雅音响"
-                    />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="14dp"
-                    android:textSize="11sp"
-                    android:textColor="@color/colorGray"
-                    android:gravity="center_vertical"
-                    android:text="你家里的有声图书馆，点击购买！"
-                    />
+                    android:layout_height="match_parent">
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="84dp"
+                        android:scrollbars="none"
+                        android:overScrollMode="never"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="68dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <FrameLayout
+                                    android:id="@+id/fl_rank"
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    app:bl_corners_radius="20dp"
+                                    app:bl_solid_color="#d5a6bd">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:tint="@color/white"
+                                        android:src="@drawable/ic_home_hot_phb" />
+                                </FrameLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:gravity="center"
+                                    android:text="排行榜"
+                                    android:textColor="@color/textColorPrimary"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="68dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <FrameLayout
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    app:bl_solid_color="#a2c4c9"
+                                    app:bl_corners_radius="20dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:tint="@color/white"
+                                        android:src="@drawable/ic_home_hot_jp" />
+                                </FrameLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:gravity="center"
+                                    android:text="精品"
+                                    android:textColor="@color/textColorPrimary"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="68dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <FrameLayout
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    app:bl_solid_color="#f9cb9c"
+                                    app:bl_corners_radius="20dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:tint="@color/white"
+                                        android:src="@drawable/ic_home_hot_dfhy" />
+                                </FrameLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:gravity="center"
+                                    android:text="巅峰会员"
+                                    android:textColor="@color/textColorPrimary"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="68dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <FrameLayout
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    app:bl_solid_color="#b6d7a8"
+                                    app:bl_corners_radius="20dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:tint="@color/white"
+                                        android:src="@drawable/ic_home_hot_tqy" />
+                                </FrameLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:gravity="center"
+                                    android:text="听清远"
+                                    android:textColor="@color/textColorPrimary"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="68dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <FrameLayout
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    app:bl_solid_color="#a4c2f4"
+                                    app:bl_corners_radius="20dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:tint="@color/white"
+                                        android:src="@drawable/ic_home_hot_xyyx" />
+                                </FrameLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:gravity="center"
+                                    android:text="小雅音响"
+                                    android:textColor="@color/textColorPrimary"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="68dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <FrameLayout
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    app:bl_solid_color="#ffe599"
+                                    app:bl_corners_radius="20dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:tint="@color/white"
+                                        android:src="@drawable/ic_home_hot_td" />
+                                </FrameLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:gravity="center"
+                                    android:text="听单"
+                                    android:textColor="@color/textColorPrimary"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="68dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <FrameLayout
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    app:bl_solid_color="#a4c2f4"
+                                    app:bl_corners_radius="20dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:tint="@color/white"
+                                        android:src="@drawable/ic_home_hot_jrbt" />
+                                </FrameLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:gravity="center"
+                                    android:text="今日必听"
+                                    android:textColor="@color/textColorPrimary"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="68dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <FrameLayout
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    app:bl_solid_color="#b6d7a8"
+                                    app:bl_corners_radius="20dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:tint="@color/white"
+                                        android:src="@drawable/ic_home_hot_btbd" />
+                                </FrameLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:gravity="center"
+                                    android:text="边听边读"
+                                    android:textColor="@color/textColorPrimary"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="68dp"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <FrameLayout
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    app:bl_solid_color="#ff0000"
+                                    app:bl_corners_radius="20dp">
+
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:layout_gravity="center"
+                                        android:tint="@color/white"
+                                        android:src="@drawable/ic_home_hot_rmfx" />
+                                </FrameLayout>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="18dp"
+                                    android:gravity="center"
+                                    android:text="热门分享"
+                                    android:textColor="@color/textColorPrimary"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                    <View
+                        android:id="@+id/line1"
+                        android:layout_width="0dp"
+                        style="@style/PrimaryHLine"
+                        app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <com.gykj.zhumulangma.common.widget.ItemHeader
+                        android:id="@+id/ih_like"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:ih_right_text="更多"
+                        app:ih_title="猜你喜欢"
+                        app:layout_constraintTop_toBottomOf="@id/line1" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_like"
+                        android:layout_width="match_parent"
+
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        app:layout_constraintTop_toBottomOf="@id/ih_like"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/like_refresh"
+                        layout="@layout/home_layout_item_refresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/rv_like" />
+
+                    <View
+                        android:id="@+id/line2"
+                        android:layout_width="0dp"
+                        style="@style/PrimaryHLine"
+                        app:layout_constraintTop_toBottomOf="@id/like_refresh"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <com.gykj.zhumulangma.common.widget.ItemHeader
+                        android:id="@+id/ih_story"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:ih_right_text="更多"
+                        app:ih_title="最热有声小说"
+                        app:layout_constraintTop_toBottomOf="@id/line2" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_story"
+                        android:layout_width="match_parent"
+                        app:layout_constraintTop_toBottomOf="@id/ih_story"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/story_refresh"
+                        layout="@layout/home_layout_item_refresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        app:layout_constraintTop_toBottomOf="@id/rv_story" />
+
+                    <View
+                        android:id="@+id/line3"
+                        android:layout_width="0dp"
+                        style="@style/PrimaryHLine"
+                        app:layout_constraintTop_toBottomOf="@id/story_refresh"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <com.gykj.zhumulangma.common.widget.ItemHeader
+                        android:id="@+id/ih_baby"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        app:ih_right_text="更多"
+                        app:ih_title="宝贝最爱听"
+                        app:layout_constraintTop_toBottomOf="@id/line3" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_baby"
+                        android:layout_width="match_parent"
+                        app:layout_constraintTop_toBottomOf="@id/ih_baby"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/baby_refresh"
+                        layout="@layout/home_layout_item_refresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        app:layout_constraintTop_toBottomOf="@id/rv_baby" />
+
+                    <View
+                        android:id="@+id/line4"
+                        android:layout_width="0dp"
+                        style="@style/PrimaryHLine"
+                        app:layout_constraintTop_toBottomOf="@id/baby_refresh"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_ad"
+                        android:layout_width="match_parent"
+                        android:layout_height="169dp"
+
+                        android:paddingLeft="11dp"
+                        android:paddingRight="11dp"
+                        android:paddingTop="8dp"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toBottomOf="@id/line4">
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="113dp"
+                            android:scaleType="centerCrop"
+                            app:riv_corner_radius="4dp"
+                            android:src="@drawable/home_hot_ad" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="23dp"
+                            android:textSize="14sp"
+                            android:textColor="@color/textColorPrimary"
+                            android:gravity="center_vertical"
+                            android:text="小雅音响" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="14dp"
+                            android:textSize="11sp"
+                            android:textColor="@color/colorGray"
+                            android:gravity="center_vertical"
+                            android:text="你家里的有声图书馆，点击购买！" />
+                    </LinearLayout>
+
+                    <com.gykj.zhumulangma.common.widget.ItemHeader
+                        android:id="@+id/ih_topic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:ih_right_text="更多"
+                        app:ih_title="精选专题"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/layout_ad" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_topic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/ih_topic" />
+
+                    <include
+                        android:visibility="gone"
+                        android:id="@+id/topic_refresh"
+                        layout="@layout/home_layout_item_refresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        app:layout_constraintTop_toBottomOf="@id/rv_topic" />
+
+                    <View
+                        android:id="@+id/line5"
+                        android:layout_width="0dp"
+                        style="@style/PrimaryHLine"
+                        app:layout_constraintTop_toBottomOf="@id/topic_refresh"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <com.gykj.zhumulangma.common.widget.ItemHeader
+                        android:id="@+id/ih_music"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:ih_right_text="更多"
+                        app:ih_title="音乐好时光"
+                        app:layout_constraintTop_toBottomOf="@id/line5" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_music"
+                        android:layout_width="match_parent"
+                        app:layout_constraintTop_toBottomOf="@id/ih_music"
+
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_height="wrap_content" />
+
+                    <include
+                        android:id="@+id/music_refresh"
+                        layout="@layout/home_layout_item_refresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        app:layout_constraintTop_toBottomOf="@id/rv_music" />
+
+                    <View
+                        android:id="@+id/line6"
+                        android:layout_width="0dp"
+                        style="@style/PrimaryHLine"
+                        app:layout_constraintTop_toBottomOf="@id/music_refresh"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+
+                    <com.gykj.zhumulangma.common.widget.ItemHeader
+                        android:id="@+id/ih_radio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:ih_right_text="更多"
+                        app:ih_title="电台"
+                        app:layout_constraintTop_toBottomOf="@id/line6" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_radio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/ih_radio" />
+
+                    <include
+                        android:id="@+id/radio_refresh"
+                        layout="@layout/home_layout_item_refresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        app:layout_constraintTop_toBottomOf="@id/rv_radio" />
+
+                    <View
+                        android:id="@+id/line7"
+                        android:layout_width="0dp"
+                        style="@style/PrimaryHLine"
+                        app:layout_constraintTop_toBottomOf="@id/radio_refresh"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+
             </LinearLayout>
-            <com.gykj.zhumulangma.common.widget.ItemHeader
-                android:id="@+id/ih_topic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:ih_right_text="更多"
-                app:ih_title="精选专题"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/layout_ad" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_topic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/ih_topic" />
-
-            <include
-                android:visibility="gone"
-                android:id="@+id/topic_refresh"
-                layout="@layout/common_layout_item_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                app:layout_constraintTop_toBottomOf="@id/rv_topic" />
-            <View
-                android:id="@+id/line5"
-                android:layout_width="0dp"
-                style="@style/PrimaryHLine"
-                app:layout_constraintTop_toBottomOf="@id/topic_refresh"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                />
-            <com.gykj.zhumulangma.common.widget.ItemHeader
-                android:id="@+id/ih_music"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ih_right_text="更多"
-                app:ih_title="音乐好时光"
-                app:layout_constraintTop_toBottomOf="@id/line5" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_music"
-                android:layout_width="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/ih_music"
-
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:nestedScrollingEnabled="false"
-                android:layout_height="wrap_content"/>
-            <include
-                android:id="@+id/music_refresh"
-                layout="@layout/common_layout_item_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                app:layout_constraintTop_toBottomOf="@id/rv_music" />
-            <View
-                android:id="@+id/line6"
-                android:layout_width="0dp"
-                style="@style/PrimaryHLine"
-                app:layout_constraintTop_toBottomOf="@id/music_refresh"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                />
-            <com.gykj.zhumulangma.common.widget.ItemHeader
-                android:id="@+id/ih_radio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:ih_right_text="更多"
-                app:ih_title="电台"
-                app:layout_constraintTop_toBottomOf="@id/line6" />
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_radio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/ih_radio" />
-            <include
-                android:id="@+id/radio_refresh"
-                layout="@layout/common_layout_item_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                app:layout_constraintTop_toBottomOf="@id/rv_radio" />
-            <View
-                android:id="@+id/line7"
-                android:layout_width="0dp"
-                style="@style/PrimaryHLine"
-                app:layout_constraintTop_toBottomOf="@id/radio_refresh"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                />
-        </android.support.constraint.ConstraintLayout>
-
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</layout>

@@ -1,122 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="center_vertical"
-        android:paddingStart="11dp"
-        android:text="主播"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="16sp" />
+    <data>
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/cl_announcer"
-        android:layout_width="match_parent"
-        android:layout_height="63dp">
-
-
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/iv_announcer_cover"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="17dp"
-            app:riv_oval="true"
-            android:src="@color/colorDefault"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_announcer_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="逝水流年轻染尘"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/iv_announcer_cover"
-            app:layout_constraintTop_toTopOf="@id/iv_announcer_cover" />
-        <TextView
-            android:id="@+id/tv_vip"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginStart="8dp"
-            app:bl_solid_color="@color/colorPrimary"
-            app:bl_corners_radius="20dp"
-            android:gravity="center"
-            android:text="V"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintStart_toEndOf="@+id/tv_announcer_name"
-            app:layout_constraintTop_toTopOf="@+id/iv_announcer_cover" />
-        <TextView
-            android:id="@+id/tv_following_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="已被3294人关注"
-            android:textColor="@color/colorGray"
-            android:textSize="11sp"
-            app:layout_constraintLeft_toRightOf="@id/iv_announcer_cover"
-            app:layout_constraintTop_toBottomOf="@id/tv_announcer_name" />
-
-        <ImageView
-            android:id="@+id/imageView26"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_common_more_arrow"
-            android:tint="@color/colorPrimaryDark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/tv_vsignature"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
-        android:layout_marginEnd="11dp"
-        app:bl_solid_color="#f0f0f0"
-        app:bl_corners_radius="10dp"
-        android:gravity="center_vertical"
-        android:minHeight="36dp"
-        android:visibility="gone"
-        android:padding="16dp"
-        android:text="喜欢音乐 喜欢我就多多关注啦"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="想向主播提问？"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:paddingStart="11dp"
+            android:text="主播"
             android:textColor="@color/textColorPrimary"
-            android:textSize="12sp" />
+            android:textSize="16sp" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/cl_announcer"
+            android:layout_width="match_parent"
+            android:layout_height="63dp">
+
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/iv_announcer_cover"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="17dp"
+                app:riv_oval="true"
+                android:src="@color/colorDefault"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_announcer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="逝水流年轻染尘"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/iv_announcer_cover"
+                app:layout_constraintTop_toTopOf="@id/iv_announcer_cover" />
+
+            <TextView
+                android:id="@+id/tv_vip"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="8dp"
+                app:bl_solid_color="@color/colorPrimary"
+                app:bl_corners_radius="20dp"
+                android:gravity="center"
+                android:text="V"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/tv_announcer_name"
+                app:layout_constraintTop_toTopOf="@+id/iv_announcer_cover" />
+
+            <TextView
+                android:id="@+id/tv_following_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="已被3294人关注"
+                android:textColor="@color/colorGray"
+                android:textSize="11sp"
+                app:layout_constraintLeft_toRightOf="@id/iv_announcer_cover"
+                app:layout_constraintTop_toBottomOf="@id/tv_announcer_name" />
+
+            <ImageView
+                android:id="@+id/imageView26"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_common_more_arrow"
+                android:tint="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_vsignature"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="邀请TA开通问答"
-            android:textColor="@color/colorPrimary"
-            android:textSize="12sp" />
+            android:layout_marginStart="11dp"
+            android:layout_marginEnd="11dp"
+            app:bl_solid_color="#f0f0f0"
+            app:bl_corners_radius="10dp"
+            android:gravity="center_vertical"
+            android:minHeight="36dp"
+            android:visibility="gone"
+            android:padding="16dp"
+            android:text="喜欢音乐 喜欢我就多多关注啦"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="39dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="想向主播提问？"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="邀请TA开通问答"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</layout>

@@ -1,10 +1,11 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -46,7 +47,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:Fragment基类
  */
-public abstract class BaseFragment extends SupportFragment implements BaseView, Consumer<Disposable> {
+public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFragment implements BaseView, Consumer<Disposable> {
     protected static final String TAG = BaseFragment.class.getSimpleName();
 
     protected App mApplication;
@@ -66,6 +67,8 @@ public abstract class BaseFragment extends SupportFragment implements BaseView, 
     protected Handler mHandler = new Handler();
     //记录是否第一次进入
     private boolean isFirst = true;
+
+    protected DB mBinding;
 
     protected abstract @LayoutRes
     int onBindLayout();
@@ -143,6 +146,7 @@ public abstract class BaseFragment extends SupportFragment implements BaseView, 
     protected void loadView() {
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
+        mBinding= DataBindingUtil.bind(contentView);
         LoadSir.Builder builder = new LoadSir.Builder()
                 .addCallback(getInitStatus())
                 .addCallback(getEmptyStatus())
@@ -162,10 +166,11 @@ public abstract class BaseFragment extends SupportFragment implements BaseView, 
      * 初始化基本布局
      */
     private void initCommonView() {
-        mSimpleTitleBar = mView.findViewById(R.id.ctb_simple);
         mViewStubContent = mView.findViewById(R.id.view_stub_content);
+        ViewStub viewStubBar = mView.findViewById(R.id.view_stub_bar);
         if (enableSimplebar()) {
-            mSimpleTitleBar.setVisibility(View.VISIBLE);
+            viewStubBar.setLayoutResource(R.layout.common_layout_simplebar);
+            mSimpleTitleBar = viewStubBar.inflate().findViewById(R.id.ctb_simple);
             initSimpleBar(mSimpleTitleBar);
         }
     }
@@ -349,17 +354,6 @@ public abstract class BaseFragment extends SupportFragment implements BaseView, 
             onRevisible();
         }
         isFirst = false;
-    }
-
-    /**
-     * findViewById
-     *
-     * @param id
-     * @param <T>
-     * @return
-     */
-    protected <T extends View> T fd(@IdRes int id) {
-        return mView.findViewById(id);
     }
 
     @Override

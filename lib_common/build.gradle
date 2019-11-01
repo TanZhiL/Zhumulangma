@@ -31,6 +31,9 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+    dataBinding {
+        enabled true
+    }
 }
 dependencies {
     api project(':lib_third')

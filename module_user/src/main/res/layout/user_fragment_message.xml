@@ -1,181 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
 
-    <android.support.constraint.ConstraintLayout
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="54dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView229"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:bl_solid_color="#ffe599"
-            app:bl_corners_radius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView228"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:tint="@color/white"
-            android:src="@drawable/ic_user_wenda"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView229"
-            app:layout_constraintEnd_toEndOf="@+id/imageView229"
-            app:layout_constraintStart_toStartOf="@+id/imageView229"
-            app:layout_constraintTop_toTopOf="@+id/imageView229" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="54dp">
 
-        <TextView
-            android:id="@+id/textView245"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="问答"
-            android:textColor="@color/colorGray"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView229"
-            app:layout_constraintStart_toEndOf="@+id/imageView229"
-            app:layout_constraintTop_toTopOf="@+id/imageView229" />
+            <ImageView
+                android:id="@+id/imageView229"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:bl_solid_color="#ffe599"
+                app:bl_corners_radius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView230"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:tint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_common_more_arrow"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-<View
-    android:layout_width="match_parent"
-    style="@style/SecondHLine"/>
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="54dp">
+            <ImageView
+                android:id="@+id/imageView228"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:tint="@color/white"
+                android:src="@drawable/ic_user_wenda"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView229"
+                app:layout_constraintEnd_toEndOf="@+id/imageView229"
+                app:layout_constraintStart_toStartOf="@+id/imageView229"
+                app:layout_constraintTop_toTopOf="@+id/imageView229" />
 
-        <ImageView
-            android:id="@+id/imageView129"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:bl_solid_color="#b6d7a8"
-            app:bl_corners_radius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textView245"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="问答"
+                android:textColor="@color/colorGray"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView229"
+                app:layout_constraintStart_toEndOf="@+id/imageView229"
+                app:layout_constraintTop_toTopOf="@+id/imageView229" />
 
-        <ImageView
-            android:id="@+id/imageView128"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:tint="@color/white"
-            android:src="@drawable/ic_user_tongzhi"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView129"
-            app:layout_constraintEnd_toEndOf="@+id/imageView129"
-            app:layout_constraintStart_toStartOf="@+id/imageView129"
-            app:layout_constraintTop_toTopOf="@+id/imageView129" />
+            <ImageView
+                android:id="@+id/imageView230"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:tint="@color/colorPrimaryDark"
+                android:src="@drawable/ic_common_more_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/textView145"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="听友圈通知"
-            android:textColor="@color/colorGray"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView129"
-            app:layout_constraintStart_toEndOf="@+id/imageView129"
-            app:layout_constraintTop_toTopOf="@+id/imageView129" />
+        <View
+            android:layout_width="match_parent"
+            style="@style/SecondHLine" />
 
-        <ImageView
-            android:id="@+id/imageView130"
-            android:layout_width="23dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:tint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_common_more_arrow"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="54dp">
 
-    <View
-        android:layout_width="match_parent"
-        style="@style/SecondHLine"/>
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="54dp">
+            <ImageView
+                android:id="@+id/imageView129"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:bl_solid_color="#b6d7a8"
+                app:bl_corners_radius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imageView29"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:bl_solid_color="#a4c2f4"
-            app:bl_corners_radius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/imageView128"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:tint="@color/white"
+                android:src="@drawable/ic_user_tongzhi"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView129"
+                app:layout_constraintEnd_toEndOf="@+id/imageView129"
+                app:layout_constraintStart_toStartOf="@+id/imageView129"
+                app:layout_constraintTop_toTopOf="@+id/imageView129" />
 
-        <ImageView
-            android:id="@+id/imageView28"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:tint="@color/white"
-            android:src="@drawable/ic_user_pinglun"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView29"
-            app:layout_constraintEnd_toEndOf="@+id/imageView29"
-            app:layout_constraintStart_toStartOf="@+id/imageView29"
-            app:layout_constraintTop_toTopOf="@+id/imageView29" />
+            <TextView
+                android:id="@+id/textView145"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="听友圈通知"
+                android:textColor="@color/colorGray"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView129"
+                app:layout_constraintStart_toEndOf="@+id/imageView129"
+                app:layout_constraintTop_toTopOf="@+id/imageView129" />
 
-        <TextView
-            android:id="@+id/textView45"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="评论"
-            android:textColor="@color/colorGray"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView29"
-            app:layout_constraintStart_toEndOf="@+id/imageView29"
-            app:layout_constraintTop_toTopOf="@+id/imageView29" />
+            <ImageView
+                android:id="@+id/imageView130"
+                android:layout_width="23dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:tint="@color/colorPrimaryDark"
+                android:src="@drawable/ic_common_more_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/imageView30"
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:tint="@color/colorPrimaryDark"
-            android:src="@drawable/ic_common_more_arrow"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
-    <View
-        android:layout_width="match_parent"
-        style="@style/SecondHLine"/>
-</LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            style="@style/SecondHLine" />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="54dp">
+
+            <ImageView
+                android:id="@+id/imageView29"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:bl_solid_color="#a4c2f4"
+                app:bl_corners_radius="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView28"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:tint="@color/white"
+                android:src="@drawable/ic_user_pinglun"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView29"
+                app:layout_constraintEnd_toEndOf="@+id/imageView29"
+                app:layout_constraintStart_toStartOf="@+id/imageView29"
+                app:layout_constraintTop_toTopOf="@+id/imageView29" />
+
+            <TextView
+                android:id="@+id/textView45"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="评论"
+                android:textColor="@color/colorGray"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView29"
+                app:layout_constraintStart_toEndOf="@+id/imageView29"
+                app:layout_constraintTop_toTopOf="@+id/imageView29" />
+
+            <ImageView
+                android:id="@+id/imageView30"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:tint="@color/colorPrimaryDark"
+                android:src="@drawable/ic_common_more_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            style="@style/SecondHLine" />
+    </LinearLayout>
+</layout>

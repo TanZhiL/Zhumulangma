@@ -68,6 +68,10 @@ android {
               manifestPlaceholders = [CHANNEL_VALUE: "xiaomi"]
           }*/
     }
+
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {

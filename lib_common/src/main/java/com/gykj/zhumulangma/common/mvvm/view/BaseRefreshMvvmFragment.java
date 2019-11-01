@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.arch.lifecycle.Observer;
+import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -18,7 +19,8 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:自动处理刷新Fragment基类
  */
-public abstract class BaseRefreshMvvmFragment<VM extends BaseRefreshViewModel, T> extends BaseMvvmFragment<VM>
+public abstract class BaseRefreshMvvmFragment<DB extends ViewDataBinding,VM extends BaseRefreshViewModel, T>
+        extends BaseMvvmFragment<DB,VM>
         implements OnRefreshLoadMoreListener {
 
     private WrapRefresh mWrapRefresh;

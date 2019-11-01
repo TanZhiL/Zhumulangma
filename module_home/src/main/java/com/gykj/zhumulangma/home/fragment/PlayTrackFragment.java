@@ -14,7 +14,6 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +39,7 @@ import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
+import com.gykj.zhumulangma.home.databinding.HomeFragmentPlayTrackBinding;
 import com.gykj.zhumulangma.home.dialog.CommentPopup;
 import com.gykj.zhumulangma.home.dialog.PlaySchedulePopup;
 import com.gykj.zhumulangma.home.dialog.PlayTempoPopup;
@@ -52,7 +52,6 @@ import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
 import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
@@ -82,45 +81,24 @@ import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_VALUES;
 import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 
 @Route(path = Constants.Router.Home.F_PLAY_TRACK)
-public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> implements
+public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBinding,PlayTrackViewModel> implements
         NestedScrollView.OnScrollChangeListener, View.OnClickListener,
         BaseQuickAdapter.OnItemClickListener, OnSeekChangeListener,
         PlaySchedulePopup.onSelectedListener, PlayTrackPopup.onActionListener,
         IXmDataCallback, PlayTempoPopup.onTempoSelectedListener, View.OnTouchListener {
 
-    private NestedScrollView msv;
-    private CommonTitleBar ctbTrans;
-    private CommonTitleBar ctbWhite;
-    private View clController;
-
     private ImageView whiteLeft;
-    private TextView tvSchedule;
     private ImageView transLeft;
-    private IndicatorSeekBar isbProgress;
-    private LottieAnimationView lavPlayPause;
-    private LottieAnimationView lavBuffering;
-    private ImageView ivBg;
+
     private AlbumAdapter mAlbumAdapter;
-    private View clAction;
-
-    private TextView tvActionCur;
-    private TextView tvActionDur;
-    private TextView tvPer15;
-    private TextView tvNext15;
-    private TextView tvTempo;
-
     private Track mTrack;
     private boolean isPlaying;
-
-    private LottieAnimationView lavPlayNext;
-    private LottieAnimationView lavPlayPre;
     private PlaySchedulePopup mSchedulePopup;
     private PlayTrackPopup mPlayTrackPopup;
-
+    private CommentPopup mCommentPopup;
     private boolean isUp;
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mActivity);
 
-    private CommentPopup mCommentPopup;
 
 
     public PlayTrackFragment() {
@@ -146,28 +124,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     protected void initView(View view) {
-        msv = fd(R.id.msv);
-        ctbTrans = fd(R.id.ctb_trans);
-        ctbWhite = fd(R.id.ctb_white);
-        ivBg = fd(R.id.iv_bg);
-        isbProgress = fd(R.id.ib_progress);
-        clController = fd(R.id.cl_controller);
-        tvSchedule = fd(R.id.tv_schedule);
-        lavPlayPause = fd(R.id.lav_play_pause);
-        clAction = fd(R.id.cl_action);
-        lavBuffering = fd(R.id.lav_buffering);
-        RecyclerView rvRelative = fd(R.id.rv_relative);
-        lavPlayNext = fd(R.id.lav_next);
-        lavPlayPre = fd(R.id.lav_pre);
-        tvActionCur = fd(R.id.tv_action_cur);
-        tvActionDur = fd(R.id.tv_action_duration);
-        tvPer15 = fd(R.id.tv_pre15);
-        tvNext15 = fd(R.id.tv_next15);
-        tvTempo = fd(R.id.tv_tempo);
 
-        rvRelative.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.rvRelative.setLayoutManager(new LinearLayoutManager(mActivity));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_line);
-        mAlbumAdapter.bindToRecyclerView(rvRelative);
+        mAlbumAdapter.bindToRecyclerView(mBinding.rvRelative);
         initBar();
         new Handler().postDelayed(() -> {
             if (mPlayerManager.isPlaying()) {
@@ -187,9 +147,9 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     private void initBar() {
 
-        transLeft = ctbTrans.getLeftCustomView().findViewById(R.id.iv_left);
-        ImageView transRight1 = ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
-        ImageView transRight2 = ctbTrans.getRightCustomView().findViewById(R.id.iv2_right);
+        transLeft = mBinding.ctbTrans.getLeftCustomView().findViewById(R.id.iv_left);
+        ImageView transRight1 = mBinding.ctbTrans.getRightCustomView().findViewById(R.id.iv1_right);
+        ImageView transRight2 = mBinding.ctbTrans.getRightCustomView().findViewById(R.id.iv2_right);
 
 
         transLeft.setImageResource(R.drawable.ic_common_titlebar_back);
@@ -211,10 +171,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         }
         transRight2.setVisibility(View.VISIBLE);
         transRight2.setOnClickListener(this);
-        whiteLeft = ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
-        ImageView whiteRight1 = ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
-        ImageView whiteRight2 = ctbWhite.getRightCustomView().findViewById(R.id.iv2_right);
-        TextView tvTitle = ctbWhite.getCenterCustomView().findViewById(R.id.tv_title);
+        whiteLeft = mBinding.ctbWhite.getLeftCustomView().findViewById(R.id.iv_left);
+        ImageView whiteRight1 = mBinding.ctbWhite.getRightCustomView().findViewById(R.id.iv1_right);
+        ImageView whiteRight2 = mBinding.ctbWhite.getRightCustomView().findViewById(R.id.iv2_right);
+        TextView tvTitle = mBinding.ctbWhite.getCenterCustomView().findViewById(R.id.tv_title);
         tvTitle.setVisibility(View.VISIBLE);
         tvTitle.setText("歌曲详情");
 
@@ -231,31 +191,31 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void initListener() {
         super.initListener();
-        msv.setOnScrollChangeListener(this);
+        mBinding.nsv.setOnScrollChangeListener(this);
         whiteLeft.setOnClickListener(this);
         transLeft.setOnClickListener(this);
-        fd(R.id.fl_play_pause).setOnClickListener(this);
-        fd(R.id.cl_album).setOnClickListener(this);
-        fd(R.id.tv_play_list).setOnClickListener(this);
-        fd(R.id.iv_play_list).setOnClickListener(this);
-        fd(R.id.iv_schedule).setOnClickListener(this);
-        fd(R.id.cl_announcer).setOnClickListener(this);
-        fd(R.id.tv_comment).setOnClickListener(this);
-        ivBg.setOnClickListener(this);
-        clAction.setOnClickListener(this);
-        lavPlayNext.setOnClickListener(this);
-        lavPlayPre.setOnClickListener(this);
-        tvSchedule.setOnClickListener(this);
-        tvPer15.setOnClickListener(this);
-        tvNext15.setOnClickListener(this);
-        tvTempo.setOnClickListener(this);
+        mBinding.flPlayPause.setOnClickListener(this);
+        mBinding.clAlbum.setOnClickListener(this);
+        mBinding.tvPlayList.setOnClickListener(this);
+        mBinding.ivPlayList.setOnClickListener(this);
+        mBinding.ivSchedule.setOnClickListener(this);
+        mView.findViewById(R.id.cl_announcer).setOnClickListener(this);
+        mBinding.tvComment.setOnClickListener(this);
+        mBinding.ivBg.setOnClickListener(this);
+        mBinding.clAction.setOnClickListener(this);
+        mBinding.lavNext.setOnClickListener(this);
+        mBinding.lavPre.setOnClickListener(this);
+        mBinding.tvSchedule.setOnClickListener(this);
+        mBinding.tvPre15.setOnClickListener(this);
+        mBinding.tvNext15.setOnClickListener(this);
+        mBinding.tvTempo.setOnClickListener(this);
         mAlbumAdapter.setOnItemClickListener(this);
-        isbProgress.setOnSeekChangeListener(this);
-        isbProgress.setOnTouchListener(this);
+        mBinding.isbProgress.setOnSeekChangeListener(this);
+        mBinding.isbProgress.setOnTouchListener(this);
         mPlayerManager.addPlayerStatusListener(playerStatusListener);
         mPlayerManager.addAdsStatusListener(adsStatusListener);
 
-        fd(R.id.tv_more_relative).setOnClickListener(view -> {
+        mBinding.tvMoreRelative.setOnClickListener(view -> {
             Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
                     .withString(KeyCode.Home.TITLE, "更多推荐")
@@ -266,28 +226,28 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     EventCode.Main.NAVIGATE, navigateBean));
 
         });
-        RxView.clicks(fd(R.id.ll_subscribe))
+        RxView.clicks(mBinding.llSubscribe)
                 .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     if (mTrack != null)
                         mViewModel.subscribe(String.valueOf(mTrack.getAlbum().getAlbumId()));
                 });
-        RxView.clicks(fd(R.id.ll_unsubscribe))
+        RxView.clicks(mBinding.llUnsubscribe)
                 .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     if (mTrack != null)
                         mViewModel.unsubscribe(mTrack.getAlbum().getAlbumId());
                 });
-        RxView.clicks(fd(R.id.iv_like))
+        RxView.clicks(mBinding.ivLike)
                 .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     if (mTrack != null)
                         mViewModel.like(mTrack);
                 });
-        RxView.clicks(fd(R.id.iv_unlike))
+        RxView.clicks(mBinding.ivUnlike)
                 .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
@@ -303,46 +263,46 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
             mTrack = currSoundIgnoreKind;
 
             Glide.with(this).load(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlLarge())
-                    ? currSoundIgnoreKind.getAlbum().getCoverUrlLarge() : currSoundIgnoreKind.getCoverUrlLarge()).into(ivBg);
-            Glide.with(this).load(currSoundIgnoreKind.getAnnouncer().getAvatarUrl()).into((ImageView) fd(R.id.iv_announcer_cover));
-            Glide.with(this).load(currSoundIgnoreKind.getAlbum().getCoverUrlMiddle()).into((ImageView) fd(R.id.iv_album_cover));
+                    ? currSoundIgnoreKind.getAlbum().getCoverUrlLarge() : currSoundIgnoreKind.getCoverUrlLarge()).into(mBinding.ivBg);
+            Glide.with(this).load(currSoundIgnoreKind.getAnnouncer().getAvatarUrl()).into((ImageView) mView.findViewById(R.id.iv_announcer_cover));
+            Glide.with(this).load(currSoundIgnoreKind.getAlbum().getCoverUrlMiddle()).into((ImageView) mView.findViewById(R.id.iv_album_cover));
 
-            ((TextView) fd(R.id.tv_track_name)).setText(currSoundIgnoreKind.getTrackTitle());
-            ((TextView) fd(R.id.tv_announcer_name)).setText(currSoundIgnoreKind.getAnnouncer().getNickname());
+            mBinding.tvTrackName.setText(currSoundIgnoreKind.getTrackTitle());
+            ((TextView) mView.findViewById(R.id.tv_announcer_name)).setText(currSoundIgnoreKind.getAnnouncer().getNickname());
 
 
-            fd(R.id.tv_vip).setVisibility(currSoundIgnoreKind.getAnnouncer().isVerified() ? View.VISIBLE : View.GONE);
-            ((TextView) fd(R.id.tv_album_name)).setText(currSoundIgnoreKind.getAlbum().getAlbumTitle());
-            ((TextView) fd(R.id.tv_track_intro)).setText(currSoundIgnoreKind.getTrackIntro());
-            ((TextView) fd(R.id.tv_playcount_createtime)).setText(getString(R.string.playcount_createtime,
+            mView.findViewById(R.id.tv_vip).setVisibility(currSoundIgnoreKind.getAnnouncer().isVerified() ? View.VISIBLE : View.GONE);
+            mBinding.tvAlbumName.setText(currSoundIgnoreKind.getAlbum().getAlbumTitle());
+            mBinding.tvTrackIntro.setText(currSoundIgnoreKind.getTrackIntro());
+            mBinding.tvPlaycountCreatetime.setText(getString(R.string.playcount_createtime,
                     ZhumulangmaUtil.toWanYi(currSoundIgnoreKind.getPlayCount())) + "\u3000\u3000" +
                     TimeUtils.millis2String(currSoundIgnoreKind.getCreatedAt(), new SimpleDateFormat("yyyy-MM-dd")));
-            ((TextView) fd(R.id.tv_favorite_count)).setText(getString(R.string.favorite_count,
+            mBinding.tvFavoriteCount.setText(getString(R.string.favorite_count,
                     ZhumulangmaUtil.toWanYi(currSoundIgnoreKind.getFavoriteCount())));
-            ((TextView) fd(R.id.tv_comment_count)).setText(getString(R.string.comment_count,
+            mBinding.tvCommentCount.setText(getString(R.string.comment_count,
                     ZhumulangmaUtil.toWanYi(currSoundIgnoreKind.getCommentCount())));
 
-            ((TextView) fd(R.id.tv_duration)).setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
+            mBinding.tvDuration.setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
 
             mViewModel.getRelativeAlbums(String.valueOf(mTrack.getDataId()));
             mViewModel.getAnnouncer(mTrack.getAnnouncer().getAnnouncerId());
-            isbProgress.setMax(currSoundIgnoreKind.getDuration());
+            mBinding.isbProgress.setMax(currSoundIgnoreKind.getDuration());
             if (mPlayerManager.isPlaying()) {
-                ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(
+                mBinding.tvCurrent.setText(ZhumulangmaUtil.secondToTimeE(
                         mPlayerManager.getPlayCurrPositon() / 1000));
-                isbProgress.setProgress((float) mPlayerManager.getPlayCurrPositon() / 1000);
+                mBinding.isbProgress.setProgress((float) mPlayerManager.getPlayCurrPositon() / 1000);
             } else {
-                ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(0));
-                isbProgress.setProgress(0);
+                mBinding.tvCurrent.setText(ZhumulangmaUtil.secondToTimeE(0));
+                mBinding.isbProgress.setProgress(0);
             }
             mViewModel.getSubscribe(String.valueOf(mTrack.getAlbum().getAlbumId()));
             mViewModel.getFavorite(String.valueOf(mTrack.getDataId()));
         }
         mHandler.removeCallbacksAndMessages(null);
         mHandler.postDelayed(this::scheduleTime, 0);
-        tvActionDur.setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
-        tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getPlayCurrPositon() / 1000));
-        tvTempo.setText(TEMPO_LABLES[Arrays.binarySearch(TEMPO_VALUES, XmPlayerManager.getInstance(mActivity).getTempo())]);
+        mBinding.tvActionDuration.setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
+        mBinding.tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getPlayCurrPositon() / 1000));
+        mBinding.tvTempo.setText(TEMPO_LABLES[Arrays.binarySearch(TEMPO_VALUES, XmPlayerManager.getInstance(mActivity).getTempo())]);
     }
 
     private void scheduleTime() {
@@ -350,19 +310,19 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
         long time = SPUtils.getInstance().getLong(Constants.SP.PLAY_SCHEDULE_TIME, 0);
 
         if (type == 0) {
-            tvSchedule.setText("定时");
+            mBinding.tvSchedule.setText("定时");
             mHandler.removeCallbacksAndMessages(null);
         } else if (type == 1) {
             mHandler.postDelayed(this::scheduleTime, 1000);
-            tvSchedule.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getDuration() / 1000 -
+            mBinding.tvSchedule.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getDuration() / 1000 -
                     mPlayerManager.getPlayCurrPositon() / 1000));
         } else {
             if (System.currentTimeMillis() < time) {
                 mHandler.postDelayed(this::scheduleTime, 1000);
-                tvSchedule.setText(ZhumulangmaUtil.secondToTimeE((time - System.currentTimeMillis()) / 1000));
+                mBinding.tvSchedule.setText(ZhumulangmaUtil.secondToTimeE((time - System.currentTimeMillis()) / 1000));
             } else {
                 mHandler.removeCallbacksAndMessages(null);
-                tvSchedule.setText("定时");
+                mBinding.tvSchedule.setText("定时");
             }
         }
     }
@@ -370,24 +330,24 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void initViewObservable() {
         mViewModel.getSubscribeEvent().observe(this, aBoolean -> {
-            fd(R.id.ll_subscribe).setVisibility(aBoolean ? View.GONE : View.VISIBLE);
-            fd(R.id.ll_unsubscribe).setVisibility(aBoolean ? View.VISIBLE : View.GONE);
+            mBinding.llSubscribe.setVisibility(aBoolean ? View.GONE : View.VISIBLE);
+            mBinding.llUnsubscribe.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
         });
         mViewModel.getFavoriteEvent().observe(this, aBoolean -> {
-            fd(R.id.iv_like).setVisibility(aBoolean ? View.GONE : View.VISIBLE);
-            fd(R.id.iv_unlike).setVisibility(aBoolean ? View.VISIBLE : View.GONE);
+            mBinding.ivLike.setVisibility(aBoolean ? View.GONE : View.VISIBLE);
+            mBinding.ivUnlike.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
         });
         mViewModel.getAlbumsEvent().observe(this, albums -> mAlbumAdapter.setNewData(albums));
 
         mViewModel.getAnnouncerEvent().observe(this, announcer -> {
             String vsignature = announcer.getVsignature();
             if (TextUtils.isEmpty(vsignature)) {
-                fd(R.id.tv_vsignature).setVisibility(View.GONE);
+                mView.findViewById(R.id.tv_vsignature).setVisibility(View.GONE);
             } else {
-                fd(R.id.tv_vsignature).setVisibility(View.VISIBLE);
-                ((TextView) fd(R.id.tv_vsignature)).setText(vsignature);
+                mView.findViewById(R.id.tv_vsignature).setVisibility(View.VISIBLE);
+                ((TextView) mView.findViewById(R.id.tv_vsignature)).setText(vsignature);
             }
-            ((TextView) fd(R.id.tv_following_count)).setText(getString(R.string.following_count,
+            ((TextView) mView.findViewById(R.id.tv_following_count)).setText(getString(R.string.following_count,
                     ZhumulangmaUtil.toWanYi(announcer.getFollowerCount())));
         });
     }
@@ -419,7 +379,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE, navigateBean));
             }
         } else if (R.id.lav_pre == id) {
-            lavPlayPre.playAnimation();
+            mBinding.lavPre.playAnimation();
             if (mPlayerManager.getPlayMode() == XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM) {
                 mPlayerManager.playPre();
                 return;
@@ -430,7 +390,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                 ToastUtil.showToast("没有更多");
             }
         } else if (R.id.lav_next == id) {
-            lavPlayNext.playAnimation();
+            mBinding.lavNext.playAnimation();
             if (mPlayerManager.getPlayMode() == XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM) {
                 mPlayerManager.playNext();
                 return;
@@ -476,15 +436,15 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                             XmDownloadManager.getInstance().removeDownloadStatueListener(downloadStatueListener);
                         }
                     }).enableDrag(false).asCustom(mPlayTrackPopup).show();
-        } else if (v == ivBg) {
-            clAction.setVisibility(View.VISIBLE);
-        } else if (v == clAction) {
-            clAction.setVisibility(View.GONE);
-        } else if (v == tvPer15) {
+        } else if (v == mBinding.ivBg) {
+            mBinding.clAction.setVisibility(View.VISIBLE);
+        } else if (v == mBinding.clAction) {
+            mBinding.clAction.setVisibility(View.GONE);
+        } else if (v == mBinding.tvPre15) {
             mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon() - 15 * 1000);
-        } else if (v == tvNext15) {
+        } else if (v == mBinding.tvNext15) {
             mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon() + 15 * 1000);
-        } else if (v == tvTempo) {
+        } else if (v == mBinding.tvTempo) {
             new XPopup.Builder(getContext()).asCustom(new PlayTempoPopup(mActivity, this)).show();
         } else if (id == R.id.cl_announcer) {
             Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
@@ -620,7 +580,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     @Override
     public void onSeeking(SeekParams seekParams) {
 
-        TextView indicator = isbProgress.getIndicator().getTopContentView().findViewById(R.id.tv_indicator);
+        TextView indicator = mBinding.isbProgress.getIndicator().getTopContentView().findViewById(R.id.tv_indicator);
         indicator.setText(ZhumulangmaUtil.secondToTimeE(seekParams.progress)
                 + "/" + ZhumulangmaUtil.secondToTimeE((long) seekParams.seekBar.getMax()));
     }
@@ -642,53 +602,53 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
     private void playAnim() {
         if (!isPlaying) {
 
-            lavPlayPause.setMinAndMaxFrame(55, 90);
-            lavPlayPause.loop(false);
-            lavPlayPause.playAnimation();
-            lavBuffering.cancelAnimation();
-            lavBuffering.setVisibility(View.INVISIBLE);
-            lavPlayPause.setVisibility(View.VISIBLE);
-            lavPlayPause.addAnimatorListener(new AnimatorListenerAdapter() {
+            mBinding.lavPlayPause.setMinAndMaxFrame(55, 90);
+            mBinding.lavPlayPause.loop(false);
+            mBinding.lavPlayPause.playAnimation();
+            mBinding.lavBuffering.cancelAnimation();
+            mBinding.lavBuffering.setVisibility(View.INVISIBLE);
+            mBinding.lavPlayPause.setVisibility(View.VISIBLE);
+            mBinding.lavPlayPause.addAnimatorListener(new AnimatorListenerAdapter() {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
                     playingAnim();
-                    lavPlayPause.removeAnimatorListener(this);
+                    mBinding.lavPlayPause.removeAnimatorListener(this);
                 }
             });
         }
     }
 
     private void playingAnim() {
-        lavPlayPause.removeAllAnimatorListeners();
+        mBinding.lavPlayPause.removeAllAnimatorListeners();
         isPlaying = true;
-        lavPlayPause.setMinAndMaxFrame(90, 170);
-        lavPlayPause.loop(true);
-        lavPlayPause.playAnimation();
-        lavBuffering.cancelAnimation();
-        lavBuffering.setVisibility(View.INVISIBLE);
-        lavPlayPause.setVisibility(View.VISIBLE);
+        mBinding.lavPlayPause.setMinAndMaxFrame(90, 170);
+        mBinding.lavPlayPause.loop(true);
+        mBinding.lavPlayPause.playAnimation();
+        mBinding.lavBuffering.cancelAnimation();
+        mBinding.lavBuffering.setVisibility(View.INVISIBLE);
+        mBinding.lavPlayPause.setVisibility(View.VISIBLE);
     }
 
     private void bufferingAnim() {
 
-        lavPlayPause.cancelAnimation();
-        lavBuffering.playAnimation();
+        mBinding.lavPlayPause.cancelAnimation();
+        mBinding.lavBuffering.playAnimation();
         isPlaying = false;
-        lavPlayPause.setVisibility(View.INVISIBLE);
-        lavBuffering.setVisibility(View.VISIBLE);
+        mBinding.lavPlayPause.setVisibility(View.INVISIBLE);
+        mBinding.lavBuffering.setVisibility(View.VISIBLE);
     }
 
     private void pauseAnim() {
-        lavBuffering.cancelAnimation();
-        lavPlayPause.removeAllAnimatorListeners();
+        mBinding.lavBuffering.cancelAnimation();
+        mBinding.lavPlayPause.removeAllAnimatorListeners();
         isPlaying = false;
-        lavPlayPause.setMinAndMaxFrame(180, 210);
-        lavPlayPause.loop(false);
-        lavPlayPause.playAnimation();
-        lavBuffering.setVisibility(View.INVISIBLE);
-        lavPlayPause.setVisibility(View.VISIBLE);
+        mBinding.lavPlayPause.setMinAndMaxFrame(180, 210);
+        mBinding.lavPlayPause.loop(false);
+        mBinding.lavPlayPause.playAnimation();
+        mBinding.lavBuffering.setVisibility(View.INVISIBLE);
+        mBinding.lavPlayPause.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -784,7 +744,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onTempoSelected(String tempo) {
-        tvTempo.setText(tempo);
+        mBinding.tvTempo.setText(tempo);
     }
 
 
@@ -806,8 +766,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
     @Override
     public void onScrollChange(NestedScrollView nestedScrollView, int i, int scrollY, int i2, int i3) {
-        ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(scrollY, SizeUtils.dp2px(100), clController.getTop() - SizeUtils.dp2px(80)));
-        ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(scrollY, SizeUtils.dp2px(100), clController.getTop() - SizeUtils.dp2px(80)));
+        mBinding.ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(scrollY, SizeUtils.dp2px(100),
+                mBinding.clController.getTop() - SizeUtils.dp2px(80)));
+        mBinding.ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(scrollY, SizeUtils.dp2px(100),
+                mBinding. clController.getTop() - SizeUtils.dp2px(80)));
     }
 
     private IXmPlayerStatusListener playerStatusListener = new IXmPlayerStatusListener() {
@@ -881,10 +843,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
 
         @Override
         public void onPlayProgress(int i, int i1) {
-            ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
-            tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
+            mBinding.tvCurrent.setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
+            mBinding.tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(i / 1000));
             if (!isTouch) {
-                isbProgress.setProgress((float) i / 1000);
+                mBinding.isbProgress.setProgress((float) i / 1000);
             }
         }
 

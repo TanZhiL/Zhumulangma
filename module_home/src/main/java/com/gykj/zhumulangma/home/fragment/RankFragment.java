@@ -4,7 +4,6 @@ package com.gykj.zhumulangma.home.fragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,14 +16,15 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RankFreeAdapter;
 import com.gykj.zhumulangma.home.adapter.RankPaidAdapter;
+import com.gykj.zhumulangma.home.databinding.HomeFragmentRankBinding;
 import com.gykj.zhumulangma.home.dialog.RankCategoryPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
@@ -36,7 +36,6 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
-import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
@@ -54,7 +53,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Description:排行榜
  */
 @Route(path = Constants.Router.Home.F_RANK)
-public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> implements
+public class RankFragment extends BaseRefreshMvvmFragment<HomeFragmentRankBinding,RankViewModel, Album> implements
         RankCategoryPopup.onSelectedListener, RankCategoryPopup.onPopupDismissingListener {
 
     private RankFreeAdapter mFreeAdapter;
@@ -82,8 +81,6 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
 
     @Override
     public void initView(View view) {
-        MagicIndicator magicIndicator = fd(R.id.magic_indicator);
-        ViewPager viewpager = fd(R.id.viewpager);
 
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
         ivCategoryDown.setVisibility(View.VISIBLE);
@@ -104,12 +101,12 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
         mFreeAdapter.bindToRecyclerView(rvFree);
         mPaidAdapter.bindToRecyclerView(rvPaid);
 
-        viewpager.setAdapter(new RankPagerAdapter());
+        mBinding.viewpager.setAdapter(new RankPagerAdapter());
         final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdjustMode(true);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(mTabs), viewpager, 125));
-        magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(magicIndicator, viewpager);
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(mTabs),  mBinding.viewpager, 125));
+        mBinding.magicIndicator.setNavigator(commonNavigator);
+        ViewPagerHelper.bind( mBinding.magicIndicator,  mBinding.viewpager);
 
         mCategoryPopup=new RankCategoryPopup(mActivity,this);
         mCategoryPopup.setDismissingListener(this);
@@ -161,7 +158,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
             mCategoryPopup.dismiss();
         }else {
             ivCategoryDown.animate().rotation(180).setDuration(200);
-            new XPopup.Builder(mActivity).atView(fd(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mCategoryPopup).show();
+            new XPopup.Builder(mActivity).atView(mView.findViewById(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mCategoryPopup).show();
         }
     }
 

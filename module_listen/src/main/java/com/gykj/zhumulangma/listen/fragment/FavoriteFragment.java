@@ -3,19 +3,18 @@ package com.gykj.zhumulangma.listen.fragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.FavoriteBean;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.FavoriteAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.FavoriteViewModel;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 /**
@@ -25,10 +24,9 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  * <br/>Description:我的喜欢
  */
 @Route(path = Constants.Router.Listen.F_FAVORITE)
-public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel, FavoriteBean> implements
+public class FavoriteFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,FavoriteViewModel, FavoriteBean> implements
         BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
 
-    private SmartRefreshLayout refreshLayout;
     private FavoriteAdapter mFavoriteAdapter;
 
     @Override
@@ -38,12 +36,10 @@ public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel,
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = fd(R.id.recyclerview);
-        refreshLayout = fd(R.id.refreshLayout);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setHasFixedSize(true);
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.recyclerview.setHasFixedSize(true);
         mFavoriteAdapter = new FavoriteAdapter(R.layout.listen_item_favorite);
-        mFavoriteAdapter.bindToRecyclerView(recyclerView);
+        mFavoriteAdapter.bindToRecyclerView(mBinding.recyclerview);
     }
 
     @Override
@@ -56,7 +52,7 @@ public class FavoriteFragment extends BaseRefreshMvvmFragment<FavoriteViewModel,
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout,mFavoriteAdapter);
+        return new WrapRefresh(mBinding.refreshLayout,mFavoriteAdapter);
     }
 
 

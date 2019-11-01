@@ -25,6 +25,7 @@ import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.PlayRadioAdapter;
+import com.gykj.zhumulangma.home.databinding.HomeFragmentPlayRadioBinding;
 import com.gykj.zhumulangma.home.dialog.PlayRadioPopup;
 import com.gykj.zhumulangma.home.dialog.PlaySchedulePopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -62,17 +63,12 @@ import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
  * <br/>Description:
  */
 @Route(path = Constants.Router.Home.F_PLAY_RADIIO)
-public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> implements
+public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBinding,PlayRadioViewModel> implements
         View.OnClickListener, PlaySchedulePopup.onSelectedListener, IXmPlayerStatusListener,
         IXmAdsStatusListener, OnSeekChangeListener, View.OnTouchListener {
     private PlaySchedulePopup mSchedulePopup;
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mActivity);
     private Schedule mSchedule;
-    private IndicatorSeekBar isbProgress;
-    private LottieAnimationView lavPlayPause;
-    private LottieAnimationView lavBuffering;
-    private LottieAnimationView lavPlayNext;
-    private LottieAnimationView lavPlayPre;
     private boolean isPlaying;
 
     private PlayRadioPopup mPlayRadioPopup;
@@ -95,13 +91,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     @Override
     protected void initView(View view) {
         mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left).setRotation(-90);
-        fd(R.id.iv_item_play).setVisibility(View.GONE);
+        mView.findViewById(R.id.iv_item_play).setVisibility(View.GONE);
         mSchedulePopup = new PlaySchedulePopup(mActivity, this);
-        isbProgress = fd(R.id.ib_progress);
-        lavBuffering = fd(R.id.lav_buffering);
-        lavPlayPause = fd(R.id.lav_play_pause);
-        lavPlayNext = fd(R.id.lav_next);
-        lavPlayPre = fd(R.id.lav_pre);
         new Handler().postDelayed(() -> {
             if (mPlayerManager.isPlaying()) {
                 if (mPlayerManager.isAdPlaying()) {
@@ -118,17 +109,17 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     @Override
     public void initListener() {
         super.initListener();
-        fd(R.id.iv_history).setOnClickListener(this);
-        fd(R.id.tv_history).setOnClickListener(this);
-        fd(R.id.tv_play_list).setOnClickListener(this);
-        fd(R.id.iv_play_list).setOnClickListener(this);
-        fd(R.id.fl_play_pause).setOnClickListener(this);
-        lavPlayNext.setOnClickListener(this);
-        lavPlayPre.setOnClickListener(this);
+        mBinding.ivHistory.setOnClickListener(this);
+        mBinding.tvHistory.setOnClickListener(this);
+        mBinding.tvPlayList.setOnClickListener(this);
+        mBinding.ivPlayList.setOnClickListener(this);
+        mBinding.flPlayPause.setOnClickListener(this);
+        mBinding.lavNext.setOnClickListener(this);
+        mBinding.lavPre.setOnClickListener(this);
         mPlayerManager.addPlayerStatusListener(this);
         mPlayerManager.addAdsStatusListener(this);
-        isbProgress.setOnSeekChangeListener(this);
-        isbProgress.setOnTouchListener(this);
+        mBinding.isbProgress.setOnSeekChangeListener(this);
+        mBinding.isbProgress.setOnTouchListener(this);
     }
 
     @Override
@@ -137,17 +128,17 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
             try {
                 mSchedule = (Schedule) mPlayerManager.getCurrSound();
                 setTitle(new String[]{mSchedule.getRadioName()});
-                ((TextView) fd(R.id.tv_radio_name)).setText(mSchedule.getRadioName());
-                ((TextView) fd(R.id.tv_playcount)).setText(ZhumulangmaUtil.toWanYi(mSchedule.getRadioPlayCount()) + "人听过");
+                ((TextView) mView.findViewById(R.id.tv_radio_name)).setText(mSchedule.getRadioName());
+                ((TextView) mView.findViewById(R.id.tv_playcount)).setText(ZhumulangmaUtil.toWanYi(mSchedule.getRadioPlayCount()) + "人听过");
                 mViewModel.getPrograms(String.valueOf(mSchedule.getRadioId()));
 
-                ((TextView) fd(R.id.tv_time)).setText(mSchedule.getStartTime().substring(mSchedule.getStartTime().length() - 5) + "~"
+                mBinding.tvTime.setText(mSchedule.getStartTime().substring(mSchedule.getStartTime().length() - 5) + "~"
                         + mSchedule.getEndTime().substring(mSchedule.getEndTime().length() - 5));
-                isbProgress.setUserSeekAble(mPlayerManager.getCurrPlayType() == XmPlayListControl.PLAY_SOURCE_TRACK);
+                mBinding.isbProgress.setUserSeekAble(mPlayerManager.getCurrPlayType() == XmPlayListControl.PLAY_SOURCE_TRACK);
 
                 Program program = mSchedule.getRelatedProgram();
-                ((TextView) fd(R.id.tv_program_name)).setText(program.getProgramName());
-                Glide.with(this).load(program.getBackPicUrl()).into((ImageView) fd(R.id.iv_cover));
+                mBinding.tvProgramName.setText(program.getProgramName());
+                Glide.with(this).load(program.getBackPicUrl()).into((ImageView) mView.findViewById(R.id.iv_cover));
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < program.getAnnouncerList().size(); i++) {
                     sb.append(program.getAnnouncerList().get(i).getNickName());
@@ -155,7 +146,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
                         sb.append(",");
                     }
                 }
-                ((TextView) fd(R.id.tv_announcer_name)).setText("主播: "
+                mBinding.tvAnnouncerName.setText("主播: "
                         + (TextUtils.isEmpty(sb.toString()) ? mSchedule.getRadioName() : sb.toString()));
                 initProgress(mPlayerManager.getPlayCurrPositon(), mPlayerManager.getDuration());
             } catch (Exception e) {
@@ -179,18 +170,18 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
                 e.printStackTrace();
             }
         }
-        ((TextView) fd(R.id.tv_current)).setText(ZhumulangmaUtil.secondToTimeE(cur / 1000));
-        ((TextView) fd(R.id.tv_duration)).setText(ZhumulangmaUtil.secondToTimeE(dur / 1000));
+        mBinding.tvCurrent.setText(ZhumulangmaUtil.secondToTimeE(cur / 1000));
+        mBinding.tvDuration.setText(ZhumulangmaUtil.secondToTimeE(dur / 1000));
         if (!isTouch) {
-            isbProgress.setMax((float) dur / 1000);
-            isbProgress.setProgress((float) cur / 1000);
+            mBinding.isbProgress.setMax((float) dur / 1000);
+            mBinding.isbProgress.setProgress((float) cur / 1000);
         }
     }
 
     @Override
     public void initViewObservable() {
         mViewModel.getProgramsSingleLiveEvent().observe(this, programList ->
-                ((TextView) fd(R.id.tv_desc)).setText(getString(R.string.playing,
+                ((TextView) mView.findViewById(R.id.tv_desc)).setText(getString(R.string.playing,
                         programList.getmProgramList().get(0).getProgramName())));
         mViewModel.getYestodaySingleLiveEvent().observe(this, schedules ->
                 mPlayRadioPopup.getYestodayAdapter().setNewData(schedules));
@@ -326,14 +317,14 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
                 mPlayerManager.play();
             }
         } else if (R.id.lav_pre == id) {
-            lavPlayPre.playAnimation();
+            mBinding.lavPre.playAnimation();
             if (mPlayerManager.hasPreSound()) {
                 mPlayerManager.playPre();
             } else {
                 ToastUtil.showToast("没有更多");
             }
         } else if (R.id.lav_next == id) {
-            lavPlayNext.playAnimation();
+            mBinding.lavNext.playAnimation();
             if (mPlayerManager.hasNextSound()) {
                 mPlayerManager.playNext();
             } else {
@@ -477,58 +468,58 @@ public class PlayRadioFragment extends BaseMvvmFragment<PlayRadioViewModel> impl
     private void playAnim() {
         if (!isPlaying) {
 
-            lavPlayPause.setMinAndMaxFrame(55, 90);
-            lavPlayPause.loop(false);
-            lavPlayPause.playAnimation();
-            lavBuffering.cancelAnimation();
-            lavBuffering.setVisibility(View.GONE);
-            lavPlayPause.setVisibility(View.VISIBLE);
-            lavPlayPause.addAnimatorListener(new AnimatorListenerAdapter() {
+            mBinding.lavPlayPause.setMinAndMaxFrame(55, 90);
+            mBinding.lavPlayPause.loop(false);
+            mBinding.lavPlayPause.playAnimation();
+            mBinding.lavBuffering.cancelAnimation();
+            mBinding.lavBuffering.setVisibility(View.GONE);
+            mBinding.lavPlayPause.setVisibility(View.VISIBLE);
+            mBinding.lavPlayPause.addAnimatorListener(new AnimatorListenerAdapter() {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
                     playingAnim();
-                    lavPlayPause.removeAnimatorListener(this);
+                    mBinding.lavPlayPause.removeAnimatorListener(this);
                 }
             });
         }
     }
 
     private void playingAnim() {
-        lavPlayPause.removeAllAnimatorListeners();
+        mBinding.lavPlayPause.removeAllAnimatorListeners();
         isPlaying = true;
-        lavPlayPause.setMinAndMaxFrame(90, 170);
-        lavPlayPause.loop(true);
-        lavPlayPause.playAnimation();
-        lavBuffering.cancelAnimation();
-        lavBuffering.setVisibility(View.GONE);
-        lavPlayPause.setVisibility(View.VISIBLE);
+        mBinding.lavPlayPause.setMinAndMaxFrame(90, 170);
+        mBinding.lavPlayPause.loop(true);
+        mBinding.lavPlayPause.playAnimation();
+        mBinding.lavBuffering.cancelAnimation();
+        mBinding.lavBuffering.setVisibility(View.GONE);
+        mBinding.lavPlayPause.setVisibility(View.VISIBLE);
     }
 
     private void bufferingAnim() {
 
-        lavPlayPause.cancelAnimation();
-        lavBuffering.playAnimation();
+        mBinding.lavPlayPause.cancelAnimation();
+        mBinding.lavBuffering.playAnimation();
         isPlaying = false;
-        lavPlayPause.setVisibility(View.GONE);
-        lavBuffering.setVisibility(View.VISIBLE);
+        mBinding.lavPlayPause.setVisibility(View.GONE);
+        mBinding.lavBuffering.setVisibility(View.VISIBLE);
     }
 
     private void pauseAnim() {
-        lavBuffering.cancelAnimation();
-        lavPlayPause.removeAllAnimatorListeners();
+        mBinding.lavBuffering.cancelAnimation();
+        mBinding.lavPlayPause.removeAllAnimatorListeners();
         isPlaying = false;
-        lavPlayPause.setMinAndMaxFrame(180, 210);
-        lavPlayPause.loop(false);
-        lavPlayPause.playAnimation();
-        lavBuffering.setVisibility(View.GONE);
-        lavPlayPause.setVisibility(View.VISIBLE);
+        mBinding.lavPlayPause.setMinAndMaxFrame(180, 210);
+        mBinding.lavPlayPause.loop(false);
+        mBinding.lavPlayPause.playAnimation();
+        mBinding.lavBuffering.setVisibility(View.GONE);
+        mBinding.lavPlayPause.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onSeeking(SeekParams seekParams) {
-        TextView indicator = isbProgress.getIndicator().getTopContentView().findViewById(R.id.tv_indicator);
+        TextView indicator = mBinding.isbProgress.getIndicator().getTopContentView().findViewById(R.id.tv_indicator);
         indicator.setText(ZhumulangmaUtil.secondToTimeE(seekParams.progress)
                 + "/" + ZhumulangmaUtil.secondToTimeE((long) seekParams.seekBar.getMax()));
     }

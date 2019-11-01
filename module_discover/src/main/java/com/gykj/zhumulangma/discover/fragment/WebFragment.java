@@ -16,6 +16,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.discover.R;
+import com.gykj.zhumulangma.discover.databinding.DiscoverFragmentWebBinding;
 import com.just.agentwebX5.AgentWebX5;
 import com.just.agentwebX5.ChromeClientCallbackManager;
 import com.just.agentwebX5.DefaultWebClient;
@@ -43,7 +44,7 @@ import java.util.HashMap;
  * <br/>Description:
  */
 @Route(path = Constants.Router.Discover.F_WEB)
-public class WebFragment extends BaseFragment {
+public class WebFragment extends BaseFragment<DiscoverFragmentWebBinding> {
     private AgentWebX5 mAgentWeb;
     @Autowired(name = KeyCode.Discover.PATH)
     public String mPath;
@@ -77,7 +78,7 @@ public class WebFragment extends BaseFragment {
     public void initData() {
 
         mAgentWeb = AgentWebX5.with(this)
-                .setAgentWebParent(fd(R.id.fl_container), new FrameLayout.LayoutParams(-1, -1))
+                .setAgentWebParent(mBinding.flContainer, new FrameLayout.LayoutParams(-1, -1))
                 .setIndicatorColorWithHeight(getResources().getColor(R.color.colorPrimary), 1)
                 .setWebSettings(getSettings())
                 .setWebViewClient(mWebViewClient)

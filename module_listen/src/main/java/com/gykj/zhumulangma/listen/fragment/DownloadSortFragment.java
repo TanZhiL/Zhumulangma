@@ -19,6 +19,7 @@ import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.DownloadSortAdapter;
+import com.gykj.zhumulangma.listen.databinding.ListenFragmentDownloadSortBinding;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.DownloadSortViewModel;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -39,14 +40,13 @@ import java.util.Map;
  * <br/>Description:下载排序
  */
 @Route(path = Constants.Router.Listen.F_DOWNLOAD_SORT)
-public class DownloadSortFragment extends BaseMvvmFragment<DownloadSortViewModel> {
+public class DownloadSortFragment extends BaseMvvmFragment<ListenFragmentDownloadSortBinding,DownloadSortViewModel> {
 
     @Autowired(name = KeyCode.Listen.ALBUMID)
     public long mAlbumId;
 
     private DownloadSortAdapter mSortAdapter;
 
-    private XmDownloadManager mDownloadManager = XmDownloadManager.getInstance();
 
 
     @Override
@@ -56,16 +56,15 @@ public class DownloadSortFragment extends BaseMvvmFragment<DownloadSortViewModel
 
     @Override
     protected void initView(View view) {
-        RecyclerView recyclerView = fd(R.id.recyclerview);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setHasFixedSize(true);
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.recyclerview.setHasFixedSize(true);
         mSortAdapter = new DownloadSortAdapter(R.layout.listen_item_download_sort);
-        mSortAdapter.bindToRecyclerView(recyclerView);
+        mSortAdapter.bindToRecyclerView(mBinding.recyclerview);
 
         ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(mSortAdapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        itemTouchHelper.attachToRecyclerView(mBinding.recyclerview);
         // 开启拖拽
         mSortAdapter.enableDragItem(itemTouchHelper, R.id.ll_sort, false);
     }

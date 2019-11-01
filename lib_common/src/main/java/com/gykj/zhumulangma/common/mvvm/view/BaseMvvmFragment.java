@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.common.mvvm.view;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.ViewDataBinding;
 
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 
@@ -13,7 +14,7 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:MvvmFragment基类
  */
-public abstract class BaseMvvmFragment<VM extends BaseViewModel> extends BaseFragment {
+public abstract class BaseMvvmFragment<DB extends ViewDataBinding,VM extends BaseViewModel> extends BaseFragment<DB> {
     protected VM mViewModel;
 
     protected void initParam() {

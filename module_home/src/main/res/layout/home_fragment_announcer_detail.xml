@@ -1,285 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    android:layout_height="match_parent">
+    <data>
+
+    </data>
 
     <FrameLayout
-        android:id="@+id/fl_parallax"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginTop="-252dp">
 
-        <ImageView
-            android:id="@+id/parallax"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fl_parallax"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/home_announcer_bg" />
-    </FrameLayout>
+            android:layout_height="500dp"
+            android:layout_marginTop="-252dp">
 
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srlEnableLoadMore="false"
-        app:srlEnableNestedScrolling="true"
-        app:srlHeaderMaxDragRate="2.0"
-        app:srlEnablePreviewInEditMode="false">
-
-        <com.gykj.zhumulangma.common.widget.TRefreshHeader
-            android:id="@+id/header"
-            app:lottie_colorFilter="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/msv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:scrollbars="none">
-
-            <android.support.constraint.ConstraintLayout
+            <ImageView
+                android:id="@+id/iv_parallax"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:paddingBottom="8dp">
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/home_announcer_bg" />
+        </FrameLayout>
 
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srlEnableLoadMore="false"
+            app:srlEnableNestedScrolling="true"
+            app:srlHeaderMaxDragRate="2.0"
+            app:srlEnablePreviewInEditMode="false">
+
+            <com.gykj.zhumulangma.common.widget.TRefreshHeader
+                android:id="@+id/header"
+                app:lottie_colorFilter="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/nsv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:scrollbars="none">
 
                 <android.support.constraint.ConstraintLayout
-                    android:id="@+id/c1"
                     android:layout_width="match_parent"
-                    android:layout_height="128dp"
-                    android:layout_marginTop="60dp"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants"
+                    android:paddingBottom="8dp">
 
-                    <com.makeramen.roundedimageview.RoundedImageView
-                        android:id="@+id/iv_avatar"
-                        android:layout_width="68dp"
-                        android:layout_height="68dp"
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/c1"
+                        android:layout_width="match_parent"
+                        android:layout_height="128dp"
+                        android:layout_marginTop="60dp"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/iv_avatar"
+                            android:layout_width="68dp"
+                            android:layout_height="68dp"
+                            android:layout_marginStart="20dp"
+                            app:riv_border_color="@color/white"
+                            app:riv_border_width="3dp"
+                            app:riv_oval="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@color/colorDefault" />
+
+                        <TextView
+                            android:id="@+id/tv_nick"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center_vertical"
+                            tools:text="逝水流年轻染尘"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+                            app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
+
+                        <TextView
+                            android:id="@+id/tv_fans"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginBottom="8dp"
+                            tools:text="关注  3  |  粉丝  0"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+                            app:layout_constraintStart_toEndOf="@+id/iv_avatar"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_nick" />
+
+                        <TextView
+                            android:id="@+id/tv_vip"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="8dp"
+                            app:bl_solid_color="@color/colorPrimary"
+                            app:bl_corners_radius="20dp"
+                            android:gravity="center"
+                            android:text="V"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_nick"
+                            app:layout_constraintStart_toEndOf="@+id/tv_nick"
+                            app:layout_constraintTop_toTopOf="@+id/tv_nick" />
+
+                        <TextView
+                            android:id="@+id/tv_follwer"
+                            android:layout_width="50dp"
+                            android:layout_height="25dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginBottom="8dp"
+                            app:bl_solid_color="@color/colorPrimary"
+                            app:bl_corners_radius="2dp"
+                            android:gravity="center"
+                            android:text="+关注"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_vsignature"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="4dp"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:gravity="bottom"
+                            android:text="这个人很懒,什么都没留下..."
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/tv_follwer"
+                            app:layout_constraintStart_toStartOf="@+id/tv_fans"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_fans" />
+                    </android.support.constraint.ConstraintLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
                         android:layout_marginStart="20dp"
-                        app:riv_border_color="@color/white"
-                        app:riv_border_width="3dp"
-                        app:riv_oval="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:src="@color/colorDefault" />
-
-                    <TextView
-                        android:id="@+id/tv_nick"
-                        android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="8dp"
-                        android:gravity="center_vertical"
-                        tools:text="逝水流年轻染尘"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-                        app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
-
-                    <TextView
-                        android:id="@+id/tv_fans"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginBottom="8dp"
-                        tools:text="关注  3  |  粉丝  0"
+                        android:gravity="center"
+                        android:text="未知"
                         android:textColor="@color/white"
                         android:textSize="11sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
-                        app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_nick" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/c1" />
 
                     <TextView
-                        android:id="@+id/tv_vip"
-                        android:layout_width="18dp"
+                        android:id="@+id/tv_more"
+                        android:layout_width="39dp"
                         android:layout_height="18dp"
-                        android:layout_marginStart="8dp"
-                        app:bl_solid_color="@color/colorPrimary"
-                        app:bl_corners_radius="20dp"
-                        android:gravity="center"
-                        android:text="V"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_nick"
-                        app:layout_constraintStart_toEndOf="@+id/tv_nick"
-                        app:layout_constraintTop_toTopOf="@+id/tv_nick" />
-
-                    <TextView
-                        android:id="@+id/tv_follwer"
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="20dp"
-                        android:layout_marginBottom="8dp"
-                        app:bl_solid_color="@color/colorPrimary"
+                        app:bl_solid_color="#666666"
                         app:bl_corners_radius="2dp"
                         android:gravity="center"
-                        android:text="+关注"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_vsignature"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_marginTop="4dp"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:gravity="bottom"
-                        android:text="这个人很懒,什么都没留下..."
+                        android:text="更多"
                         android:textColor="@color/white"
                         android:textSize="11sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_follwer"
-                        app:layout_constraintStart_toStartOf="@+id/tv_fans"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_fans" />
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_category"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_category" />
+
+                    <android.support.constraint.Group
+                        android:id="@+id/gp_album"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:constraint_referenced_ids="ih_album,rv_album" />
+
+                    <com.gykj.zhumulangma.common.widget.ItemHeader
+                        android:id="@+id/ih_album"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        app:ih_right_text="更多"
+                        app:ih_title="专辑(0)"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_intro"
+                        tools:layout_editor_absoluteX="-16dp" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_album"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:overScrollMode="never"
+                        android:layout_marginEnd="4dp"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/ih_album" />
+
+                    <android.support.constraint.Group
+                        android:id="@+id/gp_track"
+                        android:layout_width="wrap_content"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        app:constraint_referenced_ids="ih_track,rv_track" />
+
+                    <com.gykj.zhumulangma.common.widget.ItemHeader
+                        android:id="@+id/ih_track"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        app:ih_right_text="更多"
+                        app:ih_title="声音(0)"
+                        app:layout_constraintTop_toBottomOf="@id/rv_album" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_track"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:overScrollMode="never"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/ih_track" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="11dp"
+                        android:text="主播简介"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_category" />
+
+                    <TextView
+                        android:id="@+id/tv_intro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="11dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="11dp"
+                        android:paddingBottom="16dp"
+                        android:text="这个人很神秘,没有任何简介..."
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView13" />
                 </android.support.constraint.ConstraintLayout>
 
+            </android.support.v4.widget.NestedScrollView>
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-                <TextView
-                    android:id="@+id/tv_category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:layout_marginStart="20dp"
-                    android:gravity="center"
-                    android:text="未知"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/c1" />
+        <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+            android:id="@+id/ctb_trans"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:centerCustomView="@layout/common_layout_titlebar_center"
+            app:centerType="customView"
+            app:leftCustomView="@layout/common_layout_titlebar_left"
+            app:leftType="customView"
+            app:rightCustomView="@layout/common_layout_titlebar_right"
+            app:rightType="customView"
+            app:showBottomLine="false"
+            app:statusBarColor="@color/transparent"
+            app:titleBarColor="@color/transparent"
+            app:titleBarHeight="@dimen/simpleBarHeight" />
 
-                <TextView
-                    android:id="@+id/tv_more"
-                    android:layout_width="39dp"
-                    android:layout_height="18dp"
-                    android:layout_marginEnd="20dp"
-                    app:bl_solid_color="#666666"
-                    app:bl_corners_radius="2dp"
-                    android:gravity="center"
-                    android:text="更多"
-                    android:textColor="@color/white"
-                    android:textSize="11sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_category"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tv_category" />
-
-                <android.support.constraint.Group
-                    android:id="@+id/gp_album"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:constraint_referenced_ids="ih_album,rv_album" />
-
-                <com.gykj.zhumulangma.common.widget.ItemHeader
-                    android:id="@+id/ih_album"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    app:ih_right_text="更多"
-                    app:ih_title="专辑(0)"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_intro"
-                    tools:layout_editor_absoluteX="-16dp" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_album"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:overScrollMode="never"
-                    android:layout_marginEnd="4dp"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/ih_album" />
-
-                <android.support.constraint.Group
-                    android:id="@+id/gp_track"
-                    android:layout_width="wrap_content"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="ih_track,rv_track" />
-
-                <com.gykj.zhumulangma.common.widget.ItemHeader
-                    android:id="@+id/ih_track"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    app:ih_right_text="更多"
-                    app:ih_title="声音(0)"
-                    app:layout_constraintTop_toBottomOf="@id/rv_album" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_track"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:overScrollMode="never"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/ih_track" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:gravity="center_vertical"
-                    android:paddingStart="11dp"
-                    android:text="主播简介"
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_category" />
-
-                <TextView
-                    android:id="@+id/tv_intro"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="11dp"
-                    android:paddingTop="16dp"
-                    android:paddingEnd="11dp"
-                    android:paddingBottom="16dp"
-                    android:text="这个人很神秘,没有任何简介..."
-                    android:textColor="@color/textColorPrimary"
-                    android:textSize="15sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
-            </android.support.constraint.ConstraintLayout>
-
-        </android.support.v4.widget.NestedScrollView>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-
-    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
-        android:id="@+id/ctb_trans"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:centerCustomView="@layout/common_layout_titlebar_center"
-        app:centerType="customView"
-        app:leftCustomView="@layout/common_layout_titlebar_left"
-        app:leftType="customView"
-        app:rightCustomView="@layout/common_layout_titlebar_right"
-        app:rightType="customView"
-        app:showBottomLine="false"
-        app:statusBarColor="@color/transparent"
-        app:titleBarColor="@color/transparent"
-        app:titleBarHeight="@dimen/simpleBarHeight" />
-
-    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
-        android:id="@+id/ctb_white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:alpha="0"
-        app:centerCustomView="@layout/common_layout_titlebar_center"
-        app:centerType="customView"
-        app:leftCustomView="@layout/common_layout_titlebar_left"
-        app:leftType="customView"
-        app:rightCustomView="@layout/common_layout_titlebar_right"
-        app:rightType="customView"
-        app:titleBarColor="@color/white"
-        app:titleBarHeight="@dimen/simpleBarHeight" />
-</FrameLayout>
+        <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+            android:id="@+id/ctb_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            app:centerCustomView="@layout/common_layout_titlebar_center"
+            app:centerType="customView"
+            app:leftCustomView="@layout/common_layout_titlebar_left"
+            app:leftType="customView"
+            app:rightCustomView="@layout/common_layout_titlebar_right"
+            app:rightType="customView"
+            app:titleBarColor="@color/white"
+            app:titleBarHeight="@dimen/simpleBarHeight" />
+    </FrameLayout>
+</layout>
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+        android:background="@color/transparent"
+        android:id="@+id/ctb_simple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleBarHeight="@dimen/simpleBarHeight"
+        app:centerType="customView"
+        app:statusBarMode="dark"
+        app:titleBarColor="@color/transparent"
+        app:statusBarColor="@color/white"
+        app:centerCustomView="@layout/common_layout_titlebar_center"
+        app:leftType="customView"
+        app:leftCustomView="@layout/common_layout_titlebar_left"
+        app:rightTextColor="@color/textColorPrimary"
+        app:rightType="customView"
+        app:rightCustomView="@layout/common_layout_titlebar_right"
+        />
+</android.support.constraint.ConstraintLayout>

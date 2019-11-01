@@ -15,13 +15,14 @@ import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.common.util.RouteUtil;
 import com.gykj.zhumulangma.discover.R;
+import com.gykj.zhumulangma.discover.databinding.DiscoverFragmentMainBinding;
 
 import org.greenrobot.eventbus.EventBus;
 
 import me.yokeyword.fragmentation.ISupportFragment;
 
 @Route(path = Constants.Router.Discover.F_MAIN)
-public class MainDiscoverFragment extends BaseFragment implements View.OnClickListener {
+public class MainDiscoverFragment extends BaseFragment<DiscoverFragmentMainBinding> implements View.OnClickListener {
 
     @Override
     protected int onBindLayout() {
@@ -33,23 +34,22 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
         super.onViewCreated(view, savedInstanceState);
         setSwipeBackEnable(false);
     }
+
     @Override
     protected void initView(View view) {
-
-
     }
 
     @Override
     public void initListener() {
         super.initListener();
-      fd(R.id.cl_ffjp).setOnClickListener(this);
-      fd(R.id.cl_qmld).setOnClickListener(this);
-      fd(R.id.cl_tyq).setOnClickListener(this);
-      fd(R.id.cl_dkzb).setOnClickListener(this);
-      fd(R.id.cl_wd).setOnClickListener(this);
-      fd(R.id.cl_sc).setOnClickListener(this);
-      fd(R.id.cl_yx).setOnClickListener(this);
-      fd(R.id.cl_hd).setOnClickListener(this);
+        mBinding.clFfjp.setOnClickListener(this);
+        mBinding.clQmld.setOnClickListener(this);
+        mBinding.clTyq.setOnClickListener(this);
+        mBinding.clDkzb.setOnClickListener(this);
+        mBinding.clWd.setOnClickListener(this);
+        mBinding.clSc.setOnClickListener(this);
+        mBinding.clYx.setOnClickListener(this);
+        mBinding.clHd.setOnClickListener(this);
     }
 
     @Override
@@ -67,11 +67,13 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
         super.onLeftIconClick(v);
         RouteUtil.navigateTo(Constants.Router.User.F_MESSAGE);
     }
+
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
         RouteUtil.navigateTo(Constants.Router.Home.F_SEARCH);
     }
+
     @Override
     public SimpleBarStyle onBindBarLeftStyle() {
         return SimpleBarStyle.LEFT_ICON;
@@ -94,7 +96,7 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
 
     @Override
     public String[] onBindBarTitleText() {
-        return  new String[]{"发现"};
+        return new String[]{"发现"};
     }
 
     @Override
@@ -105,10 +107,11 @@ public class MainDiscoverFragment extends BaseFragment implements View.OnClickLi
         EventBus.getDefault().post(new ActivityEvent(
                 EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
     }
+
     @Override
     public void onEvent(FragmentEvent event) {
         super.onEvent(event);
-        switch (event.getCode()){
+        switch (event.getCode()) {
             case EventCode.Discover.TAB_REFRESH:
 
                 break;
