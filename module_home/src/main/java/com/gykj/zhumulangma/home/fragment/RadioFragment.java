@@ -68,7 +68,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<HomeFragmentRadioBind
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         initHistory();
         initLocal();
         initTop();

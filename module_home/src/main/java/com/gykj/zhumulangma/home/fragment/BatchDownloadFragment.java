@@ -77,7 +77,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<HomeFragmentB
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         RecyclerView recyclerView = mView.findViewById(R.id.recyclerview);
         refreshLayout = mView.findViewById(R.id.refreshLayout);
 

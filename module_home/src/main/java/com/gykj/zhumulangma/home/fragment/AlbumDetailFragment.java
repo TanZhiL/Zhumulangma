@@ -99,7 +99,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<HomeFragmentAlb
     }
 
     @Override
-    public void initView(View view) {
+    public void initView() {
         String[] tabs = {"简介", "节目"};
 
         layoutDetail = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.home_layout_album_detail, null);

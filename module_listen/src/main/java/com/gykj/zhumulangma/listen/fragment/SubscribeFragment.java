@@ -66,7 +66,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutRefre
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
         mSubscribeAdapter = new SubscribeAdapter(R.layout.listen_item_subscribe);

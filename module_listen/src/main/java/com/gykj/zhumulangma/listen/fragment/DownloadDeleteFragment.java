@@ -51,7 +51,7 @@ public class DownloadDeleteFragment extends BaseFragment<ListenFragmentDownloadD
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
         mDeleteAdapter = new DownloadDeleteAdapter(R.layout.listen_item_download_delete);

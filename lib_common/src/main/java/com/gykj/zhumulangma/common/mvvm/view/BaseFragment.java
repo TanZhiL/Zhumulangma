@@ -76,7 +76,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
     protected void initParam() {
     }
 
-    protected abstract void initView(View view);
+    protected abstract void initView();
 
     public void initListener() {
     }
@@ -112,7 +112,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
         //不采用懒加载
         if (!enableLazy()) {
             loadView();
-            initView(mView);
+            initView();
             initListener();
         }
         return attachToSwipeBack(mView);
@@ -124,7 +124,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
         //采用懒加载
         if (enableLazy()) {
             loadView();
-            initView(mView);
+            initView();
             initListener();
             initData();
         }

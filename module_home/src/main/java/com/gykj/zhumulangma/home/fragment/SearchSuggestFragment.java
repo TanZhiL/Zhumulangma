@@ -65,7 +65,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutRefreshL
         setSwipeBackEnable(false);
     }
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         mBinding.refreshLayout.setEnableRefresh(false);
         mBinding.refreshLayout.setEnableLoadMore(false);
         mBinding.recyclerview.setHasFixedSize(true);

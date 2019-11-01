@@ -89,7 +89,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
         clearStatus();
     }
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left).setRotation(-90);
         mView.findViewById(R.id.iv_item_play).setVisibility(View.GONE);
         mSchedulePopup = new PlaySchedulePopup(mActivity, this);

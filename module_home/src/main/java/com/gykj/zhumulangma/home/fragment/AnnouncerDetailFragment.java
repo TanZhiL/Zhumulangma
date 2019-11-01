@@ -89,7 +89,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<HomeFragmen
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         initBar();
         mBinding.rvAlbum.setHasFixedSize(true);
         mBinding.rvTrack.setHasFixedSize(true);

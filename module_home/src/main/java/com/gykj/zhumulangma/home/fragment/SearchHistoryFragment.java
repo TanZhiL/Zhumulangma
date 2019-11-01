@@ -46,7 +46,7 @@ public class SearchHistoryFragment extends BaseMvvmFragment<HomeFragmentSearchHi
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         mBinding.tvClear.setOnClickListener(this);
 
         mBinding.rvHistory.setLayoutManager(new com.library.flowlayout.FlowLayoutManager());

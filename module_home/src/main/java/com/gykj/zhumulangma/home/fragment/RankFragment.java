@@ -80,7 +80,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<HomeFragmentRankBindin
     }
 
     @Override
-    public void initView(View view) {
+    public void initView() {
 
         ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
         ivCategoryDown.setVisibility(View.VISIBLE);

@@ -66,7 +66,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBindin
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         initBanner();
         initDaily();
         initBook();

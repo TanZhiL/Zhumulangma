@@ -55,7 +55,7 @@ public class SearchResultFragment extends BaseFragment<HomeFragmentSearchResultB
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         String[] tabs = {"专辑", "声音", "主播", "广播"};
 
 

@@ -36,7 +36,7 @@ public class MainDiscoverFragment extends BaseFragment<DiscoverFragmentMainBindi
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
     }
 
     @Override

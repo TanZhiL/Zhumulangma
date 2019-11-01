@@ -52,7 +52,7 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding> implemen
     }
 
     @Override
-    public void initView(View view) {
+    public void initView() {
         List<Fragment> fragments = new ArrayList<>();
 
         Object home = ARouter.getInstance().build(Constants.Router.Home.F_MAIN).navigation();

@@ -49,7 +49,7 @@ public class SearchRadioFragment extends BaseRefreshMvvmFragment<CommonLayoutRef
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
         mRadioAdapter = new RadioAdapter(R.layout.home_item_radio_line);

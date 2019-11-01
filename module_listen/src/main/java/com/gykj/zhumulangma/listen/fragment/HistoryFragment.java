@@ -40,7 +40,7 @@ public class HistoryFragment extends BaseRefreshMvvmFragment<CommonLayoutRefresh
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
         mHistoryAdapter = new HistoryAdapter(null);

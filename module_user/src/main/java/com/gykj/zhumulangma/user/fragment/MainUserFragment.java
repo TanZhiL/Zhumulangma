@@ -80,7 +80,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBi
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         initBar();
 
     }

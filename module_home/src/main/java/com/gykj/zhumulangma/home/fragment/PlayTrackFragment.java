@@ -123,7 +123,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
 
         mBinding.rvRelative.setLayoutManager(new LinearLayoutManager(mActivity));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_line);

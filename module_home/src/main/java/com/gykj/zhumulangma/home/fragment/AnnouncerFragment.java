@@ -59,7 +59,7 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<HomeFragmentAnnou
         setSwipeBackEnable(false);
     }
 
-    protected void initView(View view) {
+    protected void initView() {
         mBinding.banner.setIndicatorGravity(BannerConfig.RIGHT);
         mBinding.banner.setDelayTime(3000);
         mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);

@@ -83,7 +83,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutRefre
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         String s = ResourceUtils.readAssets2String("province.json");
         mProvinceBeans = new Gson().fromJson(s, new TypeToken<ArrayList<ProvinceBean>>() {
         }.getType());

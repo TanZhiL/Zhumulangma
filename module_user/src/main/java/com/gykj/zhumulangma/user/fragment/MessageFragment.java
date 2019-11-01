@@ -26,7 +26,7 @@ public class MessageFragment extends BaseFragment<UserFragmentMessageBinding>{
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
 
     }
 

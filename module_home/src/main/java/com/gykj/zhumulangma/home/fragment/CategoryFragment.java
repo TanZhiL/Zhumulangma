@@ -34,7 +34,7 @@ public class CategoryFragment extends BaseFragment<HomeFragmentCategoryBinding> 
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
 
     }
 

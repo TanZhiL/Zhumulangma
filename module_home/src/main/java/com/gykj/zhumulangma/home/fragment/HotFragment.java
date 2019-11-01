@@ -74,7 +74,7 @@ public class HotFragment extends BaseRefreshMvvmFragment<HomeFragmentHotBinding,
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         initBanner();
         initLike();
         initStory();

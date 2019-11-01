@@ -56,7 +56,7 @@ public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<CommonLayou
         setSwipeBackEnable(false);
     }
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
         mAnnouncerAdapter =new AnnouncerAdapter(R.layout.home_item_announcer);

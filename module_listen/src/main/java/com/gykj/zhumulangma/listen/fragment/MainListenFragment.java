@@ -43,7 +43,7 @@ public class MainListenFragment extends BaseFragment<ListenFragmentMainBinding> 
         setSwipeBackEnable(false);
     }
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         String[] tabs={"我的订阅","推荐订阅"};
         List<Fragment> pages=new ArrayList<>();
         pages.add(new SubscribeFragment());

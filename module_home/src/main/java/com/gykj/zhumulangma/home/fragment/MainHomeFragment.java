@@ -79,7 +79,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding,H
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         String[] tabs = {"热门", "分类", "精品", "主播", "广播"};
 
         if (StatusBarUtils.supportTransparentStatusBar()) {

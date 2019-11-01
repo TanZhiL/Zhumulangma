@@ -61,7 +61,7 @@ public class DownloadAlbumFragment extends BaseFragment<ListenFragmentDownloadAl
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         showInitView();
         mBinding.recyclerview.setHasFixedSize(true);
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));

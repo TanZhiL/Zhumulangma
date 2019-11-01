@@ -57,7 +57,7 @@ public class WebFragment extends BaseFragment<DiscoverFragmentWebBinding> {
     }
 
     @Override
-    protected void initView(View view) {
+    protected void initView() {
         ivClose = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);
         ivClose.setImageResource(R.drawable.ic_common_web_close);
     }
