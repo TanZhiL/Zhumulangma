@@ -5,7 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.gykj.zhumulangma.third.ThirdHelper;
+import com.gykj.thomas.third.ThirdHelper;
 import com.gykj.zhumulangma.common.aop.PointHelper;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;

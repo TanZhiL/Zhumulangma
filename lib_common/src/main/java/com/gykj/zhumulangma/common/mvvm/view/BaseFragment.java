@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
-import com.gykj.zhumulangma.third.ThirdHelper;
+import com.gykj.thomas.third.ThirdHelper;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
@@ -35,6 +35,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
@@ -45,12 +46,12 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:Fragment基类
  */
-public abstract class BaseFragment extends SupportFragment implements BaseView {
+public abstract class BaseFragment extends SupportFragment implements BaseView, Consumer<Disposable> {
     protected static final String TAG = BaseFragment.class.getSimpleName();
 
     protected App mApplication;
-    //Rxview解绑
-    private CompositeDisposable mCompositeDisposable;
+    //Disposable容器
+    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     //根部局
     protected View mView;
     //真实占位布局
@@ -93,32 +94,11 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
         EventBus.getDefault().register(this);
     }
 
-    /**
-     * RxView添加订阅
-     */
-    protected void addDisposable(Disposable mDisposable) {
-        if (mCompositeDisposable == null) {
-            mCompositeDisposable = new CompositeDisposable();
-        }
-        mCompositeDisposable.add(mDisposable);
+    @Override
+    public void accept(Disposable disposable) throws Exception {
+        mCompositeDisposable.add(disposable);
     }
 
-    /**
-     * 取消RxView所有订阅
-     */
-    protected void clearDisposable() {
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.clear();
-        }
-    }
-    /**
-     * 取消RxView某个订阅
-     */
-    protected void removeDisposable(Disposable disposable) {
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.remove(disposable);
-        }
-    }
 
     @Nullable
     @Override
@@ -189,7 +169,6 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
             initSimpleBar(mSimpleTitleBar);
         }
     }
-
 
 
     /**
@@ -327,8 +306,8 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
             clearStatus();
             mBaseLoadService.setCallBack(getLoadingStatus().getClass(), (context, view1) -> {
                 TextView tvTip = view1.findViewById(R.id.tv_tip);
-                if(tvTip==null){
-                    throw new IllegalStateException(getLoadingStatus().getClass()+"必须带有显示提示文本的TextView,且id为R.id.tv_tip");
+                if (tvTip == null) {
+                    throw new IllegalStateException(getLoadingStatus().getClass() + "必须带有显示提示文本的TextView,且id为R.id.tv_tip");
                 }
                 if (tip == null) {
                     tvTip.setVisibility(View.GONE);
@@ -404,7 +383,7 @@ public abstract class BaseFragment extends SupportFragment implements BaseView {
         mHandler.removeCallbacksAndMessages(null);
         mLoadingHandler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
-        clearDisposable();
+        mCompositeDisposable.clear();
         ThirdHelper.refWatcher.watch(this);
     }
 }

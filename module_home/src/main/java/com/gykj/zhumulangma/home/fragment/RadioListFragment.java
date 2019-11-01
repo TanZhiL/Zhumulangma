@@ -112,8 +112,9 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<RadioListViewMode
     public void initListener() {
         super.initListener();
         if (mType == PROVINCE) {
-            addDisposable(RxView.clicks(llbarCenter)
-                    .throttleFirst(1, TimeUnit.SECONDS).subscribe(unit -> switchProvince()));
+            RxView.clicks(llbarCenter)
+                    .doOnSubscribe(this)
+                    .throttleFirst(1, TimeUnit.SECONDS).subscribe(unit -> switchProvince());
         }
     }
 

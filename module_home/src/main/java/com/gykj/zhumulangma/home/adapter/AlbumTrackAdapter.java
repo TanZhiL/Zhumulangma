@@ -8,10 +8,6 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.gykj.zhumulangma.common.App;
-import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
-import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
-import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
@@ -30,8 +26,6 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
         super(layoutResId);
     }
 
-    private ZhumulangmaModel model = new ZhumulangmaModel(App.getInstance());
-
     @Override
     protected void convert(BaseViewHolder helper, Track item) {
 
@@ -41,6 +35,13 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
         helper.setText(R.id.tv_duration, ZhumulangmaUtil.secondToTime(item.getDuration()));
         helper.setText(R.id.tv_index, item.getOrderPositionInAlbum() + 1 + "");
         helper.setText(R.id.tv_create_time, TimeUtils.millis2String(item.getCreatedAt(), new SimpleDateFormat("yyyy-MM-dd")));
+        //历史播放进度
+        if (item.getSource() == 0) {
+            helper.setText(R.id.tv_hasplay, "");
+        } else {
+            helper.setText(R.id.tv_hasplay, mContext.getString(R.string.hasplay, item.getSource()));
+        }
+        //播放动画
         if (null != XmPlayerManager.getInstance(mContext).getCurrSound()) {
             LottieAnimationView lavPlaying = helper.getView(R.id.lav_playing);
             PlayableModel currSound = XmPlayerManager.getInstance(mContext).getCurrSound();
@@ -58,6 +59,7 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
 
 
         }
+        //下载状态
         switch (XmDownloadManager.getInstance().getSingleTrackDownloadStatus(item.getDataId())) {
             case FINISHED:
                 helper.setGone(R.id.iv_downloadsucc, true);
@@ -87,16 +89,7 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
             helper.setGone(R.id.iv_download, false);
             helper.setGone(R.id.iv_paid, true);
         }
-        model.list(PlayHistoryBean.class, PlayHistoryBeanDao.Properties.SoundId.eq(item.getDataId()),
-                PlayHistoryBeanDao.Properties.Kind.eq(item.getKind()))
-                .subscribe(playHistoryBeans ->
-                {
-                    if (playHistoryBeans.size() == 0) {
-                        helper.setText(R.id.tv_hasplay, "");
-                        return;
-                    }
-                    helper.setText(R.id.tv_hasplay, mContext.getString(R.string.hasplay, playHistoryBeans.get(0).getPercent()));
-                }, Throwable::printStackTrace);
+
         helper.addOnClickListener(R.id.iv_download);
     }
 }

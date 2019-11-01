@@ -41,7 +41,7 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
 
      /*   if (modelClass.isAssignableFrom(FeedbackViewModel.class)) {
-            return (T) new FeedbackViewModel(mApplication, new FeedbackModel(mApplication),new CommonModel(mApplication));
+            return (T) new FeedbackViewModel(mApplication, new FeedbackModel(mApplication),new BaseModel(mApplication));
         }else if (modelClass.isAssignableFrom(AcceptViewModel.class)) {
             return (T) new AcceptViewModel(mApplication, new AcceptModel(mApplication));
         }*/

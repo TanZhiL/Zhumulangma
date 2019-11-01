@@ -27,7 +27,9 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Author: Thomas.
@@ -154,6 +156,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
         map.put(DTransferConstants.SORT, mSort);
         map.put(DTransferConstants.PAGE, String.valueOf(curTrackPage));
         mModel.getTracks(map)
+                .flatMap(insertHistory())
                 .doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(trackList -> {
@@ -165,6 +168,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                 }, Throwable::printStackTrace);
 
     }
+
 
     /**
      * 分页查询
@@ -179,6 +183,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
         mModel.getTracks(map)
                 .doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
+                .flatMap(insertHistory())
                 .subscribe(trackList -> {
                     upTrackPage = page;
                     curTrackPage = page;
@@ -213,6 +218,7 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
         map.put(DTransferConstants.SORT, mSort);
         map.put(DTransferConstants.PAGE, String.valueOf(page));
         mModel.getTracks(map)
+                .flatMap(insertHistory())
                 .subscribe(trackList -> {
                     if (isUp) {
                         setUpOrder(trackList);
@@ -233,7 +239,12 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
 
     }
 
-
+    /**
+     * 获取主播信息
+     *
+     * @param announcerId
+     * @return
+     */
     private Observable<AnnouncerListByIds> getAnnouncer(long announcerId) {
         Map<String, String> map = new HashMap<>();
         map.put("ids", String.valueOf(announcerId));
@@ -284,7 +295,44 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                                     return trackList;
                                 });
                     }
-                });
+                })
+                .flatMap(insertHistory());
+    }
+
+
+    /**
+     * 获取历史播放进度,利用source字段保存
+     *
+     * @return
+     */
+    @NonNull
+    private Function<TrackList, ObservableSource<TrackList>> insertHistory() {
+        return trackList -> {
+            if (CollectionUtils.isEmpty(trackList.getTracks())) {
+                return Observable.just(trackList);
+            }
+            return (ObservableSource<TrackList>) Observable.just(trackList)
+                    //先扩散
+                    .flatMapIterable((Function<TrackList, Iterable<Track>>) CommonTrackList::getTracks)
+                    .flatMap((Function<Track, ObservableSource<List<PlayHistoryBean>>>) track -> {
+                        //初始化数据
+                        track.setSource(0);
+                        return mModel.list(PlayHistoryBean.class, PlayHistoryBeanDao.Properties.SoundId.eq(track.getDataId()),
+                                PlayHistoryBeanDao.Properties.Kind.eq(track.getKind()));
+                    })
+                    .observeOn(Schedulers.io())
+                    .doOnNext(historyBeans -> {
+                        if (!CollectionUtils.isEmpty(historyBeans)) {
+                            CollectionUtils.find(trackList.getTracks(), item ->
+                                    item.getDataId() == historyBeans.get(0).getSoundId())
+                                    .setSource(historyBeans.get(0).getPercent());
+                        }
+                    })
+                    //合并后发射
+                    .buffer(trackList.getTracks().size())
+                    .map(lists -> trackList)
+                    .observeOn(AndroidSchedulers.mainThread());
+        };
     }
 
     /**

@@ -9,6 +9,7 @@ import android.support.annotation.VisibleForTesting;
 
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.listen.mvvm.model.HistoryModel;
+import com.gykj.zhumulangma.listen.mvvm.viewmodel.DownloadSortViewModel;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.DownloadViewModel;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.FavoriteViewModel;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.HistoryViewModel;
@@ -54,6 +55,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new SubscribeViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }else if (modelClass.isAssignableFrom(FavoriteViewModel.class)) {
             return (T) new FavoriteViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        }else if (modelClass.isAssignableFrom(DownloadSortViewModel.class)) {
+            return (T) new DownloadSortViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }
 
 

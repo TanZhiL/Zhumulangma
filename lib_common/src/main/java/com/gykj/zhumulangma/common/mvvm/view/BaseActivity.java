@@ -13,10 +13,10 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
-import com.gykj.zhumulangma.third.ThirdHelper;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
+import com.gykj.thomas.third.ThirdHelper;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -28,6 +28,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
@@ -38,10 +39,10 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:Activity基类
  */
-public abstract class BaseActivity extends SupportActivity implements BaseView {
+public abstract class BaseActivity extends SupportActivity implements BaseView , Consumer<Disposable> {
     protected static final String TAG = BaseActivity.class.getSimpleName();
-    //Rxview解绑
-    private CompositeDisposable mCompositeDisposable;
+    //Disposable容器
+    protected CompositeDisposable mCompositeDisposable=new CompositeDisposable();
     //用于延时显示loading状态
     private Handler mLoadingHandler = new Handler();
     //状态页管理
@@ -77,32 +78,11 @@ public abstract class BaseActivity extends SupportActivity implements BaseView {
         initData();
     }
 
-    /**
-     * RxView添加订阅
-     */
-    protected void addDisposable(Disposable mDisposable) {
-        if (mCompositeDisposable == null) {
-            mCompositeDisposable = new CompositeDisposable();
-        }
-        mCompositeDisposable.add(mDisposable);
+    @Override
+    public void accept(Disposable disposable) throws Exception {
+        mCompositeDisposable.add(disposable);
     }
 
-    /**
-     * 取消RxView所有订阅
-     */
-    protected void clearDisposable() {
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.clear();
-        }
-    }
-    /**
-     * 取消RxView某个订阅
-     */
-    protected void removeDisposable(Disposable disposable) {
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.remove(disposable);
-        }
-    }
 
     /**
      * 初始化基本布局
@@ -318,7 +298,7 @@ public abstract class BaseActivity extends SupportActivity implements BaseView {
         mHandler.removeCallbacksAndMessages(null);
         KeyboardUtils.fixSoftInputLeaks(this);
         EventBus.getDefault().unregister(this);
-        clearDisposable();
+       mCompositeDisposable.clear();
         ThirdHelper.refWatcher.watch(this);
     }
 

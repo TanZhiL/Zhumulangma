@@ -5,9 +5,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.bean.FavoriteBean;
-import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.listen.R;
 
@@ -19,7 +17,6 @@ public class FavoriteAdapter extends BaseQuickAdapter<FavoriteBean, BaseViewHold
     public FavoriteAdapter(int layoutResId) {
         super(layoutResId);
     }
-    private ZhumulangmaModel model = new ZhumulangmaModel(App.getInstance());
 
     @Override
     protected void convert(BaseViewHolder helper, FavoriteBean item) {

@@ -24,22 +24,28 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * Author: Thomas.
- * <br/>Date: 2019/8/21 9:36
- * <br/>Email: 1071931588@qq.com
- * <br/>Description:
+ * Author: Thomas.<br/>
+ * Date: 2019/11/1 9:20<br/>
+ * GitHub: https://github.com/TanZhiL<br/>
+ * CSDN: https://blog.csdn.net/weixin_42703445<br/>
+ * Email: 1071931588@qq.com<br/>
+ * Description:
  */
-public class DownloadViewModel extends BaseViewModel<ZhumulangmaModel> {
+public class DownloadSortViewModel extends BaseViewModel<ZhumulangmaModel> {
+
     private SingleLiveEvent<List<Track>> mTracksEvent;
 
-    public DownloadViewModel(@NonNull Application application, ZhumulangmaModel model) {
+    public DownloadSortViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
 
-
-    public void getDownloadTracks() {
-        List<Track> tracks = XmDownloadManager.getInstance().getDownloadTracks(true);
-
+    public void getDownloadTracks(long albumId) {
+        List<Track> tracks;
+        if (albumId == 0) {
+            tracks = XmDownloadManager.getInstance().getDownloadTracks(true);
+        } else {
+            tracks = XmDownloadManager.getInstance().getDownloadTrackInAlbum(albumId, true);
+        }
         Collections.sort(tracks, ComparatorUtil.comparatorByUserSort(true));
         Completable.fromObservable(Observable.fromIterable(tracks)
                 .flatMap((Function<Track, ObservableSource<List<PlayHistoryBean>>>) track -> {

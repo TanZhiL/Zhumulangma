@@ -57,7 +57,7 @@ import io.reactivex.functions.Function;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:珠穆朗玛接口Model
  */
-public class ZhumulangmaModel extends CommonModel {
+public class ZhumulangmaModel extends BaseModel {
     public ZhumulangmaModel(Application application) {
         super(application);
     }
@@ -71,18 +71,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<BannerV2List> getCategoryBannersV2(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<BannerV2List>) emitter ->
                 CommonRequest.getCategoryBannersV2(specificParams,
-                new IDataCallBack<BannerV2List>() {
-                    @Override
-                    public void onSuccess(@Nullable BannerV2List bannerV2List) {
-                        emitter.onNext(bannerV2List);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<BannerV2List>() {
+                            @Override
+                            public void onSuccess(@Nullable BannerV2List bannerV2List) {
+                                emitter.onNext(bannerV2List);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -94,18 +94,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<GussLikeAlbumList> getGuessLikeAlbum(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<GussLikeAlbumList>) emitter ->
                 CommonRequest.getGuessLikeAlbum(specificParams,
-                new IDataCallBack<GussLikeAlbumList>() {
-                    @Override
-                    public void onSuccess(@Nullable GussLikeAlbumList gussLikeAlbumList) {
-                        emitter.onNext(gussLikeAlbumList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<GussLikeAlbumList>() {
+                            @Override
+                            public void onSuccess(@Nullable GussLikeAlbumList gussLikeAlbumList) {
+                                emitter.onNext(gussLikeAlbumList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -117,18 +117,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<AlbumList> getAllPaidAlbums(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<AlbumList>) emitter ->
                 CommonRequest.getAllPaidAlbums(specificParams,
-                new IDataCallBack<AlbumList>() {
-                    @Override
-                    public void onSuccess(@Nullable AlbumList albumList) {
-                        emitter.onNext(albumList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<AlbumList>() {
+                            @Override
+                            public void onSuccess(@Nullable AlbumList albumList) {
+                                emitter.onNext(albumList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -140,18 +140,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<AlbumList> getAlbumList(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<AlbumList>) emitter ->
                 CommonRequest.getAlbumList(specificParams,
-                new IDataCallBack<AlbumList>() {
-                    @Override
-                    public void onSuccess(@Nullable AlbumList albumList) {
-                        emitter.onNext(albumList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<AlbumList>() {
+                            @Override
+                            public void onSuccess(@Nullable AlbumList albumList) {
+                                emitter.onNext(albumList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -163,18 +163,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<RadioList> getRadios(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
                 CommonRequest.getRadios(specificParams,
-                new IDataCallBack<RadioList>() {
-                    @Override
-                    public void onSuccess(@Nullable RadioList radioList) {
-                        emitter.onNext(radioList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<RadioList>() {
+                            @Override
+                            public void onSuccess(@Nullable RadioList radioList) {
+                                emitter.onNext(radioList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -186,18 +186,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<ColumnList> getColumnList(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<ColumnList>) emitter ->
                 CommonRequest.getColumnList(specificParams,
-                new IDataCallBack<ColumnList>() {
-                    @Override
-                    public void onSuccess(@Nullable ColumnList columnList) {
-                        emitter.onNext(columnList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<ColumnList>() {
+                            @Override
+                            public void onSuccess(@Nullable ColumnList columnList) {
+                                emitter.onNext(columnList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -209,18 +209,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<AlbumList> getPaidAlbumByTag(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<AlbumList>) emitter ->
                 CommonRequest.getPaidAlbumByTag(specificParams,
-                new IDataCallBack<AlbumList>() {
-                    @Override
-                    public void onSuccess(@Nullable AlbumList albumList) {
-                        emitter.onNext(albumList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<AlbumList>() {
+                            @Override
+                            public void onSuccess(@Nullable AlbumList albumList) {
+                                emitter.onNext(albumList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -232,18 +232,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<RadioList> getRadiosByCity(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
                 CommonRequest.getRadiosByCity(specificParams,
-                new IDataCallBack<RadioList>() {
-                    @Override
-                    public void onSuccess(@Nullable RadioList radioList) {
-                        emitter.onNext(radioList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<RadioList>() {
+                            @Override
+                            public void onSuccess(@Nullable RadioList radioList) {
+                                emitter.onNext(radioList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -255,18 +255,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<RadioList> getRankRadios(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
                 CommonRequest.getRankRadios(specificParams,
-                new IDataCallBack<RadioList>() {
-                    @Override
-                    public void onSuccess(@Nullable RadioList radioList) {
-                        emitter.onNext(radioList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<RadioList>() {
+                            @Override
+                            public void onSuccess(@Nullable RadioList radioList) {
+                                emitter.onNext(radioList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -278,18 +278,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<HotWordList> getHotWords(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<HotWordList>) emitter ->
                 CommonRequest.getHotWords(specificParams,
-                new IDataCallBack<HotWordList>() {
-                    @Override
-                    public void onSuccess(@Nullable HotWordList hotWordList) {
-                        emitter.onNext(hotWordList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<HotWordList>() {
+                            @Override
+                            public void onSuccess(@Nullable HotWordList hotWordList) {
+                                emitter.onNext(hotWordList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -301,18 +301,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<SearchAlbumList> getSearchedAlbums(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<SearchAlbumList>) emitter ->
                 CommonRequest.getSearchedAlbums(specificParams,
-                new IDataCallBack<SearchAlbumList>() {
-                    @Override
-                    public void onSuccess(@Nullable SearchAlbumList albumList) {
-                        emitter.onNext(albumList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<SearchAlbumList>() {
+                            @Override
+                            public void onSuccess(@Nullable SearchAlbumList albumList) {
+                                emitter.onNext(albumList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -324,18 +324,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<SearchTrackList> getSearchedTracks(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<SearchTrackList>) emitter ->
                 CommonRequest.getSearchedTracks(specificParams,
-                new IDataCallBack<SearchTrackList>() {
-                    @Override
-                    public void onSuccess(@Nullable SearchTrackList trackList) {
-                        emitter.onNext(trackList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<SearchTrackList>() {
+                            @Override
+                            public void onSuccess(@Nullable SearchTrackList trackList) {
+                                emitter.onNext(trackList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -347,18 +347,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<RadioList> getSearchedRadios(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
                 CommonRequest.getSearchedRadios(specificParams,
-                new IDataCallBack<RadioList>() {
-                    @Override
-                    public void onSuccess(@Nullable RadioList radioList) {
-                        emitter.onNext(radioList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<RadioList>() {
+                            @Override
+                            public void onSuccess(@Nullable RadioList radioList) {
+                                emitter.onNext(radioList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -370,18 +370,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<AnnouncerList> getSearchAnnouncers(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<AnnouncerList>) emitter ->
                 CommonRequest.getSearchAnnouncers(specificParams,
-                new IDataCallBack<AnnouncerList>() {
-                    @Override
-                    public void onSuccess(@Nullable AnnouncerList announcerList) {
-                        emitter.onNext(announcerList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<AnnouncerList>() {
+                            @Override
+                            public void onSuccess(@Nullable AnnouncerList announcerList) {
+                                emitter.onNext(announcerList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -393,18 +393,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<BatchAlbumList> getBatch(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<BatchAlbumList>) emitter ->
                 CommonRequest.getBatch(specificParams,
-                new IDataCallBack<BatchAlbumList>() {
-                    @Override
-                    public void onSuccess(@Nullable BatchAlbumList batchAlbumList) {
-                        emitter.onNext(batchAlbumList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<BatchAlbumList>() {
+                            @Override
+                            public void onSuccess(@Nullable BatchAlbumList batchAlbumList) {
+                                emitter.onNext(batchAlbumList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -416,18 +416,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<TrackList> getTracks(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<TrackList>) emitter ->
                 CommonRequest.getTracks(specificParams,
-                new IDataCallBack<TrackList>() {
-                    @Override
-                    public void onSuccess(@Nullable TrackList trackList) {
-                        emitter.onNext(trackList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<TrackList>() {
+                            @Override
+                            public void onSuccess(@Nullable TrackList trackList) {
+                                emitter.onNext(trackList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -439,18 +439,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<LastPlayTrackList> getLastPlayTracks(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<LastPlayTrackList>) emitter ->
                 CommonRequest.getLastPlayTracks(specificParams,
-                new IDataCallBack<LastPlayTrackList>() {
-                    @Override
-                    public void onSuccess(@Nullable LastPlayTrackList trackList) {
-                        emitter.onNext(trackList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<LastPlayTrackList>() {
+                            @Override
+                            public void onSuccess(@Nullable LastPlayTrackList trackList) {
+                                emitter.onNext(trackList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -462,18 +462,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<AnnouncerList> getAnnouncerList(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<AnnouncerList>) emitter ->
                 CommonRequest.getAnnouncerList(specificParams,
-                new IDataCallBack<AnnouncerList>() {
-                    @Override
-                    public void onSuccess(@Nullable AnnouncerList announcerList) {
-                        emitter.onNext(announcerList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<AnnouncerList>() {
+                            @Override
+                            public void onSuccess(@Nullable AnnouncerList announcerList) {
+                                emitter.onNext(announcerList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -485,18 +485,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<RelativeAlbums> getRelativeAlbumsUseTrackId(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<RelativeAlbums>) emitter ->
                 CommonRequest.getRelativeAlbumsUseTrackId(specificParams,
-                new IDataCallBack<RelativeAlbums>() {
-                    @Override
-                    public void onSuccess(@Nullable RelativeAlbums relativeAlbums) {
-                        emitter.onNext(relativeAlbums);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<RelativeAlbums>() {
+                            @Override
+                            public void onSuccess(@Nullable RelativeAlbums relativeAlbums) {
+                                emitter.onNext(relativeAlbums);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -508,18 +508,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<RelativeAlbums> getRelativeAlbums(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<RelativeAlbums>) emitter ->
                 CommonRequest.getRelativeAlbums(specificParams,
-                new IDataCallBack<RelativeAlbums>() {
-                    @Override
-                    public void onSuccess(@Nullable RelativeAlbums relativeAlbums) {
-                        emitter.onNext(relativeAlbums);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<RelativeAlbums>() {
+                            @Override
+                            public void onSuccess(@Nullable RelativeAlbums relativeAlbums) {
+                                emitter.onNext(relativeAlbums);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -531,19 +531,20 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<RecommendDownload> getRecommendDownloadList(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<RecommendDownload>) emitter ->
                 CommonRequest.getRecommendDownloadList(specificParams,
-                new IDataCallBack<RecommendDownload>() {
-                    @Override
-                    public void onSuccess(@Nullable RecommendDownload recommendDownload) {
-                        emitter.onNext(recommendDownload);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<RecommendDownload>() {
+                            @Override
+                            public void onSuccess(@Nullable RecommendDownload recommendDownload) {
+                                emitter.onNext(recommendDownload);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
+
     /**
      * 获取直播节目详情
      *
@@ -553,19 +554,20 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<ProgramList> getProgram(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<ProgramList>) emitter ->
                 CommonRequest.getProgram(specificParams,
-                new IDataCallBack<ProgramList>() {
-                    @Override
-                    public void onSuccess(@Nullable ProgramList programList) {
-                        emitter.onNext(programList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<ProgramList>() {
+                            @Override
+                            public void onSuccess(@Nullable ProgramList programList) {
+                                emitter.onNext(programList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
+
     /**
      * 批量获取电台接口
      *
@@ -575,18 +577,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<RadioListById> getRadiosByIds(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<RadioListById>) emitter ->
                 CommonRequest.getRadiosByIds(specificParams,
-                new IDataCallBack<RadioListById>() {
-                    @Override
-                    public void onSuccess(@Nullable RadioListById radioListById) {
-                        emitter.onNext(radioListById);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<RadioListById>() {
+                            @Override
+                            public void onSuccess(@Nullable RadioListById radioListById) {
+                                emitter.onNext(radioListById);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -595,7 +597,7 @@ public class ZhumulangmaModel extends CommonModel {
      * @param specificParams
      * @return
      */
-    public  Observable<List<Schedule>> getSchedules(Map<String, String> specificParams) {
+    public Observable<List<Schedule>> getSchedules(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<List<Schedule>>) emitter -> CommonRequest.getSchedules(specificParams,
                 new IDataCallBack<ScheduleList>() {
                     @Override
@@ -616,7 +618,6 @@ public class ZhumulangmaModel extends CommonModel {
     }
 
 
-
     /**
      * 搜索声音，支持的筛选条件包括声音ID、标题、所属专辑ID、所属专辑标题、
      * 所属主播ID或昵称、标签、是否付费、分类ID或分类名等，并可指定排序字段。
@@ -627,18 +628,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<SearchTrackListV2> searchTrackV2(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<SearchTrackListV2>) emitter ->
                 CommonRequest.searchTrackV2(specificParams,
-                new IDataCallBack<SearchTrackListV2>() {
-                    @Override
-                    public void onSuccess(@Nullable SearchTrackListV2 searchTrackListV2) {
-                        emitter.onNext(searchTrackListV2);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<SearchTrackListV2>() {
+                            @Override
+                            public void onSuccess(@Nullable SearchTrackListV2 searchTrackListV2) {
+                                emitter.onNext(searchTrackListV2);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -650,18 +651,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<RadioListByCategory> getRadiosByCategory(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<RadioListByCategory>) emitter ->
                 CommonRequest.getRadiosByCategory(specificParams,
-                new IDataCallBack<RadioListByCategory>() {
-                    @Override
-                    public void onSuccess(@Nullable RadioListByCategory radioListByCategory) {
-                        emitter.onNext(radioListByCategory);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<RadioListByCategory>() {
+                            @Override
+                            public void onSuccess(@Nullable RadioListByCategory radioListByCategory) {
+                                emitter.onNext(radioListByCategory);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -673,18 +674,18 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<AnnouncerListByIds> getAnnouncersBatch(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<AnnouncerListByIds>) emitter ->
                 CommonRequest.getAnnouncersBatch(specificParams,
-                new IDataCallBack<AnnouncerListByIds>() {
-                    @Override
-                    public void onSuccess(@Nullable AnnouncerListByIds announcerListByIds) {
-                        emitter.onNext(announcerListByIds);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<AnnouncerListByIds>() {
+                            @Override
+                            public void onSuccess(@Nullable AnnouncerListByIds announcerListByIds) {
+                                emitter.onNext(announcerListByIds);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
@@ -696,21 +697,22 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<AlbumList> getAlbumsByAnnouncer(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<AlbumList>) emitter ->
                 CommonRequest.getAlbumsByAnnouncer(specificParams,
-                new IDataCallBack<AlbumList>() {
-                    @Override
-                    public void onSuccess(@Nullable AlbumList albumList) {
-                        emitter.onNext(albumList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<AlbumList>() {
+                            @Override
+                            public void onSuccess(@Nullable AlbumList albumList) {
+                                emitter.onNext(albumList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
+
     /**
-     *  获取某个主播的声音列表
+     * 获取某个主播的声音列表
      *
      * @param specificParams
      * @return
@@ -718,22 +720,22 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<AnnouncerTrackList> getTracksByAnnouncer(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<AnnouncerTrackList>) emitter ->
                 CommonRequest.getTracksByAnnouncer(specificParams,
-                new IDataCallBack<AnnouncerTrackList>() {
-                    @Override
-                    public void onSuccess(@Nullable AnnouncerTrackList trackList) {
-                        emitter.onNext(trackList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<AnnouncerTrackList>() {
+                            @Override
+                            public void onSuccess(@Nullable AnnouncerTrackList trackList) {
+                                emitter.onNext(trackList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
     /**
-     *  获取某个主播的声音列表
+     * 获取某个主播的声音列表
      *
      * @param specificParams
      * @return
@@ -741,23 +743,23 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<AnnouncerCategoryList> getAnnouncerCategoryList(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<AnnouncerCategoryList>) emitter ->
                 CommonRequest.getAnnouncerCategoryList(specificParams,
-                new IDataCallBack<AnnouncerCategoryList>() {
-                    @Override
-                    public void onSuccess(@Nullable AnnouncerCategoryList categoryList) {
-                        emitter.onNext(categoryList);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<AnnouncerCategoryList>() {
+                            @Override
+                            public void onSuccess(@Nullable AnnouncerCategoryList categoryList) {
+                                emitter.onNext(categoryList);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
 
 
     /**
-     *   获取某个关键词的联想词
+     * 获取某个关键词的联想词
      *
      * @param specificParams
      * @return
@@ -765,21 +767,22 @@ public class ZhumulangmaModel extends CommonModel {
     public Observable<SuggestWords> getSuggestWord(Map<String, String> specificParams) {
         return Observable.create((ObservableOnSubscribe<SuggestWords>) emitter ->
                 CommonRequest.getSuggestWord(specificParams,
-                new IDataCallBack<SuggestWords>() {
-                    @Override
-                    public void onSuccess(@Nullable SuggestWords suggestWords) {
-                        emitter.onNext(suggestWords);
-                        emitter.onComplete();
-                    }
+                        new IDataCallBack<SuggestWords>() {
+                            @Override
+                            public void onSuccess(@Nullable SuggestWords suggestWords) {
+                                emitter.onNext(suggestWords);
+                                emitter.onComplete();
+                            }
 
-                    @Override
-                    public void onError(int i, String s) {
-                        emitter.onError(new CustException(String.valueOf(i), s));
-                    }
-                })).compose(RxAdapter.exceptionTransformer());
+                            @Override
+                            public void onError(int i, String s) {
+                                emitter.onError(new CustException(String.valueOf(i), s));
+                            }
+                        })).compose(RxAdapter.exceptionTransformer());
     }
+
     /**
-     *   根据用户ID获取用户基本信息
+     * 根据用户ID获取用户基本信息
      *
      * @param specificParams
      * @return
@@ -807,7 +810,7 @@ public class ZhumulangmaModel extends CommonModel {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.RADIO_IDS, radioId);
 
-        return  getRadiosByIds(map).doOnNext(radioListById -> radio.set(radioListById.getRadios().get(0)))
+        return getRadiosByIds(map).doOnNext(radioListById -> radio.set(radioListById.getRadios().get(0)))
                 .flatMap((Function<RadioListById, ObservableSource<List<Schedule>>>) radioListById -> getSchedulesSource(radio.get()));
     }
 

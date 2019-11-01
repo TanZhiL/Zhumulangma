@@ -113,7 +113,9 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
     @Override
     public void initListener() {
         super.initListener();
-        addDisposable(RxView.clicks(fd(R.id.ll_search)).throttleFirst(1, TimeUnit.SECONDS)
+       RxView.clicks(fd(R.id.ll_search))
+                .doOnSubscribe(this)
+                .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     Postcard build = ARouter.getInstance().build(Constants.Router.Home.F_SEARCH);
                     if (!CollectionUtils.isEmpty(mMarqueeView.getMessages())) {
@@ -122,12 +124,14 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeViewModel> implements
                     Object navigation = build.navigation();
                     EventBus.getDefault().post(new ActivityEvent(
                             EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
-                }));
+                });
 
         fd(R.id.iv_download).setOnClickListener(this);
         fd(R.id.iv_history).setOnClickListener(this);
-        addDisposable(RxView.clicks(fd(R.id.iv_message)).throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(unit -> RouteUtil.navigateTo(Constants.Router.User.F_MESSAGE)));
+        RxView.clicks(fd(R.id.iv_message))
+                .doOnSubscribe(this)
+                .throttleFirst(1, TimeUnit.SECONDS)
+                .subscribe(unit -> RouteUtil.navigateTo(Constants.Router.User.F_MESSAGE));
         mMarqueeView.setOnItemClickListener(this);
     }
 

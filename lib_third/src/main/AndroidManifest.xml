@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gykj.zhumulangma.third" >
+    package="com.gykj.thomas.third" >
 
 
     <!--高德定位-->
@@ -100,7 +100,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
         <activity
-            android:name="com.gykj.zhumulangma.third.share.WXEntryActivity"
+            android:name="com.gykj.thomas.third.share.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />

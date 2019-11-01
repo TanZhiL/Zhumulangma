@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.third;
+package com.gykj.thomas.third;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

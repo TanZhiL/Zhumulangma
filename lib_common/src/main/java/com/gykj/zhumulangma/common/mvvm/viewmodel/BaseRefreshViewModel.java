@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.BaseModel;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,14 +40,14 @@ public class BaseRefreshViewModel<M extends BaseModel, T> extends BaseViewModel<
      * 当界面下拉刷新时,默认直接结束刷新
      */
     public void onViewRefresh() {
-        getFinishRefreshEvent().postValue(new ArrayList<>());
+        getFinishRefreshEvent().postValue(Collections.emptyList());
     }
 
     /**
      * 当界面下拉更多时,默认没有更多数据
      */
     public void onViewLoadmore() {
-        getFinishLoadmoreEvent().postValue(new ArrayList<>());
+        getFinishLoadmoreEvent().postValue(Collections.emptyList());
     }
 
 }

@@ -107,7 +107,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
             mIat.setParameter(SpeechConstant.RESULT_TYPE, "json");
 
         } catch (Exception e) {
-            Log.w(TAG,"由于讯飞语音没有提供x86 so文件所以直接捕获此异常");
+            Log.w(TAG, "由于讯飞语音没有提供x86 so文件所以直接捕获此异常");
         }
         mSpeechPopup = new SpeechPopup(mActivity);
     }
@@ -118,9 +118,9 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         suggestObservable = RxTextView.textChanges(etKeyword)
                 .debounce(300, TimeUnit.MILLISECONDS)
                 .skip(1)
-                .doOnSubscribe(d-> {
+                .doOnSubscribe(d -> {
                     suggestDisposable = d;
-                    addDisposable(d);
+                    accept(d);
                 })
                 .doOnNext(charSequence -> {
                     if (TextUtils.isEmpty(charSequence.toString().trim())) {
@@ -135,9 +135,10 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         etKeyword.setOnFocusChangeListener(this);
         suggestObservable.subscribe();
         etKeyword.setOnEditorActionListener(this);
-        addDisposable(RxView.clicks(fd(R.id.tv_search))
+        RxView.clicks(fd(R.id.tv_search))
+                .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(unit -> preSearch()));
+                .subscribe(unit -> preSearch());
     }
 
     @Override
@@ -179,7 +180,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
                             try {
                                 mIat.startListening(mRecognizerListener);
                             } catch (Exception e) {
-                               ToastUtil.showToast(ToastUtil.LEVEL_E,"语音功能暂时不支持在PC端使用");
+                                ToastUtil.showToast(ToastUtil.LEVEL_E, "语音功能暂时不支持在PC端使用");
                             }
                         } else {
                             ToastUtil.showToast("请允许应用使用麦克风权限");
@@ -191,7 +192,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
     @Override
     public void onSearch(String keyword) {
         hideSoftInput();
-        removeDisposable(suggestDisposable);
+        mCompositeDisposable.remove(suggestDisposable);
         etKeyword.setText(keyword);
         suggestObservable.subscribe();
         search(keyword);
@@ -271,7 +272,6 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         super.onSupportInvisible();
         KeyboardUtils.hideSoftInput(etKeyword);
     }
-
 
 
     /**
@@ -377,7 +377,7 @@ public class SearchFragment extends BaseMvvmFragment<SearchViewModel> implements
         try {
             mIat.destroy();
         } catch (Exception e) {
-            Log.w(TAG,"由于讯飞语音没有提供x86 so文件所以直接捕获此异常");
+            Log.w(TAG, "由于讯飞语音没有提供x86 so文件所以直接捕获此异常");
         }
     }
 }

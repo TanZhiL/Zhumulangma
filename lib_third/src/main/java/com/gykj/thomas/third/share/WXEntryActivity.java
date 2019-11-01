@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.third.share;
+package com.gykj.thomas.third.share;
 
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 

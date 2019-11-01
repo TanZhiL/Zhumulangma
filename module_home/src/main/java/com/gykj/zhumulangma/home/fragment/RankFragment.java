@@ -119,8 +119,9 @@ public class RankFragment extends BaseRefreshMvvmFragment<RankViewModel, Album> 
     @Override
     public void initListener() {
         super.initListener();
-        addDisposable(RxView.clicks(llbarCenter)
-                .throttleFirst(1, TimeUnit.SECONDS).subscribe(unit -> switchCategory()));
+        RxView.clicks(llbarCenter)
+                .doOnSubscribe(this)
+                .throttleFirst(1, TimeUnit.SECONDS).subscribe(unit -> switchCategory());
         mFreeAdapter.setOnItemClickListener((adapter, view, position) -> {
             Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mFreeAdapter.getItem(position).getId())

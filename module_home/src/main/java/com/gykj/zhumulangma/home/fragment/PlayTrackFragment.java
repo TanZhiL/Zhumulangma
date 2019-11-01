@@ -266,30 +266,34 @@ public class PlayTrackFragment extends BaseMvvmFragment<PlayTrackViewModel> impl
                     EventCode.Main.NAVIGATE, navigateBean));
 
         });
-        addDisposable(RxView.clicks(fd(R.id.ll_subscribe))
+        RxView.clicks(fd(R.id.ll_subscribe))
+                .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     if (mTrack != null)
                         mViewModel.subscribe(String.valueOf(mTrack.getAlbum().getAlbumId()));
-                }));
-        addDisposable(RxView.clicks(fd(R.id.ll_unsubscribe))
+                });
+        RxView.clicks(fd(R.id.ll_unsubscribe))
+                .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     if (mTrack != null)
                         mViewModel.unsubscribe(mTrack.getAlbum().getAlbumId());
-                }));
-        addDisposable(RxView.clicks(fd(R.id.iv_like))
+                });
+        RxView.clicks(fd(R.id.iv_like))
+                .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     if (mTrack != null)
                         mViewModel.like(mTrack);
-                }));
-        addDisposable(RxView.clicks(fd(R.id.iv_unlike))
+                });
+        RxView.clicks(fd(R.id.iv_unlike))
+                .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     if (mTrack != null)
                         mViewModel.unlike(mTrack);
-                }));
+                });
     }
 
     @Override

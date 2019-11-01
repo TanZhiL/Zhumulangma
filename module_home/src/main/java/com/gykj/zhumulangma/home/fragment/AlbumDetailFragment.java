@@ -159,7 +159,8 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
         layoutDetail.findViewById(R.id.cl_announcer).setOnClickListener(this);
         layoutTracks.findViewById(R.id.ll_select).setOnClickListener(this);
         layoutTracks.findViewById(R.id.ll_download).setOnClickListener(this);
-        addDisposable(RxView.clicks(layoutTracks.findViewById(R.id.ll_sort))
+        RxView.clicks(layoutTracks.findViewById(R.id.ll_sort))
+                .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
                     if (mPagerPopup.isShow()) {
@@ -167,9 +168,10 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                     }
                     mSort = "time_desc".equals(mSort) ? "time_asc" : "time_desc";
                     mViewModel.getTrackList(mSort);
-                }));
-        addDisposable(RxView.clicks(fd(R.id.ll_play))
+                });
+        RxView.clicks(fd(R.id.ll_play))
                 .throttleFirst(1, TimeUnit.SECONDS)
+                .doOnSubscribe(this)
                 .subscribe(unit -> {
                     TextView tvPlay = fd(R.id.tv_play);
                     tvPlay.setText("继续播放");
@@ -192,15 +194,17 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
                         XmPlayerManager.getInstance(mActivity).playList(mViewModel.getCommonTrackList(), 0);
                         RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                     }
-                }));
+                });
 
 
-        addDisposable(RxView.clicks(fd(R.id.ll_subscribe))
+        RxView.clicks(fd(R.id.ll_subscribe))
+                .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(unit -> mViewModel.subscribe(mAlbum)));
-        addDisposable(RxView.clicks(fd(R.id.ll_unsubscribe))
+                .subscribe(unit -> mViewModel.subscribe(mAlbum));
+        RxView.clicks(fd(R.id.ll_unsubscribe))
+                .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(unit -> mViewModel.unsubscribe(mAlbum)));
+                .subscribe(unit -> mViewModel.unsubscribe(mAlbum));
     }
 
 
@@ -533,8 +537,9 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<AlbumDetailView
         int index = mAlbumTrackAdapter.getData().indexOf(track);
         if (index != -1) {
             TextView tvHasplay = (TextView) mAlbumTrackAdapter.getViewByPosition(index, R.id.tv_hasplay);
+            mAlbumTrackAdapter.getItem(index).setSource(100 * currPos / duration);
             if (null != tvHasplay && mAlbumTrackAdapter.getItem(index).getDataId() == track.getDataId()) {
-                tvHasplay.setText(getString(R.string.hasplay, 100 * currPos / duration));
+                tvHasplay.setText(getString(R.string.hasplay, mAlbumTrackAdapter.getItem(index).getSource()));
             } else {
                 mAlbumTrackAdapter.notifyItemChanged(index);
             }

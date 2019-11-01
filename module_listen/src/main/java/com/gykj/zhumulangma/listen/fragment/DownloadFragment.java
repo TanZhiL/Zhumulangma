@@ -183,10 +183,8 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
                 SystemUtil.getRomTotalSize(mActivity)));
         mAlbumAdapter.setNewData(mDownloadManager.getDownloadAlbums(true));
 
-        List<Track> downloadTracks = mDownloadManager.getDownloadTracks(true);
-        Collections.sort(downloadTracks, ComparatorUtil.comparatorByUserSort(true));
+        mViewModel.getDownloadTracks();
 
-        mTrackAdapter.setNewData(downloadTracks);
         mDownloadingAdapter.setNewData(mDownloadManager.getDownloadTracks(false));
         if (mDownloadManager.getDownloadTracks(false).size() > 0) {
             layoutDetail3.findViewById(R.id.cl_action).setVisibility(View.VISIBLE);
@@ -199,7 +197,7 @@ public class DownloadFragment extends BaseMvvmFragment<DownloadViewModel> implem
 
     @Override
     public void initViewObservable() {
-
+        mViewModel.getTracksEvent().observe(this, tracks -> mTrackAdapter.setNewData(tracks));
     }
 
     @Override

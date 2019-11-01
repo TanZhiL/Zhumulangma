@@ -105,9 +105,9 @@ public class MainViewModel extends BaseViewModel<MainModel> {
     }
 
     public void getBing() {
-        RxField<BingBean> bingBean=new RxField<>();
+        RxField<BingBean> bingBean = new RxField<>();
         mModel.getBing("js", "1")
-                .doOnSubscribe(disposable ->accept(disposable))
+                .doOnSubscribe(this)
                 .flatMap((Function<BingBean, ObservableSource<ResponseBody>>) bean -> {
                     if (bean.getImages().get(0).getCopyrightlink().equals(SPUtils.getInstance().getString(Constants.SP.AD_URL))) {
                         return Observable.just(new RealResponseBody("", 0, null));
@@ -118,10 +118,12 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                 .observeOn(Schedulers.io())
                 .subscribe(body -> {
                     if (body.contentLength() != 0) {
-                        FileIOUtils.writeFileFromIS(getApplication().getFilesDir().getAbsolutePath()
+                        boolean b = FileIOUtils.writeFileFromIS(getApplication().getFilesDir().getAbsolutePath()
                                 + Constants.Default.AD_NAME, body.byteStream());
-                        SPUtils.getInstance().put(Constants.SP.AD_LABEL, bingBean.get().getImages().get(0).getCopyright());
-                        SPUtils.getInstance().put(Constants.SP.AD_URL, bingBean.get().getImages().get(0).getCopyrightlink());
+                        if (b) {
+                            SPUtils.getInstance().put(Constants.SP.AD_LABEL, bingBean.get().getImages().get(0).getCopyright());
+                            SPUtils.getInstance().put(Constants.SP.AD_URL, bingBean.get().getImages().get(0).getCopyrightlink());
+                        }
                     }
                 }, Throwable::printStackTrace);
     }

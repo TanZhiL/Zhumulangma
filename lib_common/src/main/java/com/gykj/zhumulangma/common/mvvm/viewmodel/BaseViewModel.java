@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.BaseModel;
 
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -20,7 +21,8 @@ import io.reactivex.functions.Consumer;
  */
 public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel, Consumer<Disposable> {
     protected M mModel;
-
+    //Disposable容器
+    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     private SingleLiveEvent<Void> showInitLoadViewEvent;
     private SingleLiveEvent<String> showLoadingViewEvent;
     private SingleLiveEvent<Void> showEmptyViewEvent;
@@ -35,14 +37,16 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
 
     /**
      * 初始化时loading视图
+     *
      * @return
      */
     public SingleLiveEvent<Void> getShowInitViewEvent() {
-        return showInitLoadViewEvent=createLiveData(showInitLoadViewEvent);
+        return showInitLoadViewEvent = createLiveData(showInitLoadViewEvent);
     }
 
     /**
      * 常规loading,null:隐藏,"":不带提示,"提示":带提示文本
+     *
      * @return
      */
     public SingleLiveEvent<String> getShowLoadingViewEvent() {
@@ -51,6 +55,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
 
     /**
      * 数据为空
+     *
      * @return
      */
     public SingleLiveEvent<Void> getShowEmptyViewEvent() {
@@ -59,6 +64,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
 
     /**
      * 网络异常
+     *
      * @return
      */
     public SingleLiveEvent<Void> getShowErrorViewEvent() {
@@ -67,6 +73,7 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
 
     /**
      * 结束宿主视图
+     *
      * @return
      */
     public SingleLiveEvent<Void> getFinishSelfEvent() {
@@ -75,10 +82,11 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
 
     /**
      * 清空所有状态
+     *
      * @return
      */
     public SingleLiveEvent<Void> getClearStatusEvent() {
-        return clearStatusEvent= createLiveData(clearStatusEvent);
+        return clearStatusEvent = createLiveData(clearStatusEvent);
     }
 
     protected <T> SingleLiveEvent<T> createLiveData(SingleLiveEvent<T> liveData) {
@@ -118,17 +126,13 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
 
     @Override
     public void accept(Disposable disposable) throws Exception {
-        if (mModel != null) {
-            mModel.addSubscribe(disposable);
-        }
+        mCompositeDisposable.add(disposable);
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        if (mModel != null) {
-            mModel.onCleared();
-        }
+        mCompositeDisposable.clear();
     }
 
 
