@@ -125,7 +125,7 @@ public class SearchFragment extends BaseMvvmFragment<HomeFragmentSearchBinding, 
                         showHideFragment(mHistoryFragment, mSuggestFragment);
                     } else {
                         showHideFragment(mSuggestFragment, mHistoryFragment);
-                        mHandler.postDelayed(() -> mSuggestFragment.loadSuggest(charSequence.toString()), 100);
+                        mHandler.postDelayed(() -> mSuggestFragment.loadSuggest(charSequence.toString()), 150);
                     }
                 });
         mBinding.ivPop.setOnClickListener(this);

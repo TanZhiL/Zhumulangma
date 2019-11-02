@@ -366,7 +366,7 @@
                         <com.gykj.zhumulangma.common.widget.ItemHeader
                             android:id="@+id/ih_daily"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             app:ih_right_text="更多"
                             app:ih_title="每日优选"
                             app:layout_constraintTop_toBottomOf="@id/line8" />
@@ -396,7 +396,7 @@
                         <com.gykj.zhumulangma.common.widget.ItemHeader
                             android:id="@+id/ih_book"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             app:ih_right_text="更多"
                             app:ih_title="有声读物"
                             app:layout_constraintTop_toBottomOf="@id/line3" />
@@ -426,7 +426,7 @@
                         <com.gykj.zhumulangma.common.widget.ItemHeader
                             android:id="@+id/ih_classroom"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="50dp"
                             app:ih_right_text="更多"
                             app:ih_title="小课堂"
                             app:layout_constraintTop_toBottomOf="@id/line4" />

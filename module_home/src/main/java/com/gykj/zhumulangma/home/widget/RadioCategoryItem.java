@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.home.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.Constants;
@@ -23,26 +24,17 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Description:
  */
 public class RadioCategoryItem extends android.support.v7.widget.AppCompatTextView {
-    private int categoryId;
     public RadioCategoryItem(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.RadioCategoryItem);
-        getAttrs(typedArray);
-        typedArray.recycle();
 
         this.setOnClickListener(view -> {
-
             Object o = ARouter.getInstance().build(Constants.Router.Home.F_RADIO_LIST)
-                    .withInt(KeyCode.Home.TYPE, categoryId)
+                    .withInt(KeyCode.Home.TYPE, Integer.parseInt(getTag().toString()))
                     .withString(KeyCode.Home.TITLE,getText().toString())
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
                     EventCode.Main.NAVIGATE,new NavigateBean(Constants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
         });
-    }
-
-    private void getAttrs(TypedArray typedArray) {
-        categoryId=typedArray.getInt(R.styleable.RadioCategoryItem_rci_id,5);
     }
 
 }

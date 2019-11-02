@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -27,7 +28,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * Created by 10719
  * on 2019/6/11
  */
-public class AlbumCategoryItem extends FrameLayout {
+public class AlbumCategoryItem extends ConstraintLayout {
 
     private int icon;
     private String title="分类一";
@@ -44,7 +45,7 @@ public class AlbumCategoryItem extends FrameLayout {
     public AlbumCategoryItem(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.AlbumCategoryItem,defStyleAttr,0);
+        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.AlbumCategoryItem);
         getAttrs(typedArray);
         typedArray.recycle();
 
@@ -58,7 +59,7 @@ public class AlbumCategoryItem extends FrameLayout {
         this.setOnClickListener(view -> {
 
             Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                    .withInt(KeyCode.Home.TYPE, categoryId)
+                    .withInt(KeyCode.Home.TYPE, getTag()==null?3: Integer.parseInt(getTag().toString()))
                     .withString(KeyCode.Home.TITLE,title)
                     .navigation();
             EventBus.getDefault().post(new ActivityEvent(
@@ -68,9 +69,7 @@ public class AlbumCategoryItem extends FrameLayout {
 
     private void getAttrs(TypedArray typedArray) {
         icon=typedArray.getResourceId(R.styleable.AlbumCategoryItem_aci_icon,icon);
-        categoryId=typedArray.getInt(R.styleable.AlbumCategoryItem_aci_id,3);
         title=typedArray.getString(R.styleable.AlbumCategoryItem_aci_title);
     }
-
 
 }

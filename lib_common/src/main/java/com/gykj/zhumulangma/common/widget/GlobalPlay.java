@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.animation.Animation;
@@ -19,7 +20,7 @@ import com.gykj.zhumulangma.common.R;
  * Created by 10719
  * on 2019/6/18
  */
-public class GlobalPlay extends FrameLayout {
+public class GlobalPlay extends ConstraintLayout {
 
     private ImageView civAvatar;
     private ImageView ivPlay;

@@ -21,8 +21,8 @@
 
         <com.gykj.zhumulangma.common.widget.GlobalPlay
             android:id="@+id/globalplay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="bottom|center_horizontal" />
     </FrameLayout>
 </layout>

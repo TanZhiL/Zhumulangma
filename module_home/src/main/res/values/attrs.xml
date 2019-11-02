@@ -2,11 +2,6 @@
 <resources>
     <declare-styleable name="AlbumCategoryItem">
         <attr name="aci_icon" format="reference"/>
-        <attr name="aci_id" format="integer"/>
         <attr name="aci_title" format="string"/>
-    </declare-styleable>
-
-    <declare-styleable name="RadioCategoryItem">
-        <attr name="rci_id" format="integer"/>
     </declare-styleable>
 </resources>

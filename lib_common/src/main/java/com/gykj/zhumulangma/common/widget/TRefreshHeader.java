@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
@@ -30,7 +31,7 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:
  */
-public class TRefreshHeader extends LinearLayout implements RefreshHeader {
+public class TRefreshHeader extends FrameLayout implements RefreshHeader {
     private static final String TAG = "TRefreshHeader";
     SimpleColorFilter filter;
     private LottieAnimationView mAnimationView;

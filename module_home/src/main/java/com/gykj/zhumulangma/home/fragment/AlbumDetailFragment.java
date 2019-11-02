@@ -330,7 +330,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<HomeFragmentAlb
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (R.id.ll_select == id || R.id.fl_mask == id) {
+        if (R.id.ll_select == id) {
             switchPager();
         } else if (id == R.id.ll_download) {
             Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_BATCH_DOWNLOAD)

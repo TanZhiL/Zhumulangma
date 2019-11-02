@@ -330,7 +330,7 @@
                     <com.gykj.zhumulangma.common.widget.ItemHeader
                         android:id="@+id/ih_like"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         app:ih_right_text="更多"
                         app:ih_title="猜你喜欢"
                         app:layout_constraintTop_toBottomOf="@id/line1" />
@@ -364,7 +364,7 @@
                     <com.gykj.zhumulangma.common.widget.ItemHeader
                         android:id="@+id/ih_story"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         app:ih_right_text="更多"
                         app:ih_title="最热有声小说"
                         app:layout_constraintTop_toBottomOf="@id/line2" />
@@ -459,7 +459,7 @@
                     <com.gykj.zhumulangma.common.widget.ItemHeader
                         android:id="@+id/ih_topic"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_marginTop="8dp"
                         app:ih_right_text="更多"
                         app:ih_title="精选专题"
@@ -493,7 +493,7 @@
                     <com.gykj.zhumulangma.common.widget.ItemHeader
                         android:id="@+id/ih_music"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         app:ih_right_text="更多"
                         app:ih_title="音乐好时光"
                         app:layout_constraintTop_toBottomOf="@id/line5" />
@@ -526,7 +526,7 @@
                     <com.gykj.zhumulangma.common.widget.ItemHeader
                         android:id="@+id/ih_radio"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         app:ih_right_text="更多"
                         app:ih_title="电台"
                         app:layout_constraintTop_toBottomOf="@id/line6" />

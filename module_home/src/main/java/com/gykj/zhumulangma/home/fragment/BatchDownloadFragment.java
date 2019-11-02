@@ -207,7 +207,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<HomeFragmentB
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (R.id.ll_select == id || R.id.fl_mask == id) {
+        if (R.id.ll_select == id) {
             switchPager();
         } else if (id == R.id.cb_all) {
             boolean isChecked = ((CheckBox) v).isChecked();
