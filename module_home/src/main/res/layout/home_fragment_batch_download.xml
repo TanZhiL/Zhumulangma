@@ -2,6 +2,7 @@
 
 <layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -62,10 +63,11 @@
             android:background="#f0f0f0" />
 
         <include
+            android:id="@+id/include_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            layout="@layout/common_layout_refresh_loadmore" />
+            layout="@layout/common_layout_list" />
 
         <LinearLayout
             android:id="@+id/cl_action"

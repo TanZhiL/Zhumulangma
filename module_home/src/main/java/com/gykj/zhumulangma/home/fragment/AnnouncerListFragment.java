@@ -11,7 +11,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -37,7 +37,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 
 @Route(path = Constants.Router.Home.F_ANNOUNCER_LIST)
-public class AnnouncerListFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,AnnouncerListViewModel, Announcer>
+public class AnnouncerListFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,AnnouncerListViewModel, Announcer>
         implements BaseQuickAdapter.OnItemClickListener, OnLoadMoreListener {
 
     @Autowired(name = KeyCode.Home.CATEGORY_ID)
@@ -48,7 +48,7 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<CommonLayoutR
 
     @Override
     protected int onBindLayout() {
-        return R.layout.common_layout_refresh_loadmore;
+        return R.layout.common_layout_list;
     }
 
     @Override

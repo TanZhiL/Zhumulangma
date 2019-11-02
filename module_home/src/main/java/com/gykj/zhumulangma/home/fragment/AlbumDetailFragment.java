@@ -222,7 +222,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<HomeFragmentAlb
             mBinding.tvSbcount.setText(String.format(getResources().getString(R.string.sb)
                     , ZhumulangmaUtil.toWanYi(mAlbum.getSubscribeCount())));
 
-            Glide.with(this).load(album.getAnnouncer().getAvatarUrl()).into((ImageView) mView.findViewById(R.id.iv_announcer_cover));
+            Glide.with(this).load(album.getAnnouncer().getAvatarUrl()).into((ImageView) layoutDetail.findViewById(R.id.iv_announcer_cover));
             ((TextView) layoutDetail.findViewById(R.id.tv_announcer_name)).setText(album.getAnnouncer().getNickname());
             ((TextView) layoutDetail.findViewById(R.id.tv_intro)).setText(album.getAlbumIntro());
             if (!TextUtils.isEmpty(album.getAlbumTags())) {
@@ -259,7 +259,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<HomeFragmentAlb
             }
         });
         mViewModel.getAnnouncerEvent().observe(this, announcer -> {
-            mView.findViewById(R.id.tv_vip).setVisibility(announcer.isVerified() ? View.VISIBLE : View.GONE);
+            layoutDetail.findViewById(R.id.tv_vip).setVisibility(announcer.isVerified() ? View.VISIBLE : View.GONE);
             String vsignature = announcer.getVsignature();
             if (TextUtils.isEmpty(vsignature)) {
                 layoutDetail.findViewById(R.id.tv_vsignature).setVisibility(View.GONE);
@@ -403,7 +403,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<HomeFragmentAlb
     private void setPager(long totalcount) {
         int pagesize = 20;
 
-        ((TextView) mView.findViewById(R.id.tv_pagecount)).setText(getString(R.string.pagecount, totalcount));
+        ((TextView) layoutTracks.findViewById(R.id.tv_pagecount)).setText(getString(R.string.pagecount, totalcount));
         List<String> list = new ArrayList<>();
         if (mSort.equals("time_desc")) {
             for (int i = 0; i < totalcount / pagesize; i++) {
@@ -535,7 +535,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<HomeFragmentAlb
         if (mPagerPopup.isShow()) {
             mPagerPopup.dismiss();
         } else {
-            mView.findViewById(R.id.iv_select_page).animate().rotation(-90).setDuration(200);
+            layoutTracks.findViewById(R.id.iv_select_page).animate().rotation(-90).setDuration(200);
             new XPopup.Builder(mActivity).atView(layoutTracks.findViewById(R.id.cl_actionbar)).setPopupCallback(new SimpleCallback() {
                 @Override
                 public void onCreated() {
@@ -693,7 +693,7 @@ public class AlbumDetailFragment extends BaseRefreshMvvmFragment<HomeFragmentAlb
 
     @Override
     public void onDismissing() {
-        mView.findViewById(R.id.iv_select_page).animate().rotation(90).setDuration(200);
+        layoutTracks.findViewById(R.id.iv_select_page).animate().rotation(90).setDuration(200);
     }
 
     class AlbumPagerAdapter extends PagerAdapter {

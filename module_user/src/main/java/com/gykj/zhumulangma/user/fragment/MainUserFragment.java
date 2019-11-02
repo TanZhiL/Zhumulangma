@@ -186,8 +186,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBi
                 .error(R.drawable.ic_user_avatar);
         mViewModel.getBaseUserInfoEvent().observe(this, xmBaseUserInfo -> {
             Glide.with(MainUserFragment.this).load(xmBaseUserInfo.getAvatarUrl())
-                    .apply(options)
-                    .into((ImageView) mView.findViewById(R.id.iv_avatar));
+                    .apply(options).into(mBinding.ivAvatar);
             mBinding.tvNickname.setText(xmBaseUserInfo.getNickName());
             mBinding.tvVip.setVisibility(xmBaseUserInfo.isVip() ? View.VISIBLE : View.GONE);
         });

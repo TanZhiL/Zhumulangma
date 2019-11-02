@@ -9,7 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.FavoriteBean;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.FavoriteAdapter;
@@ -24,14 +24,14 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  * <br/>Description:我的喜欢
  */
 @Route(path = Constants.Router.Listen.F_FAVORITE)
-public class FavoriteFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,FavoriteViewModel, FavoriteBean> implements
+public class FavoriteFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,FavoriteViewModel, FavoriteBean> implements
         BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
 
     private FavoriteAdapter mFavoriteAdapter;
 
     @Override
     protected int onBindLayout() {
-        return R.layout.common_layout_refresh_loadmore;
+        return R.layout.common_layout_list;
     }
 
     @Override

@@ -86,8 +86,8 @@ public class RankFragment extends BaseRefreshMvvmFragment<HomeFragmentRankBindin
         ivCategoryDown.setVisibility(View.VISIBLE);
         tvTitle = llbarCenter.findViewById(R.id.tv_title);
         tvTitle.setText("热门");
-        layoutFree = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.common_layout_refresh_loadmore, null);
-        layoutPaid = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.common_layout_refresh_loadmore, null);
+        layoutFree = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.common_layout_list, null);
+        layoutPaid = (ViewGroup) LayoutInflater.from(mActivity).inflate(R.layout.common_layout_list, null);
         rlFree = layoutFree.findViewById(R.id.refreshLayout);
         rlPaid = layoutPaid.findViewById(R.id.refreshLayout);
         RecyclerView rvFree = layoutFree.findViewById(R.id.recyclerview);
@@ -158,7 +158,7 @@ public class RankFragment extends BaseRefreshMvvmFragment<HomeFragmentRankBindin
             mCategoryPopup.dismiss();
         }else {
             ivCategoryDown.animate().rotation(180).setDuration(200);
-            new XPopup.Builder(mActivity).atView(mView.findViewById(R.id.ctb_simple)).popupPosition(PopupPosition.Bottom).asCustom(mCategoryPopup).show();
+            new XPopup.Builder(mActivity).atView(mSimpleTitleBar).popupPosition(PopupPosition.Bottom).asCustom(mCategoryPopup).show();
         }
     }
 

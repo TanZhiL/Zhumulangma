@@ -92,15 +92,15 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<HomeFragmentAnnou
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if (null != mBinding && null!= mBinding.banner)
+        if (null != mBinding)
             mBinding.banner.startAutoPlay();
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        if (null != mBinding && null!= mBinding.banner)
-        mBinding.banner.stopAutoPlay();
+        if (null != mBinding)
+            mBinding.banner.stopAutoPlay();
     }
 
     @Override

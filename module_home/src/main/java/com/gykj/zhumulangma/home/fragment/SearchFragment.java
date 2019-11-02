@@ -96,7 +96,7 @@ public class SearchFragment extends BaseMvvmFragment<HomeFragmentSearchBinding, 
     @Override
     protected void initView() {
         if (StatusBarUtils.supportTransparentStatusBar()) {
-            mView.findViewById(R.id.cl_titlebar).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
+            mBinding.clTitlebar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
         //不支持x86
         mIat = SpeechRecognizer.createRecognizer(mActivity, mInitListener);

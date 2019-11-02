@@ -286,14 +286,14 @@ public class HotFragment extends BaseRefreshMvvmFragment<HomeFragmentHotBinding,
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if (null != mBinding && null!= mBinding.banner)
+        if (null != mBinding)
             mBinding.banner.startAutoPlay();
     }
 
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        if (null != mBinding && null!= mBinding.banner)
+        if (null != mBinding)
             mBinding.banner.stopAutoPlay();
     }
 

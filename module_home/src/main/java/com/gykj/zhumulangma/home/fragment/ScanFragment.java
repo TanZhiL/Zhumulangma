@@ -56,7 +56,7 @@ public class ScanFragment extends BaseFragment<HomeFragmentScanBinding> implemen
     @Override
     protected void initView() {
         if (StatusBarUtils.supportTransparentStatusBar()) {
-            mView.findViewById(R.id.fl_title).setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
+            mBinding.flTitle.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
         mBinding.zxingview.setDelegate(delegate);
     }
@@ -64,12 +64,12 @@ public class ScanFragment extends BaseFragment<HomeFragmentScanBinding> implemen
     @Override
     public void initListener() {
         super.initListener();
-        mView.findViewById(R.id.iv_pop).setOnClickListener(this);
-        mView.findViewById(R.id.tv_pic).setOnClickListener(this);
-        mView.findViewById(R.id.tv_on).setOnClickListener(this);
-        mView.findViewById(R.id.iv_on).setOnClickListener(this);
-        mView.findViewById(R.id.tv_off).setOnClickListener(this);
-        mView.findViewById(R.id.iv_off).setOnClickListener(this);
+        mBinding.ivPop.setOnClickListener(this);
+        mBinding.tvPic.setOnClickListener(this);
+        mBinding.tvOn.setOnClickListener(this);
+        mBinding.ivOn.setOnClickListener(this);
+        mBinding.tvOff.setOnClickListener(this);
+        mBinding.ivOff.setOnClickListener(this);
     }
 
     @Override
@@ -103,11 +103,11 @@ public class ScanFragment extends BaseFragment<HomeFragmentScanBinding> implemen
         @Override
         public void onCameraAmbientBrightnessChanged(boolean isDark) {
             if (isDark) {
-                mView.findViewById(R.id.gp_on).setVisibility(View.VISIBLE);
-                mView.findViewById(R.id.gp_off).setVisibility(View.GONE);
+                mBinding.gpOn.setVisibility(View.VISIBLE);
+                mBinding.gpOff.setVisibility(View.GONE);
             } else {
-                mView.findViewById(R.id.gp_off).setVisibility(isLight ? View.VISIBLE : View.GONE);
-                mView.findViewById(R.id.gp_on).setVisibility(View.GONE);
+                mBinding.gpOff.setVisibility(isLight ? View.VISIBLE : View.GONE);
+                mBinding.gpOn.setVisibility(View.GONE);
             }
         }
 

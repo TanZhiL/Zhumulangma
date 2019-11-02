@@ -91,7 +91,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
     @Override
     protected void initView() {
         mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left).setRotation(-90);
-        mView.findViewById(R.id.iv_item_play).setVisibility(View.GONE);
+        mBinding.includeItemRadio.ivItemPlay.setVisibility(View.GONE);
         mSchedulePopup = new PlaySchedulePopup(mActivity, this);
         new Handler().postDelayed(() -> {
             if (mPlayerManager.isPlaying()) {
@@ -128,8 +128,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
             try {
                 mSchedule = (Schedule) mPlayerManager.getCurrSound();
                 setTitle(new String[]{mSchedule.getRadioName()});
-                ((TextView) mView.findViewById(R.id.tv_radio_name)).setText(mSchedule.getRadioName());
-                ((TextView) mView.findViewById(R.id.tv_playcount)).setText(ZhumulangmaUtil.toWanYi(mSchedule.getRadioPlayCount()) + "人听过");
+                mBinding.includeItemRadio.tvRadioName.setText(mSchedule.getRadioName());
+                mBinding.includeItemRadio.tvPlaycount.setText(ZhumulangmaUtil.toWanYi(mSchedule.getRadioPlayCount()) + "人听过");
                 mViewModel.getPrograms(String.valueOf(mSchedule.getRadioId()));
 
                 mBinding.tvTime.setText(mSchedule.getStartTime().substring(mSchedule.getStartTime().length() - 5) + "~"
@@ -138,7 +138,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
 
                 Program program = mSchedule.getRelatedProgram();
                 mBinding.tvProgramName.setText(program.getProgramName());
-                Glide.with(this).load(program.getBackPicUrl()).into((ImageView) mView.findViewById(R.id.iv_cover));
+                Glide.with(this).load(program.getBackPicUrl()).into(mBinding.includeItemRadio.ivCover);
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < program.getAnnouncerList().size(); i++) {
                     sb.append(program.getAnnouncerList().get(i).getNickName());
@@ -181,7 +181,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
     @Override
     public void initViewObservable() {
         mViewModel.getProgramsSingleLiveEvent().observe(this, programList ->
-                ((TextView) mView.findViewById(R.id.tv_desc)).setText(getString(R.string.playing,
+                mBinding.includeItemRadio.tvDesc.setText(getString(R.string.playing,
                         programList.getmProgramList().get(0).getProgramName())));
         mViewModel.getYestodaySingleLiveEvent().observe(this, schedules ->
                 mPlayRadioPopup.getYestodayAdapter().setNewData(schedules));

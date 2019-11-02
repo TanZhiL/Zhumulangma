@@ -12,7 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -35,7 +35,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索专辑
  */
-public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,SearchAlbumViewModel, Album> implements
+public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,SearchAlbumViewModel, Album> implements
         BaseQuickAdapter.OnItemClickListener {
 
 
@@ -48,7 +48,7 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutRef
 
     @Override
     protected int onBindLayout() {
-        return R.layout.common_layout_refresh_loadmore;
+        return R.layout.common_layout_list;
     }
 
     @Override

@@ -260,6 +260,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/iv_history" />
         </android.support.constraint.ConstraintLayout>
 
-        <include layout="@layout/home_item_radio_line" />
+        <include
+            android:id="@+id/include_item_radio"
+            layout="@layout/home_item_radio" />
     </LinearLayout>
 </layout>

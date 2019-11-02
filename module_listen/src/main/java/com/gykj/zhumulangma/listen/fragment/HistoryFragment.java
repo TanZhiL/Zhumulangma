@@ -10,7 +10,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.listen.R;
@@ -29,14 +29,14 @@ import java.util.List;
  * <br/>Description:
  */
 @Route(path = Constants.Router.Listen.F_HISTORY)
-public class HistoryFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,HistoryViewModel, PlayHistoryItem> implements
+public class HistoryFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,HistoryViewModel, PlayHistoryItem> implements
         BaseQuickAdapter.OnItemClickListener {
 
     private HistoryAdapter mHistoryAdapter;
 
     @Override
     protected int onBindLayout() {
-        return R.layout.common_layout_refresh_loadmore;
+        return R.layout.common_layout_list;
     }
 
     @Override

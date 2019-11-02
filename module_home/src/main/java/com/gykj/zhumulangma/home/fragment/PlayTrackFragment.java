@@ -199,7 +199,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
         mBinding.tvPlayList.setOnClickListener(this);
         mBinding.ivPlayList.setOnClickListener(this);
         mBinding.ivSchedule.setOnClickListener(this);
-        mView.findViewById(R.id.cl_announcer).setOnClickListener(this);
+        mBinding.includeAnnouncer.clAnnouncer.setOnClickListener(this);
         mBinding.tvComment.setOnClickListener(this);
         mBinding.ivBg.setOnClickListener(this);
         mBinding.clAction.setOnClickListener(this);
@@ -264,14 +264,14 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
 
             Glide.with(this).load(TextUtils.isEmpty(currSoundIgnoreKind.getCoverUrlLarge())
                     ? currSoundIgnoreKind.getAlbum().getCoverUrlLarge() : currSoundIgnoreKind.getCoverUrlLarge()).into(mBinding.ivBg);
-            Glide.with(this).load(currSoundIgnoreKind.getAnnouncer().getAvatarUrl()).into((ImageView) mView.findViewById(R.id.iv_announcer_cover));
-            Glide.with(this).load(currSoundIgnoreKind.getAlbum().getCoverUrlMiddle()).into((ImageView) mView.findViewById(R.id.iv_album_cover));
+            Glide.with(this).load(currSoundIgnoreKind.getAnnouncer().getAvatarUrl()).into(mBinding.includeAnnouncer.ivAnnouncerCover);
+            Glide.with(this).load(currSoundIgnoreKind.getAlbum().getCoverUrlMiddle()).into(mBinding.ivAlbumCover);
 
             mBinding.tvTrackName.setText(currSoundIgnoreKind.getTrackTitle());
-            ((TextView) mView.findViewById(R.id.tv_announcer_name)).setText(currSoundIgnoreKind.getAnnouncer().getNickname());
+            mBinding.includeAnnouncer.tvAnnouncerName.setText(currSoundIgnoreKind.getAnnouncer().getNickname());
 
 
-            mView.findViewById(R.id.tv_vip).setVisibility(currSoundIgnoreKind.getAnnouncer().isVerified() ? View.VISIBLE : View.GONE);
+            mBinding.includeAnnouncer.tvVip.setVisibility(currSoundIgnoreKind.getAnnouncer().isVerified() ? View.VISIBLE : View.GONE);
             mBinding.tvAlbumName.setText(currSoundIgnoreKind.getAlbum().getAlbumTitle());
             mBinding.tvTrackIntro.setText(currSoundIgnoreKind.getTrackIntro());
             mBinding.tvPlaycountCreatetime.setText(getString(R.string.playcount_createtime,
@@ -342,12 +342,12 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
         mViewModel.getAnnouncerEvent().observe(this, announcer -> {
             String vsignature = announcer.getVsignature();
             if (TextUtils.isEmpty(vsignature)) {
-                mView.findViewById(R.id.tv_vsignature).setVisibility(View.GONE);
+                mBinding.includeAnnouncer.tvVsignature.setVisibility(View.GONE);
             } else {
-                mView.findViewById(R.id.tv_vsignature).setVisibility(View.VISIBLE);
-                ((TextView) mView.findViewById(R.id.tv_vsignature)).setText(vsignature);
+                mBinding.includeAnnouncer.tvVsignature.setVisibility(View.VISIBLE);
+                mBinding.includeAnnouncer.tvVsignature.setText(vsignature);
             }
-            ((TextView) mView.findViewById(R.id.tv_following_count)).setText(getString(R.string.following_count,
+            mBinding.includeAnnouncer.tvFollowingCount.setText(getString(R.string.following_count,
                     ZhumulangmaUtil.toWanYi(announcer.getFollowerCount())));
         });
     }

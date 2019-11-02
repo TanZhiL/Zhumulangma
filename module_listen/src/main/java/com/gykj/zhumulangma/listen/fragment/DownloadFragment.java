@@ -132,15 +132,13 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
         mDownloadingAdapter.bindToRecyclerView(rvRecommend);
         mDownloadingAdapter.setEmptyView(R.layout.common_layout_empty);
 
-        tvMemory = mView.findViewById(R.id.tv_memory);
-        ViewPager viewpager = mView.findViewById(R.id.viewpager);
-        viewpager.setAdapter(new DownloadPagerAdapter());
+        mBinding.viewpager.setAdapter(new DownloadPagerAdapter());
         final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 50));
+        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), mBinding.viewpager, 50));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(magicIndicator, viewpager);
-        viewpager.setCurrentItem(mTabIndex);
+        ViewPagerHelper.bind(magicIndicator,mBinding.viewpager);
+        mBinding.viewpager.setCurrentItem(mTabIndex);
 
         if (!mDownloadManager.haveDowningTask()) {
             ((TextView) layoutDetail3.findViewById(R.id.tv_all)).setText("全部开始");

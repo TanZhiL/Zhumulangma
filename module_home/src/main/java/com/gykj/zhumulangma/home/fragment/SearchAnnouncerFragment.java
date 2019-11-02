@@ -12,7 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -35,7 +35,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索主播
  */
-public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,SearchAnnouncerViewModel, Announcer>
+public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,SearchAnnouncerViewModel, Announcer>
         implements BaseQuickAdapter.OnItemClickListener {
 
    private AnnouncerAdapter mAnnouncerAdapter;
@@ -47,7 +47,7 @@ public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<CommonLayou
 
     @Override
     protected int onBindLayout() {
-        return R.layout.common_layout_refresh_loadmore;
+        return R.layout.common_layout_list;
     }
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

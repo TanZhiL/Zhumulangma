@@ -113,7 +113,7 @@
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 
-<include layout="@layout/common_layout_refresh_loadmore"/>
+<include layout="@layout/common_layout_list"/>
     <!--<com.scwang.smartrefresh.layout.SmartRefreshLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"

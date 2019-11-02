@@ -16,6 +16,7 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
@@ -65,11 +66,9 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<HomeFragmentB
     @Autowired(name = KeyCode.Home.ALBUMID)
     public long mAlbumId;
     private long mTotalSize;
-    private SmartRefreshLayout refreshLayout;
     private DownloadTrackAdapter mDownloadTrackAdapter;
     private TrackPagerPopup mPagerPopup;
     private int mTotalCount;
-
 
     @Override
     protected int onBindLayout() {
@@ -78,13 +77,10 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<HomeFragmentB
 
     @Override
     protected void initView() {
-        RecyclerView recyclerView = mView.findViewById(R.id.recyclerview);
-        refreshLayout = mView.findViewById(R.id.refreshLayout);
-
         mDownloadTrackAdapter = new DownloadTrackAdapter(R.layout.home_item_batch_download);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
-        recyclerView.setHasFixedSize(true);
-        mDownloadTrackAdapter.bindToRecyclerView(recyclerView);
+        mBinding.includeList.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.includeList.recyclerview.setHasFixedSize(true);
+        mDownloadTrackAdapter.bindToRecyclerView(mBinding.includeList.recyclerview);
         mPagerPopup = new TrackPagerPopup(mActivity, this);
         mPagerPopup.setDismissingListener(this);
     }
@@ -102,7 +98,7 @@ public class BatchDownloadFragment extends BaseRefreshMvvmFragment<HomeFragmentB
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(refreshLayout, mDownloadTrackAdapter);
+        return new WrapRefresh(mBinding.includeList.refreshLayout, mDownloadTrackAdapter);
     }
 
     @Override

@@ -490,7 +490,9 @@
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
-                    <include layout="@layout/home_layout_announcer" />
+                    <include
+                        android:id="@+id/include_announcer"
+                        layout="@layout/home_layout_announcer" />
                 </LinearLayout>
 
                 <View

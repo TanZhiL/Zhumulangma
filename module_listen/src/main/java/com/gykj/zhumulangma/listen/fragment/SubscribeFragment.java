@@ -15,7 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.SubscribeBean;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
@@ -38,7 +38,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:订阅
  */
-public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,SubscribeViewModel, SubscribeBean>
+public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,SubscribeViewModel, SubscribeBean>
         implements BaseQuickAdapter.OnItemChildClickListener,
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
 
@@ -51,7 +51,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutRefre
 
     @Override
     protected int onBindLayout() {
-        return R.layout.common_layout_refresh_loadmore;
+        return R.layout.common_layout_list;
     }
 
     @Override
@@ -150,8 +150,8 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutRefre
         switch (event.getCode()){
             case EventCode.Listen.TAB_REFRESH:
                 if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!= getInitStatus().getClass()){
-                    ((RecyclerView)mView.findViewById(R.id.recyclerview)).scrollToPosition(0);
-                    ((SmartRefreshLayout)mView.findViewById(R.id.refreshLayout)).autoRefresh();
+                    mBinding.recyclerview.scrollToPosition(0);
+                    mBinding.refreshLayout.autoRefresh();
                 }
                 break;
         }

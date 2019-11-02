@@ -9,7 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
@@ -28,7 +28,7 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  */
 
 @Route(path = Constants.Router.Home.F_TRACK_LIST)
-public class TrackListFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding, TrackListViewModel, Track> implements
+public class TrackListFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, TrackListViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener {
 
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
@@ -39,7 +39,7 @@ public class TrackListFragment extends BaseRefreshMvvmFragment<CommonLayoutRefre
 
     @Override
     protected int onBindLayout() {
-        return R.layout.common_layout_refresh_loadmore;
+        return R.layout.common_layout_list;
     }
 
     @Override

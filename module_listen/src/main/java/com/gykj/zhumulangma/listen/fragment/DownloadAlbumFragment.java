@@ -91,7 +91,7 @@ public class DownloadAlbumFragment extends BaseFragment<ListenFragmentDownloadAl
                 break;
             }
         }
-        Glide.with(this).load(mAlbum.getCoverUrlMiddle()).into((ImageView) mView.findViewById(R.id.iv_cover));
+        Glide.with(this).load(mAlbum.getCoverUrlMiddle()).into(mBinding.ivCover);
 
         mBinding.tvName.setText(mAlbum.getAlbumTitle());
 

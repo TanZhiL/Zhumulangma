@@ -229,8 +229,8 @@ public abstract class BaseActivity<DB extends ViewDataBinding> extends SupportAc
     public void showLoadingView(String tip) {
         mLoadingHandler.removeCallbacksAndMessages(null);
         mBaseLoadService.showSuccess();
-        mBaseLoadService.setCallBack(getLoadingStatus().getClass(), (context, view1) -> {
-            TextView tvTip = view1.findViewById(R.id.tv_tip);
+        mBaseLoadService.setCallBack(getLoadingStatus().getClass(), (context, view) -> {
+            TextView tvTip = view.findViewById(R.id.tv_tip);
             if(tvTip==null){
                 throw new IllegalStateException(getLoadingStatus().getClass()+"必须带有显示提示文本的TextView,且id为R.id.tv_tip");
             }

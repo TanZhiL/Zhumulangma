@@ -12,7 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshLoadmoreBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -36,7 +36,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Description:专辑列表
  */
 @Route(path = Constants.Router.Home.F_ALBUM_LIST)
-public class AlbumListFragment extends BaseRefreshMvvmFragment<CommonLayoutRefreshLoadmoreBinding,AlbumListViewModel, Album> implements
+public class AlbumListFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,AlbumListViewModel, Album> implements
         BaseQuickAdapter.OnItemClickListener {
     //猜你喜欢
     public static final int LIKE = 0;
@@ -59,7 +59,7 @@ public class AlbumListFragment extends BaseRefreshMvvmFragment<CommonLayoutRefre
 
     @Override
     protected int onBindLayout() {
-        return R.layout.common_layout_refresh_loadmore;
+        return R.layout.common_layout_list;
     }
 
     @Override

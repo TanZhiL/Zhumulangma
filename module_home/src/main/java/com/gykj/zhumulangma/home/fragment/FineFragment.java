@@ -40,7 +40,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:精品
  */
-public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBinding,FineViewModel, Album> implements
+public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBinding, FineViewModel, Album> implements
         View.OnClickListener, OnBannerListener {
 
     private FineAdapter mDailyAdapter;
@@ -109,6 +109,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBindin
         mViewModel.getBooksEvent().observe(this, albums -> mBookAdapter.setNewData(albums));
         mViewModel.getClassRoomsEvent().observe(this, albums -> mClassroomAdapter.setNewData(albums));
     }
+
     private void initBanner() {
         mBinding.banner.setIndicatorGravity(BannerConfig.RIGHT);
         mBinding.banner.setDelayTime(3000);
@@ -125,7 +126,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBindin
     private void initBook() {
         mBookAdapter = new FineAdapter(R.layout.home_item_fine);
         mBinding.rvBook.setLayoutManager(new LinearLayoutManager(mActivity));
-        mBinding. rvBook.setHasFixedSize(true);
+        mBinding.rvBook.setHasFixedSize(true);
         mBookAdapter.bindToRecyclerView(mBinding.rvBook);
 
     }
@@ -168,10 +169,10 @@ public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBindin
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
-        if (null != mBinding && null!= mBinding.banner){
+        if (null != mBinding) {
             mBinding.banner.startAutoPlay();
         }
-        if (null != mBinding && null!= mBinding.banner){
+        if (null != mBinding) {
             mBinding.marqueeView.continueRoll();
         }
     }
@@ -179,10 +180,10 @@ public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBindin
     @Override
     public void onSupportInvisible() {
         super.onSupportInvisible();
-        if (null != mBinding && null!= mBinding.banner){
+        if (null != mBinding) {
             mBinding.banner.stopAutoPlay();
         }
-        if (null != mBinding && null!= mBinding.banner){
+        if (null != mBinding) {
             mBinding.marqueeView.stopRoll();
         }
     }
