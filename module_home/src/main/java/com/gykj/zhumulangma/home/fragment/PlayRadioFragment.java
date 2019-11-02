@@ -79,9 +79,8 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setSwipeBackEnable(false);
+    protected boolean enableSwipeBack() {
+        return false;
     }
     @Override
     protected void loadView() {

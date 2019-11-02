@@ -7,9 +7,8 @@
 
     </data>
 
-    <FrameLayout
+    <merge
         android:layout_width="match_parent"
-        android:id="@+id/cl_main"
         android:layout_height="match_parent">
 
         <FrameLayout
@@ -24,5 +23,5 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom|center_horizontal" />
-    </FrameLayout>
+    </merge>
 </layout>

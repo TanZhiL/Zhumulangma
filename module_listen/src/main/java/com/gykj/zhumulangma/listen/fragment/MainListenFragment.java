@@ -38,9 +38,8 @@ public class MainListenFragment extends BaseFragment<ListenFragmentMainBinding> 
         return R.layout.listen_fragment_main;
     }
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setSwipeBackEnable(false);
+    protected boolean enableSwipeBack() {
+        return false;
     }
     @Override
     protected void initView() {

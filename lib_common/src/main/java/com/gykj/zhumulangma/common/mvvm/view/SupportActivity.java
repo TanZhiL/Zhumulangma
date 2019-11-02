@@ -24,9 +24,9 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:Fragmentation支持
  */
-public abstract class SupportActivity extends RxAppCompatActivity implements ISupportActivity, ISwipeBackActivity {
+public abstract class SupportActivity extends RxAppCompatActivity implements ISupportActivity {
     final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
-    final SwipeBackActivityDelegate mBackDelegate = new SwipeBackActivityDelegate(this);
+
     @Override
     public SupportActivityDelegate getSupportDelegate() {
         return mDelegate;
@@ -45,14 +45,14 @@ public abstract class SupportActivity extends RxAppCompatActivity implements ISu
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDelegate.onCreate(savedInstanceState);
-        mBackDelegate.onCreate(savedInstanceState);
+
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDelegate.onPostCreate(savedInstanceState);
-        mBackDelegate.onPostCreate(savedInstanceState);
+
     }
 
     @Override
@@ -264,36 +264,5 @@ public abstract class SupportActivity extends RxAppCompatActivity implements ISu
     public <T extends ISupportFragment> T findFragment(Class<T> fragmentClass) {
         return SupportHelper.findFragment(getSupportFragmentManager(), fragmentClass);
     }
-    @Override
-    public SwipeBackLayout getSwipeBackLayout() {
-        return mBackDelegate.getSwipeBackLayout();
-    }
-    /**
-     * 是否可滑动
-     * @param enable
-     */
-    @Override
-    public void setSwipeBackEnable(boolean enable) {
-        mBackDelegate.setSwipeBackEnable(enable);
-    }
 
-    @Override
-    public void setEdgeLevel(SwipeBackLayout.EdgeLevel edgeLevel) {
-        mBackDelegate.setEdgeLevel(edgeLevel);
-    }
-
-    @Override
-    public void setEdgeLevel(int widthPixel) {
-        mBackDelegate.setEdgeLevel(widthPixel);
-    }
-
-    /**
-     * 限制SwipeBack的条件,默认栈内Fragment数 <= 1时 , 优先滑动退出Activity , 而不是Fragment
-     *
-     * @return true: Activity优先滑动退出;  false: Fragment优先滑动退出
-     */
-    @Override
-    public boolean swipeBackPriority() {
-        return mBackDelegate.swipeBackPriority();
-    }
 }

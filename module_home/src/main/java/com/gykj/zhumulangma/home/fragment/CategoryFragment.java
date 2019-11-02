@@ -21,13 +21,11 @@ public class CategoryFragment extends BaseFragment<HomeFragmentCategoryBinding> 
     public CategoryFragment() {
 
     }
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mView.setBackground(null);
-        setSwipeBackEnable(false);
-    }
 
+    @Override
+    protected boolean enableSwipeBack() {
+        return false;
+    }
     @Override
     protected int onBindLayout() {
         return R.layout.home_fragment_category;

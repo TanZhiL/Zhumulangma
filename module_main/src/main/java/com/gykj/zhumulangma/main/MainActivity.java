@@ -80,10 +80,10 @@ public class MainActivity extends BaseMvvmActivity<MainActivityMainBinding, Main
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //清除全屏显示
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        super.onCreate(savedInstanceState);
-        initAd();
         //全局白色背景
         setTheme(R.style.NullTheme);
+        super.onCreate(savedInstanceState);
+        initAd();
         //申请权限
         new RxPermissions(this).request(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -136,7 +136,6 @@ public class MainActivity extends BaseMvvmActivity<MainActivityMainBinding, Main
 
     @Override
     public void initView() {
-        setSwipeBackEnable(false);
         if (findFragment(MainFragment.class) == null) {
             MainFragment mainFragment = new MainFragment();
             mainFragment.setShowListener(this);
@@ -184,10 +183,6 @@ public class MainActivity extends BaseMvvmActivity<MainActivityMainBinding, Main
         mViewModel.getCoverSingleLiveEvent().observe(this, s -> mBinding.globalplay.play(s));
     }
 
-    @Override
-    public boolean enableSimplebar() {
-        return false;
-    }
 
 
     @Override

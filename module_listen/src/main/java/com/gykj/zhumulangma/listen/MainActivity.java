@@ -11,7 +11,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        setSwipeBackEnable(false);
         if (findFragment(MainListenFragment.class) == null) {
             loadRootFragment(R.id.fl_container,new MainListenFragment());  // 加载根Fragment
         }
@@ -22,8 +21,4 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    @Override
-    public boolean enableSimplebar() {
-        return false;
-    }
 }

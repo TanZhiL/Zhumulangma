@@ -45,7 +45,7 @@ public class SearchRadioFragment extends BaseRefreshMvvmFragment<CommonLayoutLis
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mView.setBackground(null);
-        setSwipeBackEnable(false);
+
     }
 
     @Override

@@ -59,12 +59,9 @@ public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBindin
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mView.setBackground(null);
-        setSwipeBackEnable(false);
+    protected boolean enableSwipeBack() {
+        return false;
     }
-
     @Override
     protected void initView() {
         initBanner();

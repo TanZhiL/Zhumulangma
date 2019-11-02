@@ -52,13 +52,11 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<HomeFragmentAnnou
         return R.layout.home_fragment_announcer;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mView.setBackground(null);
-        setSwipeBackEnable(false);
-    }
 
+    @Override
+    protected boolean enableSwipeBack() {
+        return false;
+    }
     protected void initView() {
         mBinding.banner.setIndicatorGravity(BannerConfig.RIGHT);
         mBinding.banner.setDelayTime(3000);
