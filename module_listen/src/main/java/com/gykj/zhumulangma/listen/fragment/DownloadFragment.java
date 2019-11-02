@@ -81,7 +81,6 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
     private DownloadTrackAdapter mTrackAdapter;
     private DownloadingAdapter mDownloadingAdapter;
 
-    private TextView tvMemory;
     private MagicIndicator magicIndicator;
     private ViewGroup layoutDetail1, layoutDetail2, layoutDetail3;
     private XmDownloadManager mDownloadManager = XmDownloadManager.getInstance();
@@ -177,7 +176,7 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
 
     @Override
     public void initData() {
-        tvMemory.setText(getString(R.string.memory,
+        mBinding.tvMemory.setText(getString(R.string.memory,
                 mDownloadManager.getHumanReadableDownloadOccupation(IDownloadManager.Auto),
                 SystemUtil.getRomTotalSize(mActivity)));
         mAlbumAdapter.setNewData(mDownloadManager.getDownloadAlbums(true));

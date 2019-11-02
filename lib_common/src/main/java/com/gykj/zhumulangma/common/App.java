@@ -76,8 +76,8 @@ public class App extends Application {
                     .initUM()
                     .initRouter()
                     .initUtils()
-                    .initBugly()
-                    .initCrashView();
+                    .initCrashView()
+                    .initBugly(false);
             AppHelper.getInstance(this)
                     .initLog()
                     .initXmly()

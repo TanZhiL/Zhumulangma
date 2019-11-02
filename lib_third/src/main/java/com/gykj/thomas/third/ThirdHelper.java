@@ -85,14 +85,14 @@ public class ThirdHelper {
 
 
     
-    public ThirdHelper initBugly() {
+    public ThirdHelper initBugly(boolean enableHotfix) {
             Beta.largeIconId = R.drawable.third_launcher_ting;
             Beta.smallIconId = R.drawable.third_launcher_ting;
             Beta.upgradeDialogLayoutId = R.layout.third_dialog_update;
-
+            Beta.enableHotfix = enableHotfix;
             Beta.canNotifyUserRestart = true;
             //生产环境
-            // Bugly.init(mApplication, Constants.Bugly.SPEECH_ID,, false);
+            // Bugly.init(mApplication, Constants.Bugly.SPEECH_ID,false);
             //开发设备
             Bugly.setIsDevelopmentDevice(mApplication, true);
             Bugly.init(mApplication, Constants.BUGLY_ID, true);
