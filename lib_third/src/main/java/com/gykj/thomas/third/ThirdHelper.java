@@ -93,8 +93,7 @@ public class ThirdHelper {
             Beta.canNotifyUserRestart = true;
             //生产环境
             // Bugly.init(mApplication, Constants.Bugly.SPEECH_ID,false);
-            //开发设备
-            Bugly.setIsDevelopmentDevice(mApplication, true);
+            //开发环境
             Bugly.init(mApplication, Constants.BUGLY_ID, true);
         return this;
     }

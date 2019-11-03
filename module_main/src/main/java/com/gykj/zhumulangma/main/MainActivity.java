@@ -136,12 +136,8 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     @Override
     public void initView() {
-
+        //手动添加布局,减少布局层级
         globalplay = new GlobalPlay(this);
-
-        int id = View.generateViewId();
-        ViewGroup root = findViewById(android.R.id.content);
-        ((ViewGroup) root.getParent().getParent()).setId(id);
         if (findFragment(MainFragment.class) == null) {
             MainFragment mainFragment = new MainFragment();
             mainFragment.setShowListener(this);
@@ -150,7 +146,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(SizeUtils.dp2px(57), SizeUtils.dp2px(57));
         layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
         LoadLayout loadLayout = mBaseLoadService.getLoadLayout();
-        loadLayout.addView(globalplay, layoutParams);
+        ((ViewGroup)loadLayout.getParent().getParent()).addView(globalplay, layoutParams);
     }
 
     @Override
