@@ -5,6 +5,7 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.ContentFrameLayout;
 import android.text.TextUtils;
@@ -39,9 +40,9 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * Author: Thomas.
  * <br/>Date: 2019/9/10 8:23
  * <br/>Email: 1071931588@qq.com
- * <br/>Description:Activity基类
+ * <br/>Description:Activity基类,为了减少布局层级,主要用于添加应用内悬浮窗,其他界面请添加到根fragment中
  */
-public abstract class BaseActivity<DB extends ViewDataBinding> extends SupportActivity implements BaseView, Consumer<Disposable> {
+public abstract class BaseActivity extends SupportActivity implements BaseView, Consumer<Disposable> {
     protected static final String TAG = BaseActivity.class.getSimpleName();
     //Disposable容器
     protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
@@ -51,11 +52,12 @@ public abstract class BaseActivity<DB extends ViewDataBinding> extends SupportAc
     protected LoadService mBaseLoadService;
     //公用Handler
     protected Handler mHandler = new Handler();
-    //databinding
-    protected DB mBinding;
 
 
-    protected abstract int onBindLayout();
+    protected @LayoutRes
+    int onBindLayout() {
+        return View.NO_ID;
+    }
 
     protected void initParam() {
     }
@@ -70,7 +72,9 @@ public abstract class BaseActivity<DB extends ViewDataBinding> extends SupportAc
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, onBindLayout());
+        //减少布局层级
+        if (onBindLayout() != View.NO_ID)
+            setContentView(onBindLayout());
         EventBus.getDefault().register(this);
         ARouter.getInstance().inject(this);
         initCommonView();

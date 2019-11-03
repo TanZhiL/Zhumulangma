@@ -1,5 +1,7 @@
 package com.gykj.zhumulangma.discover.fragment;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;

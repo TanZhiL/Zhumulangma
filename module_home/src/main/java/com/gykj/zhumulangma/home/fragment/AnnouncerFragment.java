@@ -52,7 +52,6 @@ public class AnnouncerFragment extends BaseRefreshMvvmFragment<HomeFragmentAnnou
         return R.layout.home_fragment_announcer;
     }
 
-
     @Override
     protected boolean enableSwipeBack() {
         return false;

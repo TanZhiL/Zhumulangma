@@ -13,7 +13,7 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:MvvmActivity基类
  */
-public abstract class BaseMvvmActivity<DB extends ViewDataBinding,VM extends BaseViewModel> extends BaseActivity<DB>{
+public abstract class BaseMvvmActivity<VM extends BaseViewModel> extends BaseActivity{
     protected VM mViewModel;
 
     @Override

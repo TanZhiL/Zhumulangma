@@ -59,7 +59,12 @@ public class RadioFragment extends BaseRefreshMvvmFragment<HomeFragmentRadioBind
     protected int onBindLayout() {
         return R.layout.home_fragment_radio;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //避免过度绘制
+        mView.setBackground(null);
+    }
     @Override
     protected boolean enableSwipeBack() {
         return false;

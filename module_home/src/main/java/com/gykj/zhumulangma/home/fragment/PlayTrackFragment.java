@@ -115,7 +115,11 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
     protected int onBindLayout() {
         return R.layout.home_fragment_play_track;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mView.setBackgroundColor(Color.WHITE);
+    }
     @Override
     protected boolean enableSwipeBack() {
         return false;

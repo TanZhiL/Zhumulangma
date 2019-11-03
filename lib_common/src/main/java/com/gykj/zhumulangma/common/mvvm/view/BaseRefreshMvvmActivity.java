@@ -19,8 +19,8 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:自动处理刷新Fragment基类
  */
-public abstract class BaseRefreshMvvmActivity<DB extends ViewDataBinding,VM extends BaseRefreshViewModel, T>
-        extends BaseMvvmActivity<DB,VM>
+public abstract class BaseRefreshMvvmActivity<VM extends BaseRefreshViewModel, T>
+        extends BaseMvvmActivity<VM>
         implements OnRefreshLoadMoreListener {
 
     private RefreshWrapper mRefreshWrapper;

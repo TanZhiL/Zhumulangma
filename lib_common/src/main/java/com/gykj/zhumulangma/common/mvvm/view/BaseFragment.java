@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -107,6 +108,10 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.common_layout_root, container, false);
+        if(enableSwipeBack()){
+            //避免过度绘制策略
+            mView.setBackgroundColor(Color.WHITE);
+        }
         initCommonView();
         initParam();
         //不采用懒加载
@@ -115,6 +120,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
             initView();
             initListener();
         }
+        //避免不必要的布局层级
         if (enableSwipeBack())
             return attachToSwipeBack(mView);
         return mView;

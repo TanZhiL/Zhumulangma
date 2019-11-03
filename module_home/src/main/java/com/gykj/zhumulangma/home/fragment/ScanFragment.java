@@ -74,6 +74,7 @@ public class ScanFragment extends BaseFragment<HomeFragmentScanBinding> implemen
     @Override
     public void initData() {
         mBinding.zxingview.setVisibility(View.VISIBLE);
+        mBinding.clContent.setBackground(null);
     }
 
     private QRCodeView.Delegate delegate = new QRCodeView.Delegate() {

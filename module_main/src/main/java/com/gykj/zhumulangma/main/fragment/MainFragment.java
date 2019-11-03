@@ -1,8 +1,13 @@
 package com.gykj.zhumulangma.main.fragment;
 
 
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -42,7 +47,12 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding> implemen
     protected int onBindLayout() {
         return R.layout.main_fragment_main;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //避免过度绘制
+        mView.setBackgroundColor(Color.WHITE);
+    }
     @Override
     protected boolean enableSwipeBack() {
         return false;

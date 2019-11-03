@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.home.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.arch.lifecycle.ViewModelProvider;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -77,7 +78,11 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
     protected int onBindLayout() {
         return R.layout.home_fragment_play_radio;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mView.setBackgroundColor(Color.WHITE);
+    }
     @Override
     protected boolean enableSwipeBack() {
         return false;

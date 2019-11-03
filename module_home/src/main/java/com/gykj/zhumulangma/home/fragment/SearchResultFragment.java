@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -47,6 +48,11 @@ public class SearchResultFragment extends BaseFragment<HomeFragmentSearchResultB
         return R.layout.home_fragment_search_result;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mView.setBackgroundColor(Color.WHITE);
+    }
 
     @Override
     protected boolean enableSwipeBack() {

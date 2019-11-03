@@ -118,6 +118,14 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
     }
 
     @Override
+    public void onSupportInvisible() {
+        super.onSupportInvisible();
+        if(mSuggestAdapter!=null){
+            mSuggestAdapter.getData().clear();
+        }
+    }
+
+    @Override
     public Class<SearchViewModel> onBindViewModel() {
         return SearchViewModel.class;
     }

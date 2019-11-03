@@ -37,6 +37,7 @@ public class MainListenFragment extends BaseFragment<ListenFragmentMainBinding> 
     protected int onBindLayout() {
         return R.layout.listen_fragment_main;
     }
+
     @Override
     protected boolean enableSwipeBack() {
         return false;
