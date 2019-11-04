@@ -19,7 +19,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.SizeUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -39,6 +38,7 @@ import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
 import com.kingja.loadsir.core.LoadLayout;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.SimpleCallback;
+import com.next.easynavigation.utils.NavigationUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
@@ -143,7 +143,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
             mainFragment.setShowListener(this);
             loadRootFragment(android.R.id.content, mainFragment);
         }
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(SizeUtils.dp2px(57), SizeUtils.dp2px(57));
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(NavigationUtil.dip2px(this,50), NavigationUtil.dip2px(this,50));
         layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
         LoadLayout loadLayout = mBaseLoadService.getLoadLayout();
         ((ViewGroup)loadLayout.getParent().getParent()).addView(globalplay, layoutParams);

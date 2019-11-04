@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.thomas.third.ThirdHelper;
 import com.gykj.zhumulangma.common.App;
@@ -30,6 +31,7 @@ import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
+import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -190,7 +192,9 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
         FrameLayout.LayoutParams layoutParams=null;
         if(enableSimplebar()){
             layoutParams = new FrameLayout.LayoutParams((FrameLayout.LayoutParams) contentView.getLayoutParams());
-            layoutParams.topMargin=getResources().getDimensionPixelOffset(R.dimen.simpleBarHeight);
+            boolean b = StatusBarUtils.supportTransparentStatusBar();
+            int barHeight=b? BarUtils.getStatusBarHeight() :0;
+            layoutParams.topMargin=getResources().getDimensionPixelOffset(R.dimen.simpleBarHeight)+barHeight;
         }
         mBaseLoadService = builder.build().register(contentView,layoutParams, (Callback.OnReloadListener) BaseFragment.this::onReload);
     }

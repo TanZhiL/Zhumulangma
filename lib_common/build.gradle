@@ -1,10 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.greenrobot.greendao'
-
 import com.android.build.gradle.LibraryPlugin
 import org.aspectj.bridge.IMessage
 import org.aspectj.bridge.MessageHandler
 import org.aspectj.tools.ajc.Main
+
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
@@ -46,7 +46,6 @@ greendao {
     //设置DaoMaster、DaoSession、Dao目录
     targetGenDir 'src/main/java'
 }
-
 
 android.libraryVariants.all { variant ->
     LibraryPlugin plugin = project.plugins.getPlugin(LibraryPlugin)

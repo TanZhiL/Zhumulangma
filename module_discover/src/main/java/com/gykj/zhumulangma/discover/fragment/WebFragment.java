@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.discover.fragment;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -55,7 +56,11 @@ public class WebFragment extends BaseFragment<DiscoverFragmentWebBinding> {
     protected int onBindLayout() {
         return R.layout.discover_fragment_web;
     }
-
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mView.setBackgroundColor(Color.WHITE);
+    }
     @Override
     protected void initView() {
         ivClose = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);

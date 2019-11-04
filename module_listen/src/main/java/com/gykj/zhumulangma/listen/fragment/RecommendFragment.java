@@ -54,12 +54,6 @@ public class RecommendFragment extends BaseMvvmFragment<CommonLayoutListBinding,
     }
 
     @Override
-    protected void loadView() {
-        super.loadView();
-        clearStatus();
-    }
-
-    @Override
     protected void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);

@@ -4,9 +4,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -80,11 +78,6 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<HomeFragmen
     @Override
     protected int onBindLayout() {
         return R.layout.home_fragment_announcer_detail;
-    }
-
-    @Override
-    protected boolean enableSwipeBack() {
-        return false;
     }
 
     @Override
