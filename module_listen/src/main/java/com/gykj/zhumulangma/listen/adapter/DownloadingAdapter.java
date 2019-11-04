@@ -31,7 +31,11 @@ public class DownloadingAdapter extends BaseQuickAdapter<Track, BaseViewHolder> 
         helper.setText(R.id.tv_duration, ZhumulangmaUtil.secondToTime(item.getDuration()));
 
         CircleProgressBar progressBar = helper.getView(R.id.cpb_progress);
-        progressBar.setProgress((int) (item.getDownloadedSize()*100/item.getDownloadSize()));
+        try {
+            progressBar.setProgress((int) (item.getDownloadedSize()*100/item.getDownloadSize()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         switch (XmDownloadManager.getInstance().getSingleTrackDownloadStatus(item.getDataId())) {
             case STARTED:

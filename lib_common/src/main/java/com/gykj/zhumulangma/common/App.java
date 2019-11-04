@@ -1,14 +1,17 @@
 package com.gykj.zhumulangma.common;
 
+import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.multidex.MultiDex;
 
 import com.gykj.thomas.third.ThirdHelper;
 import com.gykj.zhumulangma.common.aop.PointHelper;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;
+import com.noober.background.BackgroundLibrary;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.tencent.bugly.beta.Beta;
@@ -86,6 +89,7 @@ public class App extends Application {
                     .initXmlyDownloader()
                     .initGreenDao(false);
             XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
+            registerActivityLifecycleCallbacks(new BLActivityLifecycleRegister());
         }
     }
 
@@ -185,4 +189,41 @@ public class App extends Application {
             return false;
         }
     };
+
+    public class BLActivityLifecycleRegister implements Application.ActivityLifecycleCallbacks {
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            BackgroundLibrary.inject(activity);
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+
+        }
+    }
 }
