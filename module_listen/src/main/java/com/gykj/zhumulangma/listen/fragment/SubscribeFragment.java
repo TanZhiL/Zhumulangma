@@ -2,11 +2,8 @@ package com.gykj.zhumulangma.listen.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -26,7 +23,6 @@ import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.SubscribeAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.SubscribeViewModel;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -148,7 +144,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
         super.onEvent(event);
         switch (event.getCode()){
             case EventCode.Listen.TAB_REFRESH:
-                if(isSupportVisible()&&mBaseLoadService.getCurrentCallback()!= getInitStatus().getClass()){
+                if(isSupportVisible()&& mBaseLoadService.getCurrentCallback()!= getInitStatus().getClass()){
                     mBinding.recyclerview.scrollToPosition(0);
                     mBinding.refreshLayout.autoRefresh();
                 }

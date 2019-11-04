@@ -1,16 +1,10 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.ColorInt;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.ContentFrameLayout;
-import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
@@ -23,7 +17,6 @@ import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

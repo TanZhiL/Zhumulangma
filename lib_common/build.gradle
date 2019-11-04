@@ -13,12 +13,6 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
-        //阿里路由框架配置
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
-            }
-        }
     }
 
     compileOptions {
@@ -37,9 +31,7 @@ android {
 }
 dependencies {
     api project(':lib_third')
-    annotationProcessor rootProject.ext.dependencies["arouter-compiler"]
     annotationProcessor rootProject.ext.dependencies["okaspectjrt-compiler"]
-    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
     annotationProcessor rootProject.ext.dependencies["lifecycle-compiler"]
 
     api files('libs/TingPhoneOpenSDK_7.0.8.jar')

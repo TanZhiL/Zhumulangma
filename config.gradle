@@ -152,7 +152,7 @@ ext {
             "Jolyglot-gson"                        :"com.github.VictorAlbertos.Jolyglot:gson:${versions["Jolyglot-gson"]}",
 
             //***************************************界面类*************************************************
-            "loadsir"                              :"com.kingja.loadsir:loadsir:${versions["loadsir"]}",
+            "loadsir"                              :"com.github.TanZhiL:LoadSir:${versions["loadsir"]}",
             "titlebar"                             :"com.wuhenzhizao:titlebar:${versions["titlebar"]}",
             "lottie"                               :"com.airbnb.android:lottie:${versions["lottie"]}",
             "autosize"                             :"me.jessyan:autosize:${versions["autosize"]}",

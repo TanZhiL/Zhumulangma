@@ -2,8 +2,6 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -125,7 +123,6 @@ public class ScanFragment extends BaseFragment<HomeFragmentScanBinding> implemen
     @Override
     public void onStart() {
         super.onStart();
-        mBinding.zxingview.startCamera(); // 打开后置摄像头开始预览，但是并未开始识别
         mBinding.zxingview.startSpotAndShowRect(); // 显示扫描框，并开始识别
     }
 

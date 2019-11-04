@@ -1,10 +1,6 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.View;
-
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentCategoryBinding;
@@ -43,7 +39,7 @@ public class CategoryFragment extends BaseFragment<HomeFragmentCategoryBinding> 
 
     @Override
     protected boolean enableLazy() {
-        return false;
+        return true;
     }
 
     @Override

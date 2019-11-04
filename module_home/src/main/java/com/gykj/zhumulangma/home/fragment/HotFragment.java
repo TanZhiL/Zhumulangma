@@ -2,17 +2,13 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
-import android.graphics.Color;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.bean.FavoriteBean;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;

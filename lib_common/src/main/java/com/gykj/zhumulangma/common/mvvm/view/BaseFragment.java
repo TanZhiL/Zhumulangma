@@ -11,11 +11,9 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -108,7 +106,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.common_layout_root, container, false);
-        if(enableSwipeBack()){
+        if (enableSwipeBack()) {
             //避免过度绘制策略
             mView.setBackgroundColor(Color.WHITE);
         }
@@ -163,7 +161,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
      */
     private void initCommonView() {
         if (enableSimplebar()) {
-            ViewStub viewStubBar = mView.findViewById(R.id.view_stub_bar);
+            ViewStub viewStubBar = mView.findViewById(R.id.vs_bar);
             viewStubBar.setLayoutResource(R.layout.common_layout_simplebar);
             mSimpleTitleBar = viewStubBar.inflate().findViewById(R.id.ctb_simple);
             initSimpleBar(mSimpleTitleBar);
@@ -174,7 +172,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
      * 填充布局(布局懒加载)
      */
     protected void loadView() {
-        ViewStub mViewStubContent = mView.findViewById(R.id.view_stub_content);
+        ViewStub mViewStubContent = mView.findViewById(R.id.vs_content);
         mViewStubContent.setLayoutResource(onBindLayout());
         View contentView = mViewStubContent.inflate();
         mBinding = DataBindingUtil.bind(contentView);
@@ -189,7 +187,12 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
                 builder.addCallback(callback);
             }
         }
-        mBaseLoadService = builder.build().register(contentView, (Callback.OnReloadListener) BaseFragment.this::onReload);
+        FrameLayout.LayoutParams layoutParams=null;
+        if(enableSimplebar()){
+            layoutParams = new FrameLayout.LayoutParams((FrameLayout.LayoutParams) contentView.getLayoutParams());
+            layoutParams.topMargin=getResources().getDimensionPixelOffset(R.dimen.simpleBarHeight);
+        }
+        mBaseLoadService = builder.build().register(contentView,layoutParams, (Callback.OnReloadListener) BaseFragment.this::onReload);
     }
 
     /**
