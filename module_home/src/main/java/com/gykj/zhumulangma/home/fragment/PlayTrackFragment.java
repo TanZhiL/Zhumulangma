@@ -129,7 +129,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
     protected void initView() {
 
         mBinding.rvRelative.setLayoutManager(new LinearLayoutManager(mActivity));
-        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_line);
+        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
         mAlbumAdapter.bindToRecyclerView(mBinding.rvRelative);
         initBar();
         new Handler().postDelayed(() -> {

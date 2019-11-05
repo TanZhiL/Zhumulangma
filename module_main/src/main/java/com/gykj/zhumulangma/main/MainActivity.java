@@ -138,6 +138,8 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     public void initView() {
         //手动添加布局,减少布局层级
         globalplay = new GlobalPlay(this);
+        globalplay.setRadius(NavigationUtil.dip2px(this,19));
+        globalplay.setBarWidth(NavigationUtil.dip2px(this,2));
         if (findFragment(MainFragment.class) == null) {
             MainFragment mainFragment = new MainFragment();
             mainFragment.setShowListener(this);

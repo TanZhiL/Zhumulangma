@@ -16,7 +16,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
 import com.gykj.zhumulangma.common.bean.NavigateBean;
@@ -24,6 +23,7 @@ import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.extra.GlideApp;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
 import com.gykj.zhumulangma.common.util.RouteUtil;
@@ -178,12 +178,13 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBi
             mBinding.tvFork.setText(convertNum(gitHubDTO.getForks_count()));
             //      ((TextView) mView.findViewById(R.id.tv_desc)).setText(gitHubDTO.getDescription());
         });
-        RequestOptions options = new RequestOptions();
-        options.placeholder(R.drawable.ic_user_avatar)
-                .error(R.drawable.ic_user_avatar);
+
         mViewModel.getBaseUserInfoEvent().observe(this, xmBaseUserInfo -> {
-            Glide.with(MainUserFragment.this).load(xmBaseUserInfo.getAvatarUrl())
-                    .apply(options).into(mBinding.ivAvatar);
+            GlideApp.with(MainUserFragment.this)
+                    .load(xmBaseUserInfo.getAvatarUrl())
+                    .placeholder(R.drawable.ic_user_avatar)
+                    .error(R.drawable.ic_user_avatar)
+                    .into(mBinding.ivAvatar);
             mBinding.tvNickname.setText(xmBaseUserInfo.getNickName());
             mBinding.tvVip.setVisibility(xmBaseUserInfo.isVip() ? View.VISIBLE : View.GONE);
         });

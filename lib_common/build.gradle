@@ -33,6 +33,7 @@ dependencies {
     api project(':lib_third')
     annotationProcessor rootProject.ext.dependencies["okaspectjrt-compiler"]
     annotationProcessor rootProject.ext.dependencies["lifecycle-compiler"]
+    annotationProcessor rootProject.ext.dependencies["glide-compiler"]
 
     api files('libs/TingPhoneOpenSDK_7.0.8.jar')
     api files('libs/XmlyOAuth2SDK_V1.11.jar')
