@@ -87,11 +87,12 @@ public class App extends Application {
                     .initLog()
                     .initXmly()
                     .initNet()
-                    .initXmlyPlayer()
                     .initXmlyDownloader();
             XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
             registerActivityLifecycleCallbacks(new BLActivityLifecycleRegister());
         }
+        AppHelper.getInstance(this)
+                .initXmlyPlayer();
     }
 
 

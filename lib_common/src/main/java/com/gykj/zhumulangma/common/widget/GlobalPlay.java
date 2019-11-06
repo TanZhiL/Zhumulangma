@@ -100,7 +100,7 @@ public class GlobalPlay extends View implements ValueAnimator.AnimatorUpdateList
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         //0,先将坐标移至中心点
-        canvas.translate(mWidth/2, mHeight /2);
+        canvas.translate(mWidth / 2, mHeight / 2);
         canvas.rotate(-90);
         //1.画未到达进度条弧形
         mPaint.setStyle(Paint.Style.STROKE);
@@ -145,12 +145,15 @@ public class GlobalPlay extends View implements ValueAnimator.AnimatorUpdateList
                 .load(avatarUrl)
                 .error(R.drawable.notification_default)
                 .placeholder(R.drawable.notification_default)
-                .into(new SimpleTarget<Drawable>((int)mWidth,(int)mHeight) {
+                .into(new SimpleTarget<Drawable>((int) mWidth, (int) mHeight) {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         setBitmap(ImageUtils.drawable2Bitmap(resource));
                         isPlaying = true;
-                        mAnimator.start();
+                        if (mAnimator.isStarted())
+                            mAnimator.resume();
+                        else
+                            mAnimator.start();
                     }
                 });
     }
@@ -158,7 +161,10 @@ public class GlobalPlay extends View implements ValueAnimator.AnimatorUpdateList
     public void play(@DrawableRes int res) {
         setBitmap(BitmapFactory.decodeResource(getResources(), res));
         isPlaying = true;
-        mAnimator.start();
+        if (mAnimator.isStarted())
+            mAnimator.resume();
+        else
+            mAnimator.start();
     }
 
     public void pause() {
@@ -175,7 +181,12 @@ public class GlobalPlay extends View implements ValueAnimator.AnimatorUpdateList
     public void show() {
         this.animate().translationY(0).setDuration(300).withStartAction(() -> {
             if (isPlaying)
-                mAnimator.start();
+            {
+                if (mAnimator.isStarted())
+                    mAnimator.resume();
+                else
+                    mAnimator.start();
+            }
             setVisibility(VISIBLE);
         });
     }
@@ -192,7 +203,7 @@ public class GlobalPlay extends View implements ValueAnimator.AnimatorUpdateList
                 .load(avatarUrl)
                 .error(R.drawable.notification_default)
                 .placeholder(R.drawable.notification_default)
-                .into(new SimpleTarget<Drawable>((int)mWidth, (int)mHeight) {
+                .into(new SimpleTarget<Drawable>((int) mWidth, (int) mHeight) {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         setBitmap(ImageUtils.drawable2Bitmap(resource));
@@ -215,7 +226,7 @@ public class GlobalPlay extends View implements ValueAnimator.AnimatorUpdateList
         mRadius = radius;
         mRectF = new RectF(-mRadius, -mRadius, mRadius, mRadius);
         //考虑线条宽度,向内缩小半个宽度
-        mRectF.inset(mBarWidth/2, mBarWidth/2);
+        mRectF.inset(mBarWidth / 2, mBarWidth / 2);
         mPlayPath = new Path();
         mPlayPath.moveTo(0, 0);
         mPlayPath.lineTo(-mRadius / 1.4f, (float) (Math.tan(Math.toRadians(30)) * mRadius / 1.4f));

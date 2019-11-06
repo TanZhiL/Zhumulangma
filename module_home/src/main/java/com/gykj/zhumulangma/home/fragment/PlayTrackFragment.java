@@ -264,8 +264,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
 
             mBinding.tvTrackName.setText(currSoundIgnoreKind.getTrackTitle());
             mBinding.includeAnnouncer.tvAnnouncerName.setText(currSoundIgnoreKind.getAnnouncer().getNickname());
-
-
+            
             mBinding.includeAnnouncer.tvVip.setVisibility(currSoundIgnoreKind.getAnnouncer().isVerified() ? View.VISIBLE : View.GONE);
             mBinding.tvAlbumName.setText(currSoundIgnoreKind.getAlbum().getAlbumTitle());
             mBinding.tvTrackIntro.setText(currSoundIgnoreKind.getTrackIntro());
