@@ -4,8 +4,9 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.blankj.utilcode.util.SPUtils;
+import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.db.DBManager;
 import com.gykj.zhumulangma.common.net.service.CommonService;
 import com.gykj.zhumulangma.common.net.service.UserService;
 
@@ -29,13 +30,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Author: Thomas.
  * <br/>Date: 2019/9/10 8:23
  * <br/>Email: 1071931588@qq.com
- * <br/>Description:网络请求类
+ * <br/>Description:网络请求管理类
  */
 public class NetManager {
     private static final String TAG = "NetManager";
     private static File mCacheFile;
     private static volatile NetManager instance;
-    private final CacheProvider mCacheProvider;
+    private CacheProvider mCacheProvider;
     private Retrofit mRetrofit;
     private int mNetStatus = Constans.NET_ONLINE;
     private CommonService mCommonService;
@@ -59,31 +60,37 @@ public class NetManager {
     }
 
     private NetManager() {
+        //先异步获取token
+        DBManager.getInstance(App.getInstance())
+                .getSPString(Constants.SP.TOKEN)
+                .compose(RxAdapter.schedulersTransformer())
+                .compose(RxAdapter.exceptionTransformer())
+                .subscribe(token -> {
+                    OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                            //添加头部信息
+                            .addInterceptor(chain -> {
+                                Request.Builder requestBuilder = chain.request().newBuilder()
+                                        .header(Constans.TOKEN_KEY, token);
+                                return chain.proceed(requestBuilder.build());
+                            })
+                            //动态改变baseUrl拦截器
+                            .addInterceptor(new UrlInterceptor())
+                            //日志
+                            .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                            //防抓包
+                            .proxy(Proxy.NO_PROXY);
 
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                //添加头部信息
-                .addInterceptor(chain -> {
-                    Request.Builder requestBuilder = chain.request().newBuilder()
-                            .header(Constans.TOKEN_KEY, SPUtils.getInstance().getString(Constants.SP.TOKEN));
-                    return chain.proceed(requestBuilder.build());
-                })
-                //动态改变baseUrl拦截器
-                .addInterceptor(new UrlInterceptor())
-                //日志
-                .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                //防抓包
-                .proxy(Proxy.NO_PROXY);
+                    mRetrofit = new Retrofit.Builder()
+                            .client(builder.build())
+                            .baseUrl(Constans.ONLINE_HOST1)
+                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
 
-        mRetrofit = new Retrofit.Builder()
-                .client(builder.build())
-                .baseUrl(Constans.ONLINE_HOST1)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        mCacheProvider = new RxCache.Builder()
-                .persistence(mCacheFile, new GsonSpeaker())
-                .using(CacheProvider.class);
+                    mCacheProvider = new RxCache.Builder()
+                            .persistence(mCacheFile, new GsonSpeaker())
+                            .using(CacheProvider.class);
+                });
     }
 
     /**

@@ -61,7 +61,9 @@ public class ExceptionConverter {
             msg = "连接超时";
         } else if (e instanceof java.net.UnknownHostException) {
             msg = "主机地址未知";
-        } else {
+        }else if (e instanceof ClassCastException) {
+            msg = "类型转换异常";
+        }  else {
             msg = "未知异常";
         }
         return new Exception(msg);

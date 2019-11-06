@@ -2,12 +2,9 @@ package com.gykj.zhumulangma.common;
 
 import android.app.Application;
 import android.app.Notification;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
-import com.gykj.zhumulangma.common.db.DaoMaster;
-import com.gykj.zhumulangma.common.db.DaoSession;
 import com.gykj.zhumulangma.common.net.NetManager;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
@@ -19,8 +16,6 @@ import com.ximalaya.ting.android.opensdk.player.appnotification.XmNotificationCr
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerConfig;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
-
-import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -104,28 +99,12 @@ public class AppHelper {
         return this;
     }
 
-    private static DaoSession daoSession;
-
-    public static DaoSession getDaoSession() {
-        return daoSession;
-    }
-
-    public AppHelper initGreenDao(boolean logger) {
-        QueryBuilder.LOG_SQL = logger;
-        QueryBuilder.LOG_VALUES = logger;
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(mApplication, "zhumulangma.db");
-        SQLiteDatabase db = helper.getWritableDatabase();
-        DaoMaster daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
-        return this;
-    }
-
     public AppHelper initLog() {
         TLog.init(BuildConfig.DEBUG);
         return this;
     }
 
-    public AppHelper Net() {
+    public AppHelper initNet() {
         NetManager.init(new File( mApplication.getCacheDir(),"rx-cache"));
         return this;
     }

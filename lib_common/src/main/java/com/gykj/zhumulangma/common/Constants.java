@@ -69,6 +69,7 @@ public interface Constants {
         String CITY_NAME = "city_name";
         String PROVINCE_CODE = "province_code";
         String PROVINCE_NAME = "province_name";
+
         String PLAY_SCHEDULE_TYPE = "play_schedule_type";
         String PLAY_SCHEDULE_TIME = "play_schedule_time";
         String AD_TIME = "ad_time";

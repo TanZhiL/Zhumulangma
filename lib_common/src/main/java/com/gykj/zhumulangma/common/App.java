@@ -10,6 +10,8 @@ import android.support.multidex.MultiDex;
 import com.gykj.thomas.third.ThirdHelper;
 import com.gykj.zhumulangma.common.aop.PointHelper;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
+import com.gykj.zhumulangma.common.db.DBManager;
+import com.gykj.zhumulangma.common.net.RxAdapter;
 import com.gykj.zhumulangma.common.widget.TRefreshHeader;
 import com.noober.background.BackgroundLibrary;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -84,10 +86,9 @@ public class App extends Application {
             AppHelper.getInstance(this)
                     .initLog()
                     .initXmly()
-                    .Net()
+                    .initNet()
                     .initXmlyPlayer()
-                    .initXmlyDownloader()
-                    .initGreenDao(false);
+                    .initXmlyDownloader();
             XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
             registerActivityLifecycleCallbacks(new BLActivityLifecycleRegister());
         }
@@ -113,8 +114,12 @@ public class App extends Application {
                 }
                 if (currSound.getKind().equals(PlayableModel.KIND_SCHEDULE)) {
                     Schedule schedule = (Schedule) currSound;
-                    AppHelper.getDaoSession().insertOrReplace(new PlayHistoryBean(currSound.getDataId(), schedule.getRadioId(), currSound.getKind(),
-                            System.currentTimeMillis(), schedule));
+                    DBManager.getInstance(mApplication).insert(new PlayHistoryBean(currSound.getDataId(),
+                            schedule.getRadioId(), currSound.getKind(), System.currentTimeMillis(), schedule))
+                            .compose(RxAdapter.exceptionTransformer())
+                            .compose(RxAdapter.schedulersTransformer())
+                            .subscribe(r -> {
+                            }, Throwable::printStackTrace);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -175,9 +180,13 @@ public class App extends Application {
                     Track track = (Track) currSound;
                     int currPos = XmPlayerManager.getInstance(App.this).getPlayCurrPositon();
                     int duration = XmPlayerManager.getInstance(App.this).getDuration();
-                    AppHelper.getDaoSession().insertOrReplace(new PlayHistoryBean(currSound.getDataId(), track.getAlbum().getAlbumId(),
-                            currSound.getKind(), 100 * currPos / duration,
-                            System.currentTimeMillis(), track));
+                    DBManager.getInstance(mApplication).insert(new PlayHistoryBean(currSound.getDataId(),
+                            track.getAlbum().getAlbumId(), currSound.getKind(), 100 * currPos / duration,
+                            System.currentTimeMillis(), track))
+                            .compose(RxAdapter.exceptionTransformer())
+                            .compose(RxAdapter.schedulersTransformer())
+                            .subscribe(r -> {
+                            }, Throwable::printStackTrace);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -7,13 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.blankj.utilcode.util.CollectionUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
@@ -42,7 +40,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<HomeFragmentRadioBind
     private RadioHistoryAdapter mHistoryAdapter;
     private RadioAdapter mLocalAdapter;
     private RadioAdapter mTopAdapter;
-
+    // private String mCityCode;
 
     public RadioFragment() {
     }
@@ -86,10 +84,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<HomeFragmentRadioBind
                         .withInt(KeyCode.Home.TYPE, RadioListFragment.RANK)
                         .withString(KeyCode.Home.TITLE, "排行榜")));
         mBinding.ihHistory.setOnClickListener(view -> RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY));
-        mBinding.ihLocal.setOnClickListener(view ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                        .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_CITY)
-                        .withString(KeyCode.Home.TITLE, SPUtils.getInstance().getString(Constants.SP.CITY_NAME, Constants.Default.CITY_NAME))));
+        mBinding.ihLocal.setOnClickListener(view -> mViewModel.navigateToCity());
         mLocalAdapter.setOnItemClickListener((adapter, view, position) -> mViewModel.playRadio(mLocalAdapter.getItem(position)));
         mTopAdapter.setOnItemClickListener((adapter, view, position) -> mViewModel.playRadio(mTopAdapter.getItem(position)));
         mHistoryAdapter.setOnItemClickListener((adapter, view, position) ->
@@ -105,44 +100,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<HomeFragmentRadioBind
 
     @Override
     public void initData() {
-
-        String cityCode = SPUtils.getInstance().getString(Constants.SP.CITY_CODE, Constants.Default.CITY_CODE);
-
-        mViewModel.init(cityCode);
-        String cityName = SPUtils.getInstance().getString(Constants.SP.CITY_NAME, Constants.Default.CITY_NAME);
-        mBinding.ihLocal.setTitle(cityName);
-
-        //初始化定位
-        AMapLocationClient mLocationClient = new AMapLocationClient(mApplication);
-        AMapLocationClientOption option = new AMapLocationClientOption();
-        //获取一次定位结果：
-        option.setOnceLocation(true);
-        option.setLocationCacheEnable(false);
-        option.setNeedAddress(true);
-        option.setMockEnable(true);
-        // 设置定位回调监听
-        mLocationClient.setLocationListener(aMapLocation -> {
-            if (!TextUtils.isEmpty(aMapLocation.getAdCode()) && !cityCode.equals(aMapLocation.getAdCode().substring(0, 4))) {
-                String city = aMapLocation.getCity();
-                String province = aMapLocation.getProvince();
-                SPUtils.getInstance().put(Constants.SP.CITY_CODE, aMapLocation.getAdCode().substring(0, 4), true);
-                SPUtils.getInstance().put(Constants.SP.CITY_NAME, city.substring(0, city.length() - 1), true);
-                SPUtils.getInstance().put(Constants.SP.PROVINCE_CODE, aMapLocation.getAdCode().substring(0, 3) + "000", true);
-                SPUtils.getInstance().put(Constants.SP.PROVINCE_NAME, province.substring(0, province.length() - 1), true);
-
-                mBinding.ihLocal.setTitle(SPUtils.getInstance().getString(Constants.SP.CITY_NAME));
-                mViewModel.init(SPUtils.getInstance().getString(Constants.SP.CITY_CODE));
-            }
-        });
-        mLocationClient.setLocationOption(option);
-        new RxPermissions(this).request(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION})
-                .subscribe(granted -> {
-                    if (granted) {
-                        mLocationClient.startLocation();
-                    } else {
-                        ToastUtil.showToast("无法获取本地电台,请允许应用获取位置信息");
-                    }
-                });
+        mViewModel.init();
     }
 
     @Override
@@ -203,6 +161,32 @@ public class RadioFragment extends BaseRefreshMvvmFragment<HomeFragmentRadioBind
                 mBinding.gpHistory.setVisibility(View.VISIBLE);
             }
         });
+        mViewModel.getCityNameEvent().observe(this, cn -> mBinding.ihLocal.setTitle(cn));
+        mViewModel.getStartLocationEvent().observe(this, aVoid -> startLocation());
+        mViewModel.getTitleEvent().observe(this, s -> mBinding.ihLocal.setTitle(s));
+    }
+
+    private void startLocation() {
+        //初始化定位
+        AMapLocationClient locationClient = new AMapLocationClient(mApplication);
+        AMapLocationClientOption option = new AMapLocationClientOption();
+        //获取一次定位结果：
+        option.setOnceLocation(true);
+        option.setLocationCacheEnable(false);
+        option.setNeedAddress(true);
+        option.setMockEnable(true);
+        // 设置定位回调监听
+        locationClient.setLocationListener(aMapLocation -> mViewModel.saveLocation(aMapLocation));
+        locationClient.setLocationOption(option);
+
+        new RxPermissions(RadioFragment.this).request(Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe(granted -> {
+                    if (granted) {
+                        locationClient.startLocation();
+                    } else {
+                        ToastUtil.showToast("无法获取本地电台,请允许应用获取位置信息");
+                    }
+                }, Throwable::printStackTrace);
     }
 
     @Override
@@ -221,10 +205,7 @@ public class RadioFragment extends BaseRefreshMvvmFragment<HomeFragmentRadioBind
             mBinding.clMore.setVisibility(View.GONE);
             mBinding.ivMore.setVisibility(View.VISIBLE);
         } else if (id == R.id.ll_local) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                    .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_PROVINCE)
-                    .withString(KeyCode.Home.TITLE, SPUtils.getInstance().getString(
-                            Constants.SP.PROVINCE_NAME, Constants.Default.PROVINCE_NAME)));
+            mViewModel.navigateToProvince();
         } else if (id == R.id.ll_country) {
             RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.COUNTRY)

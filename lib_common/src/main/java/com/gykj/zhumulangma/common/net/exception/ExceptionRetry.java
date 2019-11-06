@@ -3,10 +3,11 @@ package com.gykj.zhumulangma.common.net.exception;
 
 import android.util.Log;
 
-import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
+import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.UserBean;
+import com.gykj.zhumulangma.common.db.DBManager;
 import com.gykj.zhumulangma.common.net.NetManager;
 import com.gykj.zhumulangma.common.net.RxAdapter;
 import com.gykj.zhumulangma.common.net.dto.LoginDTO;
@@ -14,6 +15,7 @@ import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
 import com.gykj.zhumulangma.common.util.log.TLog;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -25,7 +27,7 @@ import io.reactivex.schedulers.Schedulers;
  * <br/>Description:所有异常都会经过此处,可拦截需要重试的内部异常,如Token超时等
  */
 public class ExceptionRetry implements Function<Observable<Throwable>, Observable<?>> {
-
+    private DBManager mDBManager=DBManager.getInstance(App.getInstance());
     @Override
     public Observable<?> apply(Observable<Throwable> observable) throws Exception {
 
@@ -57,24 +59,29 @@ public class ExceptionRetry implements Function<Observable<Throwable>, Observabl
      * @return
      */
     private Observable reLogin() {
-        final UserBean userBean = new Gson().fromJson(SPUtils.getInstance()
-                .getString(Constants.SP.USER), UserBean.class);
-            LoginDTO loginDTO = new LoginDTO();
-            loginDTO.setCode(userBean.getCode());
-            loginDTO.setDescer_name(userBean.getDescer_name());
-            loginDTO.setDescer_phone(userBean.getDescer_phone());
-            loginDTO.setGraer_name(userBean.getGraer_name());
-            loginDTO.setGraer_phone(userBean.getGraer_phone());
-            return NetManager.getInstance().getUserService().login(loginDTO)
-                    .flatMap((Function<ResponseDTO<UserBean>, Observable<?>>) userBeanResponseDTO -> {
-                        if (!userBeanResponseDTO.code.equals(ExceptionConverter.APP_ERROR.SUCCESS)) {
-                            return Observable.error(new CustException(userBeanResponseDTO.code,
-                                    userBeanResponseDTO.msg));
-                        } else {
-                            SPUtils.getInstance().put(Constants.SP.TOKEN, userBeanResponseDTO.result.getToken());
-                            SPUtils.getInstance().put(Constants.SP.USER, new Gson().toJson(userBeanResponseDTO.result));
-                            return Observable.just(0);
-                        }
-                    }).compose(RxAdapter.schedulersTransformer());
+        return mDBManager.getSPString(Constants.SP.USER)
+                .map(s -> {
+                    final UserBean userBean = new Gson().fromJson(s, UserBean.class);
+                    LoginDTO loginDTO = new LoginDTO();
+                    loginDTO.setCode(userBean.getCode());
+                    loginDTO.setDescer_name(userBean.getDescer_name());
+                    loginDTO.setDescer_phone(userBean.getDescer_phone());
+                    loginDTO.setGraer_name(userBean.getGraer_name());
+                    loginDTO.setGraer_phone(userBean.getGraer_phone());
+                    return loginDTO;
+                }).flatMap((Function<LoginDTO, ObservableSource<ResponseDTO<UserBean>>>) loginDTO ->
+                        NetManager.getInstance().getUserService().login(loginDTO))
+                .flatMap((Function<ResponseDTO<UserBean>, Observable<?>>) responseDTO -> {
+                    if (!responseDTO.code.equals(ExceptionConverter.APP_ERROR.SUCCESS)) {
+                        return Observable.error(new CustException(responseDTO.code,
+                                responseDTO.msg));
+                    } else {
+                        return  mDBManager.putSP(Constants.SP.TOKEN, responseDTO.result.getToken())
+                                .flatMap((Function<Boolean, ObservableSource<?>>) aBoolean ->
+                                        mDBManager.putSP(Constants.SP.USER, new Gson().toJson(responseDTO.result)));
+                    }
+                })
+                .compose(RxAdapter.schedulersTransformer())
+                .compose(RxAdapter.exceptionTransformer());
     }
 }
