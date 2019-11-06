@@ -1,12 +1,12 @@
 package com.gykj.zhumulangma.home.mvvm;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
-import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumDetailViewModel;
@@ -39,9 +39,9 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.TrackListViewModel;
 public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @SuppressLint("StaticFieldLeak")
     private static volatile ViewModelFactory INSTANCE;
-    private final App mApplication;
+    private final Application mApplication;
 
-    public static ViewModelFactory getInstance(App application) {
+    public static ViewModelFactory getInstance(Application application) {
         if (INSTANCE == null) {
             synchronized (ViewModelFactory.class) {
                 if (INSTANCE == null) {
@@ -51,7 +51,7 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
         }
         return INSTANCE;
     }
-    private ViewModelFactory(App application) {
+    private ViewModelFactory(Application application) {
         this.mApplication = application;
     }
     @VisibleForTesting

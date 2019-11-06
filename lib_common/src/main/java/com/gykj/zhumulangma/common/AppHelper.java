@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
-import com.gykj.zhumulangma.common.dao.DaoMaster;
-import com.gykj.zhumulangma.common.dao.DaoSession;
+import com.gykj.zhumulangma.common.db.DaoMaster;
+import com.gykj.zhumulangma.common.db.DaoSession;
 import com.gykj.zhumulangma.common.net.NetManager;
 import com.gykj.zhumulangma.common.util.log.TLog;
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;

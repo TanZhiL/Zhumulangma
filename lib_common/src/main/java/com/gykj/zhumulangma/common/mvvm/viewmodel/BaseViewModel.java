@@ -6,6 +6,7 @@ import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
 import android.support.annotation.NonNull;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.BaseModel;
 
@@ -22,7 +23,10 @@ import io.reactivex.functions.Consumer;
 public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel, Consumer<Disposable> {
     protected M mModel;
     //Disposable容器
-    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+
+    protected ARouter mRouter =ARouter.getInstance();
+
     private SingleLiveEvent<Void> showInitLoadViewEvent;
     private SingleLiveEvent<String> showLoadingViewEvent;
     private SingleLiveEvent<Void> showEmptyViewEvent;

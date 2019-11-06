@@ -59,19 +59,19 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding> implemen
     @Override
     public void initView() {
         List<Fragment> fragments = new ArrayList<>();
-        Object home = ARouter.getInstance().build(Constants.Router.Home.F_MAIN).navigation();
+        Object home = mRouter.build(Constants.Router.Home.F_MAIN).navigation();
         if (null != home) {
             fragments.add((Fragment) home);
         }
-        Object listen = ARouter.getInstance().build(Constants.Router.Listen.F_MAIN).navigation();
+        Object listen = mRouter.build(Constants.Router.Listen.F_MAIN).navigation();
         if (null != listen) {
             fragments.add((Fragment) listen);
         }
-        Object discover = ARouter.getInstance().build(Constants.Router.Discover.F_MAIN).navigation();
+        Object discover = mRouter.build(Constants.Router.Discover.F_MAIN).navigation();
         if (null != listen) {
             fragments.add((Fragment) discover);
         }
-        Object user = ARouter.getInstance().build(Constants.Router.User.F_MAIN).navigation();
+        Object user = mRouter.build(Constants.Router.User.F_MAIN).navigation();
         if (null != listen) {
             fragments.add((Fragment) user);
         }

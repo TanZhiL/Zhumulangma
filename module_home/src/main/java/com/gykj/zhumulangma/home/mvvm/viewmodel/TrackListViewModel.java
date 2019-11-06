@@ -8,7 +8,7 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
@@ -89,7 +89,7 @@ private void getMoreTracks(){
                             break;
                         }
                     }
-                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
     public SingleLiveEvent<List<Track>> getInitTrackListEvent() {

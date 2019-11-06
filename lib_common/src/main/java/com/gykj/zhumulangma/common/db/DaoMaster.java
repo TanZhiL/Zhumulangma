@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.common.dao;
+package com.gykj.zhumulangma.common.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

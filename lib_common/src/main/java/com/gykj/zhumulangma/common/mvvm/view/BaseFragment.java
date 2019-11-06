@@ -1,5 +1,6 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
+import android.app.Application;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.Color;
@@ -54,9 +55,9 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFragment implements BaseView, Consumer<Disposable> {
     protected static final String TAG = BaseFragment.class.getSimpleName();
 
-    protected App mApplication;
+    protected Application mApplication;
     //Disposable容器
-    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     //根部局
     protected View mView;
     //状态页管理
@@ -69,6 +70,8 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
     protected Handler mHandler = new Handler();
     //记录是否第一次进入
     private boolean isFirst = true;
+
+    protected ARouter mRouter =ARouter.getInstance();
 
     protected DB mBinding;
 
@@ -95,7 +98,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApplication = App.getInstance();
-        ARouter.getInstance().inject(this);
+        mRouter.inject(this);
         EventBus.getDefault().register(this);
     }
 

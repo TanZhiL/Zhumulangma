@@ -21,14 +21,13 @@ import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
 import com.gykj.zhumulangma.common.util.PermissionPageUtil;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.dialog.SplashAdPopup;
@@ -47,7 +46,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.shareboard.ShareBoardConfig;
-import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
 import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
@@ -64,7 +62,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
@@ -196,17 +193,17 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         if (v == globalplay) {
             if (null == mPlayerManager.getCurrSound(true)) {
                 if (mHistoryBean == null) {
-                    RouteUtil.navigateTo(Constants.Router.Home.F_RANK);
+                    RouterUtil.navigateTo(Constants.Router.Home.F_RANK);
                 } else {
                     mViewModel.play(mHistoryBean);
                 }
             } else {
                 mPlayerManager.play();
                 if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_TRACK)) {
-                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
 
                 } else if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_SCHEDULE)) {
-                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
+                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }
             }
         }
@@ -276,38 +273,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     public void onEvent(ActivityEvent event) {
         super.onEvent(event);
         switch (event.getCode()) {
-            case EventCode.Main.NAVIGATE:
-                NavigateBean navigateBean = (NavigateBean) event.getData();
-                if (null == navigateBean.fragment) {
-                    return;
-                }
-                switch (navigateBean.path) {
-                    case Constants.Router.User.F_MESSAGE:
-                        //登录拦截
-                        if (!AccessTokenManager.getInstanse().hasLogin()) {
-                            LoginHelper.getInstance().login(this);
-                        } else {
-                            start(navigateBean.fragment);
-                        }
-                        break;
-                    case Constants.Router.Home.F_PLAY_TRACK:
-                    case Constants.Router.Home.F_PLAY_RADIIO:
-                        extraTransaction().setCustomAnimations(
-                                com.gykj.zhumulangma.common.R.anim.push_bottom_in,
-                                com.gykj.zhumulangma.common.R.anim.no_anim,
-                                com.gykj.zhumulangma.common.R.anim.no_anim,
-                                com.gykj.zhumulangma.common.R.anim.push_bottom_out).start(
-                                navigateBean.fragment, ISupportFragment.SINGLETASK);
-                        break;
-                    default:
-                        if (navigateBean.extraTransaction != null) {
-                            navigateBean.extraTransaction.start(navigateBean.fragment, navigateBean.launchMode);
-                        } else {
-                            start(navigateBean.fragment, navigateBean.launchMode);
-                        }
-                        break;
-                }
-                break;
             case EventCode.Main.HIDE_GP:
                 globalplay.hide();
                 break;
@@ -315,16 +280,13 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 globalplay.show();
                 break;
             case EventCode.Main.SHARE:
-
                 ShareBoardConfig config = new ShareBoardConfig();
                 config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_CIRCULAR);
                 config.setCancelButtonVisibility(true);
                 config.setTitleVisibility(false);
-                config.setCancelButtonVisibility(false);
+                config.setCancelButtonVisibility(true);
                 config.setIndicatorVisibility(false);
-
                 ShareAction action = (ShareAction) event.getData();
-
                 if (action == null) {
                     UMWeb web = new UMWeb("https://github.com/TanZhiL/Zhumulangma");
                     web.setTitle("珠穆朗玛听");//标题
@@ -342,6 +304,8 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 break;
         }
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

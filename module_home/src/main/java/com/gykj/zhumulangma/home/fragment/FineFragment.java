@@ -8,13 +8,12 @@ import android.view.View;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.FineAdapter;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentFineBinding;
@@ -25,12 +24,8 @@ import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
@@ -60,6 +55,7 @@ public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBindin
     protected boolean enableSwipeBack() {
         return false;
     }
+
     @Override
     protected void initView() {
         initBanner();
@@ -201,22 +197,15 @@ public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBindin
         BannerV2 bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:
-                Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
-                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId())
-                        .navigation();
-                EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                        new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId()));
                 break;
             case 3:
                 mViewModel.play(bannerV2.getTrackId());
                 break;
             case 1:
-                Object navigation1 = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
-                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid())
-                        .navigation();
-                EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                        new NavigateBean(Constants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation1)));
-
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid()));
                 break;
         }
     }

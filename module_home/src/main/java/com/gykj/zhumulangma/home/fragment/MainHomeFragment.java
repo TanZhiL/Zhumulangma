@@ -3,26 +3,20 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.Manifest;
 import android.arch.lifecycle.ViewModelProvider;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentMainBinding;
@@ -37,14 +31,10 @@ import com.ximalaya.ting.android.opensdk.model.word.HotWord;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
@@ -53,7 +43,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Description:首页
  */
 @Route(path = Constants.Router.Home.F_MAIN)
-public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding,HomeViewModel>
+public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, HomeViewModel>
         implements View.OnClickListener, MarqueeView.OnItemClickListener {
 
 
@@ -107,18 +97,16 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding,H
     @Override
     public void initListener() {
         super.initListener();
-       RxView.clicks(mBinding.llSearch)
+        RxView.clicks(mBinding.llSearch)
                 .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
                 .subscribe(unit -> {
-                    Postcard build = ARouter.getInstance().build(Constants.Router.Home.F_SEARCH);
+                    Postcard postcard = mRouter.build(Constants.Router.Home.F_SEARCH);
                     if (!CollectionUtils.isEmpty(mBinding.marqueeView.getMessages())) {
-                        build.withString(KeyCode.Home.HOTWORD, (String) mBinding.marqueeView.getMessages()
+                        postcard.withString(KeyCode.Home.HOTWORD, (String) mBinding.marqueeView.getMessages()
                                 .get(mBinding.marqueeView.getPosition()));
                     }
-                    Object navigation = build.navigation();
-                    EventBus.getDefault().post(new ActivityEvent(
-                            EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
+                    RouterUtil.navigateTo(postcard);
                 });
 
         mBinding.ivDownload.setOnClickListener(this);
@@ -126,7 +114,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding,H
         RxView.clicks(mBinding.ivMessage)
                 .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(unit -> RouteUtil.navigateTo(Constants.Router.User.F_MESSAGE));
+                .subscribe(unit -> RouterUtil.navigateTo(Constants.Router.User.F_MESSAGE));
         mBinding.marqueeView.setOnItemClickListener(this);
     }
 
@@ -155,14 +143,14 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding,H
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            RouteUtil.navigateTo(Constants.Router.Home.F_SCAN);
+                            RouterUtil.navigateTo(Constants.Router.Home.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
 
         } else if (id == R.id.iv_history) {
-            RouteUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
+            RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
         }
 
     }
@@ -190,10 +178,8 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding,H
 
     @Override
     public void onItemClick(int position, TextView textView) {
-        Postcard build = ARouter.getInstance().build(Constants.Router.Home.F_SEARCH);
-        Object navigation = build.withString(KeyCode.Home.HOTWORD, (String) mBinding.marqueeView.getMessages().get(position)).navigation();
-        EventBus.getDefault().post(new ActivityEvent(
-                EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_SEARCH, (ISupportFragment) navigation)));
+        RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_SEARCH)
+                .withString(KeyCode.Home.HOTWORD, (String) mBinding.marqueeView.getMessages().get(position)));
     }
 
     @Override

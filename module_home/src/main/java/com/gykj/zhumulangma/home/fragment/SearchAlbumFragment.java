@@ -8,16 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.alibaba.android.arouter.launcher.ARouter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -25,18 +21,13 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAlbumViewModel;
 import com.kingja.loadsir.callback.Callback;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
-import org.greenrobot.eventbus.EventBus;
-
-import me.yokeyword.fragmentation.ISupportFragment;
-
 /**
  * Author: Thomas.
  * <br/>Date: 2019/8/13 15:12
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索专辑
  */
-public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,SearchAlbumViewModel, Album> implements
-        BaseQuickAdapter.OnItemClickListener {
+public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, SearchAlbumViewModel, Album> {
 
 
     private AlbumAdapter mAlbumAdapter;
@@ -70,13 +61,15 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutLis
     @Override
     public void initListener() {
         super.initListener();
-        mAlbumAdapter.setOnItemClickListener(this);
+        mAlbumAdapter.setOnItemClickListener((adapter, view, position) ->
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                        .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())));
     }
 
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(mBinding.refreshLayout,mAlbumAdapter);
+        return new WrapRefresh(mBinding.refreshLayout, mAlbumAdapter);
     }
 
     @Override
@@ -86,16 +79,6 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutLis
         mViewModel.init();
     }
 
-
-
-    @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
-                .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
-                .navigation();
-        EventBus.getDefault().post(new ActivityEvent(
-                EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
-    }
 
     @Override
     public Class<SearchAlbumViewModel> onBindViewModel() {
@@ -116,8 +99,9 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutLis
     public boolean enableSimplebar() {
         return false;
     }
-     @Override
-     public Callback getInitStatus() {
+
+    @Override
+    public Callback getInitStatus() {
         return new ListSkeleton();
     }
 }

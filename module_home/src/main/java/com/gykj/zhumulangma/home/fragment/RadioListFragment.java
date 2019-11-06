@@ -2,11 +2,10 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -22,6 +21,7 @@ import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
+import com.gykj.zhumulangma.home.databinding.HomeLayoutRankBarCenterBinding;
 import com.gykj.zhumulangma.home.dialog.RadioProvincePopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioListViewModel;
@@ -29,7 +29,6 @@ import com.jakewharton.rxbinding3.view.RxView;
 import com.kingja.loadsir.callback.Callback;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:电台列表
  */
 @Route(path = Constants.Router.Home.F_RADIO_LIST)
-public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,RadioListViewModel, Radio> implements
+public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, RadioListViewModel, Radio> implements
         BaseQuickAdapter.OnItemClickListener, RadioProvincePopup.onSelectedListener, RadioProvincePopup.onPopupDismissingListener {
     //本省台
     public static final int LOCAL_PROVINCE = 999;
@@ -65,9 +64,8 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
     private RadioAdapter mRadioAdapter;
     private int mProvinceCode;
 
-    private View llbarCenter;
-    private View ivCategoryDown;
-    private TextView tvTitle;
+    private HomeLayoutRankBarCenterBinding mBarCenterBind;
+
 
     private List<ProvinceBean> mProvinceBeans;
     private RadioProvincePopup mProvincePopup;
@@ -89,19 +87,17 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
 
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
-        ivCategoryDown = llbarCenter.findViewById(R.id.iv_down);
-        tvTitle = llbarCenter.findViewById(R.id.tv_title);
         mRadioAdapter = new RadioAdapter(R.layout.home_item_radio_line);
-        mRadioAdapter.bindToRecyclerView( mBinding.recyclerview);
+        mRadioAdapter.bindToRecyclerView(mBinding.recyclerview);
         mRadioAdapter.setOnItemClickListener(this);
 
-        tvTitle.setText(mTitle);
+        mBarCenterBind.tvTitle.setText(mTitle);
         if (mType == PROVINCE) {
-            ivCategoryDown.setVisibility(View.VISIBLE);
-            tvTitle.setText(mProvinceBeans.get(0).getProvince_name());
+            mBarCenterBind.ivDown.setVisibility(View.VISIBLE);
+            mBarCenterBind.tvTitle.setText(mProvinceBeans.get(0).getProvince_name());
         }
 
-        mProvincePopup=new RadioProvincePopup(mActivity,this);
+        mProvincePopup = new RadioProvincePopup(mActivity, this);
         mProvincePopup.setDismissingListener(this);
     }
 
@@ -109,7 +105,7 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
     public void initListener() {
         super.initListener();
         if (mType == PROVINCE) {
-            RxView.clicks(llbarCenter)
+            RxView.clicks(mBarCenterBind.getRoot())
                     .doOnSubscribe(this)
                     .throttleFirst(1, TimeUnit.SECONDS).subscribe(unit -> switchProvince());
         }
@@ -158,8 +154,8 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
 
     @Override
     public View onBindBarCenterCustome() {
-        llbarCenter = LayoutInflater.from(mActivity).inflate(R.layout.home_layout_rank_bar_center, null);
-        return llbarCenter;
+        mBarCenterBind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.home_layout_rank_bar_center, null, false);
+        return mBarCenterBind.getRoot();
     }
 
 
@@ -180,10 +176,10 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
 
     private void switchProvince() {
 
-        if(mProvincePopup.isShow()){
+        if (mProvincePopup.isShow()) {
             mProvincePopup.dismiss();
-        }else {
-            ivCategoryDown.animate().rotation(180).setDuration(200);
+        } else {
+            mBarCenterBind.ivDown.animate().rotation(180).setDuration(200);
             new XPopup.Builder(mActivity).atView(mSimpleTitleBar).popupPosition(PopupPosition.Bottom).asCustom(mProvincePopup).show();
         }
     }
@@ -191,9 +187,9 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
 
     @Override
     public void onSelected(int province_code, String province_name) {
-        if (mProvinceCode !=province_code) {
+        if (mProvinceCode != province_code) {
             mProvinceCode = province_code;
-            tvTitle.setText(province_name);
+            mBarCenterBind.tvTitle.setText(province_name);
             mViewModel.setProvinceCode(mProvinceCode);
             mViewModel.init();
         }
@@ -201,11 +197,11 @@ public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
 
     @Override
     public void onDismissing() {
-        ivCategoryDown.animate().rotation(0).setDuration(200);
+        mBarCenterBind.ivDown.animate().rotation(0).setDuration(200);
     }
 
-     @Override
-     public Callback getInitStatus() {
+    @Override
+    public Callback getInitStatus() {
         return new ListSkeleton();
     }
 }

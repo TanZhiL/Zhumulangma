@@ -1,8 +1,6 @@
 package com.gykj.zhumulangma.listen.fragment;
 
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
@@ -11,7 +9,7 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.databinding.ListenFragmentMainBinding;
 
@@ -107,22 +105,22 @@ public class MainListenFragment extends BaseFragment<ListenFragmentMainBinding> 
     public void onClick(View v) {
         int id = v.getId();
         if(R.id.ll_download==id){
-            RouteUtil.navigateTo(Constants.Router.Listen.F_DOWNLOAD);
+            RouterUtil.navigateTo(Constants.Router.Listen.F_DOWNLOAD);
         }else  if(R.id.ll_history==id){
-            RouteUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
+            RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
         }else  if(R.id.ll_favorite==id){
-            RouteUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
+            RouterUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
         }
     }
     @Override
     public void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
-        RouteUtil.navigateTo(Constants.Router.User.F_MESSAGE);
+        RouterUtil.navigateTo(Constants.Router.User.F_MESSAGE);
     }
 
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        RouteUtil.navigateTo(Constants.Router.Home.F_SEARCH);
+        RouterUtil.navigateTo(Constants.Router.Home.F_SEARCH);
     }
 }

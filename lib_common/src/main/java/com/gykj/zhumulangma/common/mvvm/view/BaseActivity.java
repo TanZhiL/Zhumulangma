@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -12,8 +13,11 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.gykj.thomas.third.ThirdHelper;
 import com.gykj.zhumulangma.common.R;
+import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -46,6 +50,7 @@ public abstract class BaseActivity extends SupportActivity implements BaseView, 
     //公用Handler
     protected Handler mHandler = new Handler();
 
+    protected ARouter mRouter = ARouter.getInstance();
 
     protected @LayoutRes
     int onBindLayout() {
@@ -69,7 +74,7 @@ public abstract class BaseActivity extends SupportActivity implements BaseView, 
         if (onBindLayout() != View.NO_ID)
             setContentView(onBindLayout());
         EventBus.getDefault().register(this);
-        ARouter.getInstance().inject(this);
+        mRouter.inject(this);
         initCommonView();
         initParam();
         initView();
@@ -168,13 +173,17 @@ public abstract class BaseActivity extends SupportActivity implements BaseView, 
         initData();
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ActivityEvent event) {
-    }
-
+    @CallSuper
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onEventSticky(ActivityEvent event) {
+    }
+
+    @CallSuper
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityEvent event) {
+        //路由事件
+        if (event.getCode() == EventCode.Main.NAVIGATE)
+            RouterUtil.dispatcher(this, (NavigateBean) event.getData());
     }
 
     @Override

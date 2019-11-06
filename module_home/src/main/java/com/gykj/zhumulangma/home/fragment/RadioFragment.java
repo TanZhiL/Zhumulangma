@@ -10,19 +10,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
@@ -32,10 +29,6 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
-
-import org.greenrobot.eventbus.EventBus;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
@@ -59,16 +52,19 @@ public class RadioFragment extends BaseRefreshMvvmFragment<HomeFragmentRadioBind
     protected int onBindLayout() {
         return R.layout.home_fragment_radio;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //避免过度绘制
         mView.setBackground(null);
     }
+
     @Override
     protected boolean enableSwipeBack() {
         return false;
     }
+
     @Override
     protected void initView() {
         initHistory();
@@ -85,23 +81,15 @@ public class RadioFragment extends BaseRefreshMvvmFragment<HomeFragmentRadioBind
         mBinding.llCountry.setOnClickListener(this);
         mBinding.llProvince.setOnClickListener(this);
         mBinding.llInternet.setOnClickListener(this);
-        mBinding.ihTop.setOnClickListener(view -> {
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_RADIO_LIST)
-                    .withInt(KeyCode.Home.TYPE, RadioListFragment.RANK)
-                    .withString(KeyCode.Home.TITLE, "排行榜")
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
-        });
-        mBinding.ihHistory.setOnClickListener(view -> RouteUtil.navigateTo(Constants.Router.Listen.F_HISTORY));
-        mBinding.ihLocal.setOnClickListener(view -> {
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_RADIO_LIST)
-                    .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_CITY)
-                    .withString(KeyCode.Home.TITLE, SPUtils.getInstance().getString(Constants.SP.CITY_NAME, Constants.Default.CITY_NAME))
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
-        });
+        mBinding.ihTop.setOnClickListener(view ->
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
+                        .withInt(KeyCode.Home.TYPE, RadioListFragment.RANK)
+                        .withString(KeyCode.Home.TITLE, "排行榜")));
+        mBinding.ihHistory.setOnClickListener(view -> RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY));
+        mBinding.ihLocal.setOnClickListener(view ->
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
+                        .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_CITY)
+                        .withString(KeyCode.Home.TITLE, SPUtils.getInstance().getString(Constants.SP.CITY_NAME, Constants.Default.CITY_NAME))));
         mLocalAdapter.setOnItemClickListener((adapter, view, position) -> mViewModel.playRadio(mLocalAdapter.getItem(position)));
         mTopAdapter.setOnItemClickListener((adapter, view, position) -> mViewModel.playRadio(mTopAdapter.getItem(position)));
         mHistoryAdapter.setOnItemClickListener((adapter, view, position) ->
@@ -233,34 +221,22 @@ public class RadioFragment extends BaseRefreshMvvmFragment<HomeFragmentRadioBind
             mBinding.clMore.setVisibility(View.GONE);
             mBinding.ivMore.setVisibility(View.VISIBLE);
         } else if (id == R.id.ll_local) {
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_RADIO_LIST)
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_PROVINCE)
                     .withString(KeyCode.Home.TITLE, SPUtils.getInstance().getString(
-                            Constants.SP.PROVINCE_NAME, Constants.Default.PROVINCE_NAME))
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
+                            Constants.SP.PROVINCE_NAME, Constants.Default.PROVINCE_NAME)));
         } else if (id == R.id.ll_country) {
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_RADIO_LIST)
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.COUNTRY)
-                    .withString(KeyCode.Home.TITLE, "国家台")
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
+                    .withString(KeyCode.Home.TITLE, "国家台"));
         } else if (id == R.id.ll_province) {
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_RADIO_LIST)
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.PROVINCE)
-                    .withString(KeyCode.Home.TITLE, "省市台")
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
+                    .withString(KeyCode.Home.TITLE, "省市台"));
         } else if (id == R.id.ll_internet) {
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_RADIO_LIST)
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
                     .withInt(KeyCode.Home.TYPE, RadioListFragment.INTERNET)
-                    .withString(KeyCode.Home.TITLE, "网络台")
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_RADIO_LIST, (ISupportFragment) o)));
+                    .withString(KeyCode.Home.TITLE, "网络台"));
         }
     }
 

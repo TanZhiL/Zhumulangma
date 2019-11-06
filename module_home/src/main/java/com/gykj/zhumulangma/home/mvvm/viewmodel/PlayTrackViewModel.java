@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.gykj.zhumulangma.common.bean.FavoriteBean;
 import com.gykj.zhumulangma.common.bean.SubscribeBean;
-import com.gykj.zhumulangma.common.dao.FavoriteBeanDao;
-import com.gykj.zhumulangma.common.dao.SubscribeBeanDao;
+import com.gykj.zhumulangma.common.db.FavoriteBeanDao;
+import com.gykj.zhumulangma.common.db.SubscribeBeanDao;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;

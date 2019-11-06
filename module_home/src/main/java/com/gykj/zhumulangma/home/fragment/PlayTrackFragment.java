@@ -30,11 +30,11 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
@@ -74,14 +74,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import me.yokeyword.fragmentation.ISupportFragment;
-
 import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_LABLES;
 import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_VALUES;
 import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 
 @Route(path = Constants.Router.Home.F_PLAY_TRACK)
-public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBinding,PlayTrackViewModel> implements
+public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBinding, PlayTrackViewModel> implements
         NestedScrollView.OnScrollChangeListener, View.OnClickListener,
         BaseQuickAdapter.OnItemClickListener, OnSeekChangeListener,
         PlaySchedulePopup.onSelectedListener, PlayTrackPopup.onActionListener,
@@ -100,7 +98,6 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mActivity);
 
 
-
     public PlayTrackFragment() {
 
     }
@@ -115,11 +112,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
     protected int onBindLayout() {
         return R.layout.home_fragment_play_track;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mView.setBackgroundColor(Color.WHITE);
     }
+
     @Override
     protected boolean enableSwipeBack() {
         return false;
@@ -218,17 +217,10 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
         mPlayerManager.addPlayerStatusListener(playerStatusListener);
         mPlayerManager.addAdsStatusListener(adsStatusListener);
 
-        mBinding.tvMoreRelative.setOnClickListener(view -> {
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                    .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
-                    .withString(KeyCode.Home.TITLE, "更多推荐")
-                    .navigation();
-            NavigateBean navigateBean = new NavigateBean(Constants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o);
-            navigateBean.launchMode = STANDARD;
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, navigateBean));
-
-        });
+        mBinding.tvMoreRelative.setOnClickListener(view ->
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                        .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
+                        .withString(KeyCode.Home.TITLE, "更多推荐"), STANDARD));
         RxView.clicks(mBinding.llSubscribe)
                 .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
@@ -374,12 +366,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
             pop();
         } else if (R.id.cl_album == id) {
             if (null != mTrack) {
-                Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
-                        .withLong(KeyCode.Home.ALBUMID, mTrack.getAlbum().getAlbumId())
-                        .navigation();
-                NavigateBean navigateBean = new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
-                navigateBean.launchMode = STANDARD;
-                EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE, navigateBean));
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                        .withLong(KeyCode.Home.ALBUMID, mTrack.getAlbum().getAlbumId()), STANDARD);
             }
         } else if (R.id.lav_pre == id) {
             mBinding.lavPre.playAnimation();
@@ -450,12 +438,9 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
         } else if (v == mBinding.tvTempo) {
             new XPopup.Builder(getContext()).asCustom(new PlayTempoPopup(mActivity, this)).show();
         } else if (id == R.id.cl_announcer) {
-            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                     .withLong(KeyCode.Home.ANNOUNCER_ID, mTrack.getAnnouncer().getAnnouncerId())
-                    .withString(KeyCode.Home.ANNOUNCER_NAME, mTrack.getAnnouncer().getNickname())
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,
-                    new NavigateBean(Constants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation)));
+                    .withString(KeyCode.Home.ANNOUNCER_NAME, mTrack.getAnnouncer().getNickname()));
         } else if (R.id.tv_comment == id) {
             new XPopup.Builder(mActivity).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
                     .dismissOnTouchOutside(false).enableDrag(false).asCustom(mCommentPopup).show();
@@ -570,13 +555,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
-                .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
-                .navigation();
-        NavigateBean navigateBean = new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation);
-        navigateBean.launchMode = STANDARD;
-        EventBus.getDefault().post(new ActivityEvent(
-                EventCode.Main.NAVIGATE, navigateBean));
+        RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId()), STANDARD);
     }
 
 
@@ -772,7 +752,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
         mBinding.ctbTrans.setAlpha(ZhumulangmaUtil.unvisibleByScroll(scrollY, SizeUtils.dp2px(100),
                 mBinding.clController.getTop() - SizeUtils.dp2px(80)));
         mBinding.ctbWhite.setAlpha(ZhumulangmaUtil.visibleByScroll(scrollY, SizeUtils.dp2px(100),
-                mBinding. clController.getTop() - SizeUtils.dp2px(80)));
+                mBinding.clController.getTop() - SizeUtils.dp2px(80)));
     }
 
     private IXmPlayerStatusListener playerStatusListener = new IXmPlayerStatusListener() {

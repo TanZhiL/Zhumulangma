@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
-import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
+import com.gykj.zhumulangma.common.db.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;

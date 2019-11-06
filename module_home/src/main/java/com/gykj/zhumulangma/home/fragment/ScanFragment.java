@@ -84,7 +84,7 @@ public class ScanFragment extends BaseFragment<HomeFragmentScanBinding> implemen
                 return;
             }
             if (RegexUtils.isURL(result)) {
-                Object navigation = ARouter.getInstance().build(Constants.Router.Discover.F_WEB)
+                Object navigation = mRouter.build(Constants.Router.Discover.F_WEB)
                         .withString(KeyCode.Discover.PATH, result)
                         .navigation();
                 if (navigation != null) {

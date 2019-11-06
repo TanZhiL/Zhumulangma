@@ -9,14 +9,13 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.RecommendAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
@@ -26,11 +25,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
@@ -39,7 +34,7 @@ import me.yokeyword.fragmentation.ISupportFragment;
  * <br/>Description:推荐订阅
  */
 public class RecommendFragment extends BaseMvvmFragment<CommonLayoutListBinding, SubscribeViewModel> implements
-        BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener, OnRefreshLoadMoreListener {
+        BaseQuickAdapter.OnItemChildClickListener, OnRefreshLoadMoreListener {
 
     private RecommendAdapter mRecommendAdapter;
 
@@ -65,7 +60,9 @@ public class RecommendFragment extends BaseMvvmFragment<CommonLayoutListBinding,
     public void initListener() {
         super.initListener();
         mRecommendAdapter.setOnItemChildClickListener(this);
-        mRecommendAdapter.setOnItemClickListener(this);
+        mRecommendAdapter.setOnItemClickListener((adapter, view, position) ->
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                        .withLong(KeyCode.Home.ALBUMID, mRecommendAdapter.getItem(position).getId())));
         mBinding.refreshLayout.setOnRefreshLoadMoreListener(this);
     }
 
@@ -137,14 +134,6 @@ public class RecommendFragment extends BaseMvvmFragment<CommonLayoutListBinding,
         }
     }
 
-    @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
-                .withLong(KeyCode.Home.ALBUMID, mRecommendAdapter.getItem(position).getId())
-                .navigation();
-        EventBus.getDefault().post(new ActivityEvent(
-                EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
-    }
 
     @Override
     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {

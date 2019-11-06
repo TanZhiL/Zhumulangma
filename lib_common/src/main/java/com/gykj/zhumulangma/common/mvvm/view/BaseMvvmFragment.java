@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.CallSuper;
 
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 
@@ -22,7 +23,7 @@ public abstract class BaseMvvmFragment<DB extends ViewDataBinding,VM extends Bas
         initBaseViewObservable();
         initViewObservable();
     }
-
+    @CallSuper
     @Override
     protected void loadView() {
         super.loadView();

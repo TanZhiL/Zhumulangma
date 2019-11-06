@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.ResourceUtils;
 import com.blankj.utilcode.util.SizeUtils;
@@ -26,11 +25,9 @@ import com.google.gson.reflect.TypeToken;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.NeedLogin;
 import com.gykj.zhumulangma.common.bean.AnnouncerCategoryBean;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -44,12 +41,8 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
@@ -157,23 +150,15 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<HomeFragmen
         ivTransRight.setOnClickListener(this);
         mAlbumAdapter.setOnItemClickListener(this);
         mTrackAdapter.setOnItemClickListener(this);
-        mBinding.ihAlbum.setOnClickListener(v -> {
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                    .withInt(KeyCode.Home.TYPE, AlbumListFragment.ANNOUNCER)
-                    .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerId)
-                    .withString(KeyCode.Home.TITLE, mAnnouncerName)
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
-        });
-        mBinding.ihTrack.setOnClickListener(v -> {
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_TRACK_LIST)
-                    .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerId)
-                    .withString(KeyCode.Home.TITLE, mAnnouncerName)
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_TRACK_LIST, (ISupportFragment) o)));
-        });
+        mBinding.ihAlbum.setOnClickListener(v ->
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                        .withInt(KeyCode.Home.TYPE, AlbumListFragment.ANNOUNCER)
+                        .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerId)
+                        .withString(KeyCode.Home.TITLE, mAnnouncerName)));
+        mBinding.ihTrack.setOnClickListener(v ->
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_TRACK_LIST)
+                        .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerId)
+                        .withString(KeyCode.Home.TITLE, mAnnouncerName)));
 
         mBinding.tvMore.setOnClickListener(this);
         mBinding.ivAvatar.setOnClickListener(this);
@@ -183,7 +168,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<HomeFragmen
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh( mBinding.refreshLayout, null);
+        return new WrapRefresh(mBinding.refreshLayout, null);
     }
 
     @Override
@@ -196,7 +181,7 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<HomeFragmen
     public void initViewObservable() {
         mViewModel.getAnnouncerEvent().observe(this, announcer -> {
             mAnnouncer = announcer;
-            Glide.with(mActivity).load(announcer.getAvatarUrl()).into( mBinding.ivAvatar);
+            Glide.with(mActivity).load(announcer.getAvatarUrl()).into(mBinding.ivAvatar);
             mBinding.tvNick.setText(announcer.getNickname());
             mBinding.tvFans.setText("关注  " + ZhumulangmaUtil.toWanYi(announcer.getFollowingCount())
                     + "  |  粉丝  " + ZhumulangmaUtil.toWanYi(announcer.getFollowerCount()));
@@ -250,12 +235,9 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<HomeFragmen
         if (v == ivWhiteLeft || v == ivTransLeft) {
             pop();
         } else if (id == R.id.tv_more) {
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_LIST)
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_LIST)
                     .withLong(KeyCode.Home.CATEGORY_ID, mAnnouncer.getvCategoryId())
-                    .withString(KeyCode.Home.TITLE,  mBinding.tvCategory.getText().toString())
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ANNOUNCER_LIST, (ISupportFragment) o)));
+                    .withString(KeyCode.Home.TITLE, mBinding.tvCategory.getText().toString()));
         } else if (id == R.id.tv_follwer) {
             follwer();
         }
@@ -284,11 +266,8 @@ public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<HomeFragmen
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mAlbumAdapter) {
-            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
-                    .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_ALBUM_DETAIL, (ISupportFragment) navigation)));
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                    .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId()));
         } else {
             Track track = mTrackAdapter.getItem(position);
             mViewModel.playTrack(track.getAlbum().getAlbumId(), track.getDataId());

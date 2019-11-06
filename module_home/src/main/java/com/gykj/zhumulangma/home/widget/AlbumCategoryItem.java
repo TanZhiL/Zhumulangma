@@ -7,21 +7,14 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
-
-import org.greenrobot.eventbus.EventBus;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 
 /**
@@ -32,7 +25,6 @@ public class AlbumCategoryItem extends ConstraintLayout {
 
     private int icon;
     private String title="分类一";
-    private  int categoryId;
 
     public AlbumCategoryItem(@NonNull Context context) {
         this(context,null);
@@ -56,15 +48,10 @@ public class AlbumCategoryItem extends ConstraintLayout {
         tvTitle.setText(title);
         ivIcon.setImageResource(icon);
 
-        this.setOnClickListener(view -> {
-
-            Object o = ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                    .withInt(KeyCode.Home.TYPE, getTag()==null?3: Integer.parseInt(getTag().toString()))
-                    .withString(KeyCode.Home.TITLE,title)
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE,new NavigateBean(Constants.Router.Home.F_ALBUM_LIST, (ISupportFragment) o)));
-        });
+        this.setOnClickListener(view ->
+                RouterUtil.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
+                .withInt(KeyCode.Home.TYPE, getTag()==null?3: Integer.parseInt(getTag().toString()))
+                .withString(KeyCode.Home.TITLE,title)));
     }
 
     private void getAttrs(TypedArray typedArray) {

@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -21,7 +20,7 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
@@ -302,7 +301,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
         int id = v.getId();
         if (id == R.id.iv_history || id == R.id.tv_history) {
             pop();
-            RouteUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
+            RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
         } else if (id == R.id.iv_play_list || id == R.id.tv_play_list) {
             if(mSchedule==null){
                 return;

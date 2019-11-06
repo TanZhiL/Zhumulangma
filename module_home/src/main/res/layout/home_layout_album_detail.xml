@@ -1,81 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none"
-    android:overScrollMode="never"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:descendantFocusability="blocksDescendants"
-    android:layout_height="wrap_content">
+    <data>
 
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+    </data>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:gravity="center_vertical"
-            android:paddingStart="11dp"
-            android:text="内容简介"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/tv_intro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="11dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="11dp"
-            android:paddingBottom="16dp"
-            tools:text="对于一个声控来说…没有一副好嗓音…真的心塞塞，只能听听伦桑的声音抚慰抚慰耳朵了【躺     "
-            android:textColor="@color/textColorPrimary"
-            android:textSize="15sp" />
-    </LinearLayout>
-    <View
-        android:id="@+id/line3"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        style="@style/PrimaryHLine"
-        />
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include  layout="@layout/home_layout_announcer"/>
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:overScrollMode="never">
 
-    <LinearLayout android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-        <View
-            android:id="@+id/line4"
+        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            style="@style/PrimaryHLine"
-            />
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:gravity="center_vertical"
-            android:paddingStart="11dp"
-            android:text="专辑标签"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="16sp" />
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_tag"
-            android:layout_width="match_parent"
-            android:overScrollMode="never"
-            android:paddingLeft="10dp"
-            android:paddingBottom="4dp"
-            app:layout_constraintTop_toBottomOf="@id/textView17"
-            android:layout_height="200dp" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:descendantFocusability="blocksDescendants"
+            android:layout_height="wrap_content">
 
-</LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="11dp"
+                    android:text="内容简介"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_intro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="11dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="11dp"
+                    android:paddingBottom="16dp"
+                    tools:text="对于一个声控来说…没有一副好嗓音…真的心塞塞，只能听听伦桑的声音抚慰抚慰耳朵了【躺     "
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line3"
+                android:layout_width="match_parent"
+                style="@style/PrimaryHLine" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include android:id="@+id/include_announcer" layout="@layout/home_layout_announcer" />
+            </FrameLayout>
+
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/line4"
+                    android:layout_width="match_parent"
+                    style="@style/PrimaryHLine" />
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="11dp"
+                    android:text="专辑标签"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="16sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_tag"
+                    android:layout_width="match_parent"
+                    android:overScrollMode="never"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/textView17"
+                    android:layout_height="200dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>

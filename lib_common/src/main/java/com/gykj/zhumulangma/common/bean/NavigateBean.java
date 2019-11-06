@@ -1,5 +1,7 @@
 package com.gykj.zhumulangma.common.bean;
 
+import com.gykj.zhumulangma.common.mvvm.view.SupportFragment;
+
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportFragment;
 
@@ -11,19 +13,23 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 public class NavigateBean {
    public String path;
-   public ISupportFragment fragment;
+   public SupportFragment fragment;
    public ExtraTransaction extraTransaction;
    public @ISupportFragment.LaunchMode int  launchMode=ISupportFragment.SINGLETASK;
 
-    public NavigateBean(String path, ISupportFragment fragment) {
+    public NavigateBean(String path, SupportFragment fragment) {
         this.path = path;
         this.fragment = fragment;
     }
 
-    public NavigateBean(String path, ISupportFragment fragment,ExtraTransaction extraTransaction) {
+    public NavigateBean(String path, SupportFragment fragment,ExtraTransaction extraTransaction) {
         this.path = path;
         this.fragment = fragment;
         this.extraTransaction = extraTransaction;
     }
 
+    @Override
+    public String toString() {
+        return path;
+    }
 }

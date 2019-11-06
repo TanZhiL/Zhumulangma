@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.arch.lifecycle.Observer;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -25,6 +26,7 @@ public abstract class BaseRefreshMvvmFragment<DB extends ViewDataBinding,VM exte
 
     private WrapRefresh mWrapRefresh;
 
+    @CallSuper
     @Override
     public void initListener() {
         super.initListener();

@@ -2,7 +2,6 @@ package com.gykj.zhumulangma.listen.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -11,13 +10,12 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.DownloadTrackAdapter;
@@ -36,8 +34,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Collections;
 import java.util.List;
 
-import me.yokeyword.fragmentation.ISupportFragment;
-
 /**
  * Author: Thomas.
  * <br/>Date: 2019/10/11 10:19
@@ -52,7 +48,7 @@ public class DownloadAlbumFragment extends BaseFragment<ListenFragmentDownloadAl
     public long mAlbumId;
     private XmDownloadAlbum mAlbum;
     private XmDownloadManager mDownloadManager = XmDownloadManager.getInstance();
-    private XmPlayerManager mPlayerManager=XmPlayerManager.getInstance(mActivity);
+    private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mActivity);
     private DownloadTrackAdapter mTrackAdapter;
 
     @Override
@@ -99,7 +95,7 @@ public class DownloadAlbumFragment extends BaseFragment<ListenFragmentDownloadAl
         List<Track> trackInAlbum = XmDownloadManager.getInstance().getDownloadTrackInAlbum(mAlbumId, true);
         Collections.sort(trackInAlbum, ComparatorUtil.comparatorByDownloadOverTime(true));
         mBinding.tvAuthor.setText(trackInAlbum.get(0).getAnnouncer().getNickname());
-        mBinding.tvTrackNum.setText(String.format(mActivity.getResources().getString(R.string.ji),mAlbum.getTrackCount()));
+        mBinding.tvTrackNum.setText(String.format(mActivity.getResources().getString(R.string.ji), mAlbum.getTrackCount()));
         mTrackAdapter.setNewData(trackInAlbum);
         clearStatus();
     }
@@ -123,23 +119,14 @@ public class DownloadAlbumFragment extends BaseFragment<ListenFragmentDownloadAl
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.tv_more) {
-            Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_BATCH_DOWNLOAD)
-                    .withLong(KeyCode.Home.ALBUMID, mAlbumId)
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Home.F_BATCH_DOWNLOAD, (ISupportFragment) navigation)));
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_BATCH_DOWNLOAD)
+                    .withLong(KeyCode.Home.ALBUMID, mAlbumId));
         } else if (id == R.id.ll_sort_all) {
-            Object navigation = ARouter.getInstance().build(Constants.Router.Listen.F_DOWNLOAD_SORT)
-                    .withLong(KeyCode.Home.ALBUMID, mAlbumId)
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Listen.F_DOWNLOAD_SORT, (ISupportFragment) navigation)));
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Listen.F_DOWNLOAD_SORT)
+                    .withLong(KeyCode.Home.ALBUMID, mAlbumId));
         } else if (id == R.id.ll_delete) {
-            Object navigation = ARouter.getInstance().build(Constants.Router.Listen.F_DOWNLOAD_DELETE)
-                    .withLong(KeyCode.Home.ALBUMID, mAlbumId)
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Listen.F_DOWNLOAD_DELETE, (ISupportFragment) navigation)));
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Listen.F_DOWNLOAD_DELETE)
+                    .withLong(KeyCode.Home.ALBUMID, mAlbumId));
         } else if (id == R.id.ll_sort) {
             List<Track> trackInAlbum = XmDownloadManager.getInstance().getDownloadTrackInAlbum(mAlbumId, true);
             Collections.sort(trackInAlbum, ComparatorUtil.comparatorByDownloadOverTime(!mBinding.tvSort.getText().equals("正序")));
@@ -150,12 +137,12 @@ public class DownloadAlbumFragment extends BaseFragment<ListenFragmentDownloadAl
     }
 
     @Override
-    public  void onEvent(FragmentEvent event) {
+    public void onEvent(FragmentEvent event) {
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Listen.DOWNLOAD_SORT:
             case EventCode.Listen.DOWNLOAD_DELETE:
-                if(isSupportVisible()){
+                if (isSupportVisible()) {
                     return;
                 }
                 List<Track> downloadTracks = XmDownloadManager.getInstance().getDownloadTrackInAlbum(mAlbumId, true);
@@ -163,7 +150,7 @@ public class DownloadAlbumFragment extends BaseFragment<ListenFragmentDownloadAl
                 mTrackAdapter.setNewData(downloadTracks);
                 mBinding.tvTrackNum.setText(String.format(mActivity.getResources().getString(R.string.ji),
                         downloadTracks.size()));
-                if (mTrackAdapter.getItemCount()-mTrackAdapter.getEmptyViewCount()==0) {
+                if (mTrackAdapter.getItemCount() - mTrackAdapter.getEmptyViewCount() == 0) {
                     mBinding.clActionbar.setVisibility(View.GONE);
                 }
                 break;
@@ -181,8 +168,8 @@ public class DownloadAlbumFragment extends BaseFragment<ListenFragmentDownloadAl
         mDownloadManager.clearDownloadedTrack(mTrackAdapter.getItem(position).getDataId());
         mTrackAdapter.remove(position);
         mBinding.tvTrackNum.setText(String.format(mActivity.getResources().getString(R.string.ji),
-                mTrackAdapter.getItemCount()-mTrackAdapter.getEmptyViewCount()));
-        if (mTrackAdapter.getItemCount()-mTrackAdapter.getEmptyViewCount()==0) {
+                mTrackAdapter.getItemCount() - mTrackAdapter.getEmptyViewCount()));
+        if (mTrackAdapter.getItemCount() - mTrackAdapter.getEmptyViewCount() == 0) {
             mBinding.clActionbar.setVisibility(View.GONE);
         }
         mHandler.postDelayed(() -> EventBus.getDefault().post(new FragmentEvent(EventCode.Listen.DOWNLOAD_DELETE)), 100);
@@ -191,7 +178,7 @@ public class DownloadAlbumFragment extends BaseFragment<ListenFragmentDownloadAl
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         XmPlayerManager.getInstance(mActivity).playList(mTrackAdapter.getData(), position);
-        RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+        RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
     }
 
     @Override
@@ -213,11 +200,12 @@ public class DownloadAlbumFragment extends BaseFragment<ListenFragmentDownloadAl
             TextView tvHasplay = (TextView) mTrackAdapter.getViewByPosition(index, R.id.tv_hasplay);
             if (null != tvHasplay && mTrackAdapter.getItem(index).getDataId() == track.getDataId()) {
                 tvHasplay.setText(getString(R.string.hasplay, 100 * currPos / duration));
-            }else {
+            } else {
                 mTrackAdapter.notifyItemChanged(index);
             }
         }
     }
+
     private IXmPlayerStatusListener playerStatusListener = new IXmPlayerStatusListener() {
 
         @Override

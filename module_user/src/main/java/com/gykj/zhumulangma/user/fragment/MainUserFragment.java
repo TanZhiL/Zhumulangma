@@ -13,12 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
@@ -26,7 +24,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.GlideApp;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
@@ -41,8 +39,6 @@ import com.tencent.bugly.beta.Beta;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 
 import org.greenrobot.eventbus.EventBus;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
@@ -205,34 +201,31 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBi
     public void onClick(View v) {
         int id = v.getId();
         if (R.id.ll_download == id) {
-            RouteUtil.navigateTo(Constants.Router.Listen.F_DOWNLOAD);
+            RouterUtil.navigateTo(Constants.Router.Listen.F_DOWNLOAD);
         } else if (R.id.ll_history == id) {
-            RouteUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
+            RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
         } else if (R.id.ll_favorit == id) {
-            RouteUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
+            RouterUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
         } else if (v == whiteLeft || v == transLeft) {
-            RouteUtil.navigateTo(Constants.Router.User.F_MESSAGE);
+            RouterUtil.navigateTo(Constants.Router.User.F_MESSAGE);
         } else if (id == R.id.cl_fxzq) {
             EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
         } else if (id == R.id.cl_sys) {
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            RouteUtil.navigateTo(Constants.Router.Home.F_SCAN);
+                            RouterUtil.navigateTo(Constants.Router.Home.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
         } else if (id == R.id.cl_wxhd) {
-            RouteUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
+            RouterUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
         } else if (id == R.id.cl_jcgx) {
             Beta.checkUpgrade();
         } else if (id == R.id.cl_gy || id == R.id.iv_user) {
-            Object navigation = ARouter.getInstance().build(Constants.Router.Discover.F_WEB)
-                    .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL")
-                    .navigation();
-            EventBus.getDefault().post(new ActivityEvent(
-                    EventCode.Main.NAVIGATE, new NavigateBean(Constants.Router.Discover.F_WEB, (ISupportFragment) navigation)));
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
+                    .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL"));
         } else if (id == R.id.cl_zx) {
             new AlertDialog.Builder(mActivity)
                     .setMessage("您确定要注销登录吗?")

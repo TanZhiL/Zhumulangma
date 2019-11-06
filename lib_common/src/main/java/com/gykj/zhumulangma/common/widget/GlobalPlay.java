@@ -118,7 +118,6 @@ public class GlobalPlay extends View implements ValueAnimator.AnimatorUpdateList
         mMatrix.postScale(scale, scale);
         mShader.setLocalMatrix(mMatrix);
         mBpPaint.setShader(mShader);
-        //+1是为了填补缝隙
         canvas.drawCircle(0, 0, mRadius - mBarWidth, mBpPaint);
         //4.绘制半透明蒙版
         if (isPlaying)

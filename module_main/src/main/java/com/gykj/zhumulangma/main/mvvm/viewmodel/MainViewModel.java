@@ -10,12 +10,12 @@ import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.BingBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
-import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
+import com.gykj.zhumulangma.common.db.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.extra.RxField;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.net.Constans;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.main.mvvm.model.MainModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
@@ -88,7 +88,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                             break;
                         }
                     }
-                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 
@@ -99,7 +99,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                 .subscribe(schedules ->
                 {
                     XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
-                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
+                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }, Throwable::printStackTrace);
 
     }

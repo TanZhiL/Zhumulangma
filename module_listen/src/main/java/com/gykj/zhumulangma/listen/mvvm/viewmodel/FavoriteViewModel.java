@@ -6,11 +6,11 @@ import android.support.annotation.NonNull;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.FavoriteBean;
-import com.gykj.zhumulangma.common.dao.FavoriteBeanDao;
+import com.gykj.zhumulangma.common.db.FavoriteBeanDao;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
@@ -110,7 +110,7 @@ public class FavoriteViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Fa
                             break;
                         }
                     }
-                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 

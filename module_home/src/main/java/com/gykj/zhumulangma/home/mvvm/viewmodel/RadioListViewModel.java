@@ -9,7 +9,7 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.fragment.RadioListFragment;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
@@ -242,7 +242,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                 .subscribe(schedules ->
                 {
                     XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
-                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
+                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }, Throwable::printStackTrace);
     }
     public SingleLiveEvent<List<Radio>> getInitRadiosEvent() {

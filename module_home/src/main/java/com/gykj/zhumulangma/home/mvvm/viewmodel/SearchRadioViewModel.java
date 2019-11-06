@@ -8,7 +8,7 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
-import com.gykj.zhumulangma.common.util.RouteUtil;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -88,7 +88,7 @@ public class SearchRadioViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                 .subscribe(trackList -> {
                     XmPlayerManager.getInstance(getApplication()).playList(trackList,
                             trackList.getTracks().indexOf(track));
-                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 
@@ -99,7 +99,7 @@ public class SearchRadioViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
                 .subscribe(schedules ->
                 {
                     XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
-                    RouteUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
+                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }, Throwable::printStackTrace);
     }
     public SingleLiveEvent<List<Radio>> getInitRadiosEvent() {

@@ -6,7 +6,7 @@ import android.database.Cursor;
 import com.google.gson.Gson;
 import com.gykj.zhumulangma.common.AppHelper;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
-import com.gykj.zhumulangma.common.dao.PlayHistoryBeanDao;
+import com.gykj.zhumulangma.common.db.PlayHistoryBeanDao;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.net.RxAdapter;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
@@ -25,25 +25,25 @@ public class HistoryModel extends ZhumulangmaModel {
     }
 
     public Observable<List<PlayHistoryBean>> getHistory(int page,int pagesize) {
+        /**
+         * SELECT
+         *     a.*
+         *   FROM
+         *     PLAY_HISTORY_BEAN a
+         *   WHERE
+         *     1 > (
+         *       SELECT
+         *         count(*)
+         *       FROM
+         *         PLAY_HISTORY_BEAN
+         *       WHERE
+         *         ALBUM_ID = a.ALBUM_ID
+         *       AND DATATIME > a.DATATIME
+         *     )
+         *   ORDER BY
+         *     a.DATATIME desc
+         */
         return io.reactivex.Observable.create((ObservableOnSubscribe<List<PlayHistoryBean>>) emitter -> {
-            /**
-             * SELECT
-             *     a.*
-             *   FROM
-             *     PLAY_HISTORY_BEAN a
-             *   WHERE
-             *     1 > (
-             *       SELECT
-             *         count(*)
-             *       FROM
-             *         PLAY_HISTORY_BEAN
-             *       WHERE
-             *         ALBUM_ID = a.ALBUM_ID
-             *       AND DATATIME > a.DATATIME
-             *     )
-             *   ORDER BY
-             *     a.DATATIME desc
-             */
             List<PlayHistoryBean> list = new ArrayList<>();
             String sql = "SELECT a.* FROM "+ PlayHistoryBeanDao.TABLENAME+
                     " a WHERE 1>( SELECT COUNT(*) FROM "+ PlayHistoryBeanDao.TABLENAME
@@ -52,14 +52,9 @@ public class HistoryModel extends ZhumulangmaModel {
                     +")  ORDER BY a."+PlayHistoryBeanDao.Properties.Datatime.columnName+
                     " DESC LIMIT "+pagesize+" OFFSET "+((page-1)*pagesize);
 
-           /* String sql = "SELECT * FROM "+ PlayHistoryBeanDao.TABLENAME+
-                    " GROUP BY "+PlayHistoryBeanDao.Properties.AlbumId.columnName+
-                    "  ORDER BY "+PlayHistoryBeanDao.Properties.Datatime.columnName+
-                    " DESC LIMIT ? OFFSET ?";*/
             try (Cursor c = AppHelper.getDaoSession().getDatabase().rawQuery(sql,null)) {
-                if (c.moveToFirst()) {
+                if (c.moveToFirst()&&!emitter.isDisposed()) {
                     do {
-
                         list.add(new PlayHistoryBean(
                                 c.getLong(c.getColumnIndex(PlayHistoryBeanDao.Properties.SoundId.columnName)),
                                 c.getLong(c.getColumnIndex(PlayHistoryBeanDao.Properties.GroupId.columnName)),
@@ -69,7 +64,7 @@ public class HistoryModel extends ZhumulangmaModel {
                                 new Gson().fromJson(c.getString(c.getColumnIndex(PlayHistoryBeanDao.Properties.Track.columnName)), Track.class),
                                 new Gson().fromJson(c.getString(c.getColumnIndex(PlayHistoryBeanDao.Properties.Schedule.columnName)), Schedule.class)
                         ));
-                    } while (c.moveToNext());
+                    } while (c.moveToNext()&&!emitter.isDisposed());
                 }
             } catch (Exception e) {
                 emitter.onError(e);

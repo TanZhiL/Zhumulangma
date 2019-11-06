@@ -3,20 +3,16 @@ package com.gykj.zhumulangma.home.fragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -24,10 +20,6 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerListViewModel;
 import com.kingja.loadsir.callback.Callback;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
-
-import org.greenrobot.eventbus.EventBus;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.
@@ -37,8 +29,8 @@ import me.yokeyword.fragmentation.ISupportFragment;
  */
 
 @Route(path = Constants.Router.Home.F_ANNOUNCER_LIST)
-public class AnnouncerListFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,AnnouncerListViewModel, Announcer>
-        implements BaseQuickAdapter.OnItemClickListener, OnLoadMoreListener {
+public class AnnouncerListFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, AnnouncerListViewModel, Announcer>
+        implements OnLoadMoreListener {
 
     @Autowired(name = KeyCode.Home.CATEGORY_ID)
     public long mCategoryId;
@@ -63,7 +55,10 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<CommonLayoutL
     @Override
     public void initListener() {
         super.initListener();
-        mAnnouncerAdapter.setOnItemClickListener(this);
+        mAnnouncerAdapter.setOnItemClickListener((adapter, view, position) ->
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+                .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getItem(position).getAnnouncerId())
+                .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getItem(position).getNickname()), STANDARD));
     }
 
     @NonNull
@@ -71,7 +66,6 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<CommonLayoutL
     protected WrapRefresh onBindWrapRefresh() {
         return new WrapRefresh(mBinding.refreshLayout, mAnnouncerAdapter);
     }
-
 
 
     @Override
@@ -92,17 +86,6 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<CommonLayoutL
         return false;
     }
 
-    @Override
-    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
-                .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getItem(position).getAnnouncerId())
-                .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getItem(position).getNickname())
-                .navigation();
-        NavigateBean navigateBean = new NavigateBean(Constants.Router.Home.F_ANNOUNCER_DETAIL, (ISupportFragment) navigation);
-        navigateBean.launchMode=STANDARD;
-        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.NAVIGATE,navigateBean));
-    }
-
 
     @Override
     public Class<AnnouncerListViewModel> onBindViewModel() {
@@ -113,8 +96,9 @@ public class AnnouncerListFragment extends BaseRefreshMvvmFragment<CommonLayoutL
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }
-     @Override
-     public Callback getInitStatus() {
+
+    @Override
+    public Callback getInitStatus() {
         return new ListSkeleton();
     }
 }

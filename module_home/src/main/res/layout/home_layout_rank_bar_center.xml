@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerVertical="true"
-    android:gravity="center"
-    android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tv_title"
+    <data>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@color/textColorPrimary"
-        tools:text="热门" />
-    <ImageView
-        android:id="@+id/iv_down"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="4dp"
-        android:visibility="gone"
-        android:tint="@color/textColorPrimary"
-        android:src="@drawable/ic_home_rank_arrow" />
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/textColorPrimary"
+            tools:text="热门" />
+
+        <ImageView
+            android:id="@+id/iv_down"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="4dp"
+            android:visibility="gone"
+            android:tint="@color/textColorPrimary"
+            android:src="@drawable/ic_home_rank_arrow" />
+
+    </LinearLayout>
+</layout>

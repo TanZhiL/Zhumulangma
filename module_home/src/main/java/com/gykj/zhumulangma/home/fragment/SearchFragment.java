@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.gykj.zhumulangma.common.Constants;
@@ -190,7 +189,7 @@ public class SearchFragment extends BaseMvvmFragment<HomeFragmentSearchBinding, 
     @Override
     public void onSearch(String keyword) {
         hideSoftInput();
-        mCompositeDisposable.remove(suggestDisposable);
+        suggestDisposable.dispose();
         mBinding.etKeyword.setText(keyword);
         suggestObservable.subscribe();
         search(keyword);
@@ -204,7 +203,7 @@ public class SearchFragment extends BaseMvvmFragment<HomeFragmentSearchBinding, 
         //更新显示历史搜索记录
         mBinding.etKeyword.clearFocus();
 
-        Object navigation = ARouter.getInstance().build(Constants.Router.Home.F_SEARCH_RESULT)
+        Object navigation = mRouter.build(Constants.Router.Home.F_SEARCH_RESULT)
                 .withString(KeyCode.Home.KEYWORD, keyword).navigation();
         if (null != navigation)
             ((BaseFragment) getTopChildFragment()).start((ISupportFragment) navigation);

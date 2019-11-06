@@ -166,7 +166,7 @@ public class BaseModel {
 
     }
     /**
-     * 插入一条记录
+     * 更新或插入一条记录
      * @param entity
      * @param <T>
      * @return
