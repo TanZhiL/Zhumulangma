@@ -130,7 +130,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
         mAlbumAdapter.bindToRecyclerView(mBinding.rvRelative);
         initBar();
-        new Handler().postDelayed(() -> {
+        mHandler.postDelayed(() -> {
             if (mPlayerManager.isPlaying()) {
                 if (mPlayerManager.isAdPlaying()) {
                     bufferingAnim();

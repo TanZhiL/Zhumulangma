@@ -95,7 +95,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
         mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left).setRotation(-90);
         mBinding.includeItemRadio.ivItemPlay.setVisibility(View.GONE);
         mSchedulePopup = new PlaySchedulePopup(mActivity, this);
-        new Handler().postDelayed(() -> {
+        mHandler.postDelayed(() -> {
             if (mPlayerManager.isPlaying()) {
                 if (mPlayerManager.isAdPlaying()) {
                     bufferingAnim();
@@ -339,7 +339,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
     @Override
     public void onNewBundle(Bundle args) {
         super.onNewBundle(args);
-        new Handler().postDelayed(()->{
+        mHandler.postDelayed(()->{
             if(mSchedule==null){
                 return;
             }
