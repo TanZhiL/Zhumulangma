@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -87,6 +86,11 @@ public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<CommonLayou
 
     @Override
     public boolean enableSimplebar() {
+        return false;
+    }
+
+    @Override
+    protected boolean enableSwipeBack() {
         return false;
     }
 

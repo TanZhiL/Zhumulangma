@@ -134,13 +134,13 @@ public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
             String province = aMapLocation.getProvince();
             mModel.putSP(Constants.SP.CITY_CODE, aMapLocation.getAdCode().substring(0, 4))
                     .doOnSubscribe(this)
-                    .flatMap((Function<Boolean, ObservableSource<Boolean>>) aBoolean ->
+                    .flatMap((Function<String, ObservableSource<String>>) aBoolean ->
                             mModel.putSP(Constants.SP.CITY_NAME, city.substring(0, city.length() - 1)))
-                    .flatMap((Function<Boolean, ObservableSource<Boolean>>) aBoolean ->
+                    .flatMap((Function<String, ObservableSource<String>>) aBoolean ->
                             mModel.putSP(Constants.SP.PROVINCE_CODE, aMapLocation.getAdCode().substring(0, 3) + "000"))
-                    .flatMap((Function<Boolean, ObservableSource<Boolean>>) aBoolean ->
+                    .flatMap((Function<String, ObservableSource<String>>) aBoolean ->
                             mModel.putSP(Constants.SP.PROVINCE_NAME, province.substring(0, province.length() - 1)))
-                    .flatMap((Function<Boolean, ObservableSource<String>>) aBoolean ->
+                    .flatMap((Function<String, ObservableSource<String>>) aBoolean ->
                             mModel.getSPString(Constants.SP.CITY_NAME))
                     .flatMap((Function<String, ObservableSource<String>>) s -> {
                         getTitleEvent().setValue(s);

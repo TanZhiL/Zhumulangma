@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.SizeUtils;
@@ -264,7 +263,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
 
             mBinding.tvTrackName.setText(currSoundIgnoreKind.getTrackTitle());
             mBinding.includeAnnouncer.tvAnnouncerName.setText(currSoundIgnoreKind.getAnnouncer().getNickname());
-            
+
             mBinding.includeAnnouncer.tvVip.setVisibility(currSoundIgnoreKind.getAnnouncer().isVerified() ? View.VISIBLE : View.GONE);
             mBinding.tvAlbumName.setText(currSoundIgnoreKind.getAlbum().getAlbumTitle());
             mBinding.tvTrackIntro.setText(currSoundIgnoreKind.getTrackIntro());
@@ -300,25 +299,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
     }
 
     private void scheduleTime() {
-        int type = SPUtils.getInstance().getInt(Constants.SP.PLAY_SCHEDULE_TYPE, 0);
-        long time = SPUtils.getInstance().getLong(Constants.SP.PLAY_SCHEDULE_TIME, 0);
-
-        if (type == 0) {
-            mBinding.tvSchedule.setText("定时");
-            mHandler.removeCallbacksAndMessages(null);
-        } else if (type == 1) {
-            mHandler.postDelayed(this::scheduleTime, 1000);
-            mBinding.tvSchedule.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getDuration() / 1000 -
-                    mPlayerManager.getPlayCurrPositon() / 1000));
-        } else {
-            if (System.currentTimeMillis() < time) {
-                mHandler.postDelayed(this::scheduleTime, 1000);
-                mBinding.tvSchedule.setText(ZhumulangmaUtil.secondToTimeE((time - System.currentTimeMillis()) / 1000));
-            } else {
-                mHandler.removeCallbacksAndMessages(null);
-                mBinding.tvSchedule.setText("定时");
-            }
-        }
+        mViewModel.scheduleTime();
     }
 
     @Override
@@ -343,6 +324,27 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
             }
             mBinding.includeAnnouncer.tvFollowingCount.setText(getString(R.string.following_count,
                     ZhumulangmaUtil.toWanYi(announcer.getFollowerCount())));
+        });
+        //开启定时倒计时
+        mViewModel.getScheduleTimeEvent().observe(this, sparseArray -> {
+            int type = (int) sparseArray.get(0);
+            long time = (long) sparseArray.get(1);
+            if (type == 0) {
+                mBinding.tvSchedule.setText("定时");
+                mHandler.removeCallbacksAndMessages(null);
+            } else if (type == 1) {
+                mHandler.postDelayed(PlayTrackFragment.this::scheduleTime, 1000);
+                mBinding.tvSchedule.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getDuration() / 1000 -
+                        mPlayerManager.getPlayCurrPositon() / 1000));
+            } else {
+                if (System.currentTimeMillis() < time) {
+                    mHandler.postDelayed(PlayTrackFragment.this::scheduleTime, 1000);
+                    mBinding.tvSchedule.setText(ZhumulangmaUtil.secondToTimeE((time - System.currentTimeMillis()) / 1000));
+                } else {
+                    mHandler.removeCallbacksAndMessages(null);
+                    mBinding.tvSchedule.setText("定时");
+                }
+            }
         });
     }
 

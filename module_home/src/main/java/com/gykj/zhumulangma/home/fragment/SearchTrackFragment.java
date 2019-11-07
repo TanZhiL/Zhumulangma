@@ -104,6 +104,10 @@ public class SearchTrackFragment extends BaseRefreshMvvmFragment<CommonLayoutLis
     public boolean enableSimplebar() {
         return false;
     }
+    @Override
+    protected boolean enableSwipeBack() {
+        return false;
+    }
      @Override
      public Callback getInitStatus() {
         return new ListSkeleton();

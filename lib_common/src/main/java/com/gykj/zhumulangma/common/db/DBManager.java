@@ -1,11 +1,11 @@
 package com.gykj.zhumulangma.common.db;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.blankj.utilcode.util.CacheDoubleUtils;
 import com.blankj.utilcode.util.SPUtils;
+import com.gykj.zhumulangma.common.App;
 
 import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.Property;
@@ -15,7 +15,6 @@ import org.greenrobot.greendao.query.WhereCondition;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
 
 /**
  * Author: Thomas.<br/>
@@ -32,21 +31,21 @@ public class DBManager {
     private SPUtils mSPUtils;
     private CacheDoubleUtils mCacheDoubleUtils;
 
-    public static DBManager getInstance(Context context) {
+    public static DBManager getInstance() {
         if (instance == null) {
             synchronized (DBManager.class) {
                 if (instance == null) {
-                    instance = new DBManager(context);
+                    instance = new DBManager();
                 }
             }
         }
         return instance;
     }
 
-    private DBManager(Context context) {
+    private DBManager() {
         QueryBuilder.LOG_SQL = LOGGER;
         QueryBuilder.LOG_VALUES = LOGGER;
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "zhumulangma.db");
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(App.getInstance(), "zhumulangma.db");
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         mSession = daoMaster.newSession();
@@ -234,11 +233,11 @@ public class DBManager {
         });
     }
 
-    public Observable<Boolean> putSP(String key, String value) {
+    public Observable<String> putSP(String key, String value) {
         return Observable.create(emitter -> {
             try {
                 mSPUtils.put(key, value, true);
-                emitter.onNext(true);
+                emitter.onNext(value);
                 emitter.onComplete();
             } catch (Exception e) {
                 emitter.onError(e);
@@ -246,11 +245,11 @@ public class DBManager {
         });
     }
 
-    public Observable<Boolean> putSP(String key, int value) {
+    public Observable<Integer> putSP(String key, int value) {
         return Observable.create(emitter -> {
             try {
                 mSPUtils.put(key, value, true);
-                emitter.onNext(true);
+                emitter.onNext(value);
                 emitter.onComplete();
             } catch (Exception e) {
                 emitter.onError(e);
@@ -258,11 +257,11 @@ public class DBManager {
         });
     }
 
-    public Observable<Boolean> putSP(String key, Long value) {
-        return Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
+    public Observable<Long> putSP(String key, Long value) {
+        return Observable.create(emitter -> {
             try {
                 mSPUtils.put(key, value, true);
-                emitter.onNext(true);
+                emitter.onNext(value);
                 emitter.onComplete();
             } catch (Exception e) {
                 emitter.onError(e);
@@ -317,11 +316,11 @@ public class DBManager {
         });
     }
 
-    public Observable<Boolean> putCache(String key, String value) {
+    public Observable<String> putCache(String key, String value) {
         return Observable.create(emitter -> {
             try {
                 mCacheDoubleUtils.put(key, value);
-                emitter.onNext(true);
+                emitter.onNext(value);
                 emitter.onComplete();
             } catch (Exception e) {
                 emitter.onError(e);
@@ -329,11 +328,11 @@ public class DBManager {
         });
     }
 
-    public Observable<Boolean> putCache(String key, int value) {
+    public Observable<Integer> putCache(String key, int value) {
         return Observable.create(emitter -> {
             try {
                 mCacheDoubleUtils.put(key, value);
-                emitter.onNext(true);
+                emitter.onNext(value);
                 emitter.onComplete();
             } catch (Exception e) {
                 emitter.onError(e);
@@ -341,11 +340,11 @@ public class DBManager {
         });
     }
 
-    public Observable<Boolean> putCache(String key, Long value) {
+    public Observable<Long> putCache(String key, long value) {
         return Observable.create(emitter -> {
             try {
                 mCacheDoubleUtils.put(key, value);
-                emitter.onNext(true);
+                emitter.onNext(value);
                 emitter.onComplete();
             } catch (Exception e) {
                 emitter.onError(e);

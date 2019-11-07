@@ -101,6 +101,11 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutLis
     }
 
     @Override
+    protected boolean enableSwipeBack() {
+        return false;
+    }
+
+    @Override
     public Callback getInitStatus() {
         return new ListSkeleton();
     }

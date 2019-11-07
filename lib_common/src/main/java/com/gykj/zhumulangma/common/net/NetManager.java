@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.db.DBManager;
 import com.gykj.zhumulangma.common.net.service.CommonService;
@@ -61,7 +60,7 @@ public class NetManager {
 
     private NetManager() {
         //先异步获取token
-        DBManager.getInstance(App.getInstance())
+        DBManager.getInstance()
                 .getSPString(Constants.SP.TOKEN)
                 .compose(RxAdapter.schedulersTransformer())
                 .compose(RxAdapter.exceptionTransformer())

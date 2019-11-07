@@ -6,7 +6,6 @@ import android.text.TextUtils;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileIOUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.BingBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
@@ -21,6 +20,7 @@ import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +31,8 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import okhttp3.internal.http.RealResponseBody;
 
+import static cn.bmob.v3.Bmob.getFilesDir;
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/9/10 8:23
@@ -39,8 +41,9 @@ import okhttp3.internal.http.RealResponseBody;
  */
 public class MainViewModel extends BaseViewModel<MainModel> {
 
-    private SingleLiveEvent<PlayHistoryBean> mHistorySingleLiveEvent;
-    private SingleLiveEvent<String> mCoverSingleLiveEvent;
+    private SingleLiveEvent<PlayHistoryBean> mHistoryEvent;
+    private SingleLiveEvent<String> mCoverEvent;
+    private SingleLiveEvent<Void> mShowAdEvent;
 
     public MainViewModel(@NonNull Application application, MainModel model) {
         super(application, model);
@@ -50,13 +53,13 @@ public class MainViewModel extends BaseViewModel<MainModel> {
         mModel.listDesc(PlayHistoryBean.class, 0, 0, PlayHistoryBeanDao.Properties.Datatime, null)
                 .subscribe(historyBeans -> {
                     if (!CollectionUtils.isEmpty(historyBeans)) {
-                        getHistorySingleLiveEvent().postValue(historyBeans.get(0));
+                        getHistoryEvent().postValue(historyBeans.get(0));
                     }
                 }, Throwable::printStackTrace);
     }
 
-    public SingleLiveEvent<PlayHistoryBean> getHistorySingleLiveEvent() {
-        return mHistorySingleLiveEvent = createLiveData(mHistorySingleLiveEvent);
+    public SingleLiveEvent<PlayHistoryBean> getHistoryEvent() {
+        return mHistoryEvent = createLiveData(mHistoryEvent);
     }
 
     public void play(PlayHistoryBean historyBean) {
@@ -82,7 +85,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                     for (int i = 0; i < trackList.getTracks().size(); i++) {
                         if (trackList.getTracks().get(i).getDataId() == trackId) {
                             String coverUrlSmall = trackList.getTracks().get(i).getCoverUrlSmall();
-                            getCoverSingleLiveEvent().postValue(TextUtils.isEmpty(coverUrlSmall)
+                            getCoverEvent().postValue(TextUtils.isEmpty(coverUrlSmall)
                                     ? trackList.getTracks().get(i).getAlbum().getCoverUrlLarge() : coverUrlSmall);
                             XmPlayerManager.getInstance(getApplication()).playList(trackList, i);
                             break;
@@ -106,29 +109,63 @@ public class MainViewModel extends BaseViewModel<MainModel> {
 
     public void getBing() {
         RxField<BingBean> bingBean = new RxField<>();
+        //获取最新Bing数据
         mModel.getBing("js", "1")
                 .doOnSubscribe(this)
-                .flatMap((Function<BingBean, ObservableSource<ResponseBody>>) bean -> {
-                    if (bean.getImages().get(0).getCopyrightlink().equals(SPUtils.getInstance().getString(Constants.SP.AD_URL))) {
+                //查询本地广告URL
+                .flatMap((Function<BingBean, ObservableSource<String>>) bean -> {
+                    bingBean.set(bean);
+                    return mModel.getSPString(Constants.SP.AD_URL);
+                })
+                //判断本地广告是否一致
+                .flatMap((Function<String, ObservableSource<ResponseBody>>) s -> {
+                    // 如果一致则直接跳过,不重新下载
+                    if (bingBean.get().getImages().get(0).getCopyrightlink().equals(s)) {
                         return Observable.just(new RealResponseBody("", 0, null));
                     }
-                    bingBean.set(bean);
-                    return mModel.getCommonBody(Constans.BING_HOST + bean.getImages().get(0).getUrl());
+                    //否则下载图片文件
+                    return mModel.getCommonBody(Constans.BING_HOST + bingBean.get().getImages().get(0).getUrl());
                 })
+               // 如果一致则直接跳过,不重新下载
+                .filter(responseBody -> responseBody.contentLength()!=0)
+                //保存图片文件
                 .observeOn(Schedulers.io())
-                .subscribe(body -> {
-                    if (body.contentLength() != 0) {
-                        boolean b = FileIOUtils.writeFileFromIS(getApplication().getFilesDir().getAbsolutePath()
-                                + Constants.Default.AD_NAME, body.byteStream());
-                        if (b) {
-                            SPUtils.getInstance().put(Constants.SP.AD_LABEL, bingBean.get().getImages().get(0).getCopyright());
-                            SPUtils.getInstance().put(Constants.SP.AD_URL, bingBean.get().getImages().get(0).getCopyrightlink());
-                        }
+                .map(responseBody -> FileIOUtils.writeFileFromIS(getApplication().getFilesDir().getAbsolutePath()
+                        + Constants.Default.AD_NAME, responseBody.byteStream()))
+                //判断是否保存成
+                .filter(aBoolean -> aBoolean)
+                //如果保存成功,则更新本地广告信息
+                .flatMap((Function<Boolean, ObservableSource<String>>) aBoolean ->
+                        mModel.putSP(Constants.SP.AD_LABEL, bingBean.get().getImages().get(0).getCopyright()))
+                .flatMap((Function<String, ObservableSource<String>>) s ->
+                        mModel.putSP(Constants.SP.AD_URL, bingBean.get().getImages().get(0).getCopyrightlink()))
+                .subscribe(r->{}, Throwable::printStackTrace);
+    }
+
+    public SingleLiveEvent<String> getCoverEvent() {
+        return mCoverEvent = createLiveData(mCoverEvent);
+    }
+
+    public SingleLiveEvent<Void> getShowAdEvent() {
+        return mShowAdEvent = createLiveData(mShowAdEvent);
+    }
+
+    public void initAd() {
+        mModel.getSPLong(Constants.SP.AD_TIME, 0)
+                .doOnSubscribe(this)
+                .subscribe(aLong -> {
+                    if (System.currentTimeMillis() - aLong > 5 * 60 * 1000
+                            && new File(getFilesDir().getAbsolutePath() + Constants.Default.AD_NAME).exists()) {
+                        getShowAdEvent().call();
+                    } else {
+                        getBing();
                     }
                 }, Throwable::printStackTrace);
     }
 
-    public SingleLiveEvent<String> getCoverSingleLiveEvent() {
-        return mCoverSingleLiveEvent = createLiveData(mCoverSingleLiveEvent);
+    public void adDissmiss() {
+        mModel.putSP(Constants.SP.AD_TIME, System.currentTimeMillis())
+                .doOnSubscribe(this)
+                .subscribe(aLong -> getBing(), Throwable::printStackTrace);
     }
 }

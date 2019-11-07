@@ -4,7 +4,6 @@ package com.gykj.zhumulangma.common.net.exception;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.UserBean;
 import com.gykj.zhumulangma.common.db.DBManager;
@@ -27,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
  * <br/>Description:所有异常都会经过此处,可拦截需要重试的内部异常,如Token超时等
  */
 public class ExceptionRetry implements Function<Observable<Throwable>, Observable<?>> {
-    private DBManager mDBManager=DBManager.getInstance(App.getInstance());
+    private DBManager mDBManager=DBManager.getInstance();
     @Override
     public Observable<?> apply(Observable<Throwable> observable) throws Exception {
 
@@ -77,7 +76,7 @@ public class ExceptionRetry implements Function<Observable<Throwable>, Observabl
                                 responseDTO.msg));
                     } else {
                         return  mDBManager.putSP(Constants.SP.TOKEN, responseDTO.result.getToken())
-                                .flatMap((Function<Boolean, ObservableSource<?>>) aBoolean ->
+                                .flatMap((Function<String, ObservableSource<String>>) aBoolean ->
                                         mDBManager.putSP(Constants.SP.USER, new Gson().toJson(responseDTO.result)));
                     }
                 })

@@ -130,7 +130,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
     }
 
     /**
-     * 是否可滑动返回
+     * 是否可滑动返回,默认true
      *
      * @return
      */

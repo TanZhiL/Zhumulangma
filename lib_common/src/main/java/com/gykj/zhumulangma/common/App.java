@@ -115,7 +115,7 @@ public class App extends Application {
                 }
                 if (currSound.getKind().equals(PlayableModel.KIND_SCHEDULE)) {
                     Schedule schedule = (Schedule) currSound;
-                    DBManager.getInstance(mApplication).insert(new PlayHistoryBean(currSound.getDataId(),
+                    DBManager.getInstance().insert(new PlayHistoryBean(currSound.getDataId(),
                             schedule.getRadioId(), currSound.getKind(), System.currentTimeMillis(), schedule))
                             .compose(RxAdapter.exceptionTransformer())
                             .compose(RxAdapter.schedulersTransformer())
@@ -181,7 +181,7 @@ public class App extends Application {
                     Track track = (Track) currSound;
                     int currPos = XmPlayerManager.getInstance(App.this).getPlayCurrPositon();
                     int duration = XmPlayerManager.getInstance(App.this).getDuration();
-                    DBManager.getInstance(mApplication).insert(new PlayHistoryBean(currSound.getDataId(),
+                    DBManager.getInstance().insert(new PlayHistoryBean(currSound.getDataId(),
                             track.getAlbum().getAlbumId(), currSound.getKind(), 100 * currPos / duration,
                             System.currentTimeMillis(), track))
                             .compose(RxAdapter.exceptionTransformer())

@@ -2,7 +2,9 @@ package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
+import android.util.SparseArray;
 
+import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.FavoriteBean;
 import com.gykj.zhumulangma.common.bean.SubscribeBean;
 import com.gykj.zhumulangma.common.db.FavoriteBeanDao;
@@ -35,6 +37,7 @@ public class PlayTrackViewModel extends BaseViewModel<ZhumulangmaModel> {
     private SingleLiveEvent<Boolean> mSubscribeEvent;
     private SingleLiveEvent<Announcer> mAnnouncerEvent;
     private SingleLiveEvent<Boolean> mFavoriteEvent;
+    private SingleLiveEvent<SparseArray> mScheduleTimeEvent;
 
 
     public PlayTrackViewModel(@NonNull Application application, ZhumulangmaModel model) {
@@ -106,4 +109,20 @@ public class PlayTrackViewModel extends BaseViewModel<ZhumulangmaModel> {
         return mFavoriteEvent = createLiveData(mFavoriteEvent);
     }
 
+    public SingleLiveEvent<SparseArray> getScheduleTimeEvent() {
+        return mScheduleTimeEvent= createLiveData(mScheduleTimeEvent);
+    }
+
+    public void scheduleTime() {
+       SparseArray sparseArray=new SparseArray();
+        mModel.getSPInt(Constants.SP.PLAY_SCHEDULE_TYPE, 0)
+                .doOnSubscribe(this)
+                .doOnNext(integer -> sparseArray.put(0,integer))
+                .flatMap((Function<Integer, ObservableSource<Long>>) integer ->
+                        mModel.getSPLong(Constants.SP.PLAY_SCHEDULE_TIME, 0))
+                .subscribe(aLong -> {
+                    sparseArray.put(1,aLong);
+                    getScheduleTimeEvent().setValue(sparseArray);
+                }, Throwable::printStackTrace);
+    }
 }

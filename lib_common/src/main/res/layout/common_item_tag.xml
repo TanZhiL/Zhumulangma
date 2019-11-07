@@ -5,7 +5,7 @@
     android:paddingRight="8dp"
     android:paddingBottom="8dp"
     android:layout_height="wrap_content">
-<TextView
+<com.noober.background.view.BLTextView
     android:id="@+id/tv_keyword"
     android:layout_width="wrap_content"
     android:text="摸金天师"

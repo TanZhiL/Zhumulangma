@@ -29,7 +29,7 @@ public class BaseModel {
     public BaseModel(Application application) {
         mApplication = application;
         mNetManager = NetManager.getInstance();
-        mDBManager = DBManager.getInstance(mApplication);
+        mDBManager = DBManager.getInstance();
     }
 
     /**
@@ -166,19 +166,19 @@ public class BaseModel {
                 .compose(RxAdapter.schedulersTransformer());
     }
 
-    public Observable<Boolean> putSP(String key, String value) {
+    public Observable<String> putSP(String key, String value) {
         return mDBManager.putSP(key, value)
                 .compose(RxAdapter.exceptionTransformer())
                 .compose(RxAdapter.schedulersTransformer());
     }
 
-    public Observable<Boolean> putSP(String key, int value) {
+    public Observable<Integer> putSP(String key, int value) {
         return mDBManager.putSP(key, value)
                 .compose(RxAdapter.exceptionTransformer())
                 .compose(RxAdapter.schedulersTransformer());
     }
 
-    public Observable<Boolean> putSP(String key, Long value) {
+    public Observable<Long> putSP(String key, long value) {
         return mDBManager.putSP(key, value)
                 .compose(RxAdapter.exceptionTransformer())
                 .compose(RxAdapter.schedulersTransformer());
@@ -221,19 +221,19 @@ public class BaseModel {
                 .compose(RxAdapter.schedulersTransformer());
     }
 
-    public Observable<Boolean> putCache(String key, String value) {
+    public Observable<String> putCache(String key, String value) {
         return mDBManager.putCache(key, value)
                 .compose(RxAdapter.exceptionTransformer())
                 .compose(RxAdapter.schedulersTransformer());
     }
 
-    public Observable<Boolean> putCache(String key, int value) {
+    public Observable<Integer> putCache(String key, int value) {
         return mDBManager.putCache(key, value)
                 .compose(RxAdapter.exceptionTransformer())
                 .compose(RxAdapter.schedulersTransformer());
     }
 
-    public Observable<Boolean> putCache(String key, Long value) {
+    public Observable<Long> putCache(String key, long value) {
         return mDBManager.putCache(key, value)
                 .compose(RxAdapter.exceptionTransformer())
                 .compose(RxAdapter.schedulersTransformer());

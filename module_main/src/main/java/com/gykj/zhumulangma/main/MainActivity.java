@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.main;
 
 import android.Manifest;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
@@ -58,7 +58,6 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -105,47 +104,24 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
      * 显示广告
      */
     private void initAd() {
-        long adOffset = System.currentTimeMillis() - SPUtils.getInstance().getLong(Constants.SP.AD_TIME, 0);
-        //显示广告
-        if (adOffset > 5 * 60 * 1000 && new File(getFilesDir().getAbsolutePath() + Constants.Default.AD_NAME)
-                .exists()) {
-            new XPopup.Builder(this).customAnimator(new SplashAdPopup.AlphaAnimator())
-                    .setPopupCallback(new SimpleCallback() {
-                        @Override
-                        public void onDismiss() {
-                            super.onDismiss();
-                            SPUtils.getInstance().put(Constants.SP.AD_TIME, System.currentTimeMillis());
-                            mViewModel.getBing();
-                        }
-
-                        @Override
-                        public boolean onBackPressed() {
-                            ActivityUtils.startHomeActivity();
-                            return true;
-                        }
-                    })
-                    .asCustom(new SplashAdPopup(this)).show();
-        } else if (!new File(getFilesDir().getAbsolutePath() + Constants.Default.AD_NAME)
-                .exists()) {
-            mViewModel.getBing();
-        }
+        mViewModel.initAd();
     }
 
     @Override
     public void initView() {
         //手动添加布局,减少布局层级
         globalplay = new GlobalPlay(this);
-        globalplay.setRadius(NavigationUtil.dip2px(this,19));
-        globalplay.setBarWidth(NavigationUtil.dip2px(this,2));
+        globalplay.setRadius(NavigationUtil.dip2px(this, 19));
+        globalplay.setBarWidth(NavigationUtil.dip2px(this, 2));
         if (findFragment(MainFragment.class) == null) {
             MainFragment mainFragment = new MainFragment();
             mainFragment.setShowListener(this);
             loadRootFragment(android.R.id.content, mainFragment);
         }
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(NavigationUtil.dip2px(this,50), NavigationUtil.dip2px(this,50));
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(NavigationUtil.dip2px(this, 50), NavigationUtil.dip2px(this, 50));
         layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
         LoadLayout loadLayout = mBaseLoadService.getLoadLayout();
-        ((ViewGroup)loadLayout.getParent().getParent()).addView(globalplay, layoutParams);
+        ((ViewGroup) loadLayout.getParent().getParent()).addView(globalplay, layoutParams);
     }
 
     @Override
@@ -174,7 +150,7 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     @Override
     public void initViewObservable() {
-        mViewModel.getHistorySingleLiveEvent().observe(this, bean -> {
+        mViewModel.getHistoryEvent().observe(this, bean -> {
             mHistoryBean = bean;
             if (bean.getKind().equals(PlayableModel.KIND_TRACK)) {
                 globalplay.setImage(TextUtils.isEmpty(bean.getTrack().getCoverUrlSmall())
@@ -184,7 +160,27 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 globalplay.setImage(bean.getSchedule().getRelatedProgram().getBackPicUrl());
             }
         });
-        mViewModel.getCoverSingleLiveEvent().observe(this, s -> globalplay.play(s));
+        mViewModel.getCoverEvent().observe(this, s -> globalplay.play(s));
+        mViewModel.getShowAdEvent().observe(this, new Observer<Void>() {
+            @Override
+            public void onChanged(@Nullable Void aVoid) {
+                new XPopup.Builder(MainActivity.this).customAnimator(new SplashAdPopup.AlphaAnimator())
+                        .setPopupCallback(new SimpleCallback() {
+                            @Override
+                            public void onDismiss() {
+                                super.onDismiss();
+                                mViewModel.adDissmiss();
+                            }
+
+                            @Override
+                            public boolean onBackPressed() {
+                                ActivityUtils.startHomeActivity();
+                                return true;
+                            }
+                        })
+                        .asCustom(new SplashAdPopup(MainActivity.this)).show();
+            }
+        });
     }
 
 
@@ -304,7 +300,6 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                 break;
         }
     }
-
 
 
     @Override

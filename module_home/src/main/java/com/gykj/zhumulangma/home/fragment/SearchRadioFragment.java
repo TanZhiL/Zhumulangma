@@ -90,7 +90,10 @@ public class SearchRadioFragment extends BaseRefreshMvvmFragment<CommonLayoutLis
     public boolean enableSimplebar() {
         return false;
     }
-
+    @Override
+    protected boolean enableSwipeBack() {
+        return false;
+    }
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {

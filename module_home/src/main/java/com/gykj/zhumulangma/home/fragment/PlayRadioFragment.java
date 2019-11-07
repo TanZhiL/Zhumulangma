@@ -14,11 +14,10 @@ import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
+import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -183,15 +182,16 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
 
     @Override
     public void initViewObservable() {
-        mViewModel.getProgramsSingleLiveEvent().observe(this, programList ->
+        mViewModel.getProgramsEvent().observe(this, programList ->
                 mBinding.includeItemRadio.tvDesc.setText(getString(R.string.playing,
                         programList.getmProgramList().get(0).getProgramName())));
-        mViewModel.getYestodaySingleLiveEvent().observe(this, schedules ->
+        mViewModel.getYestodayEvent().observe(this, schedules ->
                 mPlayRadioPopup.getYestodayAdapter().setNewData(schedules));
-        mViewModel.getTodaySingleLiveEvent().observe(this, schedules ->
+        mViewModel.getTodayEvent().observe(this, schedules ->
                 mPlayRadioPopup.getTodayAdapter().setNewData(schedules));
-        mViewModel.getTomorrowSingleLiveEvent().observe(this, schedules ->
+        mViewModel.getTomorrowEvent().observe(this, schedules ->
                 mPlayRadioPopup.getTomorrowAdapter().setNewData(schedules));
+        mViewModel.getPauseAnimEvent().observe(this, aVoid -> pauseAnim());
     }
 
 
@@ -415,12 +415,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
     public void onSoundPlayComplete() {
 
         updatePlayStatus();
-        if (SPUtils.getInstance().getInt(Constants.SP.PLAY_SCHEDULE_TYPE, 0) == 1) {
-            SPUtils.getInstance().put(Constants.SP.PLAY_SCHEDULE_TYPE, 0);
-
-        } else if (!mPlayerManager.hasNextSound()) {
-            pauseAnim();
-        }
+        mViewModel.onPlayComplete(mPlayerManager);
     }
 
     @Override
