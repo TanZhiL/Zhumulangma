@@ -44,7 +44,7 @@
 扫描二维码下载：
 ![](screenshot/download.png)
 
-如果二维码图片不可见，[点我下载体验](https://www.pgyer.com/lxEs)
+如果二维码图片不可见，[点我下载体验](https://www.pgyer.com/lxEs)密码1111
 ### 项目架构
 本项目采用retrofit+rxjava2+rxandroid+arouter+mvvm+fragmentation实现单activity多fragme组件化架构
 
