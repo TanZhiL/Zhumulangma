@@ -22,6 +22,8 @@ import okhttp3.ResponseBody;
  * <br/>Description:通用Model
  */
 public class BaseModel {
+
+
     protected NetManager mNetManager;
     protected Application mApplication;
     protected DBManager mDBManager;

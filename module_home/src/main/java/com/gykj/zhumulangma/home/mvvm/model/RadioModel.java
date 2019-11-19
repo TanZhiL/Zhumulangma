@@ -63,6 +63,7 @@ public class RadioModel extends ZhumulangmaModel {
                             ));
                         } while (c.moveToNext());
                     }
+                    c.close();
                     return list;
                 });
     }
