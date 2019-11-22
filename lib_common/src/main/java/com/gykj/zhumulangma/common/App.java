@@ -1,11 +1,11 @@
 package com.gykj.zhumulangma.common;
 
 import android.app.Activity;
-import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.multidex.MultiDex;
+
+import androidx.multidex.MultiDexApplication;
 
 import com.gykj.thomas.third.ThirdHelper;
 import com.gykj.zhumulangma.common.aop.PointHelper;
@@ -26,6 +26,8 @@ import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 
+import io.reactivex.internal.functions.Functions;
+
 
 /**
  * Author: Thomas.
@@ -33,11 +35,11 @@ import com.ximalaya.ting.android.opensdk.util.BaseUtil;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:App
  */
-public class App extends Application {
-    private static App mApplication;
+public class App extends MultiDexApplication {
+    private static App instance;
 
     public static App getInstance() {
-        return mApplication;
+        return instance;
     }
 
     static {
@@ -62,7 +64,6 @@ public class App extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         if (BaseUtil.isMainProcess(this)) {
-            MultiDex.install(mApplication);
             Beta.installTinker();
         }
     }
@@ -70,7 +71,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mApplication = this;
+        instance = this;
         if (BaseUtil.isMainProcess(this)) {
             ThirdHelper.getInstance(this)
                     .initLeakCanary()
@@ -89,7 +90,7 @@ public class App extends Application {
                     .initNet()
                     .initXmlyDownloader();
             XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
-            registerActivityLifecycleCallbacks(new BLActivityLifecycleRegister());
+            registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         }
         AppHelper.getInstance(this)
                 .initXmlyPlayer();
@@ -119,8 +120,7 @@ public class App extends Application {
                             schedule.getRadioId(), currSound.getKind(), System.currentTimeMillis(), schedule))
                             .compose(RxAdapter.exceptionTransformer())
                             .compose(RxAdapter.schedulersTransformer())
-                            .subscribe(r -> {
-                            }, Throwable::printStackTrace);
+                            .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -186,8 +186,7 @@ public class App extends Application {
                             System.currentTimeMillis(), track))
                             .compose(RxAdapter.exceptionTransformer())
                             .compose(RxAdapter.schedulersTransformer())
-                            .subscribe(r -> {
-                            }, Throwable::printStackTrace);
+                            .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -200,7 +199,7 @@ public class App extends Application {
         }
     };
 
-    public class BLActivityLifecycleRegister implements Application.ActivityLifecycleCallbacks {
+    private ActivityLifecycleCallbacks activityLifecycleCallbacks = new ActivityLifecycleCallbacks() {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
             BackgroundLibrary.inject(activity);
@@ -235,5 +234,5 @@ public class App extends Application {
         public void onActivityDestroyed(Activity activity) {
 
         }
-    }
+    };
 }

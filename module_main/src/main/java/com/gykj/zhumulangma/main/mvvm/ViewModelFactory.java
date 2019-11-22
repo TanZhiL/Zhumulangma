@@ -2,12 +2,11 @@ package com.gykj.zhumulangma.main.mvvm;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
-import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.main.mvvm.model.MainModel;
 import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
 

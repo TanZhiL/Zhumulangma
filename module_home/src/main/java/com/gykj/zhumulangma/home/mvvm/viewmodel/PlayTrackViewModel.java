@@ -1,7 +1,7 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.SparseArray;
 
 import com.gykj.zhumulangma.common.Constants;

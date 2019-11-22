@@ -6,11 +6,12 @@ import android.graphics.Canvas;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
-import android.support.v7.widget.TintTypedArray;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.appcompat.widget.TintTypedArray;
 
 import com.gykj.zhumulangma.common.R;
 

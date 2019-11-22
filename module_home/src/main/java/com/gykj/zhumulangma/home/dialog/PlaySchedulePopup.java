@@ -2,11 +2,12 @@ package com.gykj.zhumulangma.home.dialog;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RadioButton;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
@@ -28,6 +29,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.internal.functions.Functions;
 
 /**
  * Author: Thomas.
@@ -105,8 +107,7 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
                     .flatMap((Function<Integer, ObservableSource<Long>>) aBoolean ->
                             mDBManager.putSP(Constants.SP.PLAY_SCHEDULE_TIME,
                                     System.currentTimeMillis() + mTimes[position] * 60 * 1000))
-                    .subscribe(r -> {
-                    }, Throwable::printStackTrace);
+                    .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
         }
         if (position != 0 && position != 1 && position != 7) {
             mDBManager.getSPLong(Constants.SP.PLAY_SCHEDULE_TIME, 0)

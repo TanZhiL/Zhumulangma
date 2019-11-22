@@ -1,9 +1,10 @@
 package com.gykj.zhumulangma.listen.fragment;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;

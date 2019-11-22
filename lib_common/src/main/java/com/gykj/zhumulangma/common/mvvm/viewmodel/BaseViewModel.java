@@ -1,10 +1,12 @@
 package com.gykj.zhumulangma.common.mvvm.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleOwner;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
@@ -20,10 +22,10 @@ import io.reactivex.functions.Consumer;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:ViewModel基类
  */
-public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements IBaseViewModel, Consumer<Disposable> {
+public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements LifecycleObserver, Consumer<Disposable> {
     protected M mModel;
     //Disposable容器
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private CompositeDisposable mDisposables = new CompositeDisposable();
 
     protected ARouter mRouter =ARouter.getInstance();
 
@@ -100,44 +102,17 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
         return liveData;
     }
 
-    @Override
-    public void onAny(LifecycleOwner owner, Lifecycle.Event event) {
-    }
-
-    @Override
-    public void onCreate() {
-    }
-
-    @Override
-    public void onDestroy() {
-    }
-
-    @Override
-    public void onStart() {
-    }
-
-    @Override
-    public void onStop() {
-    }
-
-    @Override
-    public void onResume() {
-    }
-
-    @Override
-    public void onPause() {
-    }
 
     @Override
     public void accept(Disposable disposable) throws Exception {
-        mCompositeDisposable.add(disposable);
+        mDisposables.add(disposable);
     }
 
     @Override
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     protected void onCleared() {
         super.onCleared();
-        mCompositeDisposable.clear();
+        mDisposables.clear();
     }
-
 
 }

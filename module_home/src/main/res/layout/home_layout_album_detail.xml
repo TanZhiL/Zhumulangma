@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
     </data>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
@@ -54,7 +58,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <include android:id="@+id/include_announcer" layout="@layout/home_layout_announcer" />
+                <include
+                    android:id="@+id/include_announcer"
+                    layout="@layout/home_layout_announcer" />
             </FrameLayout>
 
             <LinearLayout android:layout_width="match_parent"
@@ -78,7 +84,7 @@
                     android:textColor="@color/textColorPrimary"
                     android:textSize="16sp" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_tag"
                     android:layout_width="match_parent"
                     android:overScrollMode="never"
@@ -89,5 +95,5 @@
             </LinearLayout>
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

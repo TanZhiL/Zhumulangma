@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -45,7 +46,7 @@
             app:srlEnableLoadMore="false"
             app:srlEnablePreviewInEditMode="false">
 
-            <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/nsv"
@@ -69,7 +70,7 @@
                         app:indicator_margin="3dp"
                         app:indicator_width="7dp"></com.youth.banner.Banner>
 
-                    <android.support.constraint.ConstraintLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -273,7 +274,7 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/horizontalScrollView" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/c4"
                             android:layout_width="match_parent"
                             android:layout_height="143dp"
@@ -347,13 +348,13 @@
                                 app:layout_constraintEnd_toEndOf="@+id/imageView3"
                                 app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
-                            <android.support.constraint.Guideline
+                            <androidx.constraintlayout.widget.Guideline
                                 android:id="@+id/guideline3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 app:layout_constraintGuide_percent="0.6" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             android:id="@+id/line8"
@@ -371,7 +372,7 @@
                             app:ih_title="每日优选"
                             app:layout_constraintTop_toBottomOf="@id/line8" />
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_daily"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -401,7 +402,7 @@
                             app:ih_title="有声读物"
                             app:layout_constraintTop_toBottomOf="@id/line3" />
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_book"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -431,7 +432,7 @@
                             app:ih_title="小课堂"
                             app:layout_constraintTop_toBottomOf="@id/line4" />
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_classroom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -452,10 +453,10 @@
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/classroom_refresh" />
-                    </android.support.constraint.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
-            </android.support.v4.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
     </LinearLayout>
 </layout>

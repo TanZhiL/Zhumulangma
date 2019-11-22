@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -41,21 +42,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />
 
-            <android.support.v4.widget.NestedScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/nsv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
                 android:scrollbars="none">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:descendantFocusability="blocksDescendants"
                     android:paddingBottom="8dp">
 
 
-                    <android.support.constraint.ConstraintLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/c1"
                         android:layout_width="match_parent"
                         android:layout_height="128dp"
@@ -148,7 +149,7 @@
                             app:layout_constraintEnd_toEndOf="@+id/tv_follwer"
                             app:layout_constraintStart_toStartOf="@+id/tv_fans"
                             app:layout_constraintTop_toBottomOf="@+id/tv_fans" />
-                    </android.support.constraint.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                     <TextView
@@ -178,7 +179,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/tv_category" />
 
-                    <android.support.constraint.Group
+                    <androidx.constraintlayout.widget.Group
                         android:id="@+id/gp_album"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -194,7 +195,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tv_intro"
                         tools:layout_editor_absoluteX="-16dp" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_album"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -204,7 +205,7 @@
                         android:nestedScrollingEnabled="false"
                         app:layout_constraintTop_toBottomOf="@id/ih_album" />
 
-                    <android.support.constraint.Group
+                    <androidx.constraintlayout.widget.Group
                         android:id="@+id/gp_track"
                         android:layout_width="wrap_content"
                         android:visibility="gone"
@@ -219,7 +220,7 @@
                         app:ih_title="声音(0)"
                         app:layout_constraintTop_toBottomOf="@id/rv_album" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_track"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -254,9 +255,9 @@
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView13" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </android.support.v4.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         <com.wuhenzhizao.titlebar.widget.CommonTitleBar
@@ -289,4 +290,3 @@
             app:titleBarHeight="@dimen/simpleBarHeight" />
     </FrameLayout>
 </layout>
-

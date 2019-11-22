@@ -2,11 +2,12 @@ package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.FloatRange;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.animation.Animation;
+
+import androidx.annotation.FloatRange;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -21,23 +22,24 @@ import me.yokeyword.fragmentation_swipeback.core.SwipeBackFragmentDelegate;
  * Author: Thomas.
  * <br/>Date: 2019/7/23 11:17
  * <br/>Email: 1071931588@qq.com
- * <br/>Description:Fragmentation支持
- *
+ * <br/>Description:Fragmentation支持,请勿修改
  */
 public abstract class SupportFragment extends Fragment implements ISupportFragment, ISwipeBackFragment {
-    final SwipeBackFragmentDelegate mBackDelegate = new SwipeBackFragmentDelegate(this);
-    final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
-    protected SupportActivity mActivity;
+    private final SwipeBackFragmentDelegate mBackDelegate = new SwipeBackFragmentDelegate(this);
+    private final SupportFragmentDelegate mDelegate = new SupportFragmentDelegate(this);
+    protected Activity mActivity;
 
     @Override
     public SupportFragmentDelegate getSupportDelegate() {
         return mDelegate;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mBackDelegate.onViewCreated(view, savedInstanceState);
     }
+
     /**
      * Perform some extra transactions.
      * 额外的事务：自定义Tag，添加SharedElement动画，操作非回退栈Fragment
@@ -51,7 +53,7 @@ public abstract class SupportFragment extends Fragment implements ISupportFragme
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         mDelegate.onAttach(activity);
-        mActivity = (SupportActivity) mDelegate.getActivity();
+        mActivity = mDelegate.getActivity();
     }
 
     @Override
@@ -230,7 +232,6 @@ public abstract class SupportFragment extends Fragment implements ISupportFragme
     }
 
     /**
-     *
      * @see #startForResult(ISupportFragment, int)
      */
     @Override
@@ -239,7 +240,6 @@ public abstract class SupportFragment extends Fragment implements ISupportFragme
     }
 
     /**
-     *
      * @see #startForResult(ISupportFragment, int)
      */
     @Override

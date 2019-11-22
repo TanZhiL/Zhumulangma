@@ -1,8 +1,9 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.amap.api.location.AMapLocation;
 import com.gykj.zhumulangma.common.Constants;
@@ -27,6 +28,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
+import io.reactivex.internal.functions.Functions;
 
 public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
 
@@ -80,8 +82,7 @@ public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
 
 
     public void getTopList() {
-        getTopListObservable().subscribe(r -> {
-        }, Throwable::printStackTrace);
+        getTopListObservable().subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
     }
 
     private Observable<RadioList> getTopListObservable() {

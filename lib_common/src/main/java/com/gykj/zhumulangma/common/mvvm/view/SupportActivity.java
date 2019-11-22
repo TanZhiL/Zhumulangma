@@ -1,31 +1,28 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
 import me.yokeyword.fragmentation.ISupportFragment;
 import me.yokeyword.fragmentation.SupportActivityDelegate;
 import me.yokeyword.fragmentation.SupportHelper;
-import me.yokeyword.fragmentation.SwipeBackLayout;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
-import me.yokeyword.fragmentation_swipeback.core.ISwipeBackActivity;
-import me.yokeyword.fragmentation_swipeback.core.SwipeBackActivityDelegate;
 
 /**
  * Author: Thomas.
  * <br/>Date: 2019/7/23 10:49
  * <br/>Email: 1071931588@qq.com
- * <br/>Description:Fragmentation支持
+ * <br/>Description:Fragmentation支持,请勿修改
  */
-public abstract class SupportActivity extends RxAppCompatActivity implements ISupportActivity {
-    final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
+public abstract class SupportActivity extends AppCompatActivity implements ISupportActivity {
+    private final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
 
     @Override
     public SupportActivityDelegate getSupportDelegate() {

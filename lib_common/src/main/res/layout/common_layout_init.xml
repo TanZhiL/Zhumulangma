@@ -5,7 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_gravity="center"
@@ -29,6 +29,6 @@
             app:lottie_fileName="lottie_refreshing.json"
             app:lottie_loop="true" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

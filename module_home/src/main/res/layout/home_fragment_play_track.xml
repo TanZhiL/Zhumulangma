@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -26,7 +27,7 @@
                 android:orientation="vertical"
                 android:descendantFocusability="blocksDescendants">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="360dp">
 
@@ -49,7 +50,7 @@
                         app:layout_constraintEnd_toEndOf="parent" />
 
 
-                    <android.support.constraint.ConstraintLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_action"
                         android:layout_width="match_parent"
                         android:background="#aa000000"
@@ -140,8 +141,8 @@
                             app:layout_constraintBottom_toBottomOf="@+id/tv_tempo"
                             app:layout_constraintStart_toEndOf="@+id/tv_tempo"
                             app:layout_constraintTop_toTopOf="@+id/tv_tempo" />
-                    </android.support.constraint.ConstraintLayout>
-                </android.support.constraint.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.warkiz.widget.IndicatorSeekBar
                     android:id="@+id/isb_progress"
@@ -166,7 +167,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:isb_track_progress_color="@color/colorPrimary" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_controller"
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
@@ -320,14 +321,14 @@
                         app:layout_constraintEnd_toEndOf="@+id/iv_schedule"
                         app:layout_constraintStart_toStartOf="@+id/iv_schedule"
                         app:layout_constraintTop_toBottomOf="@+id/iv_schedule" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:id="@+id/line1"
                     android:layout_width="match_parent"
                     style="@style/PrimaryHLine" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_album"
                     android:layout_width="match_parent"
                     android:layout_height="72dp">
@@ -440,7 +441,7 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:id="@+id/line4"
@@ -514,7 +515,7 @@
                     android:layout_width="match_parent"
                     style="@style/SecondHLine" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -542,7 +543,7 @@
                     android:layout_width="match_parent"
                     style="@style/PrimaryHLine" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp">
 
@@ -577,9 +578,9 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="16sp"
                         app:layout_constraintRight_toRightOf="parent" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="84dp">
 
@@ -651,9 +652,9 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="@id/textView44" />
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <!--<com.gykj.thomas.zhumulangma.widget.CommonTitleBar-->
         <!--android:id="@+id/ctb_trans"-->
@@ -721,7 +722,7 @@
             app:titleBarColor="@color/white"
             app:titleBarHeight="@dimen/simpleBarHeight" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
@@ -807,7 +808,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/tv_comment_count"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
 </layout>

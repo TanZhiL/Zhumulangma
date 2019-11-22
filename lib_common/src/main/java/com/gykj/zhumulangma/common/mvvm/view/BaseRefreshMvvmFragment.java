@@ -1,9 +1,9 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
-import android.arch.lifecycle.Observer;
-import android.databinding.ViewDataBinding;
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.Observer;
+import androidx.databinding.ViewDataBinding;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

@@ -1,10 +1,11 @@
 package com.gykj.zhumulangma.listen.fragment;
 
 import android.app.AlertDialog;
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;

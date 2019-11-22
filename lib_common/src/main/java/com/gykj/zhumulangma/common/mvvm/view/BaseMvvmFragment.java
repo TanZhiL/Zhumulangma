@@ -1,10 +1,10 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.ViewDataBinding;
-import android.support.annotation.CallSuper;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.databinding.ViewDataBinding;
+import androidx.annotation.CallSuper;
 
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 

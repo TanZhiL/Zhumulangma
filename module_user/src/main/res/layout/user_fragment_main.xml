@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -40,19 +41,19 @@
                 android:layout_height="50dp"
                 app:lottie_colorFilter="@color/white" />
 
-            <android.support.v4.widget.NestedScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/nsv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
                 android:scrollbars="none">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
 
-                    <android.support.constraint.ConstraintLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/c1"
                         android:layout_width="match_parent"
                         android:layout_height="128dp"
@@ -200,9 +201,9 @@
                             app:layout_constraintEnd_toEndOf="@+id/iv_user"
                             app:layout_constraintStart_toStartOf="@+id/textView14"
                             app:layout_constraintTop_toBottomOf="@+id/textView14" />
-                    </android.support.constraint.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <android.support.constraint.ConstraintLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/c0"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
@@ -312,7 +313,7 @@
                             app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toEndOf="@+id/ll_history"
                             app:layout_constraintTop_toTopOf="@id/ll_history" />
-                    </android.support.constraint.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <LinearLayout
                         android:id="@+id/l"
@@ -355,7 +356,7 @@
                             style="@style/SecondHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_sc"
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
@@ -391,13 +392,13 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/SecondHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_wdzp"
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
@@ -433,13 +434,13 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/PrimaryHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
 
@@ -474,13 +475,13 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/PrimaryHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
 
@@ -515,13 +516,13 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/SecondHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
 
@@ -556,13 +557,13 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/SecondHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
 
@@ -597,13 +598,13 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/SecondHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_fxzq"
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
@@ -639,13 +640,13 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/PrimaryHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_sys"
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
@@ -681,13 +682,13 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/SecondHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_wxhd"
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
@@ -723,13 +724,13 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/SecondHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_jcgx"
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
@@ -765,13 +766,13 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/SecondHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_gy"
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
@@ -819,13 +820,13 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toStartOf="@+id/iv_user13"
                                 app:layout_constraintTop_toTopOf="parent" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/SecondHLine"
                             android:layout_width="match_parent" />
 
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_zx"
                             android:layout_width="match_parent"
                             android:layout_height="45dp">
@@ -861,15 +862,15 @@
                                 app:layout_constraintRight_toRightOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:srcCompat="@drawable/ic_common_more_arrow" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
                             style="@style/SecondHLine"
                             android:layout_width="match_parent" />
                     </LinearLayout>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </android.support.v4.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         <com.wuhenzhizao.titlebar.widget.CommonTitleBar

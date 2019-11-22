@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -12,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
@@ -80,7 +82,7 @@
                 tools:text="18：00~19：00" />
 
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.warkiz.widget.IndicatorSeekBar
             android:id="@+id/isb_progress"
@@ -103,7 +105,7 @@
             app:isb_track_rounded_corners="true"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/c"
             android:layout_width="match_parent"
             android:layout_height="90dp"
@@ -258,7 +260,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/iv_history"
                 app:layout_constraintStart_toStartOf="@+id/iv_history"
                 app:layout_constraintTop_toBottomOf="@+id/iv_history" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
             android:id="@+id/include_item_radio"

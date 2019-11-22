@@ -14,7 +14,7 @@ import com.gykj.zhumulangma.common.util.RouterUtil;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:
  */
-public class RadioCategoryItem extends android.support.v7.widget.AppCompatTextView {
+public class RadioCategoryItem extends androidx.appcompat.widget.AppCompatTextView {
     public RadioCategoryItem(Context context, AttributeSet attrs) {
         super(context, attrs);
 

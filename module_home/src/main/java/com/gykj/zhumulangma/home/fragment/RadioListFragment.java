@@ -1,10 +1,10 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.databinding.DataBindingUtil;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;

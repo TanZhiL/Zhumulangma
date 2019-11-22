@@ -1,7 +1,8 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
+import io.reactivex.internal.functions.Functions;
 
 /**
  * Author: Thomas.
@@ -119,8 +121,7 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
                     if (integer == 1) {
                         mModel.putSP(Constants.SP.PLAY_SCHEDULE_TYPE, 0)
                                 .doOnSubscribe(PlayRadioViewModel.this)
-                                .subscribe(r -> {
-                                }, Throwable::printStackTrace);
+                                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
                     } else if (!playerManager.hasNextSound()) {
                         getPauseAnimEvent().call();
                     }

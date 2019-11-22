@@ -22,7 +22,7 @@
             android:textColor="@color/textColorPrimary"
             android:textSize="16sp" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_announcer"
             android:layout_width="match_parent"
             android:layout_height="63dp">
@@ -87,7 +87,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tv_vsignature"

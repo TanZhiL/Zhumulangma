@@ -1,17 +1,9 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.app.Application;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +11,17 @@ import android.view.ViewStub;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleRegistry;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
@@ -50,22 +53,22 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * Author: Thomas.
  * <br/>Date: 2019/9/10 8:23
  * <br/>Email: 1071931588@qq.com
- * <br/>Description:Fragment基类
+ * <br/>Description:Fragment基类,主要处理标题栏和状态页逻辑
  */
 public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFragment implements BaseView, Consumer<Disposable> {
     protected static final String TAG = BaseFragment.class.getSimpleName();
+    //用于延时显示loading状态,避免一闪而过
+    private Handler mLoadingHandler = new Handler();
 
     protected Application mApplication;
     //Disposable容器
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private CompositeDisposable mDisposables = new CompositeDisposable();
     //根部局
     protected View mView;
     //状态页管理
     protected LoadService mBaseLoadService;
     //默认标题栏
     protected CommonTitleBar mSimpleTitleBar;
-    //用于延时显示loading状态
-    private Handler mLoadingHandler = new Handler();
     //公用Handler
     protected Handler mHandler = new Handler();
     //记录是否第一次进入
@@ -88,9 +91,6 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
 
     public abstract void initData();
 
-    /**
-     * 再次可见
-     */
     protected void onRevisible() {
     }
 
@@ -104,7 +104,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
 
     @Override
     public void accept(Disposable disposable) throws Exception {
-        mCompositeDisposable.add(disposable);
+        mDisposables.add(disposable);
     }
 
     @Nullable
@@ -618,6 +618,8 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
     public boolean onBackPressedSupport() {
         //如果正在显示loading,则清除
         if (mBaseLoadService.getCurrentCallback() == LoadingStatus.class) {
+            //通知ViewModel取消正在运行的工作
+            ((LifecycleRegistry) getLifecycle()).handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
             clearStatus();
             return true;
         }
@@ -630,7 +632,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
         mHandler.removeCallbacksAndMessages(null);
         mLoadingHandler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
-        mCompositeDisposable.clear();
+        mDisposables.clear();
         ThirdHelper.refWatcher.watch(this);
     }
 

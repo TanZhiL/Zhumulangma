@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -12,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_actionbar"
             android:layout_width="match_parent"
             android:layout_height="45dp">
@@ -120,8 +122,10 @@
                     android:textColor="@color/textColorPrimary"
                     android:textSize="12sp" />
             </LinearLayout>
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <include android:id="@+id/include_list" layout="@layout/common_layout_list" />
+        <include
+            android:id="@+id/include_list"
+            layout="@layout/common_layout_list" />
     </LinearLayout>
 </layout>

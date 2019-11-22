@@ -1,9 +1,8 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+
 import android.view.View;
 
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;

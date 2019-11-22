@@ -20,7 +20,7 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         flavorDimensions versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //阿里路由框架配置
         javaCompileOptions {
             annotationProcessorOptions {

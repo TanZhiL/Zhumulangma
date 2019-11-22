@@ -2,8 +2,9 @@ package com.gykj.zhumulangma.common.aop;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.event.EventCode;

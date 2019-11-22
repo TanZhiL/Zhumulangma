@@ -2,10 +2,10 @@ package com.gykj.zhumulangma.user.mvvm;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.gykj.zhumulangma.user.mvvm.model.MainUserModel;
 import com.gykj.zhumulangma.user.mvvm.viewmodel.MainUserViewModel;

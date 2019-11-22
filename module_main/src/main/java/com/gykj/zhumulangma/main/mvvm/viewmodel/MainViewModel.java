@@ -1,8 +1,9 @@
 package com.gykj.zhumulangma.main.mvvm.viewmodel;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileIOUtils;
@@ -27,6 +28,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
+import io.reactivex.internal.functions.Functions;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import okhttp3.internal.http.RealResponseBody;
@@ -139,7 +141,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                         mModel.putSP(Constants.SP.AD_LABEL, bingBean.get().getImages().get(0).getCopyright()))
                 .flatMap((Function<String, ObservableSource<String>>) s ->
                         mModel.putSP(Constants.SP.AD_URL, bingBean.get().getImages().get(0).getCopyrightlink()))
-                .subscribe(r->{}, Throwable::printStackTrace);
+                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
     }
 
     public SingleLiveEvent<String> getCoverEvent() {

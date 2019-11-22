@@ -1,7 +1,8 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
@@ -30,6 +31,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
+import io.reactivex.internal.functions.Functions;
 
 public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> {
     private SingleLiveEvent<List<BannerV2>> mBannerV2Event;
@@ -117,8 +119,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
     public void getHotStoryList() {
         getHotStoryListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(r -> {
-                }, Throwable::printStackTrace);
+                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
     }
 
     private Observable<AlbumList> getHotStoryListObservable() {
@@ -141,8 +142,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
     public void getHotBabyList() {
         getHotBabyListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(r -> {
-                }, Throwable::printStackTrace);
+                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
 
     }
 
@@ -167,8 +167,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
     public void getHotMusicList() {
         getHotMusicListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(r -> {
-                }, Throwable::printStackTrace);
+                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
     }
 
     private Observable<AlbumList> getHotMusicListObservable() {
@@ -192,8 +191,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
 
         getRadioListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(r -> {
-                }, Throwable::printStackTrace);
+                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
 
     }
 

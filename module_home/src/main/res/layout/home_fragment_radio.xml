@@ -15,19 +15,19 @@
         app:srlEnableLoadMore="false"
         app:srlEnablePreviewInEditMode="false">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
             android:scrollbars="none">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:descendantFocusability="blocksDescendants"
                 android:layout_height="wrap_content">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/c1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -288,7 +288,7 @@
                         app:layout_constraintStart_toEndOf="@+id/textView12"
                         app:layout_constraintTop_toTopOf="@+id/textView12" />
 
-                    <android.support.constraint.ConstraintLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_more"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -423,10 +423,10 @@
                             app:layout_constraintStart_toEndOf="@+id/textView33"
                             app:layout_constraintTop_toTopOf="@+id/textView33" />
 
-                    </android.support.constraint.ConstraintLayout>
-                </android.support.constraint.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <android.support.constraint.Group
+                <androidx.constraintlayout.widget.Group
                     android:id="@+id/gp_history"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -449,7 +449,7 @@
                     app:ih_title="最近收听"
                     app:layout_constraintTop_toBottomOf="@id/line1" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -472,7 +472,7 @@
                     app:ih_title="长沙"
                     app:layout_constraintTop_toBottomOf="@id/line2" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_local"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -495,7 +495,7 @@
                     app:ih_title="排行榜"
                     app:layout_constraintTop_toBottomOf="@id/line3" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -509,7 +509,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rv_top" />
-            </android.support.constraint.ConstraintLayout>
-        </android.support.v4.widget.NestedScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </layout>

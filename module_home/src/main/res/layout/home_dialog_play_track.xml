@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_actionbar"
         android:layout_width="match_parent"
         android:layout_height="45dp">
@@ -77,7 +77,7 @@
         </LinearLayout>
 
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <View
         android:layout_width="match_parent"
        style="@style/SecondHLine"/>

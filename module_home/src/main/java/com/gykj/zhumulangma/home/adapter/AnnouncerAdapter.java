@@ -1,9 +1,7 @@
 package com.gykj.zhumulangma.home.adapter;
 
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.ResourceUtils;
 import com.bumptech.glide.Glide;

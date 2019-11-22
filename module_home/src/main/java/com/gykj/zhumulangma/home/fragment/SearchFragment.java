@@ -2,7 +2,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.Manifest;
-import android.arch.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;

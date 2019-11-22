@@ -1,8 +1,9 @@
 package com.gykj.zhumulangma.common.net;
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.db.DBManager;

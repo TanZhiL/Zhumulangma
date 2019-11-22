@@ -3,13 +3,13 @@ package com.gykj.zhumulangma.main.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.View;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;

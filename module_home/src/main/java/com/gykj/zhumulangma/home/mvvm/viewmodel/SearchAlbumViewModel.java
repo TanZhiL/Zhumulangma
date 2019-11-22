@@ -1,13 +1,12 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
-import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 

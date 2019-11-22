@@ -1,6 +1,6 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.gykj.zhumulangma.common.mvvm.view.status.BlankStatus;
 import com.gykj.zhumulangma.common.mvvm.view.status.EmptyStatus;

@@ -1,7 +1,8 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
@@ -27,6 +28,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
+import io.reactivex.internal.functions.Functions;
 
 public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> {
 
@@ -93,8 +95,7 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album>
     public void getDailyList() {
         getDailyListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(r -> {
-                }, Throwable::printStackTrace);
+                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
     }
 
     private Observable<AlbumList> getDailyListObservable() {
@@ -115,8 +116,7 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album>
     public void getBookList() {
         getBookListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(r -> {
-                }, Throwable::printStackTrace);
+                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
     }
 
     private Observable<AlbumList> getBookListObservable() {
@@ -138,8 +138,7 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album>
     public void getClassRoomList() {
         getClassRoomListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(r -> {
-                }, Throwable::printStackTrace);
+                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
     }
 
     private Observable<AlbumList> getClassRoomListObservable() {

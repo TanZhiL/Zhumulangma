@@ -1,7 +1,7 @@
 package com.gykj.zhumulangma.common.mvvm.viewmodel;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.BaseModel;

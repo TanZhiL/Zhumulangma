@@ -1,10 +1,10 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
 
 import com.gykj.zhumulangma.common.Constants;

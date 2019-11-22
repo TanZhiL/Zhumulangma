@@ -1,6 +1,6 @@
 package com.gykj.zhumulangma.main.bean;
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 
 public class MainFunc {
     private @DrawableRes

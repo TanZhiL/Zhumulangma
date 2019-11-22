@@ -1,7 +1,7 @@
 package com.gykj.zhumulangma.common.mvvm.model;
 
 import android.app.Application;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.extra.RxField;

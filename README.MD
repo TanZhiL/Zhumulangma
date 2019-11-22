@@ -2,6 +2,8 @@
 ### 本项目仅提供学习参考,不可作为商用.
 
 ### 更新日志：
+###### 珠穆朗玛FM 1.0 2019-11.22
+* 适配AndroidX
 ###### 珠穆朗玛FM 1.0 2019-10.31
 * 使用BackgroundLibrary库代替所有shape资源,请无视xml文件中app:bl_xxxx_xxxx="xxxx"错误
 * 引入databinding,减少findViewById使用

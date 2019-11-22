@@ -1,9 +1,8 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider.Factory;
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.ViewDataBinding;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider.Factory;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 

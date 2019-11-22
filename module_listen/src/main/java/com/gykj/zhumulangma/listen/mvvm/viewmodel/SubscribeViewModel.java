@@ -1,7 +1,7 @@
 package com.gykj.zhumulangma.listen.mvvm.viewmodel;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;

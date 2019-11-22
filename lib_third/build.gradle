@@ -9,7 +9,7 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
     sourceSets {
@@ -27,22 +27,22 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 
-    api rootProject.ext.support["design"]
-    api rootProject.ext.support["support-v4"]
-    api rootProject.ext.support["constraint-layout"]
-    api rootProject.ext.support["appcompat-v7"]
-    api rootProject.ext.support["constraint-layout"]
-    api rootProject.ext.support["recyclerview-v7"]
-    api rootProject.ext.support["junit"]
-    api rootProject.ext.support["runner"]
-    api rootProject.ext.support["espresso-core"]
+    api rootProject.ext.androidx["design"]
+    api rootProject.ext.androidx["constraintlayout"]
+    api rootProject.ext.androidx["appcompat"]
+    api rootProject.ext.androidx["constraintlayout"]
+    api rootProject.ext.androidx["recyclerview"]
+    api rootProject.ext.androidx["junit"]
+    api rootProject.ext.androidx["runner"]
+    api rootProject.ext.androidx["espresso-core"]
+    api rootProject.ext.androidx["lifecycle-extensions"]
+    api rootProject.ext.androidx["multidex"]
 
     api rootProject.ext.dependencies["arouter-api"]
     api rootProject.ext.dependencies["rxjava"]
     api rootProject.ext.dependencies["rxandroid"]
     api rootProject.ext.dependencies["eventbus"]
     api rootProject.ext.dependencies["glide"]
-    api rootProject.ext.dependencies["lifecycle-extensions"]
 
     //network
     api rootProject.ext.dependencies["okhttp"]
@@ -53,8 +53,6 @@ dependencies {
     api rootProject.ext.dependencies["gson"]
 
     //rx管理View的生命周期
-    api rootProject.ext.dependencies["rxlifecycle"]
-    api rootProject.ext.dependencies["rxlifecycle-components"]
     api rootProject.ext.dependencies["rxjava"]
     api rootProject.ext.dependencies["rxandroid"]
     //rx权限请求
@@ -67,10 +65,8 @@ dependencies {
     api rootProject.ext.dependencies["lottie"]
     api rootProject.ext.dependencies["autosize"]
     api rootProject.ext.dependencies["SmartRefreshLayout"]
-    api rootProject.ext.dependencies["circleimageview"]
     api rootProject.ext.dependencies["indicatorseekbar"]
     api rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
-    api rootProject.ext.dependencies["multidex"]
     api rootProject.ext.dependencies["picture_library"]
     api rootProject.ext.dependencies["PickerView"]
     api rootProject.ext.dependencies["rxbinding"]

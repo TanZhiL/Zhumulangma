@@ -1,16 +1,17 @@
 package com.gykj.zhumulangma.user.fragment;
 
 import android.Manifest;
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.SizeUtils;

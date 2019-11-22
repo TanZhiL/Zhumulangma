@@ -2,8 +2,8 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.Manifest;
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.v4.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 

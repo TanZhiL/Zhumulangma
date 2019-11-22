@@ -3,13 +3,11 @@ package com.gykj.zhumulangma.common.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.ColorFilter;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 

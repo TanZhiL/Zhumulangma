@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -31,7 +33,7 @@
                     style="@style/PrimaryHLine"
                     android:layout_width="match_parent" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_ffjp"
                     android:layout_width="match_parent"
                     android:tag="https://m.ximalaya.com/"
@@ -81,13 +83,13 @@
                         app:layout_constraintBottom_toBottomOf="@+id/imageView8"
                         app:layout_constraintEnd_toStartOf="@+id/imageView8"
                         app:layout_constraintTop_toTopOf="@+id/imageView8" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     style="@style/PrimaryHLine"
                     android:layout_width="match_parent" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_qmld"
                     android:tag="https://m.ximalaya.com/"
                     android:layout_width="match_parent"
@@ -140,13 +142,13 @@
                         app:layout_constraintBottom_toBottomOf="@+id/imageView9"
                         app:layout_constraintEnd_toStartOf="@+id/imageView9"
                         app:layout_constraintTop_toTopOf="@+id/imageView9" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     style="@style/SecondHLine"
                     android:layout_width="match_parent" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_tyq"
                     android:tag="https://m.ximalaya.com/"
                     android:layout_width="match_parent"
@@ -206,13 +208,13 @@
                         app:bl_corners_radius="20dp"
                         app:layout_constraintBottom_toTopOf="@+id/imageView10"
                         app:layout_constraintEnd_toEndOf="@+id/imageView10" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     style="@style/PrimaryHLine"
                     android:layout_width="match_parent" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_dkzb"
                     android:layout_width="match_parent"
                     android:tag="https://m.ximalaya.com/"
@@ -249,13 +251,13 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     style="@style/SecondHLine"
                     android:layout_width="match_parent" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_wd"
                     android:layout_width="match_parent"
                     android:tag="https://m.ximalaya.com/"
@@ -327,13 +329,13 @@
                         app:layout_constraintBottom_toBottomOf="@+id/imageView12"
                         app:layout_constraintEnd_toStartOf="@+id/imageView12"
                         app:layout_constraintTop_toTopOf="@+id/imageView12" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     style="@style/PrimaryHLine"
                     android:layout_width="match_parent" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_sc"
                     android:layout_width="match_parent"
                     android:tag="https://m.ximalaya.com/"
@@ -370,13 +372,13 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     style="@style/SecondHLine"
                     android:layout_width="match_parent" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_yx"
                     android:layout_width="match_parent"
                     android:tag="https://m.ximalaya.com/"
@@ -413,13 +415,13 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     style="@style/SecondHLine"
                     android:layout_width="match_parent" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_hd"
                     android:layout_width="match_parent"
                     android:tag="https://m.ximalaya.com/"
@@ -457,7 +459,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     style="@style/SecondHLine"

@@ -1,7 +1,7 @@
 package com.gykj.zhumulangma.home.dialog;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.gykj.zhumulangma.home.R;
 import com.lxj.xpopup.core.CenterPopupView;

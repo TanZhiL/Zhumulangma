@@ -148,7 +148,9 @@
 </android.support.design.widget.CoordinatorLayout>-->
 
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -166,7 +168,7 @@
             android:layout_height="match_parent"
             app:srlEnablePreviewInEditMode="false">
 
-            <android.support.v4.widget.NestedScrollView android:id="@+id/nsv"
+            <androidx.core.widget.NestedScrollView android:id="@+id/nsv"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
@@ -221,7 +223,7 @@
                         android:layout_height="1dp"
                         android:background="#f0f0f0" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_announcer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -230,7 +232,7 @@
                         android:layout_marginLeft="7dp"
                         android:layout_marginRight="7dp" />
                 </LinearLayout>
-            </android.support.v4.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
         <FrameLayout

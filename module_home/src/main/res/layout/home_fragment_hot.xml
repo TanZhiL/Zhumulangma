@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -15,7 +17,7 @@
         app:srlEnableLoadMore="false"
         app:srlEnablePreviewInEditMode="false">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -37,7 +39,7 @@
                     app:indicator_margin="3dp"
                     app:indicator_width="7dp" />
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -335,7 +337,7 @@
                         app:ih_title="猜你喜欢"
                         app:layout_constraintTop_toBottomOf="@id/line1" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_like"
                         android:layout_width="match_parent"
 
@@ -369,7 +371,7 @@
                         app:ih_title="最热有声小说"
                         app:layout_constraintTop_toBottomOf="@id/line2" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_story"
                         android:layout_width="match_parent"
                         app:layout_constraintTop_toBottomOf="@id/ih_story"
@@ -399,7 +401,7 @@
                         app:ih_title="宝贝最爱听"
                         app:layout_constraintTop_toBottomOf="@id/line3" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_baby"
                         android:layout_width="match_parent"
                         app:layout_constraintTop_toBottomOf="@id/ih_baby"
@@ -466,7 +468,7 @@
                         android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@id/layout_ad" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_topic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -498,7 +500,7 @@
                         app:ih_title="音乐好时光"
                         app:layout_constraintTop_toBottomOf="@id/line5" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_music"
                         android:layout_width="match_parent"
                         app:layout_constraintTop_toBottomOf="@id/ih_music"
@@ -531,7 +533,7 @@
                         app:ih_title="电台"
                         app:layout_constraintTop_toBottomOf="@id/line6" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_radio"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -552,9 +554,9 @@
                         app:layout_constraintTop_toBottomOf="@id/radio_refresh"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </layout>

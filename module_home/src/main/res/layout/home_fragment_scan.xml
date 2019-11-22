@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -7,7 +9,7 @@
 
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_content"
         android:layout_width="match_parent"
         android:background="@color/black"
@@ -78,14 +80,14 @@
 
         </FrameLayout>
 
-        <android.support.constraint.Group
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/gp_on"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="tv_on,iv_on" />
 
-        <android.support.constraint.Group
+        <androidx.constraintlayout.widget.Group
             android:id="@+id/gp_off"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -141,5 +143,5 @@
             app:layout_constraintEnd_toEndOf="@+id/tv_off"
             app:layout_constraintStart_toStartOf="@+id/tv_off"
             app:srcCompat="@drawable/ic_home_light_on" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

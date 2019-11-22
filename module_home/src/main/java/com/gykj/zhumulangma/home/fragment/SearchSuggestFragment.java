@@ -1,7 +1,5 @@
 package com.gykj.zhumulangma.home.fragment;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -9,8 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;

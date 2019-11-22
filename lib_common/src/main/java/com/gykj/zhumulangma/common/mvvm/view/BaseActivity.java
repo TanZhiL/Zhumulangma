@@ -2,11 +2,14 @@ package com.gykj.zhumulangma.common.mvvm.view;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.CallSuper;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleRegistry;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.CollectionUtils;
@@ -41,10 +44,10 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  */
 public abstract class BaseActivity extends SupportActivity implements BaseView, Consumer<Disposable> {
     protected static final String TAG = BaseActivity.class.getSimpleName();
-    //Disposable容器
-    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-    //用于延时显示loading状态
+    //用于延时显示loading状态,避免一闪而过
     private Handler mLoadingHandler = new Handler();
+    //Disposable容器
+    protected CompositeDisposable mDisposables = new CompositeDisposable();
     //状态页管理
     protected LoadService mBaseLoadService;
     //公用Handler
@@ -84,7 +87,7 @@ public abstract class BaseActivity extends SupportActivity implements BaseView, 
 
     @Override
     public void accept(Disposable disposable) throws Exception {
-        mCompositeDisposable.add(disposable);
+        mDisposables.add(disposable);
     }
 
 
@@ -196,6 +199,8 @@ public abstract class BaseActivity extends SupportActivity implements BaseView, 
     public void onBackPressedSupport() {
         //如果正在显示loading,则清除
         if (mBaseLoadService.getCurrentCallback() == LoadingStatus.class) {
+            //通知ViewModel取消正在运行的工作
+            ((LifecycleRegistry) getLifecycle()).handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
             clearStatus();
             return;
         }
@@ -208,7 +213,7 @@ public abstract class BaseActivity extends SupportActivity implements BaseView, 
         mHandler.removeCallbacksAndMessages(null);
         KeyboardUtils.fixSoftInputLeaks(this);
         EventBus.getDefault().unregister(this);
-        mCompositeDisposable.clear();
+        mDisposables.clear();
         ThirdHelper.refWatcher.watch(this);
     }
 
