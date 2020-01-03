@@ -128,6 +128,7 @@ sourceSets {
 * 高仿喜马拉雅听Android客户端 https://github.com/TanZhiL/Zhumulangma
 * 骨架屏弹性块 https://github.com/TanZhiL/SkeletonBlock
 * RxPersistence是基于面向对象设计的快速持久化框架 https://github.com/TanZhiL/RxPersistence
+* greenDao Converter自动生成器 https://github.com/TanZhiL/GreenConverter
 ### License
 ```
 Copyright (C)  tanzhilong Zhumualangma Framework Open Source Project
