@@ -88,7 +88,9 @@ dependencies {
     api rootProject.ext.dependencies["agentwebX5"]
     api rootProject.ext.dependencies["roundedimageview"]
     api rootProject.ext.dependencies["aspectjrt"]
-    api rootProject.ext.dependencies["okaspectjrt"]
+    api (rootProject.ext.dependencies["okaspectjrt"],{
+        exclude group: 'androidx.appcompat', module: 'appcompat'
+    })
     api rootProject.ext.dependencies["location"]
     api rootProject.ext.dependencies["customactivityoncrash"]
     api rootProject.ext.dependencies["crashreport_upgrade"]

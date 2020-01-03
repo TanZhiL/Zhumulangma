@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Log;
 
 import com.blankj.utilcode.util.ActivityUtils;
-import com.gykj.thomas.aspectj.PointHandler;
 import com.gykj.zhumulangma.common.util.ToastUtil;
+import com.thomas.okaspectj.PointHandler;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 
 import org.aspectj.lang.ProceedingJoinPoint;

@@ -8,8 +8,6 @@ import android.view.Gravity;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.KeyboardUtils;
 import com.blankj.utilcode.util.Utils;
-import com.gykj.thomas.aspectj.OkAspectjHelper;
-import com.gykj.thomas.aspectj.PointHandler;
 import com.hjq.toast.ToastUtils;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechUtility;
@@ -18,6 +16,8 @@ import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.smtt.sdk.QbSdk;
+import com.thomas.okaspectj.OkAspectjHelper;
+import com.thomas.okaspectj.PointHandler;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
@@ -143,7 +143,7 @@ public class ThirdHelper {
         return this;
     }
     public ThirdHelper initAspectj(PointHandler handler) {
-        OkAspectjHelper.setmHandler(handler);
+        OkAspectjHelper.init(handler);
         return this;
     }
 

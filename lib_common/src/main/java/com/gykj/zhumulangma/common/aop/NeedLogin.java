@@ -1,6 +1,6 @@
 package com.gykj.zhumulangma.common.aop;
 
-import com.gykj.thomas.aspectj.OkAspectj;
+import com.thomas.aspectj.OkAspectj;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

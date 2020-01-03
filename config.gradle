@@ -60,7 +60,7 @@ ext {
             "roundedimageview":"2.3.0",
             "aspectjrt":"1.8.14",
             "customactivityoncrash":"2.2.0",
-            "okaspectjrt":"1.0.4",
+            "okaspectjrt":"1.0.7",
             "location":"4.7.0",
             "crashreport_upgrade":"1.4.1",
             "tinker-android-lib":"1.9.9",
@@ -115,8 +115,10 @@ ext {
             "agentwebX5"                           :"com.just.agentwebX5:agentwebX5:${versions["agentwebX5"]}",
             "aspectjrt"                            :"org.aspectj:aspectjrt:${versions["aspectjrt"]}",
             "customactivityoncrash"                :"cat.ereza:customactivityoncrash:${versions["customactivityoncrash"]}",
-            "okaspectjrt-compiler"                 :"com.github.TanZhiL:OkAspectjCompiler:${versions["okaspectjrt"]}",
-            "okaspectjrt"                          :"com.github.TanZhiL:OkAspectjAnnotation:${versions["okaspectjrt"]}",
+
+            "okaspectjrt-compiler"                 :"com.github.TanZhiL.OkAspectj:okaspectj-compiler:${versions["okaspectjrt"]}",
+            "okaspectjrt"                          :"com.github.TanZhiL.OkAspectj:okaspectj:${versions["okaspectjrt"]}",
+
             "location"                             :"com.amap.api:location:${versions["location"]}",
             "crashreport_upgrade"                  :"com.tencent.bugly:crashreport_upgrade:${versions["crashreport_upgrade"]}",
             "tinker-android-lib"                   :"com.tencent.tinker:tinker-android-lib:${versions["tinker-android-lib"]}",

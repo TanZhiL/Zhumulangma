@@ -12,10 +12,10 @@ android {
             keyPassword '123698745'
         }
         debug {
-            storeFile file('E:\\Project\\Android\\thomas.jks')
-            storePassword '123698745'
-            keyAlias = 'thomas'
-            keyPassword '123698745'
+//            storeFile file('E:\\Project\\Android\\thomas.jks')
+//            storePassword '123698745'
+//            keyAlias = 'thomas'
+//            keyPassword '123698745'
         }
     }
     compileSdkVersion rootProject.ext.android.compileSdkVersion
