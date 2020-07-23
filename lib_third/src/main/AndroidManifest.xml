@@ -111,11 +111,11 @@
             android:value="${CHANNEL_VALUE}" />
         <!--Bugly渠道END-->
         <!--Bmob-->
-        <provider
+       <!-- <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="${applicationId}.BmobContentProvider"
             android:exported="false">
-        </provider>
+        </provider>-->
         <!--Bmob END-->
     </application>
 </manifest>

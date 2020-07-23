@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.FileIOUtils;
+import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.BingBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
@@ -33,7 +34,6 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import okhttp3.internal.http.RealResponseBody;
 
-import static cn.bmob.v3.Bmob.getFilesDir;
 
 /**
  * Author: Thomas.
@@ -157,7 +157,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                 .doOnSubscribe(this)
                 .subscribe(aLong -> {
                     if (System.currentTimeMillis() - aLong > 5 * 60 * 1000
-                            && new File(getFilesDir().getAbsolutePath() + Constants.Default.AD_NAME).exists()) {
+                            && new File(App.getInstance().getFilesDir().getAbsolutePath() + Constants.Default.AD_NAME).exists()) {
                         getShowAdEvent().call();
                     } else {
                         getBing();

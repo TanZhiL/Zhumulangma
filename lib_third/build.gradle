@@ -95,7 +95,6 @@ dependencies {
     api rootProject.ext.dependencies["customactivityoncrash"]
     api rootProject.ext.dependencies["crashreport_upgrade"]
     api rootProject.ext.dependencies["tinker-android-lib"]
-    api rootProject.ext.dependencies["bmob"]
     api rootProject.ext.dependencies["SkeletonBlock"]
     api rootProject.ext.dependencies["RxCache"]
     api rootProject.ext.dependencies["Jolyglot-gson"]
