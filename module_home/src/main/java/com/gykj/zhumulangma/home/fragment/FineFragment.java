@@ -12,7 +12,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.FineAdapter;
@@ -33,7 +33,7 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:精品
  */
-public class FineFragment extends BaseRefreshMvvmFragment<HomeFragmentFineBinding, FineViewModel, Album> implements
+public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, FineViewModel, Album> implements
         View.OnClickListener, OnBannerListener {
 
     private FineAdapter mDailyAdapter;

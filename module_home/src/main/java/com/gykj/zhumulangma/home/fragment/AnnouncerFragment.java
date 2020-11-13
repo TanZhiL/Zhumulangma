@@ -11,7 +11,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
@@ -32,7 +32,7 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:主播
  */
-public class AnnouncerFragment extends BaseRefreshMvvmFragment<HomeFragmentAnnouncerBinding, AnnouncerViewModel, Announcer>
+public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncerBinding, AnnouncerViewModel, Announcer>
         implements OnBannerListener {
 
     private AnnouncerAdapter mAnnouncerAdapter;

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
@@ -28,7 +28,7 @@ import com.ximalaya.ting.android.opensdk.model.album.Album;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索专辑
  */
-public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, SearchAlbumViewModel, Album> {
+public class SearchAlbumFragment extends BaseRefreshFragment<CommonLayoutListBinding, SearchAlbumViewModel, Album> {
 
 
     private AlbumAdapter mAlbumAdapter;

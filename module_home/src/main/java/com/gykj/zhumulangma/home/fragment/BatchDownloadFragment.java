@@ -17,7 +17,7 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.SystemUtil;
@@ -54,7 +54,7 @@ import java.util.List;
  */
 
 @Route(path = Constants.Router.Home.F_BATCH_DOWNLOAD)
-public class BatchDownloadFragment extends BaseRefreshMvvmFragment<HomeFragmentBatchDownloadBinding, BatchDownloadViewModel, Track> implements
+public class BatchDownloadFragment extends BaseRefreshFragment<HomeFragmentBatchDownloadBinding, BatchDownloadViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener, TrackPagerPopup.onPopupDismissingListener {
 
 

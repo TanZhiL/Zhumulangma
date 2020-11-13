@@ -17,7 +17,7 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.ProvinceBean;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
@@ -42,7 +42,7 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:电台列表
  */
 @Route(path = Constants.Router.Home.F_RADIO_LIST)
-public class RadioListFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, RadioListViewModel, Radio> implements
+public class RadioListFragment extends BaseRefreshFragment<CommonLayoutListBinding, RadioListViewModel, Radio> implements
         BaseQuickAdapter.OnItemClickListener, RadioProvincePopup.onSelectedListener, RadioProvincePopup.onPopupDismissingListener {
     //本省台
     public static final int LOCAL_PROVINCE = 999;

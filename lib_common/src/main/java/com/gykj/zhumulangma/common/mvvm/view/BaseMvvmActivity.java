@@ -24,7 +24,6 @@ public abstract class BaseMvvmActivity<VM extends BaseViewModel> extends BaseAct
 
     private void initViewModel() {
         mViewModel = createViewModel();
-        getLifecycle().addObserver(mViewModel);
     }
 
     public VM createViewModel() {

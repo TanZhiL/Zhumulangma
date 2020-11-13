@@ -23,7 +23,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.GlideApp;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -48,7 +48,7 @@ import org.greenrobot.eventbus.EventBus;
  * <br/>Description:我的
  */
 @Route(path = Constants.Router.User.F_MAIN)
-public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBinding, MainUserViewModel, Object> implements View.OnClickListener {
+public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBinding, MainUserViewModel, Object> implements View.OnClickListener {
 
     private GitHubDTO mGitHubDTO;
 

@@ -12,7 +12,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.HotSkeleton;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
@@ -38,7 +38,7 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:热门
  */
-public class HotFragment extends BaseRefreshMvvmFragment<HomeFragmentHotBinding, HotViewModel, Album> implements OnBannerListener,
+public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, HotViewModel, Album> implements OnBannerListener,
         View.OnClickListener {
 
     private HotLikeAdapter mLikeAdapter;

@@ -16,7 +16,7 @@ import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
@@ -48,7 +48,7 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:排行榜
  */
 @Route(path = Constants.Router.Home.F_RANK)
-public class RankFragment extends BaseRefreshMvvmFragment<HomeFragmentRankBinding, RankViewModel, Album> implements
+public class RankFragment extends BaseRefreshFragment<HomeFragmentRankBinding, RankViewModel, Album> implements
         RankCategoryPopup.onSelectedListener, RankCategoryPopup.onPopupDismissingListener {
 
     private RankFreeAdapter mFreeAdapter;

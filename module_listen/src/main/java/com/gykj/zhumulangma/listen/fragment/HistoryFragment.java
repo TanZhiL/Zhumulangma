@@ -12,7 +12,7 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.HistoryAdapter;
@@ -30,7 +30,7 @@ import java.util.List;
  * <br/>Description:
  */
 @Route(path = Constants.Router.Listen.F_HISTORY)
-public class HistoryFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,HistoryViewModel, PlayHistoryItem> implements
+public class HistoryFragment extends BaseRefreshFragment<CommonLayoutListBinding,HistoryViewModel, PlayHistoryItem> implements
         BaseQuickAdapter.OnItemClickListener {
 
     private HistoryAdapter mHistoryAdapter;

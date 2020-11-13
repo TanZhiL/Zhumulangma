@@ -12,7 +12,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerTrackAdapter;
@@ -29,7 +29,7 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  */
 
 @Route(path = Constants.Router.Home.F_TRACK_LIST)
-public class TrackListFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, TrackListViewModel, Track> implements
+public class TrackListFragment extends BaseRefreshFragment<CommonLayoutListBinding, TrackListViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener {
 
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)

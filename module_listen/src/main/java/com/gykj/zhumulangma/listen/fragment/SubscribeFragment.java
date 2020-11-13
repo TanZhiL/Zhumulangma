@@ -15,7 +15,7 @@ import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.SubscribeAdapter;
@@ -30,7 +30,7 @@ import org.greenrobot.eventbus.EventBus;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:订阅
  */
-public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, SubscribeViewModel, SubscribeBean>
+public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutListBinding, SubscribeViewModel, SubscribeBean>
         implements BaseQuickAdapter.OnItemChildClickListener, View.OnClickListener {
 
     private SubscribeAdapter mSubscribeAdapter;

@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
@@ -30,7 +30,7 @@ import com.ximalaya.ting.android.opensdk.model.album.Album;
  * <br/>Description:专辑列表
  */
 @Route(path = Constants.Router.Home.F_ALBUM_LIST)
-public class AlbumListFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, AlbumListViewModel, Album> implements
+public class AlbumListFragment extends BaseRefreshFragment<CommonLayoutListBinding, AlbumListViewModel, Album> implements
         BaseQuickAdapter.OnItemClickListener {
     //猜你喜欢
     public static final int LIKE = 0;

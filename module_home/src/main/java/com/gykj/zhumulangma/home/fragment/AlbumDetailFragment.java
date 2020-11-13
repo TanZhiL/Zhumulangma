@@ -25,7 +25,7 @@ import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.DetailSkeleton;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -74,7 +74,7 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:专辑详情页
  */
 @Route(path = Constants.Router.Home.F_ALBUM_DETAIL)
-public class AlbumDetailFragment extends BaseRefreshMvvmFragment<HomeFragmentAlbumDetailBinding, AlbumDetailViewModel, Track> implements
+public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDetailBinding, AlbumDetailViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener, View.OnClickListener, TrackPagerPopup.onPopupDismissingListener {
 
     @Autowired(name = KeyCode.Home.ALBUMID)

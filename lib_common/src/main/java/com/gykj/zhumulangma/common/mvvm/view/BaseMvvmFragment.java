@@ -33,7 +33,6 @@ public abstract class BaseMvvmFragment<DB extends ViewDataBinding,VM extends Bas
 
     protected void initViewModel() {
         mViewModel = createViewModel();
-        getLifecycle().addObserver(mViewModel);
     }
 
     protected VM createViewModel() {

@@ -26,7 +26,7 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.NeedLogin;
 import com.gykj.zhumulangma.common.bean.AnnouncerCategoryBean;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
@@ -51,7 +51,7 @@ import java.util.List;
  * <br/>Description:主播详情页
  */
 @Route(path = Constants.Router.Home.F_ANNOUNCER_DETAIL)
-public class AnnouncerDetailFragment extends BaseRefreshMvvmFragment<HomeFragmentAnnouncerDetailBinding, AnnouncerDetailViewModel, Object>
+public class AnnouncerDetailFragment extends BaseRefreshFragment<HomeFragmentAnnouncerDetailBinding, AnnouncerDetailViewModel, Object>
         implements View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
 
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)

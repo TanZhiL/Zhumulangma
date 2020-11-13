@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.SearchTrackAdapter;
@@ -27,7 +27,7 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索声音
  */
-public class SearchTrackFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding,SearchTrackViewModel, Track> implements
+public class SearchTrackFragment extends BaseRefreshFragment<CommonLayoutListBinding,SearchTrackViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener {
 
 

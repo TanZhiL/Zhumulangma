@@ -20,7 +20,7 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:自动处理刷新Fragment基类
  */
-public abstract class BaseRefreshMvvmFragment<DB extends ViewDataBinding,VM extends BaseRefreshViewModel, T>
+public abstract class BaseRefreshFragment<DB extends ViewDataBinding,VM extends BaseRefreshViewModel, T>
         extends BaseMvvmFragment<DB,VM>
         implements OnRefreshLoadMoreListener {
 

@@ -45,9 +45,9 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 public abstract class BaseActivity extends SupportActivity implements BaseView, Consumer<Disposable> {
     protected static final String TAG = BaseActivity.class.getSimpleName();
     //用于延时显示loading状态,避免一闪而过
-    private Handler mLoadingHandler = new Handler();
+    private final Handler mLoadingHandler = new Handler();
     //Disposable容器
-    protected CompositeDisposable mDisposables = new CompositeDisposable();
+    protected final CompositeDisposable mDisposables = new CompositeDisposable();
     //状态页管理
     protected LoadService mBaseLoadService;
     //公用Handler

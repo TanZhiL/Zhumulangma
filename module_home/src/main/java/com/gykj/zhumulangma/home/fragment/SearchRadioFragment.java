@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
@@ -27,7 +27,7 @@ import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索电台
  */
-public class SearchRadioFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, SearchRadioViewModel, Radio> implements
+public class SearchRadioFragment extends BaseRefreshFragment<CommonLayoutListBinding, SearchRadioViewModel, Radio> implements
         BaseQuickAdapter.OnItemClickListener {
 
     private RadioAdapter mRadioAdapter;

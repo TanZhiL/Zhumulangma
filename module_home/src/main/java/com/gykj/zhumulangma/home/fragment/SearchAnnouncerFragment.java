@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
@@ -28,7 +28,7 @@ import com.ximalaya.ting.android.opensdk.model.album.Announcer;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索主播
  */
-public class SearchAnnouncerFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, SearchAnnouncerViewModel, Announcer> {
+public class SearchAnnouncerFragment extends BaseRefreshFragment<CommonLayoutListBinding, SearchAnnouncerViewModel, Announcer> {
 
     private AnnouncerAdapter mAnnouncerAdapter;
 
