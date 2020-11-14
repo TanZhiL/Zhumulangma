@@ -12,7 +12,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
+import com.gykj.zhumulangma.common.adapter.TFragmentStateAdapter;
+import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
@@ -28,7 +29,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.ximalaya.ting.android.opensdk.model.word.HotWord;
 
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.util.ArrayList;
@@ -81,16 +81,15 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
         fragments.add(new AnnouncerFragment());
         fragments.add(new RadioFragment());
 
-        TFragmentPagerAdapter adapter = new TFragmentPagerAdapter(
-                getChildFragmentManager(), fragments);
-        mBinding.viewpager.setOffscreenPageLimit(4);
+        TFragmentStateAdapter adapter = new TFragmentStateAdapter(this, fragments);
+        mBinding.viewpager.setOffscreenPageLimit(fragments.size());
         mBinding.viewpager.setAdapter(adapter);
 
         final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), mBinding.viewpager, 50));
         commonNavigator.setAdjustMode(true);
         mBinding.magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
+        TViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
 
     }
 

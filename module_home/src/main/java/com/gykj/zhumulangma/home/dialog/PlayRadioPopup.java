@@ -3,15 +3,16 @@ package com.gykj.zhumulangma.home.dialog;
 import android.content.Context;
 import android.graphics.Color;
 import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
+import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
@@ -20,8 +21,9 @@ import com.lxj.xpopup.core.BottomPopupView;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
+import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.ScrollState;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.text.ParseException;
@@ -44,7 +46,7 @@ public class PlayRadioPopup extends BottomPopupView implements View.OnClickListe
     private SimpleDateFormat sdf = new SimpleDateFormat("yy:MM:dd:HH:mm", Locale.getDefault());
     private MagicIndicator magicIndicator;
     private String[] tabs = {"昨天", "今天", "明天"};
-    private ViewPager viewpager;
+    private ViewPager2 viewpager;
     private RecyclerView rvYestoday, rvToday, rvTomorrow;
     private PlayRadioAdapter mYestodayAdapter, mTodayAdapter, mTomorrowAdapter;
 
@@ -94,13 +96,15 @@ public class PlayRadioPopup extends BottomPopupView implements View.OnClickListe
         mTodayAdapter.bindToRecyclerView(rvToday);
         mTomorrowAdapter.bindToRecyclerView(rvTomorrow);
 
-        viewpager.setAdapter(new ListPagerAdapter());
+        viewpager.setAdapter(new TPagerAdapter(rvYestoday,rvToday,rvTomorrow));
         final CommonNavigator commonNavigator = new CommonNavigator(mContext);
         commonNavigator.setAdjustMode(true);
+        commonNavigator.setAdapter(null);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 80));
         magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(magicIndicator, viewpager);
-        viewpager.setCurrentItem(1);
+        TViewPagerHelper.bind(magicIndicator, viewpager);
+        RecyclerView recyclerView = (RecyclerView)viewpager.getChildAt(0);
+        recyclerView.scrollToPosition(1);
 
         mYestodayAdapter.setOnItemClickListener(this);
         mTodayAdapter.setOnItemClickListener(this);
@@ -160,39 +164,4 @@ public class PlayRadioPopup extends BottomPopupView implements View.OnClickListe
     }
 
 
-    class ListPagerAdapter extends PagerAdapter {
-        @Override
-        public int getCount() {
-            return 3;
-        }
-
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View view = null;
-            switch (position) {
-                case 0:
-                    view = rvYestoday;
-                    break;
-                case 1:
-                    view = rvToday;
-                    break;
-                case 2:
-                    view = rvTomorrow;
-                    break;
-            }
-            container.addView(view);
-            return view;
-        }
-
-        @Override
-        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            container.removeView((View) object);
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view == object;
-        }
-    }
 }

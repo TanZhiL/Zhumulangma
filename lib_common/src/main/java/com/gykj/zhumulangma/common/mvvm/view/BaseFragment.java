@@ -102,11 +102,6 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
         EventBus.getDefault().register(this);
     }
 
-    @Override
-    public void accept(Disposable disposable) throws Exception {
-        mDisposables.add(disposable);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -129,26 +124,24 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
         return mView;
     }
 
-    /**
-     * 是否可滑动返回,默认true
-     *
-     * @return
-     */
-    protected boolean enableSwipeBack() {
-        return true;
-    }
-
     @Override
-    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        super.onLazyInitView(savedInstanceState);
-        //采用懒加载
-        if (enableLazy()) {
+    public void onResume() {
+        super.onResume();
+        if(enableLazy() && isFirst){
             loadView();
             initView();
             initListener();
             initData();
         }
+        isFirst = false;
+    }
 
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        if(!isFirst){
+            onRevisible();
+        }
     }
 
     @Override
@@ -159,7 +152,6 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
             initData();
         }
     }
-
 
     /**
      * 初始化基本布局
@@ -200,6 +192,11 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
             layoutParams.topMargin=getResources().getDimensionPixelOffset(R.dimen.simpleBarHeight)+barHeight;
         }
         mBaseLoadService = builder.build().register(contentView,layoutParams, (Callback.OnReloadListener) BaseFragment.this::onReload);
+    }
+
+    @Override
+    public void accept(Disposable disposable) throws Exception {
+        mDisposables.add(disposable);
     }
 
     /**
@@ -299,6 +296,15 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
 
     }
 
+
+    /**
+     * 是否可滑动返回,默认true
+     *
+     * @return
+     */
+    protected boolean enableSwipeBack() {
+        return true;
+    }
 
     /**
      * 是否开启通用标题栏,默认true
@@ -598,15 +604,6 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
     protected void onReload(View v) {
         showInitView();
         initData();
-    }
-
-    @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        if (!isFirst) {
-            onRevisible();
-        }
-        isFirst = false;
     }
 
     @Override

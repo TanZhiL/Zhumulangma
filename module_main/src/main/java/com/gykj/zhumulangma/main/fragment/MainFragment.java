@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.adapter.TFragmentStateAdapter;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
@@ -26,14 +27,14 @@ import java.util.List;
 @Route(path = Constants.Router.Main.F_MAIN)
 public class MainFragment extends BaseFragment<MainFragmentMainBinding> implements EasyNavigationBar.OnTabClickListener {
 
-    private String[] tabText = {"首页", "我听", "", "发现", "我的"};
+    private String[] tabText = {"首页", "我听", "发现", "我的"};
 
     private @DrawableRes
     int[] normalIcon = {R.drawable.main_tab_home_normal, R.drawable.main_tab_litsten_normal
-            , R.drawable.main_tab_play, R.drawable.main_tab_find_normal, R.drawable.main_tab_user_normal};
+            , R.drawable.main_tab_find_normal, R.drawable.main_tab_user_normal};
     private @DrawableRes
     int[] selectIcon = {R.drawable.main_tab_home_press, R.drawable.main_tab_listen_press
-            , R.drawable.main_tab_play, R.drawable.main_tab_find_press, R.drawable.main_tab_user_press};
+            ,R.drawable.main_tab_find_press, R.drawable.main_tab_user_press};
 
     private onRootShowListener mShowListener;
 
@@ -75,20 +76,25 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding> implemen
         if (null != listen) {
             fragments.add((Fragment) user);
         }
-        mBinding.enb.titleItems(tabText)
+        mBinding.vp.setOffscreenPageLimit(fragments.size());
+        mBinding.vp.setAdapter(new TFragmentStateAdapter(this,fragments));
+        mBinding.vp.setUserInputEnabled(false);
+        mBinding.enb.defaultSetting()
+                .setupWithViewPager(mBinding.vp)
+                .titleItems(tabText)
                 .normalIconItems(normalIcon)
                 .selectIconItems(selectIcon)
-                .fragmentList(fragments)
                 .lineHeight(1)
-                .mode(EasyNavigationBar.MODE_ADD)
+                .mode(EasyNavigationBar.NavigationMode.MODE_ADD)
+                .centerImageRes(R.drawable.white_radius)
                 .fragmentManager(getChildFragmentManager())
                 .normalTextColor(getResources().getColor(R.color.colorGray))   //Tab未选中时字体颜色
                 .selectTextColor(getResources().getColor(R.color.colorPrimary))   //Tab选中时字体颜色
                 .tabTextSize(11)   //Tab文字大小
                 .iconSize(27)
-                .addIconSize(0)//取消中间图标
+                .centerIconSize(0)//取消中间图标
                 .navigationHeight(50)
-                .onTabClickListener(this)
+                .setOnTabClickListener(this)
                 .build();
     }
 
@@ -127,8 +133,8 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding> implemen
     }
 
     @Override
-    public boolean onTabClickEvent(View view, int i) {
-        switch (i){
+    public boolean onTabSelectEvent(View view, int position) {
+        switch (position){
             case 0:
                 EventBus.getDefault().post(new FragmentEvent(EventCode.Home.TAB_REFRESH));
                 break;
@@ -136,15 +142,17 @@ public class MainFragment extends BaseFragment<MainFragmentMainBinding> implemen
                 EventBus.getDefault().post(new FragmentEvent(EventCode.Listen.TAB_REFRESH));
                 break;
             case 2:
-                //中间按钮
-                break;
-            case 3:
                 EventBus.getDefault().post(new FragmentEvent(EventCode.Discover.TAB_REFRESH));
                 break;
-            case 4:
+            case 3:
                 EventBus.getDefault().post(new FragmentEvent(EventCode.User.TAB_REFRESH));
                 break;
         }
+        return false;
+    }
+
+    @Override
+    public boolean onTabReSelectEvent(View view, int position) {
         return false;
     }
 

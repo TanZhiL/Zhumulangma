@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
+import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
@@ -33,7 +35,6 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import org.greenrobot.eventbus.EventBus;
@@ -88,12 +89,12 @@ public class RankFragment extends BaseRefreshFragment<HomeFragmentRankBinding, R
         mFreeAdapter.bindToRecyclerView(mFreeBind.recyclerview);
         mPaidAdapter.bindToRecyclerView(mPaidBind.recyclerview);
 
-        mBinding.viewpager.setAdapter(new RankPagerAdapter());
+        mBinding.viewpager.setAdapter(new TPagerAdapter(mFreeBind.getRoot()));
         final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(mTabs), mBinding.viewpager, 125));
         mBinding.magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
+        TViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
 
         mCategoryPopup = new RankCategoryPopup(mActivity, this);
         mCategoryPopup.setDismissingListener(this);

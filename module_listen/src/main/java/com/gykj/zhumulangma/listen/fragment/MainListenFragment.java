@@ -6,14 +6,14 @@ import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
+import com.gykj.zhumulangma.common.adapter.TFragmentStateAdapter;
+import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.databinding.ListenFragmentMainBinding;
 
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.util.ArrayList;
@@ -26,7 +26,8 @@ import java.util.List;
  * <br/>Description:我听
  */
 @Route(path = Constants.Router.Listen.F_MAIN)
-public class MainListenFragment extends BaseFragment<ListenFragmentMainBinding> implements View.OnClickListener {
+public class MainListenFragment extends BaseFragment<ListenFragmentMainBinding> implements
+        View.OnClickListener {
 
     public MainListenFragment() {
     }
@@ -47,14 +48,14 @@ public class MainListenFragment extends BaseFragment<ListenFragmentMainBinding> 
         pages.add(new SubscribeFragment());
         pages.add(new RecommendFragment());
 
-        TFragmentPagerAdapter adapter = new TFragmentPagerAdapter(
-                getChildFragmentManager(),pages);
-        mBinding.viewpager.setOffscreenPageLimit(2);
+        TFragmentStateAdapter adapter = new TFragmentStateAdapter(
+                this,pages);
+        mBinding.viewpager.setOffscreenPageLimit(pages.size());
         mBinding.viewpager.setAdapter(adapter);
         final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), mBinding.viewpager,60));
         mBinding.magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
+        TViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
     }
 
     @Override

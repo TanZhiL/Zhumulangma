@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -19,6 +20,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
+import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
@@ -52,7 +55,6 @@ import com.ximalaya.ting.android.sdkdownloader.exception.BaseRuntimeException;
 import com.ximalaya.ting.android.sdkdownloader.task.Callback;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.util.Arrays;
@@ -66,9 +68,9 @@ import java.util.List;
  * <br/>Description:下载页
  */
 @Route(path = Constants.Router.Listen.F_DOWNLOAD)
-public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBinding, DownloadViewModel> implements
-        BaseQuickAdapter.OnItemChildClickListener,
-        BaseQuickAdapter.OnItemClickListener, View.OnClickListener {
+public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBinding, DownloadViewModel>
+        implements BaseQuickAdapter.OnItemChildClickListener,BaseQuickAdapter.OnItemClickListener,
+        View.OnClickListener {
     @Autowired(name = KeyCode.Listen.TAB_INDEX)
     public int mTabIndex;
 
@@ -128,13 +130,16 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
         mDownloadingAdapter.bindToRecyclerView(mDownloadingBind.recyclerview);
         mDownloadingAdapter.setEmptyView(R.layout.common_layout_empty);
 
-        mBinding.viewpager.setAdapter(new DownloadPagerAdapter());
+        mBinding.viewpager.setAdapter(new TPagerAdapter(
+                mAlbumBind.getRoot(),mTrackBind.getRoot(),mDownloadingBind.getRoot()));
         final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), mBinding.viewpager, 50));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(magicIndicator, mBinding.viewpager);
-        mBinding.viewpager.setCurrentItem(mTabIndex);
+        TViewPagerHelper.bind(magicIndicator, mBinding.viewpager);
+        //viewpager2的坑,在尚未绘制完成前只能使用以下方式代替mBinding.viewpager.setCurrentItem(mTabIndex);
+        RecyclerView recyclerView = (RecyclerView)mBinding.viewpager.getChildAt(0);
+        recyclerView.scrollToPosition(mTabIndex);
 
         if (!mDownloadManager.haveDowningTask()) {
             mDownloadingBind.tvAll.setText("全部开始");

@@ -37,6 +37,7 @@ dependencies {
     api rootProject.ext.androidx["espresso-core"]
     api rootProject.ext.androidx["lifecycle-extensions"]
     api rootProject.ext.androidx["multidex"]
+    api rootProject.ext.androidx["viewpager2"]
 
     api rootProject.ext.dependencies["arouter-api"]
     api rootProject.ext.dependencies["rxjava"]

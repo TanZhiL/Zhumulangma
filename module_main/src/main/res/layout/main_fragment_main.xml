@@ -9,8 +9,19 @@
 
     </data>
 
-    <com.next.easynavigation.view.EasyNavigationBar
-        android:id="@+id/enb"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        <com.next.easynavigation.view.EasyNavigationBar
+            android:id="@+id/enb"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+    </FrameLayout>
+
 </layout>

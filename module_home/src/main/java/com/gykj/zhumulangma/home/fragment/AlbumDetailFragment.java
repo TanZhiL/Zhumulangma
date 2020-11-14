@@ -4,7 +4,6 @@ package com.gykj.zhumulangma.home.fragment;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +11,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -21,6 +19,8 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
+import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -57,7 +57,6 @@ import com.ximalaya.ting.android.sdkdownloader.downloadutil.IXmDownloadTrackCall
 import com.ximalaya.ting.android.sdkdownloader.exception.AddDownloadException;
 import com.ximalaya.ting.android.sdkdownloader.task.Callback;
 
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import org.greenrobot.eventbus.EventBus;
@@ -107,13 +106,14 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
         mAlbumTagAdapter.bindToRecyclerView(mDetailBind.rvTag);
 
 
-        mBinding.viewpager.setAdapter(new AlbumPagerAdapter());
+        mBinding.viewpager.setAdapter(new TPagerAdapter(mDetailBind.getRoot(),mTrackBind.getRoot()));
         final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), mBinding.viewpager, 125));
         mBinding.magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
-        mBinding.viewpager.setCurrentItem(1);
+        TViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
+        RecyclerView recyclerView = (RecyclerView)mBinding.viewpager.getChildAt(0);
+        recyclerView.scrollToPosition(1);
 
         mAlbumTrackAdapter = new AlbumTrackAdapter(R.layout.home_item_album_track);
         mTrackBind.includeList.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -681,30 +681,4 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
     public void onDismissing() {
         mTrackBind.ivSelectPage.animate().rotation(90).setDuration(200);
     }
-
-    class AlbumPagerAdapter extends PagerAdapter {
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View view = position == 0 ? mDetailBind.getRoot() : mTrackBind.getRoot();
-            container.addView(view);
-            return view;
-        }
-
-        @Override
-        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            container.removeView((View) object);
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view == object;
-        }
-    }
-
 }
