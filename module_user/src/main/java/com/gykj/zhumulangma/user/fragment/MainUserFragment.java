@@ -22,7 +22,6 @@ import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.extra.GlideApp;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
 import com.gykj.zhumulangma.common.util.RouterUtil;
@@ -48,7 +47,8 @@ import org.greenrobot.eventbus.EventBus;
  * <br/>Description:我的
  */
 @Route(path = Constants.Router.User.F_MAIN)
-public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBinding, MainUserViewModel, Object> implements View.OnClickListener {
+public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBinding, MainUserViewModel, Object>
+        implements View.OnClickListener {
 
     private GitHubDTO mGitHubDTO;
 
@@ -58,7 +58,7 @@ public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBindin
     private ImageView transRight;
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.user_fragment_main;
     }
 
@@ -74,7 +74,7 @@ public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBindin
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         initBar();
 
     }
@@ -177,7 +177,7 @@ public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBindin
         });
 
         mViewModel.getBaseUserInfoEvent().observe(this, xmBaseUserInfo -> {
-            GlideApp.with(MainUserFragment.this)
+                    Glide.with(MainUserFragment.this)
                     .load(xmBaseUserInfo.getAvatarUrl())
                     .placeholder(R.drawable.ic_user_avatar)
                     .error(R.drawable.ic_user_avatar)
@@ -215,7 +215,7 @@ public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBindin
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            RouterUtil.navigateTo(Constants.Router.Home.F_SCAN);
+                            RouterUtil.navigateTo(Constants.Router.Discover.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
@@ -264,8 +264,7 @@ public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBindin
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.User.TAB_REFRESH:
-
-                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+                if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     mBinding.nsv.scrollTo(0, 0);
                     mBinding.refreshLayout.autoRefresh();
                 }

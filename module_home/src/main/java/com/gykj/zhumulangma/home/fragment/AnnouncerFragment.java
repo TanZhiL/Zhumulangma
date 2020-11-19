@@ -1,10 +1,11 @@
 package com.gykj.zhumulangma.home.fragment;
 
-import androidx.lifecycle.ViewModelProvider;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import android.view.View;
 
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
@@ -39,7 +40,7 @@ public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncer
 
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.home_fragment_announcer;
     }
 
@@ -48,7 +49,7 @@ public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncer
         return false;
     }
 
-    protected void initView() {
+    public void initView() {
         mBinding.banner.setIndicatorGravity(BannerConfig.RIGHT);
         mBinding.banner.setDelayTime(3000);
         mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
@@ -80,21 +81,19 @@ public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncer
         mViewModel.init();
     }
 
-
     @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        if (null != mBinding)
+    protected void onRevisible() {
+        super.onRevisible();
+        if (mBinding != null)
             mBinding.banner.startAutoPlay();
     }
 
     @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
+    public void onPause() {
+        super.onPause();
         if (null != mBinding)
             mBinding.banner.stopAutoPlay();
     }
-
     @Override
     public Class<AnnouncerViewModel> onBindViewModel() {
         return AnnouncerViewModel.class;
@@ -146,7 +145,7 @@ public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncer
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Home.TAB_REFRESH:
-                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+                if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     mBinding.nsv.scrollTo(0, 0);
                     mBinding.refreshLayout.autoRefresh();
                 }

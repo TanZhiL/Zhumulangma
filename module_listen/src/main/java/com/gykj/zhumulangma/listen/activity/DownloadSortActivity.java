@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.listen.fragment;
+package com.gykj.zhumulangma.listen.activity;
 
 import android.graphics.Color;
 import android.view.View;
@@ -16,11 +16,11 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.DownloadSortAdapter;
-import com.gykj.zhumulangma.listen.databinding.ListenFragmentDownloadSortBinding;
+import com.gykj.zhumulangma.listen.databinding.ListenActivityDownloadSortBinding;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.DownloadSortViewModel;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -41,7 +41,7 @@ import java.util.Map;
  * <br/>Description:下载排序
  */
 @Route(path = Constants.Router.Listen.F_DOWNLOAD_SORT)
-public class DownloadSortFragment extends BaseMvvmFragment<ListenFragmentDownloadSortBinding,DownloadSortViewModel> {
+public class DownloadSortActivity extends BaseMvvmActivity<ListenActivityDownloadSortBinding,DownloadSortViewModel> {
 
     @Autowired(name = KeyCode.Listen.ALBUMID)
     public long mAlbumId;
@@ -51,14 +51,14 @@ public class DownloadSortFragment extends BaseMvvmFragment<ListenFragmentDownloa
 
 
     @Override
-    protected int onBindLayout() {
-        return R.layout.listen_fragment_download_sort;
+    public int onBindLayout() {
+        return R.layout.listen_activity_download_sort;
     }
 
     @Override
-    protected void initView() {
-
-        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+    public void initView() {
+        super.initView();
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerview.setHasFixedSize(true);
         mSortAdapter = new DownloadSortAdapter(R.layout.listen_item_download_sort);
         mSortAdapter.bindToRecyclerView(mBinding.recyclerview);
@@ -82,7 +82,7 @@ public class DownloadSortFragment extends BaseMvvmFragment<ListenFragmentDownloa
     }
 
     @Override
-    protected void initViewObservable() {
+    public void initViewObservable() {
         mViewModel.getTracksEvent().observe(this, tracks -> mSortAdapter.setNewData(tracks));
     }
     @Override
@@ -100,10 +100,6 @@ public class DownloadSortFragment extends BaseMvvmFragment<ListenFragmentDownloa
         return new String[]{"完成"};
     }
 
-    @Override
-    protected boolean enableLazy() {
-        return false;
-    }
 
     @Override
     public void onRight1Click(View v) {
@@ -123,7 +119,7 @@ public class DownloadSortFragment extends BaseMvvmFragment<ListenFragmentDownloa
             public void success() {
                 clearStatus();
                 EventBus.getDefault().post(new FragmentEvent(EventCode.Listen.DOWNLOAD_SORT));
-                pop();
+                finish();
             }
 
             @Override
@@ -155,13 +151,13 @@ public class DownloadSortFragment extends BaseMvvmFragment<ListenFragmentDownloa
     };
 
     @Override
-    protected Class<DownloadSortViewModel> onBindViewModel() {
+    public Class<DownloadSortViewModel> onBindViewModel() {
         return DownloadSortViewModel.class;
     }
 
     @Override
-    protected ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+    public ViewModelProvider.Factory onBindViewModelFactory() {
+        return ViewModelFactory.getInstance(getApplication());
     }
 
 }

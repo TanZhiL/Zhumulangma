@@ -16,7 +16,7 @@ import com.gykj.zhumulangma.discover.databinding.DiscoverFragmentMainBinding;
 public class MainDiscoverFragment extends BaseFragment<DiscoverFragmentMainBinding> implements View.OnClickListener {
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.discover_fragment_main;
     }
 
@@ -26,7 +26,7 @@ public class MainDiscoverFragment extends BaseFragment<DiscoverFragmentMainBindi
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
     }
 
     @Override

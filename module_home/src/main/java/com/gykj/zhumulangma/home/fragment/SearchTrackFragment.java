@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.SearchTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -39,7 +39,7 @@ public class SearchTrackFragment extends BaseRefreshFragment<CommonLayoutListBin
 
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
@@ -51,7 +51,7 @@ public class SearchTrackFragment extends BaseRefreshFragment<CommonLayoutListBin
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
         mSearchTrackAdapter = new SearchTrackAdapter(R.layout.home_item_seach_track);

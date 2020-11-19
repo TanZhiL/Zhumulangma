@@ -1,9 +1,11 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
+import android.app.Activity;
 import android.app.Application;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +16,18 @@ import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleRegistry;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CollectionUtils;
-import com.gykj.thomas.third.ThirdHelper;
 import com.gykj.zhumulangma.common.App;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
-import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadService;
@@ -45,8 +42,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 
 /**
@@ -55,48 +50,47 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:Fragment基类,主要处理标题栏和状态页逻辑
  */
-public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFragment implements BaseView, Consumer<Disposable> {
-    protected static final String TAG = BaseFragment.class.getSimpleName();
-    //用于延时显示loading状态,避免一闪而过
-    private Handler mLoadingHandler = new Handler();
-
+public abstract class BaseFragment<DB extends ViewDataBinding> extends Fragment implements BaseView, Consumer<Disposable> {
+    protected String TAG = BaseFragment.class.getSimpleName();
     protected Application mApplication;
+    //公用Handler
+    protected Handler mHandler = new Handler(Looper.getMainLooper());
     //Disposable容器
-    private CompositeDisposable mDisposables = new CompositeDisposable();
+    protected CompositeDisposable mDisposables = new CompositeDisposable();
+
+    protected ARouter mRouter = ARouter.getInstance();
     //根部局
     protected View mView;
     //状态页管理
     protected LoadService mBaseLoadService;
     //默认标题栏
     protected CommonTitleBar mSimpleTitleBar;
-    //公用Handler
-    protected Handler mHandler = new Handler();
     //记录是否第一次进入
     private boolean isFirst = true;
 
-    protected ARouter mRouter =ARouter.getInstance();
+    protected boolean hasInit;
 
     protected DB mBinding;
 
-    protected abstract @LayoutRes
-    int onBindLayout();
-
-    protected void initParam() {
-    }
-
-    protected abstract void initView();
-
-    public void initListener() {
-    }
-
-    public abstract void initData();
+    protected Activity mActivity;
+    //是否为对象复用
+    protected boolean isReuse;
 
     protected void onRevisible() {
     }
 
     @Override
+    public void onAttach(@NonNull Activity activity) {
+        super.onAttach(activity);
+        TAG = "Thomas_" + getClass().getSimpleName();
+        Log.d(TAG, "onAttach: ");
+        mActivity = activity;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() savedInstanceState = [" + savedInstanceState + "]");
         mApplication = App.getInstance();
         mRouter.inject(this);
         EventBus.getDefault().register(this);
@@ -105,52 +99,82 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.common_layout_root, container, false);
-        if (enableSwipeBack()) {
-            //避免过度绘制策略
-            mView.setBackgroundColor(Color.WHITE);
+        Log.d(TAG, "onCreateView: ");
+        isReuse = mView != null;
+        if (isReuse) {
+            ViewGroup parent = (ViewGroup) mView.getParent();
+            if (parent != null) {
+                parent.removeView(mView);
+            }
+        } else {
+            mView = inflater.inflate(R.layout.common_layout_root, container, false);
         }
-        initCommonView();
-        initParam();
-        //不采用懒加载
-        if (!enableLazy()) {
-            loadView();
-            initView();
-            initListener();
-        }
-        //避免不必要的布局层级
-        if (enableSwipeBack())
-            return attachToSwipeBack(mView);
         return mView;
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated: ");
+        super.onViewCreated(view, savedInstanceState);
+        if (!isReuse) {
+            initCommonView();
+            initParam();
+            //不采用懒加载
+            if (!enableLazy()) {
+                loadView();
+                initView();
+                initListener();
+                initData();
+                hasInit = true;
+            }
+        }
+    }
+
+    @Override
+    public void onStart() {
+        Log.d(TAG, "onStart: ");
+        super.onStart();
+    }
+
+    @Override
     public void onResume() {
+        Log.d(TAG, "onResume: ");
         super.onResume();
-        if(enableLazy() && isFirst){
+        if (!isReuse && enableLazy() && isFirst) {
             loadView();
             initView();
             initListener();
             initData();
+            hasInit = true;
+        }
+        if (!isFirst) {
+            onRevisible();
         }
         isFirst = false;
     }
 
     @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        if(!isFirst){
-            onRevisible();
-        }
+    public void onPause() {
+        Log.d(TAG, "onPause: ");
+        super.onPause();
     }
 
     @Override
-    public void onEnterAnimationEnd(Bundle savedInstanceState) {
-        super.onEnterAnimationEnd(savedInstanceState);
-        //不采用懒加载
-        if (!enableLazy()) {
-            initData();
-        }
+    public void onHiddenChanged(boolean hidden) {
+        Log.d(TAG, "onHiddenChanged() hidden = [" + hidden + "]");
+        super.onHiddenChanged(hidden);
+    }
+
+    @Override
+    public void onStop() {
+        Log.d(TAG, "onStop: ");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        Log.d(TAG, "onDestroyView: ");
+        super.onDestroyView();
     }
 
     /**
@@ -184,14 +208,14 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
                 builder.addCallback(callback);
             }
         }
-        FrameLayout.LayoutParams layoutParams=null;
-        if(enableSimplebar()){
+        FrameLayout.LayoutParams layoutParams = null;
+        if (enableSimplebar()) {
             layoutParams = new FrameLayout.LayoutParams((FrameLayout.LayoutParams) contentView.getLayoutParams());
             boolean b = StatusBarUtils.supportTransparentStatusBar();
-            int barHeight=b? BarUtils.getStatusBarHeight() :0;
-            layoutParams.topMargin=getResources().getDimensionPixelOffset(R.dimen.simpleBarHeight)+barHeight;
+            int barHeight = b ? BarUtils.getStatusBarHeight() : 0;
+            layoutParams.topMargin = getResources().getDimensionPixelOffset(R.dimen.simpleBarHeight) + barHeight;
         }
-        mBaseLoadService = builder.build().register(contentView,layoutParams, (Callback.OnReloadListener) BaseFragment.this::onReload);
+        mBaseLoadService = builder.build().register(contentView, layoutParams, (Callback.OnReloadListener) BaseFragment.this::onReload);
     }
 
     @Override
@@ -218,29 +242,29 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
                     subtitle.setText(strings[1]);
                 }
             }
-        } else if (onBindBarCenterStyle() == BaseFragment.SimpleBarStyle.CENTER_CUSTOME && onBindBarCenterCustome() != null) {
+        } else if (onBindBarCenterStyle() == SimpleBarStyle.CENTER_CUSTOME && onBindBarCenterCustome() != null) {
             ViewGroup group = mSimpleTitleBar.getCenterCustomView().findViewById(R.id.fl_custome);
             group.setVisibility(View.VISIBLE);
             group.addView(onBindBarCenterCustome(), new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
         //左边
-        if (onBindBarLeftStyle() == BaseFragment.SimpleBarStyle.LEFT_BACK) {
+        if (onBindBarLeftStyle() == SimpleBarStyle.LEFT_BACK) {
 
             ImageView backView = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
             if (onBindBarBackIcon() != null) {
                 backView.setImageResource(onBindBarBackIcon());
             }
             backView.setVisibility(View.VISIBLE);
-            backView.setOnClickListener(v -> onSimpleBackClick());
-        } else if (onBindBarLeftStyle() == BaseFragment.SimpleBarStyle.LEFT_BACK_TEXT) {
+//            backView.setOnClickListener(v -> onSimpleBackClick());
+        } else if (onBindBarLeftStyle() == SimpleBarStyle.LEFT_BACK_TEXT) {
             View backIcon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_back);
             backIcon.setVisibility(View.VISIBLE);
-            backIcon.setOnClickListener(v -> onSimpleBackClick());
+//            backIcon.setOnClickListener(v -> onSimpleBackClick());
             View backTv = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.tv_back);
             backTv.setVisibility(View.VISIBLE);
-            backTv.setOnClickListener(v -> onSimpleBackClick());
-        } else if (onBindBarLeftStyle() == BaseFragment.SimpleBarStyle.LEFT_ICON && onBindBarLeftIcon() != null) {
+//            backTv.setOnClickListener(v -> onSimpleBackClick());
+        } else if (onBindBarLeftStyle() == SimpleBarStyle.LEFT_ICON && onBindBarLeftIcon() != null) {
             ImageView icon = mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left);
             icon.setVisibility(View.VISIBLE);
             icon.setImageResource(onBindBarLeftIcon());
@@ -312,7 +336,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
      * @return
      */
     protected boolean enableSimplebar() {
-        return true;
+        return false;
     }
 
     /**
@@ -433,13 +457,6 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
      */
     protected void onLeftIconClick(View v) {
 
-    }
-
-    /**
-     * 点击标题栏返回按钮事件
-     */
-    public void onSimpleBackClick() {
-        pop();
     }
 
     /**
@@ -581,10 +598,24 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
                 }
             });
             //延时300毫秒显示,避免闪屏
-            mLoadingHandler.postDelayed(() -> mBaseLoadService.showCallback(getLoadingStatus().getClass()), 300);
-
+            postDelayed(mLoadStatusRun, 300);
         }
     }
+
+    protected void post(Runnable runnable) {
+        mHandler.post(runnable);
+    }
+
+    protected void postDelayed(Runnable runnable, long delayMillis) {
+        mHandler.postDelayed(runnable, delayMillis);
+    }
+
+    private final Runnable mLoadStatusRun = new Runnable() {
+        @Override
+        public void run() {
+            mBaseLoadService.showCallback(getLoadingStatus().getClass());
+        }
+    };
 
     /**
      * 清除所有状态页
@@ -594,7 +625,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
         if (parentFragment != null && ((BaseFragment) parentFragment).enableSimplebar()) {
             ((BaseFragment) parentFragment).clearStatus();
         }
-        mLoadingHandler.removeCallbacksAndMessages(null);
+        mHandler.removeCallbacks(mLoadStatusRun);
         mBaseLoadService.showSuccess();
     }
 
@@ -606,66 +637,15 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends SupportFr
         initData();
     }
 
-    @Override
-    public FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultHorizontalAnimator();
-    }
-
-    @Override
-    public boolean onBackPressedSupport() {
-        //如果正在显示loading,则清除
-        if (mBaseLoadService.getCurrentCallback() == LoadingStatus.class) {
-            //通知ViewModel取消正在运行的工作
-            ((LifecycleRegistry) getLifecycle()).handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
-            clearStatus();
-            return true;
-        }
-        return super.onBackPressedSupport();
-    }
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
         super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
-        mLoadingHandler.removeCallbacksAndMessages(null);
         EventBus.getDefault().unregister(this);
         mDisposables.clear();
-        ThirdHelper.refWatcher.watch(this);
+//        ThirdHelper.refWatcher.watch(this);
     }
 
-
-    protected enum SimpleBarStyle {
-        /**
-         * 返回图标(默认)
-         */
-        LEFT_BACK,
-        /**
-         * 返回图标+文字
-         */
-        LEFT_BACK_TEXT,
-        /**
-         * 附加图标
-         */
-        LEFT_ICON,
-        /**
-         * 标题(默认)
-         */
-        CENTER_TITLE,
-        /**
-         * 自定义布局
-         */
-        CENTER_CUSTOME,
-        /**
-         * 文字
-         */
-        RIGHT_TEXT,
-        /**
-         * 图标(默认)
-         */
-        RIGHT_ICON,
-        /**
-         * 自定义布局
-         */
-        RIGHT_CUSTOME,
-    }
 }

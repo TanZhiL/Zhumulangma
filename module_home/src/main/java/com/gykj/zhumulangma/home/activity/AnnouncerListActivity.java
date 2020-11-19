@@ -1,7 +1,7 @@
-package com.gykj.zhumulangma.home.fragment;
+package com.gykj.zhumulangma.home.activity;
 
-import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
@@ -9,8 +9,8 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
@@ -20,6 +20,7 @@ import com.kingja.loadsir.callback.Callback;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/9/11 11:40
@@ -28,7 +29,7 @@ import com.ximalaya.ting.android.opensdk.model.album.Announcer;
  */
 
 @Route(path = Constants.Router.Home.F_ANNOUNCER_LIST)
-public class AnnouncerListFragment extends BaseRefreshFragment<CommonLayoutListBinding, AnnouncerListViewModel, Announcer>
+public class AnnouncerListActivity extends BaseRefreshActivity<CommonLayoutListBinding, AnnouncerListViewModel, Announcer>
         implements OnLoadMoreListener {
 
     @Autowired(name = KeyCode.Home.CATEGORY_ID)
@@ -38,13 +39,14 @@ public class AnnouncerListFragment extends BaseRefreshFragment<CommonLayoutListB
     private AnnouncerAdapter mAnnouncerAdapter;
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
     @Override
-    protected void initView() {
-        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+    public void initView() {
+        super.initView();
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerview.setHasFixedSize(true);
         mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
         mAnnouncerAdapter.bindToRecyclerView(mBinding.recyclerview);
@@ -57,7 +59,7 @@ public class AnnouncerListFragment extends BaseRefreshFragment<CommonLayoutListB
         mAnnouncerAdapter.setOnItemClickListener((adapter, view, position) ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                 .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getItem(position).getAnnouncerId())
-                .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getItem(position).getNickname()), STANDARD));
+                .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getItem(position).getNickname())));
     }
 
     @NonNull
@@ -81,19 +83,13 @@ public class AnnouncerListFragment extends BaseRefreshFragment<CommonLayoutListB
 
 
     @Override
-    protected boolean enableLazy() {
-        return false;
-    }
-
-
-    @Override
     public Class<AnnouncerListViewModel> onBindViewModel() {
         return AnnouncerListViewModel.class;
     }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
     @Override

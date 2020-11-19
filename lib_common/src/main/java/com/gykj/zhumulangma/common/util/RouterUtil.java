@@ -2,21 +2,6 @@ package com.gykj.zhumulangma.common.util;
 
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.launcher.ARouter;
-import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.aop.LoginHelper;
-import com.gykj.zhumulangma.common.bean.NavigateBean;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.mvvm.view.SupportActivity;
-import com.gykj.zhumulangma.common.mvvm.view.SupportFragment;
-import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.Objects;
-
-import me.yokeyword.fragmentation.ExtraTransaction;
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * Author: Thomas.<br/>
@@ -29,11 +14,12 @@ import me.yokeyword.fragmentation.ISupportFragment;
 public class RouterUtil {
     private static final String TAG = "RouterUtil";
     public static void navigateTo(String path) {
-        navigateTo(ARouter.getInstance().build(path));
+//        navigateTo(ARouter.getInstance().build(path));
+        ARouter.getInstance().build(path).navigation();
     }
 
     public static void navigateTo(Postcard postcard) {
-        navigateTo(postcard, ISupportFragment.SINGLETASK);
+        postcard.navigation();
     }
 
     public static void navigateTo(String path, int launchMode) {
@@ -41,10 +27,11 @@ public class RouterUtil {
     }
 
     public static void navigateTo(Postcard postcard, int launchMode) {
-        navigateTo(postcard, launchMode, null);
+        postcard.navigation();
+//        navigateTo(postcard, launchMode, null);
     }
 
-    public static void navigateTo(String path, ExtraTransaction extraTransaction) {
+ /*   public static void navigateTo(String path, ExtraTransaction extraTransaction) {
         navigateTo(ARouter.getInstance().build(path), extraTransaction);
     }
 
@@ -66,12 +53,12 @@ public class RouterUtil {
         }
     }
 
-    /**
+    *//**
      * 分发路由
      *
      * @param activity
      * @param navigateBean
-     */
+     *//*
     public static void dispatcher(SupportActivity activity, NavigateBean navigateBean) {
         Objects.requireNonNull(navigateBean);
         Objects.requireNonNull(navigateBean.fragment);
@@ -101,5 +88,5 @@ public class RouterUtil {
                 }
                 break;
         }
-    }
+    }*/
 }

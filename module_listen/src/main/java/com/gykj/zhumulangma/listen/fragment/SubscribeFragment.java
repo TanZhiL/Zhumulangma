@@ -42,7 +42,7 @@ public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutListBindi
 
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
@@ -58,7 +58,7 @@ public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutListBindi
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
         mSubscribeAdapter = new SubscribeAdapter(R.layout.listen_item_subscribe);
@@ -135,7 +135,7 @@ public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutListBindi
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Listen.TAB_REFRESH:
-                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+                if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     mBinding.recyclerview.scrollToPosition(0);
                     mBinding.refreshLayout.autoRefresh();
                 }

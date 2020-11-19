@@ -1,13 +1,14 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
-import com.gykj.zhumulangma.home.fragment.AlbumListFragment;
+import com.gykj.zhumulangma.home.activity.AlbumListActivity;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
@@ -35,7 +36,7 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
     public void init() {
         Map<String, String> map = new HashMap<String, String>();
         switch (mType) {
-            case AlbumListFragment.LIKE:
+            case AlbumListActivity.LIKE:
                 //猜你喜欢
                 map.put(DTransferConstants.LIKE_COUNT, "50");
                 map.put(DTransferConstants.PAGE, String.valueOf(1));
@@ -54,7 +55,7 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                             e.printStackTrace();
                         });
                 break;
-            case AlbumListFragment.PAID:
+            case AlbumListActivity.PAID:
                 //付费精品
                 map.put(DTransferConstants.PAGE, String.valueOf(curPage));
                 mModel.getAllPaidAlbums(map)
@@ -72,7 +73,7 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                             e.printStackTrace();
                         });
                 break;
-            case AlbumListFragment.ANNOUNCER:
+            case AlbumListActivity.ANNOUNCER:
                 //主播专辑
                 map.put(DTransferConstants.AID, String.valueOf(mAnnouncerId));
                 map.put(DTransferConstants.PAGE, String.valueOf(curPage));
@@ -163,9 +164,9 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
 
     @Override
     public void onViewLoadmore() {
-        if (mType == AlbumListFragment.PAID) {
+        if (mType == AlbumListActivity.PAID) {
             getMorePaids();
-        } else if (mType == AlbumListFragment.ANNOUNCER) {
+        } else if (mType == AlbumListActivity.ANNOUNCER) {
             getMoreAlbumsByAnnouncer();
         } else {
             getMoreAlbumsByType();

@@ -47,7 +47,7 @@ public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, F
 
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.home_fragment_fine;
     }
 
@@ -57,7 +57,7 @@ public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, F
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         initBanner();
         initDaily();
         initBook();
@@ -158,23 +158,19 @@ public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, F
     }
 
     @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        if (null != mBinding) {
+    protected void onRevisible() {
+        super.onRevisible();
+        if (mBinding != null) {
             mBinding.banner.startAutoPlay();
-        }
-        if (null != mBinding) {
             mBinding.marqueeView.continueRoll();
         }
     }
 
     @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
-        if (null != mBinding) {
+    public void onPause() {
+        super.onPause();
+        if (mBinding != null) {
             mBinding.banner.stopAutoPlay();
-        }
-        if (null != mBinding) {
             mBinding.marqueeView.stopRoll();
         }
     }
@@ -184,7 +180,7 @@ public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, F
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Home.TAB_REFRESH:
-                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+                if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     mBinding.nsv.scrollTo(0, 0);
                     mBinding.refreshLayout.autoRefresh();
                 }

@@ -1,16 +1,17 @@
-package com.gykj.zhumulangma.listen.fragment;
+package com.gykj.zhumulangma.listen.activity;
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.FavoriteBean;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.FavoriteAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
@@ -24,19 +25,20 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  * <br/>Description:我的喜欢
  */
 @Route(path = Constants.Router.Listen.F_FAVORITE)
-public class FavoriteFragment extends BaseRefreshFragment<CommonLayoutListBinding,FavoriteViewModel, FavoriteBean> implements
+public class FavoriteActivity extends BaseRefreshActivity<CommonLayoutListBinding,FavoriteViewModel, FavoriteBean> implements
         BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.OnItemClickListener {
 
     private FavoriteAdapter mFavoriteAdapter;
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
     @Override
-    protected void initView() {
-        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+    public void initView() {
+        super.initView();
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerview.setHasFixedSize(true);
         mFavoriteAdapter = new FavoriteAdapter(R.layout.listen_item_favorite);
         mFavoriteAdapter.bindToRecyclerView(mBinding.recyclerview);
@@ -93,7 +95,7 @@ public class FavoriteFragment extends BaseRefreshFragment<CommonLayoutListBindin
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
 }

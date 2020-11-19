@@ -13,7 +13,7 @@ import net.lucode.hackware.magicindicator.MagicIndicator;
  * Email: 1071931588@qq.com<br/>
  * Description:
  */
-public class TViewPagerHelper {
+public class ViewPagerHelper {
     public static void bind(final MagicIndicator magicIndicator, ViewPager2 viewPager) {
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

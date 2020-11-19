@@ -1,21 +1,24 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
-import androidx.lifecycle.ViewModelProvider;
+import android.view.View;
+
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import android.view.View;
 
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.GlideImageLoader;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.HotSkeleton;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.home.activity.AlbumListActivity;
+import com.gykj.zhumulangma.home.activity.RadioListActivity;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
 import com.gykj.zhumulangma.home.adapter.HotMusicAdapter;
@@ -53,7 +56,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
 
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.home_fragment_hot;
     }
 
@@ -63,7 +66,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         initBanner();
         initLike();
         initStory();
@@ -81,7 +84,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
         mBinding.layoutAd.setOnClickListener(this);
         mBinding.ihLike.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
-                        .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
+                        .withInt(KeyCode.Home.TYPE, AlbumListActivity.LIKE)
                         .withString(KeyCode.Home.TITLE, "猜你喜欢")));
         mBinding.storyRefresh.setOnClickListener(this);
         mBinding.ihStory.setOnClickListener(view ->
@@ -100,7 +103,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
                         .withString(KeyCode.Home.TITLE, "音乐好时光")));
         mBinding.ihRadio.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                        .withInt(KeyCode.Home.TYPE, RadioListFragment.INTERNET)
+                        .withInt(KeyCode.Home.TYPE, RadioListActivity.INTERNET)
                         .withString(KeyCode.Home.TITLE, "网络台")));
 
         mBinding.radioRefresh.setOnClickListener(this);
@@ -229,15 +232,15 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     }
 
     @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        if (null != mBinding)
+    protected void onRevisible() {
+        super.onRevisible();
+        if (mBinding != null)
             mBinding.banner.startAutoPlay();
     }
 
     @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
+    public void onPause() {
+        super.onPause();
         if (null != mBinding)
             mBinding.banner.stopAutoPlay();
     }
@@ -257,7 +260,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Home.TAB_REFRESH:
-                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+                if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     mBinding.nsv.scrollTo(0, 0);
                     mBinding.refreshLayout.autoRefresh();
                 }

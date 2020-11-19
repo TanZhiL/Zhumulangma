@@ -20,8 +20,8 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:自动处理刷新Fragment基类
  */
-public abstract class BaseRefreshFragment<DB extends ViewDataBinding,VM extends BaseRefreshViewModel, T>
-        extends BaseMvvmFragment<DB,VM>
+public abstract class BaseRefreshActivity<DB extends ViewDataBinding,VM extends BaseRefreshViewModel, T>
+        extends BaseMvvmActivity<DB,VM>
         implements OnRefreshLoadMoreListener {
 
     private WrapRefresh mWrapRefresh;

@@ -1,23 +1,22 @@
-package com.gykj.zhumulangma.home.fragment;
-
+package com.gykj.zhumulangma.home.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import androidx.lifecycle.ViewModelProvider;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
-import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -31,13 +30,13 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
-import com.gykj.zhumulangma.home.databinding.HomeFragmentPlayTrackBinding;
+import com.gykj.zhumulangma.home.databinding.HomeActivityPlayTrackBinding;
 import com.gykj.zhumulangma.home.dialog.CommentPopup;
 import com.gykj.zhumulangma.home.dialog.PlaySchedulePopup;
 import com.gykj.zhumulangma.home.dialog.PlayTempoPopup;
@@ -76,9 +75,17 @@ import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_LABLES;
 import static com.gykj.zhumulangma.home.dialog.PlayTempoPopup.TEMPO_VALUES;
 import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
 
+/**
+ * Author: Thomas.<br/>
+ * Date: 2020/11/17 19:41<br/>
+ * GitHub: https://github.com/TanZhiL<br/>
+ * CSDN: https://blog.csdn.net/weixin_42703445<br/>
+ * Email: 1071931588@qq.com<br/>
+ * Description:
+ */
 @Route(path = Constants.Router.Home.F_PLAY_TRACK)
-public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBinding, PlayTrackViewModel> implements
-        NestedScrollView.OnScrollChangeListener, View.OnClickListener,
+public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBinding, PlayTrackViewModel>
+        implements NestedScrollView.OnScrollChangeListener, View.OnClickListener,
         BaseQuickAdapter.OnItemClickListener, OnSeekChangeListener,
         PlaySchedulePopup.onSelectedListener, PlayTrackPopup.onActionListener,
         IXmDataCallback, PlayTempoPopup.onTempoSelectedListener, View.OnTouchListener {
@@ -93,39 +100,18 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
     private PlayTrackPopup mPlayTrackPopup;
     private CommentPopup mCommentPopup;
     private boolean isUp;
-    private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mActivity);
+    private final XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(this);
 
-
-    public PlayTrackFragment() {
-
-    }
 
     @Override
-    protected void loadView() {
-        super.loadView();
-        clearStatus();
+    public int onBindLayout() {
+        return R.layout.home_activity_play_track;
     }
 
-    @Override
-    protected int onBindLayout() {
-        return R.layout.home_fragment_play_track;
-    }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mView.setBackgroundColor(Color.WHITE);
-    }
-
-    @Override
-    protected boolean enableSwipeBack() {
-        return false;
-    }
-
-    @Override
-    protected void initView() {
-
-        mBinding.rvRelative.setLayoutManager(new LinearLayoutManager(mActivity));
+    public void initView() {
+        mBinding.rvRelative.setLayoutManager(new LinearLayoutManager(this));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
         mAlbumAdapter.bindToRecyclerView(mBinding.rvRelative);
         initBar();
@@ -138,9 +124,9 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
                 }
             }
         }, 100);
-        mSchedulePopup = new PlaySchedulePopup(mActivity, this);
-        mPlayTrackPopup = new PlayTrackPopup(mActivity, this);
-        mCommentPopup = new CommentPopup(mActivity);
+        mSchedulePopup = new PlaySchedulePopup(this, this);
+        mPlayTrackPopup = new PlayTrackPopup(this, this);
+        mCommentPopup = new CommentPopup(this);
 
     }
 
@@ -217,8 +203,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
 
         mBinding.tvMoreRelative.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
-                        .withInt(KeyCode.Home.TYPE, AlbumListFragment.LIKE)
-                        .withString(KeyCode.Home.TITLE, "更多推荐"), STANDARD));
+                        .withInt(KeyCode.Home.TYPE, AlbumListActivity.LIKE)
+                        .withString(KeyCode.Home.TITLE, "更多推荐")));
         RxView.clicks(mBinding.llSubscribe)
                 .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
@@ -294,7 +280,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
         mHandler.postDelayed(this::scheduleTime, 0);
         mBinding.tvActionDuration.setText(ZhumulangmaUtil.secondToTimeE(currSoundIgnoreKind.getDuration()));
         mBinding.tvActionCur.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getPlayCurrPositon() / 1000));
-        mBinding.tvTempo.setText(TEMPO_LABLES[Arrays.binarySearch(TEMPO_VALUES, XmPlayerManager.getInstance(mActivity).getTempo())]);
+        mBinding.tvTempo.setText(TEMPO_LABLES[Arrays.binarySearch(TEMPO_VALUES, XmPlayerManager.getInstance(this).getTempo())]);
     }
 
     private void scheduleTime() {
@@ -332,12 +318,12 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
                 mBinding.tvSchedule.setText("定时");
                 mHandler.removeCallbacksAndMessages(null);
             } else if (type == 1) {
-                mHandler.postDelayed(PlayTrackFragment.this::scheduleTime, 1000);
+                mHandler.postDelayed(PlayTrackActivity.this::scheduleTime, 1000);
                 mBinding.tvSchedule.setText(ZhumulangmaUtil.secondToTimeE(mPlayerManager.getDuration() / 1000 -
                         mPlayerManager.getPlayCurrPositon() / 1000));
             } else {
                 if (System.currentTimeMillis() < time) {
-                    mHandler.postDelayed(PlayTrackFragment.this::scheduleTime, 1000);
+                    mHandler.postDelayed(PlayTrackActivity.this::scheduleTime, 1000);
                     mBinding.tvSchedule.setText(ZhumulangmaUtil.secondToTimeE((time - System.currentTimeMillis()) / 1000));
                 } else {
                     mHandler.removeCallbacksAndMessages(null);
@@ -354,20 +340,14 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
     }
 
     @Override
-    protected boolean enableLazy() {
-        return false;
-    }
-
-
-    @Override
     public void onClick(View v) {
         int id = v.getId();
         if (v == whiteLeft || v == transLeft) {
-            pop();
+           finish();
         } else if (R.id.cl_album == id) {
             if (null != mTrack) {
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
-                        .withLong(KeyCode.Home.ALBUMID, mTrack.getAlbum().getAlbumId()), STANDARD);
+                        .withLong(KeyCode.Home.ALBUMID, mTrack.getAlbum().getAlbumId()));
             }
         } else if (R.id.lav_pre == id) {
             mBinding.lavPre.playAnimation();
@@ -398,7 +378,7 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
                 mPlayerManager.play();
             }
         } else if (R.id.tv_schedule == id || R.id.iv_schedule == id) {
-            new XPopup.Builder(getContext()).setPopupCallback(new SimpleCallback() {
+            new XPopup.Builder(this).setPopupCallback(new SimpleCallback() {
                 @Override
                 public void beforeShow() {
                     super.beforeShow();
@@ -406,12 +386,12 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
                 }
             }).asCustom(mSchedulePopup).show();
         } else if (R.id.tv_play_list == id || R.id.iv_play_list == id) {
-            new XPopup.Builder(getContext()).popupAnimation(TranslateFromBottom).setPopupCallback(
+            new XPopup.Builder(this).popupAnimation(TranslateFromBottom).setPopupCallback(
                     new SimpleCallback() {
                         @Override
                         public void onCreated() {
                             super.onCreated();
-                            mPlayerManager.setPlayListChangeListener(PlayTrackFragment.this);
+                            mPlayerManager.setPlayListChangeListener(PlayTrackActivity.this);
                             mPlayTrackPopup.getTrackAdapter().setNewData(mPlayerManager.getPlayList());
                             mPlayTrackPopup.getRecyclerView().scrollToPosition(mPlayerManager.getCurrentIndex());
                         }
@@ -436,13 +416,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
         } else if (v == mBinding.tvNext15) {
             mPlayerManager.seekTo(mPlayerManager.getPlayCurrPositon() + 15 * 1000);
         } else if (v == mBinding.tvTempo) {
-            new XPopup.Builder(getContext()).asCustom(new PlayTempoPopup(mActivity, this)).show();
+            new XPopup.Builder(this).asCustom(new PlayTempoPopup(this, this)).show();
         } else if (id == R.id.cl_announcer) {
             RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                     .withLong(KeyCode.Home.ANNOUNCER_ID, mTrack.getAnnouncer().getAnnouncerId())
                     .withString(KeyCode.Home.ANNOUNCER_NAME, mTrack.getAnnouncer().getNickname()));
         } else if (R.id.tv_comment == id) {
-            new XPopup.Builder(mActivity).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
+            new XPopup.Builder(this).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
                     .dismissOnTouchOutside(false).enableDrag(false).asCustom(mCommentPopup).show();
         } else if (R.id.iv2_right == id) {
             EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
@@ -450,8 +430,8 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
     }
 
     @Override
-    public void onNewBundle(Bundle args) {
-        super.onNewBundle(args);
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         if (mPlayTrackPopup.getTrackAdapter() != null) {
             mPlayTrackPopup.getTrackAdapter().setNewData(mPlayerManager.getPlayList());
             mPlayTrackPopup.getRecyclerView().scrollToPosition(
@@ -516,15 +496,15 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
             if (null != lavPlaying && tvTitle != null) {
                 if (tracks.get(i).getDataId() == track.getDataId()) {
                     lavPlaying.setVisibility(View.VISIBLE);
-                    tvTitle.setTextColor(mActivity.getResources().getColor(R.color.colorPrimary));
-                    if (XmPlayerManager.getInstance(mActivity).isPlaying()) {
+                    tvTitle.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    if (XmPlayerManager.getInstance(this).isPlaying()) {
                         lavPlaying.playAnimation();
                     } else {
                         lavPlaying.pauseAnimation();
                     }
                 } else {
                     lavPlaying.cancelAnimation();
-                    tvTitle.setTextColor(mActivity.getResources().getColor(R.color.colorPrimaryDark));
+                    tvTitle.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                     lavPlaying.setVisibility(View.GONE);
                 }
             } else {
@@ -550,13 +530,13 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
-                .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId()), STANDARD);
+                .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId()));
     }
 
 
@@ -635,26 +615,15 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
     }
 
     @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.HIDE_GP));
-    }
-
-    @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
-        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHOW_GP));
-    }
-
-    @Override
-    public boolean onBackPressedSupport() {
-        if (super.onBackPressedSupport()) {
-            return true;
-        } else if (mSchedulePopup != null && mSchedulePopup.getPickerView() != null && mSchedulePopup.getPickerView().isShowing()) {
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (mSchedulePopup != null && mSchedulePopup.getPickerView() != null
+                && mSchedulePopup.getPickerView().isShowing()) {
             mSchedulePopup.getPickerView().dismiss();
-            return true;
+        } else {
+            finish();
         }
-        return false;
+
     }
 
     @Override
@@ -908,4 +877,5 @@ public class PlayTrackFragment extends BaseMvvmFragment<HomeFragmentPlayTrackBin
 
         }
     };
+
 }

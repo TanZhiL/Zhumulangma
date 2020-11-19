@@ -12,7 +12,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.util.RouterUtil;
-import com.gykj.zhumulangma.home.fragment.RadioListFragment;
+import com.gykj.zhumulangma.home.activity.RadioListActivity;
 import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -180,7 +180,7 @@ public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
                 .doOnSubscribe(this)
                 .subscribe(s ->
                         RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                                .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_CITY)
+                                .withInt(KeyCode.Home.TYPE, RadioListActivity.LOCAL_CITY)
                                 .withString(KeyCode.Home.TITLE, s)));
     }
 
@@ -189,7 +189,7 @@ public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
                 .doOnSubscribe(this)
                 .subscribe(s ->
                         RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                                .withInt(KeyCode.Home.TYPE, RadioListFragment.LOCAL_PROVINCE)
+                                .withInt(KeyCode.Home.TYPE, RadioListActivity.LOCAL_PROVINCE)
                                 .withString(KeyCode.Home.TITLE, s)));
     }
 }

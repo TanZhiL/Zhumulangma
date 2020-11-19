@@ -1,32 +1,30 @@
-package com.gykj.zhumulangma.user.fragment;
+package com.gykj.zhumulangma.user.activity;
 
-
-import android.view.View;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseActivity;
 import com.gykj.zhumulangma.user.R;
-import com.gykj.zhumulangma.user.databinding.UserFragmentMessageBinding;
+import com.gykj.zhumulangma.user.databinding.UserActivityMessageBinding;
 
 
 @Route(path = Constants.Router.User.F_MESSAGE)
-public class MessageFragment extends BaseFragment<UserFragmentMessageBinding>{
+public class MessageActivity extends BaseActivity<UserActivityMessageBinding> {
 
 
 
-    public MessageFragment() {
+    public MessageActivity() {
 
     }
 
 
     @Override
-    protected int onBindLayout() {
-        return R.layout.user_fragment_message;
+    public int onBindLayout() {
+        return R.layout.user_activity_message;
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
 
     }
 

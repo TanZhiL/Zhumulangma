@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.home.fragment;
+package com.gykj.zhumulangma.home.activity;
 
 
 import android.view.View;
@@ -13,8 +13,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -30,8 +30,8 @@ import com.ximalaya.ting.android.opensdk.model.album.Album;
  * <br/>Description:专辑列表
  */
 @Route(path = Constants.Router.Home.F_ALBUM_LIST)
-public class AlbumListFragment extends BaseRefreshFragment<CommonLayoutListBinding, AlbumListViewModel, Album> implements
-        BaseQuickAdapter.OnItemClickListener {
+public class AlbumListActivity extends BaseRefreshActivity<CommonLayoutListBinding, AlbumListViewModel, Album> 
+        implements BaseQuickAdapter.OnItemClickListener {
     //猜你喜欢
     public static final int LIKE = 0;
     //付费精品
@@ -47,18 +47,19 @@ public class AlbumListFragment extends BaseRefreshFragment<CommonLayoutListBindi
     private AlbumAdapter mAlbumAdapter;
 
 
-    public AlbumListFragment() {
+    public AlbumListActivity() {
 
     }
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
     @Override
-    protected void initView() {
-        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+    public void initView() {
+        super.initView();
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerview.setHasFixedSize(true);
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_line);
         mAlbumAdapter.bindToRecyclerView(mBinding.recyclerview);
@@ -102,7 +103,7 @@ public class AlbumListFragment extends BaseRefreshFragment<CommonLayoutListBindi
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
     @Override
@@ -118,12 +119,6 @@ public class AlbumListFragment extends BaseRefreshFragment<CommonLayoutListBindi
         super.onRight1Click(v);
         RouterUtil.navigateTo(Constants.Router.Home.F_SEARCH);
     }
-
-    @Override
-    protected boolean enableLazy() {
-        return false;
-    }
-
 
     @Override
     public Callback getInitStatus() {

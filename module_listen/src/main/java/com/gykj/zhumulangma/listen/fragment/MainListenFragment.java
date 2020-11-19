@@ -1,14 +1,15 @@
 package com.gykj.zhumulangma.listen.fragment;
 
 
-import androidx.fragment.app.Fragment;
 import android.view.View;
+
+import androidx.fragment.app.Fragment;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TFragmentStateAdapter;
-import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
+import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.listen.R;
@@ -33,7 +34,7 @@ public class MainListenFragment extends BaseFragment<ListenFragmentMainBinding> 
     }
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.listen_fragment_main;
     }
 
@@ -42,7 +43,7 @@ public class MainListenFragment extends BaseFragment<ListenFragmentMainBinding> 
         return false;
     }
     @Override
-    protected void initView() {
+    public void initView() {
         String[] tabs={"我的订阅","推荐订阅"};
         List<Fragment> pages=new ArrayList<>();
         pages.add(new SubscribeFragment());
@@ -55,7 +56,7 @@ public class MainListenFragment extends BaseFragment<ListenFragmentMainBinding> 
         final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), mBinding.viewpager,60));
         mBinding.magicIndicator.setNavigator(commonNavigator);
-        TViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
+        ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
     }
 
     @Override

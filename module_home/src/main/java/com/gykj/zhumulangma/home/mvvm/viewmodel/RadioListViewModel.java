@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
@@ -9,7 +10,7 @@ import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.util.RouterUtil;
-import com.gykj.zhumulangma.home.fragment.RadioListFragment;
+import com.gykj.zhumulangma.home.activity.RadioListActivity;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
@@ -41,24 +42,24 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
 
     public void init() {
         switch (mType) {
-            case RadioListFragment.LOCAL_PROVINCE:
+            case RadioListActivity.LOCAL_PROVINCE:
                 mModel.getSPString(Constants.SP.PROVINCE_CODE, Constants.Default.PROVINCE_CODE)
                         .doOnSubscribe(this)
                         .subscribe(r -> getRadioList(PROVINCE, Integer.valueOf(r)), Throwable::printStackTrace);
                 break;
-            case RadioListFragment.COUNTRY:
+            case RadioListActivity.COUNTRY:
                 getRadioList(COUNTRY, -1);
                 break;
-            case RadioListFragment.PROVINCE:
+            case RadioListActivity.PROVINCE:
                 getRadioList(PROVINCE, mProvinceCode);
                 break;
-            case RadioListFragment.INTERNET:
+            case RadioListActivity.INTERNET:
                 getRadioList(INTERNET, -1);
                 break;
-            case RadioListFragment.RANK:
+            case RadioListActivity.RANK:
                 getRankRadios();
                 break;
-            case RadioListFragment.LOCAL_CITY:
+            case RadioListActivity.LOCAL_CITY:
                 mModel.getSPString(Constants.SP.CITY_CODE, Constants.Default.CITY_CODE)
                         .doOnSubscribe(this)
                         .subscribe(this::getLocalCity, Throwable::printStackTrace);
@@ -215,21 +216,21 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
     @Override
     public void onViewLoadmore() {
         switch (mType) {
-            case RadioListFragment.LOCAL_PROVINCE:
+            case RadioListActivity.LOCAL_PROVINCE:
                 mModel.getSPString(Constants.SP.PROVINCE_CODE, Constants.Default.PROVINCE_CODE)
                         .doOnSubscribe(this)
                         .subscribe(r -> getMoreRadioList(PROVINCE, Integer.valueOf(r)), Throwable::printStackTrace);
                 break;
-            case RadioListFragment.COUNTRY:
+            case RadioListActivity.COUNTRY:
                 getMoreRadioList(RadioListViewModel.COUNTRY, -1);
                 break;
-            case RadioListFragment.PROVINCE:
+            case RadioListActivity.PROVINCE:
                 getMoreRadioList(RadioListViewModel.PROVINCE, mProvinceCode);
                 break;
-            case RadioListFragment.INTERNET:
+            case RadioListActivity.INTERNET:
                 getMoreRadioList(RadioListViewModel.INTERNET, -1);
                 break;
-            case RadioListFragment.LOCAL_CITY:
+            case RadioListActivity.LOCAL_CITY:
                 mModel.getSPString(Constants.SP.CITY_CODE, Constants.Default.CITY_CODE)
                         .doOnSubscribe(this)
                         .subscribe(this::getMoreLocalCity, Throwable::printStackTrace);

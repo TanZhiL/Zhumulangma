@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.listen.fragment;
+package com.gykj.zhumulangma.listen.activity;
 
 import android.view.View;
 import android.widget.CheckBox;
@@ -10,11 +10,10 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseActivity;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.DownloadDeleteAdapter;
@@ -36,7 +35,7 @@ import java.util.List;
  * <br/>Description:下载批量删除
  */
 @Route(path = Constants.Router.Listen.F_DOWNLOAD_DELETE)
-public class DownloadDeleteFragment extends BaseFragment<ListenFragmentDownloadDeleteBinding> implements BaseQuickAdapter.OnItemClickListener,
+public class DownloadDeleteActivity extends BaseActivity<ListenFragmentDownloadDeleteBinding> implements BaseQuickAdapter.OnItemClickListener,
         View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     @Autowired(name = KeyCode.Listen.ALBUMID)
@@ -47,13 +46,13 @@ public class DownloadDeleteFragment extends BaseFragment<ListenFragmentDownloadD
     private List<Long> mSelectedIds = new ArrayList<>();
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.listen_fragment_download_delete;
     }
 
     @Override
-    protected void initView() {
-        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+    public void initView() {
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerview.setHasFixedSize(true);
         mDeleteAdapter = new DownloadDeleteAdapter(R.layout.listen_item_download_delete);
         mDeleteAdapter.bindToRecyclerView(mBinding.recyclerview);
@@ -85,24 +84,6 @@ public class DownloadDeleteFragment extends BaseFragment<ListenFragmentDownloadD
     @Override
     public String[] onBindBarTitleText() {
         return new String[]{"批量删除"};
-    }
-
-
-    @Override
-    protected boolean enableLazy() {
-        return false;
-    }
-
-    @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.HIDE_GP));
-    }
-
-    @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
-        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHOW_GP));
     }
 
     @Override
@@ -154,8 +135,8 @@ public class DownloadDeleteFragment extends BaseFragment<ListenFragmentDownloadD
     }
 
     private void updateButton() {
-        mBinding.llDelete.setBackgroundColor(mSelectedIds.size() > 0 ? mActivity.getResources().getColor(R.color.colorPrimary) :
-                mActivity.getResources().getColor(R.color.colorHint));
+        mBinding.llDelete.setBackgroundColor(mSelectedIds.size() > 0 ? this.getResources().getColor(R.color.colorPrimary) :
+                this.getResources().getColor(R.color.colorHint));
         mBinding.cbAll.setChecked(mDeleteAdapter.getItemCount() != 0 && mSelectedIds.size() == mDeleteAdapter.getItemCount());
     }
 

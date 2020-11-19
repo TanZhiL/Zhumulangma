@@ -1,2 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gykj.zhumulangma.user" />
+    package="com.gykj.zhumulangma.user" >
+
+    <application>
+        <activity android:name=".activity.MessageActivity" android:launchMode="singleTask"/>
+    </application>
+</manifest>

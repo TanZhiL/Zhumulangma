@@ -63,7 +63,6 @@ public class NetManager {
         //先异步获取token
         DBManager.getInstance()
                 .getSPString(Constants.SP.TOKEN)
-                .compose(RxAdapter.schedulersTransformer())
                 .compose(RxAdapter.exceptionTransformer())
                 .subscribe(token -> {
                     OkHttpClient.Builder builder = new OkHttpClient.Builder()

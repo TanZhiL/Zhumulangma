@@ -12,7 +12,7 @@ import android.view.View;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
-import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
+import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
@@ -21,9 +21,7 @@ import com.lxj.xpopup.core.BottomPopupView;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
-import net.lucode.hackware.magicindicator.FragmentContainerHelper;
 import net.lucode.hackware.magicindicator.MagicIndicator;
-import net.lucode.hackware.magicindicator.ScrollState;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.text.ParseException;
@@ -102,7 +100,7 @@ public class PlayRadioPopup extends BottomPopupView implements View.OnClickListe
         commonNavigator.setAdapter(null);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), viewpager, 80));
         magicIndicator.setNavigator(commonNavigator);
-        TViewPagerHelper.bind(magicIndicator, viewpager);
+        ViewPagerHelper.bind(magicIndicator, viewpager);
         RecyclerView recyclerView = (RecyclerView)viewpager.getChildAt(0);
         recyclerView.scrollToPosition(1);
 

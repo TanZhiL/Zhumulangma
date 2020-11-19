@@ -21,8 +21,8 @@ ext {
             "converter-gson":"2.4.0",
             "adapter-rxjava":"2.4.0",
             "logging-interceptor":"3.9.1",
-            "glide":"4.8.0",
-            "glide-compiler":"4.8.0",
+            "glide":"4.11.0",
+            "glide-compiler":"4.11.0",
             "gson":"2.8.5",
             "lifecycle-extensions":"1.1.1",
             "lifecycle-compiler":"1.1.1",
@@ -56,7 +56,7 @@ ext {
             "leakcanary":"1.5",
             "toast":"8.0",
             "bga-qrcode-zxing":"1.3.6",
-            "agentwebX5":"2.0.0",
+            "agentweb":"4.1.4",
             "roundedimageview":"2.3.0",
             "aspectjrt":"1.8.14",
             "customactivityoncrash":"2.2.0",
@@ -69,6 +69,7 @@ ext {
             "RxCache":"1.8.3-2.x",
             "Jolyglot-gson":"0.0.4",
             "backgroundlib":"1.6.0",
+            "Slidr":"2.1.0",
     ]
     //androidx配置
     androidx = [
@@ -113,7 +114,9 @@ ext {
             "rxbinding"                            :"com.jakewharton.rxbinding3:rxbinding:${versions["rxbinding"]}",
             "leakcanary"                           :"com.squareup.leakcanary:leakcanary-android:${versions["leakcanary"]}",
             "leakcanary-no-op"                     :"com.squareup.leakcanary:leakcanary-android-no-op:${versions["leakcanary"]}",
-            "agentwebX5"                           :"com.just.agentwebX5:agentwebX5:${versions["agentwebX5"]}",
+            "agentweb"                             :"com.just.agentweb:agentweb-androidx:${versions["agentweb"]}",
+            "agentweb_filechooser"                             :"com.just.agentweb:filechooser-androidx:${versions["agentweb"]}",
+            "agentweb_downloader"                             :"com.download.library:downloader-androidx:${versions["agentweb"]}",
             "aspectjrt"                            :"org.aspectj:aspectjrt:${versions["aspectjrt"]}",
             "customactivityoncrash"                :"cat.ereza:customactivityoncrash:${versions["customactivityoncrash"]}",
 
@@ -151,6 +154,7 @@ ext {
             "roundedimageview"                     :"com.makeramen:roundedimageview:${versions["roundedimageview"]}",
             "SkeletonBlock"                        :"com.github.TanZhiL:SkeletonBlock:${versions["SkeletonBlock"]}",
             "backgroundlib"                        :"com.noober.background:core:${versions["backgroundlib"]}",
+            "Slidr"                                :"com.r0adkll:slidableactivity:${versions["Slidr"]}",
     ]
 
 }

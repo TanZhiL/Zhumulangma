@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.home.fragment;
+package com.gykj.zhumulangma.home.activity;
 
 
 import android.graphics.Color;
@@ -20,20 +20,20 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
-import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
+import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.mvvm.view.status.DetailSkeleton;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumTagAdapter;
 import com.gykj.zhumulangma.home.adapter.AlbumTrackAdapter;
-import com.gykj.zhumulangma.home.databinding.HomeFragmentAlbumDetailBinding;
+import com.gykj.zhumulangma.home.databinding.HomeActivityAlbumDetailBinding;
 import com.gykj.zhumulangma.home.databinding.HomeLayoutAlbumDetailBinding;
 import com.gykj.zhumulangma.home.databinding.HomeLayoutAlbumTrackBinding;
 import com.gykj.zhumulangma.home.dialog.TrackPagerPopup;
@@ -73,8 +73,10 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:专辑详情页
  */
 @Route(path = Constants.Router.Home.F_ALBUM_DETAIL)
-public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDetailBinding, AlbumDetailViewModel, Track> implements
-        BaseQuickAdapter.OnItemClickListener, BaseQuickAdapter.OnItemChildClickListener, View.OnClickListener, TrackPagerPopup.onPopupDismissingListener {
+public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDetailBinding,
+        AlbumDetailViewModel, Track> implements BaseQuickAdapter.OnItemClickListener, 
+        BaseQuickAdapter.OnItemChildClickListener, View.OnClickListener,
+        TrackPagerPopup.onPopupDismissingListener {
 
     @Autowired(name = KeyCode.Home.ALBUMID)
     public long mAlbumId;
@@ -84,16 +86,17 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
     private AlbumTrackAdapter mAlbumTrackAdapter;
     private AlbumTagAdapter mAlbumTagAdapter;
     private TrackPagerPopup mPagerPopup;
-    private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mActivity);
+    private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(this);
 
     private HomeLayoutAlbumDetailBinding mDetailBind;
     private HomeLayoutAlbumTrackBinding mTrackBind;
 
-    public AlbumDetailFragment() {
+    public AlbumDetailActivity() {
     }
 
     @Override
     public void initView() {
+        super.initView();
         String[] tabs = {"简介", "节目"};
 
         mTrackBind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.home_layout_album_track, null, false);
@@ -107,19 +110,19 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
 
 
         mBinding.viewpager.setAdapter(new TPagerAdapter(mDetailBind.getRoot(),mTrackBind.getRoot()));
-        final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
+        final CommonNavigator commonNavigator = new CommonNavigator(this);
         commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), mBinding.viewpager, 125));
         mBinding.magicIndicator.setNavigator(commonNavigator);
-        TViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
+        ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
         RecyclerView recyclerView = (RecyclerView)mBinding.viewpager.getChildAt(0);
         recyclerView.scrollToPosition(1);
 
         mAlbumTrackAdapter = new AlbumTrackAdapter(R.layout.home_item_album_track);
-        mTrackBind.includeList.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mTrackBind.includeList.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mTrackBind.includeList.recyclerview.setHasFixedSize(true);
         mAlbumTrackAdapter.bindToRecyclerView(mTrackBind.includeList.recyclerview);
-        mPagerPopup = new TrackPagerPopup(mActivity, this);
+        mPagerPopup = new TrackPagerPopup(this, this);
         mPagerPopup.setDismissingListener(this);
     }
 
@@ -154,7 +157,7 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
                             mLastPlay = mAlbumTrackAdapter.getItem(index);
                             mBinding.gpLastplay.setVisibility(View.VISIBLE);
                             mBinding.tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
-                            XmPlayerManager.getInstance(mActivity).playList(mViewModel.getCommonTrackList(),
+                            XmPlayerManager.getInstance(this).playList(mViewModel.getCommonTrackList(),
                                     index);
                             RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                         } else {
@@ -164,7 +167,7 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
                         mLastPlay = mAlbumTrackAdapter.getItem(0);
                         mBinding.gpLastplay.setVisibility(View.VISIBLE);
                         mBinding.tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
-                        XmPlayerManager.getInstance(mActivity).playList(mViewModel.getCommonTrackList(), 0);
+                        XmPlayerManager.getInstance(this).playList(mViewModel.getCommonTrackList(), 0);
                         RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                     }
                 });
@@ -203,7 +206,7 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
 
         mViewModel.getAlbumEvent().observe(this, album -> {
             mAlbum = album;
-            Glide.with(mActivity).load(mAlbum.getCoverUrlMiddle()).into(mBinding.ivCover);
+            Glide.with(this).load(mAlbum.getCoverUrlMiddle()).into(mBinding.ivCover);
             mBinding.tvAlbum.setText(mAlbum.getAlbumTitle());
             mBinding.tvAuthor.setText((String.format(getResources().getString(R.string.zhubo),
                     mAlbum.getAnnouncer().getNickname())));
@@ -229,7 +232,7 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
         mViewModel.getPlayTracksEvent().observe(this, tracks -> {
             setPager(tracks.getTotalCount());
             mAlbumTrackAdapter.setNewData(tracks.getTracks());
-            XmPlayerManager.getInstance(mActivity).playList(mViewModel.getCommonTrackList(),
+            XmPlayerManager.getInstance(this).playList(mViewModel.getCommonTrackList(),
                     mAlbumTrackAdapter.getData().indexOf(mLastPlay));
             RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
         });
@@ -325,7 +328,7 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
         if (R.id.ll_select == id) {
             switchPager();
         } else if (id == R.id.ll_download) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_BATCH_DOWNLOAD)
+            RouterUtil.navigateTo(mRouter.build(Constants.Router.Listen.F_BATCH_DOWNLOAD)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumId));
         } else if (id == R.id.cl_announcer) {
             RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
@@ -335,14 +338,14 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
     }
 
     @Override
-    protected void onRevisible() {
-        super.onRevisible();
+    protected void onRestart() {
+        super.onRestart();
         mAlbumTrackAdapter.notifyDataSetChanged();
     }
 
     @Override
-    protected int onBindLayout() {
-        return R.layout.home_fragment_album_detail;
+    public int onBindLayout() {
+        return R.layout.home_activity_album_detail;
     }
 
     @Override
@@ -362,18 +365,13 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
     @Override
     public void onRight2Click(View v) {
         super.onRight2Click(v);
         EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
-    }
-
-    @Override
-    protected boolean enableLazy() {
-        return false;
     }
 
     @Override
@@ -478,7 +476,7 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
             if (null != lavPlaying) {
                 if (tracks.get(i).getDataId() == track.getDataId()) {
                     lavPlaying.setVisibility(View.VISIBLE);
-                    if (XmPlayerManager.getInstance(mActivity).isPlaying()) {
+                    if (XmPlayerManager.getInstance(this).isPlaying()) {
                         lavPlaying.playAnimation();
                     } else {
                         lavPlaying.pauseAnimation();
@@ -522,7 +520,7 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
             mPagerPopup.dismiss();
         } else {
             mTrackBind.ivSelectPage.animate().rotation(-90).setDuration(200);
-            new XPopup.Builder(mActivity).atView(mTrackBind.clActionbar).setPopupCallback(new SimpleCallback() {
+            new XPopup.Builder(this).atView(mTrackBind.clActionbar).setPopupCallback(new SimpleCallback() {
                 @Override
                 public void onCreated() {
                     super.onCreated();
@@ -553,10 +551,10 @@ public class AlbumDetailFragment extends BaseRefreshFragment<HomeFragmentAlbumDe
             TextView viewByPosition = (TextView) mPagerPopup.getPagerAdapter().getViewByPosition(i, R.id.tv_page);
             if (viewByPosition != null) {
                 if (mViewModel.getUpTrackPage() <= i && i <= mViewModel.getCurTrackPage() - 2) {
-                    viewByPosition.setBackgroundResource(R.drawable.shap_home_pager_selected);
+                    viewByPosition.setBackgroundResource(R.drawable.shap_common_pager_selected);
                     viewByPosition.setTextColor(Color.WHITE);
                 } else {
-                    viewByPosition.setBackgroundResource(R.drawable.shap_home_pager_defualt);
+                    viewByPosition.setBackgroundResource(R.drawable.shap_common_pager_defualt);
                     viewByPosition.setTextColor(getResources().getColor(R.color.textColorPrimary));
                 }
             } else {

@@ -24,7 +24,6 @@ import com.umeng.socialize.PlatformConfig;
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cat.ereza.customactivityoncrash.activity.DefaultErrorActivity;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
-import me.yokeyword.fragmentation.Fragmentation;
 
 public class ThirdHelper {
 
@@ -127,18 +126,6 @@ public class ThirdHelper {
                 .apply();
         //如果没有任何配置，程序崩溃显示的是默认的设置
         CustomActivityOnCrash.install(mApplication);
-        return this;
-    }
-
-
-    public ThirdHelper initFragmentation(boolean isDebug) {
-
-        // 建议在Application里初始化
-        Fragmentation.builder()
-                // 显示悬浮球 ; 其他Mode:SHAKE: 摇一摇唤出   NONE：隐藏
-                .stackViewMode(Fragmentation.BUBBLE)
-                .debug(isDebug)
-                .install();
         return this;
     }
     public ThirdHelper initAspectj(PointHandler handler) {

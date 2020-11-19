@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.home.fragment;
+package com.gykj.zhumulangma.home.activity;
 
 import android.view.View;
 
@@ -12,8 +12,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -29,7 +29,7 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  */
 
 @Route(path = Constants.Router.Home.F_TRACK_LIST)
-public class TrackListFragment extends BaseRefreshFragment<CommonLayoutListBinding, TrackListViewModel, Track> implements
+public class TrackListActivity extends BaseRefreshActivity<CommonLayoutListBinding, TrackListViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener {
 
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
@@ -39,13 +39,14 @@ public class TrackListFragment extends BaseRefreshFragment<CommonLayoutListBindi
     private AnnouncerTrackAdapter mAnnouncerTrackAdapter;
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
     @Override
-    protected void initView() {
-        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+    public void initView() {
+        super.initView();
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerview.setHasFixedSize(true);
         mAnnouncerTrackAdapter = new AnnouncerTrackAdapter(R.layout.home_item_announcer_track);
         mAnnouncerTrackAdapter.bindToRecyclerView(mBinding.recyclerview);
@@ -77,11 +78,6 @@ public class TrackListFragment extends BaseRefreshFragment<CommonLayoutListBindi
     }
 
     @Override
-    protected boolean enableLazy() {
-        return false;
-    }
-
-    @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         Track track = mAnnouncerTrackAdapter.getItem(position);
         mViewModel.play(track.getAlbum().getAlbumId(), track.getDataId());
@@ -94,7 +90,7 @@ public class TrackListFragment extends BaseRefreshFragment<CommonLayoutListBindi
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
     @Override

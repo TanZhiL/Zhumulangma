@@ -1,2 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gykj.zhumulangma.discover" />
+    package="com.gykj.zhumulangma.discover" >
+    <application>
+        <activity android:name=".activity.ScanActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.WebActivity" android:launchMode="singleTask"/>
+    </application>
+</manifest>

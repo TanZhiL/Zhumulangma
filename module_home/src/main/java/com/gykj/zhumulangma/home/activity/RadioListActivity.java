@@ -1,11 +1,12 @@
-package com.gykj.zhumulangma.home.fragment;
+package com.gykj.zhumulangma.home.activity;
 
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -17,8 +18,8 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.ProvinceBean;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.databinding.HomeLayoutRankBarCenterBinding;
@@ -42,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:电台列表
  */
 @Route(path = Constants.Router.Home.F_RADIO_LIST)
-public class RadioListFragment extends BaseRefreshFragment<CommonLayoutListBinding, RadioListViewModel, Radio> implements
+public class RadioListActivity extends BaseRefreshActivity<CommonLayoutListBinding, RadioListViewModel, Radio> implements
         BaseQuickAdapter.OnItemClickListener, RadioProvincePopup.onSelectedListener, RadioProvincePopup.onPopupDismissingListener {
     //本省台
     public static final int LOCAL_PROVINCE = 999;
@@ -70,22 +71,23 @@ public class RadioListFragment extends BaseRefreshFragment<CommonLayoutListBindi
     private List<ProvinceBean> mProvinceBeans;
     private RadioProvincePopup mProvincePopup;
 
-    public RadioListFragment() {
+    public RadioListActivity() {
 
     }
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
+        super.initView();
         String s = ResourceUtils.readAssets2String("province.json");
         mProvinceBeans = new Gson().fromJson(s, new TypeToken<ArrayList<ProvinceBean>>() {
         }.getType());
 
-        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerview.setHasFixedSize(true);
         mRadioAdapter = new RadioAdapter(R.layout.home_item_radio_line);
         mRadioAdapter.bindToRecyclerView(mBinding.recyclerview);
@@ -97,7 +99,7 @@ public class RadioListFragment extends BaseRefreshFragment<CommonLayoutListBindi
             mBarCenterBind.tvTitle.setText(mProvinceBeans.get(0).getProvince_name());
         }
 
-        mProvincePopup = new RadioProvincePopup(mActivity, this);
+        mProvincePopup = new RadioProvincePopup(this, this);
         mProvincePopup.setDismissingListener(this);
     }
 
@@ -141,7 +143,7 @@ public class RadioListFragment extends BaseRefreshFragment<CommonLayoutListBindi
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
     @Override
@@ -169,10 +171,6 @@ public class RadioListFragment extends BaseRefreshFragment<CommonLayoutListBindi
         mViewModel.getInitRadiosEvent().observe(this, radios -> mRadioAdapter.setNewData(radios));
     }
 
-    @Override
-    protected boolean enableLazy() {
-        return false;
-    }
 
     private void switchProvince() {
 
@@ -180,7 +178,7 @@ public class RadioListFragment extends BaseRefreshFragment<CommonLayoutListBindi
             mProvincePopup.dismiss();
         } else {
             mBarCenterBind.ivDown.animate().rotation(180).setDuration(200);
-            new XPopup.Builder(mActivity).atView(mSimpleTitleBar).popupPosition(PopupPosition.Bottom).asCustom(mProvincePopup).show();
+            new XPopup.Builder(this).atView(mSimpleTitleBar).popupPosition(PopupPosition.Bottom).asCustom(mProvincePopup).show();
         }
     }
 

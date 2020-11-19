@@ -1,30 +1,26 @@
-package com.gykj.zhumulangma.home.fragment;
+package com.gykj.zhumulangma.home.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import androidx.lifecycle.ViewModelProvider;
-import android.graphics.Color;
-import android.os.Bundle;
-
-import androidx.annotation.Nullable;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.lifecycle.ViewModelProvider;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.PlayRadioAdapter;
-import com.gykj.zhumulangma.home.databinding.HomeFragmentPlayRadioBinding;
+import com.gykj.zhumulangma.home.databinding.HomeActivityPlayRadioBinding;
 import com.gykj.zhumulangma.home.dialog.PlayRadioPopup;
 import com.gykj.zhumulangma.home.dialog.PlaySchedulePopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -46,8 +42,6 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -62,39 +56,25 @@ import static com.lxj.xpopup.enums.PopupAnimation.TranslateFromBottom;
  * <br/>Description:
  */
 @Route(path = Constants.Router.Home.F_PLAY_RADIIO)
-public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBinding,PlayRadioViewModel> implements
+public class PlayRadioActivity extends BaseMvvmActivity<HomeActivityPlayRadioBinding,PlayRadioViewModel> implements
         View.OnClickListener, PlaySchedulePopup.onSelectedListener, IXmPlayerStatusListener,
         IXmAdsStatusListener, OnSeekChangeListener, View.OnTouchListener {
     private PlaySchedulePopup mSchedulePopup;
-    private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(mActivity);
+    private final XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(this);
     private Schedule mSchedule;
     private boolean isPlaying;
 
     private PlayRadioPopup mPlayRadioPopup;
 
     @Override
-    protected int onBindLayout() {
-        return R.layout.home_fragment_play_radio;
+    public int onBindLayout() {
+        return R.layout.home_activity_play_radio;
     }
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mView.setBackgroundColor(Color.WHITE);
-    }
-    @Override
-    protected boolean enableSwipeBack() {
-        return false;
-    }
-    @Override
-    protected void loadView() {
-        super.loadView();
-        clearStatus();
-    }
-    @Override
-    protected void initView() {
+    public void initView() {
         mSimpleTitleBar.getLeftCustomView().findViewById(R.id.iv_left).setRotation(-90);
         mBinding.includeItemRadio.ivItemPlay.setVisibility(View.GONE);
-        mSchedulePopup = new PlaySchedulePopup(mActivity, this);
+        mSchedulePopup = new PlaySchedulePopup(this, this);
         mHandler.postDelayed(() -> {
             if (mPlayerManager.isPlaying()) {
                 if (mPlayerManager.isAdPlaying()) {
@@ -105,7 +85,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
             }
         }, 100);
 
-        mPlayRadioPopup=new PlayRadioPopup(mActivity);
+        mPlayRadioPopup=new PlayRadioPopup(this);
     }
 
     @Override
@@ -126,7 +106,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
 
     @Override
     public void initData() {
-        mHandler.postDelayed(() -> {
+        postDelayed(() -> {
             try {
                 mSchedule = (Schedule) mPlayerManager.getCurrSound();
                 setTitle(new String[]{mSchedule.getRadioName()});
@@ -154,9 +134,9 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
             } catch (Exception e) {
                 e.printStackTrace();
                 ToastUtil.showToast("网络异常");
-                pop();
+                finish();
             }
-        }, 200);
+        }, 0);
 
     }
 
@@ -218,15 +198,15 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
             if (null != lavPlaying && tvTitle != null) {
                 if (schedules.get(i).getDataId() == schedule.getDataId()) {
                     lavPlaying.setVisibility(View.VISIBLE);
-                    tvTitle.setTextColor(mActivity.getResources().getColor(R.color.colorPrimary));
-                    if (XmPlayerManager.getInstance(mActivity).isPlaying()) {
+                    tvTitle.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    if (XmPlayerManager.getInstance(this).isPlaying()) {
                         lavPlaying.playAnimation();
                     } else {
                         lavPlaying.pauseAnimation();
                     }
                 } else {
                     lavPlaying.cancelAnimation();
-                    tvTitle.setTextColor(mActivity.getResources().getColor(R.color.textColorPrimary));
+                    tvTitle.setTextColor(getResources().getColor(R.color.textColorPrimary));
                     lavPlaying.setVisibility(View.GONE);
                 }
             }else {
@@ -253,7 +233,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        new XPopup.Builder(getContext()).setPopupCallback(new SimpleCallback(){
+        new XPopup.Builder(this).setPopupCallback(new SimpleCallback(){
             @Override
             public void beforeShow() {
                 super.beforeShow();
@@ -265,48 +245,30 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
     @Override
     public void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
-        pop();
+        finish();
     }
 
     @Override
-    public boolean onBackPressedSupport() {
-        if(super.onBackPressedSupport()){
-            return true;
-        }else if (mSchedulePopup != null && mSchedulePopup.getPickerView() != null && mSchedulePopup.getPickerView().isShowing()) {
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (mSchedulePopup != null && mSchedulePopup.getPickerView() != null && mSchedulePopup.getPickerView().isShowing()) {
             mSchedulePopup.getPickerView().dismiss();
-            return true;
+        }else {
+            finish();
         }
-        return false;
-    }
-
-    @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.HIDE_GP));
-    }
-
-    @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
-        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHOW_GP));
-    }
-
-    @Override
-    protected boolean enableLazy() {
-        return false;
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.iv_history || id == R.id.tv_history) {
-            pop();
+            finish();
             RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
         } else if (id == R.id.iv_play_list || id == R.id.tv_play_list) {
             if(mSchedule==null){
                 return;
             }
-            new XPopup.Builder(getContext()).popupAnimation(TranslateFromBottom).setPopupCallback(new SimpleCallback() {
+            new XPopup.Builder(this).popupAnimation(TranslateFromBottom).setPopupCallback(new SimpleCallback() {
                 @Override
                 public void onCreated() {
                     super.onCreated();
@@ -337,9 +299,9 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
     }
 
     @Override
-    public void onNewBundle(Bundle args) {
-        super.onNewBundle(args);
-        mHandler.postDelayed(()->{
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        postDelayed(()->{
             if(mSchedule==null){
                 return;
             }
@@ -550,7 +512,7 @@ public class PlayRadioFragment extends BaseMvvmFragment<HomeFragmentPlayRadioBin
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
     @Override

@@ -1,3 +1,4 @@
+/*
 package com.gykj.zhumulangma.discover.fragment;
 
 import android.graphics.Bitmap;
@@ -6,19 +7,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
-import com.alibaba.android.arouter.facade.annotation.Route;
-import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
 import com.gykj.zhumulangma.discover.R;
 import com.gykj.zhumulangma.discover.databinding.DiscoverFragmentWebBinding;
+import com.just.agentweb.AgentWeb;
+import com.just.agentweb.WebIndicator;
 import com.just.agentwebX5.AgentWebX5;
 import com.just.agentwebX5.ChromeClientCallbackManager;
 import com.just.agentwebX5.DefaultWebClient;
@@ -39,13 +41,14 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
+*/
 /**
  * Author: Thomas.
  * <br/>Date: 2019/9/25 15:44
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:
- */
-@Route(path = Constants.Router.Discover.F_WEB)
+ *//*
+
 public class WebFragment extends BaseFragment<DiscoverFragmentWebBinding> {
     private AgentWebX5 mAgentWeb;
     @Autowired(name = KeyCode.Discover.PATH)
@@ -81,8 +84,7 @@ public class WebFragment extends BaseFragment<DiscoverFragmentWebBinding> {
 
     @Override
     public void initData() {
-
-        mAgentWeb = AgentWebX5.with(this)
+        mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(mBinding.flContainer, new FrameLayout.LayoutParams(-1, -1))
                 .setIndicatorColorWithHeight(getResources().getColor(R.color.colorPrimary), 1)
                 .setWebSettings(getSettings())
@@ -279,3 +281,4 @@ public class WebFragment extends BaseFragment<DiscoverFragmentWebBinding> {
         EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE, new ShareAction(mActivity).withMedia(web)));
     }
 }
+*/

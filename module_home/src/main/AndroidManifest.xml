@@ -1,2 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gykj.zhumulangma.home" />
+    package="com.gykj.zhumulangma.home" >
+    <application>
+        <activity android:name=".activity.PlayTrackActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.PlayRadioActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.AlbumDetailActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.AlbumListActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.AnnouncerDetailActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.AnnouncerListActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.RadioListActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.RankActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.TrackListActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.SearchActivity" android:launchMode="singleTask"/>
+    </application>
+</manifest>

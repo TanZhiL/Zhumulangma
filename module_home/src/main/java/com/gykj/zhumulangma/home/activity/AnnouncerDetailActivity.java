@@ -1,17 +1,18 @@
-package com.gykj.zhumulangma.home.fragment;
+package com.gykj.zhumulangma.home.activity;
 
-import androidx.lifecycle.ViewModelProvider;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -26,13 +27,13 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.NeedLogin;
 import com.gykj.zhumulangma.common.bean.AnnouncerCategoryBean;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.adapter.AnnouncerTrackAdapter;
-import com.gykj.zhumulangma.home.databinding.HomeFragmentAnnouncerDetailBinding;
+import com.gykj.zhumulangma.home.databinding.HomeActivityAnnouncerDetailBinding;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerDetailViewModel;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
@@ -51,7 +52,7 @@ import java.util.List;
  * <br/>Description:主播详情页
  */
 @Route(path = Constants.Router.Home.F_ANNOUNCER_DETAIL)
-public class AnnouncerDetailFragment extends BaseRefreshFragment<HomeFragmentAnnouncerDetailBinding, AnnouncerDetailViewModel, Object>
+public class AnnouncerDetailActivity extends BaseRefreshActivity<HomeActivityAnnouncerDetailBinding, AnnouncerDetailViewModel, Object>
         implements View.OnClickListener, BaseQuickAdapter.OnItemClickListener {
 
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
@@ -69,17 +70,18 @@ public class AnnouncerDetailFragment extends BaseRefreshFragment<HomeFragmentAnn
 
 
     @Override
-    protected int onBindLayout() {
-        return R.layout.home_fragment_announcer_detail;
+    public int onBindLayout() {
+        return R.layout.home_activity_announcer_detail;
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
+        super.initView();
         initBar();
         mBinding.rvAlbum.setHasFixedSize(true);
         mBinding.rvTrack.setHasFixedSize(true);
-        mBinding.rvAlbum.setLayoutManager(new LinearLayoutManager(mActivity));
-        mBinding.rvTrack.setLayoutManager(new LinearLayoutManager(mActivity));
+        mBinding.rvAlbum.setLayoutManager(new LinearLayoutManager(this));
+        mBinding.rvTrack.setLayoutManager(new LinearLayoutManager(this));
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_line);
         mTrackAdapter = new AnnouncerTrackAdapter(R.layout.home_item_announcer_track);
         mAlbumAdapter.bindToRecyclerView(mBinding.rvAlbum);
@@ -152,7 +154,7 @@ public class AnnouncerDetailFragment extends BaseRefreshFragment<HomeFragmentAnn
         mTrackAdapter.setOnItemClickListener(this);
         mBinding.ihAlbum.setOnClickListener(v ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
-                        .withInt(KeyCode.Home.TYPE, AlbumListFragment.ANNOUNCER)
+                        .withInt(KeyCode.Home.TYPE, AlbumListActivity.ANNOUNCER)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerId)
                         .withString(KeyCode.Home.TITLE, mAnnouncerName)));
         mBinding.ihTrack.setOnClickListener(v ->
@@ -181,7 +183,7 @@ public class AnnouncerDetailFragment extends BaseRefreshFragment<HomeFragmentAnn
     public void initViewObservable() {
         mViewModel.getAnnouncerEvent().observe(this, announcer -> {
             mAnnouncer = announcer;
-            Glide.with(mActivity).load(announcer.getAvatarUrl()).into(mBinding.ivAvatar);
+            Glide.with(this).load(announcer.getAvatarUrl()).into(mBinding.ivAvatar);
             mBinding.tvNick.setText(announcer.getNickname());
             mBinding.tvFans.setText("关注  " + ZhumulangmaUtil.toWanYi(announcer.getFollowingCount())
                     + "  |  粉丝  " + ZhumulangmaUtil.toWanYi(announcer.getFollowerCount()));
@@ -233,7 +235,7 @@ public class AnnouncerDetailFragment extends BaseRefreshFragment<HomeFragmentAnn
     public void onClick(View v) {
         int id = v.getId();
         if (v == ivWhiteLeft || v == ivTransLeft) {
-            pop();
+            finish();
         } else if (id == R.id.tv_more) {
             RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_LIST)
                     .withLong(KeyCode.Home.CATEGORY_ID, mAnnouncer.getvCategoryId())
@@ -255,12 +257,7 @@ public class AnnouncerDetailFragment extends BaseRefreshFragment<HomeFragmentAnn
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
-    }
-
-    @Override
-    protected boolean enableLazy() {
-        return false;
+        return ViewModelFactory.getInstance(getApplication());
     }
 
     @Override

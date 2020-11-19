@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.listen.fragment;
+package com.gykj.zhumulangma.listen.activity;
 
 import android.app.AlertDialog;
 import android.view.View;
@@ -12,8 +12,8 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.HistoryAdapter;
 import com.gykj.zhumulangma.listen.bean.PlayHistoryItem;
@@ -30,19 +30,20 @@ import java.util.List;
  * <br/>Description:
  */
 @Route(path = Constants.Router.Listen.F_HISTORY)
-public class HistoryFragment extends BaseRefreshFragment<CommonLayoutListBinding,HistoryViewModel, PlayHistoryItem> implements
+public class HistoryActivity extends BaseRefreshActivity<CommonLayoutListBinding,HistoryViewModel, PlayHistoryItem> implements
         BaseQuickAdapter.OnItemClickListener {
 
     private HistoryAdapter mHistoryAdapter;
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
     @Override
-    protected void initView() {
-        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+    public void initView() {
+        super.initView();
+        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mBinding.recyclerview.setHasFixedSize(true);
         mHistoryAdapter = new HistoryAdapter(null);
         mHistoryAdapter.bindToRecyclerView(mBinding.recyclerview);
@@ -83,7 +84,7 @@ public class HistoryFragment extends BaseRefreshFragment<CommonLayoutListBinding
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
     @Override
@@ -118,7 +119,7 @@ public class HistoryFragment extends BaseRefreshFragment<CommonLayoutListBinding
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        new AlertDialog.Builder(mActivity)
+        new AlertDialog.Builder(this)
                 .setMessage("确定要清空播放历史吗?")
                 .setNegativeButton("取消", (dialog, which) -> dialog.dismiss())
                 .setPositiveButton("确定", (dialog, which) -> {
@@ -126,11 +127,6 @@ public class HistoryFragment extends BaseRefreshFragment<CommonLayoutListBinding
                     mHistoryAdapter.getData().clear();
                     showEmptyView();
                 }).show();
-    }
-
-    @Override
-    protected boolean enableLazy() {
-        return false;
     }
 
     @Override

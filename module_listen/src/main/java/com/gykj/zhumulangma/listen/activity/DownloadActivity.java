@@ -1,4 +1,4 @@
-package com.gykj.zhumulangma.listen.fragment;
+package com.gykj.zhumulangma.listen.activity;
 
 
 import android.util.Log;
@@ -21,12 +21,12 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
-import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
+import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.widget.CircleProgressBar;
@@ -34,7 +34,7 @@ import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.DownloadAlbumAdapter;
 import com.gykj.zhumulangma.listen.adapter.DownloadTrackAdapter;
 import com.gykj.zhumulangma.listen.adapter.DownloadingAdapter;
-import com.gykj.zhumulangma.listen.databinding.ListenFragmentDownloadBinding;
+import com.gykj.zhumulangma.listen.databinding.ListenActivityDownloadBinding;
 import com.gykj.zhumulangma.listen.databinding.ListenLayoutDownloadAlbumBinding;
 import com.gykj.zhumulangma.listen.databinding.ListenLayoutDownloadTrackBinding;
 import com.gykj.zhumulangma.listen.databinding.ListenLayoutDownloadingBinding;
@@ -68,7 +68,7 @@ import java.util.List;
  * <br/>Description:下载页
  */
 @Route(path = Constants.Router.Listen.F_DOWNLOAD)
-public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBinding, DownloadViewModel>
+public class DownloadActivity extends BaseMvvmActivity<ListenActivityDownloadBinding, DownloadViewModel>
         implements BaseQuickAdapter.OnItemChildClickListener,BaseQuickAdapter.OnItemClickListener,
         View.OnClickListener {
     @Autowired(name = KeyCode.Listen.TAB_INDEX)
@@ -86,24 +86,19 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
     private XmDownloadManager mDownloadManager = XmDownloadManager.getInstance();
 
 
-    public DownloadFragment() {
+    public DownloadActivity() {
 
     }
 
 
     @Override
-    protected int onBindLayout() {
-        return R.layout.listen_fragment_download;
+    public int onBindLayout() {
+        return R.layout.listen_activity_download;
     }
 
+    
     @Override
-    protected void loadView() {
-        super.loadView();
-        clearStatus();
-    }
-
-    @Override
-    protected void initView() {
+    public void initView() {
         String[] tabs = {"专辑", "声音", "下载中"};
         mAlbumBind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.listen_layout_download_album, null, false);
         mTrackBind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.listen_layout_download_track, null, false);
@@ -111,32 +106,32 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
 
 
         mAlbumBind.recyclerview.setHasFixedSize(true);
-        mAlbumBind.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mAlbumBind.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mAlbumAdapter = new DownloadAlbumAdapter(R.layout.listen_item_download_album);
         mAlbumAdapter.bindToRecyclerView(mAlbumBind.recyclerview);
         mAlbumAdapter.setEmptyView(R.layout.common_layout_empty);
 
 
         mTrackBind.recyclerview.setHasFixedSize(true);
-        mTrackBind.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mTrackBind.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mTrackAdapter = new DownloadTrackAdapter(R.layout.listen_item_download_track);
         mTrackAdapter.bindToRecyclerView(mTrackBind.recyclerview);
         mTrackAdapter.setEmptyView(R.layout.common_layout_empty);
 
 
         mDownloadingBind.recyclerview.setHasFixedSize(true);
-        mDownloadingBind.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mDownloadingBind.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mDownloadingAdapter = new DownloadingAdapter(R.layout.listen_item_downloading);
         mDownloadingAdapter.bindToRecyclerView(mDownloadingBind.recyclerview);
         mDownloadingAdapter.setEmptyView(R.layout.common_layout_empty);
 
         mBinding.viewpager.setAdapter(new TPagerAdapter(
                 mAlbumBind.getRoot(),mTrackBind.getRoot(),mDownloadingBind.getRoot()));
-        final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
+        final CommonNavigator commonNavigator = new CommonNavigator(this);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), mBinding.viewpager, 50));
         commonNavigator.setAdjustMode(true);
         magicIndicator.setNavigator(commonNavigator);
-        TViewPagerHelper.bind(magicIndicator, mBinding.viewpager);
+        ViewPagerHelper.bind(magicIndicator, mBinding.viewpager);
         //viewpager2的坑,在尚未绘制完成前只能使用以下方式代替mBinding.viewpager.setCurrentItem(mTabIndex);
         RecyclerView recyclerView = (RecyclerView)mBinding.viewpager.getChildAt(0);
         recyclerView.scrollToPosition(mTabIndex);
@@ -173,14 +168,14 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
         mDownloadingBind.ivClear.setOnClickListener(this);
 
         mDownloadManager.addDownloadStatueListener(downloadStatueListener);
-        XmPlayerManager.getInstance(mActivity).addPlayerStatusListener(playerStatusListener);
+        XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
     }
 
     @Override
     public void initData() {
         mBinding.tvMemory.setText(getString(R.string.memory,
                 mDownloadManager.getHumanReadableDownloadOccupation(IDownloadManager.Auto),
-                SystemUtil.getRomTotalSize(mActivity)));
+                SystemUtil.getRomTotalSize(this)));
         mAlbumAdapter.setNewData(mDownloadManager.getDownloadAlbums(true));
 
         mViewModel.getDownloadTracks();
@@ -248,7 +243,7 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
 
@@ -266,23 +261,23 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
                         ivStatus.setImageResource(R.drawable.ic_listen_waiting);
                         tvStatus.setText("待下载");
                         tvStatus.setTextColor(getResources().getColor(R.color.colorGray));
-                        progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorGray));
+                        progressBar.setSecondColor(this.getResources().getColor(R.color.colorGray));
                     } else {
                         ivStatus.setImageResource(R.drawable.ic_listen_pause);
                         tvStatus.setText("下载中");
                         tvStatus.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorPrimary));
+                        progressBar.setSecondColor(this.getResources().getColor(R.color.colorPrimary));
                     }
                 } else if (downloadStatus == DownloadState.STARTED) {
                     ivStatus.setImageResource(R.drawable.ic_listen_pause);
                     tvStatus.setText("下载中");
                     tvStatus.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorPrimary));
+                    progressBar.setSecondColor(this.getResources().getColor(R.color.colorPrimary));
                 } else if (downloadStatus == DownloadState.STOPPED) {
                     ivStatus.setImageResource(R.drawable.ic_listen_download);
                     tvStatus.setText("已暂停");
                     tvStatus.setTextColor(getResources().getColor(R.color.colorGray));
-                    progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorGray));
+                    progressBar.setSecondColor(this.getResources().getColor(R.color.colorGray));
                 }
             } else {
                 mDownloadingAdapter.notifyItemChanged(index);
@@ -318,7 +313,7 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
                 e.printStackTrace();
             }
         } else if (adapter == mTrackAdapter) {
-            XmPlayerManager.getInstance(mActivity).playList(mTrackAdapter.getData(), position);
+            XmPlayerManager.getInstance(this).playList(mTrackAdapter.getData(), position);
             RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
         } else if (adapter == mAlbumAdapter) {
             RouterUtil.navigateTo(mRouter.build(Constants.Router.Listen.F_DOWNLOAD_ALBUM)
@@ -366,7 +361,7 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
     }
 
     private void updatePlayStatus(int currPos, int duration) {
-        Track track = XmPlayerManager.getInstance(mActivity).getCurrSoundIgnoreKind(true);
+        Track track = XmPlayerManager.getInstance(this).getCurrSoundIgnoreKind(true);
         if (null == track) {
             return;
         }
@@ -441,8 +436,8 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
 
     @Override
     public View onBindBarCenterCustome() {
-        magicIndicator = new MagicIndicator(mActivity);
-        FrameLayout frameLayout = new FrameLayout(mActivity);
+        magicIndicator = new MagicIndicator(this);
+        FrameLayout frameLayout = new FrameLayout(this);
         frameLayout.addView(magicIndicator);
         ViewGroup.LayoutParams layoutParams = magicIndicator.getLayoutParams();
         layoutParams.width = SizeUtils.dp2px(270);
@@ -455,7 +450,7 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
     public void onDestroy() {
         super.onDestroy();
         mDownloadManager.removeDownloadStatueListener(downloadStatueListener);
-        XmPlayerManager.getInstance(mActivity).removePlayerStatusListener(playerStatusListener);
+        XmPlayerManager.getInstance(this).removePlayerStatusListener(playerStatusListener);
     }
 
     private IXmPlayerStatusListener playerStatusListener = new IXmPlayerStatusListener() {
@@ -564,7 +559,7 @@ public class DownloadFragment extends BaseMvvmFragment<ListenFragmentDownloadBin
             if (index != -1) {
                 CircleProgressBar progressBar = (CircleProgressBar) mDownloadingAdapter.getViewByPosition(index, R.id.cpb_progress);
                 if (progressBar != null) {
-                    progressBar.setSecondColor(mActivity.getResources().getColor(R.color.colorPrimary));
+                    progressBar.setSecondColor(getResources().getColor(R.color.colorPrimary));
                     progressBar.setProgress((int) (l1 * 100 / l));
                 } else {
                     mDownloadingAdapter.notifyItemChanged(index);

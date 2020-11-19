@@ -1,30 +1,31 @@
-package com.gykj.zhumulangma.home.fragment;
+package com.gykj.zhumulangma.home.activity;
 
 
-import androidx.lifecycle.ViewModelProvider;
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager.widget.PagerAdapter;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
-import com.gykj.zhumulangma.common.extra.TViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
+import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RankFreeAdapter;
 import com.gykj.zhumulangma.home.adapter.RankPaidAdapter;
-import com.gykj.zhumulangma.home.databinding.HomeFragmentRankBinding;
+import com.gykj.zhumulangma.home.databinding.HomeActivityRankBinding;
 import com.gykj.zhumulangma.home.databinding.HomeLayoutRankBarCenterBinding;
 import com.gykj.zhumulangma.home.dialog.RankCategoryPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -49,7 +50,7 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:排行榜
  */
 @Route(path = Constants.Router.Home.F_RANK)
-public class RankFragment extends BaseRefreshFragment<HomeFragmentRankBinding, RankViewModel, Album> implements
+public class RankActivity extends BaseRefreshActivity<HomeActivityRankBinding, RankViewModel, Album> implements
         RankCategoryPopup.onSelectedListener, RankCategoryPopup.onPopupDismissingListener {
 
     private RankFreeAdapter mFreeAdapter;
@@ -64,24 +65,24 @@ public class RankFragment extends BaseRefreshFragment<HomeFragmentRankBinding, R
     private HomeLayoutRankBarCenterBinding mBindBarCenter;
     private RankCategoryPopup mCategoryPopup;
 
-    public RankFragment() {
+    public RankActivity() {
     }
 
     @Override
-    protected int onBindLayout() {
-        return R.layout.home_fragment_rank;
+    public int onBindLayout() {
+        return R.layout.home_activity_rank;
     }
 
     @Override
     public void initView() {
-
+        super.initView();
         mBindBarCenter.ivDown.setVisibility(View.VISIBLE);
         mBindBarCenter.tvTitle.setText("热门");
         mFreeBind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.common_layout_list, null, false);
         mPaidBind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.common_layout_list, null, false);
 
-        mFreeBind.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
-        mPaidBind.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        mFreeBind.recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        mPaidBind.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mFreeAdapter = new RankFreeAdapter(R.layout.home_item_rank_free);
         mPaidAdapter = new RankPaidAdapter(R.layout.home_item_rank_paid);
         mFreeBind.recyclerview.setHasFixedSize(true);
@@ -90,13 +91,13 @@ public class RankFragment extends BaseRefreshFragment<HomeFragmentRankBinding, R
         mPaidAdapter.bindToRecyclerView(mPaidBind.recyclerview);
 
         mBinding.viewpager.setAdapter(new TPagerAdapter(mFreeBind.getRoot()));
-        final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
+        final CommonNavigator commonNavigator = new CommonNavigator(this);
         commonNavigator.setAdjustMode(true);
         commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(mTabs), mBinding.viewpager, 125));
         mBinding.magicIndicator.setNavigator(commonNavigator);
-        TViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
+        ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
 
-        mCategoryPopup = new RankCategoryPopup(mActivity, this);
+        mCategoryPopup = new RankCategoryPopup(this, this);
         mCategoryPopup.setDismissingListener(this);
 
     }
@@ -136,7 +137,7 @@ public class RankFragment extends BaseRefreshFragment<HomeFragmentRankBinding, R
             mCategoryPopup.dismiss();
         } else {
             mBindBarCenter.ivDown.animate().rotation(180).setDuration(200);
-            new XPopup.Builder(mActivity).atView(mSimpleTitleBar).popupPosition(PopupPosition.Bottom).asCustom(mCategoryPopup).show();
+            new XPopup.Builder(this).atView(mSimpleTitleBar).popupPosition(PopupPosition.Bottom).asCustom(mCategoryPopup).show();
         }
     }
 
@@ -147,7 +148,7 @@ public class RankFragment extends BaseRefreshFragment<HomeFragmentRankBinding, R
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
-        return ViewModelFactory.getInstance(mApplication);
+        return ViewModelFactory.getInstance(getApplication());
     }
 
     @Override
@@ -235,12 +236,6 @@ public class RankFragment extends BaseRefreshFragment<HomeFragmentRankBinding, R
     public View onBindBarCenterCustome() {
         mBindBarCenter = DataBindingUtil.inflate(getLayoutInflater(), R.layout.home_layout_rank_bar_center, null, false);
         return mBindBarCenter.getRoot();
-    }
-
-
-    @Override
-    protected boolean enableLazy() {
-        return false;
     }
 
     @Override

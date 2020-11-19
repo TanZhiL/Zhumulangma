@@ -21,6 +21,7 @@ import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.home.activity.RadioListActivity;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.adapter.RadioHistoryAdapter;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentRadioBinding;
@@ -48,7 +49,7 @@ public class RadioFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
 
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.home_fragment_radio;
     }
 
@@ -65,7 +66,7 @@ public class RadioFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         initHistory();
         initLocal();
         initTop();
@@ -82,7 +83,7 @@ public class RadioFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         mBinding.llInternet.setOnClickListener(this);
         mBinding.ihTop.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                        .withInt(KeyCode.Home.TYPE, RadioListFragment.RANK)
+                        .withInt(KeyCode.Home.TYPE, RadioListActivity.RANK)
                         .withString(KeyCode.Home.TITLE, "排行榜")));
         mBinding.ihHistory.setOnClickListener(view -> RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY));
         mBinding.ihLocal.setOnClickListener(view -> mViewModel.navigateToCity());
@@ -190,9 +191,10 @@ public class RadioFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
                 }, Throwable::printStackTrace);
     }
 
+
     @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
+    protected void onRevisible() {
+        super.onRevisible();
         mViewModel.getHistory();
     }
 
@@ -209,15 +211,15 @@ public class RadioFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
             mViewModel.navigateToProvince();
         } else if (id == R.id.ll_country) {
             RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                    .withInt(KeyCode.Home.TYPE, RadioListFragment.COUNTRY)
+                    .withInt(KeyCode.Home.TYPE, RadioListActivity.COUNTRY)
                     .withString(KeyCode.Home.TITLE, "国家台"));
         } else if (id == R.id.ll_province) {
             RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                    .withInt(KeyCode.Home.TYPE, RadioListFragment.PROVINCE)
+                    .withInt(KeyCode.Home.TYPE, RadioListActivity.PROVINCE)
                     .withString(KeyCode.Home.TITLE, "省市台"));
         } else if (id == R.id.ll_internet) {
             RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                    .withInt(KeyCode.Home.TYPE, RadioListFragment.INTERNET)
+                    .withInt(KeyCode.Home.TYPE, RadioListActivity.INTERNET)
                     .withString(KeyCode.Home.TITLE, "网络台"));
         }
     }
@@ -227,7 +229,7 @@ public class RadioFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Home.TAB_REFRESH:
-                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+                if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     mBinding.nsv.scrollTo(0, 0);
                     mBinding.refreshLayout.autoRefresh();
                 }

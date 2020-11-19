@@ -28,8 +28,6 @@ public interface Constants {
             String F_PLAY_TRACK = "/home/play/track";
             String F_PLAY_RADIIO = "/home/play/radio";
             String F_ANNOUNCER_DETAIL = "/home/announcer/detail";
-            String F_BATCH_DOWNLOAD = "/home/batch/download";
-            String F_SCAN = "/home/scan";
         }
 
         interface User {
@@ -40,6 +38,7 @@ public interface Constants {
         interface Discover {
             String F_MAIN = "/discover/main";
             String F_WEB = "/discover/web";
+            String F_SCAN = "/discover/scan";
         }
 
         interface Listen {
@@ -50,6 +49,7 @@ public interface Constants {
             String F_DOWNLOAD_ALBUM = "/listen/download/album";
             String F_HISTORY = "/listen/history";
             String F_FAVORITE = "/listen/favorite";
+            String F_BATCH_DOWNLOAD = "/listen/batch/download";
         }
 
     }
