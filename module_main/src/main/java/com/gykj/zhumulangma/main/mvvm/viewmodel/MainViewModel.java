@@ -98,14 +98,14 @@ public class MainViewModel extends BaseViewModel<MainModel> {
     }
 
     public void playRadio(String radioId) {
-        mModel.getSchedulesSource(radioId)
+       /* mModel.getSchedulesSource(radioId)
                 .doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(schedules ->
                 {
                     XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
                     RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
-                }, Throwable::printStackTrace);
+                }, Throwable::printStackTrace);*/
 
     }
 

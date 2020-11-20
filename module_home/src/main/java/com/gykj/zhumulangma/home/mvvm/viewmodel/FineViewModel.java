@@ -6,23 +6,23 @@ import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.bean.BannerBean;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
+import com.gykj.zhumulangma.common.net.dto.BannerDTO;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
-import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
-import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -30,9 +30,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.internal.functions.Functions;
 
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.OPERATION_CATEGORY_ID;
+
 public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> {
 
-    private SingleLiveEvent<List<BannerV2>> mBannerV2Event;
+    private SingleLiveEvent<List<BannerBean>> mBannerV2Event;
     private SingleLiveEvent<List<Album>> mDailysEvent;
     private SingleLiveEvent<List<Album>> mBooksEvent;
     private SingleLiveEvent<List<Album>> mClassRoomsEvent;
@@ -61,25 +64,15 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album>
     public void init() {
         //获取banner
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.CATEGORY_ID, "4");
-        map.put(DTransferConstants.IMAGE_SCALE, "2");
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(3 + new Random().nextInt(5)));
+        map.put(OPERATION_CATEGORY_ID, "4");
+        map.put(IS_PAID, "0");
         //是否需要输出付费内容：true-是；false-否；（默认不输出付费内容）
 //        map.put(DTransferConstants.CONTAINS_PAID,"true");
         mModel.getCategoryBannersV2(map)
-                .doOnNext(bannerV2List ->
-                {
-                    List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
-                    Iterator<BannerV2> iterator = bannerV2s.iterator();
-                    while (iterator.hasNext()) {
-                        BannerV2 next = iterator.next();
-                        if (next.getBannerContentType() == 5 || next.getBannerContentType() == 6) {
-                            iterator.remove();
-                        }
-                    }
-                    getBannerV2Event().setValue(bannerV2s);
-                })
+                .doOnNext((BannerDTO bannerV2List) -> getBannerV2Event().setValue(bannerV2List.getBanners()))
                 //每日优选
-                .flatMap((Function<BannerV2List, ObservableSource<AlbumList>>) bannerV2List -> getDailyListObservable())
+                .flatMap((Function<BannerDTO, ObservableSource<AlbumList>>) bannerV2List -> getDailyListObservable())
                 //有声书
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getBookListObservable())
                 //小课堂
@@ -184,7 +177,7 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album>
                 }, Throwable::printStackTrace);
     }
 
-    public SingleLiveEvent<List<BannerV2>> getBannerV2Event() {
+    public SingleLiveEvent<List<BannerBean>> getBannerV2Event() {
         return mBannerV2Event = createLiveData(mBannerV2Event);
     }
 

@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.adapter.TBannerImageAdapter;
+import com.gykj.zhumulangma.common.bean.BannerBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.extra.GlideImageLoader;
-import com.gykj.zhumulangma.common.mvvm.view.status.HotSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.HotSkeleton;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.activity.AlbumListActivity;
@@ -28,12 +29,9 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.kingja.loadsir.callback.Callback;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
-import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
-import com.youth.banner.BannerConfig;
+import com.youth.banner.config.IndicatorConfig;
+import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: Thomas.
@@ -41,8 +39,8 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:热门
  */
-public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, HotViewModel, Album> implements OnBannerListener,
-        View.OnClickListener {
+public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, HotViewModel, Album>
+        implements OnBannerListener,View.OnClickListener {
 
     private HotLikeAdapter mLikeAdapter;
     private AlbumAdapter mStoryAdapter;
@@ -137,9 +135,9 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     }
 
     private void initBanner() {
-        mBinding.banner.setIndicatorGravity(BannerConfig.RIGHT);
-        mBinding.banner.setDelayTime(3000);
-        mBinding.banner.setOnBannerListener(this);
+        mBinding.banner.addBannerLifecycleObserver(this);
+        mBinding.banner.setIndicator(new CircleIndicator(mActivity));
+        mBinding.banner.setIndicatorGravity(IndicatorConfig.Direction.RIGHT);
     }
 
     private void initLike() {
@@ -199,11 +197,8 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     @Override
     public void initViewObservable() {
         mViewModel.getBannerV2Event().observe(this, bannerV2s -> {
-            List<String> images = new ArrayList<>();
-            for (BannerV2 bannerV2 : bannerV2s) {
-                images.add(bannerV2.getBannerUrl());
-            }
-            mBinding.banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
+            mBinding.banner.setAdapter(new TBannerImageAdapter(bannerV2s));
+            mBinding.banner.setOnBannerListener(this);
         });
         mViewModel.getLikesEvent().observe(this, albums -> mLikeAdapter.setNewData(albums));
         mViewModel.getStorysEvent().observe(this, albums -> mStoryAdapter.setNewData(albums));
@@ -212,38 +207,6 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
         mViewModel.getRadiosEvent().observe(this, radios -> mRadioAdapter.setNewData(radios));
     }
 
-    @Override
-    public void OnBannerClick(int position) {
-        BannerV2 bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
-        switch (bannerV2.getBannerContentType()) {
-            case 2:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
-                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId()));
-                break;
-            case 3:
-                mViewModel.playTrack(bannerV2.getTrackId());
-
-                break;
-            case 1:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
-                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid()));
-                break;
-        }
-    }
-
-    @Override
-    protected void onRevisible() {
-        super.onRevisible();
-        if (mBinding != null)
-            mBinding.banner.startAutoPlay();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (null != mBinding)
-            mBinding.banner.stopAutoPlay();
-    }
 
     @Override
     protected boolean enableLazy() {
@@ -287,6 +250,27 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
         } else if (id == R.id.layout_ad) {
             RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
                     .withString(KeyCode.Discover.PATH, "https://m.ximalaya.com/"));
+        }
+    }
+
+    @Override
+    public void OnBannerClick(Object data, int position) {
+        BannerBean bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
+        switch (bannerV2.getBanner_content_type()) {
+            case 2:
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getBanner_content_id()));
+                break;
+            case 3:
+                mViewModel.playTrack(bannerV2.getBanner_content_id());
+                break;
+            case 1:
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBanner_content_id()));
+            case 4:
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
+                        .withLong(KeyCode.Discover.PATH, bannerV2.getBanner_content_id()));
+                break;
         }
     }
 }

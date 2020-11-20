@@ -8,10 +8,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.adapter.TBannerImageAdapter;
+import com.gykj.zhumulangma.common.bean.BannerBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
@@ -20,12 +21,9 @@ import com.gykj.zhumulangma.home.databinding.HomeFragmentFineBinding;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
-import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
-import com.youth.banner.BannerConfig;
+import com.youth.banner.config.IndicatorConfig;
+import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Author: Thomas.
@@ -67,7 +65,6 @@ public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, F
     @Override
     public void initListener() {
         super.initListener();
-        mBinding.banner.setOnBannerListener(this);
         mBinding.dailyRefresh.setOnClickListener(this);
         mBinding.bookRefresh.setOnClickListener(this);
         mBinding.classroomRefresh.setOnClickListener(this);
@@ -90,11 +87,8 @@ public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, F
     @Override
     public void initViewObservable() {
         mViewModel.getBannerV2Event().observe(this, bannerV2s -> {
-            List<String> images = new ArrayList<>();
-            for (BannerV2 bannerV2 : bannerV2s) {
-                images.add(bannerV2.getBannerUrl());
-            }
-            mBinding.banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
+            mBinding.banner.setAdapter(new TBannerImageAdapter(bannerV2s));
+            mBinding.banner.setOnBannerListener(this);
         });
         mViewModel.getDailysEvent().observe(this, albums -> mDailyAdapter.setNewData(albums));
         mViewModel.getBooksEvent().observe(this, albums -> mBookAdapter.setNewData(albums));
@@ -102,8 +96,10 @@ public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, F
     }
 
     private void initBanner() {
-        mBinding.banner.setIndicatorGravity(BannerConfig.RIGHT);
-        mBinding.banner.setDelayTime(3000);
+        mBinding.banner.addBannerLifecycleObserver(this);
+        mBinding.banner.setIndicator(new CircleIndicator(mActivity));
+        mBinding.banner.setIndicatorGravity(IndicatorConfig.Direction.RIGHT);
+        mBinding.banner.setOnBannerListener(this);
     }
 
     private void initDaily() {
@@ -161,7 +157,6 @@ public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, F
     protected void onRevisible() {
         super.onRevisible();
         if (mBinding != null) {
-            mBinding.banner.startAutoPlay();
             mBinding.marqueeView.continueRoll();
         }
     }
@@ -170,7 +165,6 @@ public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, F
     public void onPause() {
         super.onPause();
         if (mBinding != null) {
-            mBinding.banner.stopAutoPlay();
             mBinding.marqueeView.stopRoll();
         }
     }
@@ -189,19 +183,22 @@ public class FineFragment extends BaseRefreshFragment<HomeFragmentFineBinding, F
     }
 
     @Override
-    public void OnBannerClick(int position) {
-        BannerV2 bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
-        switch (bannerV2.getBannerContentType()) {
+    public void OnBannerClick(Object data, int position) {
+        BannerBean bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
+        switch (bannerV2.getBanner_content_type()) {
             case 2:
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
-                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getAlbumId()));
+                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getBanner_content_id()));
                 break;
             case 3:
-                mViewModel.play(bannerV2.getTrackId());
+                mViewModel.play(bannerV2.getBanner_content_id());
                 break;
             case 1:
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
-                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerUid()));
+                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBanner_content_id()));
+            case 4:
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
+                        .withLong(KeyCode.Discover.PATH, bannerV2.getBanner_content_id()));
                 break;
         }
     }

@@ -64,7 +64,7 @@ public class ExceptionConverter {
         }else if (e instanceof ClassCastException) {
             msg = "类型转换异常";
         }  else {
-            msg = "未知异常";
+            msg = e.getMessage();
         }
         return new Exception(msg);
     }

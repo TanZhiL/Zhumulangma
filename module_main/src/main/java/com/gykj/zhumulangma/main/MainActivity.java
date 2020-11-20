@@ -159,7 +159,7 @@ public class MainActivity extends BaseMvvmActivity<MainActivityMainBinding,MainV
                 .selectIconItems(selectIcon)
                 .lineHeight(1)
                 .mode(EasyNavigationBar.NavigationMode.MODE_ADD)
-                .centerImageRes(R.drawable.white_radius)
+                .centerImageRes(R.drawable.shap_third_white_coner)
                 .fragmentManager(getSupportFragmentManager())
                 .normalTextColor(getResources().getColor(R.color.colorGray))   //Tab未选中时字体颜色
                 .selectTextColor(getResources().getColor(R.color.colorPrimary))   //Tab选中时字体颜色

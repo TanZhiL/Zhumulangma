@@ -36,7 +36,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_ffjp"
                     android:layout_width="match_parent"
-                    android:tag="https://m.ximalaya.com/"
+                    android:tag="http://open.ximalaya.com/new-site/#/index/385/aeebdaf70f4efad44a8bc5f6c7847f11"
                     android:layout_height="45dp">
 
                     <ImageView

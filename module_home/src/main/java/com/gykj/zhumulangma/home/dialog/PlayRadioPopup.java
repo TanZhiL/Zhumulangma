@@ -2,24 +2,23 @@ package com.gykj.zhumulangma.home.dialog;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.view.View;
-
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
-import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
+import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.PlayRadioAdapter;
 import com.lxj.xpopup.core.BottomPopupView;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
-import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
@@ -129,7 +128,7 @@ public class PlayRadioPopup extends BottomPopupView implements View.OnClickListe
             list.addAll(mTomorrowAdapter.getData());
         }
         if (adapter == mYestodayAdapter) {
-            XmPlayerManager.getInstance(mContext).playSchedule(list, position);
+//            XmPlayerManager.getInstance(mContext).playSchedule(list, position);
         } else if (adapter == mTodayAdapter) {
             Schedule schedule = mTodayAdapter.getItem(position);
             try {
@@ -139,7 +138,7 @@ public class PlayRadioPopup extends BottomPopupView implements View.OnClickListe
                     return;
                 }
                 position = mYestodayAdapter.getData().size() + position;
-                XmPlayerManager.getInstance(mContext).playSchedule(list, position);
+            //    XmPlayerManager.getInstance(mContext).playSchedule(list, position);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

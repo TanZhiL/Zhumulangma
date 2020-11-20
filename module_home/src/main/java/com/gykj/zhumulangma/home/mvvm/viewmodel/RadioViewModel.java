@@ -19,7 +19,6 @@ import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
-import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +56,7 @@ public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
 
     public void init(String cityCode) {
         mCityCode = cityCode;
-        mModel.getHistory(1, 5)
+     /*   mModel.getHistory(1, 5)
                 .doOnNext(historyBeans -> getHistorysEvent().setValue(historyBeans))
                 .flatMap((Function<List<PlayHistoryBean>, ObservableSource<RadioList>>) historyBeans -> getLocalListObservable(mCityCode))
                 .flatMap((Function<RadioList, ObservableSource<RadioList>>) radioList -> getTopListObservable())
@@ -66,7 +65,7 @@ public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
                 {
                     getShowErrorViewEvent().call();
                     e.printStackTrace();
-                });
+                });*/
     }
 
     private Observable<RadioList> getLocalListObservable(String cityCode) {
@@ -94,12 +93,12 @@ public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
     }
 
     public void playRadio(String radioId) {
-        playRadio(mModel.getSchedulesSource(radioId));
+      //  playRadio(mModel.getSchedulesSource(radioId));
 
     }
 
     public void playRadio(Radio radio) {
-        playRadio(mModel.getSchedulesSource(radio));
+     //   playRadio(mModel.getSchedulesSource(radio));
     }
 
     private void playRadio(Observable<List<Schedule>> observable) {
@@ -107,7 +106,7 @@ public class RadioViewModel extends BaseRefreshViewModel<RadioModel, Album> {
                 .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(schedules ->
                 {
-                    XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
+                  //  XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
                     RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }, Throwable::printStackTrace);
     }

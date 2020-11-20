@@ -1,34 +1,38 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.bean.BannerBean;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
+import com.gykj.zhumulangma.common.net.dto.BannerDTO;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerList;
-import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
-import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.OPERATION_CATEGORY_ID;
+
 public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Announcer> {
 
-    private SingleLiveEvent<List<BannerV2>> mBannerV2Event;
+    private SingleLiveEvent<List<BannerBean>> mBannerV2Event;
     private SingleLiveEvent<List<Announcer>> mInitAnnouncerEvent;
     private int curPage = 1;
 
@@ -39,24 +43,14 @@ public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
     public void init() {
         //获取banner
         Map<String, String> map = new HashMap<>();
-        map.put(DTransferConstants.CATEGORY_ID, "0");
-        map.put(DTransferConstants.IMAGE_SCALE, "2");
-        map.put(DTransferConstants.CONTAINS_PAID, "false");
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(3 + new Random().nextInt(5)));
+        map.put(OPERATION_CATEGORY_ID, "10");
+        map.put(IS_PAID, "0");
         mModel.getCategoryBannersV2(map)
                 .doOnNext(bannerV2List ->
-                {
-                    List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
-                    Iterator<BannerV2> iterator = bannerV2s.iterator();
-                    while (iterator.hasNext()) {
-                        BannerV2 next = iterator.next();
-                        if (next.getBannerContentType() == 5 || next.getBannerContentType() == 6) {
-                            iterator.remove();
-                        }
-                    }
-                    getBannerV2Event().setValue(bannerV2s);
-                })
+                        getBannerV2Event().setValue(bannerV2List.getBanners()))
                 //获取主播列表
-                .flatMap((Function<BannerV2List, ObservableSource<AnnouncerList>>) bannerV2List -> {
+                .flatMap((Function<BannerDTO, ObservableSource<AnnouncerList>>) bannerV2List -> {
                     Map<String, String> map2 = new HashMap<String, String>();
                     map2.put(DTransferConstants.VCATEGORY_ID, "0");
                     map2.put(DTransferConstants.CALC_DIMENSION, "1");
@@ -130,7 +124,7 @@ public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
     }
 
 
-    public SingleLiveEvent<List<BannerV2>> getBannerV2Event() {
+    public SingleLiveEvent<List<BannerBean>> getBannerV2Event() {
         return mBannerV2Event = createLiveData(mBannerV2Event);
     }
 

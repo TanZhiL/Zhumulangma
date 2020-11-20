@@ -4,20 +4,14 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
-import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.activity.RadioListActivity;
-import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
-import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Author: Thomas.
@@ -71,7 +65,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
     }
 
     public void getLocalCity(String cityCode) {
-        Map<String, String> map = new HashMap<>();
+      /*  Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.CITY_CODE, cityCode);
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getRadiosByCity(map)
@@ -86,11 +80,11 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                 }, e -> {
                     getShowErrorViewEvent().call();
                     e.printStackTrace();
-                });
+                });*/
     }
 
     public void getMoreLocalCity(String cityCode) {
-        Map<String, String> map = new HashMap<String, String>();
+     /*   Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.CITY_CODE, cityCode);
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getRadiosByCity(map)
@@ -102,11 +96,11 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                 }, e -> {
                     getFinishLoadmoreEvent().call();
                     e.printStackTrace();
-                });
+                });*/
     }
 
     public void getRadioList(String flag, int extras) {
-        Map<String, String> map = new HashMap<String, String>();
+      /*  Map<String, String> map = new HashMap<String, String>();
         //电台类型：1-国家台，2-省市台，3-网络台
         map.put(DTransferConstants.RADIOTYPE, flag);
         if (flag.equals(PROVINCE)) {
@@ -130,11 +124,11 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                     getShowErrorViewEvent().call();
                     e.printStackTrace();
                 });
-
+*/
     }
 
     public void getMoreRadioList(String flag, int extras) {
-        Map<String, String> map = new HashMap<String, String>();
+      /*  Map<String, String> map = new HashMap<String, String>();
         //电台类型：1-国家台，2-省市台，3-网络台
         map.put(DTransferConstants.RADIOTYPE, flag);
         if (flag.equals(PROVINCE)) {
@@ -154,13 +148,13 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                 }, e -> {
                     getFinishLoadmoreEvent().call();
                     e.printStackTrace();
-                });
+                });*/
 
     }
 
 
     public void getRadiosByCategory() {
-        Map<String, String> map = new HashMap<>();
+      /*  Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.RADIO_CATEGORY_ID, String.valueOf(mType));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getRadiosByCategory(map)
@@ -175,11 +169,11 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                 }, e -> {
                     getShowErrorViewEvent().call();
                     e.printStackTrace();
-                });
+                });*/
     }
 
     public void getMoreRadiosByCategory() {
-        Map<String, String> map = new HashMap<String, String>();
+       /* Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.RADIO_CATEGORY_ID, String.valueOf(mType));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getRadiosByCategory(map)
@@ -191,11 +185,11 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                 }, e -> {
                     getFinishLoadmoreEvent().call();
                     e.printStackTrace();
-                });
+                });*/
     }
 
     public void getRankRadios() {
-        Map<String, String> map = new HashMap<>();
+      /*  Map<String, String> map = new HashMap<>();
         //获取前100名
         map.put(DTransferConstants.RADIO_COUNT, "100");
         mModel.getRankRadios(map)
@@ -210,7 +204,7 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
                 }, e -> {
                     getShowErrorViewEvent().call();
                     e.printStackTrace();
-                });
+                });*/
     }
 
     @Override
@@ -243,14 +237,14 @@ public class RadioListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, R
 
 
     public void playRadio(Radio radio) {
-        mModel.getSchedulesSource(radio)
+      /*  mModel.getSchedulesSource(radio)
                 .doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(schedules ->
                 {
-                    XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
+                //    XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
                     RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
-                }, Throwable::printStackTrace);
+                }, Throwable::printStackTrace);*/
     }
 
     public SingleLiveEvent<List<Radio>> getInitRadiosEvent() {
