@@ -2,6 +2,9 @@
     package="com.gykj.zhumulangma.discover" >
     <application>
         <activity android:name=".activity.ScanActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.WebActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.WebActivity"
+            android:launchMode="singleTask"
+            android:process=":web"
+            />
     </application>
 </manifest>

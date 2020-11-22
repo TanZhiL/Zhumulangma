@@ -78,8 +78,6 @@ public class App extends MultiDexApplication {
                     .initSpeech()
                     .initAgentWebX5()
                     .initAspectj(new PointHelper(this))
-                    .initUM()
-                    .initRouter()
                     .initUtils()
                     .initCrashView()
                     .initBugly(false);
@@ -93,6 +91,11 @@ public class App extends MultiDexApplication {
             AppHelper.getInstance(this)
                     .initXmlyPlayer();
         }
+        ThirdHelper.getInstance(this)
+                .initRouter()
+                .initBugly(false)
+                .initCrashView()
+                .initUM();
     }
 
 
