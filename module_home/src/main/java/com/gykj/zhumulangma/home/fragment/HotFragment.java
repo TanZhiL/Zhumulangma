@@ -47,6 +47,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     private AlbumAdapter mBabyAdapter;
     private HotMusicAdapter mMusicAdapter;
     private AlbumAdapter mColumnAdapter;
+    private String mColumnTitle;
 
     public HotFragment() {
 
@@ -103,7 +104,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, HOT_COLUMN_ID)
-                        .withString(KeyCode.Home.TITLE, "掌柜推荐")));
+                        .withString(KeyCode.Home.TITLE, mColumnTitle)));
 
         mBinding.radioRefresh.setOnClickListener(this);
         mBinding.topicRefresh.setOnClickListener(this);
@@ -205,6 +206,10 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
         mViewModel.getBadysEvent().observe(this, albums -> mBabyAdapter.setNewData(albums));
         mViewModel.getMusicsEvent().observe(this, albums -> mMusicAdapter.setNewData(albums));
         mViewModel.getColumnEvent().observe(this, radios -> mColumnAdapter.setNewData(radios));
+        mViewModel.getColumnNameEvent().observe(this, s -> {
+            mColumnTitle = s;
+            mBinding.ihRadio.setTitle(s);
+        });
     }
 
 

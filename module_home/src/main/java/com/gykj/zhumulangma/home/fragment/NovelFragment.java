@@ -55,6 +55,10 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
     private HotLikeAdapter mDajiaAdapter;
     private HotLikeAdapter mZhangguiAdapter;
     private AlbumAdapter mYoungAdapter;
+    private String mDailyName;
+    private String mDajiaName;
+    private String mZhangguiName;
+    private String mYoungName;
 
     public NovelFragment() {
     }
@@ -91,6 +95,7 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         mBinding.banner.setIndicator(new CircleIndicator(mActivity));
         mBinding.banner.setIndicatorGravity(IndicatorConfig.Direction.RIGHT);
     }
+
     private void initDaily() {
         mDailyAdapter = new HotLikeAdapter(R.layout.home_item_hot_like);
         mBinding.rvHistory.setLayoutManager(new GridLayoutManager(mActivity, 3));
@@ -98,6 +103,7 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         mDailyAdapter.bindToRecyclerView(mBinding.rvHistory);
 
     }
+
     private void initDajia() {
         mDajiaAdapter = new HotLikeAdapter(R.layout.home_item_hot_like);
         mBinding.rvLocal.setLayoutManager(new GridLayoutManager(mActivity, 3));
@@ -111,6 +117,7 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         mBinding.rvTop.setHasFixedSize(true);
         mZhangguiAdapter.bindToRecyclerView(mBinding.rvTop);
     }
+
     private void initYoung() {
         mYoungAdapter = new AlbumAdapter(R.layout.home_item_album);
         mBinding.rvYoung.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -127,22 +134,22 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, NOVE_ZHANGGUI_ID)
-                        .withString(KeyCode.Home.TITLE, "掌柜最爱")));
+                        .withString(KeyCode.Home.TITLE, mZhangguiName)));
         mBinding.ihHistory.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, NOVE_DAILY_ID)
-                        .withString(KeyCode.Home.TITLE, "今日推荐")));
+                        .withString(KeyCode.Home.TITLE, mDailyName)));
         mBinding.ihLocal.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, NOVE_DAJIA_ID)
-                        .withString(KeyCode.Home.TITLE, "大家在听")));
+                        .withString(KeyCode.Home.TITLE, mDajiaName)));
         mBinding.ihYoung.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, NOVE_YOUNG_ID)
-                        .withString(KeyCode.Home.TITLE, "男生女生")));
+                        .withString(KeyCode.Home.TITLE, mYoungName)));
     }
 
     @NonNull
@@ -186,13 +193,29 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         });
         mViewModel.getDailyEvent().observe(this, radios -> {
             if (!CollectionUtils.isEmpty(radios)) {
-                    mDailyAdapter.setNewData(radios);
+                mDailyAdapter.setNewData(radios);
             }
         });
-          mViewModel.getDajiaEvent().observe(this, radios -> mDajiaAdapter.setNewData(radios));
-          mViewModel.getYoungEvent().observe(this, radios -> mYoungAdapter.setNewData(radios));
+        mViewModel.getDajiaEvent().observe(this, radios -> mDajiaAdapter.setNewData(radios));
+        mViewModel.getYoungEvent().observe(this, radios -> mYoungAdapter.setNewData(radios));
         mViewModel.getZhangguiEvent().observe(this, historyBeans ->
                 mZhangguiAdapter.setNewData(historyBeans));
+        mViewModel.getDailyNameEvent().observe(this, s -> {
+            mDailyName = s;
+            mBinding.ihHistory.setTitle(s);
+        });
+        mViewModel.getDajiaNameEvent().observe(this, s -> {
+            mDajiaName = s;
+            mBinding.ihLocal.setTitle(s);
+        });
+        mViewModel.getZhangguiNameEvent().observe(this, s -> {
+            mZhangguiName = s;
+            mBinding.ihTop.setTitle(s);
+        });
+        mViewModel.getYoungNameEvent().observe(this, s -> {
+            mYoungName = s;
+            mBinding.ihYoung.setTitle(s);
+        });
 //        mViewModel.getCityNameEvent().observe(this, cn -> mBinding.ihLocal.setTitle(cn));
 //        mViewModel.getStartLocationEvent().observe(this, aVoid -> startLocation());
 //        mViewModel.getTitleEvent().observe(this, s -> mBinding.ihLocal.setTitle(s));
@@ -252,6 +275,7 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
                 break;
         }
     }
+
     @Override
     public void OnBannerClick(Object data, int position) {
         BannerBean bannerV2 = mViewModel.getBannerEvent().getValue().get(position);

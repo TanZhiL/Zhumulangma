@@ -12,6 +12,7 @@ import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.net.dto.BannerDTO;
 import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnInfoDTO;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -34,6 +35,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.internal.functions.Functions;
 
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.HOT_COLUMN_ID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IDS;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.OPERATION_CATEGORY_ID;
 
@@ -45,6 +47,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
     private SingleLiveEvent<List<Album>> mBadysEvent;
     private SingleLiveEvent<List<Album>> mMusicsEvent;
     private SingleLiveEvent<List<Radio>> mRadiosEvent;
+    private SingleLiveEvent<String> mColumnNameEvent;
 
     private int totalStoryPage = 1;
     private int totalBabyPage = 1;
@@ -82,8 +85,8 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getHotBabyListObservable())
                 //音乐
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getHotMusicListObservable())
-                //电台
                 .flatMap((Function<AlbumList, ObservableSource<ColumnDetailDTO<Album>>>) albumList -> getColumnListObservable())
+                .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnInfoDTO>>) albumList -> getColumnInfoObservable())
                 .doFinally(() -> super.onViewRefresh())
                 .subscribe(r -> getClearStatusEvent().call(), e ->
                 {
@@ -205,9 +208,14 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
                 });
 
     }
+    private Observable<ColumnInfoDTO> getColumnInfoObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, HOT_COLUMN_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getColumnNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
 
+    }
     public void playTrack(long trackId) {
-
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.ID, String.valueOf(trackId));
         mModel.searchTrackV2(map)
@@ -271,4 +279,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
         return mRadiosEvent = createLiveData(mRadiosEvent);
     }
 
+    public SingleLiveEvent<String> getColumnNameEvent() {
+        return mColumnNameEvent = createLiveData(mColumnNameEvent);
+    }
 }

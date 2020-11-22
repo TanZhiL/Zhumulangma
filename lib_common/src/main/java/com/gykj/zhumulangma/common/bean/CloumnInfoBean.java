@@ -6,26 +6,31 @@ import java.util.List;
 
 /**
  * Author: Thomas.<br/>
- * Date: 2020/11/21 19:52<br/>
+ * Date: 2020/11/22 12:35<br/>
  * GitHub: https://github.com/TanZhiL<br/>
  * CSDN: https://blog.csdn.net/weixin_42703445<br/>
  * Email: 1071931588@qq.com<br/>
  * Description:
  */
-public class ColumnBean {
+public class CloumnInfoBean {
 
     /**
-     * id : 1653
-     * updated_at : 1567764908000
-     * created_at : 1567767850000
-     * title : 单田芳经典评书top10，一代人听着长大的国民评书
-     * cover_url_small : http://fdfs.xmcdn.com/group48/M08/B0/69/wKgKnFuWRHqSztqBAAAuu4gq1WU268.jpg
+     * id : 10031
+     * updated_at : 1605609000000
+     * created_at : 1605609000000
+     * title : 11月上新仙品♥第2波♥  | 《燕云台》抢先听
+     * sub_title : 最逗逼有趣的大大，最炙手可热的新书，上新了，小说！
+     * intro : 最逗逼有趣的大大，最炙手可热的新书，上新了，小说！
+     * foot_note : 34张专辑
+     * cover_url_small : http://fdfs.xmcdn.com/storages/1720-audiofreehighqps/20/D5/CMCoOSIDiWbHAAUiVwBnzto0.jpg
      * cover_url_middle :
-     * cover_url_large : http://imagev2.xmcdn.com/group48/M08/37/4B/wKgKlVuWRG3BoAi5AAICXouzFF0875.jpg!op_type=4&upload_type=cover&device_type=ios&name=large_pop
+     * cover_url_large : http://imagev2.xmcdn.com/storages/35d7-audiofreehighqps/1C/E7/CMCoOSUDiWa_AAGQFABnztQK.jpg!op_type=4&upload_type=cover&device_type=ios&name=large_pop
      * content_type : 1
-     * operation_category : {"id":12,"name":"相声评书","kind":"operation_category"}
+     * released_at : 1605609000000
+     * is_hot : true
+     * operation_category : {"id":3,"name":"有声书","source":1,"kind":"operation_category"}
      * dimension_tags : []
-     * content_num : 10
+     * content_num : 19
      * kind : column
      */
 
@@ -37,6 +42,12 @@ public class ColumnBean {
     private long createdAt;
     @SerializedName("title")
     private String title;
+    @SerializedName("sub_title")
+    private String subTitle;
+    @SerializedName("intro")
+    private String intro;
+    @SerializedName("foot_note")
+    private String footNote;
     @SerializedName("cover_url_small")
     private String coverUrlSmall;
     @SerializedName("cover_url_middle")
@@ -45,9 +56,14 @@ public class ColumnBean {
     private String coverUrlLarge;
     @SerializedName("content_type")
     private int contentType;
+    @SerializedName("released_at")
+    private long releasedAt;
+    @SerializedName("is_hot")
+    private boolean isHot;
     /**
-     * id : 12
-     * name : 相声评书
+     * id : 3
+     * name : 有声书
+     * source : 1
      * kind : operation_category
      */
 
@@ -58,7 +74,7 @@ public class ColumnBean {
     @SerializedName("kind")
     private String kind;
     @SerializedName("dimension_tags")
-    private List<String> dimensionTags;
+    private List<?> dimensionTags;
 
     public int getId() {
         return id;
@@ -90,6 +106,30 @@ public class ColumnBean {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+
+    public String getIntro() {
+        return intro;
+    }
+
+    public void setIntro(String intro) {
+        this.intro = intro;
+    }
+
+    public String getFootNote() {
+        return footNote;
+    }
+
+    public void setFootNote(String footNote) {
+        this.footNote = footNote;
     }
 
     public String getCoverUrlSmall() {
@@ -124,6 +164,22 @@ public class ColumnBean {
         this.contentType = contentType;
     }
 
+    public long getReleasedAt() {
+        return releasedAt;
+    }
+
+    public void setReleasedAt(long releasedAt) {
+        this.releasedAt = releasedAt;
+    }
+
+    public boolean isIsHot() {
+        return isHot;
+    }
+
+    public void setIsHot(boolean isHot) {
+        this.isHot = isHot;
+    }
+
     public OperationCategoryBean getOperationCategory() {
         return operationCategory;
     }
@@ -152,7 +208,8 @@ public class ColumnBean {
         return dimensionTags;
     }
 
-    public void setDimensionTags(List<String> dimensionTags) {
+    public void setDimensionTags(List<?> dimensionTags) {
         this.dimensionTags = dimensionTags;
     }
+
 }

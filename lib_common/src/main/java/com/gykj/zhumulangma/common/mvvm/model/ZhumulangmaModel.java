@@ -9,6 +9,7 @@ import com.gykj.zhumulangma.common.net.RxAdapter;
 import com.gykj.zhumulangma.common.net.dto.BannerDTO;
 import com.gykj.zhumulangma.common.net.dto.ColumnDTO;
 import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnInfoDTO;
 import com.gykj.zhumulangma.common.net.exception.CustException;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
@@ -61,6 +62,7 @@ public class ZhumulangmaModel extends BaseModel {
     public static final String OPERATION_CATEGORY_ID = "operation_category_id";
     public static final String IS_PAID = "is_paid";
     public static final String SCOPE = "scope";
+    public static final String IDS = "ids";
     public static final String HOT_COLUMN_ID = "10054";
     public static final String NOVE_DAILY_ID = "10056";
     public static final String NOVE_DAJIA_ID = "10048";
@@ -101,6 +103,20 @@ public class ZhumulangmaModel extends BaseModel {
         return commonParams(specificParams).flatMap((Function<Map<String, String>,
                 ObservableSource<ColumnDTO>>) stringStringMap ->
                 mNetManager.getHomeService().getColumns(stringStringMap))
+                .compose(RxAdapter.schedulersTransformer())
+                .compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
+     * 获取听单基本信息
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<ColumnInfoDTO> getColumnInfo(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<ColumnInfoDTO>>) stringStringMap ->
+                mNetManager.getHomeService().getColumnInfo(stringStringMap))
                 .compose(RxAdapter.schedulersTransformer())
                 .compose(RxAdapter.exceptionTransformer());
     }

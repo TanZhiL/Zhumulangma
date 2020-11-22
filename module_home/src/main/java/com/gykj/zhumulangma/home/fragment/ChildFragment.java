@@ -46,6 +46,11 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
     private HotLikeAdapter mGXJDAdapter;
     private HotLikeAdapter mQZEGAdapter;
     private HotLikeAdapter mJZZQAdapter;
+    private String mJDGSName;
+    private String mDHSJame;
+    private String mGXJDName;
+    private String mQZEGName;
+    private String mJZZQName;
 
     public ChildFragment() {
 
@@ -113,29 +118,29 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_JDGS_ID)
-                .withString(KeyCode.Home.TITLE, "经典故事")));
+                .withString(KeyCode.Home.TITLE, mJDGSName)));
         mBinding.bookRefresh.setOnClickListener(this);
         mBinding.ihBook.setOnClickListener(v ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_DHSJ_ID)
-                .withString(KeyCode.Home.TITLE, "动画世界")));
+                .withString(KeyCode.Home.TITLE, mDHSJame)));
         mBinding.classroomRefresh.setOnClickListener(this);
         mBinding.ihClassroom.setOnClickListener(v ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_GXJD_ID)
-                .withString(KeyCode.Home.TITLE, "国学经典")));
+                .withString(KeyCode.Home.TITLE, mGXJDName)));
         mBinding.ihSing.setOnClickListener(v ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_QZEG_ID)
-                .withString(KeyCode.Home.TITLE, "启智儿歌")));
+                .withString(KeyCode.Home.TITLE, mQZEGName)));
         mBinding.ihParent.setOnClickListener(v ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_JZZQ_ID)
-                .withString(KeyCode.Home.TITLE, "家长专区")));
+                .withString(KeyCode.Home.TITLE, mJZZQName)));
 
         mBinding.llPhb.setOnClickListener(this);
         mBinding.llGs.setOnClickListener(this);
@@ -172,6 +177,26 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         mViewModel.getGXJDEvent().observe(this, albums -> mGXJDAdapter.setNewData(albums));
         mViewModel.getSingEvent().observe(this, albums -> mQZEGAdapter.setNewData(albums));
         mViewModel.getParentEvent().observe(this, albums -> mJZZQAdapter.setNewData(albums));
+        mViewModel.getJDGSNameEvent().observe(this, s -> {
+            mJDGSName = s;
+            mBinding.ihDaily.setTitle(s);
+        });
+        mViewModel.getDHSJNameEvent().observe(this, s -> {
+            mDHSJame = s;
+            mBinding.ihBook.setTitle(s);
+        });
+        mViewModel.getGXJDNameEvent().observe(this, s -> {
+            mGXJDName = s;
+            mBinding.ihClassroom.setTitle(s);
+        });
+        mViewModel.getQZEGNameEvent().observe(this, s -> {
+            mQZEGName = s;
+            mBinding.ihSing.setTitle(s);
+        });
+        mViewModel.getJZZQNameEvent().observe(this, s -> {
+            mJZZQName = s;
+            mBinding.ihParent.setTitle(s);
+        });
     }
 
     private void initBanner() {

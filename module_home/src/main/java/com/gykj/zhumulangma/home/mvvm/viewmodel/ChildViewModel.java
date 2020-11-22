@@ -12,6 +12,7 @@ import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.net.dto.BannerDTO;
 import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnInfoDTO;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -35,6 +36,7 @@ import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CHILD_GXJD
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CHILD_JDGS_ID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CHILD_JZZQ_ID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CHILD_QZEG_ID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IDS;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.OPERATION_CATEGORY_ID;
 
@@ -46,6 +48,11 @@ public class ChildViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album
     private SingleLiveEvent<List<Album>> mGXJDEvent;
     private SingleLiveEvent<List<Album>> mSingEvent;
     private SingleLiveEvent<List<Album>> mParentEvent;
+    private SingleLiveEvent<String> mJDGSNameEvent;
+    private SingleLiveEvent<String> mDHSJNameEvent;
+    private SingleLiveEvent<String> mGXJDNameEvent;
+    private SingleLiveEvent<String> mQZEGNameEvent;
+    private SingleLiveEvent<String> mJZZQNameEvent;
 
 
     private int totalJDGSPage = 1;
@@ -87,6 +94,16 @@ public class ChildViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album
                 .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnDetailDTO<Album>>>) albumList -> getGXJDObservable())
                 .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnDetailDTO<Album>>>) albumList -> getSingObservable())
                 .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnDetailDTO<Album>>>) albumList -> getParentObservable())
+                .flatMap((Function<ColumnDetailDTO<Album>,ObservableSource<ColumnInfoDTO>>) albumList ->
+                        getJDGSNameObservable())
+                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
+                        getDHSJNameObservable())
+                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
+                        getGXJDNameObservable())
+                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
+                        getQZEGNameObservable())
+                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
+                        getJZZQNameObservable())
                 .doFinally(() -> super.onViewRefresh())
                 .subscribe(r -> getClearStatusEvent().call(), e ->
                 {
@@ -125,6 +142,46 @@ public class ChildViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album
         getJDGSObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
+
+    }
+
+
+    private Observable<ColumnInfoDTO> getJDGSNameObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, CHILD_JDGS_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getJDGSNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
+
+    }
+    
+
+    private Observable<ColumnInfoDTO> getDHSJNameObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, CHILD_DHSJ_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getDHSJNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
+
+    }
+    private Observable<ColumnInfoDTO> getGXJDNameObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, CHILD_GXJD_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getGXJDNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
+
+    }
+    private Observable<ColumnInfoDTO> getQZEGNameObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, CHILD_QZEG_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getQZEGNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
+
+    }
+
+    private Observable<ColumnInfoDTO> getJZZQNameObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, CHILD_JZZQ_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getJZZQNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
 
     }
 
@@ -257,5 +314,20 @@ public class ChildViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album
     }
     public SingleLiveEvent<List<Album>> getParentEvent() {
         return mParentEvent = createLiveData(mParentEvent);
+    }
+    public SingleLiveEvent<String> getDHSJNameEvent() {
+        return mDHSJNameEvent = createLiveData(mDHSJNameEvent);
+    }
+    public SingleLiveEvent<String> getJDGSNameEvent() {
+        return mJDGSNameEvent = createLiveData(mJDGSNameEvent);
+    }
+    public SingleLiveEvent<String> getGXJDNameEvent() {
+        return mGXJDNameEvent = createLiveData(mGXJDNameEvent);
+    }
+    public SingleLiveEvent<String> getQZEGNameEvent() {
+        return mQZEGNameEvent = createLiveData(mQZEGNameEvent);
+    }
+    public SingleLiveEvent<String> getJZZQNameEvent() {
+        return mJZZQNameEvent = createLiveData(mJZZQNameEvent);
     }
 }

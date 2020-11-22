@@ -10,13 +10,12 @@ import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.BannerBean;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
-import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.net.dto.BannerDTO;
 import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnInfoDTO;
 import com.gykj.zhumulangma.common.util.RouterUtil;
-import com.gykj.zhumulangma.home.activity.RadioListActivity;
 import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
@@ -37,6 +36,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.internal.functions.Functions;
 
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IDS;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_DAILY_ID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_DAJIA_ID;
@@ -60,6 +60,10 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
     private SingleLiveEvent<List<Album>> mDajiaEvent;
     private SingleLiveEvent<List<Album>> mZhangguiEvent;
     private SingleLiveEvent<List<Album>> mYoungEvent;
+    private SingleLiveEvent<String> mDajiaNameEvent;
+    private SingleLiveEvent<String> mDailyNameEvent;
+    private SingleLiveEvent<String> mZhangguiNameEvent;
+    private SingleLiveEvent<String> mYoungNameEvent;
 
     private int totalDajiaPage = 1;
     private int totalZhangguiPage = 1;
@@ -137,6 +141,14 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
                         getZhangguiListObservable())
                 .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnDetailDTO<Album>>>) albumList ->
                         getYoungListObservable())
+                .flatMap((Function<ColumnDetailDTO<Album>,ObservableSource<ColumnInfoDTO>>) albumList ->
+                        getDailyNameObservable())
+                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
+                        getDajiaNameObservable())
+                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
+                        getZhangguiNameObservable())
+                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
+                        getYoungNameObservable())
                 .doFinally(() -> super.onViewRefresh())
                 .subscribe(r -> getClearStatusEvent().call(), e ->
                 {
@@ -208,6 +220,37 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
                 }, Throwable::printStackTrace);
     }
 
+
+    private Observable<ColumnInfoDTO> getDailyNameObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, NOVE_DAILY_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getDailyNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
+
+    }
+
+    private Observable<ColumnInfoDTO> getDajiaNameObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, NOVE_DAJIA_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getDajiaNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
+
+    }
+    private Observable<ColumnInfoDTO> getZhangguiNameObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, NOVE_ZHANGGUI_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getZhangguiNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
+
+    }
+
+    private Observable<ColumnInfoDTO> getYoungNameObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, NOVE_YOUNG_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getYoungNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
+
+    }
     public void getDailyList() {
         getDailyListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
@@ -348,22 +391,17 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
         return mDajiaEvent = createLiveData(mDajiaEvent);
     }
 
-    public void navigateToCity() {
-        mModel.getSPString(Constants.SP.CITY_NAME, Constants.Default.CITY_NAME)
-                .doOnSubscribe(this)
-                .subscribe(s ->
-                        RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                                .withInt(KeyCode.Home.CATEGORY, RadioListActivity.LOCAL_CITY)
-                                .withString(KeyCode.Home.TITLE, s)));
+    public SingleLiveEvent<String> getDajiaNameEvent() {
+        return mDajiaNameEvent = createLiveData(mDajiaNameEvent);
     }
-
-    public void navigateToProvince() {
-        mModel.getSPString(Constants.SP.PROVINCE_NAME, Constants.Default.PROVINCE_NAME)
-                .doOnSubscribe(this)
-                .subscribe(s ->
-                        RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                                .withInt(KeyCode.Home.CATEGORY, RadioListActivity.LOCAL_PROVINCE)
-                                .withString(KeyCode.Home.TITLE, s)));
+    public SingleLiveEvent<String> getDailyNameEvent() {
+        return mDailyNameEvent = createLiveData(mDailyNameEvent);
+    }
+    public SingleLiveEvent<String> getZhangguiNameEvent() {
+        return mZhangguiNameEvent = createLiveData(mZhangguiNameEvent);
+    }
+    public SingleLiveEvent<String> getYoungNameEvent() {
+        return mYoungNameEvent = createLiveData(mYoungNameEvent);
     }
 }
 
