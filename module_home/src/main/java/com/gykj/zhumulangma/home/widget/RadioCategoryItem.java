@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 
 /**
  * Author: Thomas.
@@ -19,7 +19,7 @@ public class RadioCategoryItem extends androidx.appcompat.widget.AppCompatTextVi
         super(context, attrs);
 
         this.setOnClickListener(view ->
-                RouterUtil.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, 3)
                         .withString(KeyCode.Home.TAG, getTag().toString())
                         .withString(KeyCode.Home.TITLE, getText().toString())));

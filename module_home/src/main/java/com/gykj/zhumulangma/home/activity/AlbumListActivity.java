@@ -15,7 +15,7 @@ import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -99,7 +99,7 @@ public class AlbumListActivity extends BaseRefreshActivity<CommonLayoutListBindi
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+        RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId()));
     }
 
@@ -124,7 +124,7 @@ public class AlbumListActivity extends BaseRefreshActivity<CommonLayoutListBindi
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        RouterUtil.navigateTo(Constants.Router.Home.F_SEARCH);
+        RouteHelper.navigateTo(Constants.Router.Home.F_SEARCH);
     }
 
     @Override

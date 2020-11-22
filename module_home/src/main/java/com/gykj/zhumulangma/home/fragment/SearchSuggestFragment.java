@@ -17,7 +17,7 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.SearchSuggestAdapter;
 import com.gykj.zhumulangma.home.bean.SearchSuggestItem;
@@ -131,7 +131,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
         SearchSuggestItem item = mSuggestAdapter.getItem(position);
 
         if (item.itemType == SearchSuggestItem.ALBUM) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, item.mAlbumResult.getAlbumId()));
         } else {
             mSearchListener.onSearch(item.mQueryResult.getKeyword());
@@ -147,7 +147,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         SearchSuggestItem item = mSuggestAdapter.getItem(position);
         mViewModel.play(String.valueOf(item.mAlbumResult.getAlbumId()));
-        RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+        RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, item.mAlbumResult.getAlbumId()));
     }
 

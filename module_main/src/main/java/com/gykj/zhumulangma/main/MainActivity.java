@@ -29,7 +29,7 @@ import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
 import com.gykj.zhumulangma.common.util.PermissionPageUtil;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
 import com.gykj.zhumulangma.main.databinding.MainActivityMainBinding;
@@ -242,17 +242,17 @@ public class MainActivity extends BaseMvvmActivity<MainActivityMainBinding,MainV
         if (v == globalplay) {
             if (null == mPlayerManager.getCurrSound(true)) {
                 if (mHistoryBean == null) {
-                    RouterUtil.navigateTo(Constants.Router.Home.F_RANK);
+                    RouteHelper.navigateTo(Constants.Router.Home.F_RANK);
                 } else {
                     mViewModel.play(mHistoryBean);
                 }
             } else {
                 mPlayerManager.play();
                 if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_TRACK)) {
-                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                    RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
 
                 } else if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_SCHEDULE)) {
-                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
+                    RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }
             }
         }

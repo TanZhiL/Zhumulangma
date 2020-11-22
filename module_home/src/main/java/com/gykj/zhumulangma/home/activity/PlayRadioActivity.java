@@ -15,7 +15,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
@@ -263,7 +263,7 @@ public class PlayRadioActivity extends BaseMvvmActivity<HomeActivityPlayRadioBin
         int id = v.getId();
         if (id == R.id.iv_history || id == R.id.tv_history) {
             finish();
-            RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_HISTORY);
         } else if (id == R.id.iv_play_list || id == R.id.tv_play_list) {
             if(mSchedule==null){
                 return;

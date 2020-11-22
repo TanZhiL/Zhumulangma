@@ -14,7 +14,7 @@ import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -56,7 +56,7 @@ public class SearchAnnouncerFragment extends BaseRefreshFragment<CommonLayoutLis
         mAnnouncerAdapter = new AnnouncerAdapter(R.layout.home_item_announcer);
         mAnnouncerAdapter.bindToRecyclerView(mBinding.recyclerview);
         mAnnouncerAdapter.setOnItemClickListener((adapter, view, position) ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getItem(position).getAnnouncerId())
                         .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getItem(position).getNickname())));
     }

@@ -28,7 +28,7 @@ import com.gykj.zhumulangma.common.aop.NeedLogin;
 import com.gykj.zhumulangma.common.bean.AnnouncerCategoryBean;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -156,12 +156,12 @@ public class AnnouncerDetailActivity extends BaseRefreshActivity<HomeActivityAnn
         mAlbumAdapter.setOnItemClickListener(this);
         mTrackAdapter.setOnItemClickListener(this);
         mBinding.ihAlbum.setOnClickListener(v ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.ANNOUNCER)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerId)
                         .withString(KeyCode.Home.TITLE, mAnnouncerName)));
         mBinding.ihTrack.setOnClickListener(v ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_TRACK_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_TRACK_LIST)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerId)
                         .withString(KeyCode.Home.TITLE, mAnnouncerName)));
 
@@ -239,7 +239,7 @@ public class AnnouncerDetailActivity extends BaseRefreshActivity<HomeActivityAnn
         if (v == ivWhiteLeft || v == ivTransLeft) {
             finish();
         } else if (id == R.id.tv_more) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_LIST)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_LIST)
                     .withLong(KeyCode.Home.CATEGORY_ID, mAnnouncer.getvCategoryId())
                     .withString(KeyCode.Home.TITLE, mBinding.tvCategory.getText().toString()));
         } else if (id == R.id.tv_follwer) {
@@ -265,7 +265,7 @@ public class AnnouncerDetailActivity extends BaseRefreshActivity<HomeActivityAnn
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mAlbumAdapter) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId()));
         } else {
             Track track = mTrackAdapter.getItem(position);

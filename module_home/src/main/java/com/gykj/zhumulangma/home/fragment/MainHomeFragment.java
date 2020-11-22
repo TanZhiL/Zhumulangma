@@ -18,7 +18,7 @@ import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentMainBinding;
@@ -106,7 +106,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
                         postcard.withString(KeyCode.Home.HOTWORD, (String) mBinding.marqueeView.getMessages()
                                 .get(mBinding.marqueeView.getPosition()));
                     }
-                    RouterUtil.navigateTo(postcard);
+                    RouteHelper.navigateTo(postcard);
                 });
 
         mBinding.ivDownload.setOnClickListener(this);
@@ -114,7 +114,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
         RxView.clicks(mBinding.ivMessage)
                 .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(unit -> RouterUtil.navigateTo(Constants.Router.User.F_MESSAGE));
+                .subscribe(unit -> RouteHelper.navigateTo(Constants.Router.User.F_MESSAGE));
         mBinding.marqueeView.setOnItemClickListener(this);
     }
 
@@ -145,14 +145,14 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            RouterUtil.navigateTo(Constants.Router.Discover.F_SCAN);
+                            RouteHelper.navigateTo(Constants.Router.Discover.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
 
         } else if (id == R.id.iv_history) {
-            RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_HISTORY);
         }
 
     }
@@ -180,7 +180,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
 
     @Override
     public void onItemClick(int position, TextView textView) {
-        RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_SEARCH)
+        RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_SEARCH)
                 .withString(KeyCode.Home.HOTWORD, (String) mBinding.marqueeView.getMessages().get(position)));
     }
 

@@ -11,14 +11,18 @@ import com.alibaba.android.arouter.launcher.ARouter;
  * Email: 1071931588@qq.com<br/>
  * Description:页面跳转
  */
-public class RouterUtil {
+public class RouteHelper {
     private static final String TAG = "RouterUtil";
     public static void navigateTo(String path) {
 //        navigateTo(ARouter.getInstance().build(path));
-        ARouter.getInstance().build(path).navigation();
+        navigateTo(ARouter.getInstance().build(path));
     }
 
     public static void navigateTo(Postcard postcard) {
+       /* if (Constants.Router.Home.F_PLAY_TRACK.equals(postcard.getPath())){
+            postcard.withTransition(com.gykj.zhumulangma.common.R.anim.push_bottom_in
+                    ,com.gykj.zhumulangma.common.R.anim.push_bottom_out);
+        }*/
         postcard.navigation();
     }
 
@@ -27,7 +31,7 @@ public class RouterUtil {
     }
 
     public static void navigateTo(Postcard postcard, int launchMode) {
-        postcard.navigation();
+        navigateTo(postcard);
 //        navigateTo(postcard, launchMode, null);
     }
 

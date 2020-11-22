@@ -19,7 +19,7 @@ import com.gykj.zhumulangma.common.dialog.TrackPagerPopup;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
@@ -292,7 +292,7 @@ public class BatchPreDownloadActivity extends BaseRefreshActivity<ListenActivity
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        RouterUtil.navigateTo(mRouter.build(Constants.Router.Listen.F_DOWNLOAD)
+        RouteHelper.navigateTo(mRouter.build(Constants.Router.Listen.F_DOWNLOAD)
                 .withInt(KeyCode.Listen.TAB_INDEX, 2));
     }
 

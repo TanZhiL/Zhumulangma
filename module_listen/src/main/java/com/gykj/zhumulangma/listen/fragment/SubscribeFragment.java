@@ -16,7 +16,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.SubscribeAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
@@ -73,7 +73,7 @@ public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutListBindi
         super.initListener();
         mSubscribeAdapter.setOnItemChildClickListener(this);
         mSubscribeAdapter.setOnItemClickListener((adapter, view, position) ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, mSubscribeAdapter.getItem(position).getAlbum().getId())));
         vFooter.setOnClickListener(this);
     }
@@ -126,7 +126,7 @@ public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutListBindi
     @Override
     public void onClick(View v) {
         if (v == vFooter) {
-            RouterUtil.navigateTo(Constants.Router.Home.F_RANK);
+            RouteHelper.navigateTo(Constants.Router.Home.F_RANK);
         }
     }
 

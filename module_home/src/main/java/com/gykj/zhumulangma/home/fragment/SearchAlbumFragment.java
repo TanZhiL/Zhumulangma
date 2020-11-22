@@ -10,7 +10,7 @@ import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -55,7 +55,7 @@ public class SearchAlbumFragment extends BaseRefreshFragment<CommonLayoutListBin
     public void initListener() {
         super.initListener();
         mAlbumAdapter.setOnItemClickListener((adapter, view, position) ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())));
     }
 

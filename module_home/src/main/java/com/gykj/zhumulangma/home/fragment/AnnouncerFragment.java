@@ -14,7 +14,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentAnnouncerBinding;
@@ -62,7 +62,7 @@ public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncer
         super.initListener();
         mBinding.banner.setOnBannerListener(this);
         mAnnouncerAdapter.setOnItemClickListener((adapter, view, position) ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerAdapter.getData().get(position).getAnnouncerId())
                         .withString(KeyCode.Home.ANNOUNCER_NAME, mAnnouncerAdapter.getData().get(position).getNickname())));
         mBinding.nsv.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
@@ -111,17 +111,17 @@ public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncer
         BannerBean bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getBannerContentId()));
                 break;
             case 3:
                 mViewModel.play(bannerV2.getBannerContentId());
                 break;
             case 1:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerContentId()));
             case 4:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
                         .withLong(KeyCode.Discover.PATH, bannerV2.getBannerContentId()));
                 break;
         }

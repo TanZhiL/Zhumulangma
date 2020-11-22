@@ -27,7 +27,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.mvvm.view.status.DetailSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
@@ -159,7 +159,7 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
                             mBinding.tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                             XmPlayerManager.getInstance(this).playList(mViewModel.getCommonTrackList(),
                                     index);
-                            RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                            RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                         } else {
                             mViewModel.getPlayTrackList();
                         }
@@ -168,7 +168,7 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
                         mBinding.gpLastplay.setVisibility(View.VISIBLE);
                         mBinding.tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
                         XmPlayerManager.getInstance(this).playList(mViewModel.getCommonTrackList(), 0);
-                        RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                        RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                     }
                 });
 
@@ -234,7 +234,7 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
             mAlbumTrackAdapter.setNewData(tracks.getTracks());
             XmPlayerManager.getInstance(this).playList(mViewModel.getCommonTrackList(),
                     mAlbumTrackAdapter.getData().indexOf(mLastPlay));
-            RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+            RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
         });
 
         mViewModel.getTracksSortEvent().observe(this, tracks -> {
@@ -279,7 +279,7 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
             mLastPlay = mAlbumTrackAdapter.getItem(position);
             mBinding.gpLastplay.setVisibility(View.VISIBLE);
             mBinding.tvLastplay.setText(getString(R.string.lastplay, mAlbumTrackAdapter.getItem(position).getTrackTitle()));
-            RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+            RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
         } else {
             mPagerPopup.dismissWith(() -> mViewModel.getTrackList(position + 1));
         }
@@ -328,10 +328,10 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
         if (R.id.ll_select == id) {
             switchPager();
         } else if (id == R.id.ll_download) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Listen.F_BATCH_DOWNLOAD)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Listen.F_BATCH_DOWNLOAD)
                     .withLong(KeyCode.Home.ALBUMID, mAlbumId));
         } else if (id == R.id.cl_announcer) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                     .withLong(KeyCode.Home.ANNOUNCER_ID, mAlbum.getAnnouncer().getAnnouncerId())
                     .withString(KeyCode.Home.ANNOUNCER_NAME, mAlbum.getAnnouncer().getNickname()));
         }

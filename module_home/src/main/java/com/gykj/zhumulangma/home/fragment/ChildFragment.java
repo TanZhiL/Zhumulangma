@@ -14,7 +14,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.activity.AlbumListActivity;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
@@ -115,29 +115,29 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         super.initListener();
         mBinding.dailyRefresh.setOnClickListener(this);
         mBinding.ihDaily.setOnClickListener(v ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_JDGS_ID)
                 .withString(KeyCode.Home.TITLE, mJDGSName)));
         mBinding.bookRefresh.setOnClickListener(this);
         mBinding.ihBook.setOnClickListener(v ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_DHSJ_ID)
                 .withString(KeyCode.Home.TITLE, mDHSJame)));
         mBinding.classroomRefresh.setOnClickListener(this);
         mBinding.ihClassroom.setOnClickListener(v ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_GXJD_ID)
                 .withString(KeyCode.Home.TITLE, mGXJDName)));
         mBinding.ihSing.setOnClickListener(v ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_QZEG_ID)
                 .withString(KeyCode.Home.TITLE, mQZEGName)));
         mBinding.ihParent.setOnClickListener(v ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_JZZQ_ID)
                 .withString(KeyCode.Home.TITLE, mJZZQName)));
@@ -236,31 +236,31 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         } else if (R.id.parent_refresh == id) {
             mViewModel.getParentList();
         }else if (R.id.ll_phb == id) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, 6)
                 .withString(KeyCode.Home.TITLE, "排行榜"));
         }else if (R.id.ll_gs == id) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.CATEGORY, 6)
                     .withString(KeyCode.Home.TAG, "故事")
                     .withString(KeyCode.Home.TITLE, "故事"));
         }else if (R.id.ll_hs == id) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.CATEGORY, 6)
                     .withString(KeyCode.Home.TAG, "哄睡")
                     .withString(KeyCode.Home.TITLE, "哄睡"));
         }else if (R.id.ll_eg == id) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.CATEGORY, 6)
                     .withString(KeyCode.Home.TAG, "儿歌")
                     .withString(KeyCode.Home.TITLE, "儿歌"));
         }else if (R.id.ll_dh == id) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.CATEGORY, 6)
                     .withString(KeyCode.Home.TAG, "动画")
                     .withString(KeyCode.Home.TITLE, "动画"));
         }else if (R.id.ll_xk == id) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.CATEGORY, 6)
                     .withString(KeyCode.Home.TAG, "趣学科学")
                     .withString(KeyCode.Home.TITLE, "学科"));
@@ -301,17 +301,17 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         BannerBean bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getBannerContentId()));
                 break;
             case 3:
                 mViewModel.play(bannerV2.getBannerContentId());
                 break;
             case 1:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerContentId()));
             case 4:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
                         .withLong(KeyCode.Discover.PATH, bannerV2.getBannerContentId()));
                 break;
         }

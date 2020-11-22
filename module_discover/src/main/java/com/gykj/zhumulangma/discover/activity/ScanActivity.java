@@ -12,7 +12,7 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.event.RequestCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseActivity;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.discover.R;
 import com.gykj.zhumulangma.discover.databinding.DiscoverActivityScanBinding;
@@ -78,7 +78,7 @@ public class ScanActivity extends BaseActivity<DiscoverActivityScanBinding> impl
                 finish();
                 Postcard postcard = mRouter.build(Constants.Router.Discover.F_WEB)
                         .withString(KeyCode.Discover.PATH, result);
-                RouterUtil.navigateTo(postcard);
+                RouteHelper.navigateTo(postcard);
             } else {
                 new AlertDialog.Builder(ScanActivity.this)
                         .setTitle("扫描结果")

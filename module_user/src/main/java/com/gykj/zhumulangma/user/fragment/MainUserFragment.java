@@ -24,7 +24,7 @@ import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
@@ -202,30 +202,30 @@ public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBindin
     public void onClick(View v) {
         int id = v.getId();
         if (R.id.ll_download == id) {
-            RouterUtil.navigateTo(Constants.Router.Listen.F_DOWNLOAD);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_DOWNLOAD);
         } else if (R.id.ll_history == id) {
-            RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_HISTORY);
         } else if (R.id.ll_favorit == id) {
-            RouterUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_FAVORITE);
         } else if (v == whiteLeft || v == transLeft) {
-            RouterUtil.navigateTo(Constants.Router.User.F_MESSAGE);
+            RouteHelper.navigateTo(Constants.Router.User.F_MESSAGE);
         } else if (id == R.id.cl_fxzq) {
             EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
         } else if (id == R.id.cl_sys) {
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            RouterUtil.navigateTo(Constants.Router.Discover.F_SCAN);
+                            RouteHelper.navigateTo(Constants.Router.Discover.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
         } else if (id == R.id.cl_wxhd) {
-            RouterUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_FAVORITE);
         } else if (id == R.id.cl_jcgx) {
             Beta.checkUpgrade();
         } else if (id == R.id.cl_gy || id == R.id.iv_user) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
                     .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL"));
         } else if (id == R.id.cl_zx) {
             new AlertDialog.Builder(mActivity)

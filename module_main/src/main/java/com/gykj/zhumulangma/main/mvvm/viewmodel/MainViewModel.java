@@ -16,7 +16,7 @@ import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.extra.RxField;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.common.net.Constans;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.main.mvvm.model.MainModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
@@ -93,7 +93,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                             break;
                         }
                     }
-                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                    RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 

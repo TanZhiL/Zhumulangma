@@ -21,7 +21,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.activity.AlbumListActivity;
@@ -131,22 +131,22 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         mBinding.ivMore.setOnClickListener(this);
         mBinding.ivLess.setOnClickListener(this);
         mBinding.ihTop.setOnClickListener(view ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, NOVE_ZHANGGUI_ID)
                         .withString(KeyCode.Home.TITLE, mZhangguiName)));
         mBinding.ihHistory.setOnClickListener(view ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, NOVE_DAILY_ID)
                         .withString(KeyCode.Home.TITLE, mDailyName)));
         mBinding.ihLocal.setOnClickListener(view ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, NOVE_DAJIA_ID)
                         .withString(KeyCode.Home.TITLE, mDajiaName)));
         mBinding.ihYoung.setOnClickListener(view ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, NOVE_YOUNG_ID)
                         .withString(KeyCode.Home.TITLE, mYoungName)));
@@ -281,17 +281,17 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         BannerBean bannerV2 = mViewModel.getBannerEvent().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, bannerV2.getBannerContentId()));
                 break;
             case 3:
                 mViewModel.playTrack(bannerV2.getBannerContentId());
                 break;
             case 1:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerContentId()));
             case 4:
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
                         .withLong(KeyCode.Discover.PATH, bannerV2.getBannerContentId()));
                 break;
         }

@@ -31,7 +31,7 @@ import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
@@ -202,7 +202,7 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
         mPlayerManager.addAdsStatusListener(adsStatusListener);
 
         mBinding.tvMoreRelative.setOnClickListener(view ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.LIKE)
                         .withString(KeyCode.Home.TITLE, "更多推荐")));
         RxView.clicks(mBinding.llSubscribe)
@@ -346,7 +346,7 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
            finish();
         } else if (R.id.cl_album == id) {
             if (null != mTrack) {
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, mTrack.getAlbum().getAlbumId()));
             }
         } else if (R.id.lav_pre == id) {
@@ -418,7 +418,7 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
         } else if (v == mBinding.tvTempo) {
             new XPopup.Builder(this).asCustom(new PlayTempoPopup(this, this)).show();
         } else if (id == R.id.cl_announcer) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
                     .withLong(KeyCode.Home.ANNOUNCER_ID, mTrack.getAnnouncer().getAnnouncerId())
                     .withString(KeyCode.Home.ANNOUNCER_NAME, mTrack.getAnnouncer().getNickname()));
         } else if (R.id.tv_comment == id) {
@@ -535,7 +535,7 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+        RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId()));
     }
 
