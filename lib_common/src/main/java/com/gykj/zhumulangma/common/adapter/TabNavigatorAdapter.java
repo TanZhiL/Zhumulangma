@@ -1,7 +1,7 @@
 package com.gykj.zhumulangma.common.adapter;
 
 import android.content.Context;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
@@ -25,10 +25,10 @@ import java.util.List;
  */
 public class TabNavigatorAdapter extends CommonNavigatorAdapter {
     private List<String> mtabs;
-    private ViewPager viewPager;
+    private ViewPager2 viewPager;
     private float lineHeight;
 
-    public TabNavigatorAdapter(List<String> mtabs, ViewPager viewPager, float lineHeight) {
+    public TabNavigatorAdapter(List<String> mtabs, ViewPager2 viewPager, float lineHeight) {
         this.mtabs = mtabs;
         this.viewPager = viewPager;
         this.lineHeight = lineHeight;

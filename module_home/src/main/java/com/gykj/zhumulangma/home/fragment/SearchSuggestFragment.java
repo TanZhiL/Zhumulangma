@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
@@ -16,15 +17,12 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.SearchSuggestAdapter;
 import com.gykj.zhumulangma.home.bean.SearchSuggestItem;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchViewModel;
-
-import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Author: Thomas.
@@ -40,9 +38,8 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
     private SearchSuggestAdapter mSuggestAdapter;
     private onSearchListener mSearchListener;
     private TextView tvHeader;
-
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
@@ -58,7 +55,8 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
+        mView.setBackgroundColor(mActivity.getResources().getColor(R.color.white));
         mBinding.refreshLayout.setEnableRefresh(false);
         mBinding.refreshLayout.setEnableLoadMore(false);
         mBinding.recyclerview.setHasFixedSize(true);
@@ -80,12 +78,16 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
 
     @Override
     public void initData() {
-
+        if(!TextUtils.isEmpty(mKeyword)){
+            loadSuggest();
+        }
     }
 
-    @Override
-    public FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultNoAnimator();
+    public void setKeyword(String keyword) {
+        mKeyword = keyword;
+        if(hasInit){
+            loadSuggest();
+        }
     }
 
     @Override
@@ -93,9 +95,8 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
         return false;
     }
 
-    public void loadSuggest(String s) {
-        mKeyword = s;
-        s = "搜索\"" + s + "\"";
+    public void loadSuggest() {
+        String  s = "搜索\"" + mKeyword + "\"";
         SpannableString spannableString = new SpannableString(s);
         int start = s.indexOf("\"");
         int end = s.lastIndexOf("\"");
@@ -116,14 +117,6 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
     }
 
     @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
-        if (mSuggestAdapter != null) {
-            mSuggestAdapter.getData().clear();
-        }
-    }
-
-    @Override
     public Class<SearchViewModel> onBindViewModel() {
         return SearchViewModel.class;
     }
@@ -138,7 +131,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
         SearchSuggestItem item = mSuggestAdapter.getItem(position);
 
         if (item.itemType == SearchSuggestItem.ALBUM) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                     .withLong(KeyCode.Home.ALBUMID, item.mAlbumResult.getAlbumId()));
         } else {
             mSearchListener.onSearch(item.mQueryResult.getKeyword());
@@ -154,7 +147,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         SearchSuggestItem item = mSuggestAdapter.getItem(position);
         mViewModel.play(String.valueOf(item.mAlbumResult.getAlbumId()));
-        RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+        RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                 .withLong(KeyCode.Home.ALBUMID, item.mAlbumResult.getAlbumId()));
     }
 

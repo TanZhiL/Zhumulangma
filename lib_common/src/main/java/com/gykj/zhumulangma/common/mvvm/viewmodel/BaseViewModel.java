@@ -22,7 +22,7 @@ import io.reactivex.functions.Consumer;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:ViewModel基类
  */
-public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements LifecycleObserver, Consumer<Disposable> {
+public class BaseViewModel<M extends BaseModel> extends AndroidViewModel implements Consumer<Disposable> {
     protected M mModel;
     //Disposable容器
     private CompositeDisposable mDisposables = new CompositeDisposable();
@@ -109,7 +109,6 @@ public class BaseViewModel<M extends BaseModel> extends AndroidViewModel impleme
     }
 
     @Override
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     protected void onCleared() {
         super.onCleared();
         mDisposables.clear();

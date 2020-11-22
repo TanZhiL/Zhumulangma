@@ -34,10 +34,9 @@
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
                     android:layout_height="158dp"
-                    app:indicator_drawable_unselected="@drawable/shap_home_banner_dot"
-                    app:indicator_height="7dp"
-                    app:indicator_margin="3dp"
-                    app:indicator_width="7dp" />
+                    app:banner_indicator_height="7dp"
+                    app:banner_indicator_margin="3dp"
+                    app:banner_indicator_normal_width="7dp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -57,13 +56,13 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
+                                android:id="@+id/fl_rank"
                                 android:layout_width="68dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
                                 <FrameLayout
-                                    android:id="@+id/fl_rank"
                                     android:layout_width="36dp"
                                     android:layout_height="36dp"
                                     app:bl_corners_radius="20dp"
@@ -87,6 +86,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/ll_yy"
                                 android:layout_width="68dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
@@ -110,12 +110,13 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="18dp"
                                     android:gravity="center"
-                                    android:text="精品"
+                                    android:text="音乐"
                                     android:textColor="@color/textColorPrimary"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/ll_it"
                                 android:layout_width="68dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
@@ -139,12 +140,13 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="18dp"
                                     android:gravity="center"
-                                    android:text="巅峰会员"
+                                    android:text="IT科技"
                                     android:textColor="@color/textColorPrimary"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/ll_qgsh"
                                 android:layout_width="68dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
@@ -168,12 +170,13 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="18dp"
                                     android:gravity="center"
-                                    android:text="听清远"
+                                    android:text="情感生活"
                                     android:textColor="@color/textColorPrimary"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/ll_rw"
                                 android:layout_width="68dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
@@ -197,12 +200,13 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="18dp"
                                     android:gravity="center"
-                                    android:text="小雅音响"
+                                    android:text="人文"
                                     android:textColor="@color/textColorPrimary"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/ll_english"
                                 android:layout_width="68dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
@@ -226,70 +230,12 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="18dp"
                                     android:gravity="center"
-                                    android:text="听单"
+                                    android:text="英语"
                                     android:textColor="@color/textColorPrimary"
                                     android:textSize="12sp" />
                             </LinearLayout>
-
                             <LinearLayout
-                                android:layout_width="68dp"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <FrameLayout
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    app:bl_solid_color="#a4c2f4"
-                                    app:bl_corners_radius="20dp">
-
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:layout_gravity="center"
-                                        android:tint="@color/white"
-                                        android:src="@drawable/ic_home_hot_jrbt" />
-                                </FrameLayout>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="18dp"
-                                    android:gravity="center"
-                                    android:text="今日必听"
-                                    android:textColor="@color/textColorPrimary"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="68dp"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <FrameLayout
-                                    android:layout_width="36dp"
-                                    android:layout_height="36dp"
-                                    app:bl_solid_color="#b6d7a8"
-                                    app:bl_corners_radius="20dp">
-
-                                    <ImageView
-                                        android:layout_width="24dp"
-                                        android:layout_height="24dp"
-                                        android:layout_gravity="center"
-                                        android:tint="@color/white"
-                                        android:src="@drawable/ic_home_hot_btbd" />
-                                </FrameLayout>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="18dp"
-                                    android:gravity="center"
-                                    android:text="边听边读"
-                                    android:textColor="@color/textColorPrimary"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
+                                android:id="@+id/ll_gxxy"
                                 android:layout_width="68dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
@@ -313,7 +259,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="18dp"
                                     android:gravity="center"
-                                    android:text="热门分享"
+                                    android:text="国学学院"
                                     android:textColor="@color/textColorPrimary"
                                     android:textSize="12sp" />
                             </LinearLayout>
@@ -530,7 +476,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         app:ih_right_text="更多"
-                        app:ih_title="电台"
+                        app:ih_title="掌柜推荐"
                         app:layout_constraintTop_toBottomOf="@id/line6" />
 
                     <androidx.recyclerview.widget.RecyclerView

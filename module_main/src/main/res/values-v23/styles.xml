@@ -3,7 +3,4 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@drawable/shap_main_splash</item>
     </style>
-    <style name="NullTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@null</item>
-    </style>
 </resources>

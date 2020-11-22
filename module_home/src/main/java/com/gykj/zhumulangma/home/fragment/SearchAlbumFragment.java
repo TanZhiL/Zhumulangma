@@ -1,20 +1,16 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
-import android.os.Bundle;
-import android.view.View;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -22,13 +18,15 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAlbumViewModel;
 import com.kingja.loadsir.callback.Callback;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
+import static com.gykj.zhumulangma.common.util.ZhumulangmaUtil.filterPaidAlbum;
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/8/13 15:12
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索专辑
  */
-public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, SearchAlbumViewModel, Album> {
+public class SearchAlbumFragment extends BaseRefreshFragment<CommonLayoutListBinding, SearchAlbumViewModel, Album> {
 
 
     private AlbumAdapter mAlbumAdapter;
@@ -39,19 +37,13 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutLis
 
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mView.setBackground(null);
-
-    }
 
     @Override
-    protected void initView() {
+    public void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
         mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_line);
@@ -63,7 +55,7 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutLis
     public void initListener() {
         super.initListener();
         mAlbumAdapter.setOnItemClickListener((adapter, view, position) ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, mAlbumAdapter.getItem(position).getId())));
     }
 
@@ -93,7 +85,7 @@ public class SearchAlbumFragment extends BaseRefreshMvvmFragment<CommonLayoutLis
 
     @Override
     public void initViewObservable() {
-        mViewModel.getInitAlbumsEvent().observe(this, albums -> mAlbumAdapter.setNewData(albums));
+        filterPaidAlbum(mViewModel.getInitAlbumsEvent()).observe(this, albums -> mAlbumAdapter.setNewData(albums));
     }
 
     @Override

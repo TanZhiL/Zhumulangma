@@ -1,5 +1,7 @@
 package com.gykj.zhumulangma.common.net;
 
+import android.util.Log;
+
 import com.gykj.zhumulangma.common.net.dto.ResponseDTO;
 import com.gykj.zhumulangma.common.net.exception.CustException;
 import com.gykj.zhumulangma.common.net.exception.ExceptionConverter;
@@ -71,6 +73,7 @@ public class RxAdapter {
         }
     }
 
+    private static final String TAG = "RxAdapter";
     /**
      * 统一处理未被拦截内部异常和所有外部异常
      */
@@ -86,6 +89,7 @@ public class RxAdapter {
                 t = ExceptionConverter.convert(t);
             }
             ToastUtil.showToast(ToastUtil.LEVEL_E, t.getMessage());
+            Log.e(TAG, "handle: ",t);
             return Observable.error(t);
         }
     }

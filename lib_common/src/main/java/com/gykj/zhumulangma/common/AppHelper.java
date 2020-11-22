@@ -11,14 +11,12 @@ import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
-import com.ximalaya.ting.android.opensdk.player.appnotification.NotificationColorUtils;
 import com.ximalaya.ting.android.opensdk.player.appnotification.XmNotificationCreater;
-import com.ximalaya.ting.android.opensdk.player.service.XmPlayerConfig;
+import com.ximalaya.ting.android.opensdk.player.service.XmMediaPlayerFactory;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 
 import java.io.File;
-import java.lang.reflect.Method;
 
 
 /**
@@ -62,24 +60,15 @@ public class AppHelper {
 
 
     public  AppHelper  initXmlyPlayer() {
-        try {
-            Method method = XmPlayerConfig.getInstance(mApplication).getClass().getDeclaredMethod("setUseSystemPlayer", boolean.class);
-            method.setAccessible(true);
-            method.invoke(XmPlayerConfig.getInstance(mApplication), true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        NotificationColorUtils.isTargerSDKVersion24More = true;
+        XmMediaPlayerFactory.setPlayerMode(true);
         try {
             Notification mNotification = XmNotificationCreater.getInstanse(mApplication)
-                    .initNotification(mApplication, Class.forName(ActivityUtils.getLauncherActivity()));
+                    .initNotification(mApplication, Class.forName(ActivityUtils.getLauncherActivity()));  // 此代码表示播放时会去监测下是否已经下载(setDownloadPlayPathCallback 方法已经废弃 请使用如下方法)
+            XmPlayerManager.getInstance(mApplication).setCommonBusinessHandle(XmDownloadManager.getInstance());
             XmPlayerManager.getInstance(mApplication).init(Constants.Third.XIMALAYA_NOTIFICATION, mNotification);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        // 此代码表示播放时会去监测下是否已经下载(setDownloadPlayPathCallback 方法已经废弃 请使用如下方法)
-        XmPlayerManager.getInstance(mApplication).setCommonBusinessHandle(XmDownloadManager.getInstance());
         return this;
     }
 

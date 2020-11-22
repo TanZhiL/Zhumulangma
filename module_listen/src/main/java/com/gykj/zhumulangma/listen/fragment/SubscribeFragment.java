@@ -11,18 +11,16 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.SubscribeBean;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.mvvm.view.BaseActivity;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.SubscribeAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.SubscribeViewModel;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Author: Thomas.
@@ -30,7 +28,7 @@ import org.greenrobot.eventbus.EventBus;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:订阅
  */
-public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutListBinding, SubscribeViewModel, SubscribeBean>
+public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutListBinding, SubscribeViewModel, SubscribeBean>
         implements BaseQuickAdapter.OnItemChildClickListener, View.OnClickListener {
 
     private SubscribeAdapter mSubscribeAdapter;
@@ -42,7 +40,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
 
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
@@ -58,7 +56,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
         mSubscribeAdapter = new SubscribeAdapter(R.layout.listen_item_subscribe);
@@ -73,7 +71,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
         super.initListener();
         mSubscribeAdapter.setOnItemChildClickListener(this);
         mSubscribeAdapter.setOnItemClickListener((adapter, view, position) ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, mSubscribeAdapter.getItem(position).getAlbum().getId())));
         vFooter.setOnClickListener(this);
     }
@@ -108,7 +106,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
         if (id == R.id.iv_play) {
             mViewModel.play(String.valueOf(mSubscribeAdapter.getItem(position).getAlbumId()));
         } else if (id == R.id.iv_more) {
-            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE, null));
+            ((BaseActivity)getContext()).share(null);
         }
     }
 
@@ -126,7 +124,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
     @Override
     public void onClick(View v) {
         if (v == vFooter) {
-            RouterUtil.navigateTo(Constants.Router.Home.F_RANK);
+            RouteHelper.navigateTo(Constants.Router.Home.F_RANK);
         }
     }
 
@@ -135,7 +133,7 @@ public class SubscribeFragment extends BaseRefreshMvvmFragment<CommonLayoutListB
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Listen.TAB_REFRESH:
-                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+                if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     mBinding.recyclerview.scrollToPosition(0);
                     mBinding.refreshLayout.autoRefresh();
                 }

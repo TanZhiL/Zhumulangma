@@ -16,6 +16,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:paddingStart="8dp"
+            android:visibility="gone"
             android:layout_height="25dp">
 
             <ImageView
@@ -65,10 +66,9 @@
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="158dp"
-                        app:indicator_drawable_unselected="@drawable/shap_home_banner_dot"
-                        app:indicator_height="7dp"
-                        app:indicator_margin="3dp"
-                        app:indicator_width="7dp"></com.youth.banner.Banner>
+                        app:banner_indicator_height="7dp"
+                        app:banner_indicator_margin="3dp"
+                        app:banner_indicator_normal_width="7dp" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout"
@@ -89,6 +89,7 @@
                                 android:orientation="horizontal">
 
                                 <LinearLayout
+                                    android:id="@+id/ll_phb"
                                     android:layout_width="68dp"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
@@ -112,12 +113,13 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="23dp"
                                         android:gravity="center"
-                                        android:text="畅销榜"
+                                        android:text="排行榜"
                                         android:textColor="@color/textColorPrimary"
                                         android:textSize="12sp" />
                                 </LinearLayout>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_gs"
                                     android:layout_width="68dp"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
@@ -141,12 +143,13 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="23dp"
                                         android:gravity="center"
-                                        android:text="新品榜"
+                                        android:text="故事"
                                         android:textColor="@color/textColorPrimary"
                                         android:textSize="12sp" />
                                 </LinearLayout>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_hs"
                                     android:layout_width="68dp"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
@@ -170,12 +173,13 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="23dp"
                                         android:gravity="center"
-                                        android:text="巅峰会员"
+                                        android:text="哄睡"
                                         android:textColor="@color/textColorPrimary"
                                         android:textSize="12sp" />
                                 </LinearLayout>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_eg"
                                     android:layout_width="68dp"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
@@ -199,12 +203,13 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="23dp"
                                         android:gravity="center"
-                                        android:text="有声书"
+                                        android:text="儿歌"
                                         android:textColor="@color/textColorPrimary"
                                         android:textSize="12sp" />
                                 </LinearLayout>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_dh"
                                     android:layout_width="68dp"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
@@ -228,12 +233,13 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="23dp"
                                         android:gravity="center"
-                                        android:text="筛选"
+                                        android:text="动画"
                                         android:textColor="@color/textColorPrimary"
                                         android:textSize="12sp" />
                                 </LinearLayout>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_xk"
                                     android:layout_width="68dp"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
@@ -257,7 +263,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="23dp"
                                         android:gravity="center"
-                                        android:text="已购"
+                                        android:text="学科"
                                         android:textColor="@color/textColorPrimary"
                                         android:textSize="12sp" />
                                 </LinearLayout>
@@ -270,6 +276,7 @@
                             style="@style/PrimaryHLine"
                             android:layout_width="0dp"
                             android:layout_height="6dp"
+                            android:visibility="gone"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/horizontalScrollView" />
@@ -278,6 +285,7 @@
                             android:id="@+id/c4"
                             android:layout_width="match_parent"
                             android:layout_height="143dp"
+                            android:visibility="gone"
                             app:layout_constraintTop_toBottomOf="@id/line1">
 
                             <View
@@ -369,7 +377,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             app:ih_right_text="更多"
-                            app:ih_title="每日优选"
+                            app:ih_title="经典故事"
                             app:layout_constraintTop_toBottomOf="@id/line8" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -399,7 +407,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             app:ih_right_text="更多"
-                            app:ih_title="有声读物"
+                            app:ih_title="动画世界"
                             app:layout_constraintTop_toBottomOf="@id/line3" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -429,7 +437,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             app:ih_right_text="更多"
-                            app:ih_title="小课堂"
+                            app:ih_title="国学经典"
                             app:layout_constraintTop_toBottomOf="@id/line4" />
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -444,6 +452,7 @@
                             layout="@layout/home_layout_item_refresh"
                             android:layout_width="match_parent"
                             android:layout_height="45dp"
+                            android:visibility="gone"
                             app:layout_constraintTop_toBottomOf="@id/rv_classroom" />
 
                         <View
@@ -453,6 +462,66 @@
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/classroom_refresh" />
+                        <com.gykj.zhumulangma.common.widget.ItemHeader
+                            android:id="@+id/ih_sing"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            app:ih_right_text="更多"
+                            app:ih_title="启智儿歌"
+                            app:layout_constraintTop_toBottomOf="@id/line5" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_sing"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:layout_constraintTop_toBottomOf="@id/ih_sing" />
+
+                        <include
+                            android:id="@+id/sing_refresh"
+                            layout="@layout/home_layout_item_refresh"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            app:layout_constraintTop_toBottomOf="@id/rv_sing" />
+
+                        <View
+                            android:id="@+id/line6"
+                            android:layout_width="0dp"
+                            style="@style/PrimaryHLine"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/sing_refresh" />
+                        <com.gykj.zhumulangma.common.widget.ItemHeader
+                            android:id="@+id/ih_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            app:ih_right_text="更多"
+                            app:ih_title="家长专区"
+                            app:layout_constraintTop_toBottomOf="@id/line6" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            app:layout_constraintTop_toBottomOf="@id/ih_parent" />
+
+                        <include
+                            android:id="@+id/parent_refresh"
+                            layout="@layout/home_layout_item_refresh"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:visibility="gone"
+                            app:layout_constraintTop_toBottomOf="@id/rv_parent" />
+
+                        <View
+                            android:id="@+id/line7"
+                            android:layout_width="0dp"
+                            style="@style/PrimaryHLine"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/parent_refresh" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>

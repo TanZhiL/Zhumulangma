@@ -1,5 +1,6 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider.Factory;
 import androidx.lifecycle.ViewModelProviders;
@@ -12,7 +13,7 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:MvvmActivity基类
  */
-public abstract class BaseMvvmActivity<VM extends BaseViewModel> extends BaseActivity{
+public abstract class BaseMvvmActivity<DB extends ViewDataBinding,VM extends BaseViewModel> extends BaseActivity<DB> {
     protected VM mViewModel;
 
     @Override
@@ -22,9 +23,13 @@ public abstract class BaseMvvmActivity<VM extends BaseViewModel> extends BaseAct
         initViewObservable();
     }
 
+    @Override
+    public void initView() {
+        showInitView();
+    }
+
     private void initViewModel() {
         mViewModel = createViewModel();
-        getLifecycle().addObserver(mViewModel);
     }
 
     public VM createViewModel() {
@@ -42,7 +47,7 @@ public abstract class BaseMvvmActivity<VM extends BaseViewModel> extends BaseAct
         mViewModel.getShowLoadingViewEvent().observe(this, (Observer<String>) this::showLoadingView);
         mViewModel.getShowEmptyViewEvent().observe(this, (Observer<Void>) show -> showEmptyView());
         mViewModel.getShowErrorViewEvent().observe(this, (Observer<Void>) show -> showErrorView());
-        mViewModel.getFinishSelfEvent().observe(this, (Observer<Void>) v -> pop());
+        mViewModel.getFinishSelfEvent().observe(this, (Observer<Void>) v -> finish());
         mViewModel.getClearStatusEvent().observe(this, (Observer<Void>) v -> clearStatus());
     }
 

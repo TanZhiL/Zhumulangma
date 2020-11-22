@@ -12,33 +12,25 @@ public interface Constans {
      */
     String TOKEN_KEY="token";
 
-    /**
-     * 在线
-     */
-    int NET_ONLINE = 0;
-    /**
-     * 离线
-     */
-    int NET_OFFLINE = 1;
 
     String HOST_KEY = "HOST";
     /**
      * 主机1
      */
-    String HOST1_VALUE = "Local";
+    String HOST1_BING = "bing";
     /**
      * 主机2
      */
-    String HOST2_VALUE = "Other";
+    String HOST2_XMLY = "ximalaya";
 
     /**
-     * 标识使用主机1
+     * 必应
      */
-    String HEADER_HOST1 = HOST_KEY + ":" + HOST1_VALUE;
+    String HEADER_BING = HOST_KEY + ":" + HOST1_BING;
     /**
-     * 标识使用主机2
+     * 喜马拉雅
      */
-    String HEADER_HOST2 = HOST_KEY + ":" + HOST2_VALUE;
+    String HEADER_XMLY = HOST_KEY + ":" + HOST2_XMLY;
 
     /**
      * 第三方api
@@ -48,14 +40,5 @@ public interface Constans {
     String GITHUB_URL="https://api.github.com/repos/TanZhiL/Zhumulangma";
     String REDIRECT_URL = "http://api.ximalaya.com/openapi-collector-app/get_access_token";
     String REFRESH_TOKEN_URL = "https://api.ximalaya.com/oauth2/refresh_token?";
-    /**
-     * 测试环境
-     */
-    String OFFLINE_HOST1 = "https://cn.bing.com/";
-    String OFFLINE_HOST2 = "http://192.168.31.105:8767/";
-    /**
-     * 正式环境
-     */
-    String ONLINE_HOST1 = "https://cn.bing.com/";
-    String ONLINE_HOST2 = "http://192.168.31.105:8767/";
+
 }

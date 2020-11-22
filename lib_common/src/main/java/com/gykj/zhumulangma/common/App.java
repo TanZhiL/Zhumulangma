@@ -74,13 +74,10 @@ public class App extends MultiDexApplication {
         instance = this;
         if (BaseUtil.isMainProcess(this)) {
             ThirdHelper.getInstance(this)
-                    .initLeakCanary()
-                    .initFragmentation(false)
+//                    .initLeakCanary()
                     .initSpeech()
                     .initAgentWebX5()
                     .initAspectj(new PointHelper(this))
-                    .initUM()
-                    .initRouter()
                     .initUtils()
                     .initCrashView()
                     .initBugly(false);
@@ -91,9 +88,14 @@ public class App extends MultiDexApplication {
                     .initXmlyDownloader();
             XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
             registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
+            AppHelper.getInstance(this)
+                    .initXmlyPlayer();
         }
-        AppHelper.getInstance(this)
-                .initXmlyPlayer();
+        ThirdHelper.getInstance(this)
+                .initRouter()
+                .initBugly(false)
+                .initCrashView()
+                .initUM();
     }
 
 

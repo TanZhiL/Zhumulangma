@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_height="39dp" />
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="300dp"

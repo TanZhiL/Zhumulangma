@@ -115,7 +115,7 @@
             android:background="#f0f0f0"
             app:layout_constraintTop_toBottomOf="@+id/cl_titlebar" />
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="0dp"

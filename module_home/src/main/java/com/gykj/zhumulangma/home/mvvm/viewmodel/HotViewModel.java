@@ -6,26 +6,27 @@ import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.bean.BannerBean;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.net.dto.BannerDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnInfoDTO;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList;
-import com.ximalaya.ting.android.opensdk.model.banner.BannerV2;
-import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
-import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -33,23 +34,30 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.internal.functions.Functions;
 
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.HOT_COLUMN_ID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IDS;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.OPERATION_CATEGORY_ID;
+
 public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> {
-    private SingleLiveEvent<List<BannerV2>> mBannerV2Event;
+    private SingleLiveEvent<List<BannerBean>> mBannerEvent;
+    private SingleLiveEvent<List<Album>> mColumnEvent;
     private SingleLiveEvent<List<Album>> mLikesEvent;
     private SingleLiveEvent<List<Album>> mStorysEvent;
     private SingleLiveEvent<List<Album>> mBadysEvent;
     private SingleLiveEvent<List<Album>> mMusicsEvent;
     private SingleLiveEvent<List<Radio>> mRadiosEvent;
+    private SingleLiveEvent<String> mColumnNameEvent;
 
     private int totalStoryPage = 1;
     private int totalBabyPage = 1;
     private int totalMusicPage = 1;
-    private int totalRadioPage = 1;
+    private int totalColumnPage = 1;
 
     private int curStoryPage = 1;
     private int curBabyPage = 1;
     private int curMusicPage = 1;
-    private int curRadioPage = 1;
+    private int curColumnPage = 1;
 
     public HotViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
@@ -60,7 +68,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
         curStoryPage = 1;
         curBabyPage = 1;
         curMusicPage = 1;
-        curRadioPage = 1;
+        curColumnPage = 1;
         init();
     }
 
@@ -68,7 +76,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
         //获取banner
         getBannerListObervable()
                 //猜你喜欢
-                .flatMap((Function<BannerV2List, ObservableSource<GussLikeAlbumList>>) bannerV2List ->
+                .flatMap((Function<BannerDTO, ObservableSource<GussLikeAlbumList>>) bannerV2List ->
                         getGussLikeListObservable())
                 //有声书
                 .flatMap((Function<GussLikeAlbumList, ObservableSource<AlbumList>>) gussLikeAlbumList ->
@@ -77,8 +85,8 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getHotBabyListObservable())
                 //音乐
                 .flatMap((Function<AlbumList, ObservableSource<AlbumList>>) albumList -> getHotMusicListObservable())
-                //电台
-                .flatMap((Function<AlbumList, ObservableSource<RadioList>>) albumList -> getRadioListObservable())
+                .flatMap((Function<AlbumList, ObservableSource<ColumnDetailDTO<Album>>>) albumList -> getColumnListObservable())
+                .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnInfoDTO>>) albumList -> getColumnInfoObservable())
                 .doFinally(() -> super.onViewRefresh())
                 .subscribe(r -> getClearStatusEvent().call(), e ->
                 {
@@ -87,22 +95,14 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
                 });
     }
 
-    private Observable<BannerV2List> getBannerListObervable() {
+    private Observable<BannerDTO> getBannerListObervable() {
         Map<String, String> map = new HashMap<>();
-        map.put(DTransferConstants.CATEGORY_ID, "1");
-        map.put(DTransferConstants.IMAGE_SCALE, "2");
-        return mModel.getCategoryBannersV2(map)
-                .doOnNext(bannerV2List -> {
-                    List<BannerV2> bannerV2s = bannerV2List.getBannerV2s();
-                    Iterator<BannerV2> iterator = bannerV2s.iterator();
-                    while (iterator.hasNext()) {
-                        BannerV2 next = iterator.next();
-                        //阉割听单
-                        if (next.getBannerContentType() == 5 || next.getBannerContentType() == 6) {
-                            iterator.remove();
-                        }
-                    }
-                    getBannerV2Event().setValue(bannerV2s);
+        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(3 + new Random().nextInt(5)));
+        map.put(OPERATION_CATEGORY_ID, "1");
+        map.put(IS_PAID, "0");
+        return mModel.getBanners(map)
+                .doOnNext((BannerDTO bannerV2List) -> {
+                    getBannerEvent().setValue(bannerV2List.getBanners());
                 });
     }
 
@@ -186,36 +186,36 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
                     getMusicsEvent().setValue(albumList.getAlbums());
                 });
     }
-
-    public void getRadioList() {
-
-        getRadioListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
+    public void getColumnList() {
+        getColumnListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
 
     }
-
-    private Observable<RadioList> getRadioListObservable() {
-
+    private Observable<ColumnDetailDTO<Album>> getColumnListObservable() {
         Map<String, String> map = new HashMap<String, String>();
-        //电台类型：1-国家台，2-省市台，3-网络台
-        map.put(DTransferConstants.RADIOTYPE, "3");
+        map.put(DTransferConstants.ID, HOT_COLUMN_ID);
         map.put(DTransferConstants.PAGE_SIZE, "5");
-        curRadioPage = curRadioPage >= totalRadioPage ? 1 : curRadioPage;
-        map.put(DTransferConstants.PAGE, String.valueOf(curRadioPage));
-        return mModel.getRadios(map)
+        curColumnPage = curColumnPage >= totalColumnPage ? 1 : curColumnPage;
+        map.put(DTransferConstants.PAGE, String.valueOf(curColumnPage));
+        return mModel.getBrowseAlbumColumn(map)
                 .doOnNext(radioList -> {
-                    if (!CollectionUtils.isEmpty(radioList.getRadios())) {
-                        curRadioPage++;
+                    if (!CollectionUtils.isEmpty(radioList.getColumns())) {
+                        curColumnPage++;
                     }
-                    totalRadioPage = radioList.getTotalPage();
-                    getRadiosEvent().setValue(radioList.getRadios());
+                    totalColumnPage = radioList.getTotalPage();
+                    getColumnEvent().setValue(radioList.getColumns());
                 });
 
     }
+    private Observable<ColumnInfoDTO> getColumnInfoObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, HOT_COLUMN_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getColumnNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
 
+    }
     public void playTrack(long trackId) {
-
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.ID, String.valueOf(trackId));
         mModel.searchTrackV2(map)
@@ -237,25 +237,27 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
                             break;
                         }
                     }
-                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                    RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 
     public void playRadio(Radio radio) {
-        mModel.getSchedulesSource(radio)
+        /*mModel.getSchedulesSource(radio)
                 .doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(schedules ->
                 {
-                    XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
+                 //   XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
                     RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
-                }, Throwable::printStackTrace);
+                }, Throwable::printStackTrace);*/
     }
 
-    public SingleLiveEvent<List<BannerV2>> getBannerV2Event() {
-        return mBannerV2Event = createLiveData(mBannerV2Event);
+    public SingleLiveEvent<List<BannerBean>> getBannerEvent() {
+        return mBannerEvent = createLiveData(mBannerEvent);
     }
-
+    public SingleLiveEvent<List<Album>> getColumnEvent() {
+        return mColumnEvent = createLiveData(mColumnEvent);
+    }
     public SingleLiveEvent<List<Album>> getLikesEvent() {
         return mLikesEvent = createLiveData(mLikesEvent);
     }
@@ -277,4 +279,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
         return mRadiosEvent = createLiveData(mRadiosEvent);
     }
 
+    public SingleLiveEvent<String> getColumnNameEvent() {
+        return mColumnNameEvent = createLiveData(mColumnNameEvent);
+    }
 }

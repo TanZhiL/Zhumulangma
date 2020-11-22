@@ -9,7 +9,7 @@ import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.util.DateUtil;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.listen.bean.PlayHistoryItem;
 import com.gykj.zhumulangma.listen.mvvm.model.HistoryModel;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -95,19 +95,19 @@ public class HistoryViewModel extends BaseRefreshViewModel<HistoryModel, PlayHis
                             break;
                         }
                     }
-                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                    RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
                 }, Throwable::printStackTrace);
     }
 
     public void playRadio(String radioId) {
-        mModel.getSchedulesSource(radioId)
+      /*  mModel.getSchedulesSource(radioId)
                 .doOnSubscribe(d -> getShowLoadingViewEvent().call())
                 .doFinally(() -> getClearStatusEvent().call())
                 .subscribe(schedules ->
                 {
                     XmPlayerManager.getInstance(getApplication()).playSchedule(schedules, -1);
                     RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
-                }, Throwable::printStackTrace);
+                }, Throwable::printStackTrace);*/
 
     }
 

@@ -2,18 +2,18 @@ package com.gykj.zhumulangma.main;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,32 +21,29 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.gykj.zhumulangma.common.Constants;
+import com.gykj.zhumulangma.common.adapter.TFragmentStateAdapter;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
 import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
+import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.mvvm.view.status.LoadingStatus;
 import com.gykj.zhumulangma.common.util.PermissionPageUtil;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.widget.GlobalPlay;
+import com.gykj.zhumulangma.main.databinding.MainActivityMainBinding;
 import com.gykj.zhumulangma.main.dialog.SplashAdPopup;
-import com.gykj.zhumulangma.main.fragment.MainFragment;
 import com.gykj.zhumulangma.main.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
-import com.kingja.loadsir.core.LoadLayout;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.next.easynavigation.utils.NavigationUtil;
+import com.next.easynavigation.view.EasyNavigationBar;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.advertis.Advertis;
 import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList;
@@ -59,26 +56,32 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl;
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException;
 import com.ximalaya.ting.android.opensdk.util.BaseUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import org.greenrobot.eventbus.EventBus;
 
-import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 
 @Route(path = Constants.Router.Main.A_MAIN)
-public class MainActivity extends BaseMvvmActivity<MainViewModel> implements View.OnClickListener,
-        MainFragment.onRootShowListener {
+public class MainActivity extends BaseMvvmActivity<MainActivityMainBinding,MainViewModel> implements View.OnClickListener,
+         EasyNavigationBar.OnTabClickListener {
     private XmPlayerManager mPlayerManager = XmPlayerManager.getInstance(this);
     private PlayHistoryBean mHistoryBean;
     private GlobalPlay globalplay;
 
+    private String[] tabText = {"首页", "我听", "发现", "我的"};
+
+    private @DrawableRes
+    int[] normalIcon = {R.drawable.main_tab_home_normal, R.drawable.main_tab_litsten_normal
+            , R.drawable.main_tab_find_normal, R.drawable.main_tab_user_normal};
+    private @DrawableRes
+    int[] selectIcon = {R.drawable.main_tab_home_press, R.drawable.main_tab_listen_press
+            ,R.drawable.main_tab_find_press, R.drawable.main_tab_user_press};
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        //清除全屏显示
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //去除背景色,避免过度绘制
-        setTheme(R.style.NullTheme);
         super.onCreate(savedInstanceState);
         initAd();
         //申请权限
@@ -101,6 +104,16 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
     }
 
+    @Override
+    public int onBindLayout() {
+        return R.layout.main_activity_main;
+    }
+
+    @Override
+    protected boolean enableSwipeBack() {
+        return false;
+    }
+
     /**
      * 显示广告
      */
@@ -114,15 +127,49 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
         globalplay = new GlobalPlay(this);
         globalplay.setRadius(NavigationUtil.dip2px(this, 19));
         globalplay.setBarWidth(NavigationUtil.dip2px(this, 2));
-        if (findFragment(MainFragment.class) == null) {
-            MainFragment mainFragment = new MainFragment();
-            mainFragment.setShowListener(this);
-            loadRootFragment(android.R.id.content, mainFragment);
-        }
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(NavigationUtil.dip2px(this, 50), NavigationUtil.dip2px(this, 50));
         layoutParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM;
-        LoadLayout loadLayout = mBaseLoadService.getLoadLayout();
-        ((ViewGroup) loadLayout.getParent().getParent()).addView(globalplay, layoutParams);
+        ((ViewGroup) mBinding.getRoot()).addView(globalplay, layoutParams);
+
+        List<Fragment> fragments = new ArrayList<>();
+        Object home = mRouter.build(Constants.Router.Home.F_MAIN).navigation();
+        if (null != home) {
+            fragments.add((Fragment) home);
+        }
+        Object listen = mRouter.build(Constants.Router.Listen.F_MAIN).navigation();
+        if (null != listen) {
+            fragments.add((Fragment) listen);
+        }
+        Object discover = mRouter.build(Constants.Router.Discover.F_MAIN).navigation();
+        if (null != listen) {
+            fragments.add((Fragment) discover);
+        }
+        Object user = mRouter.build(Constants.Router.User.F_MAIN).navigation();
+        if (null != listen) {
+            fragments.add((Fragment) user);
+        }
+
+        mBinding.vp.setOffscreenPageLimit(fragments.size());
+        mBinding.vp.setAdapter(new TFragmentStateAdapter(this, fragments));
+        mBinding.vp.setUserInputEnabled(false);
+        mBinding.enb.defaultSetting()
+                .setupWithViewPager(mBinding.vp)
+                .titleItems(tabText)
+                .normalIconItems(normalIcon)
+                .selectIconItems(selectIcon)
+                .lineHeight(1)
+                .mode(EasyNavigationBar.NavigationMode.MODE_ADD)
+                .centerImageRes(R.drawable.shap_third_white_coner)
+                .fragmentManager(getSupportFragmentManager())
+                .normalTextColor(getResources().getColor(R.color.colorGray))   //Tab未选中时字体颜色
+                .selectTextColor(getResources().getColor(R.color.colorPrimary))   //Tab选中时字体颜色
+                .tabTextSize(11)   //Tab文字大小
+                .iconSize(27)
+                .centerIconSize(0)//取消中间图标
+                .navigationHeight(50)
+                .setOnTabClickListener(this)
+                .build();
+
     }
 
     @Override
@@ -186,32 +233,29 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
 
 
     @Override
+    public boolean enableSimplebar() {
+        return false;
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == globalplay) {
             if (null == mPlayerManager.getCurrSound(true)) {
                 if (mHistoryBean == null) {
-                    RouterUtil.navigateTo(Constants.Router.Home.F_RANK);
+                    RouteHelper.navigateTo(Constants.Router.Home.F_RANK);
                 } else {
                     mViewModel.play(mHistoryBean);
                 }
             } else {
                 mPlayerManager.play();
                 if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_TRACK)) {
-                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
+                    RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
 
                 } else if (mPlayerManager.getCurrSound().getKind().equals(PlayableModel.KIND_SCHEDULE)) {
-                    RouterUtil.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
+                    RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_RADIIO);
                 }
             }
         }
-    }
-
-    @Override
-    public void onRootShow(boolean isVisible) {
-        if (isVisible)
-            globalplay.setBackgroundColor(Color.TRANSPARENT);
-        else
-            globalplay.setBackground(getResources().getDrawable(R.drawable.shap_main_globalplay));
     }
 
 
@@ -248,24 +292,20 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     private long exitTime = 0;
 
     @Override
-    public void onBackPressedSupport() {
+    public void onBackPressed() {
         //如果正在显示loading,则清除
         if (mBaseLoadService.getCurrentCallback() == LoadingStatus.class) {
             clearStatus();
             return;
         }
-        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            pop();
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(this, "再按一次返回桌面", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
         } else {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(this, "再按一次返回桌面", Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();
-            } else {
-                ActivityUtils.startHomeActivity();
-            }
+            ActivityUtils.startHomeActivity();
         }
     }
-
+/*
     @Override
     public void onEvent(ActivityEvent event) {
         super.onEvent(event);
@@ -300,9 +340,33 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
                         .setCallback(uMShareListener).open(config);
                 break;
         }
+    }*/
+
+
+
+    @Override
+    public boolean onTabSelectEvent(View view, int position) {
+        return false;
     }
 
-
+    @Override
+    public boolean onTabReSelectEvent(View view, int position) {
+        switch (position){
+            case 0:
+                EventBus.getDefault().post(new FragmentEvent(EventCode.Home.TAB_REFRESH));
+                break;
+            case 1:
+                EventBus.getDefault().post(new FragmentEvent(EventCode.Listen.TAB_REFRESH));
+                break;
+            case 2:
+                EventBus.getDefault().post(new FragmentEvent(EventCode.Discover.TAB_REFRESH));
+                break;
+            case 3:
+                EventBus.getDefault().post(new FragmentEvent(EventCode.User.TAB_REFRESH));
+                break;
+        }
+        return false;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -314,17 +378,11 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
-
         mPlayerManager.removePlayerStatusListener(playerStatusListener);
         mPlayerManager.removeAdsStatusListener(adsStatusListener);
         UMShareAPI.get(this).release();
-    }
-
-    @Override
-    public FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultNoAnimator();
     }
 
     private IXmPlayerStatusListener playerStatusListener = new IXmPlayerStatusListener() {
@@ -452,4 +510,5 @@ public class MainActivity extends BaseMvvmActivity<MainViewModel> implements Vie
             ToastUtil.showToast(ToastUtil.LEVEL_W, "分享取消");
         }
     };
+
 }

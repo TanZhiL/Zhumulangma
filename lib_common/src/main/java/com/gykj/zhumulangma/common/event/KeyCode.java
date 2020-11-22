@@ -12,7 +12,9 @@ public interface KeyCode {
 
     interface Home {
         String KEYWORD = "keyword";
-        String TYPE = "type";
+        String CATEGORY = "category";
+        String TAG = "tag";
+        String COLUMN = "column";
         String TITLE = "title";
         String ALBUMID = "albumid";
         String HOTWORD = "hotword";

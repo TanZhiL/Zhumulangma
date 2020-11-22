@@ -2,21 +2,23 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.Manifest;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.alibaba.android.arouter.facade.Postcard;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.adapter.TFragmentPagerAdapter;
+import com.gykj.zhumulangma.common.adapter.TFragmentStateAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentMainBinding;
@@ -28,7 +30,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.ximalaya.ting.android.opensdk.model.word.HotWord;
 
-import net.lucode.hackware.magicindicator.ViewPagerHelper;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
 
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.home_fragment_main;
     }
 
@@ -68,8 +69,8 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
     }
 
     @Override
-    protected void initView() {
-        String[] tabs = {"热门", "分类", "精品", "主播", "广播"};
+    public void initView() {
+        String[] tabs = {"热门", "分类", "小说", "儿童", "主播"};
 
         if (StatusBarUtils.supportTransparentStatusBar()) {
             mBinding.clTitlebar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
@@ -77,13 +78,12 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new HotFragment());
         fragments.add(new CategoryFragment());
-        fragments.add(new FineFragment());
+        fragments.add(new NovelFragment());
+        fragments.add(new ChildFragment());
         fragments.add(new AnnouncerFragment());
-        fragments.add(new RadioFragment());
 
-        TFragmentPagerAdapter adapter = new TFragmentPagerAdapter(
-                getChildFragmentManager(), fragments);
-        mBinding.viewpager.setOffscreenPageLimit(4);
+        TFragmentStateAdapter adapter = new TFragmentStateAdapter(this, fragments);
+        mBinding.viewpager.setOffscreenPageLimit(fragments.size());
         mBinding.viewpager.setAdapter(adapter);
 
         final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
@@ -106,7 +106,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
                         postcard.withString(KeyCode.Home.HOTWORD, (String) mBinding.marqueeView.getMessages()
                                 .get(mBinding.marqueeView.getPosition()));
                     }
-                    RouterUtil.navigateTo(postcard);
+                    RouteHelper.navigateTo(postcard);
                 });
 
         mBinding.ivDownload.setOnClickListener(this);
@@ -114,7 +114,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
         RxView.clicks(mBinding.ivMessage)
                 .doOnSubscribe(this)
                 .throttleFirst(1, TimeUnit.SECONDS)
-                .subscribe(unit -> RouterUtil.navigateTo(Constants.Router.User.F_MESSAGE));
+                .subscribe(unit -> RouteHelper.navigateTo(Constants.Router.User.F_MESSAGE));
         mBinding.marqueeView.setOnItemClickListener(this);
     }
 
@@ -128,6 +128,8 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
         super.onRevisible();
         if (CollectionUtils.isEmpty(mBinding.marqueeView.getMessages())) {
             mViewModel.getHotWords();
+        }else {
+            mBinding.marqueeView.startFlipping();
         }
     }
 
@@ -143,14 +145,14 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            RouterUtil.navigateTo(Constants.Router.Home.F_SCAN);
+                            RouteHelper.navigateTo(Constants.Router.Discover.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
 
         } else if (id == R.id.iv_history) {
-            RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_HISTORY);
         }
 
     }
@@ -178,21 +180,13 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
 
     @Override
     public void onItemClick(int position, TextView textView) {
-        RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_SEARCH)
+        RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_SEARCH)
                 .withString(KeyCode.Home.HOTWORD, (String) mBinding.marqueeView.getMessages().get(position)));
     }
 
     @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        if (mBinding.marqueeView != null && !CollectionUtils.isEmpty(mBinding.marqueeView.getMessages())) {
-            mBinding.marqueeView.startFlipping();
-        }
-    }
-
-    @Override
-    public void onSupportInvisible() {
-        super.onSupportInvisible();
+    public void onPause() {
+        super.onPause();
         if (mBinding.marqueeView != null) {
             mBinding.marqueeView.stopFlipping();
         }

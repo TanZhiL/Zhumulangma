@@ -8,11 +8,17 @@ import androidx.annotation.NonNull;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.db.DBManager;
 import com.gykj.zhumulangma.common.net.service.CommonService;
+import com.gykj.zhumulangma.common.net.service.HomeService;
 import com.gykj.zhumulangma.common.net.service.UserService;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.Proxy;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import io.rx_cache2.internal.RxCache;
 import io.victoralbertos.jolyglot.GsonSpeaker;
@@ -26,6 +32,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.gykj.zhumulangma.common.net.Constans.HOST1_BING;
+import static com.gykj.zhumulangma.common.net.Constans.HOST2_XMLY;
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/9/10 8:23
@@ -38,9 +47,19 @@ public class NetManager {
     private static volatile NetManager instance;
     private CacheProvider mCacheProvider;
     private Retrofit mRetrofit;
-    private int mNetStatus = Constans.NET_ONLINE;
-    private CommonService mCommonService;
-    private UserService mUserService;
+    private int mNetStatus;
+    private volatile CommonService mCommonService;
+    private volatile UserService mUserService;
+    private volatile HomeService mHomeService;
+
+    static final List<Map<String, String>> HOSTS = new ArrayList<>();
+
+    static {
+        Map<String, String> online = new HashMap<>(2, 1);
+        online.put(HOST1_BING, "https://cn.bing.com/");
+        online.put(HOST2_XMLY, "https://api.ximalaya.com");
+        HOSTS.add(online);
+    }
 
     public static void init(File cacheFile) {
         if (!cacheFile.exists())
@@ -63,7 +82,6 @@ public class NetManager {
         //先异步获取token
         DBManager.getInstance()
                 .getSPString(Constants.SP.TOKEN)
-                .compose(RxAdapter.schedulersTransformer())
                 .compose(RxAdapter.exceptionTransformer())
                 .subscribe(token -> {
                     OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -82,7 +100,7 @@ public class NetManager {
 
                     mRetrofit = new Retrofit.Builder()
                             .client(builder.build())
-                            .baseUrl(Constans.ONLINE_HOST1)
+                            .baseUrl("https://www.baidu.com")
                             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
@@ -104,16 +122,34 @@ public class NetManager {
 
     public CommonService getCommonService() {
         if (mCommonService == null) {
-            mCommonService = mRetrofit.create(CommonService.class);
+            synchronized (NetManager.class) {
+                if (mCommonService == null) {
+                    mCommonService = mRetrofit.create(CommonService.class);
+                }
+            }
         }
         return mCommonService;
     }
-
     public UserService getUserService() {
         if (mUserService == null) {
-            mUserService = mRetrofit.create(UserService.class);
+            synchronized (NetManager.class) {
+                if (mUserService == null) {
+                    mUserService = mRetrofit.create(UserService.class);
+                }
+            }
         }
         return mUserService;
+    }
+
+    public HomeService getHomeService() {
+        if (mHomeService == null) {
+            synchronized (NetManager.class) {
+                if (mHomeService == null) {
+                    mHomeService = mRetrofit.create(HomeService.class);
+                }
+            }
+        }
+        return mHomeService;
     }
 
     /**
@@ -167,15 +203,7 @@ public class NetManager {
      * @return
      */
     private HttpUrl getBaseUrl(String hostValue) {
-        if (Constans.HOST1_VALUE.equals(hostValue) && mNetStatus == Constans.NET_OFFLINE) {
-            return HttpUrl.parse(Constans.OFFLINE_HOST1);
-        } else if (Constans.HOST1_VALUE.equals(hostValue) && mNetStatus == Constans.NET_ONLINE) {
-            return HttpUrl.parse(Constans.ONLINE_HOST1);
-        } else if (Constans.HOST2_VALUE.equals(hostValue) && mNetStatus == Constans.NET_OFFLINE) {
-            return HttpUrl.parse(Constans.OFFLINE_HOST2);
-        } else if (Constans.HOST2_VALUE.equals(hostValue) && mNetStatus == Constans.NET_ONLINE) {
-            return HttpUrl.parse(Constans.ONLINE_HOST2);
-        }
-        return null;
+        return HttpUrl.parse(Objects.requireNonNull(HOSTS.get(mNetStatus).get(hostValue)));
     }
+
 }

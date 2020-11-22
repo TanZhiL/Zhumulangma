@@ -1,9 +1,9 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.View;
+
+import androidx.lifecycle.ViewModelProvider;
 
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.home.R;
@@ -12,9 +12,6 @@ import com.gykj.zhumulangma.home.adapter.SearchHotAdapter;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentSearchHistoryBinding;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchViewModel;
-
-import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
-import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 /**
  * Author: Thomas.
@@ -33,7 +30,7 @@ public class SearchHistoryFragment extends BaseMvvmFragment<HomeFragmentSearchHi
     }
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.home_fragment_search_history;
     }
 
@@ -44,7 +41,7 @@ public class SearchHistoryFragment extends BaseMvvmFragment<HomeFragmentSearchHi
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         mBinding.tvClear.setOnClickListener(this);
 
         mBinding.rvHistory.setLayoutManager(new com.library.flowlayout.FlowLayoutManager());
@@ -111,11 +108,6 @@ public class SearchHistoryFragment extends BaseMvvmFragment<HomeFragmentSearchHi
         mViewModel.getHotWordsEvent().observe(this, hotWords -> mHotAdapter.setNewData(hotWords));
         mViewModel.getHistorySingleLiveEvent().observe(this, historyBeanList ->
                 mHistoryAdapter.setNewData(historyBeanList));
-    }
-
-    @Override
-    public FragmentAnimator onCreateFragmentAnimator() {
-        return new DefaultNoAnimator();
     }
 
     @Override

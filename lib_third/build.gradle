@@ -37,6 +37,7 @@ dependencies {
     api rootProject.ext.androidx["espresso-core"]
     api rootProject.ext.androidx["lifecycle-extensions"]
     api rootProject.ext.androidx["multidex"]
+    api rootProject.ext.androidx["viewpager2"]
 
     api rootProject.ext.dependencies["arouter-api"]
     api rootProject.ext.dependencies["rxjava"]
@@ -60,8 +61,6 @@ dependencies {
     api rootProject.ext.dependencies["utilcode"]
     api rootProject.ext.dependencies["loadsir"]
     api rootProject.ext.dependencies["titlebar"]
-    api rootProject.ext.dependencies["fragmentation"]
-    api rootProject.ext.dependencies["fragmentation-swipeback"]
     api rootProject.ext.dependencies["lottie"]
     api rootProject.ext.dependencies["autosize"]
     api rootProject.ext.dependencies["SmartRefreshLayout"]
@@ -85,7 +84,6 @@ dependencies {
     api rootProject.ext.dependencies["xpopup"]
     api rootProject.ext.dependencies["toast"]
     api rootProject.ext.dependencies["bga-qrcode-zxing"]
-    api rootProject.ext.dependencies["agentwebX5"]
     api rootProject.ext.dependencies["roundedimageview"]
     api rootProject.ext.dependencies["aspectjrt"]
     api (rootProject.ext.dependencies["okaspectjrt"],{
@@ -99,6 +97,10 @@ dependencies {
     api rootProject.ext.dependencies["RxCache"]
     api rootProject.ext.dependencies["Jolyglot-gson"]
     api rootProject.ext.dependencies["backgroundlib"]
+    api rootProject.ext.dependencies["Slidr"]
+    api rootProject.ext.dependencies["agentweb"]
+    api rootProject.ext.dependencies["agentweb_filechooser"]
+    api rootProject.ext.dependencies["agentweb_downloader"]
 
 
     api files('libs/Msc.jar')

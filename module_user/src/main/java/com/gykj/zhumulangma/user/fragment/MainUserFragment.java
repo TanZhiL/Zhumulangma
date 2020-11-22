@@ -18,14 +18,13 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.extra.GlideApp;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.BaseActivity;
+import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.user.R;
@@ -39,8 +38,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.bugly.beta.Beta;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
 
-import org.greenrobot.eventbus.EventBus;
-
 /**
  * Author: Thomas.
  * <br/>Date: 2019/8/14 13:41
@@ -48,7 +45,8 @@ import org.greenrobot.eventbus.EventBus;
  * <br/>Description:我的
  */
 @Route(path = Constants.Router.User.F_MAIN)
-public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBinding, MainUserViewModel, Object> implements View.OnClickListener {
+public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBinding, MainUserViewModel, Object>
+        implements View.OnClickListener {
 
     private GitHubDTO mGitHubDTO;
 
@@ -58,7 +56,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBi
     private ImageView transRight;
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.user_fragment_main;
     }
 
@@ -74,7 +72,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBi
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         initBar();
 
     }
@@ -177,7 +175,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBi
         });
 
         mViewModel.getBaseUserInfoEvent().observe(this, xmBaseUserInfo -> {
-            GlideApp.with(MainUserFragment.this)
+                    Glide.with(MainUserFragment.this)
                     .load(xmBaseUserInfo.getAvatarUrl())
                     .placeholder(R.drawable.ic_user_avatar)
                     .error(R.drawable.ic_user_avatar)
@@ -202,30 +200,30 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBi
     public void onClick(View v) {
         int id = v.getId();
         if (R.id.ll_download == id) {
-            RouterUtil.navigateTo(Constants.Router.Listen.F_DOWNLOAD);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_DOWNLOAD);
         } else if (R.id.ll_history == id) {
-            RouterUtil.navigateTo(Constants.Router.Listen.F_HISTORY);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_HISTORY);
         } else if (R.id.ll_favorit == id) {
-            RouterUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_FAVORITE);
         } else if (v == whiteLeft || v == transLeft) {
-            RouterUtil.navigateTo(Constants.Router.User.F_MESSAGE);
+            RouteHelper.navigateTo(Constants.Router.User.F_MESSAGE);
         } else if (id == R.id.cl_fxzq) {
-            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
+            ((BaseActivity)getContext()).share(null);
         } else if (id == R.id.cl_sys) {
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {
                         if (permission.granted) {
-                            RouterUtil.navigateTo(Constants.Router.Home.F_SCAN);
+                            RouteHelper.navigateTo(Constants.Router.Discover.F_SCAN);
                         } else {
                             ToastUtil.showToast("请允许应用使用相机权限");
                         }
                     });
         } else if (id == R.id.cl_wxhd) {
-            RouterUtil.navigateTo(Constants.Router.Listen.F_FAVORITE);
+            RouteHelper.navigateTo(Constants.Router.Listen.F_FAVORITE);
         } else if (id == R.id.cl_jcgx) {
             Beta.checkUpgrade();
         } else if (id == R.id.cl_gy || id == R.id.iv_user) {
-            RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
+            RouteHelper.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
                     .withString(KeyCode.Discover.PATH, "https://github.com/TanZhiL"));
         } else if (id == R.id.cl_zx) {
             new AlertDialog.Builder(mActivity)
@@ -264,8 +262,7 @@ public class MainUserFragment extends BaseRefreshMvvmFragment<UserFragmentMainBi
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.User.TAB_REFRESH:
-
-                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+                if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     mBinding.nsv.scrollTo(0, 0);
                     mBinding.refreshLayout.autoRefresh();
                 }

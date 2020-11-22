@@ -13,9 +13,9 @@ import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.RecommendAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
@@ -39,7 +39,7 @@ public class RecommendFragment extends BaseMvvmFragment<CommonLayoutListBinding,
     private RecommendAdapter mRecommendAdapter;
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.common_layout_list;
     }
 
@@ -49,7 +49,7 @@ public class RecommendFragment extends BaseMvvmFragment<CommonLayoutListBinding,
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.recyclerview.setHasFixedSize(true);
         mRecommendAdapter = new RecommendAdapter(R.layout.listen_item_recommend);
@@ -61,7 +61,7 @@ public class RecommendFragment extends BaseMvvmFragment<CommonLayoutListBinding,
         super.initListener();
         mRecommendAdapter.setOnItemChildClickListener(this);
         mRecommendAdapter.setOnItemClickListener((adapter, view, position) ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, mRecommendAdapter.getItem(position).getId())));
         mBinding.refreshLayout.setOnRefreshLoadMoreListener(this);
     }
@@ -155,7 +155,7 @@ public class RecommendFragment extends BaseMvvmFragment<CommonLayoutListBinding,
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Listen.TAB_REFRESH:
-                if (isSupportVisible() && mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+                if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     mBinding.recyclerview.scrollToPosition(0);
                     mBinding.refreshLayout.autoRefresh();
                 }

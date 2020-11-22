@@ -48,10 +48,10 @@ public class PlayRadioViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
 
     public void getPrograms(String radioId) {
-        Map<String, String> map = new HashMap<>();
+      /*  Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.RADIOID, radioId);
         mModel.getProgram(map).subscribe(programList ->
-                getProgramsEvent().setValue(programList), Throwable::printStackTrace);
+                getProgramsEvent().setValue(programList), Throwable::printStackTrace);*/
     }
 
 

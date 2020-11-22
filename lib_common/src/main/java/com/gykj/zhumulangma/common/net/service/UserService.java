@@ -25,7 +25,7 @@ public interface UserService{
      * @param loginDTO
      * @return
      */
-    @Headers(Constans.HEADER_HOST1)
+    @Headers(Constans.HEADER_BING)
     @POST("app/tokenlogin")
     Observable<ResponseDTO<UserBean>> login(@Body LoginDTO loginDTO);
 

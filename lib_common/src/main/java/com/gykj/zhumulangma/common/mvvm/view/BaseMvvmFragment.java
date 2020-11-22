@@ -1,10 +1,10 @@
 package com.gykj.zhumulangma.common.mvvm.view;
 
+import androidx.annotation.CallSuper;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.databinding.ViewDataBinding;
-import androidx.annotation.CallSuper;
 
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 
@@ -18,7 +18,7 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 public abstract class BaseMvvmFragment<DB extends ViewDataBinding,VM extends BaseViewModel> extends BaseFragment<DB> {
     protected VM mViewModel;
 
-    protected void initParam() {
+    public void initParam() {
         initViewModel();
         initBaseViewObservable();
         initViewObservable();
@@ -33,7 +33,6 @@ public abstract class BaseMvvmFragment<DB extends ViewDataBinding,VM extends Bas
 
     protected void initViewModel() {
         mViewModel = createViewModel();
-        getLifecycle().addObserver(mViewModel);
     }
 
     protected VM createViewModel() {
@@ -51,7 +50,9 @@ public abstract class BaseMvvmFragment<DB extends ViewDataBinding,VM extends Bas
         mViewModel.getShowLoadingViewEvent().observe(this, (Observer<String>) this::showLoadingView);
         mViewModel.getShowEmptyViewEvent().observe(this, (Observer<Void>) show -> showEmptyView());
         mViewModel.getShowErrorViewEvent().observe(this, (Observer<Void>) show -> showErrorView());
-        mViewModel.getFinishSelfEvent().observe(this, (Observer<Void>) v -> pop());
+        mViewModel.getFinishSelfEvent().observe(this, (Observer<Void>) v -> {
+//            pop();
+        });
         mViewModel.getClearStatusEvent().observe(this, (Observer<Void>) v -> clearStatus());
     }
 }

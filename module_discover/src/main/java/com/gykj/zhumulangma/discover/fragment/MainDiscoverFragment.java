@@ -8,7 +8,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseFragment;
-import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.discover.R;
 import com.gykj.zhumulangma.discover.databinding.DiscoverFragmentMainBinding;
 
@@ -16,7 +16,7 @@ import com.gykj.zhumulangma.discover.databinding.DiscoverFragmentMainBinding;
 public class MainDiscoverFragment extends BaseFragment<DiscoverFragmentMainBinding> implements View.OnClickListener {
 
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.discover_fragment_main;
     }
 
@@ -26,7 +26,7 @@ public class MainDiscoverFragment extends BaseFragment<DiscoverFragmentMainBindi
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
     }
 
     @Override
@@ -55,13 +55,13 @@ public class MainDiscoverFragment extends BaseFragment<DiscoverFragmentMainBindi
     @Override
     public void onLeftIconClick(View v) {
         super.onLeftIconClick(v);
-        RouterUtil.navigateTo(Constants.Router.User.F_MESSAGE);
+        RouteHelper.navigateTo(Constants.Router.User.F_MESSAGE);
     }
 
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        RouterUtil.navigateTo(Constants.Router.Home.F_SEARCH);
+        RouteHelper.navigateTo(Constants.Router.Home.F_SEARCH);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class MainDiscoverFragment extends BaseFragment<DiscoverFragmentMainBindi
 
     @Override
     public void onClick(View v) {
-        RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
+        RouteHelper.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
                 .withString(KeyCode.Discover.PATH, v.getTag().toString()));
     }
 

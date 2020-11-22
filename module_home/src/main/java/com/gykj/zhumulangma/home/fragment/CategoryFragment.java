@@ -23,12 +23,12 @@ public class CategoryFragment extends BaseFragment<HomeFragmentCategoryBinding> 
         return false;
     }
     @Override
-    protected int onBindLayout() {
+    public int onBindLayout() {
         return R.layout.home_fragment_category;
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
 
     }
 

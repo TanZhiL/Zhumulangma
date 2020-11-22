@@ -1,2 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gykj.zhumulangma.listen" />
+    package="com.gykj.zhumulangma.listen" >
+    <application>
+        <activity android:name=".activity.BatchPreDownloadActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.HistoryActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.FavoriteActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.DownloadActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.DownloadSortActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.DownloadDeleteActivity" android:launchMode="singleTask"/>
+    </application>
+</manifest>

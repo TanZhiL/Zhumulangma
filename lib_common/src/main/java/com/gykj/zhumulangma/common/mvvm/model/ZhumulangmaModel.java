@@ -1,16 +1,20 @@
 package com.gykj.zhumulangma.common.mvvm.model;
 
 import android.app.Application;
+
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.extra.RxField;
 import com.gykj.zhumulangma.common.net.RxAdapter;
+import com.gykj.zhumulangma.common.net.dto.BannerDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnInfoDTO;
 import com.gykj.zhumulangma.common.net.exception.CustException;
-import com.gykj.zhumulangma.common.util.RadioUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.AnnouncerListByIds;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
@@ -19,7 +23,6 @@ import com.ximalaya.ting.android.opensdk.model.album.RelativeAlbums;
 import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList;
 import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerCategoryList;
 import com.ximalaya.ting.android.opensdk.model.announcer.AnnouncerList;
-import com.ximalaya.ting.android.opensdk.model.banner.BannerV2List;
 import com.ximalaya.ting.android.opensdk.model.column.ColumnList;
 import com.ximalaya.ting.android.opensdk.model.download.RecommendDownload;
 import com.ximalaya.ting.android.opensdk.model.live.program.ProgramList;
@@ -28,7 +31,6 @@ import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListByCategory;
 import com.ximalaya.ting.android.opensdk.model.live.radio.RadioListById;
 import com.ximalaya.ting.android.opensdk.model.live.schedule.Schedule;
-import com.ximalaya.ting.android.opensdk.model.live.schedule.ScheduleList;
 import com.ximalaya.ting.android.opensdk.model.track.AnnouncerTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
 import com.ximalaya.ting.android.opensdk.model.track.SearchTrackList;
@@ -38,11 +40,7 @@ import com.ximalaya.ting.android.opensdk.model.user.XmBaseUserInfo;
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
 import com.ximalaya.ting.android.opensdk.model.word.SuggestWords;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +49,8 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
+import static com.gykj.zhumulangma.common.util.ZhumulangmaUtil.commonParams;
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/7/31 17:27
@@ -58,6 +58,23 @@ import io.reactivex.functions.Function;
  * <br/>Description:珠穆朗玛接口Model
  */
 public class ZhumulangmaModel extends BaseModel {
+
+    public static final String OPERATION_CATEGORY_ID = "operation_category_id";
+    public static final String IS_PAID = "is_paid";
+    public static final String SCOPE = "scope";
+    public static final String IDS = "ids";
+    public static final String HOT_COLUMN_ID = "10054";
+    public static final String NOVE_DAILY_ID = "10056";
+    public static final String NOVE_DAJIA_ID = "10048";
+    public static final String NOVE_ZHANGGUI_ID = "10053";
+    public static final String NOVE_YOUNG_ID = "10055";
+
+    public static final String CHILD_JDGS_ID = "10057";
+    public static final String CHILD_DHSJ_ID = "10062";
+    public static final String CHILD_GXJD_ID = "10061";
+    public static final String CHILD_QZEG_ID = "10058";
+    public static final String CHILD_JZZQ_ID = "10059";
+
     public ZhumulangmaModel(Application application) {
         super(application);
     }
@@ -68,23 +85,55 @@ public class ZhumulangmaModel extends BaseModel {
      * @param specificParams
      * @return
      */
-    public Observable<BannerV2List> getCategoryBannersV2(Map<String, String> specificParams) {
-        return Observable.create((ObservableOnSubscribe<BannerV2List>) emitter ->
-                CommonRequest.getCategoryBannersV2(specificParams,
-                        new IDataCallBack<BannerV2List>() {
-                            @Override
-                            public void onSuccess(@Nullable BannerV2List bannerV2List) {
-                                emitter.onNext(bannerV2List);
-                                emitter.onComplete();
-                            }
-
-                            @Override
-                            public void onError(int i, String s) {
-                                emitter.onError(new CustException(String.valueOf(i), s));
-                            }
-                        })).compose(RxAdapter.exceptionTransformer());
+    public Observable<BannerDTO> getBanners(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<BannerDTO>>) stringStringMap ->
+                mNetManager.getHomeService().getBanners(stringStringMap))
+                .compose(RxAdapter.schedulersTransformer())
+                .compose(RxAdapter.exceptionTransformer());
     }
 
+    /**
+     * 获取听单
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<ColumnDTO> getColumns(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<ColumnDTO>>) stringStringMap ->
+                mNetManager.getHomeService().getColumns(stringStringMap))
+                .compose(RxAdapter.schedulersTransformer())
+                .compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
+     * 获取听单基本信息
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<ColumnInfoDTO> getColumnInfo(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<ColumnInfoDTO>>) stringStringMap ->
+                mNetManager.getHomeService().getColumnInfo(stringStringMap))
+                .compose(RxAdapter.schedulersTransformer())
+                .compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
+     * 获取专辑听单详情
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<ColumnDetailDTO<Album>> getBrowseAlbumColumn(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<ColumnDetailDTO<Album>>>) stringStringMap ->
+                mNetManager.getHomeService().getBrowseAlbumColumn(stringStringMap))
+                .compose(RxAdapter.schedulersTransformer())
+                .compose(RxAdapter.exceptionTransformer());
+    }
     /**
      * 获取猜你喜欢
      *
@@ -161,7 +210,7 @@ public class ZhumulangmaModel extends BaseModel {
      * @return
      */
     public Observable<RadioList> getRadios(Map<String, String> specificParams) {
-        return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
+      /*  return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
                 CommonRequest.getRadios(specificParams,
                         new IDataCallBack<RadioList>() {
                             @Override
@@ -174,7 +223,8 @@ public class ZhumulangmaModel extends BaseModel {
                             public void onError(int i, String s) {
                                 emitter.onError(new CustException(String.valueOf(i), s));
                             }
-                        })).compose(RxAdapter.exceptionTransformer());
+                        })).compose(RxAdapter.exceptionTransformer());*/
+        return null;
     }
 
     /**
@@ -230,7 +280,7 @@ public class ZhumulangmaModel extends BaseModel {
      * @return
      */
     public Observable<RadioList> getRadiosByCity(Map<String, String> specificParams) {
-        return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
+     /*   return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
                 CommonRequest.getRadiosByCity(specificParams,
                         new IDataCallBack<RadioList>() {
                             @Override
@@ -243,7 +293,9 @@ public class ZhumulangmaModel extends BaseModel {
                             public void onError(int i, String s) {
                                 emitter.onError(new CustException(String.valueOf(i), s));
                             }
-                        })).compose(RxAdapter.exceptionTransformer());
+                        })).compose(RxAdapter.exceptionTransformer());*/
+
+        return null;
     }
 
     /**
@@ -253,7 +305,7 @@ public class ZhumulangmaModel extends BaseModel {
      * @return
      */
     public Observable<RadioList> getRankRadios(Map<String, String> specificParams) {
-        return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
+       /* return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
                 CommonRequest.getRankRadios(specificParams,
                         new IDataCallBack<RadioList>() {
                             @Override
@@ -266,7 +318,9 @@ public class ZhumulangmaModel extends BaseModel {
                             public void onError(int i, String s) {
                                 emitter.onError(new CustException(String.valueOf(i), s));
                             }
-                        })).compose(RxAdapter.exceptionTransformer());
+                        })).compose(RxAdapter.exceptionTransformer());*/
+
+        return null;
     }
 
     /**
@@ -345,7 +399,7 @@ public class ZhumulangmaModel extends BaseModel {
      * @return
      */
     public Observable<RadioList> getSearchedRadios(Map<String, String> specificParams) {
-        return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
+       /* return Observable.create((ObservableOnSubscribe<RadioList>) emitter ->
                 CommonRequest.getSearchedRadios(specificParams,
                         new IDataCallBack<RadioList>() {
                             @Override
@@ -358,7 +412,9 @@ public class ZhumulangmaModel extends BaseModel {
                             public void onError(int i, String s) {
                                 emitter.onError(new CustException(String.valueOf(i), s));
                             }
-                        })).compose(RxAdapter.exceptionTransformer());
+                        })).compose(RxAdapter.exceptionTransformer());*/
+
+        return null;
     }
 
     /**
@@ -552,7 +608,7 @@ public class ZhumulangmaModel extends BaseModel {
      * @return
      */
     public Observable<ProgramList> getProgram(Map<String, String> specificParams) {
-        return Observable.create((ObservableOnSubscribe<ProgramList>) emitter ->
+       /* return Observable.create((ObservableOnSubscribe<ProgramList>) emitter ->
                 CommonRequest.getProgram(specificParams,
                         new IDataCallBack<ProgramList>() {
                             @Override
@@ -565,7 +621,9 @@ public class ZhumulangmaModel extends BaseModel {
                             public void onError(int i, String s) {
                                 emitter.onError(new CustException(String.valueOf(i), s));
                             }
-                        })).compose(RxAdapter.exceptionTransformer());
+                        })).compose(RxAdapter.exceptionTransformer());*/
+
+        return null;
     }
 
     /**
@@ -575,7 +633,7 @@ public class ZhumulangmaModel extends BaseModel {
      * @return
      */
     public Observable<RadioListById> getRadiosByIds(Map<String, String> specificParams) {
-        return Observable.create((ObservableOnSubscribe<RadioListById>) emitter ->
+       /* return Observable.create((ObservableOnSubscribe<RadioListById>) emitter ->
                 CommonRequest.getRadiosByIds(specificParams,
                         new IDataCallBack<RadioListById>() {
                             @Override
@@ -588,7 +646,9 @@ public class ZhumulangmaModel extends BaseModel {
                             public void onError(int i, String s) {
                                 emitter.onError(new CustException(String.valueOf(i), s));
                             }
-                        })).compose(RxAdapter.exceptionTransformer());
+                        })).compose(RxAdapter.exceptionTransformer());*/
+
+        return null;
     }
 
     /**
@@ -598,7 +658,7 @@ public class ZhumulangmaModel extends BaseModel {
      * @return
      */
     public Observable<List<Schedule>> getSchedules(Map<String, String> specificParams) {
-        return Observable.create((ObservableOnSubscribe<List<Schedule>>) emitter -> CommonRequest.getSchedules(specificParams,
+      /*  return Observable.create((ObservableOnSubscribe<List<Schedule>>) emitter -> CommonRequest.getSchedules(specificParams,
                 new IDataCallBack<ScheduleList>() {
                     @Override
                     public void onSuccess(@Nullable ScheduleList scheduleList) {
@@ -614,7 +674,9 @@ public class ZhumulangmaModel extends BaseModel {
                     public void onError(int i, String s) {
                         emitter.onError(new CustException(String.valueOf(i), s));
                     }
-                })).compose(RxAdapter.exceptionTransformer());
+                })).compose(RxAdapter.exceptionTransformer());*/
+
+        return null;
     }
 
 
@@ -649,7 +711,7 @@ public class ZhumulangmaModel extends BaseModel {
      * @return
      */
     public Observable<RadioListByCategory> getRadiosByCategory(Map<String, String> specificParams) {
-        return Observable.create((ObservableOnSubscribe<RadioListByCategory>) emitter ->
+       /* return Observable.create((ObservableOnSubscribe<RadioListByCategory>) emitter ->
                 CommonRequest.getRadiosByCategory(specificParams,
                         new IDataCallBack<RadioListByCategory>() {
                             @Override
@@ -662,7 +724,9 @@ public class ZhumulangmaModel extends BaseModel {
                             public void onError(int i, String s) {
                                 emitter.onError(new CustException(String.valueOf(i), s));
                             }
-                        })).compose(RxAdapter.exceptionTransformer());
+                        })).compose(RxAdapter.exceptionTransformer());*/
+
+        return null;
     }
 
     /**
@@ -815,7 +879,7 @@ public class ZhumulangmaModel extends BaseModel {
     }
 
     public Observable<List<Schedule>> getSchedulesSource(final Radio radio) {
-        List<Schedule> schedulesx = new ArrayList<>();
+      /*  List<Schedule> schedulesx = new ArrayList<>();
         Map<String, String> yestoday = new HashMap<>();
         yestoday.put("radio_id", radio.getDataId() + "");
         Calendar calendar0 = Calendar.getInstance();
@@ -863,7 +927,9 @@ public class ZhumulangmaModel extends BaseModel {
                 .map(schedules -> {
                     RadioUtil.fillData(schedulesx, radio);
                     return schedulesx;
-                });
+                });*/
+
+        return null;
     }
 
 }

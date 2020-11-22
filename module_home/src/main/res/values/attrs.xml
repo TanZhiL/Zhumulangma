@@ -3,5 +3,6 @@
     <declare-styleable name="AlbumCategoryItem">
         <attr name="aci_icon" format="reference"/>
         <attr name="aci_title" format="string"/>
+        <attr name="aci_center_line" format="boolean"/>
     </declare-styleable>
 </resources>
