@@ -7,5 +7,6 @@
         <activity android:name=".activity.DownloadActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.DownloadSortActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.DownloadDeleteActivity" android:launchMode="singleTask"/>
+        <activity android:name=".activity.DownloadAlbumActivity" android:launchMode="singleTask"/>
     </application>
 </manifest>
