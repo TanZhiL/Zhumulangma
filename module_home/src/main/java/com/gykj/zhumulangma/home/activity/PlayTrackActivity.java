@@ -27,8 +27,6 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.util.RouteHelper;
@@ -63,8 +61,6 @@ import com.ximalaya.ting.android.sdkdownloader.XmDownloadManager;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.DownloadState;
 import com.ximalaya.ting.android.sdkdownloader.downloadutil.IXmDownloadTrackCallBack;
 import com.ximalaya.ting.android.sdkdownloader.task.Callback;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -425,7 +421,7 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
             new XPopup.Builder(this).autoOpenSoftInput(true).popupAnimation(TranslateFromBottom)
                     .dismissOnTouchOutside(false).enableDrag(false).asCustom(mCommentPopup).show();
         } else if (R.id.iv2_right == id) {
-            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
+            share(null);
         }
     }
 

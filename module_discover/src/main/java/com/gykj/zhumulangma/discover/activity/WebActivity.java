@@ -12,8 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseActivity;
 import com.gykj.zhumulangma.discover.R;
@@ -22,8 +20,6 @@ import com.just.agentweb.AgentWeb;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -193,6 +189,6 @@ public class WebActivity extends BaseActivity<DiscoverActivityWebBinding> {
         web.setTitle(mTitle);//标题
         web.setThumb(new UMImage(this, mIcon));  //缩略图
         web.setDescription("珠穆朗玛听");//描述
-        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE, new ShareAction(this).withMedia(web)));
+        share(new ShareAction(this).withMedia(web));
     }
 }

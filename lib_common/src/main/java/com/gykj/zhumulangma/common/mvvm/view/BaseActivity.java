@@ -23,9 +23,16 @@ import com.blankj.utilcode.util.BarUtils;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.R;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
+import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.shareboard.ShareBoardConfig;
 import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
@@ -523,6 +530,28 @@ public abstract class BaseActivity<DB extends ViewDataBinding> extends AppCompat
         mHandler.postDelayed(runnable, delayMillis);
     }
 
+    public void share(ShareAction action){
+        ShareBoardConfig config = new ShareBoardConfig();
+        config.setMenuItemBackgroundShape(ShareBoardConfig.BG_SHAPE_CIRCULAR);
+        config.setCancelButtonVisibility(true);
+        config.setTitleVisibility(false);
+        config.setCancelButtonVisibility(true);
+        config.setIndicatorVisibility(false);
+        if (action == null) {
+            UMWeb web = new UMWeb("https://github.com/TanZhiL/Zhumulangma");
+            web.setTitle("珠穆朗玛听");//标题
+            web.setThumb(new UMImage(this, R.drawable.third_launcher_ting));  //缩略图
+            web.setDescription("珠穆朗玛听");//描述
+            action = new ShareAction(this).withMedia(web);
+        }
+        action.setDisplayList(
+                SHARE_MEDIA.WEIXIN,
+                SHARE_MEDIA.WEIXIN_CIRCLE,
+                SHARE_MEDIA.QQ,
+                SHARE_MEDIA.QZONE,
+                SHARE_MEDIA.SINA)
+                .setCallback(uMShareListener).open(config);
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -531,4 +560,27 @@ public abstract class BaseActivity<DB extends ViewDataBinding> extends AppCompat
         mDisposables.clear();
         //  ThirdHelper.refWatcher.watch(this);
     }
+
+    private UMShareListener uMShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            ToastUtil.showToast(ToastUtil.LEVEL_S, "分享成功");
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            Log.d(TAG, "onError() called with: share_media = [" + share_media + "], throwable = [" + throwable + "]");
+            ToastUtil.showToast(ToastUtil.LEVEL_W, throwable.getLocalizedMessage());
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+            ToastUtil.showToast(ToastUtil.LEVEL_W, "分享取消");
+        }
+    };
+
 }

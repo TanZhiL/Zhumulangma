@@ -11,18 +11,16 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.SubscribeBean;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.mvvm.view.BaseActivity;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.SubscribeAdapter;
 import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.SubscribeViewModel;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Author: Thomas.
@@ -108,7 +106,7 @@ public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutListBindi
         if (id == R.id.iv_play) {
             mViewModel.play(String.valueOf(mSubscribeAdapter.getItem(position).getAlbumId()));
         } else if (id == R.id.iv_more) {
-            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE, null));
+            ((BaseActivity)getContext()).share(null);
         }
     }
 

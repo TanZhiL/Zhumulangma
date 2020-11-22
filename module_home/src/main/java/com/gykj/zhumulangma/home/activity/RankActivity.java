@@ -15,8 +15,6 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
@@ -37,8 +35,6 @@ import com.lxj.xpopup.enums.PopupPosition;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -219,7 +215,7 @@ public class RankActivity extends BaseRefreshActivity<HomeActivityRankBinding, R
     @Override
     public void onRight1Click(View v) {
         super.onRight1Click(v);
-        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
+        share(null);
     }
 
     @Override

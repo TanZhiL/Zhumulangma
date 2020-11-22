@@ -18,10 +18,10 @@ import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.aop.LoginHelper;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.mvvm.view.BaseActivity;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.net.dto.GitHubDTO;
 import com.gykj.zhumulangma.common.util.RouteHelper;
@@ -37,8 +37,6 @@ import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.tencent.bugly.beta.Beta;
 import com.ximalaya.ting.android.opensdk.datatrasfer.AccessTokenManager;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Author: Thomas.
@@ -210,7 +208,7 @@ public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBindin
         } else if (v == whiteLeft || v == transLeft) {
             RouteHelper.navigateTo(Constants.Router.User.F_MESSAGE);
         } else if (id == R.id.cl_fxzq) {
-            EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
+            ((BaseActivity)getContext()).share(null);
         } else if (id == R.id.cl_sys) {
             new RxPermissions(this).requestEach(new String[]{Manifest.permission.CAMERA})
                     .subscribe(permission -> {

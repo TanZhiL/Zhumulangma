@@ -21,12 +21,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
-import com.gykj.zhumulangma.common.event.ActivityEvent;
-import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
-import com.gykj.zhumulangma.common.mvvm.view.status.DetailSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
+import com.gykj.zhumulangma.common.mvvm.view.status.DetailSkeleton;
 import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
@@ -58,8 +56,6 @@ import com.ximalaya.ting.android.sdkdownloader.exception.AddDownloadException;
 import com.ximalaya.ting.android.sdkdownloader.task.Callback;
 
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -371,7 +367,7 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
     @Override
     public void onRight2Click(View v) {
         super.onRight2Click(v);
-        EventBus.getDefault().post(new ActivityEvent(EventCode.Main.SHARE));
+        share(null);
     }
 
     @Override
