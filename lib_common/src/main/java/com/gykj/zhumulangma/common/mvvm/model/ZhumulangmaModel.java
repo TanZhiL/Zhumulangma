@@ -67,6 +67,12 @@ public class ZhumulangmaModel extends BaseModel {
     public static final String NOVE_ZHANGGUI_ID = "10053";
     public static final String NOVE_YOUNG_ID = "10055";
 
+    public static final String CHILD_JDGS_ID = "10057";
+    public static final String CHILD_DHSJ_ID = "10062";
+    public static final String CHILD_GXJD_ID = "10061";
+    public static final String CHILD_QZEG_ID = "10058";
+    public static final String CHILD_JZZQ_ID = "10059";
+
     public ZhumulangmaModel(Application application) {
         super(application);
     }

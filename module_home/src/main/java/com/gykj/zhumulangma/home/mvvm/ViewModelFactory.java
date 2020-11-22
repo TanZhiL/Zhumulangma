@@ -14,7 +14,7 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerDetailViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerListViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.BatchDownloadViewModel;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.FineViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.ChildViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayRadioViewModel;
@@ -59,8 +59,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(HotViewModel.class)) {
             return (T) new HotViewModel(mApplication, new ZhumulangmaModel(mApplication));
-        } else if (modelClass.isAssignableFrom(FineViewModel.class)) {
-            return (T) new FineViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        } else if (modelClass.isAssignableFrom(ChildViewModel.class)) {
+            return (T) new ChildViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(NovelViewModel.class)) {
             return (T) new NovelViewModel(mApplication, new RadioModel(mApplication));
         } else if (modelClass.isAssignableFrom(SearchViewModel.class)) {

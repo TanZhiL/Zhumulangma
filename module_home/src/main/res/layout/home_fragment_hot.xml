@@ -56,13 +56,13 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
+                                android:id="@+id/fl_rank"
                                 android:layout_width="68dp"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
                                 <FrameLayout
-                                    android:id="@+id/fl_rank"
                                     android:layout_width="36dp"
                                     android:layout_height="36dp"
                                     app:bl_corners_radius="20dp"

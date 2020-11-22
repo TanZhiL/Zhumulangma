@@ -193,7 +193,7 @@ public class HotViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album> 
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.ID, HOT_COLUMN_ID);
         map.put(DTransferConstants.PAGE_SIZE, "5");
-        curColumnPage = curColumnPage > totalColumnPage ? 1 : curColumnPage;
+        curColumnPage = curColumnPage >= totalColumnPage ? 1 : curColumnPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curColumnPage));
         return mModel.getBrowseAlbumColumn(map)
                 .doOnNext(radioList -> {
