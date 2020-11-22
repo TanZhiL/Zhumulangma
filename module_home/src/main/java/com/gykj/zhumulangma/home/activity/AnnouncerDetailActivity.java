@@ -45,6 +45,9 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.gykj.zhumulangma.common.util.ZhumulangmaUtil.filterPaidAlbum;
+import static com.gykj.zhumulangma.common.util.ZhumulangmaUtil.filterPaidTrack;
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/8/14 13:41
@@ -154,7 +157,7 @@ public class AnnouncerDetailActivity extends BaseRefreshActivity<HomeActivityAnn
         mTrackAdapter.setOnItemClickListener(this);
         mBinding.ihAlbum.setOnClickListener(v ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
-                        .withInt(KeyCode.Home.TYPE, AlbumListActivity.ANNOUNCER)
+                        .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.ANNOUNCER)
                         .withLong(KeyCode.Home.ANNOUNCER_ID, mAnnouncerId)
                         .withString(KeyCode.Home.TITLE, mAnnouncerName)));
         mBinding.ihTrack.setOnClickListener(v ->
@@ -210,17 +213,16 @@ public class AnnouncerDetailActivity extends BaseRefreshActivity<HomeActivityAnn
                 mBinding.tvCategory.setText(vcategoryName);
             }
         });
-
-        mViewModel.getAlbumListEvent().observe(this, albumList -> {
-            if (!CollectionUtils.isEmpty(albumList.getAlbums())) {
+        filterPaidAlbum(mViewModel.getAlbumListEvent()).observe(this, albumList -> {
+            if (!CollectionUtils.isEmpty(albumList)) {
                 mBinding.gpAlbum.setVisibility(View.VISIBLE);
-                mAlbumAdapter.setNewData(albumList.getAlbums());
+                mAlbumAdapter.setNewData(albumList);
             }
         });
-        mViewModel.getTrackListEvent().observe(this, trackList -> {
-            if (!CollectionUtils.isEmpty(trackList.getTracks())) {
+        filterPaidTrack(mViewModel.getTrackListEvent()).observe(this, trackList -> {
+            if (!CollectionUtils.isEmpty(trackList)) {
                 mBinding.gpTrack.setVisibility(View.VISIBLE);
-                mTrackAdapter.setNewData(trackList.getTracks());
+                mTrackAdapter.setNewData(trackList);
             }
         });
     }

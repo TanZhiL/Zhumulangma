@@ -90,9 +90,9 @@ public class App extends MultiDexApplication {
                     .initXmlyDownloader();
             XmPlayerManager.getInstance(this).addPlayerStatusListener(playerStatusListener);
             registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
+            AppHelper.getInstance(this)
+                    .initXmlyPlayer();
         }
-        AppHelper.getInstance(this)
-                .initXmlyPlayer();
     }
 
 

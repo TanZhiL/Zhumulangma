@@ -7,11 +7,13 @@ import androidx.annotation.Nullable;
 import com.gykj.zhumulangma.common.extra.RxField;
 import com.gykj.zhumulangma.common.net.RxAdapter;
 import com.gykj.zhumulangma.common.net.dto.BannerDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
 import com.gykj.zhumulangma.common.net.exception.CustException;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack;
-import com.ximalaya.ting.android.opensdk.httputil.util.SignatureUtil;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.AnnouncerListByIds;
 import com.ximalaya.ting.android.opensdk.model.album.BatchAlbumList;
@@ -46,6 +48,8 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
+import static com.gykj.zhumulangma.common.util.ZhumulangmaUtil.commonParams;
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/7/31 17:27
@@ -56,25 +60,15 @@ public class ZhumulangmaModel extends BaseModel {
 
     public static final String OPERATION_CATEGORY_ID = "operation_category_id";
     public static final String IS_PAID = "is_paid";
+    public static final String SCOPE = "scope";
+    public static final String HOT_COLUMN_ID = "10054";
+    public static final String NOVE_DAILY_ID = "10056";
+    public static final String NOVE_DAJIA_ID = "10048";
+    public static final String NOVE_ZHANGGUI_ID = "10053";
+    public static final String NOVE_YOUNG_ID = "10055";
 
     public ZhumulangmaModel(Application application) {
         super(application);
-    }
-
-
-    /**
-     * 封装公共参数
-     * @param specificParams
-     * @return
-     */
-    public Observable<Map<String,String>> commonParams(Map<String, String> specificParams){
-        return Observable.fromCallable(() -> {
-            Map<String, String> stringStringMap = CommonRequest.CommonParams(specificParams);
-            String appsecret = CommonRequest.getInstanse().getAppsecret();
-            String s = SignatureUtil.generateSignature(appsecret, stringStringMap);
-            stringStringMap.put("sig",s);
-            return stringStringMap;
-        });
     }
 
     /**
@@ -83,14 +77,41 @@ public class ZhumulangmaModel extends BaseModel {
      * @param specificParams
      * @return
      */
-    public Observable<BannerDTO> getCategoryBannersV2(Map<String, String> specificParams) {
+    public Observable<BannerDTO> getBanners(Map<String, String> specificParams) {
         return commonParams(specificParams).flatMap((Function<Map<String, String>,
                 ObservableSource<BannerDTO>>) stringStringMap ->
-                mNetManager.getHomeService().getCategoryBannersV2(stringStringMap))
+                mNetManager.getHomeService().getBanners(stringStringMap))
                 .compose(RxAdapter.schedulersTransformer())
                 .compose(RxAdapter.exceptionTransformer());
     }
 
+    /**
+     * 获取听单
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<ColumnDTO> getColumns(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<ColumnDTO>>) stringStringMap ->
+                mNetManager.getHomeService().getColumns(stringStringMap))
+                .compose(RxAdapter.schedulersTransformer())
+                .compose(RxAdapter.exceptionTransformer());
+    }
+
+    /**
+     * 获取专辑听单详情
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<ColumnDetailDTO<Album>> getBrowseAlbumColumn(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<ColumnDetailDTO<Album>>>) stringStringMap ->
+                mNetManager.getHomeService().getBrowseAlbumColumn(stringStringMap))
+                .compose(RxAdapter.schedulersTransformer())
+                .compose(RxAdapter.exceptionTransformer());
+    }
     /**
      * 获取猜你喜欢
      *

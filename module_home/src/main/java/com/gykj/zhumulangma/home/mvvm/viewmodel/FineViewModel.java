@@ -67,9 +67,7 @@ public class FineViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Album>
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(3 + new Random().nextInt(5)));
         map.put(OPERATION_CATEGORY_ID, "4");
         map.put(IS_PAID, "0");
-        //是否需要输出付费内容：true-是；false-否；（默认不输出付费内容）
-//        map.put(DTransferConstants.CONTAINS_PAID,"true");
-        mModel.getCategoryBannersV2(map)
+        mModel.getBanners(map)
                 .doOnNext((BannerDTO bannerV2List) -> getBannerV2Event().setValue(bannerV2List.getBanners()))
                 //每日优选
                 .flatMap((Function<BannerDTO, ObservableSource<AlbumList>>) bannerV2List -> getDailyListObservable())

@@ -203,7 +203,7 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
 
         mBinding.tvMoreRelative.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
-                        .withInt(KeyCode.Home.TYPE, AlbumListActivity.LIKE)
+                        .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.LIKE)
                         .withString(KeyCode.Home.TITLE, "更多推荐")));
         RxView.clicks(mBinding.llSubscribe)
                 .doOnSubscribe(this)

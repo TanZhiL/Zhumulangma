@@ -2,6 +2,10 @@ package com.gykj.zhumulangma.common.net.service;
 
 import com.gykj.zhumulangma.common.net.Constans;
 import com.gykj.zhumulangma.common.net.dto.BannerDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 import java.util.Map;
 
@@ -22,7 +26,18 @@ public interface HomeService {
 
     @Headers(Constans.HEADER_XMLY)
     @GET("/operation/banners")
-    Observable<BannerDTO> getCategoryBannersV2(@QueryMap Map<String,String> params);
+    Observable<BannerDTO> getBanners(@QueryMap Map<String,String> params);
+
+    @Headers(Constans.HEADER_XMLY)
+    @GET("/operation/columns")
+    Observable<ColumnDTO> getColumns(@QueryMap Map<String,String> params);
+
+    @Headers(Constans.HEADER_XMLY)
+    @GET("/operation/browse_column_content")
+    Observable<ColumnDetailDTO<Album>> getBrowseAlbumColumn(@QueryMap Map<String,String> params);
 
 
+    @Headers(Constans.HEADER_XMLY)
+    @GET("/operation/browse_column_content")
+    Observable<ColumnDetailDTO<Track>> getBrowseTrackColumn(@QueryMap Map<String,String> params);
 }

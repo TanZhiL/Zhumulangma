@@ -66,7 +66,7 @@ public class ExceptionConverter {
         }  else {
             msg = e.getMessage();
         }
-        return new Exception(msg);
+        return new Exception(msg,e);
     }
 
     public interface NET_ERROR {

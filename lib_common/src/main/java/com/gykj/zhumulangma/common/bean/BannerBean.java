@@ -1,5 +1,7 @@
 package com.gykj.zhumulangma.common.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Author: Thomas.<br/>
  * Date: 2020/11/20 19:53<br/>
@@ -28,17 +30,29 @@ public class BannerBean {
      */
 
     private int id;
-    private String banner_title;
-    private String banner_cover_url;
-    private String short_title;
-    private int banner_content_type;
-    private int is_paid;
-    private int operation_category_id;
-    private int banner_content_id;
-    private String banner_content_title;
-    private String redirect_url;
-    private long created_at;
-    private long updated_at;
+    @SerializedName("banner_title")
+    private String bannerTitle;
+    @SerializedName("banner_cover_url")
+    private String bannerCoverUrl;
+    @SerializedName("short_title")
+    private String shortTitle;
+    @SerializedName("banner_content_type")
+    private int bannerContentType;
+    @SerializedName("is_paid")
+    private int isPaid;
+    @SerializedName("operation_category_id")
+    private int operationCategoryId;
+    @SerializedName("banner_content_id")
+    private int bannerContentId;
+    @SerializedName("banner_content_title")
+    private String bannerContentTitle;
+    @SerializedName("redirect_url")
+    private String redirectUrl;
+    @SerializedName("created_at")
+    private long createdAt;
+    @SerializedName("updated_at")
+    private long updatedAt;
+
     private String kind;
 
     public int getId() {
@@ -49,92 +63,92 @@ public class BannerBean {
         this.id = id;
     }
 
-    public String getBanner_title() {
-        return banner_title;
+    public String getBannerTitle() {
+        return bannerTitle;
     }
 
-    public void setBanner_title(String banner_title) {
-        this.banner_title = banner_title;
+    public void setBannerTitle(String bannerTitle) {
+        this.bannerTitle = bannerTitle;
     }
 
-    public String getBanner_cover_url() {
-        return banner_cover_url;
+    public String getBannerCoverUrl() {
+        return bannerCoverUrl;
     }
 
-    public void setBanner_cover_url(String banner_cover_url) {
-        this.banner_cover_url = banner_cover_url;
+    public void setBannerCoverUrl(String bannerCoverUrl) {
+        this.bannerCoverUrl = bannerCoverUrl;
     }
 
-    public String getShort_title() {
-        return short_title;
+    public String getShortTitle() {
+        return shortTitle;
     }
 
-    public void setShort_title(String short_title) {
-        this.short_title = short_title;
+    public void setShortTitle(String shortTitle) {
+        this.shortTitle = shortTitle;
     }
 
-    public int getBanner_content_type() {
-        return banner_content_type;
+    public int getBannerContentType() {
+        return bannerContentType;
     }
 
-    public void setBanner_content_type(int banner_content_type) {
-        this.banner_content_type = banner_content_type;
+    public void setBannerContentType(int bannerContentType) {
+        this.bannerContentType = bannerContentType;
     }
 
-    public int getIs_paid() {
-        return is_paid;
+    public int getIsPaid() {
+        return isPaid;
     }
 
-    public void setIs_paid(int is_paid) {
-        this.is_paid = is_paid;
+    public void setIsPaid(int isPaid) {
+        this.isPaid = isPaid;
     }
 
-    public int getOperation_category_id() {
-        return operation_category_id;
+    public int getOperationCategoryId() {
+        return operationCategoryId;
     }
 
-    public void setOperation_category_id(int operation_category_id) {
-        this.operation_category_id = operation_category_id;
+    public void setOperationCategoryId(int operationCategoryId) {
+        this.operationCategoryId = operationCategoryId;
     }
 
-    public int getBanner_content_id() {
-        return banner_content_id;
+    public int getBannerContentId() {
+        return bannerContentId;
     }
 
-    public void setBanner_content_id(int banner_content_id) {
-        this.banner_content_id = banner_content_id;
+    public void setBannerContentId(int bannerContentId) {
+        this.bannerContentId = bannerContentId;
     }
 
-    public String getBanner_content_title() {
-        return banner_content_title;
+    public String getBannerContentTitle() {
+        return bannerContentTitle;
     }
 
-    public void setBanner_content_title(String banner_content_title) {
-        this.banner_content_title = banner_content_title;
+    public void setBannerContentTitle(String bannerContentTitle) {
+        this.bannerContentTitle = bannerContentTitle;
     }
 
-    public String getRedirect_url() {
-        return redirect_url;
+    public String getRedirectUrl() {
+        return redirectUrl;
     }
 
-    public void setRedirect_url(String redirect_url) {
-        this.redirect_url = redirect_url;
+    public void setRedirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
     }
 
-    public long getCreated_at() {
-        return created_at;
+    public long getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(long created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public long getUpdated_at() {
-        return updated_at;
+    public long getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUpdated_at(long updated_at) {
-        this.updated_at = updated_at;
+    public void setUpdatedAt(long updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getKind() {

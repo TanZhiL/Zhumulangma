@@ -1,6 +1,7 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
@@ -26,16 +27,21 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
 
     private SingleLiveEvent<List<Album>> mInitAlbumsEvent;
     private int curPage = 1;
-    private int mType;
+    private int mCategory;
+    private String mTag;
+    private String mColumnId;
     private long mAnnouncerId;
 
     public AlbumListViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
 
-    public void init() {
+    public void init(int category, String tag, String column) {
+        mCategory = category;
+        mTag = tag;
+        mColumnId = column;
         Map<String, String> map = new HashMap<String, String>();
-        switch (mType) {
+        switch (mCategory) {
             case AlbumListActivity.LIKE:
                 //猜你喜欢
                 map.put(DTransferConstants.LIKE_COUNT, "50");
@@ -91,10 +97,30 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                             e.printStackTrace();
                         });
                 break;
+            case AlbumListActivity.COLUMN:
+                map.put(DTransferConstants.ID, mColumnId);
+                map.put(DTransferConstants.PAGE, String.valueOf(curPage));
+                mModel.getBrowseAlbumColumn(map)
+                        .subscribe(albumList -> {
+                            if (CollectionUtils.isEmpty(albumList.getColumns())) {
+                                getShowEmptyViewEvent().call();
+                                return;
+                            }
+                            curPage++;
+                            getClearStatusEvent().call();
+                            getInitAlbumsEvent().setValue(albumList.getColumns());
+                        }, e -> {
+                            getShowErrorViewEvent().call();
+                            e.printStackTrace();
+                        });
+                break;
             default:
                 //分类专辑
-                map.put(DTransferConstants.CATEGORY_ID, String.valueOf(mType));
+                map.put(DTransferConstants.CATEGORY_ID, String.valueOf(mCategory));
                 map.put(DTransferConstants.CALC_DIMENSION, "3");
+                if(!TextUtils.isEmpty(mTag)){
+                    map.put(DTransferConstants.TAG_NAME, mTag);
+                }
                 map.put(DTransferConstants.PAGE, String.valueOf(curPage));
                 mModel.getAlbumList(map)
                         .subscribe(albumList -> {
@@ -116,7 +142,7 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
 
     private void getMoreAlbumsByType() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.CATEGORY_ID, String.valueOf(mType));
+        map.put(DTransferConstants.CATEGORY_ID, String.valueOf(mCategory));
         map.put(DTransferConstants.CALC_DIMENSION, "3");
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getAlbumList(map)
@@ -125,6 +151,21 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                         curPage++;
                     }
                     getFinishLoadmoreEvent().setValue(albumList.getAlbums());
+                }, e -> {
+                    getFinishLoadmoreEvent().call();
+                    e.printStackTrace();
+                });
+    }
+    private void getMoreRecommends() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.ID, mColumnId);
+        map.put(DTransferConstants.PAGE, String.valueOf(curPage));
+        mModel.getBrowseAlbumColumn(map)
+                .subscribe(albumList -> {
+                    if (!CollectionUtils.isEmpty(albumList.getColumns())) {
+                        curPage++;
+                    }
+                    getFinishLoadmoreEvent().setValue(albumList.getColumns());
                 }, e -> {
                     getFinishLoadmoreEvent().call();
                     e.printStackTrace();
@@ -164,10 +205,12 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
 
     @Override
     public void onViewLoadmore() {
-        if (mType == AlbumListActivity.PAID) {
+        if (mCategory == AlbumListActivity.PAID) {
             getMorePaids();
-        } else if (mType == AlbumListActivity.ANNOUNCER) {
+        } else if (mCategory == AlbumListActivity.ANNOUNCER) {
             getMoreAlbumsByAnnouncer();
+        } else if (mCategory == AlbumListActivity.COLUMN) {
+            getMoreRecommends();
         } else {
             getMoreAlbumsByType();
         }
@@ -175,10 +218,6 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
 
     public SingleLiveEvent<List<Album>> getInitAlbumsEvent() {
         return mInitAlbumsEvent = createLiveData(mInitAlbumsEvent);
-    }
-
-    public void setType(int type) {
-        this.mType = type;
     }
 
     public void setAnnouncerId(long announcerId) {

@@ -19,11 +19,9 @@ import com.gykj.zhumulangma.common.mvvm.view.status.HotSkeleton;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.activity.AlbumListActivity;
-import com.gykj.zhumulangma.home.activity.RadioListActivity;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
 import com.gykj.zhumulangma.home.adapter.HotMusicAdapter;
-import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentHotBinding;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
@@ -32,6 +30,8 @@ import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
+
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.HOT_COLUMN_ID;
 
 /**
  * Author: Thomas.
@@ -46,7 +46,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     private AlbumAdapter mStoryAdapter;
     private AlbumAdapter mBabyAdapter;
     private HotMusicAdapter mMusicAdapter;
-    private RadioAdapter mRadioAdapter;
+    private AlbumAdapter mColumnAdapter;
 
     public HotFragment() {
 
@@ -82,27 +82,28 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
         mBinding.layoutAd.setOnClickListener(this);
         mBinding.ihLike.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
-                        .withInt(KeyCode.Home.TYPE, AlbumListActivity.LIKE)
+                        .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.LIKE)
                         .withString(KeyCode.Home.TITLE, "猜你喜欢")));
         mBinding.storyRefresh.setOnClickListener(this);
         mBinding.ihStory.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
-                        .withInt(KeyCode.Home.TYPE, 3)
+                        .withInt(KeyCode.Home.CATEGORY, 3)
                         .withString(KeyCode.Home.TITLE, "有声小说")));
         mBinding.babyRefresh.setOnClickListener(this);
         mBinding.ihBaby.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
-                        .withInt(KeyCode.Home.TYPE, 6)
+                        .withInt(KeyCode.Home.CATEGORY, 6)
                         .withString(KeyCode.Home.TITLE, "宝贝最爱")));
         mBinding.musicRefresh.setOnClickListener(this);
         mBinding.ihMusic.setOnClickListener(view ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
-                        .withInt(KeyCode.Home.TYPE, 2)
+                        .withInt(KeyCode.Home.CATEGORY, 2)
                         .withString(KeyCode.Home.TITLE, "音乐好时光")));
         mBinding.ihRadio.setOnClickListener(view ->
-                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_RADIO_LIST)
-                        .withInt(KeyCode.Home.TYPE, RadioListActivity.INTERNET)
-                        .withString(KeyCode.Home.TITLE, "网络台")));
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                        .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
+                        .withString(KeyCode.Home.COLUMN, HOT_COLUMN_ID)
+                        .withString(KeyCode.Home.TITLE, "掌柜推荐")));
 
         mBinding.radioRefresh.setOnClickListener(this);
         mBinding.topicRefresh.setOnClickListener(this);
@@ -118,9 +119,9 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
         mMusicAdapter.setOnItemClickListener((adapter, view, position) ->
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, mMusicAdapter.getItem(position).getId())));
-        mRadioAdapter.setOnItemClickListener((adapter, view, position) -> {
-            mViewModel.playRadio(mRadioAdapter.getItem(position));
-        });
+        mColumnAdapter.setOnItemClickListener((adapter, view, position) ->
+                RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
+                        .withLong(KeyCode.Home.ALBUMID, mColumnAdapter.getItem(position).getId())));
     }
 
     @NonNull
@@ -172,11 +173,10 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     }
 
     private void initRadio() {
-        mRadioAdapter = new RadioAdapter(R.layout.home_item_radio);
+        mColumnAdapter = new AlbumAdapter(R.layout.home_item_album);
         mBinding.rvRadio.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.rvRadio.setHasFixedSize(true);
-        mRadioAdapter.bindToRecyclerView(mBinding.rvRadio);
-
+        mColumnAdapter.bindToRecyclerView(mBinding.rvRadio);
     }
 
     @Override
@@ -196,7 +196,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
 
     @Override
     public void initViewObservable() {
-        mViewModel.getBannerV2Event().observe(this, bannerV2s -> {
+        mViewModel.getBannerEvent().observe(this, bannerV2s -> {
             mBinding.banner.setAdapter(new TBannerImageAdapter(bannerV2s));
             mBinding.banner.setOnBannerListener(this);
         });
@@ -204,7 +204,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
         mViewModel.getStorysEvent().observe(this, albums -> mStoryAdapter.setNewData(albums));
         mViewModel.getBadysEvent().observe(this, albums -> mBabyAdapter.setNewData(albums));
         mViewModel.getMusicsEvent().observe(this, albums -> mMusicAdapter.setNewData(albums));
-        mViewModel.getRadiosEvent().observe(this, radios -> mRadioAdapter.setNewData(radios));
+        mViewModel.getColumnEvent().observe(this, radios -> mColumnAdapter.setNewData(radios));
     }
 
 
@@ -244,7 +244,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
         } else if (id == R.id.music_refresh) {
             mViewModel.getHotMusicList();
         } else if (id == R.id.radio_refresh) {
-            mViewModel.getRadioList();
+            mViewModel.getColumnList();
         } else if (id == R.id.fl_rank) {
             RouterUtil.navigateTo(Constants.Router.Home.F_RANK);
         } else if (id == R.id.layout_ad) {
@@ -255,21 +255,21 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
 
     @Override
     public void OnBannerClick(Object data, int position) {
-        BannerBean bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
-        switch (bannerV2.getBanner_content_type()) {
+        BannerBean bannerV2 = mViewModel.getBannerEvent().getValue().get(position);
+        switch (bannerV2.getBannerContentType()) {
             case 2:
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
-                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getBanner_content_id()));
+                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getBannerContentId()));
                 break;
             case 3:
-                mViewModel.playTrack(bannerV2.getBanner_content_id());
+                mViewModel.playTrack(bannerV2.getBannerContentId());
                 break;
             case 1:
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
-                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBanner_content_id()));
+                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerContentId()));
             case 4:
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
-                        .withLong(KeyCode.Discover.PATH, bannerV2.getBanner_content_id()));
+                        .withLong(KeyCode.Discover.PATH, bannerV2.getBannerContentId()));
                 break;
         }
     }

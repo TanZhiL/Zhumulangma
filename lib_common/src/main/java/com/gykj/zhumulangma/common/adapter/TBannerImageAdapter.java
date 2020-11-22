@@ -23,6 +23,6 @@ public class TBannerImageAdapter extends BannerImageAdapter<BannerBean> {
 
     @Override
     public void onBindView(BannerImageHolder holder, BannerBean data, int position, int size) {
-        GlideApp.with(holder.itemView).load(data.getBanner_cover_url()).into(holder.imageView);
+        GlideApp.with(holder.itemView).load(data.getBannerCoverUrl()).into(holder.imageView);
     }
 }

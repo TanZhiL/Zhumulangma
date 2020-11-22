@@ -16,6 +16,7 @@ import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.common.util.RouterUtil;
+import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -36,10 +37,16 @@ public class AlbumListActivity extends BaseRefreshActivity<CommonLayoutListBindi
     public static final int LIKE = 0;
     //付费精品
     public static final int PAID = -1;
+    //听单
+    public static final int COLUMN = -2;
     //主播专辑
     public static final int ANNOUNCER = 999;
-    @Autowired(name = KeyCode.Home.TYPE)
-    public int mType;
+    @Autowired(name = KeyCode.Home.CATEGORY)
+    public int mCategory;
+    @Autowired(name = KeyCode.Home.TAG)
+    public String mTag;
+    @Autowired(name = KeyCode.Home.COLUMN)
+    public String mColumn;
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
     public long mAnnouncerId;
     @Autowired(name = KeyCode.Home.TITLE)
@@ -80,14 +87,14 @@ public class AlbumListActivity extends BaseRefreshActivity<CommonLayoutListBindi
 
     @Override
     public void initData() {
-        mViewModel.setType(mType);
         mViewModel.setAnnouncerId(mAnnouncerId);
-        mViewModel.init();
+        mViewModel.init(mCategory,mTag,mColumn);
     }
 
     @Override
     public void initViewObservable() {
-        mViewModel.getInitAlbumsEvent().observe(this, albums -> mAlbumAdapter.setNewData(albums));
+        ZhumulangmaUtil.filterPaidAlbum(mViewModel.getInitAlbumsEvent()).observe(this,
+                albums -> mAlbumAdapter.setNewData(albums));
     }
 
     @Override
@@ -108,7 +115,7 @@ public class AlbumListActivity extends BaseRefreshActivity<CommonLayoutListBindi
 
     @Override
     public Integer[] onBindBarRightIcon() {
-        if (mType == ANNOUNCER || mType == LIKE) {
+        if (mCategory == ANNOUNCER || mCategory == LIKE) {
             return null;
         }
         return new Integer[]{R.drawable.ic_common_search};

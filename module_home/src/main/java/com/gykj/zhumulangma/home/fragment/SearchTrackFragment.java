@@ -12,14 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.SearchTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchTrackViewModel;
 import com.kingja.loadsir.callback.Callback;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
+
+import static com.gykj.zhumulangma.common.util.ZhumulangmaUtil.filterPaidTrack;
 
 /**
  * Author: Thomas.
@@ -98,7 +100,7 @@ public class SearchTrackFragment extends BaseRefreshFragment<CommonLayoutListBin
 
     @Override
     public void initViewObservable() {
-        mViewModel.getInitTracksEvent().observe(this, tracks -> mSearchTrackAdapter.setNewData(tracks));
+        filterPaidTrack(mViewModel.getInitTracksEvent()).observe(this, tracks -> mSearchTrackAdapter.setNewData(tracks));
     }
 
     @Override

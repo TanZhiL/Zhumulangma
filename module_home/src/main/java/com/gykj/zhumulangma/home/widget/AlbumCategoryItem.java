@@ -50,7 +50,7 @@ public class AlbumCategoryItem extends ConstraintLayout {
 
         this.setOnClickListener(view ->
                 RouterUtil.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                .withInt(KeyCode.Home.TYPE, getTag()==null?3: Integer.parseInt(getTag().toString()))
+                .withInt(KeyCode.Home.CATEGORY, getTag()==null?3: Integer.parseInt(getTag().toString()))
                 .withString(KeyCode.Home.TITLE,title)));
     }
 

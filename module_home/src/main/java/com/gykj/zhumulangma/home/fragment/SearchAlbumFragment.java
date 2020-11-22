@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
@@ -17,6 +17,8 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAlbumViewModel;
 import com.kingja.loadsir.callback.Callback;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
+
+import static com.gykj.zhumulangma.common.util.ZhumulangmaUtil.filterPaidAlbum;
 
 /**
  * Author: Thomas.
@@ -83,7 +85,7 @@ public class SearchAlbumFragment extends BaseRefreshFragment<CommonLayoutListBin
 
     @Override
     public void initViewObservable() {
-        mViewModel.getInitAlbumsEvent().observe(this, albums -> mAlbumAdapter.setNewData(albums));
+        filterPaidAlbum(mViewModel.getInitAlbumsEvent()).observe(this, albums -> mAlbumAdapter.setNewData(albums));
     }
 
     @Override

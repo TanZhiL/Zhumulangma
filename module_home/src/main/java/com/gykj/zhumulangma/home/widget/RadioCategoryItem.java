@@ -19,8 +19,9 @@ public class RadioCategoryItem extends androidx.appcompat.widget.AppCompatTextVi
         super(context, attrs);
 
         this.setOnClickListener(view ->
-                RouterUtil.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_RADIO_LIST)
-                        .withInt(KeyCode.Home.TYPE, Integer.parseInt(getTag().toString()))
+                RouterUtil.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
+                        .withInt(KeyCode.Home.CATEGORY, 3)
+                        .withString(KeyCode.Home.TAG, getTag().toString())
                         .withString(KeyCode.Home.TITLE, getText().toString())));
     }
 

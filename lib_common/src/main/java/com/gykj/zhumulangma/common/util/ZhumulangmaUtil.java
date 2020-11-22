@@ -1,8 +1,20 @@
 package com.gykj.zhumulangma.common.util;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+
 import com.blankj.utilcode.constant.MemoryConstants;
+import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
+import com.ximalaya.ting.android.opensdk.httputil.util.SignatureUtil;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
+import com.ximalaya.ting.android.opensdk.model.track.Track;
 
 import java.text.DecimalFormat;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import io.reactivex.Observable;
 
 /**
  * Created by 10719
@@ -108,5 +120,56 @@ public class ZhumulangmaUtil {
             return 0;
         else
         return  (end-cur)/end;
+    }
+
+    /**
+     * 封装公共参数
+     * @param specificParams
+     * @return
+     */
+    public static Observable<Map<String,String>> commonParams(Map<String, String> specificParams){
+        return Observable.fromCallable(() -> {
+            Map<String, String> stringStringMap = CommonRequest.CommonParams(specificParams);
+            String appsecret = CommonRequest.getInstanse().getAppsecret();
+            String s = SignatureUtil.generateSignature(appsecret, stringStringMap);
+            stringStringMap.put("sig",s);
+            return stringStringMap;
+        });
+    }
+
+    /**
+     * 过滤付费声音
+     * @param liveData
+     * @return
+     */
+    public static LiveData<List<Track>> filterPaidTrack(LiveData<List<Track>> liveData){
+        return Transformations.map(liveData, input -> {
+            Iterator<Track> iterator = input.iterator();
+            while (iterator.hasNext()){
+                Track next = iterator.next();
+                if(next.isPaid()){
+                    iterator.remove();
+                }
+            }
+            return input;
+        });
+    }
+
+    /**
+     * 过滤付费专辑
+     * @param liveData
+     * @return
+     */
+    public static LiveData<List<Album>> filterPaidAlbum(LiveData<List<Album>> liveData){
+        return Transformations.map(liveData, input -> {
+            Iterator<Album> iterator = input.iterator();
+            while (iterator.hasNext()){
+                Album next = iterator.next();
+                if(next.isPaid()){
+                    iterator.remove();
+                }
+            }
+            return input;
+        });
     }
 }

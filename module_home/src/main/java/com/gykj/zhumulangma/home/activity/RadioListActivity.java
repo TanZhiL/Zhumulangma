@@ -3,7 +3,6 @@ package com.gykj.zhumulangma.home.activity;
 
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,8 +17,8 @@ import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.ProvinceBean;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
-import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.RadioAdapter;
 import com.gykj.zhumulangma.home.databinding.HomeLayoutRankBarCenterBinding;
@@ -30,7 +29,6 @@ import com.jakewharton.rxbinding3.view.RxView;
 import com.kingja.loadsir.callback.Callback;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.enums.PopupPosition;
-import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +41,7 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:电台列表
  */
 @Route(path = Constants.Router.Home.F_RADIO_LIST)
-public class RadioListActivity extends BaseRefreshActivity<CommonLayoutListBinding, RadioListViewModel, Radio> implements
+public class RadioListActivity extends BaseMvvmActivity<CommonLayoutListBinding, RadioListViewModel> implements
         BaseQuickAdapter.OnItemClickListener, RadioProvincePopup.onSelectedListener, RadioProvincePopup.onPopupDismissingListener {
     //本省台
     public static final int LOCAL_PROVINCE = 999;
@@ -58,7 +56,7 @@ public class RadioListActivity extends BaseRefreshActivity<CommonLayoutListBindi
     //当地城市台
     public static final int LOCAL_CITY = 993;
 
-    @Autowired(name = KeyCode.Home.TYPE)
+    @Autowired(name = KeyCode.Home.CATEGORY)
     public int mType;
     @Autowired(name = KeyCode.Home.TITLE)
     public String mTitle;
@@ -113,12 +111,6 @@ public class RadioListActivity extends BaseRefreshActivity<CommonLayoutListBindi
         }
     }
 
-    @NonNull
-    @Override
-    protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(mBinding.refreshLayout, mRadioAdapter);
-    }
-
     @Override
     public void initData() {
         mProvinceCode = mProvinceBeans.get(0).getProvince_code();
@@ -131,7 +123,7 @@ public class RadioListActivity extends BaseRefreshActivity<CommonLayoutListBindi
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         if (adapter == mRadioAdapter) {
-            mViewModel.playRadio(mRadioAdapter.getItem(position));
+       //     mViewModel.playRadio(mRadioAdapter.getItem(position));
         }
     }
 
@@ -168,7 +160,7 @@ public class RadioListActivity extends BaseRefreshActivity<CommonLayoutListBindi
 
     @Override
     public void initViewObservable() {
-        mViewModel.getInitRadiosEvent().observe(this, radios -> mRadioAdapter.setNewData(radios));
+      //  mViewModel.getInitRadiosEvent().observe(this, radios -> mRadioAdapter.setNewData(radios));
     }
 
 

@@ -28,7 +28,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.OPERATION_CATEGORY_ID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.SCOPE;
 
 public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Announcer> {
 
@@ -44,9 +44,9 @@ public class AnnouncerViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
         //获取banner
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(3 + new Random().nextInt(5)));
-        map.put(OPERATION_CATEGORY_ID, "10");
+        map.put(SCOPE, "2");
         map.put(IS_PAID, "0");
-        mModel.getCategoryBannersV2(map)
+        mModel.getBanners(map)
                 .doOnNext(bannerV2List ->
                         getBannerV2Event().setValue(bannerV2List.getBanners()))
                 //获取主播列表

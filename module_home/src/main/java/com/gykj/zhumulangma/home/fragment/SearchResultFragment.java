@@ -54,22 +54,19 @@ public class SearchResultFragment extends BaseFragment<HomeFragmentSearchResultB
 
     @Override
     public void initView() {
-        String[] tabs = {"专辑", "声音", "主播", "广播"};
+        String[] tabs = {"专辑", "声音", "主播"};
         Fragment albumFragment = new SearchAlbumFragment();
         Fragment trackFragment = new SearchTrackFragment();
         Fragment announcerFragment = new SearchAnnouncerFragment();
-        Fragment radioFragment = new SearchRadioFragment();
         Bundle bundle = new Bundle();
         bundle.putString(KeyCode.Home.KEYWORD, getArguments().getString(KeyCode.Home.KEYWORD));
         albumFragment.setArguments(bundle);
         trackFragment.setArguments(bundle);
         announcerFragment.setArguments(bundle);
-        radioFragment.setArguments(bundle);
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(albumFragment);
         fragments.add(trackFragment);
         fragments.add(announcerFragment);
-        fragments.add(radioFragment);
 
         TFragmentStateAdapter adapter = new TFragmentStateAdapter(
                 this, fragments);

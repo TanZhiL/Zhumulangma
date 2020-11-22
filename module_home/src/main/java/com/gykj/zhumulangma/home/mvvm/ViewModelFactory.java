@@ -20,7 +20,7 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayRadioViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioListViewModel;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.NovelViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAlbumViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAnnouncerViewModel;
@@ -61,8 +61,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new HotViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(FineViewModel.class)) {
             return (T) new FineViewModel(mApplication, new ZhumulangmaModel(mApplication));
-        } else if (modelClass.isAssignableFrom(RadioViewModel.class)) {
-            return (T) new RadioViewModel(mApplication, new RadioModel(mApplication));
+        } else if (modelClass.isAssignableFrom(NovelViewModel.class)) {
+            return (T) new NovelViewModel(mApplication, new RadioModel(mApplication));
         } else if (modelClass.isAssignableFrom(SearchViewModel.class)) {
             return (T) new SearchViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(SearchRadioViewModel.class)) {

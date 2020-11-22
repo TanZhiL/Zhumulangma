@@ -9,13 +9,16 @@ import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.util.RouterUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
+import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.album.AlbumList;
 import com.ximalaya.ting.android.opensdk.model.album.Announcer;
 import com.ximalaya.ting.android.opensdk.model.album.AnnouncerListByIds;
 import com.ximalaya.ting.android.opensdk.model.track.AnnouncerTrackList;
+import com.ximalaya.ting.android.opensdk.model.track.Track;
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.ObservableSource;
@@ -30,8 +33,8 @@ import io.reactivex.functions.Function;
 public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Object> {
 
     private SingleLiveEvent<Announcer> mAnnouncerEvent;
-    private SingleLiveEvent<AlbumList> mAlbumListEvent;
-    private SingleLiveEvent<AnnouncerTrackList> mTrackListEvent;
+    private SingleLiveEvent<List<Album>> mAlbumListEvent;
+    private SingleLiveEvent<List<Track>> mTrackListEvent;
     private long mAnnouncerId;
 
     public AnnouncerDetailViewModel(@NonNull Application application, ZhumulangmaModel model) {
@@ -51,7 +54,7 @@ public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaMo
                     map1.put(DTransferConstants.PAGE, String.valueOf(1));
                     map1.put(DTransferConstants.PAGE_SIZE, String.valueOf(5));
                     return mModel.getAlbumsByAnnouncer(map1);
-                }).doOnNext(albumList -> getAlbumListEvent().setValue(albumList))
+                }).doOnNext(albumList -> getAlbumListEvent().setValue(albumList.getAlbums()))
                 //主播声音列表
                 .flatMap((Function<AlbumList, ObservableSource<AnnouncerTrackList>>) albumList -> {
                     Map<String, String> map12 = new HashMap<>();
@@ -62,7 +65,7 @@ public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaMo
                 })
                 .subscribe(trackList -> {
                     getClearStatusEvent().call();
-                    getTrackListEvent().setValue(trackList);
+                    getTrackListEvent().setValue(trackList.getTracks());
                 }, e -> {
                     getShowErrorViewEvent().call();
                     e.printStackTrace();
@@ -91,11 +94,11 @@ public class AnnouncerDetailViewModel extends BaseRefreshViewModel<ZhumulangmaMo
         return mAnnouncerEvent = createLiveData(mAnnouncerEvent);
     }
 
-    public SingleLiveEvent<AlbumList> getAlbumListEvent() {
+    public SingleLiveEvent<List<Album>> getAlbumListEvent() {
         return mAlbumListEvent = createLiveData(mAlbumListEvent);
     }
 
-    public SingleLiveEvent<AnnouncerTrackList> getTrackListEvent() {
+    public SingleLiveEvent<List<Track>> getTrackListEvent() {
         return mTrackListEvent = createLiveData(mTrackListEvent);
     }
 

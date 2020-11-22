@@ -529,7 +529,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         app:ih_right_text="更多"
-                        app:ih_title="电台"
+                        app:ih_title="掌柜推荐"
                         app:layout_constraintTop_toBottomOf="@id/line6" />
 
                     <androidx.recyclerview.widget.RecyclerView

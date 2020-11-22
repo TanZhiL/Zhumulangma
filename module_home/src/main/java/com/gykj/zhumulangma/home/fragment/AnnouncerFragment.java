@@ -109,20 +109,20 @@ public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncer
     @Override
     public void OnBannerClick(Object data, int position) {
         BannerBean bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
-        switch (bannerV2.getBanner_content_type()) {
+        switch (bannerV2.getBannerContentType()) {
             case 2:
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
-                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getBanner_content_id()));
+                        .withLong(KeyCode.Home.ALBUMID, bannerV2.getBannerContentId()));
                 break;
             case 3:
-                mViewModel.play(bannerV2.getBanner_content_id());
+                mViewModel.play(bannerV2.getBannerContentId());
                 break;
             case 1:
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Home.F_ANNOUNCER_DETAIL)
-                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBanner_content_id()));
+                        .withLong(KeyCode.Home.ANNOUNCER_ID, bannerV2.getBannerContentId()));
             case 4:
                 RouterUtil.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
-                        .withLong(KeyCode.Discover.PATH, bannerV2.getBanner_content_id()));
+                        .withLong(KeyCode.Discover.PATH, bannerV2.getBannerContentId()));
                 break;
         }
     }
