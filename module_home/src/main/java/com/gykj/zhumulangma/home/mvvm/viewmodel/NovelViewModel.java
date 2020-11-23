@@ -333,8 +333,8 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
     private Observable<ColumnDetailDTO<Album>> getYoungListObservable() {
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.ID, NOVE_YOUNG_ID);
-        map.put(DTransferConstants.PAGE_SIZE, "6");
-        curYoungPage = curYoungPage > totalYoungPage ? 1 : curYoungPage;
+        map.put(DTransferConstants.PAGE_SIZE, "5");
+        curYoungPage = curYoungPage >= totalYoungPage ? 1 : curYoungPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curYoungPage));
         return mModel.getBrowseAlbumColumn(map)
                 .doOnNext(radioList -> {

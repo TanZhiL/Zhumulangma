@@ -4,6 +4,7 @@ package com.gykj.zhumulangma.home.fragment;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -131,6 +132,15 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
         mColumnAdapter.setOnItemClickListener((adapter, view, position) ->
                 RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_DETAIL)
                         .withLong(KeyCode.Home.ALBUMID, mColumnAdapter.getItem(position).getId())));
+        mBinding.nsv.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            int bottom = mBinding.banner.getBottom();
+            if (scrollY > bottom) {
+                mBinding.banner.stop();
+            } else {
+                mBinding.banner.start();
+            }
+        });
     }
 
     @NonNull

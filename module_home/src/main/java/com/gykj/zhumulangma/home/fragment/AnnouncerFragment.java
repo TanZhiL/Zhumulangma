@@ -68,6 +68,15 @@ public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncer
         mBinding.nsv.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (nestedScrollView, i, i1, i2, i3) ->
                         mBinding.flTitleTop.setVisibility(i1 > mBinding.llTitle.getTop() ? View.VISIBLE : View.GONE));
+        mBinding.nsv.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                    int bottom = mBinding.banner.getBottom();
+                    if (scrollY > bottom) {
+                        mBinding.banner.stop();
+                    } else {
+                        mBinding.banner.start();
+                    }
+                });
     }
 
     @NonNull

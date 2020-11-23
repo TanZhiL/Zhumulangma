@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -150,6 +151,19 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, NOVE_YOUNG_ID)
                         .withString(KeyCode.Home.TITLE, mYoungName)));
+        mBinding.nsv.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                    int bottom = mBinding.banner.getBottom();
+                    if (scrollY > bottom) {
+                        mBinding.banner.stop();
+                    } else {
+                        mBinding.banner.start();
+                    }
+                });
+        mBinding.youngRefresh.setOnClickListener(this);
+        mBinding.dailyRefresh.setOnClickListener(this);
+        mBinding.dajiaRefresh.setOnClickListener(this);
+        mBinding.zhangguiRefresh.setOnClickListener(this);
     }
 
     @NonNull
@@ -260,6 +274,14 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         } else if (id == R.id.iv_less) {
             mBinding.clMore.setVisibility(View.GONE);
             mBinding.ivMore.setVisibility(View.VISIBLE);
+        }else if (id == R.id.young_refresh) {
+            mViewModel.getYoungList();
+        }else if (id == R.id.daily_refresh) {
+            mViewModel.getDailyList();
+        }else if (id == R.id.dajia_refresh) {
+            mViewModel.getDajiaList();
+        }else if (id == R.id.zhanggui_refresh) {
+            mViewModel.getZhangguiList();
         }
     }
 

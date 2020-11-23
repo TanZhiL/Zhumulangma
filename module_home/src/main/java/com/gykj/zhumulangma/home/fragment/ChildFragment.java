@@ -4,6 +4,7 @@ package com.gykj.zhumulangma.home.fragment;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -148,6 +149,15 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         mBinding.llEg.setOnClickListener(this);
         mBinding.llDh.setOnClickListener(this);
         mBinding.llXk.setOnClickListener(this);
+        mBinding.nsv.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                    int bottom = mBinding.banner.getBottom();
+                    if (scrollY > bottom) {
+                        mBinding.banner.stop();
+                    } else {
+                        mBinding.banner.start();
+                    }
+                });
     }
 
     @NonNull
