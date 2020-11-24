@@ -1,10 +1,11 @@
 package com.gykj.zhumulangma.home.dialog;
 
 import android.content.Context;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 
 import com.blankj.utilcode.util.ResourceUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -38,7 +39,7 @@ public class RadioProvincePopup extends PartShadowPopupView implements BaseQuick
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.home_dialog_recyclerview;
+        return R.layout.common_dialog_recyclerview;
     }
 
     @Override

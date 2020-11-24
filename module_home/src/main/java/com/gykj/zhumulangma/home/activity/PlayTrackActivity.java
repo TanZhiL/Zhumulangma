@@ -43,6 +43,7 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
@@ -376,8 +377,8 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
         } else if (R.id.tv_schedule == id || R.id.iv_schedule == id) {
             new XPopup.Builder(this).setPopupCallback(new SimpleCallback() {
                 @Override
-                public void beforeShow() {
-                    super.beforeShow();
+                public void beforeShow(BasePopupView popupView) {
+                    super.beforeShow(popupView);
                     mSchedulePopup.getScheduleAdapter().notifyDataSetChanged();
                 }
             }).asCustom(mSchedulePopup).show();
@@ -385,21 +386,21 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
             new XPopup.Builder(this).popupAnimation(TranslateFromBottom).setPopupCallback(
                     new SimpleCallback() {
                         @Override
-                        public void onCreated() {
-                            super.onCreated();
+                        public void onCreated(BasePopupView popupView) {
+                            super.onCreated(popupView);
                             mPlayerManager.setPlayListChangeListener(PlayTrackActivity.this);
                             mPlayTrackPopup.getTrackAdapter().setNewData(mPlayerManager.getPlayList());
                             mPlayTrackPopup.getRecyclerView().scrollToPosition(mPlayerManager.getCurrentIndex());
                         }
 
                         @Override
-                        public void onShow() {
-                            super.onShow();
+                        public void onShow(BasePopupView popupView) {
+                            super.onShow(popupView);
                             XmDownloadManager.getInstance().addDownloadStatueListener(downloadStatueListener);
                         }
 
                         @Override
-                        public void onDismiss() {
+                        public void onDismiss(BasePopupView popupView) {
                             XmDownloadManager.getInstance().removeDownloadStatueListener(downloadStatueListener);
                         }
                     }).enableDrag(false).asCustom(mPlayTrackPopup).show();

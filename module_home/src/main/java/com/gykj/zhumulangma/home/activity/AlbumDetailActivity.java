@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.home.activity;
 
 import android.graphics.Color;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,9 +19,11 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.android.material.appbar.AppBarLayout;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
+import com.gykj.zhumulangma.common.dialog.TrackPagerPopup;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
@@ -34,12 +37,12 @@ import com.gykj.zhumulangma.home.adapter.AlbumTrackAdapter;
 import com.gykj.zhumulangma.home.databinding.HomeActivityAlbumDetailBinding;
 import com.gykj.zhumulangma.home.databinding.HomeLayoutAlbumDetailBinding;
 import com.gykj.zhumulangma.home.databinding.HomeLayoutAlbumTrackBinding;
-import com.gykj.zhumulangma.home.dialog.TrackPagerPopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumDetailViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.library.flowlayout.FlowLayoutManager;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
@@ -120,6 +123,16 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
         mAlbumTrackAdapter.bindToRecyclerView(mTrackBind.includeList.recyclerview);
         mPagerPopup = new TrackPagerPopup(this, this);
         mPagerPopup.setDismissingListener(this);
+        mBinding.abl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                int[] location = new int[2];
+                mTrackBind.clActionbar.getLocationInWindow(location);
+                Log.i(TAG, "onOffsetChanged1: " + location[0] + " / " + location[1]);
+                mTrackBind.clActionbar.getLocationOnScreen(location);
+                Log.i(TAG, "onOffsetChanged2: " + location[0] + " / " + location[1]);
+            }
+        });
     }
 
     @Override
@@ -518,8 +531,8 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
             mTrackBind.ivSelectPage.animate().rotation(-90).setDuration(200);
             new XPopup.Builder(this).atView(mTrackBind.clActionbar).setPopupCallback(new SimpleCallback() {
                 @Override
-                public void onCreated() {
-                    super.onCreated();
+                public void onCreated(BasePopupView popupView) {
+                    super.onCreated(popupView);
                     mPagerPopup.getRvPager().setOnScrollListener(new RecyclerView.OnScrollListener() {
                         @Override
                         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -530,8 +543,8 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
                 }
 
                 @Override
-                public void beforeShow() {
-                    super.beforeShow();
+                public void beforeShow(BasePopupView popupView) {
+                    super.beforeShow(popupView);
                     changePageStatus();
                 }
             }).popupPosition(PopupPosition.Bottom)

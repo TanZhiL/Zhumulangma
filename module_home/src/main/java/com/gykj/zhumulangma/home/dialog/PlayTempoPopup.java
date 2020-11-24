@@ -1,11 +1,12 @@
 package com.gykj.zhumulangma.home.dialog;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.RadioButton;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
-import android.widget.RadioButton;
 
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -61,7 +62,7 @@ public class PlayTempoPopup extends BottomPopupView implements View.OnClickListe
     // 最大高度为Window的0.85
     @Override
     protected int getMaxHeight() {
-        return (int) (XPopupUtils.getWindowHeight(getContext()) * .85f);
+        return (int) (XPopupUtils.getAppHeight(getContext()) * .85f);
     }
 
     @Override
