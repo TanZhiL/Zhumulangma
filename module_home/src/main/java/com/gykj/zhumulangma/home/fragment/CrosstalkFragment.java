@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
-import com.blankj.utilcode.util.CollectionUtils;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TBannerImageAdapter;
 import com.gykj.zhumulangma.common.bean.BannerBean;
@@ -28,15 +27,16 @@ import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.activity.AlbumListActivity;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
-import com.gykj.zhumulangma.home.databinding.HomeFragmentRadioBinding;
+import com.gykj.zhumulangma.home.databinding.HomeFragmentCrosstalkBinding;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.NovelViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.CrosstalkViewModel;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
 import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
 
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_DJJX_ID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_DAILY_ID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_DAJIA_ID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_YOUNG_ID;
@@ -46,9 +46,9 @@ import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_ZHANG
  * Author: Thomas.
  * <br/>Date: 2019/8/14 13:41
  * <br/>Email: 1071931588@qq.com
- * <br/>Description:小说
+ * <br/>Description:相声
  */
-public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding, NovelViewModel, Radio>
+public class CrosstalkFragment extends BaseRefreshFragment<HomeFragmentCrosstalkBinding, CrosstalkViewModel, Radio>
         implements OnBannerListener, View.OnClickListener {
 
     // private String mCityCode;
@@ -56,14 +56,15 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
     private HotLikeAdapter mDajiaAdapter;
     private HotLikeAdapter mZhangguiAdapter;
     private AlbumAdapter mYoungAdapter;
+    private HotLikeAdapter mDujiaAdapter;
 
-    public NovelFragment() {
+    public CrosstalkFragment() {
     }
 
 
     @Override
     public int onBindLayout() {
-        return R.layout.home_fragment_radio;
+        return R.layout.home_fragment_crosstalk;
     }
 
     @Override
@@ -85,6 +86,7 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         initDajia();
         initZhanggui();
         initYoung();
+        initDujia();
     }
 
     private void initBanner() {
@@ -121,7 +123,13 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         mBinding.rvYoung.setHasFixedSize(true);
         mYoungAdapter.bindToRecyclerView(mBinding.rvYoung);
     }
+    private void initDujia() {
+        mDujiaAdapter = new HotLikeAdapter(R.layout.home_item_hot_like);
+        mBinding.rvDjjx.setLayoutManager(new GridLayoutManager(mActivity, 3));
+        mBinding.rvDjjx.setHasFixedSize(true);
+        mDujiaAdapter.bindToRecyclerView(mBinding.rvDjjx);
 
+    }
     @Override
     public void initListener() {
         super.initListener();
@@ -147,6 +155,11 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
                         .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                         .withString(KeyCode.Home.COLUMN, NOVE_YOUNG_ID)
                         .withString(KeyCode.Home.TITLE, mViewModel.getYoungNameEvent().getValue())));
+        mBinding.ihDjjx.setOnClickListener(view ->
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                        .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
+                        .withString(KeyCode.Home.COLUMN, CROSSTALK_DJJX_ID)
+                        .withString(KeyCode.Home.TITLE, mViewModel.getDujiaNameEvent().getValue())));
         mBinding.nsv.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
                     int bottom = mBinding.banner.getBottom();
@@ -160,6 +173,7 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         mBinding.dailyRefresh.setOnClickListener(this);
         mBinding.dajiaRefresh.setOnClickListener(this);
         mBinding.zhangguiRefresh.setOnClickListener(this);
+        mBinding.djjxRefresh.setOnClickListener(this);
     }
 
     @NonNull
@@ -186,8 +200,8 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
     }
 
     @Override
-    public Class<NovelViewModel> onBindViewModel() {
-        return NovelViewModel.class;
+    public Class<CrosstalkViewModel> onBindViewModel() {
+        return CrosstalkViewModel.class;
     }
 
     @Override
@@ -201,19 +215,16 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
             mBinding.banner.setAdapter(new TBannerImageAdapter(bannerV2s));
             mBinding.banner.setOnBannerListener(this);
         });
-        mViewModel.getDailyEvent().observe(this, radios -> {
-            if (!CollectionUtils.isEmpty(radios)) {
-                mDailyAdapter.setNewData(radios);
-            }
-        });
+        mViewModel.getDailyEvent().observe(this, radios -> mDailyAdapter.setNewData(radios));
         mViewModel.getDajiaEvent().observe(this, radios -> mDajiaAdapter.setNewData(radios));
         mViewModel.getYoungEvent().observe(this, radios -> mYoungAdapter.setNewData(radios));
-        mViewModel.getZhangguiEvent().observe(this, historyBeans ->
-                mZhangguiAdapter.setNewData(historyBeans));
+        mViewModel.getDujiaEvent().observe(this, radios -> mDujiaAdapter.setNewData(radios));
+        mViewModel.getZhangguiEvent().observe(this, historyBeans ->mZhangguiAdapter.setNewData(historyBeans));
         mViewModel.getDailyNameEvent().observe(this, s -> mBinding.ihHistory.setTitle(s));
         mViewModel.getDajiaNameEvent().observe(this, s -> mBinding.ihLocal.setTitle(s));
         mViewModel.getZhangguiNameEvent().observe(this, s -> mBinding.ihTop.setTitle(s));
         mViewModel.getYoungNameEvent().observe(this, s -> mBinding.ihYoung.setTitle(s));
+        mViewModel.getDujiaNameEvent().observe(this, s -> mBinding.ihDjjx.setTitle(s));
 //        mViewModel.getCityNameEvent().observe(this, cn -> mBinding.ihLocal.setTitle(cn));
 //        mViewModel.getStartLocationEvent().observe(this, aVoid -> startLocation());
 //        mViewModel.getTitleEvent().observe(this, s -> mBinding.ihLocal.setTitle(s));
@@ -232,7 +243,7 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
         locationClient.setLocationListener(aMapLocation -> mViewModel.saveLocation(aMapLocation));
         locationClient.setLocationOption(option);
 
-        new RxPermissions(NovelFragment.this).request(Manifest.permission.ACCESS_COARSE_LOCATION)
+        new RxPermissions(CrosstalkFragment.this).request(Manifest.permission.ACCESS_COARSE_LOCATION)
                 .subscribe(granted -> {
                     if (granted) {
                         locationClient.startLocation();

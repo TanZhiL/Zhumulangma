@@ -36,15 +36,16 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.internal.functions.Functions;
 
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_DJJX_ID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_PSLB_ID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_RMTJ_ID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_XPHC_ID;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_XSJX_ID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IDS;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_DAILY_ID;
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_DAJIA_ID;
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_YOUNG_ID;
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_ZHANGGUI_ID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.OPERATION_CATEGORY_ID;
 
-public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
+public class CrosstalkViewModel extends BaseRefreshViewModel<RadioModel, Album> {
 
     private SingleLiveEvent<List<BannerBean>> mBannerEvent;
     private SingleLiveEvent<List<PlayHistoryBean>> mHistorysEvent;
@@ -60,22 +61,26 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
     private SingleLiveEvent<List<Album>> mDajiaEvent;
     private SingleLiveEvent<List<Album>> mZhangguiEvent;
     private SingleLiveEvent<List<Album>> mYoungEvent;
+    private SingleLiveEvent<List<Album>> mDujiaEvent;
     private SingleLiveEvent<String> mDajiaNameEvent;
     private SingleLiveEvent<String> mDailyNameEvent;
     private SingleLiveEvent<String> mZhangguiNameEvent;
     private SingleLiveEvent<String> mYoungNameEvent;
+    private SingleLiveEvent<String> mDujiaNameEvent;
 
     private int totalDajiaPage = 1;
     private int totalZhangguiPage = 1;
     private int totalYoungPage = 1;
     private int totalDailyPage = 1;
+    private int totalDujiaPage = 1;
 
     private int curDajiaPage = 1;
     private int curZhangguiPage = 1;
     private int curYoungPage = 1;
     private int curDailyPage = 1;
+    private int curDujiaPage = 1;
 
-    public NovelViewModel(@NonNull Application application, RadioModel model) {
+    public CrosstalkViewModel(@NonNull Application application, RadioModel model) {
         super(application, model);
     }
 
@@ -85,6 +90,7 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
         curDailyPage = 1;
         curYoungPage = 1;
         curZhangguiPage = 1;
+        curDujiaPage = 1;
         init();
     }
 
@@ -141,14 +147,18 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
                         getZhangguiListObservable())
                 .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnDetailDTO<Album>>>) albumList ->
                         getYoungListObservable())
+                .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnDetailDTO<Album>>>) albumList ->
+                        getDujiaListObservable())
                 .flatMap((Function<ColumnDetailDTO<Album>,ObservableSource<ColumnInfoDTO>>) albumList ->
                         getColumnNameObservable())
-             /*   .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
+              /*  .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
                         getDajiaNameObservable())
                 .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
                         getZhangguiNameObservable())
                 .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
-                        getYoungNameObservable())*/
+                        getYoungNameObservable())
+                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
+                        getDujiaNameObservable())*/
                 .doFinally(() -> super.onViewRefresh())
                 .subscribe(r -> getClearStatusEvent().call(), e ->
                 {
@@ -187,7 +197,7 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
     private Observable<BannerDTO> getBannerListObervable() {
         Map<String, String> map = new HashMap<>();
         map.put(DTransferConstants.PAGE_SIZE, String.valueOf(3 + new Random().nextInt(5)));
-        map.put(OPERATION_CATEGORY_ID, "3");
+        map.put(OPERATION_CATEGORY_ID, "12");
         map.put(IS_PAID, "0");
         return mModel.getBanners(map)
                 .doOnNext((BannerDTO bannerV2List) -> getBannerEvent().setValue(bannerV2List.getBanners()));
@@ -224,31 +234,33 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
     private Observable<ColumnInfoDTO> getColumnNameObservable() {
         Map<String, String> map = new HashMap<String, String>();
         StringBuilder sb = new StringBuilder();
-        sb.append(NOVE_DAILY_ID).append(",");
-        sb.append(NOVE_DAJIA_ID).append(",");
-        sb.append(NOVE_ZHANGGUI_ID).append(",");
-        sb.append(NOVE_YOUNG_ID);
-        map.put(IDS,sb.toString());
+        sb.append(CROSSTALK_RMTJ_ID).append(",");
+        sb.append(CROSSTALK_XSJX_ID).append(",");
+        sb.append(CROSSTALK_PSLB_ID).append(",");
+        sb.append(CROSSTALK_XPHC_ID).append(",");
+        sb.append(CROSSTALK_DJJX_ID);
+        map.put(IDS, sb.toString());
         return mModel.getColumnInfo(map)
                 .doOnNext(radioList -> {
                     getDailyNameEvent().setValue(radioList.getColumns().get(0).getTitle());
                     getDajiaNameEvent().setValue(radioList.getColumns().get(1).getTitle());
                     getZhangguiNameEvent().setValue(radioList.getColumns().get(2).getTitle());
                     getYoungNameEvent().setValue(radioList.getColumns().get(3).getTitle());
+                    getDujiaNameEvent().setValue(radioList.getColumns().get(4).getTitle());
                 });
 
     }
 
-   /* private Observable<ColumnInfoDTO> getDajiaNameObservable() {
+  /*  private Observable<ColumnInfoDTO> getDajiaNameObservable() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(IDS, NOVE_DAJIA_ID);
+        map.put(IDS, CROSSTALK_XSJX_ID);
         return mModel.getColumnInfo(map)
                 .doOnNext(radioList -> getDajiaNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
 
     }
     private Observable<ColumnInfoDTO> getZhangguiNameObservable() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(IDS, NOVE_ZHANGGUI_ID);
+        map.put(IDS, CROSSTALK_PSLB_ID);
         return mModel.getColumnInfo(map)
                 .doOnNext(radioList -> getZhangguiNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
 
@@ -256,9 +268,17 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
 
     private Observable<ColumnInfoDTO> getYoungNameObservable() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(IDS, NOVE_YOUNG_ID);
+        map.put(IDS, CROSSTALK_XPHC_ID);
         return mModel.getColumnInfo(map)
                 .doOnNext(radioList -> getYoungNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
+
+    }
+
+    private Observable<ColumnInfoDTO> getDujiaNameObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(IDS, CROSSTALK_DJJX_ID);
+        return mModel.getColumnInfo(map)
+                .doOnNext(radioList -> getDujiaNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
 
     }*/
     public void getDailyList() {
@@ -270,7 +290,7 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
 
     private Observable<ColumnDetailDTO<Album>> getDailyListObservable() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, NOVE_DAILY_ID);
+        map.put(DTransferConstants.ID, CROSSTALK_RMTJ_ID);
         map.put(DTransferConstants.PAGE_SIZE, "6");
         curDailyPage = curDailyPage > totalDailyPage ? 1 : curDailyPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curDailyPage));
@@ -294,7 +314,7 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
 
     private Observable<ColumnDetailDTO<Album>> getDajiaListObservable() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, NOVE_DAJIA_ID);
+        map.put(DTransferConstants.ID, CROSSTALK_XSJX_ID);
         map.put(DTransferConstants.PAGE_SIZE, "6");
         curDajiaPage = curDajiaPage > totalDajiaPage ? 1 : curDajiaPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curDajiaPage));
@@ -318,7 +338,7 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
 
     private Observable<ColumnDetailDTO<Album>> getZhangguiListObservable() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, NOVE_ZHANGGUI_ID);
+        map.put(DTransferConstants.ID, CROSSTALK_PSLB_ID);
         map.put(DTransferConstants.PAGE_SIZE, "6");
         curZhangguiPage = curZhangguiPage > totalZhangguiPage ? 1 : curZhangguiPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curZhangguiPage));
@@ -342,7 +362,7 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
 
     private Observable<ColumnDetailDTO<Album>> getYoungListObservable() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, NOVE_YOUNG_ID);
+        map.put(DTransferConstants.ID, CROSSTALK_XPHC_ID);
         map.put(DTransferConstants.PAGE_SIZE, "5");
         curYoungPage = curYoungPage >= totalYoungPage ? 1 : curYoungPage;
         map.put(DTransferConstants.PAGE, String.valueOf(curYoungPage));
@@ -356,7 +376,30 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
                 });
 
     }
+    
+    public void getDujiaList() {
+        getDujiaListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
+                .doFinally(() -> getClearStatusEvent().call())
+                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
 
+    }
+
+    private Observable<ColumnDetailDTO<Album>> getDujiaListObservable() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.ID, CROSSTALK_DJJX_ID);
+        map.put(DTransferConstants.PAGE_SIZE, "3");
+        curDujiaPage = curDujiaPage >= totalDujiaPage ? 1 : curDujiaPage;
+        map.put(DTransferConstants.PAGE, String.valueOf(curDujiaPage));
+        return mModel.getBrowseAlbumColumn(map)
+                .doOnNext(radioList -> {
+                    if (!CollectionUtils.isEmpty(radioList.getColumns())) {
+                        curDujiaPage++;
+                    }
+                    totalDujiaPage = radioList.getTotalPage();
+                    getDujiaEvent().setValue(radioList.getColumns());
+                });
+
+    }
     public SingleLiveEvent<List<BannerBean>> getBannerEvent() {
         return mBannerEvent = createLiveData(mBannerEvent);
     }
@@ -400,7 +443,9 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
     public SingleLiveEvent<List<Album>> getDajiaEvent() {
         return mDajiaEvent = createLiveData(mDajiaEvent);
     }
-
+    public SingleLiveEvent<List<Album>> getDujiaEvent() {
+        return mDujiaEvent = createLiveData(mDujiaEvent);
+    }
     public SingleLiveEvent<String> getDajiaNameEvent() {
         return mDajiaNameEvent = createLiveData(mDajiaNameEvent);
     }
@@ -412,6 +457,9 @@ public class NovelViewModel extends BaseRefreshViewModel<RadioModel, Album> {
     }
     public SingleLiveEvent<String> getYoungNameEvent() {
         return mYoungNameEvent = createLiveData(mYoungNameEvent);
+    }
+    public SingleLiveEvent<String> getDujiaNameEvent() {
+        return mDujiaNameEvent = createLiveData(mDujiaNameEvent);
     }
 }
 

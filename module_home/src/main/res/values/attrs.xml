@@ -5,4 +5,7 @@
         <attr name="aci_title" format="string"/>
         <attr name="aci_center_line" format="boolean"/>
     </declare-styleable>
+    <declare-styleable name="RadioCategoryItem">
+        <attr name="rci_category" format="integer"/>
+    </declare-styleable>
 </resources>

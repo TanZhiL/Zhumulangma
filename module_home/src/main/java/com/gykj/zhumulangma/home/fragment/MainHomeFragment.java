@@ -70,7 +70,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
 
     @Override
     public void initView() {
-        String[] tabs = {"热门", "分类", "小说", "儿童", "主播"};
+        String[] tabs = {"热门", "分类", "小说", "儿童", "相声"};
 
         if (StatusBarUtils.supportTransparentStatusBar()) {
             mBinding.clTitlebar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
@@ -80,7 +80,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
         fragments.add(new CategoryFragment());
         fragments.add(new NovelFragment());
         fragments.add(new ChildFragment());
-        fragments.add(new AnnouncerFragment());
+        fragments.add(new CrosstalkFragment());
 
         TFragmentStateAdapter adapter = new TFragmentStateAdapter(this, fragments);
         mBinding.viewpager.setOffscreenPageLimit(fragments.size());
