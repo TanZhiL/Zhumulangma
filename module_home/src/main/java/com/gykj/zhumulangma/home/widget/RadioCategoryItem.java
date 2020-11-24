@@ -1,12 +1,14 @@
 package com.gykj.zhumulangma.home.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.util.RouteHelper;
+import com.gykj.zhumulangma.home.R;
 
 /**
  * Author: Thomas.
@@ -15,14 +17,20 @@ import com.gykj.zhumulangma.common.util.RouteHelper;
  * <br/>Description:
  */
 public class RadioCategoryItem extends androidx.appcompat.widget.AppCompatTextView {
+    private int category;
     public RadioCategoryItem(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RadioCategoryItem);
+        getAttrs(typedArray);
+        typedArray.recycle();
         this.setOnClickListener(view ->
                 RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                        .withInt(KeyCode.Home.CATEGORY, 3)
+                        .withInt(KeyCode.Home.CATEGORY, category)
                         .withString(KeyCode.Home.TAG, getTag().toString())
                         .withString(KeyCode.Home.TITLE, getText().toString())));
     }
 
+    private void getAttrs(TypedArray typedArray) {
+        category = typedArray.getInt(R.styleable.RadioCategoryItem_rci_category, 3);
+    }
 }

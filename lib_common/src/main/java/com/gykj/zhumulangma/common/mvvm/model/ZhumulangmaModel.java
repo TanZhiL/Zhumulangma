@@ -75,6 +75,13 @@ public class ZhumulangmaModel extends BaseModel {
     public static final String CHILD_QZEG_ID = "10058";
     public static final String CHILD_JZZQ_ID = "10059";
 
+
+    public static final String CROSSTALK_DJJX_ID = "10075";
+    public static final String CROSSTALK_XSJX_ID = "10073";
+    public static final String CROSSTALK_PSLB_ID = "10071";
+    public static final String CROSSTALK_XPHC_ID = "10070";
+    public static final String CROSSTALK_RMTJ_ID = "10069";
+
     public ZhumulangmaModel(Application application) {
         super(application);
     }
