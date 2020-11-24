@@ -4,6 +4,7 @@ package com.gykj.zhumulangma.home.fragment;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -46,11 +47,6 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
     private HotLikeAdapter mGXJDAdapter;
     private HotLikeAdapter mQZEGAdapter;
     private HotLikeAdapter mJZZQAdapter;
-    private String mJDGSName;
-    private String mDHSJame;
-    private String mGXJDName;
-    private String mQZEGName;
-    private String mJZZQName;
 
     public ChildFragment() {
 
@@ -118,29 +114,29 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
                 RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_JDGS_ID)
-                .withString(KeyCode.Home.TITLE, mJDGSName)));
+                .withString(KeyCode.Home.TITLE, mViewModel.getJDGSNameEvent().getValue())));
         mBinding.bookRefresh.setOnClickListener(this);
         mBinding.ihBook.setOnClickListener(v ->
                 RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_DHSJ_ID)
-                .withString(KeyCode.Home.TITLE, mDHSJame)));
+                .withString(KeyCode.Home.TITLE, mViewModel.getDHSJNameEvent().getValue())));
         mBinding.classroomRefresh.setOnClickListener(this);
         mBinding.ihClassroom.setOnClickListener(v ->
                 RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_GXJD_ID)
-                .withString(KeyCode.Home.TITLE, mGXJDName)));
+                .withString(KeyCode.Home.TITLE, mViewModel.getGXJDNameEvent().getValue())));
         mBinding.ihSing.setOnClickListener(v ->
                 RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_QZEG_ID)
-                .withString(KeyCode.Home.TITLE, mQZEGName)));
+                .withString(KeyCode.Home.TITLE, mViewModel.getQZEGNameEvent().getValue())));
         mBinding.ihParent.setOnClickListener(v ->
                 RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_JZZQ_ID)
-                .withString(KeyCode.Home.TITLE, mJZZQName)));
+                .withString(KeyCode.Home.TITLE, mViewModel.getJZZQNameEvent().getValue())));
 
         mBinding.llPhb.setOnClickListener(this);
         mBinding.llGs.setOnClickListener(this);
@@ -148,6 +144,15 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         mBinding.llEg.setOnClickListener(this);
         mBinding.llDh.setOnClickListener(this);
         mBinding.llXk.setOnClickListener(this);
+        mBinding.nsv.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
+                (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                    int bottom = mBinding.banner.getBottom();
+                    if (scrollY > bottom) {
+                        mBinding.banner.stop();
+                    } else {
+                        mBinding.banner.start();
+                    }
+                });
     }
 
     @NonNull
@@ -177,26 +182,11 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         mViewModel.getGXJDEvent().observe(this, albums -> mGXJDAdapter.setNewData(albums));
         mViewModel.getSingEvent().observe(this, albums -> mQZEGAdapter.setNewData(albums));
         mViewModel.getParentEvent().observe(this, albums -> mJZZQAdapter.setNewData(albums));
-        mViewModel.getJDGSNameEvent().observe(this, s -> {
-            mJDGSName = s;
-            mBinding.ihDaily.setTitle(s);
-        });
-        mViewModel.getDHSJNameEvent().observe(this, s -> {
-            mDHSJame = s;
-            mBinding.ihBook.setTitle(s);
-        });
-        mViewModel.getGXJDNameEvent().observe(this, s -> {
-            mGXJDName = s;
-            mBinding.ihClassroom.setTitle(s);
-        });
-        mViewModel.getQZEGNameEvent().observe(this, s -> {
-            mQZEGName = s;
-            mBinding.ihSing.setTitle(s);
-        });
-        mViewModel.getJZZQNameEvent().observe(this, s -> {
-            mJZZQName = s;
-            mBinding.ihParent.setTitle(s);
-        });
+        mViewModel.getJDGSNameEvent().observe(this, s -> mBinding.ihDaily.setTitle(s));
+        mViewModel.getDHSJNameEvent().observe(this, s -> mBinding.ihBook.setTitle(s));
+        mViewModel.getGXJDNameEvent().observe(this, s -> mBinding.ihClassroom.setTitle(s));
+        mViewModel.getQZEGNameEvent().observe(this, s -> mBinding.ihSing.setTitle(s));
+        mViewModel.getJZZQNameEvent().observe(this, s -> mBinding.ihParent.setTitle(s));
     }
 
     private void initBanner() {

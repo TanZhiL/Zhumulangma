@@ -39,6 +39,7 @@ import com.iflytek.cloud.SpeechRecognizer;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.jakewharton.rxbinding3.widget.RxTextView;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.enums.PopupAnimation;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -278,21 +279,21 @@ public class SearchActivity extends BaseMvvmActivity<HomeActivitySearchBinding, 
             new XPopup.Builder(SearchActivity.this).popupAnimation(PopupAnimation.NoAnimation)
                     .dismissOnTouchOutside(false).setPopupCallback(new SimpleCallback() {
                 @Override
-                public void onCreated() {
-                    super.onCreated();
+                public void onCreated(BasePopupView popupView) {
+                    super.onCreated(popupView);
                     vDialog = mSpeechPopup.getPopupImplView();
                 }
 
                 @Override
-                public void onShow() {
-                    super.onShow();
+                public void onShow(BasePopupView popupView) {
+                    super.onShow(popupView);
                     vDialog.findViewById(R.id.lav_speech).setVisibility(View.VISIBLE);
                     vDialog.findViewById(R.id.lav_loading).setVisibility(View.GONE);
                 }
 
                 @Override
-                public void onDismiss() {
-                    super.onDismiss();
+                public void onDismiss(BasePopupView popupView) {
+                    super.onDismiss(popupView);
                     mIat.cancel();
                 }
             }).asCustom(mSpeechPopup).show();

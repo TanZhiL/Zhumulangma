@@ -30,11 +30,11 @@ public class TrackPagerPopup extends PartShadowPopupView  {
     public TrackPagerPopup(@NonNull Context context, BaseQuickAdapter.OnItemClickListener listener) {
         super(context);
         mListener=listener;
+        mPagerAdapter = new TrackPagerAdapter(R.layout.common_item_pager);
     }
 
     @Override
     protected int getImplLayoutId() {
-        mPagerAdapter = new TrackPagerAdapter(R.layout.common_item_pager);
         return R.layout.common_dialog_recyclerview;
     }
 

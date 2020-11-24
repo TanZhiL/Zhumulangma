@@ -1,10 +1,11 @@
 package com.gykj.zhumulangma.home.dialog;
 
 import android.content.Context;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.home.R;
@@ -46,7 +47,7 @@ public class RankCategoryPopup extends PartShadowPopupView implements BaseQuickA
 
     @Override
     protected int getImplLayoutId() {
-        return R.layout.home_dialog_recyclerview;
+        return R.layout.common_dialog_recyclerview;
     }
 
     @Override

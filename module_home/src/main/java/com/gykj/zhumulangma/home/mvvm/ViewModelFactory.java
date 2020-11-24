@@ -15,6 +15,7 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerListViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.BatchDownloadViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.ChildViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.CrosstalkViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayRadioViewModel;
@@ -97,6 +98,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new SearchTrackViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(SearchAnnouncerViewModel.class)) {
             return (T) new SearchAnnouncerViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        } else if (modelClass.isAssignableFrom(CrosstalkViewModel.class)) {
+            return (T) new CrosstalkViewModel(mApplication, new RadioModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

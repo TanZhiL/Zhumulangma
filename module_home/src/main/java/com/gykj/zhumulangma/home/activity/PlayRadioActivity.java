@@ -26,6 +26,7 @@ import com.gykj.zhumulangma.home.dialog.PlaySchedulePopup;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayRadioViewModel;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
@@ -235,8 +236,8 @@ public class PlayRadioActivity extends BaseMvvmActivity<HomeActivityPlayRadioBin
         super.onRight1Click(v);
         new XPopup.Builder(this).setPopupCallback(new SimpleCallback(){
             @Override
-            public void beforeShow() {
-                super.beforeShow();
+            public void beforeShow(BasePopupView popupView) {
+                super.beforeShow(popupView);
                 mSchedulePopup.getScheduleAdapter().notifyDataSetChanged();
             }
         }).asCustom(mSchedulePopup).show();
@@ -270,8 +271,8 @@ public class PlayRadioActivity extends BaseMvvmActivity<HomeActivityPlayRadioBin
             }
             new XPopup.Builder(this).popupAnimation(TranslateFromBottom).setPopupCallback(new SimpleCallback() {
                 @Override
-                public void onCreated() {
-                    super.onCreated();
+                public void onCreated(BasePopupView popupView) {
+                    super.onCreated(popupView);
                    mViewModel.getSchedules(String.valueOf(mSchedule.getRadioId()));
                 }
             }).enableDrag(false).asCustom(mPlayRadioPopup).show();

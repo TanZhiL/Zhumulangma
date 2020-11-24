@@ -37,6 +37,7 @@ import com.gykj.zhumulangma.main.dialog.SplashAdPopup;
 import com.gykj.zhumulangma.main.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.main.mvvm.viewmodel.MainViewModel;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.next.easynavigation.utils.NavigationUtil;
 import com.next.easynavigation.view.EasyNavigationBar;
@@ -215,13 +216,13 @@ public class MainActivity extends BaseMvvmActivity<MainActivityMainBinding,MainV
                 new XPopup.Builder(MainActivity.this).customAnimator(new SplashAdPopup.AlphaAnimator())
                         .setPopupCallback(new SimpleCallback() {
                             @Override
-                            public void onDismiss() {
-                                super.onDismiss();
+                            public void onDismiss(BasePopupView popupView) {
+                                super.onDismiss(popupView);
                                 mViewModel.adDissmiss();
                             }
 
                             @Override
-                            public boolean onBackPressed() {
+                            public boolean onBackPressed(BasePopupView popupView) {
                                 ActivityUtils.startHomeActivity();
                                 return true;
                             }

@@ -17,8 +17,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.dialog.TrackPagerPopup;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.SystemUtil;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -30,6 +30,7 @@ import com.gykj.zhumulangma.listen.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.listen.mvvm.viewmodel.BatchPreDownloadViewModel;
 import com.kingja.loadsir.callback.Callback;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.enums.PopupPosition;
 import com.lxj.xpopup.interfaces.SimpleCallback;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -342,8 +343,8 @@ public class BatchPreDownloadActivity extends BaseRefreshActivity<ListenActivity
             mBinding.ivSelectPage.animate().rotation(-90).setDuration(200);
             new XPopup.Builder(this).atView(mBinding.clActionbar).setPopupCallback(new SimpleCallback() {
                 @Override
-                public void onCreated() {
-                    super.onCreated();
+                public void onCreated(BasePopupView popupView) {
+                    super.onCreated(popupView);
                     mPagerPopup.getRvPager().setOnScrollListener(new RecyclerView.OnScrollListener() {
                         @Override
                         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -354,8 +355,8 @@ public class BatchPreDownloadActivity extends BaseRefreshActivity<ListenActivity
                 }
 
                 @Override
-                public void beforeShow() {
-                    super.beforeShow();
+                public void beforeShow(BasePopupView popupView) {
+                    super.beforeShow(popupView);
                     changePageStatus();
                 }
             }).popupPosition(PopupPosition.Bottom)
