@@ -2,9 +2,9 @@ package com.gykj.zhumulangma.home.adapter;
 
 import android.view.View;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.gykj.zhumulangma.common.widget.PlayingIconView;
 import com.gykj.zhumulangma.home.R;
 import com.ximalaya.ting.android.opensdk.model.PlayableModel;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
@@ -25,7 +25,7 @@ public class PlayTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
 
         helper.setText(R.id.tv_title, item.getTrackTitle());
         if (null != XmPlayerManager.getInstance(mContext).getCurrSound()) {
-            LottieAnimationView lavPlaying = helper.getView(R.id.lav_playing);
+            PlayingIconView lavPlaying = helper.getView(R.id.lav_playing);
             PlayableModel currSound = XmPlayerManager.getInstance(mContext).getCurrSound();
             if (currSound.equals(item)) {
                 lavPlaying.setVisibility(View.VISIBLE);

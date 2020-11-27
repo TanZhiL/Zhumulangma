@@ -18,7 +18,6 @@ import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.SPUtils;
@@ -32,6 +31,7 @@ import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
+import com.gykj.zhumulangma.common.widget.PlayingIconView;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.databinding.HomeActivityPlayTrackBinding;
@@ -486,7 +486,7 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
         List<Track> tracks = mPlayTrackPopup.getTrackAdapter().getData();
 
         for (int i = 0; i < tracks.size(); i++) {
-            LottieAnimationView lavPlaying = (LottieAnimationView) mPlayTrackPopup.getTrackAdapter()
+            PlayingIconView lavPlaying = (PlayingIconView) mPlayTrackPopup.getTrackAdapter()
                     .getViewByPosition(i, R.id.lav_playing);
             TextView tvTitle = (TextView) mPlayTrackPopup.getTrackAdapter()
                     .getViewByPosition(i, R.id.tv_title);

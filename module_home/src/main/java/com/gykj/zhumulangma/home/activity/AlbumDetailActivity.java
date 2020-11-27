@@ -13,7 +13,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;
@@ -31,6 +30,7 @@ import com.gykj.zhumulangma.common.mvvm.view.status.DetailSkeleton;
 import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.common.util.ZhumulangmaUtil;
+import com.gykj.zhumulangma.common.widget.PlayingIconView;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AlbumTagAdapter;
 import com.gykj.zhumulangma.home.adapter.AlbumTrackAdapter;
@@ -479,7 +479,7 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
             mBinding.tvLastplay.setText(getString(R.string.lastplay, mLastPlay.getTrackTitle()));
         }
         for (int i = 0; i < tracks.size(); i++) {
-            LottieAnimationView lavPlaying = (LottieAnimationView) mAlbumTrackAdapter
+            PlayingIconView lavPlaying = (PlayingIconView) mAlbumTrackAdapter
                     .getViewByPosition(i, R.id.lav_playing);
 
             if (null != lavPlaying) {
