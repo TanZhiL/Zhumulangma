@@ -292,7 +292,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
                     .withString(KeyCode.Home.TITLE, "国学学院"));
         } else if (id == R.id.layout_ad) {
             RouteHelper.navigateTo(mRouter.build(Constants.Router.Discover.F_WEB)
-                    .withString(KeyCode.Discover.PATH, "https://m.ximalaya.com/"));
+                    .withString(KeyCode.Discover.PATH, "https://ximalayahaoshengyin.tmall.com/"));
         }
     }
 

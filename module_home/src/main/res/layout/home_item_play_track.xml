@@ -31,17 +31,16 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <com.airbnb.lottie.LottieAnimationView
+        <com.gykj.zhumulangma.common.widget.PlayingIconView
             android:id="@+id/lav_playing"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
             android:layout_gravity="center"
+            android:layout_marginBottom="2dp"
             android:background="@color/transparent"
-            android:visibility="gone"
-            app:lottie_autoPlay="true"
-            app:lottie_colorFilter="@color/colorPrimary"
-            app:lottie_fileName="lottie_playing.json"
-            app:lottie_loop="true" />
+            android:visibility="gone"/>
 
         <!--      <ImageView
                   android:id="@+id/iv_playing"
