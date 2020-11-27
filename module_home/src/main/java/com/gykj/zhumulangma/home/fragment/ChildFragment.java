@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TBannerImageAdapter;
@@ -19,6 +21,8 @@ import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.activity.AlbumListActivity;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
+import com.gykj.zhumulangma.home.adapter.NavigationAdapter;
+import com.gykj.zhumulangma.home.bean.NavigationItem;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentFineBinding;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.ChildViewModel;
@@ -26,6 +30,9 @@ import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CHILD_DHSJ_ID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CHILD_GXJD_ID;
@@ -66,11 +73,45 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
     @Override
     public void initView() {
         initBanner();
+        initNavigation();
         initJDGS();
         initDHSJ();
         initGXJD();
         initQZEG();
         initJZZQ();
+    }
+    private void initBanner() {
+        mBinding.banner.addBannerLifecycleObserver(this);
+        mBinding.banner.setIndicator(new CircleIndicator(mActivity));
+        mBinding.banner.setIndicatorGravity(IndicatorConfig.Direction.RIGHT);
+        mBinding.banner.setOnBannerListener(this);
+    }
+    private void initNavigation() {
+        List<NavigationItem> navigationItems = new ArrayList<>();
+        navigationItems.add(new NavigationItem("排行榜", "", 0xffd5a6bd, R.drawable.ic_home_fine_cxb));
+        navigationItems.add(new NavigationItem("故事", "故事", 0xffa2c4c9, R.drawable.ic_home_fine_xpb));
+        navigationItems.add(new NavigationItem("哄睡", "哄睡", 0xfff9cb9c, R.drawable.ic_home_fine_dfhy));
+        navigationItems.add(new NavigationItem("儿歌", "儿歌", 0xffb6d7a8, R.drawable.ic_home_fine_yss));
+        navigationItems.add(new NavigationItem("动画", "动画", 0xffa4c2f4, R.drawable.ic_home_fine_sx));
+        navigationItems.add(new NavigationItem("学科", "趣学科学", 0xffffe599, R.drawable.ic_home_fine_yg));
+        NavigationAdapter navigationAdapter = new NavigationAdapter(R.layout.home_item_navigation);
+        navigationAdapter.setNewData(navigationItems);
+        mBinding.rvNavitioin.setAdapter(navigationAdapter);
+        mBinding.rvNavitioin.setLayoutManager(new LinearLayoutManager(mActivity, RecyclerView.HORIZONTAL, false));
+        mBinding.rvNavitioin.setHasFixedSize(true);
+        navigationAdapter.bindToRecyclerView(mBinding.rvNavitioin);
+        navigationAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (position == 0) {
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                        .withInt(KeyCode.Home.CATEGORY, 6)
+                        .withString(KeyCode.Home.TITLE,navigationItems.get(position).getLabel()));
+            } else {
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                        .withInt(KeyCode.Home.CATEGORY, 6)
+                        .withString(KeyCode.Home.TAG, navigationItems.get(position).getValue())
+                        .withString(KeyCode.Home.TITLE, navigationItems.get(position).getLabel()));
+            }
+        });
     }
 
     private void initJDGS() {
@@ -109,19 +150,16 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
     @Override
     public void initListener() {
         super.initListener();
-        mBinding.dailyRefresh.setOnClickListener(this);
         mBinding.ihDaily.setOnClickListener(v ->
                 RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_JDGS_ID)
                 .withString(KeyCode.Home.TITLE, mViewModel.getJDGSNameEvent().getValue())));
-        mBinding.bookRefresh.setOnClickListener(this);
         mBinding.ihBook.setOnClickListener(v ->
                 RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_DHSJ_ID)
                 .withString(KeyCode.Home.TITLE, mViewModel.getDHSJNameEvent().getValue())));
-        mBinding.classroomRefresh.setOnClickListener(this);
         mBinding.ihClassroom.setOnClickListener(v ->
                 RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
@@ -137,6 +175,12 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
                 .withString(KeyCode.Home.COLUMN, CHILD_JZZQ_ID)
                 .withString(KeyCode.Home.TITLE, mViewModel.getJZZQNameEvent().getValue())));
+
+        mBinding.dailyRefresh.setOnClickListener(this);
+        mBinding.bookRefresh.setOnClickListener(this);
+        mBinding.classroomRefresh.setOnClickListener(this);
+        mBinding.singRefresh.setOnClickListener(this);
+        mBinding.parentRefresh.setOnClickListener(this);
 
         mBinding.llPhb.setOnClickListener(this);
         mBinding.llGs.setOnClickListener(this);
@@ -189,12 +233,6 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         mViewModel.getJZZQNameEvent().observe(this, s -> mBinding.ihParent.setTitle(s));
     }
 
-    private void initBanner() {
-        mBinding.banner.addBannerLifecycleObserver(this);
-        mBinding.banner.setIndicator(new CircleIndicator(mActivity));
-        mBinding.banner.setIndicatorGravity(IndicatorConfig.Direction.RIGHT);
-        mBinding.banner.setOnBannerListener(this);
-    }
 
     @Override
     public boolean enableSimplebar() {

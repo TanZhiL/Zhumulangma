@@ -47,6 +47,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="84dp"
                         android:scrollbars="none"
+                        android:visibility="gone"
                         android:overScrollMode="never"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -266,12 +267,18 @@
 
                         </LinearLayout>
                     </HorizontalScrollView>
-
+                    <com.gykj.zhumulangma.common.widget.NestRecyclerView
+                        android:id="@+id/rv_navitioin"
+                        android:layout_width="match_parent"
+                        android:overScrollMode="always"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:visibility="visible"
+                        android:layout_height="84dp" />
                     <View
                         android:id="@+id/line1"
                         android:layout_width="0dp"
                         style="@style/PrimaryHLine"
-                        app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
+                        app:layout_constraintTop_toBottomOf="@id/rv_navitioin"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
 
