@@ -8,6 +8,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TBannerImageAdapter;
@@ -23,6 +24,8 @@ import com.gykj.zhumulangma.home.activity.AlbumListActivity;
 import com.gykj.zhumulangma.home.adapter.AlbumAdapter;
 import com.gykj.zhumulangma.home.adapter.HotLikeAdapter;
 import com.gykj.zhumulangma.home.adapter.HotMusicAdapter;
+import com.gykj.zhumulangma.home.adapter.NavigationAdapter;
+import com.gykj.zhumulangma.home.bean.NavigationItem;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentHotBinding;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
@@ -31,6 +34,9 @@ import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.HOT_COLUMN_ID;
 
@@ -67,11 +73,38 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     @Override
     public void initView() {
         initBanner();
+        initNavigation();
         initLike();
         initStory();
         initBaby();
         initMusic();
         initRadio();
+    }
+
+    private void initNavigation() {
+        List<NavigationItem> navigationItems = new ArrayList<>();
+        navigationItems.add(new NavigationItem("排行榜", "", 0xffd5a6bd, R.drawable.ic_home_hot_phb));
+        navigationItems.add(new NavigationItem("音乐", "2", 0xffa2c4c9, R.drawable.ic_home_hot_jp));
+        navigationItems.add(new NavigationItem("IT科技", "18", 0xfff9cb9c, R.drawable.ic_home_hot_dfhy));
+        navigationItems.add(new NavigationItem("情感生活", "10", 0xffb6d7a8, R.drawable.ic_home_hot_tqy));
+        navigationItems.add(new NavigationItem("人文", "39", 0xffa4c2f4, R.drawable.ic_home_hot_xyyx));
+        navigationItems.add(new NavigationItem("英语", "38", 0xffffe599, R.drawable.ic_home_hot_td));
+        navigationItems.add(new NavigationItem("国学学院", "40", 0xffff0000, R.drawable.ic_home_hot_rmfx));
+        NavigationAdapter navigationAdapter = new NavigationAdapter(R.layout.home_item_navigation);
+        navigationAdapter.setNewData(navigationItems);
+        mBinding.rvNavitioin.setAdapter(navigationAdapter);
+        mBinding.rvNavitioin.setLayoutManager(new LinearLayoutManager(mActivity, RecyclerView.HORIZONTAL, false));
+        mBinding.rvNavitioin.setHasFixedSize(true);
+        navigationAdapter.bindToRecyclerView(mBinding.rvNavitioin);
+        navigationAdapter.setOnItemClickListener((adapter, view, position) -> {
+            if (position == 0) {
+                RouteHelper.navigateTo(Constants.Router.Home.F_RANK);
+            } else {
+                RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
+                        .withInt(KeyCode.Home.CATEGORY, Integer.parseInt(navigationItems.get(position).getValue()))
+                        .withString(KeyCode.Home.TITLE, navigationItems.get(position).getLabel()));
+            }
+        });
     }
 
 
@@ -133,13 +166,13 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
                         .withLong(KeyCode.Home.ALBUMID, mColumnAdapter.getItem(position).getId())));
         mBinding.nsv.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)
                 (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            int bottom = mBinding.banner.getBottom();
-            if (scrollY > bottom) {
-                mBinding.banner.stop();
-            } else {
-                mBinding.banner.start();
-            }
-        });
+                    int bottom = mBinding.banner.getBottom();
+                    if (scrollY > bottom) {
+                        mBinding.banner.stop();
+                    } else {
+                        mBinding.banner.start();
+                    }
+                });
     }
 
     @NonNull
@@ -286,7 +319,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
             RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.CATEGORY, 38)
                     .withString(KeyCode.Home.TITLE, "英语"));
-        }else if (id == R.id.ll_gxxy) {
+        } else if (id == R.id.ll_gxxy) {
             RouteHelper.navigateTo(mRouter.build(Constants.Router.Home.F_ALBUM_LIST)
                     .withInt(KeyCode.Home.CATEGORY, 40)
                     .withString(KeyCode.Home.TITLE, "国学学院"));
