@@ -27,6 +27,8 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 
+    api project(':lib_banner')
+
     api rootProject.ext.androidx["design"]
     api rootProject.ext.androidx["constraintlayout"]
     api rootProject.ext.androidx["appcompat"]
@@ -75,7 +77,7 @@ dependencies {
     api rootProject.ext.dependencies["AVLoading"]
     api rootProject.ext.dependencies["EasyNavigation"]
     api rootProject.ext.dependencies["MagicIndicator"]
-    api rootProject.ext.dependencies["banner"]
+//    api rootProject.ext.dependencies["banner"]
     api rootProject.ext.dependencies["ratingbar"]
     api rootProject.ext.dependencies["labelview"]
     api rootProject.ext.dependencies["FlowLayout"]

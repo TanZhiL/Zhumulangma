@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.adapter.TBannerImageAdapter;
 import com.gykj.zhumulangma.common.bean.BannerBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.home.R;
@@ -27,8 +27,7 @@ import com.gykj.zhumulangma.home.databinding.HomeFragmentFineBinding;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.ChildViewModel;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
-import com.youth.banner.config.IndicatorConfig;
-import com.youth.banner.indicator.CircleIndicator;
+import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
@@ -81,9 +80,8 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         initJZZQ();
     }
     private void initBanner() {
-        mBinding.banner.addBannerLifecycleObserver(this);
-        mBinding.banner.setIndicator(new CircleIndicator(mActivity));
-        mBinding.banner.setIndicatorGravity(IndicatorConfig.Direction.RIGHT);
+        mBinding.banner.setIndicatorGravity(BannerConfig.RIGHT);
+        mBinding.banner.setDelayTime(3000);
         mBinding.banner.setOnBannerListener(this);
     }
     private void initNavigation() {
@@ -192,9 +190,9 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
                 (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
                     int bottom = mBinding.banner.getBottom();
                     if (scrollY > bottom) {
-                        mBinding.banner.stop();
+                        mBinding.banner.stopAutoPlay();
                     } else {
-                        mBinding.banner.start();
+                        mBinding.banner.startAutoPlay();
                     }
                 });
     }
@@ -216,8 +214,11 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
     @Override
     public void initViewObservable() {
         mViewModel.getBannerV2Event().observe(this, bannerV2s -> {
-            mBinding.banner.setAdapter(new TBannerImageAdapter(bannerV2s));
-            mBinding.banner.setOnBannerListener(this);
+            List<String> images = new ArrayList<>();
+            for (BannerBean bannerV2 : bannerV2s) {
+                images.add(bannerV2.getBannerCoverUrl());
+            }
+            mBinding.banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
         });
         mViewModel.getJDGSEvent().observe(this, albums -> {
             mJDGSAdapter.setNewData(albums);
@@ -301,6 +302,9 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         if (mBinding != null) {
             mBinding.marqueeView.continueRoll();
         }
+        if (mBinding != null) {
+            mBinding.banner.startAutoPlay();
+        }
     }
 
     @Override
@@ -308,6 +312,9 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
         super.onPause();
         if (mBinding != null) {
             mBinding.marqueeView.stopRoll();
+        }
+        if (mBinding != null) {
+            mBinding.banner.stopAutoPlay();
         }
     }
 
@@ -325,7 +332,7 @@ public class ChildFragment extends BaseRefreshFragment<HomeFragmentFineBinding, 
     }
 
     @Override
-    public void OnBannerClick(Object data, int position) {
+    public void OnBannerClick(int position) {
         BannerBean bannerV2 = mViewModel.getBannerV2Event().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:

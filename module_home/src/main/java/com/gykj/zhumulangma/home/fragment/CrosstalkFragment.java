@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.adapter.TBannerImageAdapter;
 import com.gykj.zhumulangma.common.bean.BannerBean;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
+import com.gykj.zhumulangma.common.extra.GlideImageLoader;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
@@ -32,9 +32,11 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.CrosstalkViewModel;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
-import com.youth.banner.config.IndicatorConfig;
-import com.youth.banner.indicator.CircleIndicator;
+import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_DJJX_ID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.NOVE_DAILY_ID;
@@ -90,9 +92,9 @@ public class CrosstalkFragment extends BaseRefreshFragment<HomeFragmentCrosstalk
     }
 
     private void initBanner() {
-        mBinding.banner.addBannerLifecycleObserver(this);
-        mBinding.banner.setIndicator(new CircleIndicator(mActivity));
-        mBinding.banner.setIndicatorGravity(IndicatorConfig.Direction.RIGHT);
+        mBinding.banner.setOnBannerListener(this);
+        mBinding.banner.setIndicatorGravity(BannerConfig.RIGHT);
+        mBinding.banner.setDelayTime(3000);
     }
 
     private void initDaily() {
@@ -164,9 +166,9 @@ public class CrosstalkFragment extends BaseRefreshFragment<HomeFragmentCrosstalk
                 (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
                     int bottom = mBinding.banner.getBottom();
                     if (scrollY > bottom) {
-                        mBinding.banner.stop();
+                        mBinding.banner.stopAutoPlay();
                     } else {
-                        mBinding.banner.start();
+                        mBinding.banner.startAutoPlay();
                     }
                 });
         mBinding.youngRefresh.setOnClickListener(this);
@@ -212,8 +214,11 @@ public class CrosstalkFragment extends BaseRefreshFragment<HomeFragmentCrosstalk
     @Override
     public void initViewObservable() {
         mViewModel.getBannerEvent().observe(this, bannerV2s -> {
-            mBinding.banner.setAdapter(new TBannerImageAdapter(bannerV2s));
-            mBinding.banner.setOnBannerListener(this);
+            List<String> images = new ArrayList<>();
+            for (BannerBean bannerV2 : bannerV2s) {
+                images.add(bannerV2.getBannerCoverUrl());
+            }
+            mBinding.banner.setImages(images).setImageLoader(new GlideImageLoader()).start();
         });
         mViewModel.getDailyEvent().observe(this, radios -> mDailyAdapter.setNewData(radios));
         mViewModel.getDajiaEvent().observe(this, radios -> mDajiaAdapter.setNewData(radios));
@@ -253,11 +258,21 @@ public class CrosstalkFragment extends BaseRefreshFragment<HomeFragmentCrosstalk
                 }, Throwable::printStackTrace);
     }
 
-
     @Override
     protected void onRevisible() {
         super.onRevisible();
         mViewModel.getHistory();
+        if (mBinding != null) {
+            mBinding.banner.startAutoPlay();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mBinding != null) {
+            mBinding.banner.stopAutoPlay();
+        }
     }
 
     @Override
@@ -294,7 +309,7 @@ public class CrosstalkFragment extends BaseRefreshFragment<HomeFragmentCrosstalk
     }
 
     @Override
-    public void OnBannerClick(Object data, int position) {
+    public void OnBannerClick(int position) {
         BannerBean bannerV2 = mViewModel.getBannerEvent().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:

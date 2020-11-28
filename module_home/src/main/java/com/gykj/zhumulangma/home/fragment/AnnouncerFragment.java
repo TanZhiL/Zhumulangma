@@ -1,3 +1,4 @@
+/*
 package com.gykj.zhumulangma.home.fragment;
 
 import android.view.View;
@@ -25,12 +26,14 @@ import com.youth.banner.config.IndicatorConfig;
 import com.youth.banner.indicator.CircleIndicator;
 import com.youth.banner.listener.OnBannerListener;
 
+*/
 /**
  * Author: Thomas.
  * <br/>Date: 2019/9/10 8:23
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:主播
- */
+ *//*
+
 public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncerBinding, AnnouncerViewModel, Announcer>
         implements OnBannerListener {
 
@@ -150,3 +153,4 @@ public class AnnouncerFragment extends BaseRefreshFragment<HomeFragmentAnnouncer
         }
     }
 }
+*/

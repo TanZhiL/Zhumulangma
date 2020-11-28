@@ -66,9 +66,12 @@
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="158dp"
-                        app:banner_indicator_height="7dp"
-                        app:banner_indicator_margin="3dp"
-                        app:banner_indicator_normal_width="7dp" />
+                        app:indicator_drawable_unselected="@drawable/shap_home_banner_dot"
+                        app:indicator_height="7dp"
+                        app:indicator_margin="3dp"
+                        app:indicator_selected_height="7dp"
+                        app:indicator_selected_width="7dp"
+                        app:indicator_width="7dp" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout"
