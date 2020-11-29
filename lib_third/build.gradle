@@ -28,6 +28,7 @@ dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 
     api project(':lib_banner')
+    api project(':lib_xpopup')
 
     api rootProject.ext.androidx["design"]
     api rootProject.ext.androidx["constraintlayout"]
@@ -83,7 +84,7 @@ dependencies {
     api rootProject.ext.dependencies["FlowLayout"]
     api rootProject.ext.dependencies["greendao"]
     api rootProject.ext.dependencies["MarqueeView"]
-    api rootProject.ext.dependencies["xpopup"]
+//    api rootProject.ext.dependencies["xpopup"]
     api rootProject.ext.dependencies["toast"]
     api rootProject.ext.dependencies["bga-qrcode-zxing"]
     api rootProject.ext.dependencies["roundedimageview"]

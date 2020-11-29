@@ -1,2 +1,3 @@
+include ':lib_xpopup'
 include ':lib_banner'
 include ':app', ':lib_common', ':module_main', ':module_home', ':module_listen', ':module_discover', ':module_user', ':lib_third'

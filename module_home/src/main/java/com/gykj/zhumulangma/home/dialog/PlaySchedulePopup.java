@@ -83,7 +83,7 @@ public class PlaySchedulePopup extends BottomPopupView implements View.OnClickLi
     // 最大高度为Window的0.85
     @Override
     protected int getMaxHeight() {
-        return (int) (XPopupUtils.getAppHeight(getContext()) * .85f);
+        return (int) (XPopupUtils.getWindowHeight(getContext()) * .85f);
     }
 
     public PlayScheduleAdapter getScheduleAdapter() {
