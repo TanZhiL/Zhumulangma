@@ -155,4 +155,16 @@ public class ColumnBean {
     public void setDimensionTags(List<String> dimensionTags) {
         this.dimensionTags = dimensionTags;
     }
+
+    @Override
+    public String toString() {
+        return "ColumnBean{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", contentType=" + contentType +
+                ", operationCategory=" + operationCategory +
+                ", contentNum=" + contentNum +
+                ", kind='" + kind + '\'' +
+                '}';
+    }
 }

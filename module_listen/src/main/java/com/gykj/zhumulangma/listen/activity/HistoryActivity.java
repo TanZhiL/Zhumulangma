@@ -11,9 +11,9 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.HistoryAdapter;
 import com.gykj.zhumulangma.listen.bean.PlayHistoryItem;
@@ -30,14 +30,14 @@ import java.util.List;
  * <br/>Description:
  */
 @Route(path = Constants.Router.Listen.F_HISTORY)
-public class HistoryActivity extends BaseRefreshActivity<CommonLayoutListBinding,HistoryViewModel, PlayHistoryItem> implements
+public class HistoryActivity extends BaseRefreshActivity<CommonLayoutRefreshListBinding,HistoryViewModel, PlayHistoryItem> implements
         BaseQuickAdapter.OnItemClickListener {
 
     private HistoryAdapter mHistoryAdapter;
 
     @Override
     public int onBindLayout() {
-        return R.layout.common_layout_list;
+        return R.layout.common_layout_refresh_list;
     }
 
     @Override

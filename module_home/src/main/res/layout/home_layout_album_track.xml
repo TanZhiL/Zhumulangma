@@ -126,6 +126,6 @@
 
         <include
             android:id="@+id/include_list"
-            layout="@layout/common_layout_list" />
+            layout="@layout/common_layout_refresh_list" />
     </LinearLayout>
 </layout>

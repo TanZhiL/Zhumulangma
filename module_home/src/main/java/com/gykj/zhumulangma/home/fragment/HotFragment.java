@@ -200,14 +200,14 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     }
 
     private void initStory() {
-        mStoryAdapter = new AlbumAdapter(R.layout.home_item_album);
+        mStoryAdapter = new AlbumAdapter(R.layout.home_item_album_list);
         mBinding.rvStory.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.rvStory.setHasFixedSize(true);
         mStoryAdapter.bindToRecyclerView(mBinding.rvStory);
     }
 
     private void initBaby() {
-        mBabyAdapter = new AlbumAdapter(R.layout.home_item_album);
+        mBabyAdapter = new AlbumAdapter(R.layout.home_item_album_list);
         mBinding.rvBaby.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.rvBaby.setHasFixedSize(true);
         mBabyAdapter.bindToRecyclerView(mBinding.rvBaby);
@@ -223,7 +223,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     }
 
     private void initRadio() {
-        mColumnAdapter = new AlbumAdapter(R.layout.home_item_album);
+        mColumnAdapter = new AlbumAdapter(R.layout.home_item_album_list);
         mBinding.rvRadio.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.rvRadio.setHasFixedSize(true);
         mColumnAdapter.bindToRecyclerView(mBinding.rvRadio);
@@ -346,7 +346,7 @@ public class HotFragment extends BaseRefreshFragment<HomeFragmentHotBinding, Hot
     }
 
     @Override
-    public void OnBannerClick(int position) {
+    public void OnBannerClick(Object o, int position) {
         BannerBean bannerV2 = mViewModel.getBannerEvent().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:

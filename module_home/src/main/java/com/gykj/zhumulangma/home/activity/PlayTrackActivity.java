@@ -109,7 +109,7 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
     @Override
     public void initView() {
         mBinding.rvRelative.setLayoutManager(new LinearLayoutManager(this));
-        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album);
+        mAlbumAdapter = new AlbumAdapter(R.layout.home_item_album_list);
         mAlbumAdapter.bindToRecyclerView(mBinding.rvRelative);
         initBar();
         mHandler.postDelayed(() -> {

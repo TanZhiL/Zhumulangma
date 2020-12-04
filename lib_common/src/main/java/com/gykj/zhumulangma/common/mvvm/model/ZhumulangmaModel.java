@@ -60,7 +60,11 @@ import static com.gykj.zhumulangma.common.util.ZhumulangmaUtil.commonParams;
 public class ZhumulangmaModel extends BaseModel {
 
     public static final String OPERATION_CATEGORY_ID = "operation_category_id";
+    public static final String COLUMN_CATEGORY_CHILD = "1000535";
     public static final String IS_PAID = "is_paid";
+    public static final String COLUMN_TITLE_SEPARATOR = "/";
+    public static final int COLUMN_TITLE_INDEX = 0;
+    public static final int COLUMN_SIZE_INDEX = 1;
     public static final String SCOPE = "scope";
     public static final String IDS = "ids";
     public static final String HOT_COLUMN_ID = "10054";
@@ -74,7 +78,6 @@ public class ZhumulangmaModel extends BaseModel {
     public static final String CHILD_GXJD_ID = "10061";
     public static final String CHILD_QZEG_ID = "10058";
     public static final String CHILD_JZZQ_ID = "10059";
-
 
     public static final String CROSSTALK_DJJX_ID = "10075";
     public static final String CROSSTALK_XSJX_ID = "10073";
@@ -99,9 +102,32 @@ public class ZhumulangmaModel extends BaseModel {
                 .compose(RxAdapter.schedulersTransformer())
                 .compose(RxAdapter.exceptionTransformer());
     }
-
     /**
-     * 获取听单
+     * 获取焦点图
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<BannerDTO> getBanners1(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<BannerDTO>>) stringStringMap ->
+                mNetManager.getHomeService().getBanners(stringStringMap))
+                .compose(RxAdapter.exceptionTransformer());
+    }
+    /**
+     * 多条件获取听单
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<ColumnDTO> getColumns1(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<ColumnDTO>>) stringStringMap ->
+                mNetManager.getHomeService().getColumns(stringStringMap))
+                .compose(RxAdapter.exceptionTransformer());
+    }
+    /**
+     * 多条件获取听单
      *
      * @param specificParams
      * @return
@@ -128,6 +154,18 @@ public class ZhumulangmaModel extends BaseModel {
                 .compose(RxAdapter.exceptionTransformer());
     }
 
+    /**
+     * 获取专辑听单详情
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<ColumnDetailDTO<Album>> getBrowseAlbumColumn1(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<ColumnDetailDTO<Album>>>) stringStringMap ->
+                mNetManager.getHomeService().getBrowseAlbumColumn(stringStringMap))
+                .compose(RxAdapter.exceptionTransformer());
+    }
     /**
      * 获取专辑听单详情
      *

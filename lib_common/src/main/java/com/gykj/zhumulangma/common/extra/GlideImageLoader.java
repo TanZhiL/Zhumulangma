@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.gykj.zhumulangma.common.bean.BannerBean;
 import com.youth.banner.loader.ImageLoader;
 
 /**
@@ -23,6 +24,9 @@ public class GlideImageLoader extends ImageLoader {
          切记不要胡乱强转！
          */
         //Glide 加载图片简单用法
+        if(path instanceof BannerBean){
+            path = ((BannerBean)path).getBannerCoverUrl();
+        }
         Glide.with(context).load(path).into(imageView);
     }
 

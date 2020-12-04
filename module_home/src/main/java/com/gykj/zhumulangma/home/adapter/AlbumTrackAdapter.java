@@ -1,6 +1,8 @@
 package com.gykj.zhumulangma.home.adapter;
 
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.blankj.utilcode.util.TimeUtils;
@@ -91,5 +93,12 @@ public class AlbumTrackAdapter extends BaseQuickAdapter<Track, BaseViewHolder> {
         }
 
         helper.addOnClickListener(R.id.iv_download);
+    }
+
+    private static final String TAG = "AlbumTrackAdapter";
+    @Override
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: ");
+        return super.onCreateViewHolder(parent, viewType);
     }
 }

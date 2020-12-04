@@ -81,7 +81,7 @@
     <View
         android:layout_width="match_parent"
        style="@style/SecondHLine"/>
-    <include android:layout_height="250dp"   android:layout_width="match_parent" layout="@layout/common_layout_list"/>
+    <include android:layout_height="250dp"   android:layout_width="match_parent" layout="@layout/common_layout_refresh_list"/>
 
 
     <View

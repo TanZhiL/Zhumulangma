@@ -118,7 +118,7 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
     }
 
     private void initYoung() {
-        mYoungAdapter = new AlbumAdapter(R.layout.home_item_album);
+        mYoungAdapter = new AlbumAdapter(R.layout.home_item_album_list);
         mBinding.rvYoung.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.rvYoung.setHasFixedSize(true);
         mYoungAdapter.bindToRecyclerView(mBinding.rvYoung);
@@ -297,7 +297,7 @@ public class NovelFragment extends BaseRefreshFragment<HomeFragmentRadioBinding,
     }
 
     @Override
-    public void OnBannerClick(int position) {
+    public void OnBannerClick(Object o, int position) {
         BannerBean bannerV2 = mViewModel.getBannerEvent().getValue().get(position);
         switch (bannerV2.getBannerContentType()) {
             case 2:

@@ -3,7 +3,6 @@ package com.gykj.zhumulangma.home.activity;
 
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,7 +17,6 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.google.android.material.appbar.AppBarLayout;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
@@ -123,16 +121,6 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
         mAlbumTrackAdapter.bindToRecyclerView(mTrackBind.includeList.recyclerview);
         mPagerPopup = new TrackPagerPopup(this, this);
         mPagerPopup.setDismissingListener(this);
-        mBinding.abl.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                int[] location = new int[2];
-                mTrackBind.clActionbar.getLocationInWindow(location);
-                Log.i(TAG, "onOffsetChanged1: " + location[0] + " / " + location[1]);
-                mTrackBind.clActionbar.getLocationOnScreen(location);
-                Log.i(TAG, "onOffsetChanged2: " + location[0] + " / " + location[1]);
-            }
-        });
     }
 
     @Override

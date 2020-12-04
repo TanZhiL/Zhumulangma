@@ -1,5 +1,5 @@
 package com.youth.banner.listener;
 
 public interface OnBannerListener {
-    public void OnBannerClick(int position);
+    public void OnBannerClick(Object o, int position);
 }

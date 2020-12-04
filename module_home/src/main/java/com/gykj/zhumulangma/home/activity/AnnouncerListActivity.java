@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerAdapter;
@@ -29,7 +29,7 @@ import com.ximalaya.ting.android.opensdk.model.album.Announcer;
  */
 
 @Route(path = Constants.Router.Home.F_ANNOUNCER_LIST)
-public class AnnouncerListActivity extends BaseRefreshActivity<CommonLayoutListBinding, AnnouncerListViewModel, Announcer>
+public class AnnouncerListActivity extends BaseRefreshActivity<CommonLayoutRefreshListBinding, AnnouncerListViewModel, Announcer>
         implements OnLoadMoreListener {
 
     @Autowired(name = KeyCode.Home.CATEGORY_ID)
@@ -40,7 +40,7 @@ public class AnnouncerListActivity extends BaseRefreshActivity<CommonLayoutListB
 
     @Override
     public int onBindLayout() {
-        return R.layout.common_layout_list;
+        return R.layout.common_layout_refresh_list;
     }
 
     @Override

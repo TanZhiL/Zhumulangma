@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            layout="@layout/common_layout_list" />
+            layout="@layout/common_layout_refresh_list" />
 
         <LinearLayout
             android:id="@+id/cl_action"

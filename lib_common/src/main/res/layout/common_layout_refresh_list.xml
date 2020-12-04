@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnableLoadMoreWhenContentNotFull="false"
+        app:srlEnableNestedScrolling="true"
+        app:srlFooterTriggerRate="0"
+        app:srlHeaderMaxDragRate="2.0">
+
+        <com.gykj.zhumulangma.common.widget.TRefreshHeader
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+        <!--https://github.com/scwang90/SmartRefreshLayout/issues/1160-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="true"
+                android:overScrollMode="never" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</layout>

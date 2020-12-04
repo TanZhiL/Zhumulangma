@@ -543,7 +543,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
                 view.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.OnBannerClick(toRealPosition(position));
+                        int i = toRealPosition(position);
+                        listener.OnBannerClick(getImageUrls().get(i),i);
                     }
                 });
             }
@@ -666,4 +667,9 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     public void releaseBanner() {
         handler.removeCallbacksAndMessages(null);
     }
+
+    public List getImageUrls() {
+        return imageUrls;
+    }
+
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintDimensionRatio="1"
+            app:riv_corner_radius="4dp"
+            android:scaleType="centerCrop"
+            android:src="@color/colorDefault" />
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:tint="@color/white"
+            android:src="@drawable/ic_common_play"
+            />
+
+        <TextView
+            android:id="@+id/tv_playcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="53.1万"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_back" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="伦桑伦桑的那些年口胡的歌"
+        android:textColor="#000000"
+        android:textSize="13sp" />
+</LinearLayout>

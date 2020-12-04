@@ -1,10 +1,13 @@
 package com.youth.banner.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import androidx.viewpager.widget.ViewPager;
+
+import java.lang.reflect.Field;
 
 
 public class BannerViewPager extends ViewPager {
@@ -18,6 +21,34 @@ public class BannerViewPager extends ViewPager {
         super(context, attrs);
     }
 
+    /**
+     * https://www.jianshu.com/p/6e36fb6b80f7
+     */
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        /**
+         * 设ViewPager中有3张照片
+         * 直到完全隐藏此ViewPager，并执行了onDetachedFromWindow
+         * 再回来时，将会出现bug，第一次滑动时没有动画效果，并且，经常出现view没有加载的情况
+         */
+        try {
+            Field mFirstLayout = ViewPager.class.getDeclaredField("mFirstLayout");
+            mFirstLayout.setAccessible(true);
+            mFirstLayout.set(this, false);
+
+            setCurrentItem(getCurrentItem());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        if (((Activity) getContext()).isFinishing()) {
+            super.onDetachedFromWindow();
+        }
+    }
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {

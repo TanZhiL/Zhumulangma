@@ -1,6 +1,8 @@
 package com.gykj.zhumulangma.home.adapter;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.blankj.utilcode.util.SizeUtils;
@@ -30,5 +32,12 @@ public class NavigationAdapter extends BaseQuickAdapter<NavigationItem, BaseView
         helper.setText(R.id.tv_label, item.getLabel());
         helper.getView(R.id.fl_container).setBackground(drawable);
 
+    }
+
+    private static final String TAG = "NavigationAdapter";
+    @Override
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: ");
+        return super.onCreateViewHolder(parent, viewType);
     }
 }

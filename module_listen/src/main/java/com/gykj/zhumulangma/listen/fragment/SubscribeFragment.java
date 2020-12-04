@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.SubscribeBean;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
@@ -28,7 +28,7 @@ import com.gykj.zhumulangma.listen.mvvm.viewmodel.SubscribeViewModel;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:订阅
  */
-public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutListBinding, SubscribeViewModel, SubscribeBean>
+public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutRefreshListBinding, SubscribeViewModel, SubscribeBean>
         implements BaseQuickAdapter.OnItemChildClickListener, View.OnClickListener {
 
     private SubscribeAdapter mSubscribeAdapter;
@@ -41,7 +41,7 @@ public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutListBindi
 
     @Override
     public int onBindLayout() {
-        return R.layout.common_layout_list;
+        return R.layout.common_layout_refresh_list;
     }
 
     @Override

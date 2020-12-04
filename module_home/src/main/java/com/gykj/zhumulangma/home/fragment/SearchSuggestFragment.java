@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.RouteHelper;
@@ -31,7 +31,7 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchViewModel;
  * <br/>Description:搜索下建议词页
  */
 @Route(path = Constants.Router.Home.F_SEARCH_SUGGEST)
-public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBinding, SearchViewModel> implements
+public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutRefreshListBinding, SearchViewModel> implements
         BaseQuickAdapter.OnItemClickListener, View.OnClickListener, BaseQuickAdapter.OnItemChildClickListener {
 
     private String mKeyword;
@@ -40,7 +40,7 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutListBind
     private TextView tvHeader;
     @Override
     public int onBindLayout() {
-        return R.layout.common_layout_list;
+        return R.layout.common_layout_refresh_list;
     }
 
     @Override

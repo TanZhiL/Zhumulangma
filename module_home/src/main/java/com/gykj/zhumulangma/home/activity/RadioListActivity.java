@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.bean.ProvinceBean;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmActivity;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:电台列表
  */
 @Route(path = Constants.Router.Home.F_RADIO_LIST)
-public class RadioListActivity extends BaseMvvmActivity<CommonLayoutListBinding, RadioListViewModel> implements
+public class RadioListActivity extends BaseMvvmActivity<CommonLayoutRefreshListBinding, RadioListViewModel> implements
         BaseQuickAdapter.OnItemClickListener, RadioProvincePopup.onSelectedListener, RadioProvincePopup.onPopupDismissingListener {
     //本省台
     public static final int LOCAL_PROVINCE = 999;
@@ -75,7 +75,7 @@ public class RadioListActivity extends BaseMvvmActivity<CommonLayoutListBinding,
 
     @Override
     public int onBindLayout() {
-        return R.layout.common_layout_list;
+        return R.layout.common_layout_refresh_list;
     }
 
     @Override

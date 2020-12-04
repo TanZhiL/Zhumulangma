@@ -13,6 +13,12 @@ public class RxField<F> {
 
     private F field;
 
+    public RxField() {
+    }
+
+    public RxField(F field) {
+        this.field = field;
+    }
 
     public F get() {
         return field;

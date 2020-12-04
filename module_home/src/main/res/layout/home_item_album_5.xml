@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <com.gykj.zhumulangma.common.widget.ItemHeader
+        android:id="@+id/ih_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:ih_right_text="更多"
+        app:ih_title="猜你喜欢"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <include
+        android:id="@+id/layout_album_1"
+        layout="@layout/home_item_album_list"/>
+    <include
+        android:id="@+id/layout_album_2"
+        layout="@layout/home_item_album_list"/>
+    <include
+        android:id="@+id/layout_album_3"
+        layout="@layout/home_item_album_list"/>
+    <include
+        android:id="@+id/layout_album_4"
+        layout="@layout/home_item_album_list"/>
+    <include
+        android:id="@+id/layout_album_5"
+        layout="@layout/home_item_album_list"/>
+</LinearLayout>

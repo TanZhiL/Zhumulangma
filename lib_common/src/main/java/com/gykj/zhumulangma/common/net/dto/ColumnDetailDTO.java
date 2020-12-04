@@ -75,4 +75,14 @@ public class ColumnDetailDTO<T> {
     public void setColumns(List<T> columns) {
         this.values = columns;
     }
+
+    @Override
+    public String toString() {
+        return "ColumnDetailDTO{" +
+                "totalPage=" + totalPage +
+                ", totalCount=" + totalCount +
+                ", currentPage=" + currentPage +
+                ", values=" + values.size() + values.get(0) +
+                '}';
+    }
 }

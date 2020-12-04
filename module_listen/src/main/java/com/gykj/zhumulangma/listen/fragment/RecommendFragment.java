@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.blankj.utilcode.util.CollectionUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.listen.R;
 import com.gykj.zhumulangma.listen.adapter.RecommendAdapter;
@@ -33,14 +33,14 @@ import java.util.List;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:推荐订阅
  */
-public class RecommendFragment extends BaseMvvmFragment<CommonLayoutListBinding, SubscribeViewModel> implements
+public class RecommendFragment extends BaseMvvmFragment<CommonLayoutRefreshListBinding, SubscribeViewModel> implements
         BaseQuickAdapter.OnItemChildClickListener, OnRefreshLoadMoreListener {
 
     private RecommendAdapter mRecommendAdapter;
 
     @Override
     public int onBindLayout() {
-        return R.layout.common_layout_list;
+        return R.layout.common_layout_refresh_list;
     }
 
     @Override

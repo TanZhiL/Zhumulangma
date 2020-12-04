@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.gykj.zhumulangma.common.widget.ItemHeader
+        android:id="@+id/ih_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:ih_right_text="更多"
+        app:ih_title="猜你喜欢"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <include
+        android:id="@+id/layout_album_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        layout="@layout/home_item_album_grid"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/layout_album_2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/ih_title"
+        app:layout_constraintStart_toStartOf="parent">
+    </include>
+
+    <include
+        android:id="@+id/layout_album_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        layout="@layout/home_item_album_grid"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/layout_album_3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/layout_album_1"
+        app:layout_constraintTop_toTopOf="@id/layout_album_1">
+    </include>
+
+    <include
+        android:id="@+id/layout_album_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:orientation="vertical"
+        layout="@layout/home_item_album_grid"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/layout_album_2"
+        app:layout_constraintTop_toTopOf="@id/layout_album_1">
+
+    </include>
+
+    <include
+        android:id="@+id/layout_album_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        layout="@layout/home_item_album_grid"
+        android:visibility="gone"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/layout_album_5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_album_1">
+    </include>
+
+    <include
+        android:id="@+id/layout_album_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        layout="@layout/home_item_album_grid"
+        android:layout_marginEnd="4dp"
+        android:visibility="gone"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/layout_album_6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/layout_album_4"
+        app:layout_constraintTop_toTopOf="@id/layout_album_4">
+    </include>
+
+    <include
+        android:id="@+id/layout_album_6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        layout="@layout/home_item_album_grid"
+        android:layout_marginEnd="4dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/layout_album_5"
+        app:layout_constraintTop_toTopOf="@id/layout_album_4">
+
+    </include>
+</androidx.constraintlayout.widget.ConstraintLayout>

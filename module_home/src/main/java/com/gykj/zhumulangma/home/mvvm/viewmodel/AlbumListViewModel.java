@@ -90,8 +90,8 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                                 return;
                             }
                             curPage++;
-                            getClearStatusEvent().call();
                             getInitAlbumsEvent().setValue(albumList.getAlbums());
+                            getClearStatusEvent().call();
                         }, e -> {
                             getShowErrorViewEvent().call();
                             e.printStackTrace();

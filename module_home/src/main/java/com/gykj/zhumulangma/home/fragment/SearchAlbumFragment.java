@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
@@ -26,7 +26,7 @@ import static com.gykj.zhumulangma.common.util.ZhumulangmaUtil.filterPaidAlbum;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索专辑
  */
-public class SearchAlbumFragment extends BaseRefreshFragment<CommonLayoutListBinding, SearchAlbumViewModel, Album> {
+public class SearchAlbumFragment extends BaseRefreshFragment<CommonLayoutRefreshListBinding, SearchAlbumViewModel, Album> {
 
 
     private AlbumAdapter mAlbumAdapter;
@@ -38,7 +38,7 @@ public class SearchAlbumFragment extends BaseRefreshFragment<CommonLayoutListBin
 
     @Override
     public int onBindLayout() {
-        return R.layout.common_layout_list;
+        return R.layout.common_layout_refresh_list;
     }
 
 

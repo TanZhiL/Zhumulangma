@@ -1,5 +1,8 @@
 package com.gykj.zhumulangma.home.adapter;
 
+import android.content.Context;
+import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -18,6 +21,11 @@ public class AlbumAdapter extends BaseQuickAdapter<Album, BaseViewHolder> {
         super(layoutResId);
     }
 
+    public AlbumAdapter(Context context,int layoutResId) {
+        super(layoutResId);
+        mContext = context;
+    }
+
     @Override
     protected void convert(BaseViewHolder helper, Album item) {
         Glide.with(mContext).load(item.getCoverUrlMiddle()).into((ImageView) helper.getView(R.id.iv_cover));
@@ -27,5 +35,12 @@ public class AlbumAdapter extends BaseQuickAdapter<Album, BaseViewHolder> {
                 item.getIncludeTrackCount()));
         helper.setText(R.id.tv_desc,item.getLastUptrack().getTrackTitle());
 
+    }
+
+    private static final String TAG = "AlbumAdapter";
+    @Override
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: ");
+        return super.onCreateViewHolder(parent, viewType);
     }
 }

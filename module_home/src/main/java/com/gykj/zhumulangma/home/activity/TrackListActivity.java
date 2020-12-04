@@ -10,10 +10,10 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
-import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
+import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.AnnouncerTrackAdapter;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
@@ -29,7 +29,7 @@ import com.ximalaya.ting.android.opensdk.model.track.Track;
  */
 
 @Route(path = Constants.Router.Home.F_TRACK_LIST)
-public class TrackListActivity extends BaseRefreshActivity<CommonLayoutListBinding, TrackListViewModel, Track> implements
+public class TrackListActivity extends BaseRefreshActivity<CommonLayoutRefreshListBinding, TrackListViewModel, Track> implements
         BaseQuickAdapter.OnItemClickListener {
 
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
@@ -40,7 +40,7 @@ public class TrackListActivity extends BaseRefreshActivity<CommonLayoutListBindi
 
     @Override
     public int onBindLayout() {
-        return R.layout.common_layout_list;
+        return R.layout.common_layout_refresh_list;
     }
 
     @Override

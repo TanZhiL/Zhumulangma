@@ -2,6 +2,8 @@ package com.gykj.zhumulangma.common.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 /**
  * Author: Thomas.<br/>
  * Date: 2020/11/20 19:53<br/>
@@ -157,5 +159,26 @@ public class BannerBean {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BannerBean that = (BannerBean) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "BannerBean{" +
+                "id=" + id +
+                ", bannerTitle='" + bannerTitle + '\'' +
+                '}';
     }
 }

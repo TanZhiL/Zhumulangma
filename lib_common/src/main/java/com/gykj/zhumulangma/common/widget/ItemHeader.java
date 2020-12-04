@@ -2,13 +2,14 @@ package com.gykj.zhumulangma.common.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.gykj.zhumulangma.common.R;
 
@@ -52,6 +53,10 @@ public class ItemHeader extends ConstraintLayout {
        tvTitle.setText(title);
     }
 
+    public String getTitle() {
+        return mTitle;
+    }
+
     private void getAttrs(TypedArray typedArray) {
         mTitle=typedArray.getString(R.styleable.ItemHeader_ih_title);
         mRightText=typedArray.getString(R.styleable.ItemHeader_ih_right_text);
@@ -59,8 +64,12 @@ public class ItemHeader extends ConstraintLayout {
 
     @Override
     public void setOnClickListener(@Nullable OnClickListener l) {
-        tvRightText.setOnClickListener(l);
-        ivArrow.setOnClickListener(l);
+        tvRightText.setOnClickListener(getClickListener(l));
+        ivArrow.setOnClickListener(getClickListener(l));
+    }
+
+    private OnClickListener getClickListener(@Nullable OnClickListener l) {
+        return v -> l.onClick(ItemHeader.this);
     }
 
 }

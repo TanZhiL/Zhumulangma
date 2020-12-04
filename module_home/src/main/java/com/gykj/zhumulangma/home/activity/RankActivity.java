@@ -14,7 +14,7 @@ import com.alibaba.android.arouter.facade.annotation.Route;
 import com.gykj.zhumulangma.common.Constants;
 import com.gykj.zhumulangma.common.adapter.TPagerAdapter;
 import com.gykj.zhumulangma.common.adapter.TabNavigatorAdapter;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.extra.ViewPagerHelper;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshActivity;
@@ -55,8 +55,8 @@ public class RankActivity extends BaseRefreshActivity<HomeActivityRankBinding, R
 
     private String mCId = "0";
 
-    private CommonLayoutListBinding mFreeBind;
-    private CommonLayoutListBinding mPaidBind;
+    private CommonLayoutRefreshListBinding mFreeBind;
+    private CommonLayoutRefreshListBinding mPaidBind;
     //下拉中间视图
     private HomeLayoutRankBarCenterBinding mBindBarCenter;
     private RankCategoryPopup mCategoryPopup;
@@ -74,8 +74,8 @@ public class RankActivity extends BaseRefreshActivity<HomeActivityRankBinding, R
         super.initView();
         mBindBarCenter.ivDown.setVisibility(View.VISIBLE);
         mBindBarCenter.tvTitle.setText("热门");
-        mFreeBind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.common_layout_list, null, false);
-        mPaidBind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.common_layout_list, null, false);
+        mFreeBind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.common_layout_refresh_list, null, false);
+        mPaidBind = DataBindingUtil.inflate(getLayoutInflater(), R.layout.common_layout_refresh_list, null, false);
 
         mFreeBind.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         mPaidBind.recyclerview.setLayoutManager(new LinearLayoutManager(this));

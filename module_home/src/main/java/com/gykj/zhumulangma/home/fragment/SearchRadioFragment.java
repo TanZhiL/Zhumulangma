@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.gykj.zhumulangma.common.databinding.CommonLayoutListBinding;
+import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.mvvm.view.status.ListSkeleton;
@@ -25,7 +25,7 @@ import com.kingja.loadsir.callback.Callback;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:搜索电台
  */
-public class SearchRadioFragment extends BaseMvvmFragment<CommonLayoutListBinding, SearchRadioViewModel>
+public class SearchRadioFragment extends BaseMvvmFragment<CommonLayoutRefreshListBinding, SearchRadioViewModel>
         implements BaseQuickAdapter.OnItemClickListener {
 
     private RadioAdapter mRadioAdapter;
@@ -37,7 +37,7 @@ public class SearchRadioFragment extends BaseMvvmFragment<CommonLayoutListBindin
 
     @Override
     public int onBindLayout() {
-        return R.layout.common_layout_list;
+        return R.layout.common_layout_refresh_list;
     }
 
     @Override

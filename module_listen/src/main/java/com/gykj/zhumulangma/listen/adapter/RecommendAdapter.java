@@ -1,5 +1,7 @@
 package com.gykj.zhumulangma.listen.adapter;
 
+import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -36,5 +38,13 @@ public class RecommendAdapter extends BaseQuickAdapter<Album, BaseViewHolder> {
 
         helper.addOnClickListener(R.id.ll_subscribe);
         helper.addOnClickListener(R.id.ll_unsubscribe);
+    }
+
+    private static final String TAG = "RecommendAdapter";
+
+    @Override
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: ");
+        return super.onCreateViewHolder(parent, viewType);
     }
 }
