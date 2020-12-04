@@ -62,7 +62,7 @@ public class ChildViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeI
         //获取banner
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.PAGE_SIZE, mBannerCount);
-        map.put(OPERATION_CATEGORY_ID, "6");
+        map.put(OPERATION_CATEGORY_ID, String.valueOf(CHILD_NAVIGATION_CATEGORY));
         map.put(IS_PAID, "0");
         mModel.getBanners1(map)
                 .doOnNext((BannerDTO bannerV2List) -> {

@@ -102,10 +102,10 @@ public class CrosstalkFragment extends BaseRefreshFragment<CommonLayoutRefreshLi
         super.onEvent(event);
         switch (event.getCode()) {
             case EventCode.Home.TAB_REFRESH:
-                if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
+             /*   if (mBaseLoadService.getCurrentCallback() != getInitStatus().getClass()) {
                     mBinding.recyclerview.scrollTo(0, 0);
                     mBinding.refreshLayout.autoRefresh();
-                }
+                }*/
                 break;
         }
     }

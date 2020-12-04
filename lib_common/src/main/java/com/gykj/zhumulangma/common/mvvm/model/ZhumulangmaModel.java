@@ -63,7 +63,9 @@ public class ZhumulangmaModel extends BaseModel {
     public static final String COLUMN_CATEGORY_CHILD = "1000535";
     public static final int CHILD_NAVIGATION_CATEGORY= 6;
     public static final int CROSSTALK_NAVIGATION_CATEGORY= 12;
+    public static final int NOVEL_NAVIGATION_CATEGORY= 3;
     public static final String COLUMN_CATEGORY_CROSSTALK = "1000537";
+    public static final String COLUMN_CATEGORY_NOVEL= "1000538";
     public static final String IS_PAID = "is_paid";
     public static final String COLUMN_TITLE_SEPARATOR = "/";
     public static final String COLUMN_PAGE_SIZE = "3";

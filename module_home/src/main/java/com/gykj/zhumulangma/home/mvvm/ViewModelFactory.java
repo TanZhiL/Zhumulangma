@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
-import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumDetailViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AlbumListViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerDetailViewModel;
@@ -18,10 +17,10 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.ChildViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.CrosstalkViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.NovelViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayRadioViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RadioListViewModel;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.NovelViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.RankViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAlbumViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.SearchAnnouncerViewModel;
@@ -63,7 +62,7 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
         } else if (modelClass.isAssignableFrom(ChildViewModel.class)) {
             return (T) new ChildViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(NovelViewModel.class)) {
-            return (T) new NovelViewModel(mApplication, new RadioModel(mApplication));
+            return (T) new NovelViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(SearchViewModel.class)) {
             return (T) new SearchViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(SearchRadioViewModel.class)) {
