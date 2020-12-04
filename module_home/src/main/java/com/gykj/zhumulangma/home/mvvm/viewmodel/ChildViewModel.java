@@ -33,7 +33,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CHILD_NAVIGATION_CATEGORY;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_CATEGORY_CHILD;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_PAGE_SIZE;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_SIZE_INDEX;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TITLE_SEPARATOR;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
@@ -67,7 +69,7 @@ public class ChildViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeI
                     HomeBean homeBean = new HomeBean();
                     homeBean.setBannerBeans(bannerV2List.getBanners());
                     rxField.get().add(new HomeItem(HomeItem.BANNER, homeBean));
-                    rxField.get().add(new HomeItem(HomeItem.NAVIGATION, getNavigation()));
+                    rxField.get().add(new HomeItem(HomeItem.NAVIGATION_LIST, getNavigation()));
                     rxField.get().add(new HomeItem(HomeItem.LINE, null));
                 })
                 .flatMap((Function<BannerDTO, ObservableSource<List<Pair<ColumnBean, ColumnDetailDTO<Album>>>>>)
@@ -100,13 +102,14 @@ public class ChildViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeI
         navigationItems.add(new NavigationItem("动画", "动画", 0xffa4c2f4, R.drawable.ic_home_fine_sx));
         navigationItems.add(new NavigationItem("学科", "趣学科学", 0xffffe599, R.drawable.ic_home_fine_yg));
         homeBean.setNavigationItems(navigationItems);
+        homeBean.setNavCategory(CHILD_NAVIGATION_CATEGORY);
         return homeBean;
     }
 
     private Observable<List<Pair<ColumnBean, ColumnDetailDTO<Album>>>> getColumnObservable(){
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(2));
+        map.put(DTransferConstants.PAGE_SIZE, COLUMN_PAGE_SIZE);
         map.put(OPERATION_CATEGORY_ID, COLUMN_CATEGORY_CHILD);
         map.put(DTransferConstants.CONTENT_TYPE, "1");
         map.put(DTransferConstants.PAGE, String.valueOf(mCurPage));

@@ -30,6 +30,10 @@ public class RadioCategoryItem extends androidx.appcompat.widget.AppCompatTextVi
                         .withString(KeyCode.Home.TITLE, getText().toString())));
     }
 
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
     private void getAttrs(TypedArray typedArray) {
         category = typedArray.getInt(R.styleable.RadioCategoryItem_rci_category, 3);
     }

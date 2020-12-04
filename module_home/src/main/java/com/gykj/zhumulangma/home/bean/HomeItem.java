@@ -13,7 +13,8 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 public class HomeItem implements MultiItemEntity {
 
     public static final int BANNER = 1;
-    public static final int NAVIGATION = 2;
+    public static final int NAVIGATION_LIST = 2;
+    public static final int NAVIGATION_GRID = 3;
     public static final int ALBUM_6 = 4;
     public static final int ALBUM_3 = 7;
     public static final int ALBUM_5 = 8;

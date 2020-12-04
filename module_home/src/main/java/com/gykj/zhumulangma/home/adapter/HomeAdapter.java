@@ -26,6 +26,7 @@ import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.activity.AlbumListActivity;
 import com.gykj.zhumulangma.home.bean.HomeItem;
 import com.gykj.zhumulangma.home.bean.NavigationItem;
+import com.gykj.zhumulangma.home.widget.RadioCategoryItem;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -48,7 +49,8 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
     public HomeAdapter(List<HomeItem> data) {
         super(data);
         addItemType(HomeItem.BANNER, R.layout.home_item_banner);
-        addItemType(HomeItem.NAVIGATION, R.layout.common_layout_nest_list);
+        addItemType(HomeItem.NAVIGATION_LIST, R.layout.common_layout_nest_list);
+        addItemType(HomeItem.NAVIGATION_GRID, R.layout.home_item_navigation_grid);
         addItemType(HomeItem.ALBUM_6, R.layout.home_item_album_6);
         addItemType(HomeItem.ALBUM_3, R.layout.home_item_album_6);
         addItemType(HomeItem.ALBUM_5, R.layout.home_item_album_5);
@@ -63,8 +65,11 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
             case HomeItem.BANNER:
                 onBindBanner(helper, item);
                 break;
-            case HomeItem.NAVIGATION:
-                onBindNavigation(helper.getView(R.id.recyclerview),item);
+            case HomeItem.NAVIGATION_LIST:
+                onBindNavigationList(helper.getView(R.id.recyclerview),item);
+                break;
+            case HomeItem.NAVIGATION_GRID:
+                onBindNavigationGrid(helper,item);
                 break;
             case HomeItem.ALBUM_3:
             case HomeItem.ALBUM_6:
@@ -75,7 +80,6 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
                 break;
         }
     }
-
     private void onBindBanner(BaseViewHolder helper, HomeItem item) {
         Banner banner = helper.getView(R.id.banner);
         if (!banner.getImageUrls().equals(item.getData().getBannerBeans())) {
@@ -84,7 +88,7 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
         }
     }
 
-    private void onBindNavigation(RecyclerView rvNavitioin, HomeItem item) {
+    private void onBindNavigationList(RecyclerView rvNavitioin, HomeItem item) {
         if (rvNavitioin.getAdapter() == null) {
             List<NavigationItem> navigationItems = item.getData().getNavigationItems();
             NavigationAdapter navigationAdapter = new NavigationAdapter(R.layout.home_item_navigation);
@@ -94,9 +98,25 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
             rvNavitioin.setHasFixedSize(true);
             navigationAdapter.bindToRecyclerView(rvNavitioin);
             navigationAdapter.setOnItemClickListener((adapter, view, position) -> RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                    .withInt(KeyCode.Home.CATEGORY, 6)
+                    .withInt(KeyCode.Home.CATEGORY,item.getData().getNavCategory())
                     .withString(KeyCode.Home.TAG, navigationItems.get(position).getValue())
                     .withString(KeyCode.Home.TITLE, navigationItems.get(position).getLabel())));
+        }
+    }
+
+
+    private void onBindNavigationGrid(BaseViewHolder helper, HomeItem item) {
+        for (int i = 1; i <= 15; i++) {
+            RadioCategoryItem categoryItem = helper.getView(ResourceUtils.getIdByName("nav_" + i));
+            if(i <= item.getData().getNavigationItems().size()){
+                NavigationItem navigationItem = item.getData().getNavigationItems().get(i - 1);
+                categoryItem.setCategory(item.getData().getNavCategory());
+                categoryItem.setText(navigationItem.getLabel());
+                categoryItem.setTag(navigationItem.getValue());
+                categoryItem.setVisibility(View.VISIBLE);
+            }else {
+                categoryItem.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -165,6 +185,16 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
                 banner.setDelayTime(3000);
                 banner.setImages(new ArrayList<>()).setImageLoader(new GlideImageLoader());
                 banner.setOnBannerListener(getOnBannerListener());
+                break;
+            case HomeItem.NAVIGATION_GRID:
+                baseViewHolder.getView(R.id.iv_less).setOnClickListener(v -> {
+                    baseViewHolder.getView(R.id.cl_more).setVisibility(View.GONE);
+                    baseViewHolder.getView(R.id.iv_more).setVisibility(View.VISIBLE);
+                });
+                baseViewHolder.getView(R.id.iv_more).setOnClickListener(v -> {
+                    baseViewHolder.getView(R.id.cl_more).setVisibility(View.VISIBLE);
+                    baseViewHolder.getView(R.id.iv_more).setVisibility(View.GONE);
+                });
                 break;
             case HomeItem.ALBUM_3:
             case HomeItem.ALBUM_5:

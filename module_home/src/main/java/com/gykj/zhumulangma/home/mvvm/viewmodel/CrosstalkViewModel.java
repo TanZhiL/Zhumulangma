@@ -1,30 +1,27 @@
 package com.gykj.zhumulangma.home.mvvm.viewmodel;
 
 import android.app.Application;
-import android.text.TextUtils;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 
-import com.amap.api.location.AMapLocation;
 import com.blankj.utilcode.util.CollectionUtils;
-import com.gykj.zhumulangma.common.Constants;
-import com.gykj.zhumulangma.common.bean.BannerBean;
-import com.gykj.zhumulangma.common.bean.PlayHistoryBean;
+import com.gykj.zhumulangma.common.bean.ColumnBean;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
+import com.gykj.zhumulangma.common.extra.RxField;
+import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.net.dto.BannerDTO;
+import com.gykj.zhumulangma.common.net.dto.ColumnDTO;
 import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
-import com.gykj.zhumulangma.common.net.dto.ColumnInfoDTO;
-import com.gykj.zhumulangma.common.util.RouteHelper;
-import com.gykj.zhumulangma.home.mvvm.model.RadioModel;
+import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.home.bean.HomeBean;
+import com.gykj.zhumulangma.home.bean.HomeItem;
+import com.gykj.zhumulangma.home.bean.NavigationItem;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
-import com.ximalaya.ting.android.opensdk.model.live.radio.Radio;
-import com.ximalaya.ting.android.opensdk.model.live.radio.RadioList;
-import com.ximalaya.ting.android.opensdk.model.track.LastPlayTrackList;
-import com.ximalaya.ting.android.opensdk.model.track.SearchTrackListV2;
-import com.ximalaya.ting.android.opensdk.player.XmPlayerManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,432 +31,174 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
-import io.reactivex.internal.functions.Functions;
+import io.reactivex.schedulers.Schedulers;
 
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_DJJX_ID;
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_PSLB_ID;
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_RMTJ_ID;
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_XPHC_ID;
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_XSJX_ID;
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IDS;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_CATEGORY_CROSSTALK;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_PAGE_SIZE;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_SIZE_INDEX;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TITLE_SEPARATOR;
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CROSSTALK_NAVIGATION_CATEGORY;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.OPERATION_CATEGORY_ID;
 
-public class CrosstalkViewModel extends BaseRefreshViewModel<RadioModel, Album> {
+public class CrosstalkViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeItem> {
+    private SingleLiveEvent<List<HomeItem>> mNovelItemsEvent;
+    private int mCurPage = 1;
+    private final String mBannerCount;
 
-    private SingleLiveEvent<List<BannerBean>> mBannerEvent;
-    private SingleLiveEvent<List<PlayHistoryBean>> mHistorysEvent;
-    private SingleLiveEvent<List<Radio>> mLocalsEvent;
-    private SingleLiveEvent<List<Radio>> mTopsEvent;
-    private SingleLiveEvent<String> mCityNameEvent;
-    private SingleLiveEvent<String> mTitleEvent;
-    private SingleLiveEvent<Void> mStartLocationEvent;
-
-    private String mCityCode;
-
-    private SingleLiveEvent<List<Album>> mDailyEvent;
-    private SingleLiveEvent<List<Album>> mDajiaEvent;
-    private SingleLiveEvent<List<Album>> mZhangguiEvent;
-    private SingleLiveEvent<List<Album>> mYoungEvent;
-    private SingleLiveEvent<List<Album>> mDujiaEvent;
-    private SingleLiveEvent<String> mDajiaNameEvent;
-    private SingleLiveEvent<String> mDailyNameEvent;
-    private SingleLiveEvent<String> mZhangguiNameEvent;
-    private SingleLiveEvent<String> mYoungNameEvent;
-    private SingleLiveEvent<String> mDujiaNameEvent;
-
-    private int totalDajiaPage = 1;
-    private int totalZhangguiPage = 1;
-    private int totalYoungPage = 1;
-    private int totalDailyPage = 1;
-    private int totalDujiaPage = 1;
-
-    private int curDajiaPage = 1;
-    private int curZhangguiPage = 1;
-    private int curYoungPage = 1;
-    private int curDailyPage = 1;
-    private int curDujiaPage = 1;
-
-    public CrosstalkViewModel(@NonNull Application application, RadioModel model) {
+    public CrosstalkViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
+        mBannerCount = String.valueOf(3 + new Random().nextInt(5));
     }
 
     @Override
     public void onViewRefresh() {
-        curDajiaPage = 1;
-        curDailyPage = 1;
-        curYoungPage = 1;
-        curZhangguiPage = 1;
-        curDujiaPage = 1;
+        mCurPage = 1;
         init();
     }
 
-    public void getHistory() {
-        mModel.getHistory(1, 5)
-                .subscribe(historyBeans -> getHistorysEvent().setValue(historyBeans), Throwable::printStackTrace);
-    }
-
-    public void init(String cityCode) {
-        mCityCode = cityCode;
-     /*   mModel.getHistory(1, 5)
-                .doOnNext(historyBeans -> getHistorysEvent().setValue(historyBeans))
-                .flatMap((Function<List<PlayHistoryBean>, ObservableSource<RadioList>>) historyBeans -> getLocalListObservable(mCityCode))
-                .flatMap((Function<RadioList, ObservableSource<RadioList>>) radioList -> getTopListObservable())
-                .doFinally(() -> super.onViewRefresh())
-                .subscribe(r -> getClearStatusEvent().call(), e ->
-                {
-                    getShowErrorViewEvent().call();
-                    e.printStackTrace();
-                });*/
-    }
-
-    private Observable<RadioList> getLocalListObservable(String cityCode) {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.CITY_CODE, cityCode);
-        map.put(DTransferConstants.PAGE_SIZE, "5");
-        map.put(DTransferConstants.PAGE, String.valueOf(1));
-        return mModel.getRadiosByCity(map)
-                .doOnNext(radioList -> {
-                    getLocalsEvent().setValue(radioList.getRadios());
-                });
-    }
-
-
-    public void getTopList() {
-        getTopListObservable().subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
-    }
-
-    private Observable<RadioList> getTopListObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.RADIO_COUNT, "5");
-
-        return mModel.getRankRadios(map)
-                .doOnNext(radioList -> getTopsEvent().setValue(radioList.getRadios()));
-    }
-
     public void init() {
-        getBannerListObervable()
-                .flatMap((Function<BannerDTO, ObservableSource<ColumnDetailDTO<Album>>>) gussLikeAlbumList ->
-                        getDailyListObservable())
-                .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnDetailDTO<Album>>>) albumList ->
-                        getDajiaListObservable())
-                .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnDetailDTO<Album>>>) albumList ->
-                        getZhangguiListObservable())
-                .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnDetailDTO<Album>>>) albumList ->
-                        getYoungListObservable())
-                .flatMap((Function<ColumnDetailDTO<Album>, ObservableSource<ColumnDetailDTO<Album>>>) albumList ->
-                        getDujiaListObservable())
-                .flatMap((Function<ColumnDetailDTO<Album>,ObservableSource<ColumnInfoDTO>>) albumList ->
-                        getColumnNameObservable())
-              /*  .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
-                        getDajiaNameObservable())
-                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
-                        getZhangguiNameObservable())
-                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
-                        getYoungNameObservable())
-                .flatMap((Function<ColumnInfoDTO,ObservableSource<ColumnInfoDTO>>) albumList ->
-                        getDujiaNameObservable())*/
-                .doFinally(() -> super.onViewRefresh())
-                .subscribe(r -> getClearStatusEvent().call(), e ->
-                {
-                    getShowErrorViewEvent().call();
-                    e.printStackTrace();
-                });
-    }
-
-    /**
-     * 保存定位结果
-     *
-     * @param aMapLocation
-     */
-    public void saveLocation(AMapLocation aMapLocation) {
-        if (!TextUtils.isEmpty(aMapLocation.getAdCode()) && !mCityCode.equals(aMapLocation.getAdCode().substring(0, 4))) {
-            String city = aMapLocation.getCity();
-            String province = aMapLocation.getProvince();
-            mModel.putSP(Constants.SP.CITY_CODE, aMapLocation.getAdCode().substring(0, 4))
-                    .doOnSubscribe(this)
-                    .flatMap((Function<String, ObservableSource<String>>) aBoolean ->
-                            mModel.putSP(Constants.SP.CITY_NAME, city.substring(0, city.length() - 1)))
-                    .flatMap((Function<String, ObservableSource<String>>) aBoolean ->
-                            mModel.putSP(Constants.SP.PROVINCE_CODE, aMapLocation.getAdCode().substring(0, 3) + "000"))
-                    .flatMap((Function<String, ObservableSource<String>>) aBoolean ->
-                            mModel.putSP(Constants.SP.PROVINCE_NAME, province.substring(0, province.length() - 1)))
-                    .flatMap((Function<String, ObservableSource<String>>) aBoolean ->
-                            mModel.getSPString(Constants.SP.CITY_NAME))
-                    .flatMap((Function<String, ObservableSource<String>>) s -> {
-                        getTitleEvent().setValue(s);
-                        return mModel.getSPString(Constants.SP.CITY_CODE);
-                    })
-                    .subscribe(this::init, Throwable::printStackTrace);
-        }
-    }
-
-    private Observable<BannerDTO> getBannerListObervable() {
-        Map<String, String> map = new HashMap<>();
-        map.put(DTransferConstants.PAGE_SIZE, String.valueOf(3 + new Random().nextInt(5)));
+        RxField<List<HomeItem>> rxField = new RxField<>(new ArrayList<>());
+        //获取banner
+        Map<String, String> map = new HashMap<String, String>();
+        map.put(DTransferConstants.PAGE_SIZE, mBannerCount);
         map.put(OPERATION_CATEGORY_ID, "12");
         map.put(IS_PAID, "0");
-        return mModel.getBanners(map)
-                .doOnNext((BannerDTO bannerV2List) -> getBannerEvent().setValue(bannerV2List.getBanners()));
-    }
-
-    public void playTrack(long trackId) {
-
-        Map<String, String> map = new HashMap<>();
-        map.put(DTransferConstants.ID, String.valueOf(trackId));
-        mModel.searchTrackV2(map)
-                .flatMap((Function<SearchTrackListV2, ObservableSource<LastPlayTrackList>>)
-                        searchTrackListV2 -> {
-                            Map<String, String> map1 = new HashMap<>();
-                            map1.put(DTransferConstants.ALBUM_ID, String.valueOf(
-                                    searchTrackListV2.getTracks().get(0).getAlbum().getAlbumId()));
-                            map1.put(DTransferConstants.TRACK_ID, String.valueOf(trackId));
-                            return mModel.getLastPlayTracks(map1);
-                        })
+        mModel.getBanners1(map)
+                .doOnNext((BannerDTO bannerV2List) -> {
+                    HomeBean homeBean = new HomeBean();
+                    homeBean.setBannerBeans(bannerV2List.getBanners());
+                    rxField.get().add(new HomeItem(HomeItem.BANNER, homeBean));
+                    rxField.get().add(new HomeItem(HomeItem.NAVIGATION_GRID, getNavigation()));
+                    rxField.get().add(new HomeItem(HomeItem.LINE, null));
+                })
+                .flatMap((Function<BannerDTO, ObservableSource<List<Pair<ColumnBean, ColumnDetailDTO<Album>>>>>)
+                        bannerDTO -> getColumnObservable())
+                .doFinally(super::onViewRefresh)
+                .map(getMapper())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(d -> getShowLoadingViewEvent().call())
-                .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(trackList -> {
-                    for (int i = 0; i < trackList.getTracks().size(); i++) {
-                        if (trackList.getTracks().get(i).getDataId() == trackId) {
-                            XmPlayerManager.getInstance(getApplication()).playList(trackList, i);
-                            break;
-                        }
+                .subscribe(pairs -> {
+                    if (!CollectionUtils.isEmpty(pairs)) {
+                        mCurPage++;
                     }
-                    RouteHelper.navigateTo(Constants.Router.Home.F_PLAY_TRACK);
-                }, Throwable::printStackTrace);
-    }
-
-
-    private Observable<ColumnInfoDTO> getColumnNameObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        StringBuilder sb = new StringBuilder();
-        sb.append(CROSSTALK_RMTJ_ID).append(",");
-        sb.append(CROSSTALK_XSJX_ID).append(",");
-        sb.append(CROSSTALK_PSLB_ID).append(",");
-        sb.append(CROSSTALK_XPHC_ID).append(",");
-        sb.append(CROSSTALK_DJJX_ID);
-        map.put(IDS, sb.toString());
-        return mModel.getColumnInfo(map)
-                .doOnNext(radioList -> {
-                    getDailyNameEvent().setValue(radioList.getColumns().get(0).getTitle());
-                    getDajiaNameEvent().setValue(radioList.getColumns().get(1).getTitle());
-                    getZhangguiNameEvent().setValue(radioList.getColumns().get(2).getTitle());
-                    getYoungNameEvent().setValue(radioList.getColumns().get(3).getTitle());
-                    getDujiaNameEvent().setValue(radioList.getColumns().get(4).getTitle());
+                    rxField.get().addAll(pairs);
+                    getNovelItemsEvent().setValue(rxField.get());
+                    getClearStatusEvent().call();
+                }, e ->
+                {
+                    getShowErrorViewEvent().call();
+                    e.printStackTrace();
                 });
-
     }
 
-  /*  private Observable<ColumnInfoDTO> getDajiaNameObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(IDS, CROSSTALK_XSJX_ID);
-        return mModel.getColumnInfo(map)
-                .doOnNext(radioList -> getDajiaNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
-
-    }
-    private Observable<ColumnInfoDTO> getZhangguiNameObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(IDS, CROSSTALK_PSLB_ID);
-        return mModel.getColumnInfo(map)
-                .doOnNext(radioList -> getZhangguiNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
-
-    }
-
-    private Observable<ColumnInfoDTO> getYoungNameObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(IDS, CROSSTALK_XPHC_ID);
-        return mModel.getColumnInfo(map)
-                .doOnNext(radioList -> getYoungNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
-
-    }
-
-    private Observable<ColumnInfoDTO> getDujiaNameObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(IDS, CROSSTALK_DJJX_ID);
-        return mModel.getColumnInfo(map)
-                .doOnNext(radioList -> getDujiaNameEvent().setValue(radioList.getColumns().get(0).getTitle()));
-
-    }*/
-    public void getDailyList() {
-        getDailyListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
-                .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
-
+    private HomeBean getNavigation() {
+        HomeBean homeBean = new HomeBean();
+        List<NavigationItem> navigationItems = new ArrayList<>();
+        navigationItems.add(new NavigationItem("排行榜", "", 0xffd5a6bd, R.drawable.ic_home_fine_cxb));
+        navigationItems.add(new NavigationItem("郭德纲", "郭德纲", 0xffa2c4c9, R.drawable.ic_home_fine_xpb));
+        navigationItems.add(new NavigationItem("单田芳", "单田芳评书", 0xfff9cb9c, R.drawable.ic_home_fine_dfhy));
+        navigationItems.add(new NavigationItem("德云社", "德云社", 0xffb6d7a8, R.drawable.ic_home_fine_yss));
+        navigationItems.add(new NavigationItem("赵本山", "赵本山", 0xffa4c2f4, R.drawable.ic_home_fine_sx));
+        navigationItems.add(new NavigationItem("单口相声", "单口", 0xffffe599, R.drawable.ic_home_fine_yg));
+        navigationItems.add(new NavigationItem("热门相声", "热门相声", 0xffa4c2f4, R.drawable.ic_home_fine_sx));
+        navigationItems.add(new NavigationItem("名家评书", "名家评书", 0xffffe599, R.drawable.ic_home_fine_yg));
+        navigationItems.add(new NavigationItem("相声大全", "相声大全", 0xffffe599, R.drawable.ic_home_fine_yg));
+        navigationItems.add(new NavigationItem("评书连播", "评书连播", 0xffffe599, R.drawable.ic_home_fine_yg));
+        navigationItems.add(new NavigationItem("刘兰芳", "刘兰芳", 0xffffe599, R.drawable.ic_home_fine_yg));
+        navigationItems.add(new NavigationItem("新锐笑", "新锐笑将", 0xffffe599, R.drawable.ic_home_fine_yg));
+        navigationItems.add(new NavigationItem("雍正剑侠图", "雍正剑侠图", 0xffffe599, R.drawable.ic_home_fine_yg));
+        navigationItems.add(new NavigationItem("独家精品", "独家精品", 0xffffe599, R.drawable.ic_home_fine_yg));
+        navigationItems.add(new NavigationItem("小品大全", "小品大全", 0xffffe599, R.drawable.ic_home_fine_yg));
+        homeBean.setNavigationItems(navigationItems);
+        homeBean.setNavCategory(CROSSTALK_NAVIGATION_CATEGORY);
+        return homeBean;
     }
 
-    private Observable<ColumnDetailDTO<Album>> getDailyListObservable() {
+    private Observable<List<Pair<ColumnBean, ColumnDetailDTO<Album>>>> getColumnObservable(){
+
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, CROSSTALK_RMTJ_ID);
-        map.put(DTransferConstants.PAGE_SIZE, "6");
-        curDailyPage = curDailyPage > totalDailyPage ? 1 : curDailyPage;
-        map.put(DTransferConstants.PAGE, String.valueOf(curDailyPage));
-        return mModel.getBrowseAlbumColumn(map)
-                .doOnNext(radioList -> {
-                    if (!CollectionUtils.isEmpty(radioList.getColumns())) {
-                        curDailyPage++;
+        map.put(DTransferConstants.PAGE_SIZE, COLUMN_PAGE_SIZE);
+        map.put(OPERATION_CATEGORY_ID, COLUMN_CATEGORY_CROSSTALK);
+        map.put(DTransferConstants.CONTENT_TYPE, "1");
+        map.put(DTransferConstants.PAGE, String.valueOf(mCurPage));
+
+        return  mModel.getColumns1(map)
+                .flatMap((Function<ColumnDTO, ObservableSource<ColumnBean>>) columnDTO ->
+                        Observable.fromIterable(columnDTO.getColumns())).flatMap(
+                        (Function<ColumnBean, ObservableSource<Pair<ColumnBean, ColumnDetailDTO<Album>>>>)
+                                this::getColumnDetail).toList().toObservable();
+    }
+    private void getMoreColumns() {
+        getColumnObservable()
+                .map(getMapper())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(pairs -> {
+                    if (!CollectionUtils.isEmpty(pairs)) {
+                        mCurPage++;
                     }
-                    totalDailyPage = radioList.getTotalPage();
-                    getDailyEvent().setValue(radioList.getColumns());
+                    getFinishLoadmoreEvent().setValue(pairs);
+                }, e -> {
+                    getFinishLoadmoreEvent().call();
+                    e.printStackTrace();
                 });
-
     }
 
-    public void getDajiaList() {
-        getDajiaListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
-                .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
-
+    private Function<List<Pair<ColumnBean, ColumnDetailDTO<Album>>>, List<HomeItem>> getMapper() {
+        return pairs -> {
+            List<HomeItem> ovelItenms = new ArrayList<>();
+            for (Pair<ColumnBean, ColumnDetailDTO<Album>> pair : pairs) {
+                HomeBean homeBean = new HomeBean();
+                homeBean.setColumnDetailDTOPair(pair);
+                String pageSize = getPageSize(pair.first);
+                int type = HomeItem.ALBUM_3;
+                switch (pageSize) {
+                    case "3":
+                        type = HomeItem.ALBUM_3;
+                        break;
+                    case "5":
+                        type = HomeItem.ALBUM_5;
+                        break;
+                    case "6":
+                        type = HomeItem.ALBUM_6;
+                        break;
+                }
+                ovelItenms.add(new HomeItem(type, homeBean));
+                ovelItenms.add(new HomeItem(HomeItem.LINE, homeBean));
+            }
+            return ovelItenms;
+        };
     }
 
-    private Observable<ColumnDetailDTO<Album>> getDajiaListObservable() {
+    private Observable<Pair<ColumnBean,ColumnDetailDTO<Album>>> getColumnDetail(ColumnBean columnBean) {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, CROSSTALK_XSJX_ID);
-        map.put(DTransferConstants.PAGE_SIZE, "6");
-        curDajiaPage = curDajiaPage > totalDajiaPage ? 1 : curDajiaPage;
-        map.put(DTransferConstants.PAGE, String.valueOf(curDajiaPage));
-        return mModel.getBrowseAlbumColumn(map)
-                .doOnNext(radioList -> {
-                    if (!CollectionUtils.isEmpty(radioList.getColumns())) {
-                        curDajiaPage++;
-                    }
-                    totalDajiaPage = radioList.getTotalPage();
-                    getDajiaEvent().setValue(radioList.getColumns());
-                });
+        map.put(DTransferConstants.ID, String.valueOf(columnBean.getId()));
+        String pageSize = getPageSize(columnBean);
+        map.put(DTransferConstants.PAGE_SIZE,pageSize);
+        map.put(DTransferConstants.PAGE, String.valueOf(1));
+        return mModel.getBrowseAlbumColumn1(map).map(albumColumnDetailDTO ->
+                new Pair<>(columnBean,albumColumnDetailDTO));
 
     }
 
-    public void getZhangguiList() {
-        getZhangguiListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
-                .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
-
+    private String getPageSize(ColumnBean columnBean) {
+        String pageSize = "3";
+        try {
+            pageSize = columnBean.getTitle().split(COLUMN_TITLE_SEPARATOR)[COLUMN_SIZE_INDEX];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pageSize;
     }
 
-    private Observable<ColumnDetailDTO<Album>> getZhangguiListObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, CROSSTALK_PSLB_ID);
-        map.put(DTransferConstants.PAGE_SIZE, "6");
-        curZhangguiPage = curZhangguiPage > totalZhangguiPage ? 1 : curZhangguiPage;
-        map.put(DTransferConstants.PAGE, String.valueOf(curZhangguiPage));
-        return mModel.getBrowseAlbumColumn(map)
-                .doOnNext(radioList -> {
-                    if (!CollectionUtils.isEmpty(radioList.getColumns())) {
-                        curZhangguiPage++;
-                    }
-                    totalZhangguiPage = radioList.getTotalPage();
-                    getZhangguiEvent().setValue(radioList.getColumns());
-                });
-
+    @Override
+    public void onViewLoadmore() {
+        getMoreColumns();
     }
 
-    public void getYoungList() {
-        getYoungListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
-                .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
-
-    }
-
-    private Observable<ColumnDetailDTO<Album>> getYoungListObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, CROSSTALK_XPHC_ID);
-        map.put(DTransferConstants.PAGE_SIZE, "5");
-        curYoungPage = curYoungPage >= totalYoungPage ? 1 : curYoungPage;
-        map.put(DTransferConstants.PAGE, String.valueOf(curYoungPage));
-        return mModel.getBrowseAlbumColumn(map)
-                .doOnNext(radioList -> {
-                    if (!CollectionUtils.isEmpty(radioList.getColumns())) {
-                        curYoungPage++;
-                    }
-                    totalYoungPage = radioList.getTotalPage();
-                    getYoungEvent().setValue(radioList.getColumns());
-                });
-
-    }
-    
-    public void getDujiaList() {
-        getDujiaListObservable().doOnSubscribe(d -> getShowLoadingViewEvent().call())
-                .doFinally(() -> getClearStatusEvent().call())
-                .subscribe(Functions.emptyConsumer(), Throwable::printStackTrace);
-
-    }
-
-    private Observable<ColumnDetailDTO<Album>> getDujiaListObservable() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, CROSSTALK_DJJX_ID);
-        map.put(DTransferConstants.PAGE_SIZE, "3");
-        curDujiaPage = curDujiaPage >= totalDujiaPage ? 1 : curDujiaPage;
-        map.put(DTransferConstants.PAGE, String.valueOf(curDujiaPage));
-        return mModel.getBrowseAlbumColumn(map)
-                .doOnNext(radioList -> {
-                    if (!CollectionUtils.isEmpty(radioList.getColumns())) {
-                        curDujiaPage++;
-                    }
-                    totalDujiaPage = radioList.getTotalPage();
-                    getDujiaEvent().setValue(radioList.getColumns());
-                });
-
-    }
-    public SingleLiveEvent<List<BannerBean>> getBannerEvent() {
-        return mBannerEvent = createLiveData(mBannerEvent);
-    }
-
-    public SingleLiveEvent<List<PlayHistoryBean>> getHistorysEvent() {
-        return mHistorysEvent = createLiveData(mHistorysEvent);
-    }
-
-    public SingleLiveEvent<List<Album>> getZhangguiEvent() {
-        return mZhangguiEvent = createLiveData(mZhangguiEvent);
-    }
-
-    public SingleLiveEvent<List<Radio>> getLocalsEvent() {
-        return mLocalsEvent = createLiveData(mLocalsEvent);
-    }
-
-    public SingleLiveEvent<List<Radio>> getTopsEvent() {
-        return mTopsEvent = createLiveData(mTopsEvent);
-    }
-
-    public SingleLiveEvent<String> getCityNameEvent() {
-        return mCityNameEvent = createLiveData(mCityNameEvent);
-    }
-
-    public SingleLiveEvent<Void> getStartLocationEvent() {
-        return mStartLocationEvent = createLiveData(mStartLocationEvent);
-    }
-
-    public SingleLiveEvent<String> getTitleEvent() {
-        return mTitleEvent = createLiveData(mTitleEvent);
-    }
-
-    public SingleLiveEvent<List<Album>> getDailyEvent() {
-        return mDailyEvent = createLiveData(mDailyEvent);
-    }
-
-    public SingleLiveEvent<List<Album>> getYoungEvent() {
-        return mYoungEvent = createLiveData(mYoungEvent);
-    }
-
-    public SingleLiveEvent<List<Album>> getDajiaEvent() {
-        return mDajiaEvent = createLiveData(mDajiaEvent);
-    }
-    public SingleLiveEvent<List<Album>> getDujiaEvent() {
-        return mDujiaEvent = createLiveData(mDujiaEvent);
-    }
-    public SingleLiveEvent<String> getDajiaNameEvent() {
-        return mDajiaNameEvent = createLiveData(mDajiaNameEvent);
-    }
-    public SingleLiveEvent<String> getDailyNameEvent() {
-        return mDailyNameEvent = createLiveData(mDailyNameEvent);
-    }
-    public SingleLiveEvent<String> getZhangguiNameEvent() {
-        return mZhangguiNameEvent = createLiveData(mZhangguiNameEvent);
-    }
-    public SingleLiveEvent<String> getYoungNameEvent() {
-        return mYoungNameEvent = createLiveData(mYoungNameEvent);
-    }
-    public SingleLiveEvent<String> getDujiaNameEvent() {
-        return mDujiaNameEvent = createLiveData(mDujiaNameEvent);
+    public SingleLiveEvent<List<HomeItem>> getNovelItemsEvent() {
+        return mNovelItemsEvent = createLiveData(mNovelItemsEvent);
     }
 }
 

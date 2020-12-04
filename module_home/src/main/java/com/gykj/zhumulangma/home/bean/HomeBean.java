@@ -20,6 +20,7 @@ import java.util.List;
 public class HomeBean {
     private List<BannerBean> bannerBeans;
     private List<NavigationItem> navigationItems;
+    private int navCategory;
     private String header;
     private Pair<ColumnBean, ColumnDetailDTO<Album>> mColumnDetailDTOPair;
 
@@ -50,6 +51,14 @@ public class HomeBean {
 
     public Pair<ColumnBean, ColumnDetailDTO<Album>> getColumnDetailDTOPair() {
         return mColumnDetailDTOPair;
+    }
+
+    public int getNavCategory() {
+        return navCategory;
+    }
+
+    public void setNavCategory(int navCategory) {
+        this.navCategory = navCategory;
     }
 
     public void setColumnDetailDTOPair(Pair<ColumnBean, ColumnDetailDTO<Album>> columnDetailDTOPair) {

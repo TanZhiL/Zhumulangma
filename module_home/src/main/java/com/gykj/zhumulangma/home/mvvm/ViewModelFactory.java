@@ -99,7 +99,7 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
         } else if (modelClass.isAssignableFrom(SearchAnnouncerViewModel.class)) {
             return (T) new SearchAnnouncerViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(CrosstalkViewModel.class)) {
-            return (T) new CrosstalkViewModel(mApplication, new RadioModel(mApplication));
+            return (T) new CrosstalkViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

@@ -1,6 +1,8 @@
 package com.gykj.zhumulangma.home.fragment;
 
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,8 +18,6 @@ import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.ChildViewModel;
 
 import java.util.ArrayList;
-
-import static com.gykj.zhumulangma.home.adapter.HomeAdapter.RECYCLEDVIEWPOOL;
 
 /**
  * Author: Thomas.
@@ -45,15 +45,12 @@ public class ChildFragment extends BaseRefreshFragment<CommonLayoutRefreshListBi
     @Override
     public void initView() {
         mHomeAdapter = new HomeAdapter(new ArrayList<>());
-        mBinding.recyclerview.setLayoutManager(new LinearLayoutManager(mActivity));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
+//        linearLayoutManager.setRecycleChildrenOnDetach(true);
+        mBinding.recyclerview.setLayoutManager(linearLayoutManager);
         mBinding.recyclerview.setHasFixedSize(true);
+//        mBinding.recyclerview.setRecycledViewPool(RECYCLEDVIEWPOOL);
         mHomeAdapter.bindToRecyclerView(mBinding.recyclerview);
-    }
-
-    @Override
-    public void initListener() {
-        super.initListener();
-
     }
 
     @NonNull
@@ -94,13 +91,9 @@ public class ChildFragment extends BaseRefreshFragment<CommonLayoutRefreshListBi
     }
 
     @Override
-    protected void onRevisible() {
-        super.onRevisible();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
+    protected void onReload(View v) {
+        showInitView();
+        mViewModel.onViewRefresh();
     }
 
     @Override
