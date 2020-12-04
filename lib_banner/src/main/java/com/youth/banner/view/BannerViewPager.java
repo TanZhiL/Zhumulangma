@@ -49,13 +49,19 @@ public class BannerViewPager extends ViewPager {
             super.onDetachedFromWindow();
         }
     }
+    float startX,startY;
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 getParent().requestDisallowInterceptTouchEvent(true);
+                startX = ev.getX();
+                startY = ev.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
+                float x = Math.abs(ev.getX() - startX);
+                float y = Math.abs(ev.getY() - startY);
+                getParent().requestDisallowInterceptTouchEvent(x > y);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:

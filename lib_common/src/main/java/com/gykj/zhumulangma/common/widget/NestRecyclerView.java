@@ -23,17 +23,26 @@ public class NestRecyclerView extends RecyclerView {
         super(context, attrs, defStyleAttr);
     }
 
+    float startX,startY;
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 getParent().requestDisallowInterceptTouchEvent(requestDisallowIntercept);
+                startX = ev.getX();
+                startY = ev.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 LayoutManager layoutManager = getLayoutManager();
                 if(layoutManager instanceof LinearLayoutManager){
                     int orientation = ((LinearLayoutManager) layoutManager).getOrientation();
-//                    getParent().requestDisallowInterceptTouchEvent(requestDisallowIntercept&&);
+                    float x = Math.abs(ev.getX() - startX);
+                    float y = Math.abs(ev.getY() - startY);
+                    if (orientation == VERTICAL) {
+                        getParent().requestDisallowInterceptTouchEvent(requestDisallowIntercept && y > x);
+                    } else {
+                        getParent().requestDisallowInterceptTouchEvent(requestDisallowIntercept && x > y);
+                    }
                 }
                 break;
             case MotionEvent.ACTION_UP:
