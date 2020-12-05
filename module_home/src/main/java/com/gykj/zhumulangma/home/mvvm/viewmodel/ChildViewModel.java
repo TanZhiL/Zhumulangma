@@ -14,7 +14,6 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.net.dto.BannerDTO;
 import com.gykj.zhumulangma.common.net.dto.ColumnDTO;
 import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
-import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.bean.HomeBean;
 import com.gykj.zhumulangma.home.bean.HomeItem;
 import com.gykj.zhumulangma.home.bean.NavigationItem;
@@ -95,12 +94,6 @@ public class ChildViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeI
     private HomeBean getNavigation() {
         HomeBean homeBean = new HomeBean();
         List<NavigationItem> navigationItems = new ArrayList<>();
-        navigationItems.add(new NavigationItem("排行榜", "", 0xffd5a6bd, R.drawable.ic_home_fine_cxb));
-        navigationItems.add(new NavigationItem("故事", "故事", 0xffa2c4c9, R.drawable.ic_home_fine_xpb));
-        navigationItems.add(new NavigationItem("哄睡", "哄睡", 0xfff9cb9c, R.drawable.ic_home_fine_dfhy));
-        navigationItems.add(new NavigationItem("儿歌", "儿歌", 0xffb6d7a8, R.drawable.ic_home_fine_yss));
-        navigationItems.add(new NavigationItem("动画", "动画", 0xffa4c2f4, R.drawable.ic_home_fine_sx));
-        navigationItems.add(new NavigationItem("学科", "趣学科学", 0xffffe599, R.drawable.ic_home_fine_yg));
         homeBean.setNavigationItems(navigationItems);
         homeBean.setNavCategory(CHILD_NAVIGATION_CATEGORY);
         return homeBean;
@@ -143,16 +136,16 @@ public class ChildViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeI
                 HomeBean homeBean = new HomeBean();
                 homeBean.setColumnDetailDTOPair(pair);
                 String pageSize = getPageSize(pair.first);
-                int type = HomeItem.ALBUM_3;
+                int type = HomeItem.ALBUM_GRID;
                 switch (pageSize) {
                     case "3":
-                        type = HomeItem.ALBUM_3;
+                        type = HomeItem.ALBUM_GRID;
                         break;
                     case "5":
-                        type = HomeItem.ALBUM_5;
+                        type = HomeItem.ALBUM_LIST;
                         break;
                     case "6":
-                        type = HomeItem.ALBUM_6;
+                        type = HomeItem.ALBUM_GRID;
                         break;
                 }
                 ovelItenms.add(new HomeItem(type, homeBean));

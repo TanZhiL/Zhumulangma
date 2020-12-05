@@ -22,6 +22,7 @@ public interface KeyCode {
         String ANNOUNCER_ID = "announcerId";
         String CATEGORY_ID = "categoryId";
         String ANNOUNCER_NAME= "announcerName";
+        String TAB= "tab";
     }
 
     interface Listen {

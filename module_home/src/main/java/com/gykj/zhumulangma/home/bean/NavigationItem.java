@@ -1,7 +1,5 @@
 package com.gykj.zhumulangma.home.bean;
 
-import androidx.annotation.DrawableRes;
-
 /**
  * Author: Thomas.<br/>
  * Date: 2020/11/27 19:32<br/>
@@ -14,9 +12,9 @@ public class NavigationItem {
     private String label;
     private String value;
     private int bgColor;
-    private @DrawableRes int icon;
+    private String icon;
 
-    public NavigationItem(String label, String value, int bgColor, int icon) {
+    public NavigationItem(String label, String value, int bgColor, String icon) {
         this.label = label;
         this.value = value;
         this.bgColor = bgColor;
@@ -47,11 +45,11 @@ public class NavigationItem {
         this.value = value;
     }
 
-    public int getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(int icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 }

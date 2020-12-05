@@ -15,11 +15,12 @@ public class HomeItem implements MultiItemEntity {
     public static final int BANNER = 1;
     public static final int NAVIGATION_LIST = 2;
     public static final int NAVIGATION_GRID = 3;
-    public static final int ALBUM_6 = 4;
-    public static final int ALBUM_3 = 7;
-    public static final int ALBUM_5 = 8;
+    public static final int NAVIGATION_CAT = 10;
+    public static final int ALBUM_GRID = 4;
+    public static final int ALBUM_LIST = 8;
     public static final int REFRESH = 5;
     public static final int LINE = 6;
+    public static final int CATEGOTY = 9;
 
     public int itemType;
     public HomeBean data;

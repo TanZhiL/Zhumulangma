@@ -129,6 +129,7 @@ public class ZhumulangmaUtil {
      */
     public static Observable<Map<String,String>> commonParams(Map<String, String> specificParams){
         return Observable.fromCallable(() -> {
+            CommonRequest.getInstanse().setPageSize(specificParams);
             Map<String, String> stringStringMap = CommonRequest.CommonParams(specificParams);
             String appsecret = CommonRequest.getInstanse().getAppsecret();
             String s = SignatureUtil.generateSignature(appsecret, stringStringMap);

@@ -14,7 +14,6 @@ import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseRefreshViewModel;
 import com.gykj.zhumulangma.common.net.dto.BannerDTO;
 import com.gykj.zhumulangma.common.net.dto.ColumnDTO;
 import com.gykj.zhumulangma.common.net.dto.ColumnDetailDTO;
-import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.bean.HomeBean;
 import com.gykj.zhumulangma.home.bean.HomeItem;
 import com.gykj.zhumulangma.home.bean.NavigationItem;
@@ -95,21 +94,6 @@ public class CrosstalkViewModel extends BaseRefreshViewModel<ZhumulangmaModel, H
     private HomeBean getNavigation() {
         HomeBean homeBean = new HomeBean();
         List<NavigationItem> navigationItems = new ArrayList<>();
-        navigationItems.add(new NavigationItem("排行榜", "", 0xffd5a6bd, R.drawable.ic_home_fine_cxb));
-        navigationItems.add(new NavigationItem("郭德纲", "郭德纲", 0xffa2c4c9, R.drawable.ic_home_fine_xpb));
-        navigationItems.add(new NavigationItem("单田芳", "单田芳评书", 0xfff9cb9c, R.drawable.ic_home_fine_dfhy));
-        navigationItems.add(new NavigationItem("德云社", "德云社", 0xffb6d7a8, R.drawable.ic_home_fine_yss));
-        navigationItems.add(new NavigationItem("赵本山", "赵本山", 0xffa4c2f4, R.drawable.ic_home_fine_sx));
-        navigationItems.add(new NavigationItem("单口相声", "单口", 0xffffe599, R.drawable.ic_home_fine_yg));
-        navigationItems.add(new NavigationItem("热门相声", "热门相声", 0xffa4c2f4, R.drawable.ic_home_fine_sx));
-        navigationItems.add(new NavigationItem("名家评书", "名家评书", 0xffffe599, R.drawable.ic_home_fine_yg));
-        navigationItems.add(new NavigationItem("相声大全", "相声大全", 0xffffe599, R.drawable.ic_home_fine_yg));
-        navigationItems.add(new NavigationItem("评书连播", "评书连播", 0xffffe599, R.drawable.ic_home_fine_yg));
-        navigationItems.add(new NavigationItem("刘兰芳", "刘兰芳", 0xffffe599, R.drawable.ic_home_fine_yg));
-        navigationItems.add(new NavigationItem("新锐笑", "新锐笑将", 0xffffe599, R.drawable.ic_home_fine_yg));
-        navigationItems.add(new NavigationItem("雍正剑侠图", "雍正剑侠图", 0xffffe599, R.drawable.ic_home_fine_yg));
-        navigationItems.add(new NavigationItem("独家精品", "独家精品", 0xffffe599, R.drawable.ic_home_fine_yg));
-        navigationItems.add(new NavigationItem("小品大全", "小品大全", 0xffffe599, R.drawable.ic_home_fine_yg));
         homeBean.setNavigationItems(navigationItems);
         homeBean.setNavCategory(CROSSTALK_NAVIGATION_CATEGORY);
         return homeBean;
@@ -152,16 +136,16 @@ public class CrosstalkViewModel extends BaseRefreshViewModel<ZhumulangmaModel, H
                 HomeBean homeBean = new HomeBean();
                 homeBean.setColumnDetailDTOPair(pair);
                 String pageSize = getPageSize(pair.first);
-                int type = HomeItem.ALBUM_3;
+                int type = HomeItem.ALBUM_GRID;
                 switch (pageSize) {
                     case "3":
-                        type = HomeItem.ALBUM_3;
+                        type = HomeItem.ALBUM_GRID;
                         break;
                     case "5":
-                        type = HomeItem.ALBUM_5;
+                        type = HomeItem.ALBUM_LIST;
                         break;
                     case "6":
-                        type = HomeItem.ALBUM_6;
+                        type = HomeItem.ALBUM_GRID;
                         break;
                 }
                 ovelItenms.add(new HomeItem(type, homeBean));

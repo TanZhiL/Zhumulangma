@@ -18,35 +18,36 @@ import java.util.List;
  * Description:
  */
 public class HomeBean {
-    private List<BannerBean> bannerBeans;
-    private List<NavigationItem> navigationItems;
-    private int navCategory;
-    private String header;
+    private List<BannerBean> mBannerBeans;
+    private List<NavigationItem> mNavigationItems;
+    private int mNavCategory;
+    private String mHeader;
     private Pair<ColumnBean, ColumnDetailDTO<Album>> mColumnDetailDTOPair;
+    private List<Album> mGussLikeAlbumList;
 
 
     public List<BannerBean> getBannerBeans() {
-        return bannerBeans;
+        return mBannerBeans;
     }
 
     public void setBannerBeans(List<BannerBean> bannerBeans) {
-        this.bannerBeans = bannerBeans;
+        this.mBannerBeans = bannerBeans;
     }
 
     public List<NavigationItem> getNavigationItems() {
-        return navigationItems;
+        return mNavigationItems;
     }
 
     public void setNavigationItems(List<NavigationItem> navigationItems) {
-        this.navigationItems = navigationItems;
+        this.mNavigationItems = navigationItems;
     }
 
     public String getHeader() {
-        return header;
+        return mHeader;
     }
 
     public void setHeader(String header) {
-        this.header = header;
+        this.mHeader = header;
     }
 
     public Pair<ColumnBean, ColumnDetailDTO<Album>> getColumnDetailDTOPair() {
@@ -54,14 +55,22 @@ public class HomeBean {
     }
 
     public int getNavCategory() {
-        return navCategory;
+        return mNavCategory;
     }
 
     public void setNavCategory(int navCategory) {
-        this.navCategory = navCategory;
+        this.mNavCategory = navCategory;
     }
 
     public void setColumnDetailDTOPair(Pair<ColumnBean, ColumnDetailDTO<Album>> columnDetailDTOPair) {
         this.mColumnDetailDTOPair = columnDetailDTOPair;
+    }
+
+    public List<Album>  getGussLikeAlbumList() {
+        return mGussLikeAlbumList;
+    }
+
+    public void setGussLikeAlbumList(List<Album>  gussLikeAlbumList) {
+        mGussLikeAlbumList = gussLikeAlbumList;
     }
 }

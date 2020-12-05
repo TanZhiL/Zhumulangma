@@ -13,10 +13,11 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerDetailViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerListViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.AnnouncerViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.BatchDownloadViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.CategoryViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.ChildViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.CrosstalkViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.MainHomeViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.HotViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.NovelViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayRadioViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
@@ -57,8 +58,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(HotViewModel.class)) {
-            return (T) new HotViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        if (modelClass.isAssignableFrom(HomeViewModel.class)) {
+            return (T) new HomeViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(ChildViewModel.class)) {
             return (T) new ChildViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(NovelViewModel.class)) {
@@ -73,8 +74,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new AlbumListViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(AlbumDetailViewModel.class)) {
             return (T) new AlbumDetailViewModel(mApplication, new ZhumulangmaModel(mApplication));
-        } else if (modelClass.isAssignableFrom(HomeViewModel.class)) {
-            return (T) new HomeViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        } else if (modelClass.isAssignableFrom(MainHomeViewModel.class)) {
+            return (T) new MainHomeViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(AnnouncerViewModel.class)) {
             return (T) new AnnouncerViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(PlayTrackViewModel.class)) {
@@ -99,6 +100,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
             return (T) new SearchAnnouncerViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(CrosstalkViewModel.class)) {
             return (T) new CrosstalkViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        } else if (modelClass.isAssignableFrom(CategoryViewModel.class)) {
+            return (T) new CategoryViewModel(mApplication, new ZhumulangmaModel(mApplication));
         }
         throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
     }

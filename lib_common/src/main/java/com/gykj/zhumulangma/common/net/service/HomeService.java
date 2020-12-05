@@ -8,6 +8,7 @@ import com.gykj.zhumulangma.common.net.dto.ColumnInfoDTO;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.ximalaya.ting.android.opensdk.model.track.Track;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -64,4 +65,14 @@ public interface HomeService {
     @Headers(Constans.HEADER_XMLY)
     @GET("/operation/browse_column_content")
     Observable<ColumnDetailDTO<Track>> getBrowseTrackColumn(@QueryMap Map<String,String> params);
+
+
+    /**
+     * 获取猜你喜欢
+     * @param params
+     * @return
+     */
+    @Headers(Constans.HEADER_XMLY)
+    @GET("/v2/albums/guess_like")
+    Observable<List<Album>> getGuessLike(@QueryMap Map<String,String> params);
 }

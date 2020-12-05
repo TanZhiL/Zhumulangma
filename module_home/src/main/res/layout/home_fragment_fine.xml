@@ -110,7 +110,7 @@
                                             android:layout_width="24dp"
                                             android:layout_height="24dp"
                                             android:layout_gravity="center"
-                                            android:src="@drawable/ic_home_fine_cxb"
+                                            android:src="@drawable/ic_home_nav_2"
                                             android:tint="@color/white" />
                                     </FrameLayout>
 
@@ -140,7 +140,7 @@
                                             android:layout_width="24dp"
                                             android:layout_height="24dp"
                                             android:layout_gravity="center"
-                                            android:src="@drawable/ic_home_fine_xpb"
+                                            android:src="@drawable/ic_home_nav_15"
                                             android:tint="@color/white" />
                                     </FrameLayout>
 
@@ -170,7 +170,7 @@
                                             android:layout_width="24dp"
                                             android:layout_height="24dp"
                                             android:layout_gravity="center"
-                                            android:src="@drawable/ic_home_fine_dfhy"
+                                            android:src="@drawable/ic_home_nav_3"
                                             android:tint="@color/white" />
                                     </FrameLayout>
 
@@ -200,7 +200,7 @@
                                             android:layout_width="24dp"
                                             android:layout_height="24dp"
                                             android:layout_gravity="center"
-                                            android:src="@drawable/ic_home_fine_yss"
+                                            android:src="@drawable/ic_home_nav_13"
                                             android:tint="@color/white" />
                                     </FrameLayout>
 
@@ -230,7 +230,7 @@
                                             android:layout_width="24dp"
                                             android:layout_height="24dp"
                                             android:layout_gravity="center"
-                                            android:src="@drawable/ic_home_fine_sx"
+                                            android:src="@drawable/ic_home_nav_16"
                                             android:tint="@color/white" />
                                     </FrameLayout>
 
@@ -260,7 +260,7 @@
                                             android:layout_width="24dp"
                                             android:layout_height="24dp"
                                             android:layout_gravity="center"
-                                            android:src="@drawable/ic_home_fine_yg"
+                                            android:src="@drawable/ic_home_nav_14"
                                             android:tint="@color/white" />
                                     </FrameLayout>
 

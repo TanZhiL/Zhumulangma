@@ -77,7 +77,7 @@
                                         android:layout_height="24dp"
                                         android:layout_gravity="center"
                                         android:tint="@color/white"
-                                        android:src="@drawable/ic_home_hot_phb" />
+                                        android:src="@drawable/ic_home_nav_1" />
                                 </FrameLayout>
 
                                 <TextView
@@ -107,7 +107,7 @@
                                         android:layout_height="24dp"
                                         android:layout_gravity="center"
                                         android:tint="@color/white"
-                                        android:src="@drawable/ic_home_hot_jp" />
+                                        android:src="@drawable/ic_home_nav_10" />
                                 </FrameLayout>
 
                                 <TextView
@@ -137,7 +137,7 @@
                                         android:layout_height="24dp"
                                         android:layout_gravity="center"
                                         android:tint="@color/white"
-                                        android:src="@drawable/ic_home_hot_dfhy" />
+                                        android:src="@drawable/ic_home_nav_12" />
                                 </FrameLayout>
 
                                 <TextView
@@ -167,7 +167,7 @@
                                         android:layout_height="24dp"
                                         android:layout_gravity="center"
                                         android:tint="@color/white"
-                                        android:src="@drawable/ic_home_hot_tqy" />
+                                        android:src="@drawable/ic_home_nav_5" />
                                 </FrameLayout>
 
                                 <TextView
@@ -197,7 +197,7 @@
                                         android:layout_height="24dp"
                                         android:layout_gravity="center"
                                         android:tint="@color/white"
-                                        android:src="@drawable/ic_home_hot_xyyx" />
+                                        android:src="@drawable/ic_home_nav_4" />
                                 </FrameLayout>
 
                                 <TextView
@@ -227,7 +227,7 @@
                                         android:layout_height="24dp"
                                         android:layout_gravity="center"
                                         android:tint="@color/white"
-                                        android:src="@drawable/ic_home_hot_td" />
+                                        android:src="@drawable/ic_home_nav_7" />
                                 </FrameLayout>
 
                                 <TextView
@@ -256,7 +256,7 @@
                                         android:layout_height="24dp"
                                         android:layout_gravity="center"
                                         android:tint="@color/white"
-                                        android:src="@drawable/ic_home_hot_rmfx" />
+                                        android:src="@drawable/ic_home_nav_8" />
                                 </FrameLayout>
 
                                 <TextView

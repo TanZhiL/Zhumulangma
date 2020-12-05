@@ -20,7 +20,7 @@
             android:layout_height="24dp"
             android:layout_gravity="center"
             android:tint="@color/white"
-            android:src="@drawable/ic_home_hot_phb" />
+            android:src="@drawable/ic_home_nav_1" />
     </FrameLayout>
 
     <TextView

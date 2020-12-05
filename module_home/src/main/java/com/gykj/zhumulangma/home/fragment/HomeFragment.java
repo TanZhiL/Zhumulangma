@@ -10,25 +10,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.gykj.zhumulangma.common.databinding.CommonLayoutRefreshListBinding;
 import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
+import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.HomeAdapter;
 import com.gykj.zhumulangma.home.bean.HomeItem;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.CategoryViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
 
 import java.util.ArrayList;
+
+import static com.gykj.zhumulangma.home.adapter.HomeAdapter.RECYCLEDVIEWPOOL;
 
 /**
  * Author: Thomas.
  * <br/>Date: 2019/8/14 13:41
  * <br/>Email: 1071931588@qq.com
- * <br/>Description:分类
+ * <br/>Description:热门
  */
-public class CategoryFragment extends BaseRefreshFragment<CommonLayoutRefreshListBinding, CategoryViewModel,HomeItem> {
+
+public class HomeFragment extends BaseRefreshFragment<CommonLayoutRefreshListBinding, HomeViewModel, HomeItem>{
     private HomeAdapter mHomeAdapter;
 
-    public CategoryFragment() {
+
+    public HomeFragment() {
     }
 
 
@@ -45,12 +50,12 @@ public class CategoryFragment extends BaseRefreshFragment<CommonLayoutRefreshLis
 
     @Override
     public void initView() {
-        mHomeAdapter = new HomeAdapter(new ArrayList<>());
+        mHomeAdapter = new HomeAdapter(new ArrayList<>(),mActivity);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
-//        linearLayoutManager.setRecycleChildrenOnDetach(true);
+        linearLayoutManager.setRecycleChildrenOnDetach(true);
         mBinding.recyclerview.setLayoutManager(linearLayoutManager);
         mBinding.recyclerview.setHasFixedSize(true);
-//        mBinding.recyclerview.setRecycledViewPool(RECYCLEDVIEWPOOL);
+        mBinding.recyclerview.setRecycledViewPool(RECYCLEDVIEWPOOL);
         mHomeAdapter.bindToRecyclerView(mBinding.recyclerview);
     }
 
@@ -63,6 +68,7 @@ public class CategoryFragment extends BaseRefreshFragment<CommonLayoutRefreshLis
 
     @Override
     public void initData() {
+        mViewModel.initArguments(getArguments().getParcelable(KeyCode.Home.TAB));
         mViewModel.init();
     }
 
@@ -78,8 +84,8 @@ public class CategoryFragment extends BaseRefreshFragment<CommonLayoutRefreshLis
     }
 
     @Override
-    public Class<CategoryViewModel> onBindViewModel() {
-        return CategoryViewModel.class;
+    public Class<HomeViewModel> onBindViewModel() {
+        return HomeViewModel.class;
     }
 
     @Override
@@ -90,7 +96,7 @@ public class CategoryFragment extends BaseRefreshFragment<CommonLayoutRefreshLis
 
     @Override
     public void initViewObservable() {
-        mViewModel.getNovelItemsEvent().observe(this, novelItems -> {
+        mViewModel.getHomeItemsEvent().observe(this, novelItems -> {
             mHomeAdapter.setNewData(novelItems);
             //重新恢复可下拉加载更多
             mBinding.refreshLayout.setNoMoreData(false);

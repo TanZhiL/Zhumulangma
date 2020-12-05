@@ -49,4 +49,13 @@
         android:text="伦桑伦桑的那些年口胡的歌"
         android:textColor="#000000"
         android:textSize="13sp" />
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:text="全站播放量最高的钢琴曲集"
+        android:textColor="#999999"
+        android:ellipsize = "end"
+        android:maxLines="2"
+        android:textSize="11sp" />
 </LinearLayout>

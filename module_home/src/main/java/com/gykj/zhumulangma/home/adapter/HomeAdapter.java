@@ -1,5 +1,7 @@
 package com.gykj.zhumulangma.home.adapter;
 
+import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.blankj.utilcode.util.CollectionUtils;
 import com.blankj.utilcode.util.ResourceUtils;
+import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -35,6 +39,7 @@ import com.youth.banner.listener.OnBannerListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_ALBUM_TYPE_INDEX;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TITLE_INDEX;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TITLE_SEPARATOR;
 
@@ -43,18 +48,24 @@ import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TIT
  * on 2019/6/17
  */
 public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHolder> {
-    private static final String TAG = "NovelAdapter";
+    private static final String TAG = "HomeAdapter";
     public static final RecyclerView.RecycledViewPool RECYCLEDVIEWPOOL = new RecyclerView.RecycledViewPool();
 
     public HomeAdapter(List<HomeItem> data) {
         super(data);
+    }
+
+    public HomeAdapter(List<HomeItem> data, Context context) {
+        super(data);
+        mContext =context;
         addItemType(HomeItem.BANNER, R.layout.home_item_banner);
         addItemType(HomeItem.NAVIGATION_LIST, R.layout.common_layout_nest_list);
         addItemType(HomeItem.NAVIGATION_GRID, R.layout.home_item_navigation_grid);
-        addItemType(HomeItem.ALBUM_6, R.layout.home_item_album_6);
-        addItemType(HomeItem.ALBUM_3, R.layout.home_item_album_6);
-        addItemType(HomeItem.ALBUM_5, R.layout.home_item_album_5);
+        addItemType(HomeItem.NAVIGATION_CAT, R.layout.common_layout_nest_list);
+        addItemType(HomeItem.ALBUM_GRID, R.layout.home_item_album_6);
+        addItemType(HomeItem.ALBUM_LIST, R.layout.home_item_album_5);
         addItemType(HomeItem.REFRESH, R.layout.home_layout_item_refresh);
+        addItemType(HomeItem.CATEGOTY, R.layout.home_fragment_category);
         addItemType(HomeItem.LINE, R.layout.home_item_line);
     }
 
@@ -66,20 +77,24 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
                 onBindBanner(helper, item);
                 break;
             case HomeItem.NAVIGATION_LIST:
-                onBindNavigationList(helper.getView(R.id.recyclerview),item);
+                onBindNavigationList(helper.getView(R.id.recyclerview), item);
                 break;
             case HomeItem.NAVIGATION_GRID:
-                onBindNavigationGrid(helper,item);
+                onBindNavigationGrid(helper, item);
                 break;
-            case HomeItem.ALBUM_3:
-            case HomeItem.ALBUM_6:
+            case HomeItem.NAVIGATION_CAT:
+                onBindNavigationCat(helper.getView(R.id.recyclerview), item);
+                break;
+            case HomeItem.ALBUM_GRID:
                 onBindAlbum3_6(helper, item);
                 break;
-            case HomeItem.ALBUM_5:
+            case HomeItem.ALBUM_LIST:
                 onBindAlbum5(helper, item);
                 break;
         }
     }
+
+
     private void onBindBanner(BaseViewHolder helper, HomeItem item) {
         Banner banner = helper.getView(R.id.banner);
         if (!banner.getImageUrls().equals(item.getData().getBannerBeans())) {
@@ -97,8 +112,9 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
             rvNavitioin.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
             rvNavitioin.setHasFixedSize(true);
             navigationAdapter.bindToRecyclerView(rvNavitioin);
-            navigationAdapter.setOnItemClickListener((adapter, view, position) -> RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                    .withInt(KeyCode.Home.CATEGORY,item.getData().getNavCategory())
+            navigationAdapter.setOnItemClickListener((adapter, view, position) ->
+                    RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
+                    .withInt(KeyCode.Home.CATEGORY, item.getData().getNavCategory())
                     .withString(KeyCode.Home.TAG, navigationItems.get(position).getValue())
                     .withString(KeyCode.Home.TITLE, navigationItems.get(position).getLabel())));
         }
@@ -108,24 +124,53 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
     private void onBindNavigationGrid(BaseViewHolder helper, HomeItem item) {
         for (int i = 1; i <= 15; i++) {
             RadioCategoryItem categoryItem = helper.getView(ResourceUtils.getIdByName("nav_" + i));
-            if(i <= item.getData().getNavigationItems().size()){
+            if (i <= item.getData().getNavigationItems().size()) {
                 NavigationItem navigationItem = item.getData().getNavigationItems().get(i - 1);
                 categoryItem.setCategory(item.getData().getNavCategory());
                 categoryItem.setText(navigationItem.getLabel());
                 categoryItem.setTag(navigationItem.getValue());
                 categoryItem.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 categoryItem.setVisibility(View.GONE);
             }
         }
     }
 
+    private void onBindNavigationCat(RecyclerView rvNavitioin, HomeItem item) {
+        if (rvNavitioin.getAdapter() == null) {
+            List<NavigationItem> navigationItems = item.getData().getNavigationItems();
+            NavigationAdapter navigationAdapter = new NavigationAdapter(R.layout.home_item_navigation);
+            navigationAdapter.setNewData(item.getData().getNavigationItems());
+            rvNavitioin.setAdapter(navigationAdapter);
+            rvNavitioin.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
+            rvNavitioin.setHasFixedSize(true);
+            navigationAdapter.bindToRecyclerView(rvNavitioin);
+
+            navigationAdapter.setOnItemClickListener((adapter, view, position) -> {
+                if (TextUtils.isEmpty(navigationItems.get(position).getValue())) {
+                    RouteHelper.navigateTo(Constants.Router.Home.F_RANK);
+                } else {
+                    RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
+                            .withInt(KeyCode.Home.CATEGORY, Integer.parseInt(navigationItems.get(position).getValue()))
+                            .withString(KeyCode.Home.TITLE, navigationItems.get(position).getLabel()));
+                }
+            });
+        }
+    }
+
     private void onBindAlbum3_6(BaseViewHolder helper, HomeItem item) {
         ItemHeader itemHeader = (ItemHeader) helper.getView(R.id.ih_title);
-        ColumnBean columnBean = item.getData().getColumnDetailDTOPair().first;
-        itemHeader.setTitle(getTiltle(columnBean));
+        List<Album> albums;
         itemHeader.setTag(item);
-        List<Album> albums = item.getData().getColumnDetailDTOPair().second.getColumns();
+        boolean isGuessLike = !CollectionUtils.isEmpty(item.getData().getGussLikeAlbumList());
+        if(isGuessLike){
+            albums = item.getData().getGussLikeAlbumList();
+            itemHeader.setTitle("猜你喜欢");
+        }else {
+            albums = item.getData().getColumnDetailDTOPair().second.getColumns();
+            ColumnBean columnBean = item.getData().getColumnDetailDTOPair().first;
+            itemHeader.setTitle(getTiltle(columnBean));
+        }
         for (int i = 1; i <= 6; i++) {
             View view = helper.getView(ResourceUtils.getIdByName("layout_album_" + i));
             if (i <= albums.size()) {
@@ -136,6 +181,24 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
                 ((TextView) view.findViewById(R.id.tv_playcount)).setText(ZhumulangmaUtil.toWanYi(album.getPlayCount()));
                 ((TextView) view.findViewById(R.id.tv_title)).setText(album.getAlbumTitle());
                 view.setVisibility(View.VISIBLE);
+                TextView tvDesc = view.findViewById(R.id.tv_desc);
+                TextView tvTitle = view.findViewById(R.id.tv_title);
+                ViewGroup.LayoutParams layoutParams = tvTitle.getLayoutParams();
+                String showDesc = "";
+                try {
+                    showDesc = item.getData().getColumnDetailDTOPair().first.getTitle().split(COLUMN_TITLE_SEPARATOR)[COLUMN_ALBUM_TYPE_INDEX];
+                } catch (Exception ignored) {
+                }
+                if (showDesc.equalsIgnoreCase("d")) {
+                    tvDesc.setVisibility(View.VISIBLE);
+                    tvDesc.setText(album.getAlbumIntro());
+                    layoutParams.height = SizeUtils.dp2px(23);
+                    tvTitle.setMaxLines(1);
+                } else {
+                    tvDesc.setVisibility(View.GONE);
+                    layoutParams.height = SizeUtils.dp2px(43);
+                    tvTitle.setMaxLines(2);
+                }
             } else {
                 view.setTag(null);
                 view.setVisibility(View.GONE);
@@ -171,7 +234,7 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: ");
+        Log.d(TAG, "onCreateViewHolder: " + viewType);
         return super.onCreateViewHolder(parent, viewType);
     }
 
@@ -196,16 +259,22 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
                     baseViewHolder.getView(R.id.iv_more).setVisibility(View.GONE);
                 });
                 break;
-            case HomeItem.ALBUM_3:
-            case HomeItem.ALBUM_5:
-            case HomeItem.ALBUM_6:
+            case HomeItem.ALBUM_LIST:
+            case HomeItem.ALBUM_GRID:
                 ItemHeader itemHeader = baseViewHolder.getView(R.id.ih_title);
                 itemHeader.setOnClickListener(v -> {
                     HomeItem homeItem = (HomeItem) v.getTag();
-                    RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                            .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
-                            .withString(KeyCode.Home.COLUMN, String.valueOf(homeItem.getData().getColumnDetailDTOPair().first.getId()))
-                            .withString(KeyCode.Home.TITLE, itemHeader.getTitle()));
+                    boolean isGuessLike = !CollectionUtils.isEmpty(homeItem.getData().getGussLikeAlbumList());
+                    if (isGuessLike) {
+                        RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
+                                .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.LIKE)
+                                .withString(KeyCode.Home.TITLE, itemHeader.getTitle()));
+                    } else {
+                        RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
+                                .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
+                                .withString(KeyCode.Home.COLUMN, String.valueOf(homeItem.getData().getColumnDetailDTOPair().first.getId()))
+                                .withString(KeyCode.Home.TITLE, itemHeader.getTitle()));
+                    }
                 });
                 for (int i = 1; i <= 6; i++) {
                     View view = baseViewHolder.getView(ResourceUtils.getIdByName("layout_album_" + i));
@@ -213,9 +282,13 @@ public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHol
                         int finalI = i - 1;
                         view.setOnClickListener(v -> {
                             HomeItem homeItem = (HomeItem) v.getTag();
+                            boolean isGuessLike = !CollectionUtils.isEmpty(homeItem.getData().getGussLikeAlbumList());
                             if (homeItem != null) {
+                                Album album = isGuessLike?
+                                         homeItem.getData().getGussLikeAlbumList().get(finalI)
+                                        :homeItem.getData().getColumnDetailDTOPair().second.getColumns().get(finalI);
                                 RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
-                                        .withLong(KeyCode.Home.ALBUMID, homeItem.getData().getColumnDetailDTOPair().second.getColumns().get(finalI).getId()));
+                                        .withLong(KeyCode.Home.ALBUMID, album.getId()));
                             }
                         });
                     }

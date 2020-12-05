@@ -2,6 +2,7 @@ package com.gykj.zhumulangma.home.fragment;
 
 
 import android.Manifest;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,9 +22,10 @@ import com.gykj.zhumulangma.common.mvvm.view.BaseMvvmFragment;
 import com.gykj.zhumulangma.common.util.RouteHelper;
 import com.gykj.zhumulangma.common.util.ToastUtil;
 import com.gykj.zhumulangma.home.R;
+import com.gykj.zhumulangma.home.bean.TabBean;
 import com.gykj.zhumulangma.home.databinding.HomeFragmentMainBinding;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.MainHomeViewModel;
 import com.jakewharton.rxbinding3.view.RxView;
 import com.sunfusheng.marqueeview.MarqueeView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -33,7 +35,6 @@ import com.ximalaya.ting.android.opensdk.model.word.HotWord;
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -44,13 +45,11 @@ import java.util.concurrent.TimeUnit;
  * <br/>Description:首页
  */
 @Route(path = Constants.Router.Home.F_MAIN)
-public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, HomeViewModel>
+public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, MainHomeViewModel>
         implements View.OnClickListener, MarqueeView.OnItemClickListener {
-
 
     public MainHomeFragment() {
     }
-
 
     @Override
     public int onBindLayout() {
@@ -63,35 +62,10 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
     }
 
     @Override
-    protected void loadView() {
-        super.loadView();
-        clearStatus();
-    }
-
-    @Override
     public void initView() {
-        String[] tabs = {"热门", "分类", "小说", "儿童", "相声"};
-
         if (StatusBarUtils.supportTransparentStatusBar()) {
             mBinding.clTitlebar.setPadding(0, BarUtils.getStatusBarHeight(), 0, 0);
         }
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new HotFragment());
-        fragments.add(new CategoryFragment());
-        fragments.add(new NovelFragment());
-        fragments.add(new ChildFragment());
-        fragments.add(new CrosstalkFragment());
-
-        TFragmentStateAdapter adapter = new TFragmentStateAdapter(this, fragments);
-        mBinding.viewpager.setOffscreenPageLimit(fragments.size());
-        mBinding.viewpager.setAdapter(adapter);
-
-        final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
-        commonNavigator.setAdapter(new TabNavigatorAdapter(Arrays.asList(tabs), mBinding.viewpager, 50));
-        commonNavigator.setAdjustMode(true);
-        mBinding.magicIndicator.setNavigator(commonNavigator);
-        ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
-
     }
 
     @Override
@@ -120,7 +94,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
 
     @Override
     public void initData() {
-        mViewModel.getHotWords();
+        mViewModel.init();
     }
 
     @Override
@@ -158,8 +132,8 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
     }
 
     @Override
-    public Class<HomeViewModel> onBindViewModel() {
-        return HomeViewModel.class;
+    public Class<MainHomeViewModel> onBindViewModel() {
+        return MainHomeViewModel.class;
     }
 
     @Override
@@ -175,6 +149,27 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
                 words.add(word.getSearchword());
             }
             mBinding.marqueeView.startWithList(words);
+        });
+        mViewModel.getTabsEvent().observe(this, tabBeans -> {
+            List<String> titles = new ArrayList<>(tabBeans.size());
+            List<Fragment> fragments = new ArrayList<>();
+            for (TabBean tabBean : tabBeans) {
+                HomeFragment homeFragment = new HomeFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(KeyCode.Home.TAB,tabBean);
+                homeFragment.setArguments(bundle);
+                titles.add(tabBean.getCatName());
+                fragments.add(homeFragment);
+            }
+            TFragmentStateAdapter adapter = new TFragmentStateAdapter(MainHomeFragment.this, fragments);
+            mBinding.viewpager.setOffscreenPageLimit(fragments.size());
+            mBinding.viewpager.setAdapter(adapter);
+
+            final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
+            commonNavigator.setAdapter(new TabNavigatorAdapter(titles, mBinding.viewpager, 50));
+            commonNavigator.setAdjustMode(true);
+            mBinding.magicIndicator.setNavigator(commonNavigator);
+            ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
         });
     }
 

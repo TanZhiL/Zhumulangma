@@ -25,7 +25,8 @@ import java.util.ArrayList;
  * <br/>Email: 1071931588@qq.com
  * <br/>Description:小说
  */
-public class NovelFragment extends BaseRefreshFragment<CommonLayoutRefreshListBinding, NovelViewModel, HomeItem> {   private HomeAdapter mHomeAdapter;
+public class NovelFragment extends BaseRefreshFragment<CommonLayoutRefreshListBinding, NovelViewModel, HomeItem> {
+    private HomeAdapter mHomeAdapter;
 
         public NovelFragment() {
         }

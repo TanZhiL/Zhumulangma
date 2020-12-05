@@ -60,36 +60,22 @@ import static com.gykj.zhumulangma.common.util.ZhumulangmaUtil.commonParams;
 public class ZhumulangmaModel extends BaseModel {
 
     public static final String OPERATION_CATEGORY_ID = "operation_category_id";
-    public static final String COLUMN_CATEGORY_CHILD = "1000535";
-    public static final int CHILD_NAVIGATION_CATEGORY= 6;
-    public static final int CROSSTALK_NAVIGATION_CATEGORY= 12;
-    public static final int NOVEL_NAVIGATION_CATEGORY= 3;
     public static final String COLUMN_CATEGORY_CROSSTALK = "1000537";
     public static final String COLUMN_CATEGORY_NOVEL= "1000538";
+    public static final String COLUMN_CATEGORY_CHILD = "1000535";
+    public static final String CONFIG_BANNER_ID = "35533";
+    public static final int NOVEL_NAVIGATION_CATEGORY= 3;
+    public static final int HOT_NAVIGATION_CATEGORY= 1;
+    public static final int CHILD_NAVIGATION_CATEGORY= 6;
+    public static final int CROSSTALK_NAVIGATION_CATEGORY= 12;
     public static final String IS_PAID = "is_paid";
     public static final String COLUMN_TITLE_SEPARATOR = "/";
     public static final String COLUMN_PAGE_SIZE = "3";
     public static final int COLUMN_TITLE_INDEX = 0;
     public static final int COLUMN_SIZE_INDEX = 1;
+    public static final int COLUMN_ALBUM_TYPE_INDEX = 2;
     public static final String SCOPE = "scope";
     public static final String IDS = "ids";
-    public static final String HOT_COLUMN_ID = "10054";
-    public static final String NOVE_DAILY_ID = "10056";
-    public static final String NOVE_DAJIA_ID = "10048";
-    public static final String NOVE_ZHANGGUI_ID = "10053";
-    public static final String NOVE_YOUNG_ID = "10055";
-
-    public static final String CHILD_JDGS_ID = "10057";
-    public static final String CHILD_DHSJ_ID = "10062";
-    public static final String CHILD_GXJD_ID = "10061";
-    public static final String CHILD_QZEG_ID = "10058";
-    public static final String CHILD_JZZQ_ID = "10059";
-
-    public static final String CROSSTALK_DJJX_ID = "10075";
-    public static final String CROSSTALK_XSJX_ID = "10073";
-    public static final String CROSSTALK_PSLB_ID = "10071";
-    public static final String CROSSTALK_XPHC_ID = "10070";
-    public static final String CROSSTALK_RMTJ_ID = "10069";
 
     public ZhumulangmaModel(Application application) {
         super(application);
@@ -185,6 +171,19 @@ public class ZhumulangmaModel extends BaseModel {
                 .compose(RxAdapter.schedulersTransformer())
                 .compose(RxAdapter.exceptionTransformer());
     }
+    /**
+     * 获取猜你喜欢
+     *
+     * @param specificParams
+     * @return
+     */
+    public Observable<List<Album>> getGuessLike(Map<String, String> specificParams) {
+        return commonParams(specificParams).flatMap((Function<Map<String, String>,
+                ObservableSource<List<Album>>>) stringStringMap ->
+                mNetManager.getHomeService().getGuessLike(stringStringMap))
+                .compose(RxAdapter.exceptionTransformer());
+    }
+
     /**
      * 获取猜你喜欢
      *

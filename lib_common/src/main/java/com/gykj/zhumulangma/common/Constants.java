@@ -18,6 +18,7 @@ public interface Constants {
             String F_MAIN = "/home/main";
             String F_SEARCH = "/home/search";
             String F_RANK = "/home/rank";
+            String F_HOT = "/home/hot";
             String F_SEARCH_RESULT = "/home/search/result";
             String F_SEARCH_SUGGEST = "/home/search/suggest";
             String F_ALBUM_LIST = "/home/album/list";
