@@ -68,25 +68,10 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
         super(application, model);
     }
 
-    /**
-     * 取消订阅
-     *
-     * @param album
-     */
-    public void unsubscribe(Album album) {
-        mModel.remove(SubscribeBean.class, album.getId()).subscribe(aBoolean ->
-                getSubscribeEvent().setValue(false), Throwable::printStackTrace);
 
-    }
-
-    /**
-     * 订阅
-     *
-     * @param album
-     */
-    public void subscribe(Album album) {
-        mModel.insert(new SubscribeBean(album.getId(), album, System.currentTimeMillis()))
-                .subscribe(subscribeBean -> getSubscribeEvent().setValue(true), Throwable::printStackTrace);
+    public void setArguments(long albumId,String sort) {
+        mAlbumId = albumId;
+        mSort = sort;
     }
 
     /**
@@ -366,6 +351,26 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
             }
         }
     }
+    /**
+     * 取消订阅
+     *
+     * @param album
+     */
+    public void unsubscribe(Album album) {
+        mModel.remove(SubscribeBean.class, album.getId()).subscribe(aBoolean ->
+                getSubscribeEvent().setValue(false), Throwable::printStackTrace);
+
+    }
+
+    /**
+     * 订阅
+     *
+     * @param album
+     */
+    public void subscribe(Album album) {
+        mModel.insert(new SubscribeBean(album.getId(), album, System.currentTimeMillis()))
+                .subscribe(subscribeBean -> getSubscribeEvent().setValue(true), Throwable::printStackTrace);
+    }
 
     @Override
     public void onViewRefresh() {
@@ -377,13 +382,6 @@ public class AlbumDetailViewModel extends BaseRefreshViewModel<ZhumulangmaModel,
         getTrackList(false);
     }
 
-    public void setAlbumId(long albumId) {
-        mAlbumId = albumId;
-    }
-
-    public void setSort(String sort) {
-        mSort = sort;
-    }
 
     public SingleLiveEvent<Album> getAlbumEvent() {
         return mAlbumEvent = createLiveData(mAlbumEvent);
