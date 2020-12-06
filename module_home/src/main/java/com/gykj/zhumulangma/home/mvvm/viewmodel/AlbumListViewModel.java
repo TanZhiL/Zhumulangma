@@ -29,17 +29,19 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
     private int curPage = 1;
     private int mCategory;
     private String mTag;
-    private String mColumnId;
+    private int mColumnId;
     private long mAnnouncerId;
 
     public AlbumListViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
     }
-
-    public void init(int category, String tag, String column) {
+    public void setArguments(int category, String tag, int column,long announcerId){
         mCategory = category;
         mTag = tag;
         mColumnId = column;
+        mAnnouncerId = announcerId;
+    }
+    public void init() {
         Map<String, String> map = new HashMap<String, String>();
         switch (mCategory) {
             case AlbumListActivity.LIKE:
@@ -98,7 +100,7 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
                         });
                 break;
             case AlbumListActivity.COLUMN:
-                map.put(DTransferConstants.ID, mColumnId);
+                map.put(DTransferConstants.ID, String.valueOf(mColumnId));
                 map.put(DTransferConstants.PAGE, String.valueOf(curPage));
                 mModel.getBrowseAlbumColumn(map)
                         .subscribe(albumList -> {
@@ -158,7 +160,7 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
     }
     private void getMoreRecommends() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, mColumnId);
+        map.put(DTransferConstants.ID, String.valueOf(mColumnId));
         map.put(DTransferConstants.PAGE, String.valueOf(curPage));
         mModel.getBrowseAlbumColumn(map)
                 .subscribe(albumList -> {
@@ -220,7 +222,4 @@ public class AlbumListViewModel extends BaseRefreshViewModel<ZhumulangmaModel, A
         return mInitAlbumsEvent = createLiveData(mInitAlbumsEvent);
     }
 
-    public void setAnnouncerId(long announcerId) {
-        mAnnouncerId = announcerId;
-    }
 }

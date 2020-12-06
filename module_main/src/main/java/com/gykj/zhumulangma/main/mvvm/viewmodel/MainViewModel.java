@@ -153,7 +153,12 @@ public class MainViewModel extends BaseViewModel<MainModel> {
     }
 
     public void initAd() {
-        mModel.getSPLong(Constants.SP.AD_TIME, 0)
+        if (new File(App.getInstance().getFilesDir().getAbsolutePath() + Constants.Default.AD_NAME).exists()) {
+            getShowAdEvent().call();
+        } else {
+            getBing();
+        }
+/*        mModel.getSPLong(Constants.SP.AD_TIME, 0)
                 .doOnSubscribe(this)
                 .subscribe(aLong -> {
                     if (System.currentTimeMillis() - aLong > 5 * 60 * 1000
@@ -162,7 +167,7 @@ public class MainViewModel extends BaseViewModel<MainModel> {
                     } else {
                         getBing();
                     }
-                }, Throwable::printStackTrace);
+                }, Throwable::printStackTrace);*/
     }
 
     public void adDissmiss() {

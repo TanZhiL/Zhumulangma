@@ -83,6 +83,7 @@ public class MainActivity extends BaseMvvmActivity<MainActivityMainBinding,MainV
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.NullTheme);
         super.onCreate(savedInstanceState);
         initAd();
         //申请权限

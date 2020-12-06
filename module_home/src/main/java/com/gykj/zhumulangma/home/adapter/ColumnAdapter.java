@@ -272,7 +272,7 @@ public class ColumnAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewH
                     } else {
                         RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
                                 .withInt(KeyCode.Home.CATEGORY, AlbumListActivity.COLUMN)
-                                .withString(KeyCode.Home.COLUMN, String.valueOf(homeItem.getData().getColumnDetailDTOPair().first.getId()))
+                                .withInt(KeyCode.Home.COLUMN, homeItem.getData().getColumnDetailDTOPair().first.getId())
                                 .withString(KeyCode.Home.TITLE, itemHeader.getTitle()));
                     }
                 });

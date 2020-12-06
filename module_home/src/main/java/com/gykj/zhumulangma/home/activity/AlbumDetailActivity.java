@@ -189,8 +189,7 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
 
     @Override
     public void initData() {
-        mViewModel.setAlbumId(mAlbumId);
-        mViewModel.setSort(mSort);
+        mViewModel.setArguments(mAlbumId,mSort);
         mViewModel.init();
     }
 

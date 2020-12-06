@@ -46,7 +46,7 @@ public class AlbumListActivity extends BaseRefreshActivity<CommonLayoutRefreshLi
     @Autowired(name = KeyCode.Home.TAG)
     public String mTag;
     @Autowired(name = KeyCode.Home.COLUMN)
-    public String mColumn;
+    public int mColumn;
     @Autowired(name = KeyCode.Home.ANNOUNCER_ID)
     public long mAnnouncerId;
     @Autowired(name = KeyCode.Home.TITLE)
@@ -87,8 +87,8 @@ public class AlbumListActivity extends BaseRefreshActivity<CommonLayoutRefreshLi
 
     @Override
     public void initData() {
-        mViewModel.setAnnouncerId(mAnnouncerId);
-        mViewModel.init(mCategory,mTag,mColumn);
+        mViewModel.setArguments(mCategory,mTag,mColumn,mAnnouncerId);
+        mViewModel.init();
     }
 
     @Override
