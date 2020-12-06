@@ -1,5 +1,7 @@
 package com.gykj.zhumulangma.home.bean;
 
+import java.util.List;
+
 /**
  * Author: Thomas.<br/>
  * Date: 2020/12/5 17:15<br/>
@@ -9,13 +11,13 @@ package com.gykj.zhumulangma.home.bean;
  * Description:
  */
 public class ConfigBean {
-    private String tabs;
+    private List<TabBean> tabs;
 
-    public String getTabs() {
+    public List<TabBean> getTabs() {
         return tabs;
     }
 
-    public void setTabs(String tabs) {
+    public void setTabs(List<TabBean> tabs) {
         this.tabs = tabs;
     }
 }

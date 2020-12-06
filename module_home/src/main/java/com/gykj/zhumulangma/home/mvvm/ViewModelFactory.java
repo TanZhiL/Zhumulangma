@@ -17,7 +17,7 @@ import com.gykj.zhumulangma.home.mvvm.viewmodel.CategoryViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.ChildViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.CrosstalkViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.MainHomeViewModel;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.ColumnViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.NovelViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayRadioViewModel;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.PlayTrackViewModel;
@@ -58,8 +58,8 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(HomeViewModel.class)) {
-            return (T) new HomeViewModel(mApplication, new ZhumulangmaModel(mApplication));
+        if (modelClass.isAssignableFrom(ColumnViewModel.class)) {
+            return (T) new ColumnViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(ChildViewModel.class)) {
             return (T) new ChildViewModel(mApplication, new ZhumulangmaModel(mApplication));
         } else if (modelClass.isAssignableFrom(NovelViewModel.class)) {

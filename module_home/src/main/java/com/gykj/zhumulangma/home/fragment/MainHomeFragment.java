@@ -154,12 +154,12 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
             List<String> titles = new ArrayList<>(tabBeans.size());
             List<Fragment> fragments = new ArrayList<>();
             for (TabBean tabBean : tabBeans) {
-                HomeFragment homeFragment = new HomeFragment();
+                ColumnFragment columnFragment = new ColumnFragment();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(KeyCode.Home.TAB,tabBean);
-                homeFragment.setArguments(bundle);
+                columnFragment.setArguments(bundle);
                 titles.add(tabBean.getCatName());
-                fragments.add(homeFragment);
+                fragments.add(columnFragment);
             }
             TFragmentStateAdapter adapter = new TFragmentStateAdapter(MainHomeFragment.this, fragments);
             mBinding.viewpager.setOffscreenPageLimit(fragments.size());

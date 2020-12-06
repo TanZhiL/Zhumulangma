@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Author: Thomas.<br/>
  * Date: 2020/12/5 17:18<br/>
@@ -28,27 +30,40 @@ public class TabBean implements Parcelable {
     private String catId;
     @SerializedName("cat_name")
     private String catName;
-    @SerializedName("nav_ids")
-    private String navIds;
     @SerializedName("nav_type")
     private String navType;
     @SerializedName("show_like")
     private boolean showLike;
-
     @SerializedName("is_cat")
     private boolean isCat;
     @SerializedName("nav_cat")
     private String navCatId;
+    @SerializedName("nav_items")
+    private List<NavigationItem> navItems;
 
 
     protected TabBean(Parcel in) {
         catId = in.readString();
         catName = in.readString();
-        navIds = in.readString();
         navType = in.readString();
         showLike = in.readByte() != 0;
         isCat = in.readByte() != 0;
         navCatId = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(catId);
+        dest.writeString(catName);
+        dest.writeString(navType);
+        dest.writeByte((byte) (showLike ? 1 : 0));
+        dest.writeByte((byte) (isCat ? 1 : 0));
+        dest.writeString(navCatId);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<TabBean> CREATOR = new Creator<TabBean>() {
@@ -79,13 +94,6 @@ public class TabBean implements Parcelable {
         this.catName = catName;
     }
 
-    public String getNavIds() {
-        return navIds;
-    }
-
-    public void setNavIds(String navIds) {
-        this.navIds = navIds;
-    }
 
     public String getNavType() {
         return navType;
@@ -111,10 +119,6 @@ public class TabBean implements Parcelable {
         isCat = cat;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
     public String getNavCatId() {
         return navCatId;
@@ -124,14 +128,11 @@ public class TabBean implements Parcelable {
         this.navCatId = navCatId;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(catId);
-        dest.writeString(catName);
-        dest.writeString(navIds);
-        dest.writeString(navType);
-        dest.writeByte((byte) (showLike ? 1 : 0));
-        dest.writeByte((byte) (isCat ? 1 : 0));
-        dest.writeString(navCatId);
+    public List<NavigationItem> getNavItems() {
+        return navItems;
+    }
+
+    public void setNavItems(List<NavigationItem> navItems) {
+        this.navItems = navItems;
     }
 }

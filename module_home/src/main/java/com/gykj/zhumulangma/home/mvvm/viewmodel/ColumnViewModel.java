@@ -7,8 +7,6 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.CollectionUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.gykj.zhumulangma.common.bean.ColumnBean;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.extra.RxField;
@@ -25,7 +23,6 @@ import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -44,13 +41,13 @@ import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TIT
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.IS_PAID;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.OPERATION_CATEGORY_ID;
 
-public class HomeViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeItem> {
+public class ColumnViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeItem> {
     private SingleLiveEvent<List<HomeItem>> mHomeItemsEvent;
     private int mCurPage = 1;
     private final String mBannerCount;
     private TabBean mTabBean;
 
-    public HomeViewModel(@NonNull Application application, ZhumulangmaModel model) {
+    public ColumnViewModel(@NonNull Application application, ZhumulangmaModel model) {
         super(application, model);
         mBannerCount = String.valueOf(3 + new Random().nextInt(5));
     }
@@ -78,7 +75,6 @@ public class HomeViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeIt
             return;
         }
         RxField<List<HomeItem>> rxField = new RxField<>(new ArrayList<>());
-        RxField<List<NavigationItem>> rxNavs = new RxField<>(new ArrayList<>());
         //获取banner
         Map<String, String> map = new HashMap<String, String>();
         map.put(DTransferConstants.PAGE_SIZE, mBannerCount);
@@ -90,24 +86,10 @@ public class HomeViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeIt
                     homeBean.setBannerBeans(bannerV2List.getBanners());
                     rxField.get().add(new HomeItem(HomeItem.BANNER, homeBean));
                 })
-                .flatMap((Function<BannerDTO, ObservableSource<String>>) bannerDTO -> {
-                    String navIds = mTabBean.getNavIds();
-                    return Observable.fromIterable(Arrays.asList(navIds.split(",")));
-                })
-                .flatMap((Function<String, ObservableSource<BannerDTO>>) s -> {
-                    Map<String, String> map1 = new HashMap<>();
-                    map1.put(DTransferConstants.ID, s);
-                    return mModel.getBanners1(map1);
-                }).map(bannerDTO -> {
-                    String bannerTitle = bannerDTO.getBanners().get(0).getBannerTitle();
-                    rxNavs.get().addAll(new Gson().fromJson(bannerTitle, new TypeToken<List<NavigationItem>>() {
-                    }.getType()));
-                    return bannerDTO;
-                }).toList()
-                .flatMapObservable((Function<List<BannerDTO>, ObservableSource<List<Album>>>) bannerDTO -> {
+                .flatMap((Function<BannerDTO, ObservableSource<List<Album>>>) bannerDTO -> {
                     int navType = getNavType();
                     HomeBean homeBean = new HomeBean();
-                    homeBean.setNavigationItems(rxNavs.get());
+                    homeBean.setNavigationItems(mTabBean.getNavItems());
                     if (!TextUtils.isEmpty(mTabBean.getNavCatId())) {
                         homeBean.setNavCategory(Integer.parseInt(mTabBean.getNavCatId()));
                     }
@@ -145,6 +127,8 @@ public class HomeViewModel extends BaseRefreshViewModel<ZhumulangmaModel, HomeIt
                     e.printStackTrace();
                 });
     }
+
+
 
     private int getNavType() {
         int navType = HomeItem.NAVIGATION_LIST;

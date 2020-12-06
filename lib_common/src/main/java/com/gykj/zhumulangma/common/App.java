@@ -75,6 +75,7 @@ public class App extends MultiDexApplication {
         if (BaseUtil.isMainProcess(this)) {
             ThirdHelper.getInstance(this)
 //                    .initLeakCanary()
+                    .initBmob()
                     .initSpeech()
                     .initAgentWebX5()
                     .initAspectj(new PointHelper(this))

@@ -12,7 +12,7 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.home.R;
-import com.gykj.zhumulangma.home.adapter.HomeAdapter;
+import com.gykj.zhumulangma.home.adapter.ColumnAdapter;
 import com.gykj.zhumulangma.home.bean.HomeItem;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.ChildViewModel;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * <br/>Description:精品
  */
 public class ChildFragment extends BaseRefreshFragment<CommonLayoutRefreshListBinding, ChildViewModel, HomeItem> {
-    private HomeAdapter mHomeAdapter;
+    private ColumnAdapter mColumnAdapter;
 
     public ChildFragment() {
 
@@ -44,19 +44,19 @@ public class ChildFragment extends BaseRefreshFragment<CommonLayoutRefreshListBi
 
     @Override
     public void initView() {
-        mHomeAdapter = new HomeAdapter(new ArrayList<>());
+        mColumnAdapter = new ColumnAdapter(new ArrayList<>());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
 //        linearLayoutManager.setRecycleChildrenOnDetach(true);
         mBinding.recyclerview.setLayoutManager(linearLayoutManager);
         mBinding.recyclerview.setHasFixedSize(true);
 //        mBinding.recyclerview.setRecycledViewPool(RECYCLEDVIEWPOOL);
-        mHomeAdapter.bindToRecyclerView(mBinding.recyclerview);
+        mColumnAdapter.bindToRecyclerView(mBinding.recyclerview);
     }
 
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(mBinding.refreshLayout, mHomeAdapter);
+        return new WrapRefresh(mBinding.refreshLayout, mColumnAdapter);
     }
 
 
@@ -68,7 +68,7 @@ public class ChildFragment extends BaseRefreshFragment<CommonLayoutRefreshListBi
     @Override
     public void initViewObservable() {
         mViewModel.getNovelItemsEvent().observe(this, novelItems -> {
-            mHomeAdapter.setNewData(novelItems);
+            mColumnAdapter.setNewData(novelItems);
             //重新恢复可下拉加载更多
             mBinding.refreshLayout.setNoMoreData(false);
         });

@@ -64,7 +64,7 @@ ext {
             "location":"4.7.0",
             "crashreport_upgrade":"1.4.1",
             "tinker-android-lib":"1.9.9",
-            "bmob":"3.7.3-rc1",
+            "bmob":"3.7.8",
             "SkeletonBlock":"1.0.4",
             "RxCache":"1.8.3-2.x",
             "Jolyglot-gson":"0.0.4",

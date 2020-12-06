@@ -104,6 +104,7 @@ dependencies {
     api rootProject.ext.dependencies["agentweb"]
     api rootProject.ext.dependencies["agentweb_filechooser"]
     api rootProject.ext.dependencies["agentweb_downloader"]
+    api rootProject.ext.dependencies["bmob"]
 
 
     api files('libs/Msc.jar')
