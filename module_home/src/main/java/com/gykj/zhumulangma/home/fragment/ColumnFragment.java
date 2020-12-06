@@ -13,14 +13,14 @@ import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
 import com.gykj.zhumulangma.home.R;
-import com.gykj.zhumulangma.home.adapter.HomeAdapter;
+import com.gykj.zhumulangma.home.adapter.ColumnAdapter;
 import com.gykj.zhumulangma.home.bean.HomeItem;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
-import com.gykj.zhumulangma.home.mvvm.viewmodel.HomeViewModel;
+import com.gykj.zhumulangma.home.mvvm.viewmodel.ColumnViewModel;
 
 import java.util.ArrayList;
 
-import static com.gykj.zhumulangma.home.adapter.HomeAdapter.RECYCLEDVIEWPOOL;
+import static com.gykj.zhumulangma.home.adapter.ColumnAdapter.RECYCLEDVIEWPOOL;
 
 /**
  * Author: Thomas.
@@ -29,11 +29,11 @@ import static com.gykj.zhumulangma.home.adapter.HomeAdapter.RECYCLEDVIEWPOOL;
  * <br/>Description:热门
  */
 
-public class HomeFragment extends BaseRefreshFragment<CommonLayoutRefreshListBinding, HomeViewModel, HomeItem>{
-    private HomeAdapter mHomeAdapter;
+public class ColumnFragment extends BaseRefreshFragment<CommonLayoutRefreshListBinding, ColumnViewModel, HomeItem>{
+    private ColumnAdapter mColumnAdapter;
 
 
-    public HomeFragment() {
+    public ColumnFragment() {
     }
 
 
@@ -50,19 +50,19 @@ public class HomeFragment extends BaseRefreshFragment<CommonLayoutRefreshListBin
 
     @Override
     public void initView() {
-        mHomeAdapter = new HomeAdapter(new ArrayList<>(),mActivity);
+        mColumnAdapter = new ColumnAdapter(new ArrayList<>(),mActivity);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setRecycleChildrenOnDetach(true);
         mBinding.recyclerview.setLayoutManager(linearLayoutManager);
         mBinding.recyclerview.setHasFixedSize(true);
         mBinding.recyclerview.setRecycledViewPool(RECYCLEDVIEWPOOL);
-        mHomeAdapter.bindToRecyclerView(mBinding.recyclerview);
+        mColumnAdapter.bindToRecyclerView(mBinding.recyclerview);
     }
 
     @NonNull
     @Override
     protected WrapRefresh onBindWrapRefresh() {
-        return new WrapRefresh(mBinding.refreshLayout, mHomeAdapter);
+        return new WrapRefresh(mBinding.refreshLayout, mColumnAdapter);
     }
 
 
@@ -84,8 +84,8 @@ public class HomeFragment extends BaseRefreshFragment<CommonLayoutRefreshListBin
     }
 
     @Override
-    public Class<HomeViewModel> onBindViewModel() {
-        return HomeViewModel.class;
+    public Class<ColumnViewModel> onBindViewModel() {
+        return ColumnViewModel.class;
     }
 
     @Override
@@ -97,7 +97,7 @@ public class HomeFragment extends BaseRefreshFragment<CommonLayoutRefreshListBin
     @Override
     public void initViewObservable() {
         mViewModel.getHomeItemsEvent().observe(this, novelItems -> {
-            mHomeAdapter.setNewData(novelItems);
+            mColumnAdapter.setNewData(novelItems);
             //重新恢复可下拉加载更多
             mBinding.refreshLayout.setNoMoreData(false);
         });

@@ -4,32 +4,29 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 
-import com.blankj.utilcode.util.JsonUtils;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
 import com.gykj.zhumulangma.common.extra.RxField;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
-import com.gykj.zhumulangma.common.net.dto.BannerDTO;
+import com.gykj.zhumulangma.home.bean.ConfigBean;
+import com.gykj.zhumulangma.home.bean.Dictionary;
 import com.gykj.zhumulangma.home.bean.TabBean;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.word.HotWord;
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.bmob.v3.BmobQuery;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.CONFIG_BANNER_ID;
 
 /**
  * Author: Thomas.
@@ -48,25 +45,9 @@ public class MainHomeViewModel extends BaseViewModel<ZhumulangmaModel> {
 
     public void init() {
         RxField<List<TabBean>> tabs = new RxField<>(new ArrayList<>());
-        //获取banner
-        Map<String, String> map = new HashMap<String, String>();
-        map.put(DTransferConstants.ID, CONFIG_BANNER_ID);
-        mModel.getBanners1(map).flatMap((Function<BannerDTO, ObservableSource<String>>) bannerDTO -> {
-            String bannerTitle = bannerDTO.getBanners().get(0).getBannerTitle();
-            String tabs1 = JsonUtils.getString(bannerTitle, "tabs");
-            String[] split = tabs1.split(",");
-            return Observable.fromIterable(Arrays.asList(split));
-        }).flatMap((Function<String, ObservableSource<BannerDTO>>) s -> {
-            Map<String, String> map1 = new HashMap<>();
-            map1.put(DTransferConstants.ID, s);
-            return mModel.getBanners1(map1);
-        }).map(bannerDTO -> {
-            String bannerTitle = bannerDTO.getBanners().get(0).getBannerTitle();
-            tabs.get().addAll(new Gson().fromJson(bannerTitle, new TypeToken<List<TabBean>>() {
-            }.getType()));
-            return bannerDTO;
-        }).toList()
-                .flatMapObservable((Function<List<BannerDTO>, ObservableSource<HotWordList>>) bannerDTOS -> {
+        getTabsObservable()
+                .flatMap((Function<List<TabBean>, ObservableSource<HotWordList>>) bannerDTOS -> {
+                    tabs.get().addAll(bannerDTOS);
                     Map<String, String> map12 = new HashMap<String, String>();
                     map12.put(DTransferConstants.TOP, String.valueOf(20));
                     return mModel.getHotWords(map12);
@@ -93,6 +74,16 @@ public class MainHomeViewModel extends BaseViewModel<ZhumulangmaModel> {
                 });
     }
 
+    private Observable<List<TabBean>> getTabsObservable() {
+        BmobQuery<Dictionary> query = new BmobQuery<>();
+        query.addWhereEqualTo("name", "config");
+        return query.findObjectsObservable(Dictionary.class)
+                .map(strings -> {
+                    String value = strings.get(0).getValue();
+                    ConfigBean configBean = new Gson().fromJson(value, ConfigBean.class);
+                    return configBean.getTabs();
+                });
+    }
 
     public SingleLiveEvent<List<HotWord>> getHotWordsEvent() {
         return mHotWordsEvent = createLiveData(mHotWordsEvent);

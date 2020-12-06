@@ -24,6 +24,7 @@ import com.umeng.socialize.PlatformConfig;
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 import cat.ereza.customactivityoncrash.activity.DefaultErrorActivity;
 import cat.ereza.customactivityoncrash.config.CaocConfig;
+import cn.bmob.v3.Bmob;
 
 public class ThirdHelper {
 
@@ -134,7 +135,7 @@ public class ThirdHelper {
     }
 
     public ThirdHelper initBmob() {
-//        Bmob.initialize(mApplication, Constants.BMOB_ID);
+        Bmob.initialize(mApplication, Constants.BMOB_ID);
         return this;
     }
     public ThirdHelper initSpeech() {

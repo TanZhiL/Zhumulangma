@@ -34,17 +34,22 @@
     <remote-repository>
       <option name="id" value="E:\AndroidSdk\extras\m2repository" />
       <option name="name" value="E:\AndroidSdk\extras\m2repository" />
-      <option name="url" value="file:/E:/AndroidSdk/extras/m2repository" />
+      <option name="url" value="file:/$PROJECT_DIR$/../../AndroidSdk/extras/m2repository" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="E:\AndroidSdk\extras\google\m2repository" />
       <option name="name" value="E:\AndroidSdk\extras\google\m2repository" />
-      <option name="url" value="file:/E:/AndroidSdk/extras/google/m2repository" />
+      <option name="url" value="file:/$PROJECT_DIR$/../../AndroidSdk/extras/google/m2repository" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="E:\AndroidSdk\extras\android\m2repository" />
       <option name="name" value="E:\AndroidSdk\extras\android\m2repository" />
-      <option name="url" value="file:/E:/AndroidSdk/extras/android/m2repository" />
+      <option name="url" value="file:/$PROJECT_DIR$/../../AndroidSdk/extras/android/m2repository" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://dl.bintray.com/chaozhouzhang/maven" />
     </remote-repository>
   </component>
 </project>

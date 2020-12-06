@@ -47,15 +47,15 @@ import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TIT
  * Created by 10719
  * on 2019/6/17
  */
-public class HomeAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHolder> {
-    private static final String TAG = "HomeAdapter";
+public class ColumnAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHolder> {
+    private static final String TAG = "ColumnAdapter";
     public static final RecyclerView.RecycledViewPool RECYCLEDVIEWPOOL = new RecyclerView.RecycledViewPool();
 
-    public HomeAdapter(List<HomeItem> data) {
+    public ColumnAdapter(List<HomeItem> data) {
         super(data);
     }
 
-    public HomeAdapter(List<HomeItem> data, Context context) {
+    public ColumnAdapter(List<HomeItem> data, Context context) {
         super(data);
         mContext =context;
         addItemType(HomeItem.BANNER, R.layout.home_item_banner);
