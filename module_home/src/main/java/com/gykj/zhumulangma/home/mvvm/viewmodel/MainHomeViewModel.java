@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.gykj.zhumulangma.common.event.SingleLiveEvent;
-import com.gykj.zhumulangma.common.extra.RxField;
 import com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel;
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 import com.gykj.zhumulangma.home.bean.ConfigBean;
@@ -14,18 +13,14 @@ import com.gykj.zhumulangma.home.bean.Dictionary;
 import com.gykj.zhumulangma.home.bean.TabBean;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
 import com.ximalaya.ting.android.opensdk.model.word.HotWord;
-import com.ximalaya.ting.android.opensdk.model.word.HotWordList;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.bmob.v3.BmobQuery;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -44,19 +39,12 @@ public class MainHomeViewModel extends BaseViewModel<ZhumulangmaModel> {
     }
 
     public void init() {
-        RxField<List<TabBean>> tabs = new RxField<>(new ArrayList<>());
+        getHotWords();
         getTabsObservable()
-                .flatMap((Function<List<TabBean>, ObservableSource<HotWordList>>) bannerDTOS -> {
-                    tabs.get().addAll(bannerDTOS);
-                    Map<String, String> map12 = new HashMap<String, String>();
-                    map12.put(DTransferConstants.TOP, String.valueOf(20));
-                    return mModel.getHotWords(map12);
-                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pairs -> {
-                    getHotWordsEvent().setValue(pairs.getHotWordList());
-                    getTabsEvent().setValue(tabs.get());
+                    getTabsEvent().setValue(pairs);
                     getClearStatusEvent().call();
                 }, e ->
                 {

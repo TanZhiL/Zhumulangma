@@ -12,11 +12,14 @@ import com.gykj.zhumulangma.common.event.EventCode;
 import com.gykj.zhumulangma.common.event.FragmentEvent;
 import com.gykj.zhumulangma.common.event.KeyCode;
 import com.gykj.zhumulangma.common.mvvm.view.BaseRefreshFragment;
+import com.gykj.zhumulangma.common.mvvm.view.status.HotSkeleton;
 import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.adapter.ColumnAdapter;
 import com.gykj.zhumulangma.home.bean.HomeItem;
+import com.gykj.zhumulangma.home.bean.TabBean;
 import com.gykj.zhumulangma.home.mvvm.ViewModelFactory;
 import com.gykj.zhumulangma.home.mvvm.viewmodel.ColumnViewModel;
+import com.kingja.loadsir.callback.Callback;
 
 import java.util.ArrayList;
 
@@ -31,7 +34,7 @@ import static com.gykj.zhumulangma.home.adapter.ColumnAdapter.RECYCLEDVIEWPOOL;
 
 public class ColumnFragment extends BaseRefreshFragment<CommonLayoutRefreshListBinding, ColumnViewModel, HomeItem>{
     private ColumnAdapter mColumnAdapter;
-
+    private TabBean mTabBean;
 
     public ColumnFragment() {
     }
@@ -41,7 +44,6 @@ public class ColumnFragment extends BaseRefreshFragment<CommonLayoutRefreshListB
     public int onBindLayout() {
         return R.layout.common_layout_refresh_list;
     }
-
 
     @Override
     protected boolean enableSwipeBack() {
@@ -68,7 +70,8 @@ public class ColumnFragment extends BaseRefreshFragment<CommonLayoutRefreshListB
 
     @Override
     public void initData() {
-        mViewModel.initArguments(getArguments().getParcelable(KeyCode.Home.TAB));
+        mTabBean= getArguments().getParcelable(KeyCode.Home.TAB);
+        mViewModel.initArguments(mTabBean);
         mViewModel.init();
     }
 
@@ -102,7 +105,14 @@ public class ColumnFragment extends BaseRefreshFragment<CommonLayoutRefreshListB
             mBinding.refreshLayout.setNoMoreData(false);
         });
     }
-
+    @Override
+    public Callback getInitStatus() {
+        mTabBean= getArguments().getParcelable(KeyCode.Home.TAB);
+        if(mTabBean.isCat()){
+            return super.getInitStatus();
+        }
+        return new HotSkeleton();
+    }
     @Override
     public void onEvent(FragmentEvent event) {
         super.onEvent(event);
