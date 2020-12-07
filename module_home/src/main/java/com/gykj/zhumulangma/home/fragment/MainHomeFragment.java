@@ -167,7 +167,7 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
 
             final CommonNavigator commonNavigator = new CommonNavigator(mActivity);
             commonNavigator.setAdapter(new TabNavigatorAdapter(titles, mBinding.viewpager, 50));
-            commonNavigator.setAdjustMode(true);
+    //        commonNavigator.setAdjustMode(true);
             mBinding.magicIndicator.setNavigator(commonNavigator);
             ViewPagerHelper.bind(mBinding.magicIndicator, mBinding.viewpager);
         });

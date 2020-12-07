@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -12,13 +13,14 @@ import java.lang.reflect.Field;
 
 public class BannerViewPager extends ViewPager {
     private boolean scrollable = true;
-
+    private int touchSlop;
     public BannerViewPager(Context context) {
-        super(context);
+        this(context,null);
     }
 
     public BannerViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
+        touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
     }
 
     /**
@@ -50,6 +52,7 @@ public class BannerViewPager extends ViewPager {
         }
     }
     float startX,startY;
+    private static final String TAG = "BannerViewPager";
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
@@ -61,7 +64,7 @@ public class BannerViewPager extends ViewPager {
             case MotionEvent.ACTION_MOVE:
                 float x = Math.abs(ev.getX() - startX);
                 float y = Math.abs(ev.getY() - startY);
-                getParent().requestDisallowInterceptTouchEvent(x > y);
+                getParent().requestDisallowInterceptTouchEvent(x > y||Math.max(x,y)<touchSlop);
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
