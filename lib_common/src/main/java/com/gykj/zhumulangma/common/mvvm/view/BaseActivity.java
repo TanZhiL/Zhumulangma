@@ -96,7 +96,7 @@ public abstract class BaseActivity<DB extends ViewDataBinding> extends AppCompat
     /**
      * 初始化基本布局
      */
-    private void initCommonView() {
+    public void initCommonView() {
         if (enableSimplebar()) {
             ViewStub viewStubBar = findViewById(R.id.vs_bar);
             viewStubBar.setLayoutResource(R.layout.common_layout_simplebar);

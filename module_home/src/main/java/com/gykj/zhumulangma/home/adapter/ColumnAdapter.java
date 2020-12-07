@@ -30,6 +30,7 @@ import com.gykj.zhumulangma.home.R;
 import com.gykj.zhumulangma.home.activity.AlbumListActivity;
 import com.gykj.zhumulangma.home.bean.HomeItem;
 import com.gykj.zhumulangma.home.bean.NavigationItem;
+import com.gykj.zhumulangma.home.bean.TabBean;
 import com.gykj.zhumulangma.home.widget.RadioCategoryItem;
 import com.ximalaya.ting.android.opensdk.model.album.Album;
 import com.youth.banner.Banner;
@@ -38,6 +39,8 @@ import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_ALBUM_TYPE_INDEX;
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TITLE_INDEX;
@@ -50,18 +53,19 @@ import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TIT
 public class ColumnAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHolder> {
     private static final String TAG = "ColumnAdapter";
     public static final RecyclerView.RecycledViewPool RECYCLEDVIEWPOOL = new RecyclerView.RecycledViewPool();
+    private TabBean mTabBean;
 
     public ColumnAdapter(List<HomeItem> data) {
         super(data);
     }
 
-    public ColumnAdapter(List<HomeItem> data, Context context) {
+    public ColumnAdapter(TabBean tabBean, List<HomeItem> data, Context context) {
         super(data);
-        mContext =context;
+        mContext = context;
+        mTabBean = tabBean;
         addItemType(HomeItem.BANNER, R.layout.home_item_banner);
         addItemType(HomeItem.NAVIGATION_LIST, R.layout.common_layout_nest_list);
         addItemType(HomeItem.NAVIGATION_GRID, R.layout.home_item_navigation_grid);
-        addItemType(HomeItem.NAVIGATION_CAT, R.layout.common_layout_nest_list);
         addItemType(HomeItem.ALBUM_GRID, R.layout.home_item_album_6);
         addItemType(HomeItem.ALBUM_LIST, R.layout.home_item_album_5);
         addItemType(HomeItem.REFRESH, R.layout.home_layout_item_refresh);
@@ -81,9 +85,6 @@ public class ColumnAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewH
                 break;
             case HomeItem.NAVIGATION_GRID:
                 onBindNavigationGrid(helper, item);
-                break;
-            case HomeItem.NAVIGATION_CAT:
-                onBindNavigationCat(helper.getView(R.id.recyclerview), item);
                 break;
             case HomeItem.ALBUM_GRID:
                 onBindAlbum3_6(helper, item);
@@ -111,12 +112,24 @@ public class ColumnAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewH
             rvNavitioin.setAdapter(navigationAdapter);
             rvNavitioin.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
             rvNavitioin.setHasFixedSize(true);
+            OverScrollDecoratorHelper.setUpOverScroll(rvNavitioin, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL);
             navigationAdapter.bindToRecyclerView(rvNavitioin);
-            navigationAdapter.setOnItemClickListener((adapter, view, position) ->
+            navigationAdapter.setOnItemClickListener((adapter, view, position) -> {
+                if (!TextUtils.isEmpty(mTabBean.getNavType()) && mTabBean.getNavType().equals("nav_cat")) {
+                    if (TextUtils.isEmpty(navigationItems.get(position).getValue())) {
+                        RouteHelper.navigateTo(Constants.Router.Home.F_RANK);
+                    } else {
+                        RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
+                                .withInt(KeyCode.Home.CATEGORY, Integer.parseInt(navigationItems.get(position).getValue()))
+                                .withString(KeyCode.Home.TITLE, navigationItems.get(position).getLabel()));
+                    }
+                } else {
                     RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                    .withInt(KeyCode.Home.CATEGORY, item.getData().getNavCategory())
-                    .withString(KeyCode.Home.TAG, navigationItems.get(position).getValue())
-                    .withString(KeyCode.Home.TITLE, navigationItems.get(position).getLabel())));
+                            .withInt(KeyCode.Home.CATEGORY, item.getData().getNavCategory())
+                            .withString(KeyCode.Home.TAG, navigationItems.get(position).getValue())
+                            .withString(KeyCode.Home.TITLE, navigationItems.get(position).getLabel()));
+                }
+            });
         }
     }
 
@@ -136,37 +149,15 @@ public class ColumnAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewH
         }
     }
 
-    private void onBindNavigationCat(RecyclerView rvNavitioin, HomeItem item) {
-        if (rvNavitioin.getAdapter() == null) {
-            List<NavigationItem> navigationItems = item.getData().getNavigationItems();
-            NavigationAdapter navigationAdapter = new NavigationAdapter(R.layout.home_item_navigation);
-            navigationAdapter.setNewData(item.getData().getNavigationItems());
-            rvNavitioin.setAdapter(navigationAdapter);
-            rvNavitioin.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false));
-            rvNavitioin.setHasFixedSize(true);
-            navigationAdapter.bindToRecyclerView(rvNavitioin);
-
-            navigationAdapter.setOnItemClickListener((adapter, view, position) -> {
-                if (TextUtils.isEmpty(navigationItems.get(position).getValue())) {
-                    RouteHelper.navigateTo(Constants.Router.Home.F_RANK);
-                } else {
-                    RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_LIST)
-                            .withInt(KeyCode.Home.CATEGORY, Integer.parseInt(navigationItems.get(position).getValue()))
-                            .withString(KeyCode.Home.TITLE, navigationItems.get(position).getLabel()));
-                }
-            });
-        }
-    }
-
     private void onBindAlbum3_6(BaseViewHolder helper, HomeItem item) {
         ItemHeader itemHeader = (ItemHeader) helper.getView(R.id.ih_title);
         List<Album> albums;
         itemHeader.setTag(item);
         boolean isGuessLike = !CollectionUtils.isEmpty(item.getData().getGussLikeAlbumList());
-        if(isGuessLike){
+        if (isGuessLike) {
             albums = item.getData().getGussLikeAlbumList();
             itemHeader.setTitle("猜你喜欢");
-        }else {
+        } else {
             albums = item.getData().getColumnDetailDTOPair().second.getColumns();
             ColumnBean columnBean = item.getData().getColumnDetailDTOPair().first;
             itemHeader.setTitle(getTiltle(columnBean));
@@ -284,9 +275,9 @@ public class ColumnAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewH
                             HomeItem homeItem = (HomeItem) v.getTag();
                             boolean isGuessLike = !CollectionUtils.isEmpty(homeItem.getData().getGussLikeAlbumList());
                             if (homeItem != null) {
-                                Album album = isGuessLike?
-                                         homeItem.getData().getGussLikeAlbumList().get(finalI)
-                                        :homeItem.getData().getColumnDetailDTOPair().second.getColumns().get(finalI);
+                                Album album = isGuessLike ?
+                                        homeItem.getData().getGussLikeAlbumList().get(finalI)
+                                        : homeItem.getData().getColumnDetailDTOPair().second.getColumns().get(finalI);
                                 RouteHelper.navigateTo(ARouter.getInstance().build(Constants.Router.Home.F_ALBUM_DETAIL)
                                         .withLong(KeyCode.Home.ALBUMID, album.getId()));
                             }

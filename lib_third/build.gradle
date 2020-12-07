@@ -105,6 +105,7 @@ dependencies {
     api rootProject.ext.dependencies["agentweb_filechooser"]
     api rootProject.ext.dependencies["agentweb_downloader"]
     api rootProject.ext.dependencies["bmob"]
+    api rootProject.ext.dependencies["overscroll-decor"]
 
 
     api files('libs/Msc.jar')

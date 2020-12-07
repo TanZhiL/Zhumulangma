@@ -180,7 +180,7 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends Fragment 
     /**
      * 初始化基本布局
      */
-    private void initCommonView() {
+    public void initCommonView() {
         if (enableSimplebar()) {
             ViewStub viewStubBar = mView.findViewById(R.id.vs_bar);
             viewStubBar.setLayoutResource(R.layout.common_layout_simplebar);

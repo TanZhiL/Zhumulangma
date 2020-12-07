@@ -70,6 +70,7 @@ ext {
             "Jolyglot-gson":"0.0.4",
             "backgroundlib":"1.6.0",
             "Slidr":"2.1.0",
+            "overscroll-decor":"1.1.0",
     ]
     //androidx配置
     androidx = [
@@ -155,6 +156,7 @@ ext {
             "SkeletonBlock"                        :"com.github.TanZhiL:SkeletonBlock:${versions["SkeletonBlock"]}",
             "backgroundlib"                        :"com.noober.background:core:${versions["backgroundlib"]}",
             "Slidr"                                :"com.r0adkll:slidableactivity:${versions["Slidr"]}",
+            "overscroll-decor"                     :"me.everything:overscroll-decor-android:${versions["overscroll-decor"]}",
     ]
 
 }
