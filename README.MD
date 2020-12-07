@@ -4,6 +4,11 @@
 ### 新增传统AMS页面管理,参考develop_ams分支
 
 ### 更新日志：
+
+###### 珠穆朗玛FM 1.0 2020-12.7
+
+* 通过后台动态配置首页tab栏
+
 ###### 珠穆朗玛FM 1.0 2020-11.19
 
 * 新增传统ams页面管理,参考develop_ams分支
@@ -90,6 +95,7 @@ if (isModule.toBoolean()) {
 我们可以为组件开发模式下的业务组件再创建一个 AndroidManifest.xml，然后根据isModule指定AndroidManifest.xml的文件路径，让业务组件在集成模式和组件模式下使用不同的AndroidManifest.xml，这样表单冲突的问题就可以规避了
 已module_main组件为例配置如下：
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190530150350275.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9tZW54aW5kaWFvbG9uZy5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70)
+
 ```
 sourceSets {
         main {
