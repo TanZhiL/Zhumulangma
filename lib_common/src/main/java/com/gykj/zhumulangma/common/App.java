@@ -53,6 +53,7 @@ public class App extends MultiDexApplication {
         //设置全局的Footer构建器
         SmartRefreshLayout.setDefaultRefreshFooterCreator((context, layout) -> {
             ClassicsFooter classicsFooter = new ClassicsFooter(context);
+            ClassicsFooter.REFRESH_FOOTER_NOTHING = "没有更多数据了,试试搜索功能吧";
             classicsFooter.setTextSizeTitle(12);
             classicsFooter.setDrawableSize(16);
             classicsFooter.setFinishDuration(0);
