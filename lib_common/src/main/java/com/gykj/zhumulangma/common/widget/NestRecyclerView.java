@@ -3,6 +3,7 @@ package com.gykj.zhumulangma.common.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,19 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class NestRecyclerView extends RecyclerView {
     private boolean requestDisallowIntercept = true;
+    private int touchSlop;
+
     public NestRecyclerView(@NonNull Context context) {
-        super(context);
+        this(context,null);
     }
 
     public NestRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs,0);
     }
 
     public NestRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
     }
 
-    float startX,startY;
+    float startX, startY;
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
@@ -34,14 +39,15 @@ public class NestRecyclerView extends RecyclerView {
                 break;
             case MotionEvent.ACTION_MOVE:
                 LayoutManager layoutManager = getLayoutManager();
-                if(layoutManager instanceof LinearLayoutManager){
+                if (layoutManager instanceof LinearLayoutManager) {
                     int orientation = ((LinearLayoutManager) layoutManager).getOrientation();
                     float x = Math.abs(ev.getX() - startX);
                     float y = Math.abs(ev.getY() - startY);
+
                     if (orientation == VERTICAL) {
-                        getParent().requestDisallowInterceptTouchEvent(requestDisallowIntercept && y > x);
+                        getParent().requestDisallowInterceptTouchEvent(requestDisallowIntercept && (y > x||Math.max(x,y)<touchSlop));
                     } else {
-                        getParent().requestDisallowInterceptTouchEvent(requestDisallowIntercept && x > y);
+                        getParent().requestDisallowInterceptTouchEvent(requestDisallowIntercept && (x > y||Math.max(x,y)<touchSlop));
                     }
                 }
                 break;
