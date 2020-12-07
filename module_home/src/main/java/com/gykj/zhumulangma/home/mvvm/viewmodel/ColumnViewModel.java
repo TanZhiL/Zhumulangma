@@ -87,13 +87,16 @@ public class ColumnViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Home
                     rxField.get().add(new HomeItem(HomeItem.BANNER, homeBean));
                 })
                 .flatMap((Function<BannerDTO, ObservableSource<List<Album>>>) bannerDTO -> {
-                    int navType = getNavType();
-                    HomeBean homeBean = new HomeBean();
-                    homeBean.setNavigationItems(mTabBean.getNavItems());
-                    if (!TextUtils.isEmpty(mTabBean.getNavCatId())) {
-                        homeBean.setNavCategory(Integer.parseInt(mTabBean.getNavCatId()));
+                    List<NavigationItem> navItems = mTabBean.getNavItems();
+                    if(!CollectionUtils.isEmpty(navItems)&&!TextUtils.isEmpty(mTabBean.getNavType())){
+                        int navType = getNavType();
+                        HomeBean homeBean = new HomeBean();
+                        homeBean.setNavigationItems(mTabBean.getNavItems());
+                        if (!TextUtils.isEmpty(mTabBean.getNavCatId())) {
+                            homeBean.setNavCategory(Integer.parseInt(mTabBean.getNavCatId()));
+                        }
+                        rxField.get().add(new HomeItem(navType, homeBean));
                     }
-                    rxField.get().add(new HomeItem(navType, homeBean));
                     rxField.get().add(new HomeItem(HomeItem.LINE, null));
                     if (mTabBean.isShowLike()) {
                         return getGussLikeObservable();
@@ -134,13 +137,11 @@ public class ColumnViewModel extends BaseRefreshViewModel<ZhumulangmaModel, Home
         int navType = HomeItem.NAVIGATION_LIST;
         switch (mTabBean.getNavType()) {
             case "nav_list":
+            case "nav_cat":
                 navType = HomeItem.NAVIGATION_LIST;
                 break;
             case "nav_grid":
                 navType = HomeItem.NAVIGATION_GRID;
-                break;
-            case "nav_cat":
-                navType = HomeItem.NAVIGATION_CAT;
                 break;
         }
         return navType;

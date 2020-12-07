@@ -52,7 +52,8 @@ public class ColumnFragment extends BaseRefreshFragment<CommonLayoutRefreshListB
 
     @Override
     public void initView() {
-        mColumnAdapter = new ColumnAdapter(new ArrayList<>(),mActivity);
+        mTabBean= getArguments().getParcelable(KeyCode.Home.TAB);
+        mColumnAdapter = new ColumnAdapter(mTabBean,new ArrayList<>(),mActivity);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setRecycleChildrenOnDetach(true);
         mBinding.recyclerview.setLayoutManager(linearLayoutManager);
@@ -70,7 +71,6 @@ public class ColumnFragment extends BaseRefreshFragment<CommonLayoutRefreshListB
 
     @Override
     public void initData() {
-        mTabBean= getArguments().getParcelable(KeyCode.Home.TAB);
         mViewModel.initArguments(mTabBean);
         mViewModel.init();
     }

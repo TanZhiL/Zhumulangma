@@ -35,13 +35,15 @@ public interface BaseView {
     @LayoutRes
     int onBindLayout();
 
+    void initCommonView();
+
     default void initParam() {
     }
 
+    void initView();
+
     default void initListener() {
     }
-
-    void initView();
 
     void initData();
 
