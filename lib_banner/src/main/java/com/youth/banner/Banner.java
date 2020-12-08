@@ -672,4 +672,15 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         return imageUrls;
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        startAutoPlay();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        stopAutoPlay();
+    }
 }
