@@ -47,8 +47,10 @@ import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TIT
 import static com.gykj.zhumulangma.common.mvvm.model.ZhumulangmaModel.COLUMN_TITLE_SEPARATOR;
 
 /**
- * Created by 10719
- * on 2019/6/17
+ * Author: Thomas.
+ * <br/>Date: 2019/6/17 13:41
+ * <br/>Email: 1071931588@qq.com
+ * <br/>Description:首页adapter
  */
 public class ColumnAdapter extends BaseMultiItemQuickAdapter<HomeItem, BaseViewHolder> {
     private static final String TAG = "ColumnAdapter";

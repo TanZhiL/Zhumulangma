@@ -23,8 +23,6 @@ import com.kingja.loadsir.callback.Callback;
 
 import java.util.ArrayList;
 
-import static com.gykj.zhumulangma.home.adapter.ColumnAdapter.RECYCLEDVIEWPOOL;
-
 /**
  * Author: Thomas.
  * <br/>Date: 2019/8/14 13:41
@@ -58,7 +56,7 @@ public class ColumnFragment extends BaseRefreshFragment<CommonLayoutRefreshListB
         linearLayoutManager.setRecycleChildrenOnDetach(true);
         mBinding.recyclerview.setLayoutManager(linearLayoutManager);
         mBinding.recyclerview.setHasFixedSize(true);
-        mBinding.recyclerview.setRecycledViewPool(RECYCLEDVIEWPOOL);
+//        mBinding.recyclerview.setRecycledViewPool(RECYCLEDVIEWPOOL);
         mColumnAdapter.bindToRecyclerView(mBinding.recyclerview);
     }
 
