@@ -37,9 +37,10 @@
 * 第一次发布
 
 ### 功能演示
-![在这里插入图片描述](https://github.com/TanZhiL/Zhumulangma/blob/master/screenshot/1.png)
-![在这里插入图片描述](https://github.com/TanZhiL/Zhumulangma/blob/master/screenshot/3.png)
-![在这里插入图片描述](https://github.com/TanZhiL/Zhumulangma/blob/master/screenshot/7.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20201211185112677.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjcwMzQ0NQ==,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191021163929286.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjcwMzQ0NQ==,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191021164006231.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjcwMzQ0NQ==,size_16,color_FFFFFF,t_70)
+
 ### 主要功能(包括不仅限于):
 * 专辑展示
 * 声音展示及播放

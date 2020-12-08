@@ -6,7 +6,7 @@ if (tinkerEnable.toBoolean()) {
 android {
     signingConfigs {
         release {
-            storeFile file('E:\\Project\\Android\\thomas.jks')
+            storeFile file('E:\\Project\\thomas.jks')
             storePassword '123698745'
             keyAlias = 'thomas'
             keyPassword '123698745'
