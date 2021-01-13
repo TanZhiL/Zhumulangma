@@ -3,7 +3,7 @@
           package="com.gykj.zhumulangma.main">
 
     <application android:label="@string/app_name">
-        <activity android:name="com.gykj.zhumulangma.main.MainActivity"
+        <activity android:name="com.gykj.zhumulangma.main.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:theme="@style/SplashTheme"
             android:launchMode="singleTask">
@@ -12,6 +12,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>
