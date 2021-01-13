@@ -150,10 +150,6 @@ public class DownloadSortActivity extends BaseMvvmActivity<ListenActivityDownloa
         }
     };
 
-    @Override
-    public Class<DownloadSortViewModel> onBindViewModel() {
-        return DownloadSortViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

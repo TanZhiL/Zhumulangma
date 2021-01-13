@@ -110,10 +110,7 @@ public class SubscribeFragment extends BaseRefreshFragment<CommonLayoutRefreshLi
         }
     }
 
-    @Override
-    public Class<SubscribeViewModel> onBindViewModel() {
-        return SubscribeViewModel.class;
-    }
+
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

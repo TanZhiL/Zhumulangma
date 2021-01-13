@@ -22,15 +22,16 @@ import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.impl.FullScreenPopupView;
 
 import java.io.File;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class SplashAdPopup extends FullScreenPopupView implements View.OnClickListener {
     private Context mContext;
-    private int mAdSecond = 5;
+    private int mAdSecond = 3;
 
     public SplashAdPopup(@NonNull Context context) {
         super(context);
@@ -61,13 +62,15 @@ public class SplashAdPopup extends FullScreenPopupView implements View.OnClickLi
                                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                         ((TextView) findViewById(R.id.tv_label)).setText(string);
                     }, Throwable::printStackTrace);
-            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-                mAdSecond--;
-                post(() -> ((TextView) findViewById(R.id.tv_time)).setText("跳过广告 " + mAdSecond));
-                if (mAdSecond == 0) {
-                    post(this::dismiss);
-                }
-            }, 1, 1, TimeUnit.SECONDS);
+            Observable.interval(1,1,TimeUnit.SECONDS).take(mAdSecond)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> {
+                        mAdSecond--;
+                        ((TextView) findViewById(R.id.tv_time)).setText("跳过广告 " + mAdSecond);
+                        if (mAdSecond == 0) {
+                            dismiss();
+                        }
+                    }, Throwable::printStackTrace);
             ivAd.setOnClickListener(this);
         }
     }

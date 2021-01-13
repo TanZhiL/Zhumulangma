@@ -88,10 +88,6 @@ public class FavoriteActivity extends BaseRefreshActivity<CommonLayoutRefreshLis
         mViewModel.play(track.getAlbum().getAlbumId(),track.getDataId());
     }
 
-    @Override
-    public Class<FavoriteViewModel> onBindViewModel() {
-        return FavoriteViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

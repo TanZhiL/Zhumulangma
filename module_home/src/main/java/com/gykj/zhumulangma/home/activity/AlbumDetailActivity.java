@@ -354,10 +354,6 @@ public class AlbumDetailActivity extends BaseRefreshActivity<HomeActivityAlbumDe
         return new Integer[]{R.drawable.ic_common_more, R.drawable.ic_common_share};
     }
 
-    @Override
-    public Class<AlbumDetailViewModel> onBindViewModel() {
-        return AlbumDetailViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

@@ -74,11 +74,6 @@ public class SearchAlbumFragment extends BaseRefreshFragment<CommonLayoutRefresh
 
 
     @Override
-    public Class<SearchAlbumViewModel> onBindViewModel() {
-        return SearchAlbumViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }

@@ -78,11 +78,6 @@ public class CategoryFragment extends BaseRefreshFragment<CommonLayoutRefreshLis
     }
 
     @Override
-    public Class<CategoryViewModel> onBindViewModel() {
-        return CategoryViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }

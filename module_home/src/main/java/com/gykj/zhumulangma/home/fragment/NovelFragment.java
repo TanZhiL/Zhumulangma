@@ -77,10 +77,6 @@ public class NovelFragment extends BaseRefreshFragment<CommonLayoutRefreshListBi
             return false;
         }
 
-        @Override
-        public Class<NovelViewModel> onBindViewModel() {
-            return NovelViewModel.class;
-        }
 
         @Override
         public ViewModelProvider.Factory onBindViewModelFactory() {

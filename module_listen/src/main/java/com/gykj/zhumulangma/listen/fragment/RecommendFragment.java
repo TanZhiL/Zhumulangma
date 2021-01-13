@@ -107,10 +107,6 @@ public class RecommendFragment extends BaseMvvmFragment<CommonLayoutRefreshListB
         });
     }
 
-    @Override
-    public Class<SubscribeViewModel> onBindViewModel() {
-        return SubscribeViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

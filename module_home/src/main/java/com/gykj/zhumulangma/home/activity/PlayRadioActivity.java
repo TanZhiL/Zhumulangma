@@ -506,10 +506,6 @@ public class PlayRadioActivity extends BaseMvvmActivity<HomeActivityPlayRadioBin
         mPlayerManager.removeAdsStatusListener(this);
     }
 
-    @Override
-    public Class<PlayRadioViewModel> onBindViewModel() {
-        return PlayRadioViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

@@ -81,11 +81,6 @@ public class ChildFragment extends BaseRefreshFragment<CommonLayoutRefreshListBi
     }
 
     @Override
-    public Class<ChildViewModel> onBindViewModel() {
-        return ChildViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }

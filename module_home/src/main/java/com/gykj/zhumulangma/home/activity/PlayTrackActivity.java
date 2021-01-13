@@ -520,10 +520,6 @@ public class PlayTrackActivity extends BaseMvvmActivity<HomeActivityPlayTrackBin
         mPlayerManager.setPlayListChangeListener(null);
     }
 
-    @Override
-    public Class<PlayTrackViewModel> onBindViewModel() {
-        return PlayTrackViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

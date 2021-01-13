@@ -237,10 +237,6 @@ public class MainUserFragment extends BaseRefreshFragment<UserFragmentMainBindin
         }
     }
 
-    @Override
-    protected Class<MainUserViewModel> onBindViewModel() {
-        return MainUserViewModel.class;
-    }
 
     @Override
     protected ViewModelProvider.Factory onBindViewModelFactory() {

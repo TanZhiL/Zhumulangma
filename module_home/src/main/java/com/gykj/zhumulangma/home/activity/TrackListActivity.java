@@ -83,10 +83,6 @@ public class TrackListActivity extends BaseRefreshActivity<CommonLayoutRefreshLi
         mViewModel.play(track.getAlbum().getAlbumId(), track.getDataId());
     }
 
-    @Override
-    public Class<TrackListViewModel> onBindViewModel() {
-        return TrackListViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

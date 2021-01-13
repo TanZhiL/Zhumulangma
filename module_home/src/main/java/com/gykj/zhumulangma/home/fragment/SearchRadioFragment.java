@@ -70,10 +70,7 @@ public class SearchRadioFragment extends BaseMvvmFragment<CommonLayoutRefreshLis
      //   mViewModel.playRadio(mRadioAdapter.getItem(position));
     }
 
-    @Override
-    public Class<SearchRadioViewModel> onBindViewModel() {
-        return SearchRadioViewModel.class;
-    }
+
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

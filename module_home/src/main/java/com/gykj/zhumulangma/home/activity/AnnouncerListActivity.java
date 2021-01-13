@@ -82,10 +82,6 @@ public class AnnouncerListActivity extends BaseRefreshActivity<CommonLayoutRefre
     }
 
 
-    @Override
-    public Class<AnnouncerListViewModel> onBindViewModel() {
-        return AnnouncerListViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

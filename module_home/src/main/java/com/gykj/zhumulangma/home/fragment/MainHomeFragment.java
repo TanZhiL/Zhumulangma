@@ -132,11 +132,6 @@ public class MainHomeFragment extends BaseMvvmFragment<HomeFragmentMainBinding, 
     }
 
     @Override
-    public Class<MainHomeViewModel> onBindViewModel() {
-        return MainHomeViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }

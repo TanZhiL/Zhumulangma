@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.gykj.zhumulangma.common.mvvm.viewmodel.BaseViewModel;
 
+import java.lang.reflect.ParameterizedType;
+
 /**
  * Author: Thomas.
  * <br/>Date: 2019/9/10 8:23
@@ -33,10 +35,9 @@ public abstract class BaseMvvmActivity<DB extends ViewDataBinding,VM extends Bas
     }
 
     public VM createViewModel() {
-        return ViewModelProviders.of(this, onBindViewModelFactory()).get(onBindViewModel());
+        Class<VM> tClass = (Class<VM>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+        return ViewModelProviders.of(this, onBindViewModelFactory()).get(tClass);
     }
-
-    public abstract Class<VM> onBindViewModel();
 
     public abstract Factory onBindViewModelFactory();
 

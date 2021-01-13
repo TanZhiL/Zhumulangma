@@ -84,10 +84,6 @@ public class ColumnFragment extends BaseRefreshFragment<CommonLayoutRefreshListB
         return false;
     }
 
-    @Override
-    public Class<ColumnViewModel> onBindViewModel() {
-        return ColumnViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

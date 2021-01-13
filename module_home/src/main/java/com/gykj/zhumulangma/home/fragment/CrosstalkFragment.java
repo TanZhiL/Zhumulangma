@@ -78,11 +78,6 @@ public class CrosstalkFragment extends BaseRefreshFragment<CommonLayoutRefreshLi
     }
 
     @Override
-    public Class<CrosstalkViewModel> onBindViewModel() {
-        return CrosstalkViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }

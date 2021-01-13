@@ -77,10 +77,6 @@ public class HistoryActivity extends BaseRefreshActivity<CommonLayoutRefreshList
         return new Integer[]{R.drawable.ic_listen_history_delete};
     }
 
-    @Override
-    public Class<HistoryViewModel> onBindViewModel() {
-        return HistoryViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

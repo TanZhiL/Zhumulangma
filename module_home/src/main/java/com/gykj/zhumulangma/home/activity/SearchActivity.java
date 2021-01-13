@@ -216,10 +216,6 @@ public class SearchActivity extends BaseMvvmActivity<HomeActivitySearchBinding, 
         }
     }
 
-    @Override
-    public Class<SearchViewModel> onBindViewModel() {
-        return SearchViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

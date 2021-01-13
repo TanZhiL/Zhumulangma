@@ -71,11 +71,6 @@ public class SearchAnnouncerFragment extends BaseRefreshFragment<CommonLayoutRef
 
 
     @Override
-    public Class<SearchAnnouncerViewModel> onBindViewModel() {
-        return SearchAnnouncerViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }

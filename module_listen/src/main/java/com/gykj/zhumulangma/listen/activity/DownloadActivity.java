@@ -237,11 +237,6 @@ public class DownloadActivity extends BaseMvvmActivity<ListenActivityDownloadBin
     }
 
     @Override
-    public Class<DownloadViewModel> onBindViewModel() {
-        return DownloadViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(getApplication());
     }

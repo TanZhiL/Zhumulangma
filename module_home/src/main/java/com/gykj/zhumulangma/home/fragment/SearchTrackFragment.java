@@ -88,10 +88,7 @@ public class SearchTrackFragment extends BaseRefreshFragment<CommonLayoutRefresh
 
     }
 
-    @Override
-    public Class<SearchTrackViewModel> onBindViewModel() {
-        return SearchTrackViewModel.class;
-    }
+
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

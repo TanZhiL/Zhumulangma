@@ -252,10 +252,6 @@ public class AnnouncerDetailActivity extends BaseRefreshActivity<HomeActivityAnn
         Log.d(TAG, "follwer() called");
     }
 
-    @Override
-    public Class<AnnouncerDetailViewModel> onBindViewModel() {
-        return AnnouncerDetailViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

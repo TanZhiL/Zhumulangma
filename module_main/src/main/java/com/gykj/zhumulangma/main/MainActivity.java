@@ -281,11 +281,6 @@ public class MainActivity extends BaseMvvmActivity<MainActivityMainBinding,MainV
 
 
     @Override
-    public Class<MainViewModel> onBindViewModel() {
-        return MainViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(getApplication());
     }

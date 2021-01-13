@@ -117,11 +117,6 @@ public class SearchSuggestFragment extends BaseMvvmFragment<CommonLayoutRefreshL
     }
 
     @Override
-    public Class<SearchViewModel> onBindViewModel() {
-        return SearchViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(mApplication);
     }

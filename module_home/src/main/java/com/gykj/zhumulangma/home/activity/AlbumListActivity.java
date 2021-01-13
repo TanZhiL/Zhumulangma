@@ -104,11 +104,6 @@ public class AlbumListActivity extends BaseRefreshActivity<CommonLayoutRefreshLi
     }
 
     @Override
-    public Class<AlbumListViewModel> onBindViewModel() {
-        return AlbumListViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(getApplication());
     }

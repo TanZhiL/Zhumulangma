@@ -129,11 +129,6 @@ public class RadioListActivity extends BaseMvvmActivity<CommonLayoutRefreshListB
 
 
     @Override
-    public Class<RadioListViewModel> onBindViewModel() {
-        return RadioListViewModel.class;
-    }
-
-    @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
         return ViewModelFactory.getInstance(getApplication());
     }

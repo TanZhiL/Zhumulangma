@@ -137,10 +137,6 @@ public class RankActivity extends BaseRefreshActivity<HomeActivityRankBinding, R
         }
     }
 
-    @Override
-    public Class<RankViewModel> onBindViewModel() {
-        return RankViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

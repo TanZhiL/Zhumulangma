@@ -279,10 +279,6 @@ public class BatchPreDownloadActivity extends BaseRefreshActivity<ListenActivity
     }
 
 
-    @Override
-    public Class<BatchPreDownloadViewModel> onBindViewModel() {
-        return BatchPreDownloadViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {

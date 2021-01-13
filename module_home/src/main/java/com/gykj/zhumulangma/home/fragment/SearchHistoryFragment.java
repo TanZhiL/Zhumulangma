@@ -88,10 +88,6 @@ public class SearchHistoryFragment extends BaseMvvmFragment<HomeFragmentSearchHi
         mSearchListener = searchListener;
     }
 
-    @Override
-    public Class<SearchViewModel> onBindViewModel() {
-        return SearchViewModel.class;
-    }
 
     @Override
     public ViewModelProvider.Factory onBindViewModelFactory() {
