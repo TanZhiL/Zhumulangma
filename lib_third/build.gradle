@@ -89,7 +89,7 @@ dependencies {
     api rootProject.ext.dependencies["bga-qrcode-zxing"]
     api rootProject.ext.dependencies["roundedimageview"]
     api rootProject.ext.dependencies["aspectjrt"]
-    api (rootProject.ext.dependencies["okaspectjrt"],{
+    api (rootProject.ext.dependencies["okaspect"],{
         exclude group: 'androidx.appcompat', module: 'appcompat'
     })
     api rootProject.ext.dependencies["location"]

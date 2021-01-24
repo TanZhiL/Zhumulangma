@@ -19,17 +19,17 @@ public class PointHelper implements PointHandler {
     }
 
     @Override
-    public void handlePoint(Class clazz, ProceedingJoinPoint joinPoint) {
+    public void onHandlePoint(Class clazz, ProceedingJoinPoint joinPoint) {
         Log.d(TAG, "handlePoint() called with: clazz = [" + clazz + "], joinPoint = [" + joinPoint + "]");
         try {
-        if(clazz==NeedLogin.class){
-            if (AccessTokenManager.getInstanse().hasLogin()) {
+            if (clazz == NeedLogin.class) {
+                if (AccessTokenManager.getInstanse().hasLogin()) {
                     joinPoint.proceed();
-            } else {
-                ToastUtil.showToast("请先登陆");
-                LoginHelper.getInstance().login(ActivityUtils.getTopActivity());
+                } else {
+                    ToastUtil.showToast("请先登陆");
+                    LoginHelper.getInstance().login(ActivityUtils.getTopActivity());
+                }
             }
-        }
 
         } catch (Throwable throwable) {
             throwable.printStackTrace();

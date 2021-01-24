@@ -8,8 +8,8 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
         classpath "com.tencent.bugly:tinker-support:1.1.5"
-        classpath 'org.aspectj:aspectjtools:1.8.9'
-        classpath 'org.aspectj:aspectjweaver:1.8.9'
+        classpath 'org.aspectj:aspectjtools:1.9.6'
+        classpath 'com.github.TanZhiL.OkAspectj:okaspectj-plugin:1.1.2'
     }
 }
 
