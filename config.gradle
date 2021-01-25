@@ -60,7 +60,7 @@ ext {
             "roundedimageview":"2.3.0",
             "aspectjrt":"1.9.6",
             "customactivityoncrash":"2.2.0",
-            "okaspect":"1.1.2",
+            "okaspect":"1.1.5",
             "location":"4.7.0",
             "crashreport_upgrade":"1.4.1",
             "tinker-android-lib":"1.9.9",

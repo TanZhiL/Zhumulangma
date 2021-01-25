@@ -17,7 +17,7 @@ import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.smtt.sdk.QbSdk;
 import com.thomas.okaspectj.OkAspectjHelper;
-import com.thomas.okaspectj.PointHandler;
+import com.thomas.okaspectj.IPointHandler;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 
@@ -129,7 +129,7 @@ public class ThirdHelper {
         CustomActivityOnCrash.install(mApplication);
         return this;
     }
-    public ThirdHelper initAspectj(PointHandler handler) {
+    public ThirdHelper initAspectj(IPointHandler handler) {
         OkAspectjHelper.init(handler);
         return this;
     }
